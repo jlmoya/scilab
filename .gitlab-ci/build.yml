@@ -34,20 +34,30 @@
     # Remove folder older than 3 day
     - >
       $ErrorActionPreference = 'Continue';
-      Get-ChildItem -Path "$SCILAB_COMMON_PATH\*" -Erroraction 'Continue' | Where-Object {($_.LastWriteTime -lt (Get-Date).AddHours(-72))} | Get-ChildItem -Recurse | foreach {
-        if ( (Remove-Item -Force -Verbose -Confirm:$False -ErrorAction 'Continue' $_.FullName *>&1) -ne $null)
-        {
-          echo "Unable to remove $_"
-        }
-      } ; $null
+      Get-ChildItem -Path "$SCILAB_COMMON_PATH\*" -ErrorAction 'Continue' -Recurse -Force |
+      Where-Object { $_.LastWriteTime -lt (Get-Date).AddHours(-72) } |
+      ForEach-Object {
+          $item = $_
+          try {
+              Remove-Item -Path $item.FullName -Force -Recurse -Confirm:$false -ErrorAction Stop
+          }
+          catch {
+              Write-Output "Unable to remove $($item.FullName): $($_.Exception.Message)"
+          }
+      }; $null
     # Remove TMPDIR older than 3 day
     - >
       $ErrorActionPreference = 'Continue';
-      Get-ChildItem -Path "$env:TEMP/SCI_TMP*" -ErrorAction 'Continue' | Where-Object {($_.LastWriteTime -lt (Get-Date).AddHours(-72))} | Get-ChildItem -Recurse | foreach {
-        if ( (Remove-Item -Force -Verbose -Confirm:$False -ErrorAction 'Continue' $_.FullName *>&1) -ne $null)
-        {
-          echo "Unable to remove $_"
-        }
+      Get-ChildItem -Path "$env:TEMP/SCI_TMP*" -ErrorAction 'Continue' |
+      Where-Object { $_.LastWriteTime -lt (Get-Date).AddHours(-72) } |
+      ForEach-Object {
+          $item = $_
+          try {
+              Remove-Item -Path $item.FullName -Force -Recurse -Confirm:$false -ErrorAction Stop
+          }
+          catch {
+              Write-Output "Unable to remove $($item.FullName): $($_.Exception.Message)"
+          }
       }; $null
 
   script:
