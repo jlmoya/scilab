@@ -130,3 +130,16 @@ windows_build_prereq:
       changes:
         paths: *PREBUILD_WINDOWS_CHANGED
         compare_to: ${CI_DEFAULT_BRANCH}
+
+# Clean up the Windows common folder, TMPDIR, uninstall Scilab, and kill any remaining Scilab processes.
+windows_cleanup:
+  stage: prebuild
+  tags: [x64_windows, shell, scilab]
+  needs: []
+  script:
+    - echo "Starting Windows Common path cleanup..."
+    - powershell -NoProfile -ExecutionPolicy Bypass -File ".gitlab-ci\cleanup_windows.ps1"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  allow_failure: true
