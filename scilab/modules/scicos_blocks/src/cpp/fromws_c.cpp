@@ -33,6 +33,7 @@ extern "C"
 #include "sci_malloc.h"
 
 #include "localization.h"
+#include "charEncoding.h"
 
     SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag);
 }
@@ -106,14 +107,21 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
         {
             /* Init */
 
-            /* Convert Scilab code of the variable name to C string */
-            wchar_t FName[100];
-            for (int i = 0; i < Fnlength; ++i)
+            /*
+             * the variable name is :
+             *  - length prefix
+             *  - utf8 string stored as int32 values (might not be 0-terminated)
+             */
+            int len = block->ipar[0];
+            char* utf8_varname = (char*) MALLOC((len + 1) * sizeof(char));
+            for (int i = 0; i < len; ++i)
             {
-                FName[i] = static_cast<wchar_t>(block->ipar[1 + i]);
+                utf8_varname[i] = static_cast<char>(block->ipar[1 + i]);
             }
-            FName[Fnlength] = '\0';
-
+            utf8_varname[len] = '\0';
+            std::wstring FName(to_wide_string(utf8_varname));
+            FREE(utf8_varname);
+            
             auto* pIT = symbol::Context::getInstance()->get(symbol::Symbol(FName));
             if (pIT == nullptr)
             {
@@ -200,7 +208,9 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
             int mX = dims[1];
             int nX = 1;
             if (pGTValues->getDims() > 2)
+            {
                 nX = dims[2];
+            }
             if (my != mX || ny != nX)
             {
                 Coserror(_("Data dimensions are inconsistent:\n Variable size=[%d,%d] \n Block output size=[%d,%d].\n"), mX, nX, my, ny);
@@ -332,11 +342,11 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                 /* double or complex */
                 if (ytype == SCSREAL_N) /* real */
                 {
-                    ptr->D = new double[nPoints * mX];
+                    ptr->D = new double[nPoints * mX + 1];
                 }
                 else /* complex */
                 {
-                    ptr->D = new double[2 * nPoints * mX];
+                    ptr->D = new double[2 * nPoints * mX + 1];
                 }
 
                 double* spline = new double[3 * nPoints - 2];
@@ -366,6 +376,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         ptr->D[0 + j * nPoints] = 3 * qdy[0];
                         A_d[nPoints - 1] =  2 * A_sd[nPoints - 2];
                         ptr->D[nPoints - 1 + j * nPoints] =  3 * qdy[nPoints - 2];
+                        ptr->D[nPoints + j * nPoints] =  ptr->D[nPoints - 1 + j * nPoints];
                         double* res = &ptr->D[j * nPoints];
                         Mytridiagldltsolve(A_d, A_sd, res, nPoints);
                     }
@@ -380,6 +391,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         r = A_sd[nPoints - 3] / A_sd[nPoints - 2];
                         A_d[nPoints - 1] = A_sd[nPoints - 2] / (1 + r);
                         ptr->D[nPoints - 1 + j * nPoints] = ((3 * r + 2) * qdy[nPoints - 2] + r * qdy[nPoints - 3]) / ((1 + r) * (1 + r));
+                        ptr->D[nPoints + j * nPoints] =  ptr->D[nPoints - 1 + j * nPoints];
                         double* res = &ptr->D[j * nPoints];
                         Mytridiagldltsolve(A_d, A_sd, res, nPoints);
                     }
@@ -408,6 +420,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                             ptr->D[nPoints + 0 + j * nPoints] = 3 * qdy[0];
                             A_d[nPoints - 1] =  2 * A_sd[nPoints - 2];
                             ptr->D[nPoints + nPoints - 1 + j * nPoints] =  3 * qdy[nPoints - 2];
+                            ptr->D[nPoints + nPoints + j * nPoints] =  ptr->D[nPoints + nPoints - 1 + j * nPoints];
                             double* res = &ptr->D[nPoints + j * nPoints];
                             Mytridiagldltsolve(A_d, A_sd, res, nPoints);
                         }
@@ -422,6 +435,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                             r = A_sd[nPoints - 3] / A_sd[nPoints - 2];
                             A_d[nPoints - 1] = A_sd[nPoints - 2] / (1 + r);
                             ptr->D[nPoints + nPoints - 1 + j * nPoints] = ((3 * r + 2) * qdy[nPoints - 2] + r * qdy[nPoints - 3]) / ((1 + r) * (1 + r));
+                            ptr->D[nPoints + nPoints + j * nPoints] =  ptr->D[nPoints + nPoints - 1 + j * nPoints];
                             double* res = &ptr->D[nPoints + j * nPoints];
                             Mytridiagldltsolve(A_d, A_sd, res, nPoints);
                         }
@@ -490,7 +504,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                 {
                     inow = nPoints + 1; // Arbitrary value more than nPoints, will be overwritten if needed.
                 }
-                for (int i = cnt1 ; i < nPoints ; ++i)
+                for (int i = cnt1 ; i < nPoints; ++i)
                 {
                     if (i == -1)
                     {
@@ -537,7 +551,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                 }
                 // Look in time value table a range to have current time in.
                 // Beware exact values.
-                for (int i = 0 ; i < nPoints ; ++i)
+                for (int i = 0 ; i < nPoints; ++i)
                 {
                     if (t <= ptr->workt[i])
                     {
@@ -571,7 +585,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         y_d = GetRealOutPortPtrs(block, 1);
                         ptr_d = (double*) ptr->work;
 
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -601,7 +615,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         y_cd = GetImagOutPortPtrs(block, 1);
                         ptr_d = (double*) ptr->work;
 
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -633,7 +647,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         /* --------------------- int8 char  ----------------------------*/
                         y_c = Getint8OutPortPtrs(block, 1);
                         ptr_c = (char*) ptr->work;
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -661,7 +675,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         /* --------------------- int16 short int ---------------------*/
                         y_s = Getint16OutPortPtrs(block, 1);
                         ptr_s = (short int*) ptr->work;
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -689,7 +703,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         /* --------------------- int32 long ---------------------*/
                         y_l = Getint32OutPortPtrs(block, 1);
                         ptr_l = (int*) ptr->work;
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -717,7 +731,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         /*--------------------- uint8 uchar ---------------------*/
                         y_uc = Getuint8OutPortPtrs(block, 1);
                         ptr_uc = (unsigned char*) ptr->work;
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -745,7 +759,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         /* --------------------- uint16 ushort ---------------------*/
                         y_us = Getuint16OutPortPtrs(block, 1);
                         ptr_us = (unsigned short int*) ptr->work;
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -773,7 +787,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         /* --------------------- uint32 ulong ---------------------*/
                         y_ul = Getuint32OutPortPtrs(block, 1);
                         ptr_ul = (unsigned int*) ptr->work;
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -812,7 +826,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         ptr_d = (double*) ptr->work;
                         ptr_D = (double*) ptr->D;
 
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -866,7 +880,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                     {
                         /*  -------------- complex ----------------------*/
                         y_cd = GetImagOutPortPtrs(block, 1);
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -923,7 +937,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         y_c = Getint8OutPortPtrs(block, 1);
                         ptr_c = (char*) ptr->work;
                         /* y_c[j]=ptr_c[inow+(j)*nPoints]; */
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -964,7 +978,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         y_s = Getint16OutPortPtrs(block, 1);
                         ptr_s = (short int*) ptr->work;
                         /* y_s[j]=ptr_s[inow+(j)*nPoints]; */
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -1005,7 +1019,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         y_l = Getint32OutPortPtrs(block, 1);
                         ptr_l = (int*) ptr->work;
                         /* y_l[j]=ptr_l[inow+(j)*nPoints]; */
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -1042,7 +1056,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         y_uc = Getuint8OutPortPtrs(block, 1);
                         ptr_uc = (unsigned char*) ptr->work;
                         /* y_uc[j]=ptr_uc[inow+(j)*nPoints]; */
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {
@@ -1079,7 +1093,7 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
                         y_us = Getuint16OutPortPtrs(block, 1);
                         ptr_us = (unsigned short int*) ptr->work;
                         /* y_us[j]=ptr_us[inow+(j)*nPoints]; */
-                        if (inow > nPoints)
+                        if (inow >= nPoints)
                         {
                             if (OutEnd == 0)
                             {

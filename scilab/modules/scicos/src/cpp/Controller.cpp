@@ -169,12 +169,12 @@ model::BaseObject* Controller::referenceBaseObject(model::BaseObject* o) const
     }
 
     // not locked on purpose, this will allow referencing on View notification
-    // lock(&m_instance.onViewsStructuralModification);
+    lock(&m_instance.onViewsStructuralModification);
     for (const auto& v : m_instance.allViews)
     {
         v->objectReferenced(o->id(), o->kind(), refCount);
     }
-    // unlock(&m_instance.onViewsStructuralModification);
+    unlock(&m_instance.onViewsStructuralModification);
 
     return o;
 }
@@ -198,12 +198,12 @@ void Controller::deleteBaseObject(model::BaseObject* initial)
         --refCount;
 
         // not locked on purpose, this will allow referencing on View notification
-        // lock(&m_instance.onViewsStructuralModification);
+        lock(&m_instance.onViewsStructuralModification);
         for (const auto& v : m_instance.allViews)
         {
             v->objectUnreferenced(initial->id(), initial->kind(), refCount);
         }
-        // unlock(&m_instance.onViewsStructuralModification);
+        unlock(&m_instance.onViewsStructuralModification);
         return;
     }
 

@@ -1020,28 +1020,15 @@ function [ordclk,iord,oord,zord,typ_z,ok]=scheduler(inpptr,outptr,clkptr,execlk_
         j=j+1
         if j>size(ext_cord1,1) then break;end
     end
-    // code to replace faulty unique which reorders
+    // unique() might not be stable, ensure it does not reorders
     yy=ext_cord1(:,1)'
     [xx,kkn]=unique(yy);
     ext_cord=yy(-gsort(-kkn))
-    //ext_cord=unique(ext_cord1(:,1)');
-    //for i=ext_cord
-    //  if typ_l(i) then typ_z(i)=clkptr(i+1)-clkptr(i)-1;end
-    //end  // adding zero crossing surfaces to cont. time synchros
-
-    //a supprimer
-
-    [ext_cord_old,ok]=newc_tree3(vec,dep_u,dep_uptr,typp);
-
-    if or(gsort(ext_cord_old)<>gsort(ext_cord)) then pause,end
-    //
+    
     //pour mettre a zero les typ_z qui ne sont pas dans ext_cord
     //noter que typ_z contient les tailles des nzcross (peut etre >1)
     typ_z(ext_cord)=-typ_z(ext_cord)
     typ_z=-min(typ_z,0)
-
-    if ~ok then mprintf("serious bug, report.");pause;end
-    // ext_cord=ext_cord(n+1:$);
 
     typ_z_save=typ_z
 
@@ -1099,39 +1086,6 @@ function [ordclk,iord,oord,zord,typ_z,ok]=scheduler(inpptr,outptr,clkptr,execlk_
             end
         end
     end
-endfunction
-
-function [ord,ok]=tree3(vec,dep_ut,typ_l)
-    //compute blocks execution tree
-    ok=%t
-    nb=size(vec,"*")
-    for j=1:nb+2
-        fini=%t
-        for i=1:nb
-            if vec(i)==j-1&typ_l(i)<>-1 then
-                if j==nb+2 then
-                    disp(msprintf("%s: tree (3) failed", "c_pass2"));
-                    messagebox(_("Algebraic loop."),"modal","error");ok=%f;ord=[];return;
-                end
-                if typ_l(i)==1 then
-                    fini=%f;
-                    kk=bexe(boptr(i):boptr(i+1)-1)';
-                else
-                    kk=[];
-                    for ii=blnk(blptr(i):blptr(i+1)-1)'
-                        if vec(ii)>-1 & (dep_ut(ii,1) | (typ_l(ii)==1)) then
-                            fini=%f;
-                            kk=[kk ii];
-                        end
-                    end
-                end
-                vec(kk)=j*ones(kk) ;   //mprintf(vec)
-            end
-        end
-        if fini then break;end
-    end
-    [k,ord]=gsort(-vec);
-    ord(find(k==1))=[];
 endfunction
 
 function [clkconnectj_cons]=discard(clkptr,cliptr,clkconnect,exe_cons)
@@ -2407,20 +2361,6 @@ endfunction
 function  [r,ok]=new_tree2(vec,outoin,outoinptr,dep_u,dep_uptr)
     dd=zeros(dep_u);dd(dep_u)=1;
     [r,ok2]=sci_tree2(vec,outoin,outoinptr,dd)
-    ok=ok2==1
-endfunction
-
-function  [r,ok]=new_tree3(vec,dep_ut,typ_l)
-    dd=zeros(dep_ut);dd(dep_ut)=1;
-    [r2,ok2]=sci_tree3(vec,dd,typ_l,bexe,boptr,blnk,blptr)
-    r=r2'
-    ok=ok2==1
-endfunction
-
-function  [r,ok]=newc_tree3(vec,dep_u,dep_uptr,typ_l)
-    dd=zeros(dep_u);dd(dep_u)=1;
-    [r2,ok2]=ctree3(vec,dd,dep_uptr,typ_l,bexe,boptr,blnk,blptr)
-    r=r2'
     ok=ok2==1
 endfunction
 
