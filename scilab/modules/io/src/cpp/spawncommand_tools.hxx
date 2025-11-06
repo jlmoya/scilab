@@ -1,7 +1,7 @@
 /*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  *
- * Copyright (C) 2025 - Dassault Systèmes S.E. - Cédric DELAMARRE
+ * Copyright (C) 2025 - Dassault SystÃ¨mes S.E. - CÃ©dric DELAMARRE
  *
  */
 
@@ -26,5 +26,4 @@ typedef struct pipeinfo
 
 int splitString(char* output, char*** splited);
 void* ReadFromPipe(void* data);
-
 #endif /* __SPAWNCOMMAND_TOOLS_H__ */

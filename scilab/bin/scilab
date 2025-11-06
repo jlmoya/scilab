@@ -930,7 +930,7 @@ do_scilex()
                     "$SCILABBIN" "$@"
                 fi
             else
-                "$SCILABBIN" "$@"
+                exec "$SCILABBIN" "$@"
             fi
             exit $?
         fi
