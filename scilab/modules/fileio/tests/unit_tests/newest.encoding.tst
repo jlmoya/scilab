@@ -6,6 +6,7 @@
 // =============================================================================
 
 // <-- JVM MANDATORY -->
+// <-- NO CHECK REF -->
 
 chdir(TMPDIR);
 
@@ -38,9 +39,7 @@ for i = 1 : size(tab_ref,'*')
 end
 
 a = newest(FileNameList);
-if(a <> 1) then 
-	pause
-end
+assert_checkequal(a, 1);
 
 a=dir('SCI\bin');
 f1=a(2);
@@ -63,11 +62,11 @@ for k=1 : size(tab_ref,"*")
 	mputl("",TMPDIR+"/newest_"+tab_ref(k));
 end
 
-if newest([]) <> [] then pause,end
-if newest()   <> [] then pause,end
+assert_checkequal(newest([]), []);
+assert_checkequal(newest(), []);
 
-if newest("SCI/etc/scilab.start") <> 1 then pause,end
-if newest("SCI/nofile.txt")       <> 1 then pause,end
+assert_checkequal(newest("SCI/etc/scilab.start"), 1);
+assert_checkequal(newest("SCI/nofile.txt"), 1);
 
 for i = 1 : size(tab_ref,"*")
 	for j = size(tab_ref,"*") : -1 : 1
@@ -78,12 +77,12 @@ for i = 1 : size(tab_ref,"*")
 			else;
 				ref = 2;
 			end
-			if(newest(TMPDIR+"/newest_"+tab_ref(i), TMPDIR+"/newest_"+tab_ref(j)) <> ref) then pause, end
-			if(newest([TMPDIR+"/newest_"+tab_ref(i), TMPDIR+"/newest_"+tab_ref(j)]) <> ref)  then pause, end
-			if(newest([TMPDIR+"/newest_"+tab_ref(i); TMPDIR+"/newest_"+tab_ref(j)]) <> ref)  then pause, end
-			if(newest(TMPDIR+"/newest_"+tab_ref(i), TMPDIR+"/no_file") <> 1)  then pause, end
-			if(newest([TMPDIR+"/newest_"+tab_ref(i), TMPDIR+"/no_file"]) <> 1)  then pause, end
-			if(newest([TMPDIR+"/newest_"+tab_ref(i); TMPDIR+"/no_file"]) <> 1)  then pause, end
+			assert_checkequal(newest(TMPDIR+"/newest_"+tab_ref(i), TMPDIR+"/newest_"+tab_ref(j)), ref);
+			assert_checkequal(newest([TMPDIR+"/newest_"+tab_ref(i), TMPDIR+"/newest_"+tab_ref(j)]), ref),
+			assert_checkequal(newest([TMPDIR+"/newest_"+tab_ref(i); TMPDIR+"/newest_"+tab_ref(j)]), ref),
+			assert_checkequal(newest(TMPDIR+"/newest_"+tab_ref(i), TMPDIR+"/no_file"), 1);
+			assert_checkequal(newest([TMPDIR+"/newest_"+tab_ref(i), TMPDIR+"/no_file"]), 1);
+			assert_checkequal(newest([TMPDIR+"/newest_"+tab_ref(i); TMPDIR+"/no_file"]), 1);
 		end
 	end
 end

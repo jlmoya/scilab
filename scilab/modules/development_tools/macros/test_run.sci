@@ -862,20 +862,14 @@ function status = test_single(_module, _testPath, _testName)
     sciFile = strsubst(sciFile, "halt();", "");
 
     // Build test header
-    bugmes_def = "function []=bugmes(), printf(''error on test'');endfunction";
+    bugmes_def = "function []=bugmes(), printf(''error on test'');exit(200);endfunction";
     head = [
     "// <-- HEADER START -->";
-    "mode(3);" ;
+    "mode(3);";
     "lines(28,72);";
-    "lines(0);" ;
-    bugmes_def;
-    "function %onprompt" ;
-    "   [msg, num] = lasterror();" ;
-    "   if (num <> 0) then" ;
-    "       bugmes()" ;
-    "   end" ;
-    "   quit;" ;
-    "endfunction"];
+    "lines(0);";
+    bugmes_def]
+
     if ~interactive then
         head = [ head ;
         "prot=funcprot(0);";
@@ -915,7 +909,7 @@ function status = test_single(_module, _testPath, _testName)
         ""];
     end
 
-    assert_generror_def = "function assert_generror(errmsg, errnb), printf(''%s\nassert failed on test\n'',errmsg);quit; endfunction";
+    assert_generror_def = "function assert_generror(errmsg, errnb), printf(''%s\nassert failed on test\n'',errmsg);exit(201); endfunction";
     if assert then
         head = [ head ;
         "prot=funcprot(0);";
@@ -1366,9 +1360,6 @@ function status = test_single(_module, _testPath, _testName)
         // strsubst(dia, "-.", "-0.")
         // strsubst(dia, "E+", "D+");
         // strsubst(dia, "E-", "D-");
-
-        //not to change the ref files
-        dia = strsubst(dia ,"bugmes();return", "bugmes();quit");
 
         if _module.reference=="create" then
             // Delete previous .dia.ref file

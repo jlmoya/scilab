@@ -7,19 +7,20 @@
 //
 // <-- ENGLISH IMPOSED -->
 //
+// <-- NO CHECK REF -->
 // <-- CLI SHELL MODE -->
 //
 testFile=TMPDIR + '/testFile.bin';
 fd = mopen(testFile,'wb');
 
 // file should be empty
-if mtell(fd) <> 0 then pause, end
+assert_checkequal(mtell(fd), 0);
 for j=1:100
   for i=1:j
     mput(i,'d');
   end
   // 'd' is 8 bytes
-  if mtell(fd) <> 8 * j then pause, end
+  assert_checkequal(mtell(fd), 8 * j);
   mseek(0);
 end
 mclose(fd);
@@ -28,32 +29,32 @@ try
     mtell(fd);
 catch
     errorMessage = sprintf(gettext("%s: Error while opening, reading or writing.\n"), "mtell");
-    [message, ierr]=lasterror();
-    if message <> errorMessage then bugmes();quit;end
+    [msg, ierr]=lasterror();
+    assert_checkequal(msg, errorMessage);
 end
 
 fd = mopen(testFile,'wb');
 // file should be empty
-if mtell(fd) <> 0 then pause, end
+assert_checkequal(mtell(fd), 0);
 for j=1:100
   for i=1:j
     mput(i,'us');
   end
   // 'us' is 2 bytes
-  if mtell(fd) <> 2 * j then pause, end
+  assert_checkequal(mtell(fd), 2 * j);
   mseek(0);
 end
 mclose(fd);
 
 fd = mopen(testFile,'wb');
 // file should be empty
-if mtell(fd) <> 0 then pause, end
+assert_checkequal(mtell(fd), 0);
 for j=1:100
   for i=1:j
     mput(i,'ul');
   end
   // 'ul' is 8 bytes
-  if mtell(fd) <> 8 * j then pause, end
+  assert_checkequal(mtell(fd), 8 * j);
   mseek(0);
 end
 mclose(fd);

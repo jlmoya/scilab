@@ -40,4 +40,4 @@ Texpected = [9.898862973943269 , -0.148040709667531 ,  0.084466211100534  ,  0.0
    0.084466211100534 , -0.000240812494752 ,  0.002102817295201 , -0.000240812494554 ;
    0.056050336743578 , -0.002102817295201 , -0.000240812494554 , 0.000795767345537];
 Texpected=   1.0e+08 * Texpected;
-if or(abs(Tcomputed-Texpected)>%eps) then bugmes();quit;end
+assert_checktrue(or(abs(Tcomputed-Texpected)>%eps));

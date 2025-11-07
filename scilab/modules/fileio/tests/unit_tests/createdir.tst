@@ -6,6 +6,7 @@
 // =============================================================================
 
 // <-- CLI SHELL MODE -->
+// <-- NO CHECK REF -->
 
 chdir(TMPDIR);
 
@@ -24,9 +25,9 @@ tab_ref = [
 for i = 1 : size(tab_ref,'*')
 	sz = "dir_" + tab_ref(i);
 	a = createdir(sz);
-	if(a <> %T) then pause,	end
+	assert_checktrue(a);
 	b = cd(TMPDIR + filesep() + sz);
-	if(b <> (TMPDIR + filesep() + sz)) then pause, end
+	assert_checkequal(b, TMPDIR + filesep() + sz);
 	cd(TMPDIR);
 	removedir(sz);
 end

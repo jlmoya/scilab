@@ -1,4 +1,3 @@
-//<-- CLI SHELL MODE -->
 // =============================================================================
 // Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 // Copyright (C) 2009 - DIGITEO
@@ -6,7 +5,8 @@
 //  This file is distributed under the same license as the Scilab package.
 // =============================================================================
 
-// <-- JVM MANDATORY -->
+// <-- CLI SHELL MODE -->
+// <-- NO CHECK REF -->
 
 chdir(TMPDIR);
 
@@ -26,12 +26,8 @@ tab_ref = [
 for i = 1 : size(tab_ref,'*')
 	sz = "dir_" + tab_ref(i);
 	a = chdir(sz);
-	if(a <> %T) then
-		pause
-	end
+	assert_checktrue(a);
 	b = pwd();
-	if(b <> (TMPDIR + filesep() + sz)) then
-		pause
-	end
+	assert_checkequal(b, TMPDIR + filesep() + sz);
 	cd(TMPDIR);
 end
