@@ -48,15 +48,15 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
+    xdoc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
     dtd = xmlDTD("SCI/modules/xml/tests/unit_tests/library.dtd");
 
     // We test if the document is valid
     // If no error the file is valid
 
-    xmlValidate(doc, dtd);
+    xmlValidate(xdoc, dtd);
 
-    xmlDelete(doc, dtd);
+    xmlDelete(xdoc, dtd);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

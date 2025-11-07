@@ -46,7 +46,7 @@
         </variablelist>
         <variablelist>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>
                         mlist typed XMLDoc: the XML document in which to write values.
@@ -60,7 +60,7 @@
     <refsection>
         <title>Description</title>
         <para>
-            When no explicit XML document <varname>doc</varname> is indicated,
+            When no explicit XML document <varname>xdoc</varname> is indicated,
             <literal>xmlSetValues</literal> opens the main Scilab preferences file
             <literal>SCIHOME + '/XConfiguration.xml'</literal>, looks for the tag pointed to by
             <varname>xpath</varname>, updates some of its attributes and related values as
@@ -68,7 +68,7 @@
         </para>
         <para>
             <literal>xmlSetValues</literal> can also be used on-the-fly on an already open XML
-            document <varname>doc</varname>. In this case, the document is kept open after
+            document <varname>xdoc</varname>. In this case, the document is kept open after
             leaving <literal>xmlSetValues</literal>. This mode is useful when several
             tags must be updated in the same document.
         </para>

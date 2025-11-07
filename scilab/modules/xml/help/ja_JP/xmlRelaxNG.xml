@@ -48,12 +48,12 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
+    xdoc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
     rng = xmlRelaxNG("SCI/modules/xml/tests/unit_tests/library.rng");
     // 文書が有効かどうかを調べます
     // エラーが発生しない場合,ファイルは有効です
-    xmlValidate(doc, rng);
-    xmlDelete(doc, rng);
+    xmlValidate(xdoc, rng);
+    xmlDelete(xdoc, rng);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

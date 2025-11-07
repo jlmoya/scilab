@@ -48,16 +48,16 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlDocument();
-    root = xmlElement(doc, "root");
-    doc.root = root;
+    xdoc = xmlDocument();
+    root = xmlElement(xdoc, "root");
+    xdoc.root = root;
 
     for i=1:5
-        xmlAppend(doc.root, xmlElement(doc, "child_" + string(i)));
+        xmlAppend(xdoc.root, xmlElement(xdoc, "child_" + string(i)));
     end;
 
-    xmlDump(doc)
-    xmlDelete(doc);
+    xmlDump(xdoc)
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

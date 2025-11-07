@@ -54,20 +54,20 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
     // Dump a document
-    xmlDump(doc)
+    xmlDump(xdoc)
 
     // Dump a document without indentation
-    xmlDump(doc, %f)
+    xmlDump(xdoc, %f)
 
     // Dump a node list
-    xmlDump(doc.root.children)
+    xmlDump(xdoc.root.children)
 
     //Dump an element
-    xmlDump(doc.root.children(1))
+    xmlDump(xdoc.root.children(1))
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

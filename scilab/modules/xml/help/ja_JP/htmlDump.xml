@@ -54,7 +54,7 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = htmlReadStr(["<!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01//EN""";
+    xdoc = htmlReadStr(["<!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01//EN""";
                        """http://www.w3.org/TR/html4/strict.dtd"">";
                        "<html lang=""en"">";
                        "  <head>";
@@ -67,11 +67,11 @@
                        "  </body>";
                        "</html>"]);
     // HTML文書をダンプ
-    htmlDump(doc)
+    htmlDump(xdoc)
     // インデントせずにHTML文書をダンプ
-    htmlDump(doc, %f)
+    htmlDump(xdoc, %f)
     // 文書に関連するリソースを開放
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

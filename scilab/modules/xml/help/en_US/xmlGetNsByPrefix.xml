@@ -56,11 +56,11 @@
         <programlisting role="example"><![CDATA[
     s = "<root><a xmlns:scilab=""http://www.scilab.org"">"+..
         "<b>Hello </b><scilab:c>World</scilab:c></a></root>"
-    doc = xmlReadStr(s)
-    c = doc.root.children(1).children(2);
+    xdoc = xmlReadStr(s)
+    c = xdoc.root.children(1).children(2);
     xmlGetNsByPrefix(c, "scilab")
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

@@ -21,7 +21,7 @@
     <refsynopsisdiv>
         <title>呼び出し手順</title>
         <synopsis>
-            doc = xmlRead(path [, validateDTD])
+            xdoc = xmlRead(path [, validateDTD])
         </synopsis>
     </refsynopsisdiv>
     <refsection>
@@ -40,7 +40,7 @@
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>XMLDoc型のmlist</para>
                 </listitem>
@@ -66,16 +66,16 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("http://www.w3.org/TR/2009/REC-xml-names-20091208/xml-names-10-3e.xml");
-    e = doc.root.children(1).children(1)
+    xdoc = xmlRead("http://www.w3.org/TR/2009/REC-xml-names-20091208/xml-names-10-3e.xml");
+    e = xdoc.root.children(1).children(1)
     e.name
     e.content
     xmlDump(e)
     // 'href'属性を有するノードを全て取得できます
-    q = xmlXPath(doc, "//*[@href]");
+    q = xmlXPath(xdoc, "//*[@href]");
     q(1).attributes.href
     // 文書を削除します
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

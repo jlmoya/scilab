@@ -48,13 +48,13 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("http://www.w3.org/TR/2009/REC-xml-names-20091208/xml-names-10-3e.xml");
-    r = doc.root
+    xdoc = xmlRead("http://www.w3.org/TR/2009/REC-xml-names-20091208/xml-names-10-3e.xml");
+    r = xdoc.root
     // must return %T
     xmlIsValidObject(r)
 
     // We delete the doc
-    xmlDelete(doc);
+    xmlDelete(xdoc);
 
     // must return [%F %F]
     xmlIsValidObject(["doc" "r"])

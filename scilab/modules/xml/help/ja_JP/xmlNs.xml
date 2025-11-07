@@ -57,13 +57,13 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlDocument("TMPDIR/foo.xml");
-    doc.root = xmlElement(doc, "root");
-    ns = xmlNs(doc.root, "scilab", "https://www.scilab.org");
-    doc.root.children(1) = "<a>hello</a>";
-    doc.root.children(1).namespace = ns;
-    xmlDump(doc)
-    xmlDelete(doc);
+    xdoc = xmlDocument("TMPDIR/foo.xml");
+    xdoc.root = xmlElement(xdoc, "root");
+    ns = xmlNs(xdoc.root, "scilab", "https://www.scilab.org");
+    xdoc.root.children(1) = "<a>hello</a>";
+    xdoc.root.children(1).namespace = ns;
+    xmlDump(xdoc)
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

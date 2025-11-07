@@ -59,16 +59,16 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
     // 文書をダンプ
-    xmlDump(doc)
+    xmlDump(xdoc)
     // インデントなしに文書をダンプ
-    xmlDump(doc, %f)
+    xmlDump(xdoc, %f)
     // ノードリストをダンプ
-    xmlDump(doc.root.children)
+    xmlDump(xdoc.root.children)
     //要素をダンプ
-    xmlDump(doc.root.children(1))
-    xmlDelete(doc);
+    xmlDump(xdoc.root.children(1))
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

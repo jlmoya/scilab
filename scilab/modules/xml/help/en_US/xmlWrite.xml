@@ -21,15 +21,15 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
-            xmlWrite(doc [, filename] [, indent])
-            xmlWrite(doc [, indent])
+            xmlWrite(xdoc [, filename] [, indent])
+            xmlWrite(xdoc [, indent])
         </synopsis>
     </refsynopsisdiv>
     <refsection>
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>doc, a mlist typed XMLDoc</para>
                 </listitem>
@@ -55,13 +55,13 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
-    xmlWrite(doc, TMPDIR+"/foo.xml", %f);
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    xmlWrite(xdoc, TMPDIR+"/foo.xml", %f);
 
     // Now we open the previous file, modify it and save it
     doc1 = xmlRead(TMPDIR+"/foo.xml");
     doc1.root.children(1).name = "newName";
-    xmlWrite(doc1);
+    xmlWrite(xdoc1);
 
     // Now we check that the modification has been done
     doc2 = xmlRead(TMPDIR+"/foo.xml");

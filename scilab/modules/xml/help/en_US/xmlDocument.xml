@@ -21,7 +21,7 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
-            doc = xmlDocument([uri, [, version]])
+            xdoc = xmlDocument([uri, [, version]])
         </synopsis>
     </refsynopsisdiv>
     <refsection>
@@ -40,7 +40,7 @@
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>a mlist typed XMLDoc</para>
                 </listitem>
@@ -54,19 +54,19 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlDocument("TMPDIR/foo.xml");
-    root = xmlElement(doc, "root");
+    xdoc = xmlDocument("TMPDIR/foo.xml");
+    root = xmlElement(xdoc, "root");
     root.attributes.attr = "value";
 
     root.children(1) = "<a>hello</a>";
-    root.children(2) = xmlElement(doc, "b");
+    root.children(2) = xmlElement(xdoc, "b");
     root.children(2).attributes.id = "123";
     root.children(2).content = " world";
 
-    doc.root = root;
-    xmlDump(doc)
+    xdoc.root = root;
+    xmlDump(xdoc)
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

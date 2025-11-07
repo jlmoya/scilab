@@ -52,14 +52,14 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-doc = xmlReadStr("<root><foo a=""123"" b=""456"" c=""789""/></root>")
+xdoc = xmlReadStr("<root><foo a=""123"" b=""456"" c=""789""/></root>")
 // 単一の要素の名前を取得
-xmlName(doc.root.children(1))
+xmlName(xdoc.root.children(1))
 // 属性のリストの名前を取得
-xmlName(doc.root.children(1).attributes)
+xmlName(xdoc.root.children(1).attributes)
 // XPathクエリの結果の名前を取得
-xmlName(xmlXPath(doc,"//foo/@*"))
-xmlDelete(doc);
+xmlName(xmlXPath(xdoc,"//foo/@*"))
+xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

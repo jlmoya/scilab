@@ -47,20 +47,20 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a>Hello</a><b>Scilab</b><a>World</a></root>");
+    xdoc = xmlReadStr("<root><a>Hello</a><b>Scilab</b><a>World</a></root>");
     // <a>を全て削除
-    xp = xmlXPath(doc, "//a");
+    xp = xmlXPath(xdoc, "//a");
     xmlRemove(xp);
-    xmlDump(doc)
-    xmlDelete(doc);
+    xmlDump(xdoc)
+    xmlDelete(xdoc);
     // 最初の要素を削除
-    doc = xmlReadStr("<root><a>Hello</a><b>Scilab</b><a>World</a></root>");
-    xmlRemove(doc.root.children(1));
-    xmlDump(doc)
+    xdoc = xmlReadStr("<root><a>Hello</a><b>Scilab</b><a>World</a></root>");
+    xmlRemove(xdoc.root.children(1));
+    xmlDump(xdoc)
     // ルートの子を全て削除
-    xmlRemove(doc.root.children);
-    xmlDump(doc)
-    xmlDelete(doc);
+    xmlRemove(xdoc.root.children);
+    xmlDump(xdoc)
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

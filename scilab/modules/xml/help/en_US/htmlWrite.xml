@@ -21,15 +21,15 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
-            htmlWrite(doc [, filename] [, indent])
-            htmlWrite(doc [, indent])
+            htmlWrite(xdoc [, filename] [, indent])
+            htmlWrite(xdoc [, indent])
         </synopsis>
     </refsynopsisdiv>
     <refsection>
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>doc, a mlist typed XMLDoc</para>
                 </listitem>
@@ -55,19 +55,19 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = htmlRead("https://www.scilab.org");
-    htmlWrite(doc, TMPDIR+"/scilab.html", %f);
+    xdoc = htmlRead("https://www.scilab.org");
+    htmlWrite(xdoc, TMPDIR+"/scilab.html", %f);
 
     // Now we open the previous file, modify it and save it
     doc1 = htmlRead(TMPDIR+"/scilab.html");
-    xp = xmlXPath(doc1, "//title");
+    xp = xmlXPath(xdoc1, "//title");
     e = xp(1);
     e.content = "Hello Scilab World";
-    htmlWrite(doc1);
+    htmlWrite(xdoc1);
 
     // Now we check that the modification has been done
     doc2 = htmlRead(TMPDIR+"/scilab.html");
-    xp = xmlXPath(doc2, "//title");
+    xp = xmlXPath(xdoc2, "//title");
     xp(1).content
 
     xmlDelete("all");

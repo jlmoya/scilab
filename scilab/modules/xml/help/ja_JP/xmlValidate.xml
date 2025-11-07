@@ -21,7 +21,7 @@
     <refsynopsisdiv>
         <title>呼び出し手順</title>
         <synopsis>
-            error = xmlValidate(docs [, valid])
+            error = xmlValidate(xdocs [, valid])
         </synopsis>
     </refsynopsisdiv>
     <refsection>
@@ -68,31 +68,31 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
+    xdoc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
     dtd = xmlDTD("SCI/modules/xml/tests/unit_tests/library.dtd");
     schema = xmlSchema("SCI/modules/xml/tests/unit_tests/library.xsd");
     rng = xmlRelaxNG("SCI/modules/xml/tests/unit_tests/library.rng");
     // 文書が有効かどうかを調べます
     // エラーがない場合,ファイルは有効です
     // DTD
-    xmlValidate(doc, dtd);
+    xmlValidate(xdoc, dtd);
     // Relax NG
-    xmlValidate(doc, rng);
+    xmlValidate(xdoc, rng);
     // Schema
-    xmlValidate(doc, schema);
+    xmlValidate(xdoc, schema);
     // 新規要素に文書が追加されます
-    doc.root.children(3) = "<a>error</a>"
+    xdoc.root.children(3) = "<a>error</a>"
     // ここで検証は失敗します
-    xmlValidate(doc, dtd);
-    xmlValidate(doc, rng);
-    xmlValidate(doc, schema);
+    xmlValidate(xdoc, dtd);
+    xmlValidate(xdoc, rng);
+    xmlValidate(xdoc, schema);
     // パスを指定して文書を検証できます
     xmlValidate("SCI/modules/xml/tests/unit_tests/library.xml")
     xmlValidate("SCI/modules/xml/tests/unit_tests/invalid_library.xml")
     xmlValidate("SCI/modules/xml/tests/unit_tests/library.xml", schema)
     xmlValidate("SCI/modules/xml/tests/unit_tests/invalid_library.xml", rng)
     // オープンした文書を全て削除します
-    xmlDelete(doc, dtd, schema, rng);
+    xmlDelete(xdoc, dtd, schema, rng);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

@@ -21,7 +21,7 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
-            doc = xmlReadStr(string [, validateDTD])
+            xdoc = xmlReadStr(string [, validateDTD])
         </synopsis>
     </refsynopsisdiv>
     <refsection>
@@ -40,7 +40,7 @@
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>a mlist typed XMLDoc</para>
                 </listitem>
@@ -58,21 +58,21 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
-    e = doc.root.children(1).children(1)
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    e = xdoc.root.children(1).children(1)
     e.name
     e.content
     xmlDump(e)
-    doc.root.children(1).attributes.att
-    doc.root.children(1).attributes.rib
+    xdoc.root.children(1).attributes.att
+    xdoc.root.children(1).attributes.rib
 
     // Modify the attributes
-    doc.root.children(1).attributes.att = "truc"
-    doc.root.children(1).attributes.rib = "machin"
-    xmlDump(doc.root.children(1))
+    xdoc.root.children(1).attributes.att = "truc"
+    xdoc.root.children(1).attributes.rib = "machin"
+    xmlDump(xdoc.root.children(1))
 
     // We delete the doc
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
