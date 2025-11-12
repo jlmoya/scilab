@@ -125,13 +125,13 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
             auto* pIT = symbol::Context::getInstance()->get(symbol::Symbol(FName));
             if (pIT == nullptr)
             {
-                Coserror(_("The '%s' variable does not exist.\n"), FName);
+                Coserror(_("The '%s' variable does not exist.\n"), FName.c_str());
                 return;
             }
 
             if (!pIT->isGenericType())
             {
-                Coserror(_("The '%s' variable does not have fields.\n"), FName);
+                Coserror(_("The '%s' variable does not have fields.\n"), FName.c_str());
                 return;
             }
             auto* pGT = pIT->getAs<types::GenericType>();
@@ -139,13 +139,13 @@ SCICOS_BLOCKS_IMPEXP void fromws_c(scicos_block* block, int flag)
             types::InternalType* pITTime = nullptr;
             if(!pGT->extract(L"time", pITTime))
             {
-                Coserror(_("The '%s.time' field does not exist.\n"), FName);
+                Coserror(_("The '%s.time' field does not exist.\n"), FName.c_str());
                 return;
             }
             types::InternalType* pITValues = nullptr;
             if (!pGT->extract(L"values", pITValues))
             {
-                Coserror(_("The '%s.values' field does not exist.\n"), FName);
+                Coserror(_("The '%s.values' field does not exist.\n"), FName.c_str());
                 return;
             }
 
