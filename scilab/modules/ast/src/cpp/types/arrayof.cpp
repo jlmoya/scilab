@@ -896,6 +896,14 @@ GenericType* ArrayOf<T>::remove(typed_list* _pArgs)
         return this;
     }
 
+    if (checkArgValidity(pArg) == false)
+    {
+        //free pArg content
+        cleanIndexesArguments(_pArgs, &pArg);
+        //contain bad index, like <= 0, ...
+        return NULL;
+    }
+
     int iToDelIndex = -1;
     std::vector<int> toDelIndexVect;
 
