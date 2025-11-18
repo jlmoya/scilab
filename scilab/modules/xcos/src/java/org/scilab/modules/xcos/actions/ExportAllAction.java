@@ -20,7 +20,6 @@ package org.scilab.modules.xcos.actions;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,14 +27,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import org.scilab.modules.graph.ScilabGraph;
 import org.scilab.modules.graph.actions.base.DefaultAction;
-import org.scilab.modules.graph.utils.ScilabGraphRenderer;
 import org.scilab.modules.gui.bridge.filechooser.FileMask;
 import org.scilab.modules.gui.menuitem.MenuItem;
 import org.scilab.modules.gui.messagebox.ScilabModalDialog;
@@ -50,14 +48,6 @@ import org.scilab.modules.xcos.XcosTab;
 import org.scilab.modules.xcos.configuration.ConfigurationManager;
 import org.scilab.modules.xcos.graph.XcosDiagram;
 import org.scilab.modules.xcos.utils.XcosMessages;
-import org.w3c.dom.Document;
-
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxCellRenderer;
-import com.mxgraph.util.mxUtils;
-import com.mxgraph.util.mxXmlUtils;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import org.scilab.modules.xcos.graph.model.XcosCellFactory;
 
 /**
@@ -78,8 +68,6 @@ public final class ExportAllAction extends DefaultAction {
     private static final String HTML = "html";
     private static final String VML = "vml";
     private static final String SVG = "svg";
-
-    private boolean useBackground = true;
 
     /**
      * Constructor
@@ -144,11 +132,12 @@ public final class ExportAllAction extends DefaultAction {
             String format = ((FileMask) fc.getFileFilter()).getExtensionFromFilter();
 
             /* update states from the format */
+            Color backgroundColor = null;
             if ((!format.equalsIgnoreCase("png"))
                     || ScilabModalDialog.show(XcosTab.get((XcosDiagram) getGraph(null)),
                                               XcosMessages.TRANSPARENT_BACKGROUND, XcosMessages.XCOS,
                                               IconType.QUESTION_ICON, ButtonType.YES_NO) != AnswerOption.YES_OPTION) {
-                useBackground = true;
+                backgroundColor = null;
             }
 
             /*
@@ -180,10 +169,10 @@ public final class ExportAllAction extends DefaultAction {
              * Export
              */
             try {
-                export(graph, files[0], format);
+                ExportAction.export(graph, files[0], format, backgroundColor);
 
                 for (int i = 0; i < diagrams.size(); i++) {
-                    export(diagrams.get(i), files[i + 1], format);
+                    ExportAction.export(diagrams.get(i), files[i + 1], format, backgroundColor);
                 }
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -247,80 +236,6 @@ public final class ExportAllAction extends DefaultAction {
                 }
             }
 
-        }
-    }
-
-    /**
-     * Export the graph into the filename.
-     *
-     * The filename extension is used find export format.
-     *
-     * @param graph
-     *            the current graph
-     * @param filename
-     *            the filename
-     * @param fileFormat
-     *            the format to save
-     * @throws IOException
-     *             when a write problem occurs.
-     */
-    private void export(XcosDiagram graph, File filename, String fileFormat)
-    throws IOException {
-        filename.getParentFile().mkdirs();
-
-        if (fileFormat.equalsIgnoreCase(SVG)) {
-            ScilabGraphRenderer.createSvgDocument(graph, null, 1, null, null,
-                                                  filename.getCanonicalPath());
-        } else if (fileFormat.equalsIgnoreCase(VML)) {
-            Document doc = mxCellRenderer.createVmlDocument(graph, null, 1,
-                           null, null);
-            if (doc != null) {
-                mxUtils.writeFile(mxXmlUtils.getXml(doc.getDocumentElement()),
-                                  filename.getCanonicalPath());
-            }
-        } else if (fileFormat.equalsIgnoreCase(HTML)) {
-            Document doc = mxCellRenderer.createHtmlDocument(graph, null, 1,
-                           null, null);
-            if (doc != null) {
-                mxUtils.writeFile(mxXmlUtils.getXml(doc.getDocumentElement()),
-                                  filename.getCanonicalPath());
-            }
-        } else {
-            exportBufferedImage(graph, filename, fileFormat);
-        }
-    }
-
-    /**
-     * Use the Java image capabilities to export the diagram
-     *
-     * @param graph
-     *            the current diagram
-     * @param filename
-     *            the current filename
-     * @param fileFormat
-     *            the file format
-     * @throws IOException
-     *             when an error occurs
-     */
-    private void exportBufferedImage(XcosDiagram graph, File filename,
-                                     String fileFormat) throws IOException {
-        final mxGraphComponent graphComponent = graph.getAsComponent();
-
-        Color bg = null;
-
-        if (useBackground) {
-            bg = graphComponent.getBackground();
-        }
-
-        BufferedImage image = mxCellRenderer.createBufferedImage(graph, null,
-                              1, bg, graphComponent.isAntiAlias(), null,
-                              graphComponent.getCanvas());
-
-        if (image != null) {
-            ImageIO.write(image, fileFormat, filename);
-        } else {
-            JOptionPane.showMessageDialog(graphComponent,
-                                          XcosMessages.NO_IMAGE_DATA);
         }
     }
 }

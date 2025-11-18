@@ -145,7 +145,7 @@ public final class ExportAction extends DefaultAction {
             int index = fileName.lastIndexOf('.');
             String format = fileName.substring(index+1);
             try {
-                export(graph, new File(fileName), format);                
+                export(graph, new File(fileName), format, null);                
             } catch (IOException ex) {
                 Logger.getLogger(ExportAction.class.getName()).severe(e.toString());
             }
@@ -162,11 +162,13 @@ public final class ExportAction extends DefaultAction {
      * @param filename
      *            the filename
      * @param fileFormat
-     *            the format to save
+     *            the format to save (one of ImageIO#getWriterFileSuffixes() plus SVG, VML, HTML)
+     * @param backgroundColor
+     *            The background Color, null is transparent
      * @throws IOException
      *             when a write problem occurs.
      */
-    private void export(XcosDiagram graph, File filename, String fileFormat) throws IOException {
+    public static void export(XcosDiagram graph, File filename, String fileFormat, Color backgroundColor) throws IOException {
         if (fileFormat.equalsIgnoreCase(SVG)) {
             ScilabGraphRenderer.createSvgDocument(graph, null, 1, null, null, filename.getCanonicalPath());
         } else if (fileFormat.equalsIgnoreCase(VML)) {
@@ -180,7 +182,7 @@ public final class ExportAction extends DefaultAction {
                 mxUtils.writeFile(mxXmlUtils.getXml(doc.getDocumentElement()), filename.getCanonicalPath());
             }
         } else {
-            exportBufferedImage(graph, filename, fileFormat);
+            exportBufferedImage(graph, filename, fileFormat, backgroundColor);
         }
     }
 
@@ -196,23 +198,24 @@ public final class ExportAction extends DefaultAction {
      * @throws IOException
      *             when an error occurs
      */
-    private void exportBufferedImage(XcosDiagram graph, File filename, String fileFormat) throws IOException {
+    public static void exportBufferedImage(XcosDiagram graph, File filename,
+                                     String fileFormat, Color backgroundColor) throws IOException {
         final mxGraphComponent graphComponent = graph.getAsComponent();
 
         Color bg = null;
-
-        if ((!fileFormat.equalsIgnoreCase("png"))
-                || ScilabModalDialog
-                .show(XcosTab.get(graph), XcosMessages.TRANSPARENT_BACKGROUND, XcosMessages.XCOS, IconType.QUESTION_ICON, ButtonType.YES_NO) != AnswerOption.YES_OPTION) {
+        if (backgroundColor == null) {
             bg = graphComponent.getBackground();
         }
 
-        BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, bg, graphComponent.isAntiAlias(), null, graphComponent.getCanvas());
+        BufferedImage image = mxCellRenderer.createBufferedImage(graph, null,
+                              1, bg, graphComponent.isAntiAlias(), null,
+                              graphComponent.getCanvas());
 
         if (image != null) {
             ImageIO.write(image, fileFormat, filename);
         } else {
-            JOptionPane.showMessageDialog(graphComponent, XcosMessages.NO_IMAGE_DATA);
+            JOptionPane.showMessageDialog(graphComponent,
+                                          XcosMessages.NO_IMAGE_DATA);
         }
     }
 }

@@ -2320,12 +2320,25 @@ public class XcosDiagram extends ScilabGraph {
             .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
         }
 
+        controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.GEOMETRY, vecValue);
+        result.append(XcosMessages.TOOLTIP_GEOMETRY).append(ScilabGraphConstants.HTML_BEGIN_CODE);
+        appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        for (mxICell parent = o.getParent(); parent instanceof XcosCell; parent = parent.getParent())
+        {
+            XcosCell cellParent = (XcosCell) parent;
+            controller.getObjectProperty(cellParent.getUID(), cellParent.getKind(), ObjectProperties.GEOMETRY, vecValue);
+            result.append(ScilabGraphConstants.HTML_NEWLINE);
+            appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        }
+        result.append(ScilabGraphConstants.HTML_END_CODE);
+
         result.append(ScilabGraphConstants.HTML_END);
         return result.toString();
     }
 
     private String getToolTipForCell(final BasicPort o) {
         JavaController controller = new JavaController();
+        VectorOfDouble vecValue = new VectorOfDouble();
         boolean[] boolValue = {false};
         String[] strValue = {""};
         VectorOfInt intVecValue = new VectorOfInt();
@@ -2357,6 +2370,18 @@ public class XcosDiagram extends ScilabGraph {
         appendReduced(result, strValue[0])
         .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
 
+        controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.GEOMETRY, vecValue);
+        result.append(XcosMessages.TOOLTIP_GEOMETRY).append(ScilabGraphConstants.HTML_BEGIN_CODE);
+        appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        for (mxICell parent = o.getParent(); parent instanceof XcosCell; parent = parent.getParent())
+        {
+            XcosCell cellParent = (XcosCell) parent;
+            controller.getObjectProperty(cellParent.getUID(), cellParent.getKind(), ObjectProperties.GEOMETRY, vecValue);
+            result.append(ScilabGraphConstants.HTML_NEWLINE);
+            appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        }
+        result.append(ScilabGraphConstants.HTML_END_CODE);
+
         result.append(ScilabGraphConstants.HTML_END);
         return result.toString();
     }
@@ -2365,6 +2390,7 @@ public class XcosDiagram extends ScilabGraph {
         JavaController controller = new JavaController();
         long[] longValue = {0l};
         String[] strValue = {""};
+        VectorOfDouble vecValue = new VectorOfDouble();
         VectorOfInt intVecValue = new VectorOfInt();
 
         StringBuilder result = new StringBuilder();
@@ -2399,6 +2425,18 @@ public class XcosDiagram extends ScilabGraph {
         appendReduced(result, strValue[0])
         .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
 
+        controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.GEOMETRY, vecValue);
+        result.append(XcosMessages.TOOLTIP_GEOMETRY).append(ScilabGraphConstants.HTML_BEGIN_CODE);
+        appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        for (mxICell parent = o.getParent(); parent instanceof XcosCell; parent = parent.getParent())
+        {
+            XcosCell cellParent = (XcosCell) parent;
+            controller.getObjectProperty(cellParent.getUID(), cellParent.getKind(), ObjectProperties.GEOMETRY, vecValue);
+            result.append(ScilabGraphConstants.HTML_NEWLINE);
+            appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        }
+        result.append(ScilabGraphConstants.HTML_END_CODE);
+
         result.append(ScilabGraphConstants.HTML_END);
         return result.toString();
     }
@@ -2406,6 +2444,7 @@ public class XcosDiagram extends ScilabGraph {
     private String getToolTipForCell(final XcosCell o) {
         JavaController controller = new JavaController();
         String[] strValue = {""};
+        VectorOfDouble vecValue = new VectorOfDouble();
 
         StringBuilder result = new StringBuilder();
         result.append(ScilabGraphConstants.HTML_BEGIN);
@@ -2427,6 +2466,18 @@ public class XcosDiagram extends ScilabGraph {
         result.append(XcosMessages.TOOLTIP_STYLE).append(ScilabGraphConstants.HTML_BEGIN_CODE);
         appendReduced(result, strValue[0])
         .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
+
+        controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.GEOMETRY, vecValue);
+        result.append(XcosMessages.TOOLTIP_GEOMETRY).append(ScilabGraphConstants.HTML_BEGIN_CODE);
+        appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        for (mxICell parent = o.getParent(); parent instanceof XcosCell; parent = parent.getParent())
+        {
+            XcosCell cellParent = (XcosCell) parent;
+            controller.getObjectProperty(cellParent.getUID(), cellParent.getKind(), ObjectProperties.GEOMETRY, vecValue);
+            result.append(ScilabGraphConstants.HTML_NEWLINE);
+            appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        }
+        result.append(ScilabGraphConstants.HTML_END_CODE);
 
         result.append(ScilabGraphConstants.HTML_END);
         return result.toString();

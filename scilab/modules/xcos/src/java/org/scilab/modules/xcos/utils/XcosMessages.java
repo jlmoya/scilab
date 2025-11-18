@@ -327,6 +327,7 @@ public final class XcosMessages {
     public static final String TOOLTIP_LABEL = Messages.gettext("Label: ");
     public static final String TOOLTIP_DESCRIPTION = Messages.gettext("Description: ");
     public static final String TOOLTIP_STYLE = Messages.gettext("Style: ");
+    public static final String TOOLTIP_GEOMETRY = Messages.gettext("Geometry: ");
 
     /* Automatic Layout */
     public static final String LINK_STYLE_OPTIMAL = Messages.gettext("Optimal");

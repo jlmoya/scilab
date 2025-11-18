@@ -221,6 +221,7 @@ am__objects_4 = sci_gateway/cpp/libscixcos_la-sci_Xcos.lo \
 	sci_gateway/cpp/libscixcos_la-sci_xcosCellCreated.lo \
 	sci_gateway/cpp/libscixcos_la-sci_xcosUpdateBlock.lo \
 	sci_gateway/cpp/libscixcos_la-sci_xcosDiagramToScilab.lo \
+	sci_gateway/cpp/libscixcos_la-sci_xcosDiagramExport.lo \
 	sci_gateway/cpp/libscixcos_la-sci_xcosPalLoad.lo \
 	sci_gateway/cpp/libscixcos_la-sci_xcosPalCategoryAdd.lo \
 	sci_gateway/cpp/libscixcos_la-sci_xcosPalDelete.lo \
@@ -259,6 +260,7 @@ am__depfiles_remade =  \
 	sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosAddToolsMenu.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosCellCreated.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosConfigureXmlFile.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramExport.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramToScilab.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalCategoryAdd.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalDelete.Plo \
@@ -738,6 +740,7 @@ GATEWAY_CXX_SOURCES = \
 	sci_gateway/cpp/sci_xcosCellCreated.cpp \
 	sci_gateway/cpp/sci_xcosUpdateBlock.cpp \
 	sci_gateway/cpp/sci_xcosDiagramToScilab.cpp \
+	sci_gateway/cpp/sci_xcosDiagramExport.cpp \
 	sci_gateway/cpp/sci_xcosPalLoad.cpp \
 	sci_gateway/cpp/sci_xcosPalCategoryAdd.cpp \
 	sci_gateway/cpp/sci_xcosPalDelete.cpp \
@@ -1350,6 +1353,9 @@ sci_gateway/cpp/libscixcos_la-sci_xcosUpdateBlock.lo:  \
 sci_gateway/cpp/libscixcos_la-sci_xcosDiagramToScilab.lo:  \
 	sci_gateway/cpp/$(am__dirstamp) \
 	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscixcos_la-sci_xcosDiagramExport.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
 sci_gateway/cpp/libscixcos_la-sci_xcosPalLoad.lo:  \
 	sci_gateway/cpp/$(am__dirstamp) \
 	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
@@ -1411,6 +1417,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosAddToolsMenu.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosCellCreated.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosConfigureXmlFile.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramExport.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramToScilab.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalCategoryAdd.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalDelete.Plo@am__quote@ # am--include-marker
@@ -1598,6 +1605,13 @@ sci_gateway/cpp/libscixcos_la-sci_xcosDiagramToScilab.lo: sci_gateway/cpp/sci_xc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_xcosDiagramToScilab.cpp' object='sci_gateway/cpp/libscixcos_la-sci_xcosDiagramToScilab.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscixcos_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscixcos_la-sci_xcosDiagramToScilab.lo `test -f 'sci_gateway/cpp/sci_xcosDiagramToScilab.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xcosDiagramToScilab.cpp
+
+sci_gateway/cpp/libscixcos_la-sci_xcosDiagramExport.lo: sci_gateway/cpp/sci_xcosDiagramExport.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscixcos_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscixcos_la-sci_xcosDiagramExport.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramExport.Tpo -c -o sci_gateway/cpp/libscixcos_la-sci_xcosDiagramExport.lo `test -f 'sci_gateway/cpp/sci_xcosDiagramExport.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xcosDiagramExport.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramExport.Tpo sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramExport.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_xcosDiagramExport.cpp' object='sci_gateway/cpp/libscixcos_la-sci_xcosDiagramExport.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscixcos_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscixcos_la-sci_xcosDiagramExport.lo `test -f 'sci_gateway/cpp/sci_xcosDiagramExport.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xcosDiagramExport.cpp
 
 sci_gateway/cpp/libscixcos_la-sci_xcosPalLoad.lo: sci_gateway/cpp/sci_xcosPalLoad.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscixcos_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscixcos_la-sci_xcosPalLoad.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalLoad.Tpo -c -o sci_gateway/cpp/libscixcos_la-sci_xcosPalLoad.lo `test -f 'sci_gateway/cpp/sci_xcosPalLoad.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xcosPalLoad.cpp
@@ -1951,6 +1965,7 @@ distclean: distclean-am
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosAddToolsMenu.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosCellCreated.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosConfigureXmlFile.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramExport.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramToScilab.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalCategoryAdd.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalDelete.Plo
@@ -2027,6 +2042,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosAddToolsMenu.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosCellCreated.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosConfigureXmlFile.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramExport.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosDiagramToScilab.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalCategoryAdd.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscixcos_la-sci_xcosPalDelete.Plo

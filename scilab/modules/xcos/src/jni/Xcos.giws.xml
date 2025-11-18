@@ -10,6 +10,10 @@
             <parameter name="diagramId" type="long"/>
             <parameter name="exported" type="boolean"/>
         </method>
+        <method name="xcosDiagramExport" returnType="void" modifier="static">
+            <parameter name="diagramId" type="long"/>
+            <parameter name="file" type="String"/>
+        </method>
         <method name="warnCellByUID" returnType="void" modifier="static">
             <parameter name="uids" type="String[]"/>
             <parameter name="message" type="String"/>
