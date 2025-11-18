@@ -108,16 +108,25 @@ void OdeManager::solve()
             }
             if (m_iRetCount > 0)
             {
-                // Refine by interpolation if requested and [t,y,...] output
-                double dblStepRef = (dblTime - dblPrevTime)/((double)m_iNRefine+1.0);
-                double dblRefTime = m_iNRefine == 0 ? dblTime : dblPrevTime + dblStepRef;
-                for (int i=0; i<m_iNRefine+1; i++)
+                // Refine by interpolation if requested
+                if (m_iNRefine>0)
                 {
-                    getDky(m_prob_mem, dblRefTime, 0, m_N_VectorYTemp);
-                    m_vecYOut.push_back(std::vector<double>(N_VGetArrayPointer(m_N_VectorYTemp), N_VGetArrayPointer(m_N_VectorYTemp) + m_iNbRealEq));
-                    m_dblVecTOut.push_back(dblRefTime);
-                    saveAdditionalStates(dblRefTime);
-                    dblRefTime += dblStepRef;
+                    double dblStepRef = (dblTime - dblPrevTime)/((double)m_iNRefine+1.0);
+                    double dblRefTime = m_iNRefine == 0 ? dblTime : dblPrevTime + dblStepRef;
+                    for (int i=0; i<m_iNRefine+1; i++)
+                    {
+                        getDky(m_prob_mem, dblRefTime, 0, m_N_VectorYTemp);
+                        m_vecYOut.push_back(std::vector<double>(N_VGetArrayPointer(m_N_VectorYTemp), N_VGetArrayPointer(m_N_VectorYTemp) + m_iNbRealEq));
+                        m_dblVecTOut.push_back(dblRefTime);
+                        saveAdditionalStates(dblRefTime);
+                        dblRefTime += dblStepRef;
+                    }                    
+                }
+                else
+                {
+                    m_vecYOut.push_back(std::vector<double>(N_VGetArrayPointer(m_N_VectorY), N_VGetArrayPointer(m_N_VectorY) + m_iNbRealEq));
+                    m_dblVecTOut.push_back(dblTime);
+                    saveAdditionalStates(dblTime);                    
                 }
                 // dblCurrTime is solver time (can be greater than user requested dblTime)
                 getCurrentTime(m_prob_mem,&dblCurrTime);
