@@ -926,8 +926,8 @@ fi
 
 AC_SUBST(XCOS_ENABLE)
 
-AM_CONDITIONAL(OCAMLFIND, test "$OCAMLFIND" = no)
-AM_CONDITIONAL(OCAML, test "$with_modelica" != no -a "$OCAMLC" != no -a "$OCAMLOPT" != no)
+AM_CONDITIONAL(OCAMLFIND, test "x$OCAMLFIND" != "xno")
+AM_CONDITIONAL(OCAML, test "$with_modelica" != no -a "x$OCAMLC" != "xno" -a "x$OCAMLOPT" != "xno")
 AM_CONDITIONAL(XCOS, test "$XCOS_ENABLE" != no)
 
 ###########################
@@ -2405,7 +2405,7 @@ if test $XCOS_ENABLE = yes; then
    echo "Xcos enable"
    echo "Build modelica compiler (--without-modelica) ....... = $with_modelica"
    echo ""
-   if test "$with_modelica" != no -a "$OCAMLC" != no -a "$OCAMLOPT" != no; then
+   if test "$with_modelica" != no -a "x$OCAMLC" != "xno" -a "x$OCAMLOPT" != "xno"; then
      echo "Ocaml Configuration (for Modelica compiler):"
      echo "  OCAMLC ............. = $OCAMLC"
      echo "  OCAMLCFLAGS ........ = $OCAMLCFLAGS"

@@ -20,27 +20,27 @@ AC_DEFUN([AC_CHECK_PROG_OCAML],[
 # checking for ocamlc
 	
 	AC_CHECK_PROG(OCAMLC,ocamlc,ocamlc,no)
-	if test "$OCAMLC" = no; then
+	if test "x$OCAMLC" = "xno"; then
 		AC_MSG_ERROR([ocamlc not found. Mandatory to build the Scicos modelica compiler (Use --without-modelica to disable the Modelica compiler).])
 	fi
 	AC_CHECK_PROG(OCAMLOPT,ocamlopt,ocamlopt,no)
-	if test "$OCAMLOPT" = no; then
+	if test "x$OCAMLOPT" = "xno"; then
 		AC_MSG_ERROR([ocamlopt not found. Mandatory to build the Scicos modelica compiler.])
 	fi
 	AC_CHECK_PROG(OCAMLDEP,ocamldep,ocamldep,no)
-	if test "$OCAMLDEP" = no; then
+	if test "x$OCAMLDEP" = "xno"; then
 		AC_MSG_ERROR([ocamldep not found. Mandatory to build the Scicos modelica compiler.])
 	fi
 	AC_CHECK_PROG(OCAMLYACC,ocamlyacc,ocamlyacc,no)
-	if test "$OCAMLYACC" = no; then
+	if test "x$OCAMLYACC" = "xno"; then
 		AC_MSG_ERROR([ocamlyacc not found. Mandatory to build the Scicos modelica compiler.])
 	fi
 	AC_CHECK_PROG(OCAMLLEX,ocamllex,ocamllex,no)
-	if test "$OCAMLLEX" = no; then
+	if test "x$OCAMLLEX" = "xno"; then
 		AC_MSG_ERROR([ocamllex not found. Mandatory to build the Scicos modelica compiler.])
 	fi
 	AC_CHECK_PROG(OCAMLFIND,ocamlfind,ocamlfind,no)
-	if test "$OCAMLFIND" = no; then
+	if test "x$OCAMLFIND" = "xno"; then
 		AC_MSG_WARN([ocamlfind not found. Dependency resolution is set to manual, build might fail (Use --without-modelica to disable the Modelica compiler).])
 	fi
 	AC_DEFINE([WITH_OCAML],[],[With OCAML])

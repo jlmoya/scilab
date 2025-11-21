@@ -10256,11 +10256,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++11 features" >&5
 printf %s "checking for $CXX option to enable C++11 features... " >&6; }
-if test ${ac_cv_prog_cxx_cxx11+y}
+if test ${ac_cv_prog_cxx_11+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_cxx11=no
+  ac_cv_prog_cxx_11=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -10302,11 +10302,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++98 features" >&5
 printf %s "checking for $CXX option to enable C++98 features... " >&6; }
-if test ${ac_cv_prog_cxx_cxx98+y}
+if test ${ac_cv_prog_cxx_98+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_cxx98=no
+  ac_cv_prog_cxx_98=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -13331,7 +13331,7 @@ printf "%s\n" "no" >&6; }
 fi
 
 
-	if test "$OCAMLC" = no; then
+	if test "x$OCAMLC" = "xno"; then
 		as_fn_error $? "ocamlc not found. Mandatory to build the Scicos modelica compiler (Use --without-modelica to disable the Modelica compiler)." "$LINENO" 5
 	fi
 	# Extract the first word of "ocamlopt", so it can be a program name with args.
@@ -13377,7 +13377,7 @@ printf "%s\n" "no" >&6; }
 fi
 
 
-	if test "$OCAMLOPT" = no; then
+	if test "x$OCAMLOPT" = "xno"; then
 		as_fn_error $? "ocamlopt not found. Mandatory to build the Scicos modelica compiler." "$LINENO" 5
 	fi
 	# Extract the first word of "ocamldep", so it can be a program name with args.
@@ -13423,7 +13423,7 @@ printf "%s\n" "no" >&6; }
 fi
 
 
-	if test "$OCAMLDEP" = no; then
+	if test "x$OCAMLDEP" = "xno"; then
 		as_fn_error $? "ocamldep not found. Mandatory to build the Scicos modelica compiler." "$LINENO" 5
 	fi
 	# Extract the first word of "ocamlyacc", so it can be a program name with args.
@@ -13469,7 +13469,7 @@ printf "%s\n" "no" >&6; }
 fi
 
 
-	if test "$OCAMLYACC" = no; then
+	if test "x$OCAMLYACC" = "xno"; then
 		as_fn_error $? "ocamlyacc not found. Mandatory to build the Scicos modelica compiler." "$LINENO" 5
 	fi
 	# Extract the first word of "ocamllex", so it can be a program name with args.
@@ -13515,7 +13515,7 @@ printf "%s\n" "no" >&6; }
 fi
 
 
-	if test "$OCAMLLEX" = no; then
+	if test "x$OCAMLLEX" = "xno"; then
 		as_fn_error $? "ocamllex not found. Mandatory to build the Scicos modelica compiler." "$LINENO" 5
 	fi
 	# Extract the first word of "ocamlfind", so it can be a program name with args.
@@ -13561,7 +13561,7 @@ printf "%s\n" "no" >&6; }
 fi
 
 
-	if test "$OCAMLFIND" = no; then
+	if test "x$OCAMLFIND" = "xno"; then
 		{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: ocamlfind not found. Dependency resolution is set to manual, build might fail (Use --without-modelica to disable the Modelica compiler)." >&5
 printf "%s\n" "$as_me: WARNING: ocamlfind not found. Dependency resolution is set to manual, build might fail (Use --without-modelica to disable the Modelica compiler)." >&2;}
 	fi
@@ -13587,7 +13587,7 @@ fi
 
 
 
- if test "$OCAMLFIND" = no; then
+ if test "x$OCAMLFIND" != "xno"; then
   OCAMLFIND_TRUE=
   OCAMLFIND_FALSE='#'
 else
@@ -13595,7 +13595,7 @@ else
   OCAMLFIND_FALSE=
 fi
 
- if test "$with_modelica" != no -a "$OCAMLC" != no -a "$OCAMLOPT" != no; then
+ if test "$with_modelica" != no -a "x$OCAMLC" != "xno" -a "x$OCAMLOPT" != "xno"; then
   OCAML_TRUE=
   OCAML_FALSE='#'
 else
@@ -61303,7 +61303,7 @@ if test $XCOS_ENABLE = yes; then
    echo "Xcos enable"
    echo "Build modelica compiler (--without-modelica) ....... = $with_modelica"
    echo ""
-   if test "$with_modelica" != no -a "$OCAMLC" != no -a "$OCAMLOPT" != no; then
+   if test "$with_modelica" != no -a "x$OCAMLC" != "xno" -a "x$OCAMLOPT" != "xno"; then
      echo "Ocaml Configuration (for Modelica compiler):"
      echo "  OCAMLC ............. = $OCAMLC"
      echo "  OCAMLCFLAGS ........ = $OCAMLCFLAGS"
