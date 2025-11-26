@@ -122,12 +122,16 @@ public final class XcosMessages {
     public static final String DIAGRAM_BACKGROUND = Messages.gettext("Diagram background") + DOTS;
 
     /* Format - Edit dialog */
+    public static final String NAME_LABEL = Messages.gettext("Unique name");
+    public static final String DESCRIPTION_LABEL = Messages.gettext("Description");
     public static final String BOLD = Messages.gettext("Bold");
     public static final String ITALIC = Messages.gettext("Italic");
     public static final String FONT_SIZE = Messages.gettext("Font size");
     public static final String FONT_NAME = Messages.gettext("Font name");
     public static final String FONT_STYLE = Messages.gettext("Font style");
-    public static final String TEXT_SETTINGS = Messages.gettext("Block legend");
+    public static final String TEXT_BLOCK_SETTINGS = Messages.gettext("Block legend");
+    public static final String TEXT_LINK_SETTINGS = Messages.gettext("Link legend");
+    public static final String TEXT_ANNOTATION_SETTINGS = Messages.gettext("Legend");
     public static final String IMAGE_PATH = Messages.gettext("Image path");
 
     /* Tools menu */
@@ -218,8 +222,9 @@ public final class XcosMessages {
     public static final String ALIGN_BOTTOM = Messages.gettext("Bottom");
     public static final String ALIGN_MIDDLE = Messages.gettext("Middle");
 
-    public static final String BORDER_COLOR = Messages.gettext("Block edge");
-    public static final String FILL_COLOR = Messages.gettext("Block background");
+    public static final String BORDER_BLOCK_COLOR = Messages.gettext("Block edge");
+    public static final String BORDER_LINK_COLOR = Messages.gettext("Link color");
+    public static final String FILL_BLOCK_COLOR = Messages.gettext("Block background");
     public static final String TEXT_COLOR = Messages.gettext("Legend color");
 
     public static final String LINK_STYLE = Messages.gettext("Link Style");
@@ -335,6 +340,7 @@ public final class XcosMessages {
     public static final String BLOCK_AUTO_POSITION_SPLIT_BLOCK = Messages.gettext("Split Block");
     public static final String BLOCK_AUTO_POSITION_SPLIT_BLOCK_CONTEXTUAL = Messages.gettext("Auto-Position Split Block");
 
+    public static final String VAR_NAME_TOOLTIP = Messages.gettext("Unique identifier the block");
     public static final String ONELINE_DESCRIPTION_TOOLTIP = Messages.gettext("A one-line description of the block");
     public static final String MULTILINE_DESCRIPTION_TOOLTIP = Messages.gettext("Annotation (or comment) attached to the object");
 

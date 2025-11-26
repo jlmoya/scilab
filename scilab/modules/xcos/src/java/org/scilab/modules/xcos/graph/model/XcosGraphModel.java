@@ -56,7 +56,7 @@ public class XcosGraphModel extends mxGraphModel {
 
         private T previous;
 
-        public PropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, T value) {
+        public PropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, T value) {
             super(model);
 
             this.uid = cell.getUID();
@@ -85,13 +85,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, double[] value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, double[] value) {
         execute(new DoublePropertyChange(this, cell, key, value));
     }
 
     private static final class DoublePropertyChange extends PropertyChange<double[]> {
 
-        public DoublePropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, double[] value) {
+        public DoublePropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, double[] value) {
             super(model, cell, key, value);
         }
 
@@ -115,13 +115,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, int[] value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, int[] value) {
         execute(new IntPropertyChange(this, cell, key, value));
     }
 
     private static class IntPropertyChange extends PropertyChange<int[]> {
 
-        public IntPropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, int[] value) {
+        public IntPropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, int[] value) {
             super(model, cell, key, value);
         }
 
@@ -145,13 +145,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, boolean[] value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, boolean[] value) {
         execute(new BoolPropertyChange(this, cell, key, value));
     }
 
     private static class BoolPropertyChange extends PropertyChange<boolean[]> {
 
-        public BoolPropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, boolean[] value) {
+        public BoolPropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, boolean[] value) {
             super(model, cell, key, value);
         }
 
@@ -175,13 +175,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, String[] value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, String[] value) {
         execute(new StringPropertyChange(this, cell, key, value));
     }
 
     private static class StringPropertyChange extends PropertyChange<String[]> {
 
-        public StringPropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, String[] value) {
+        public StringPropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, String[] value) {
             super(model, cell, key, value);
         }
 
@@ -205,13 +205,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, long[] value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, long[] value) {
         execute(new LongPropertyChange(this, cell, key, value));
     }
 
     private static class LongPropertyChange extends PropertyChange<long[]> {
 
-        public LongPropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, long[] value) {
+        public LongPropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, long[] value) {
             super(model, cell, key, value);
         }
 
@@ -235,13 +235,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, VectorOfDouble value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, VectorOfDouble value) {
         execute(new VectorOfDoublePropertyChange(this, cell, key, value));
     }
 
     private static class VectorOfDoublePropertyChange extends PropertyChange<VectorOfDouble> {
 
-        public VectorOfDoublePropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, VectorOfDouble value) {
+        public VectorOfDoublePropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, VectorOfDouble value) {
             super(model, cell, key, value);
         }
 
@@ -265,13 +265,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, VectorOfInt value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, VectorOfInt value) {
         execute(new VectorOfIntPropertyChange(this, cell, key, value));
     }
 
     private static class VectorOfIntPropertyChange extends PropertyChange<VectorOfInt> {
 
-        public VectorOfIntPropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, VectorOfInt value) {
+        public VectorOfIntPropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, VectorOfInt value) {
             super(model, cell, key, value);
         }
 
@@ -295,13 +295,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, VectorOfBool value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, VectorOfBool value) {
         execute(new VectorOfBoolPropertyChange(this, cell, key, value));
     }
 
     private static class VectorOfBoolPropertyChange extends PropertyChange<VectorOfBool> {
 
-        public VectorOfBoolPropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, VectorOfBool value) {
+        public VectorOfBoolPropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, VectorOfBool value) {
             super(model, cell, key, value);
         }
 
@@ -325,13 +325,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, VectorOfString value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, VectorOfString value) {
         execute(new VectorOfStringPropertyChange(this, cell, key, value));
     }
 
     private static class VectorOfStringPropertyChange extends PropertyChange<VectorOfString> {
 
-        public VectorOfStringPropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, VectorOfString value) {
+        public VectorOfStringPropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, VectorOfString value) {
             super(model, cell, key, value);
         }
 
@@ -355,13 +355,13 @@ public class XcosGraphModel extends mxGraphModel {
      * @param key the property
      * @param value the value to assign
      */
-    public void setProperty(BasicBlock cell, ObjectProperties key, VectorOfScicosID value) {
+    public void setProperty(XcosCell cell, ObjectProperties key, VectorOfScicosID value) {
         execute(new VectorOfScicosIDPropertyChange(this, cell, key, value));
     }
 
     private static class VectorOfScicosIDPropertyChange extends PropertyChange<VectorOfScicosID> {
 
-        public VectorOfScicosIDPropertyChange(XcosGraphModel model, BasicBlock cell, ObjectProperties key, VectorOfScicosID value) {
+        public VectorOfScicosIDPropertyChange(XcosGraphModel model, XcosCell cell, ObjectProperties key, VectorOfScicosID value) {
             super(model, cell, key, value);
         }
 

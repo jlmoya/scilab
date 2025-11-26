@@ -41,7 +41,7 @@ import com.mxgraph.util.mxUtils;
 @SuppressWarnings(value = { "serial" })
 public final class BorderColorAction extends VertexSelectionDependantAction {
     /** Name of the action */
-    public static final String NAME = XcosMessages.BORDER_COLOR;
+    public static final String NAME = XcosMessages.BORDER_BLOCK_COLOR;
     /** Icon name of the action */
     public static final String SMALL_ICON = "draw-brush";
     /** Mnemonic key of the action */
