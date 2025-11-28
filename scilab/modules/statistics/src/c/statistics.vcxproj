@@ -191,6 +191,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\cpp\pairwise_distances.cpp" />
     <ClCompile Include="CdfBase.c" />
     <ClCompile Include="DllMainStatistics.c" />
     <ClCompile Include="ipmpar1.c" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\..\includes\dynlib_statistics.h" />
     <ClInclude Include="..\..\includes\ipmpar1.h" />
     <ClInclude Include="..\..\includes\sci_string_matrix.h" />
+    <ClInclude Include="..\cpp\pairwise_distances.hxx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\locales\statistics.pot" />

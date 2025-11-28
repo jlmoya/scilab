@@ -178,7 +178,9 @@ am__dirstamp = $(am__leading_dot)dirstamp
 am__objects_1 = src/c/libscistatistics_algo_la-CdfBase.lo \
 	src/c/libscistatistics_algo_la-ipmpar1.lo \
 	src/c/libscistatistics_algo_la-sci_string_matrix.lo
-am__objects_2 = src/dcdflib/psi.lo src/dcdflib/alngam.lo \
+am__objects_2 =  \
+	src/cpp/libscistatistics_algo_la-pairwise_distances.lo
+am__objects_3 = src/dcdflib/psi.lo src/dcdflib/alngam.lo \
 	src/dcdflib/erfc1.lo src/dcdflib/cdff.lo src/dcdflib/spmpar.lo \
 	src/dcdflib/cumnor.lo src/dcdflib/cdfpoi.lo \
 	src/dcdflib/bcorr.lo src/dcdflib/cumchi.lo \
@@ -207,7 +209,7 @@ am__objects_2 = src/dcdflib/psi.lo src/dcdflib/alngam.lo \
 	src/dcdflib/brcmp1.lo src/dcdflib/cdfbin.lo src/dcdflib/bup.lo \
 	src/dcdflib/cdfbet.lo
 am_libscistatistics_algo_la_OBJECTS = $(am__objects_1) \
-	$(am__objects_2)
+	$(am__objects_2) $(am__objects_3)
 libscistatistics_algo_la_OBJECTS =  \
 	$(am_libscistatistics_algo_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -217,7 +219,7 @@ am__v_lt_1 =
 am__DEPENDENCIES_1 =
 libscistatistics_la_DEPENDENCIES = libscistatistics-algo.la \
 	$(am__DEPENDENCIES_1)
-am__objects_3 = sci_gateway/c/libscistatistics_la-sci_cdfchi.lo \
+am__objects_4 = sci_gateway/c/libscistatistics_la-sci_cdfchi.lo \
 	sci_gateway/c/libscistatistics_la-sci_cdft.lo \
 	sci_gateway/c/libscistatistics_la-sci_cdftnc.lo \
 	sci_gateway/c/libscistatistics_la-sci_cdfgam.lo \
@@ -229,13 +231,15 @@ am__objects_3 = sci_gateway/c/libscistatistics_la-sci_cdfchi.lo \
 	sci_gateway/c/libscistatistics_la-sci_cdfbet.lo \
 	sci_gateway/c/libscistatistics_la-sci_cdfnbn.lo \
 	sci_gateway/c/libscistatistics_la-sci_cdfnor.lo
-am__objects_4 =  \
+am__objects_5 =  \
 	sci_gateway/cpp/libscistatistics_la-sci_percent_meanshift.lo \
 	sci_gateway/cpp/libscistatistics_la-sci_percent_cov.lo \
 	sci_gateway/cpp/libscistatistics_la-sci_nansum.lo \
 	sci_gateway/cpp/libscistatistics_la-sci_mean.lo \
-	sci_gateway/cpp/libscistatistics_la-sci_nanmean.lo
-am_libscistatistics_la_OBJECTS = $(am__objects_3) $(am__objects_4)
+	sci_gateway/cpp/libscistatistics_la-sci_nanmean.lo \
+	sci_gateway/cpp/libscistatistics_la-sci_pdist.lo \
+	sci_gateway/cpp/libscistatistics_la-sci_pdist2.lo
+am_libscistatistics_la_OBJECTS = $(am__objects_4) $(am__objects_5)
 libscistatistics_la_OBJECTS = $(am_libscistatistics_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -268,11 +272,14 @@ am__depfiles_remade =  \
 	sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_mean.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_nanmean.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_nansum.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist2.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_cov.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_meanshift.Plo \
 	src/c/$(DEPDIR)/libscistatistics_algo_la-CdfBase.Plo \
 	src/c/$(DEPDIR)/libscistatistics_algo_la-ipmpar1.Plo \
-	src/c/$(DEPDIR)/libscistatistics_algo_la-sci_string_matrix.Plo
+	src/c/$(DEPDIR)/libscistatistics_algo_la-sci_string_matrix.Plo \
+	src/cpp/$(DEPDIR)/libscistatistics_algo_la-pairwise_distances.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -690,6 +697,9 @@ STATISTICS_C_SOURCES = \
 	src/c/ipmpar1.c \
 	src/c/sci_string_matrix.c
 
+STATISTICS_CPP_SOURCES = \
+    src/cpp/pairwise_distances.cpp
+
 STATISTICS_FORTRAN_SOURCES = \
     src/dcdflib/psi.f \
     src/dcdflib/alngam.f \
@@ -775,11 +785,14 @@ GATEWAY_CPP_SOURCES = \
 	sci_gateway/cpp/sci_percent_cov.cpp \
 	sci_gateway/cpp/sci_nansum.cpp \
 	sci_gateway/cpp/sci_mean.cpp \
-	sci_gateway/cpp/sci_nanmean.cpp
+	sci_gateway/cpp/sci_nanmean.cpp \
+    sci_gateway/cpp/sci_pdist.cpp \
+    sci_gateway/cpp/sci_pdist2.cpp
 
 libscistatistics_la_CPPFLAGS = \
     -I$(srcdir)/includes/ \
     -I$(srcdir)/src/c/ \
+    -I$(srcdir)/src/cpp/ \
     -I$(top_srcdir)/modules/ast/includes/ast/ \
     -I$(top_srcdir)/modules/ast/includes/exps/ \
     -I$(top_srcdir)/modules/ast/includes/operations/ \
@@ -798,7 +811,7 @@ libscistatistics_la_CPPFLAGS = \
 
 pkglib_LTLIBRARIES = libscistatistics.la
 noinst_LTLIBRARIES = libscistatistics-algo.la
-libscistatistics_algo_la_SOURCES = $(STATISTICS_C_SOURCES) $(STATISTICS_FORTRAN_SOURCES)
+libscistatistics_algo_la_SOURCES = $(STATISTICS_C_SOURCES) $(STATISTICS_CPP_SOURCES) $(STATISTICS_FORTRAN_SOURCES)
 libscistatistics_la_SOURCES = $(GATEWAY_C_SOURCES) $(GATEWAY_CPP_SOURCES)
 libscistatistics_algo_la_CPPFLAGS = $(libscistatistics_la_CPPFLAGS)
 
@@ -986,6 +999,14 @@ src/c/libscistatistics_algo_la-ipmpar1.lo: src/c/$(am__dirstamp) \
 	src/c/$(DEPDIR)/$(am__dirstamp)
 src/c/libscistatistics_algo_la-sci_string_matrix.lo:  \
 	src/c/$(am__dirstamp) src/c/$(DEPDIR)/$(am__dirstamp)
+src/cpp/$(am__dirstamp):
+	@$(MKDIR_P) src/cpp
+	@: > src/cpp/$(am__dirstamp)
+src/cpp/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) src/cpp/$(DEPDIR)
+	@: > src/cpp/$(DEPDIR)/$(am__dirstamp)
+src/cpp/libscistatistics_algo_la-pairwise_distances.lo:  \
+	src/cpp/$(am__dirstamp) src/cpp/$(DEPDIR)/$(am__dirstamp)
 src/dcdflib/$(am__dirstamp):
 	@$(MKDIR_P) src/dcdflib
 	@: > src/dcdflib/$(am__dirstamp)
@@ -1122,7 +1143,7 @@ src/dcdflib/cdfbet.lo: src/dcdflib/$(am__dirstamp) \
 	src/dcdflib/$(DEPDIR)/$(am__dirstamp)
 
 libscistatistics-algo.la: $(libscistatistics_algo_la_OBJECTS) $(libscistatistics_algo_la_DEPENDENCIES) $(EXTRA_libscistatistics_algo_la_DEPENDENCIES) 
-	$(AM_V_F77LD)$(F77LINK)  $(libscistatistics_algo_la_OBJECTS) $(libscistatistics_algo_la_LIBADD) $(LIBS)
+	$(AM_V_CXXLD)$(CXXLINK)  $(libscistatistics_algo_la_OBJECTS) $(libscistatistics_algo_la_LIBADD) $(LIBS)
 sci_gateway/c/$(am__dirstamp):
 	@$(MKDIR_P) sci_gateway/c
 	@: > sci_gateway/c/$(am__dirstamp)
@@ -1186,6 +1207,12 @@ sci_gateway/cpp/libscistatistics_la-sci_mean.lo:  \
 sci_gateway/cpp/libscistatistics_la-sci_nanmean.lo:  \
 	sci_gateway/cpp/$(am__dirstamp) \
 	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscistatistics_la-sci_pdist.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscistatistics_la-sci_pdist2.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
 
 libscistatistics.la: $(libscistatistics_la_OBJECTS) $(libscistatistics_la_DEPENDENCIES) $(EXTRA_libscistatistics_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(CXXLINK) -rpath $(pkglibdir) $(libscistatistics_la_OBJECTS) $(libscistatistics_la_LIBADD) $(LIBS)
@@ -1198,6 +1225,8 @@ mostlyclean-compile:
 	-rm -f sci_gateway/cpp/*.lo
 	-rm -f src/c/*.$(OBJEXT)
 	-rm -f src/c/*.lo
+	-rm -f src/cpp/*.$(OBJEXT)
+	-rm -f src/cpp/*.lo
 	-rm -f src/dcdflib/*.$(OBJEXT)
 	-rm -f src/dcdflib/*.lo
 
@@ -1219,11 +1248,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_mean.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_nanmean.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_nansum.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist2.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_cov.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_meanshift.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscistatistics_algo_la-CdfBase.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscistatistics_algo_la-ipmpar1.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscistatistics_algo_la-sci_string_matrix.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/cpp/$(DEPDIR)/libscistatistics_algo_la-pairwise_distances.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -1384,6 +1416,13 @@ sci_gateway/c/libscistatistics_la-sci_cdfnor.lo: sci_gateway/c/sci_cdfnor.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
+src/cpp/libscistatistics_algo_la-pairwise_distances.lo: src/cpp/pairwise_distances.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscistatistics_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT src/cpp/libscistatistics_algo_la-pairwise_distances.lo -MD -MP -MF src/cpp/$(DEPDIR)/libscistatistics_algo_la-pairwise_distances.Tpo -c -o src/cpp/libscistatistics_algo_la-pairwise_distances.lo `test -f 'src/cpp/pairwise_distances.cpp' || echo '$(srcdir)/'`src/cpp/pairwise_distances.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) src/cpp/$(DEPDIR)/libscistatistics_algo_la-pairwise_distances.Tpo src/cpp/$(DEPDIR)/libscistatistics_algo_la-pairwise_distances.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/cpp/pairwise_distances.cpp' object='src/cpp/libscistatistics_algo_la-pairwise_distances.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscistatistics_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/cpp/libscistatistics_algo_la-pairwise_distances.lo `test -f 'src/cpp/pairwise_distances.cpp' || echo '$(srcdir)/'`src/cpp/pairwise_distances.cpp
+
 sci_gateway/cpp/libscistatistics_la-sci_percent_meanshift.lo: sci_gateway/cpp/sci_percent_meanshift.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscistatistics_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscistatistics_la-sci_percent_meanshift.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_meanshift.Tpo -c -o sci_gateway/cpp/libscistatistics_la-sci_percent_meanshift.lo `test -f 'sci_gateway/cpp/sci_percent_meanshift.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_percent_meanshift.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_meanshift.Tpo sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_meanshift.Plo
@@ -1419,6 +1458,20 @@ sci_gateway/cpp/libscistatistics_la-sci_nanmean.lo: sci_gateway/cpp/sci_nanmean.
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscistatistics_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscistatistics_la-sci_nanmean.lo `test -f 'sci_gateway/cpp/sci_nanmean.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_nanmean.cpp
 
+sci_gateway/cpp/libscistatistics_la-sci_pdist.lo: sci_gateway/cpp/sci_pdist.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscistatistics_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscistatistics_la-sci_pdist.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist.Tpo -c -o sci_gateway/cpp/libscistatistics_la-sci_pdist.lo `test -f 'sci_gateway/cpp/sci_pdist.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_pdist.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist.Tpo sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_pdist.cpp' object='sci_gateway/cpp/libscistatistics_la-sci_pdist.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscistatistics_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscistatistics_la-sci_pdist.lo `test -f 'sci_gateway/cpp/sci_pdist.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_pdist.cpp
+
+sci_gateway/cpp/libscistatistics_la-sci_pdist2.lo: sci_gateway/cpp/sci_pdist2.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscistatistics_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscistatistics_la-sci_pdist2.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist2.Tpo -c -o sci_gateway/cpp/libscistatistics_la-sci_pdist2.lo `test -f 'sci_gateway/cpp/sci_pdist2.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_pdist2.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist2.Tpo sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist2.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_pdist2.cpp' object='sci_gateway/cpp/libscistatistics_la-sci_pdist2.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscistatistics_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscistatistics_la-sci_pdist2.lo `test -f 'sci_gateway/cpp/sci_pdist2.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_pdist2.cpp
+
 .f.o:
 	$(AM_V_F77)$(F77COMPILE) -c -o $@ $<
 
@@ -1436,6 +1489,7 @@ clean-libtool:
 	-rm -rf sci_gateway/c/.libs sci_gateway/c/_libs
 	-rm -rf sci_gateway/cpp/.libs sci_gateway/cpp/_libs
 	-rm -rf src/c/.libs src/c/_libs
+	-rm -rf src/cpp/.libs src/cpp/_libs
 	-rm -rf src/dcdflib/.libs src/dcdflib/_libs
 install-libscistatistics_la_etcDATA: $(libscistatistics_la_etc_DATA)
 	@$(NORMAL_INSTALL)
@@ -1625,6 +1679,8 @@ distclean-generic:
 	-rm -f sci_gateway/cpp/$(am__dirstamp)
 	-rm -f src/c/$(DEPDIR)/$(am__dirstamp)
 	-rm -f src/c/$(am__dirstamp)
+	-rm -f src/cpp/$(DEPDIR)/$(am__dirstamp)
+	-rm -f src/cpp/$(am__dirstamp)
 	-rm -f src/dcdflib/$(DEPDIR)/$(am__dirstamp)
 	-rm -f src/dcdflib/$(am__dirstamp)
 
@@ -1652,11 +1708,14 @@ distclean: distclean-am
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_mean.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_nanmean.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_nansum.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist2.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_cov.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_meanshift.Plo
 	-rm -f src/c/$(DEPDIR)/libscistatistics_algo_la-CdfBase.Plo
 	-rm -f src/c/$(DEPDIR)/libscistatistics_algo_la-ipmpar1.Plo
 	-rm -f src/c/$(DEPDIR)/libscistatistics_algo_la-sci_string_matrix.Plo
+	-rm -f src/cpp/$(DEPDIR)/libscistatistics_algo_la-pairwise_distances.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-local distclean-tags
@@ -1720,11 +1779,14 @@ maintainer-clean: maintainer-clean-am
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_mean.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_nanmean.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_nansum.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_pdist2.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_cov.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscistatistics_la-sci_percent_meanshift.Plo
 	-rm -f src/c/$(DEPDIR)/libscistatistics_algo_la-CdfBase.Plo
 	-rm -f src/c/$(DEPDIR)/libscistatistics_algo_la-ipmpar1.Plo
 	-rm -f src/c/$(DEPDIR)/libscistatistics_algo_la-sci_string_matrix.Plo
+	-rm -f src/cpp/$(DEPDIR)/libscistatistics_algo_la-pairwise_distances.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
