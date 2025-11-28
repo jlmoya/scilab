@@ -52,7 +52,7 @@ types::Function::ReturnValue sci_percent_meanshift(types::typed_list& in, int _i
 {
     if (in.size() != 5)
     {
-        Scierror(77, _("%s: Wrong number of input argument: At least %d expected.\n"), "%_gallery", 1);
+        Scierror(77, _("%s: Wrong number of input argument: At least %d expected.\n"), "meanshift", 1);
         return types::Function::Error;
     }
 

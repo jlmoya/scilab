@@ -94,6 +94,7 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
 
         pDblIn = in[1]->getAs<types::Double>();
         int iSize = pDblIn->getSize();
+        bool isScalarX = iSize == 1;
 
         if (wcsName == L"circul") // gallery("circul", x)
         {
@@ -106,7 +107,7 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
             int N = 0;
             double* data = NULL;
 
-            if (iSize == 1)
+            if (isScalarX)
             {
                 if (pDblIn->isComplex())
                 {
@@ -134,6 +135,10 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
             {
                 circul_matrix(N, pDblIn->getImg(), pDblOut->getImg());            
             }
+            if (isScalarX)
+            {
+                delete[] data;
+            }
         }  
         else if (wcsName == L"cauchy") // gallery("cauchy", x) or gallery("cauchy", x, y)
         {
@@ -148,8 +153,9 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
             double* dataXI = NULL;
             double* dataY = NULL;
             double* dataYI = NULL;
+            bool isScalarY = false;
 
-            if (iSize == 1)
+            if (isScalarX)
             {
                 // x is scalar
                 if (pDblIn->isComplex())
@@ -187,24 +193,37 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
                 types::Double* pDblIn2 = NULL;
                 if (in[2]->isDouble() == false)
                 {
+                    if (isScalarX)
+                    {
+                        delete[] dataX;
+                    }
                     Scierror(999, _("%s: Wrong type for input argument #%d: A double expected.\n"), "gallery", 3);
                     return types::Function::Error;
                 }
 
                 pDblIn2 = in[2]->getAs<types::Double>();
                 int iSize2 = pDblIn2->getSize();
+                isScalarY = iSize2 == 1;
 
-                if (iSize2 == 1)
+                if (isScalarY)
                 {
                     // y is scalar
                     if (pDblIn2->isComplex())
                     {
+                        if (isScalarX)
+                        {
+                            delete[] dataX;
+                        }
                         Scierror(999, _("%s: Wrong value for input argument #%d: Real scalar expected.\n"), "gallery", 3);
                         return types::Function::Error;
                     }
                     // y must be equal to size of x or x when it is scalar
                     if (N != static_cast<int>(pDblIn2->get(0)))
                     {
+                        if (isScalarX)
+                        {
+                            delete[] dataX;
+                        }
                         Scierror(999, _("%s: Wrong size for input argument #%d: Must be of the same size of #%d.\n"), "gallery", 3, 2);
                         return types::Function::Error;
                     }
@@ -219,6 +238,10 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
                 {
                     if (N != iSize2)
                     {
+                        if (isScalarX)
+                        {
+                            delete[] dataX;
+                        }
                         Scierror(999, _("%s: Wrong size for input argument #%d: Must be of the same size of #%d.\n"), "gallery", 3, 2);
                         return types::Function::Error;
                     }
@@ -234,6 +257,15 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
             }
 
             cauchy_matrix(N, dataX, dataXI, dataY, dataYI, pDblOut->get(), pDblOut->getImg());
+
+            if (isScalarX)
+            {
+                delete[] dataX;
+            }
+            if (isScalarY)
+            {
+                delete[] dataY;
+            }
         }
         else
         {
