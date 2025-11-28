@@ -26,11 +26,8 @@ import com.mxgraph.model.mxGeometry;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxUtils;
 
-import java.nio.DoubleBuffer;
-import java.nio.LongBuffer;
 import java.util.ArrayList;
 import org.scilab.modules.xcos.VectorOfDouble;
-import org.scilab.modules.xcos.VectorOfScicosID;
 
 class JGraphXHandler implements ScilabHandler {
 
@@ -96,10 +93,61 @@ class JGraphXHandler implements ScilabHandler {
                         long[] parentUID = {0};
                         saxHandler.controller.getObjectProperty(cell.getUID(), cell.getKind(), ObjectProperties.RELATED_TO, parentUID);
 
-                        VectorOfDouble parentGeom = new VectorOfDouble(4);
-                        saxHandler.controller.getObjectProperty(parentUID[0], saxHandler.controller.getKind(parentUID[0]), ObjectProperties.GEOMETRY, parentGeom);
-                        g.setX(g.getX() * parentGeom.get(2));
-                        g.setY(g.getY() * parentGeom.get(3));
+                        Kind parentKind = saxHandler.controller.getKind(parentUID[0]);
+
+                        double x = 0.;
+                        double y = 0.;
+                        double width = 0.;
+                        double height = 0.;
+
+                        switch (parentKind) {
+                            case BLOCK:
+                            {
+                                VectorOfDouble parentGeom = new VectorOfDouble(4);
+                                saxHandler.controller.getObjectProperty(parentUID[0], parentKind, ObjectProperties.GEOMETRY, parentGeom);
+                                
+                                x = g.getX() * parentGeom.get(2);
+                                y = g.getY() * parentGeom.get(3);
+                                width = 0;
+                                height = 0;
+                                break;
+                            }
+                            case LINK:
+                            {
+                                VectorOfDouble controlPoints = new VectorOfDouble();
+                                saxHandler.controller.getObjectProperty(parentUID[0], parentKind, ObjectProperties.CONTROL_POINTS, controlPoints);
+                                
+                                // look for the max and min to center the label
+                                double x_min = Double.MAX_VALUE;
+                                double y_min = Double.MAX_VALUE;
+                                double x_max = Double.MIN_VALUE;
+                                double y_max = Double.MIN_VALUE;
+                                final int nbOfPoints = controlPoints.size() / 2;
+                                for (int i = 0; i < nbOfPoints; i++)
+                                {
+                                    x = controlPoints.get(2*i);
+                                    y = controlPoints.get(2*i+1);
+                                    x_min = Double.min(x_min, x);
+                                    y_min = Double.min(y_min, y);
+                                    x_max = Double.max(x_max, x);
+                                    y_max = Double.max(y_max, y);
+                                }
+                                // center the label
+                                x = x_min;
+                                y = y_min;
+                                width = x_max - x_min;
+                                height = y_max - y_min;
+                                break;
+                            }
+                        
+                            default:
+                                break;
+                        }
+                        
+                        g.setX(x);
+                        g.setY(y);
+                        g.setWidth(width);
+                        g.setHeight(height);
                     }
                 }
 
@@ -125,54 +173,13 @@ class JGraphXHandler implements ScilabHandler {
                         parent.setSourcePoint(p);
                     } else if ("targetPoint".equals(v)) {
                         parent.setTargetPoint(p);
+                    } else if ("offset".equals(v)) {
+                        parent.setX(parent.getX() + p.getX());
+                        parent.setY(parent.getY() + p.getY());
                     }
                 } else if (localParent instanceof RawDataHandler.RawDataDescriptor) {
                     RawDataHandler.RawDataDescriptor parent = (RawDataHandler.RawDataDescriptor) localParent;
                     ((ArrayList) parent.value).add(p);
-                } else if (localParent instanceof XcosCell) {
-                    // Diagram origin, translate each children
-                    XcosCell parent = (XcosCell) localParent;
-
-                    VectorOfScicosID children = new VectorOfScicosID();
-                    saxHandler.controller.getObjectProperty(parent.getUID(), parent.getKind(), ObjectProperties.CHILDREN, children);
-
-                    VectorOfDouble geometry = new VectorOfDouble(4);
-                    DoubleBuffer geom = geometry.asByteBuffer(0, 4).asDoubleBuffer();
-
-                    LongBuffer childrenUIDs = children.asByteBuffer(0, children.size()).asLongBuffer();
-                    while (childrenUIDs.hasRemaining()) {
-                        long uid = childrenUIDs.get();
-                        Kind kind = saxHandler.controller.getKind(uid);
-
-                        saxHandler.controller.getObjectProperty(uid, kind, ObjectProperties.GEOMETRY, geometry);
-                        geom.put(0, geom.get(0) + p.getX());
-                        geom.put(1, geom.get(1) + p.getY());
-                        saxHandler.controller.setObjectProperty(uid, kind, ObjectProperties.GEOMETRY, geometry);
-
-                        // translate the annotation
-                        long[] annotation = { 0 };
-                        saxHandler.controller.getObjectProperty(uid, kind, ObjectProperties.LABEL, annotation);
-                        if (annotation[0] != 0) {
-                            saxHandler.controller.getObjectProperty(annotation[0], Kind.ANNOTATION, ObjectProperties.GEOMETRY, geometry);
-                            geom.put(0, geom.get(0) + p.getX());
-                            geom.put(1, geom.get(1) + p.getY());
-                            saxHandler.controller.setObjectProperty(annotation[0], Kind.ANNOTATION, ObjectProperties.GEOMETRY, geometry);
-                        }
-
-                        // translate control-points
-                        if (kind == Kind.LINK) {
-                            VectorOfDouble controlPoints = new VectorOfDouble();
-                            saxHandler.controller.getObjectProperty(uid, kind, ObjectProperties.CONTROL_POINTS, controlPoints);
-
-                            DoubleBuffer points = controlPoints.asByteBuffer(0, controlPoints.size()).asDoubleBuffer();
-                            for (int i = 0; i < controlPoints.size(); i += 2) {
-                                points.put(i, points.get(i) + p.getX());
-                                points.put(i + 1, points.get(i + 1) + p.getY());
-                            }
-                            saxHandler.controller.setObjectProperty(uid, kind, ObjectProperties.CONTROL_POINTS, controlPoints);
-                        }
-                    }
-
                 }
                 return p;
             }
