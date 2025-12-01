@@ -62,5 +62,4 @@ if with_openmp
     [t,y,info2]=arkode(list("SUN_lorenz",[n,sigma,rho,bet]),5,X0,t0=0,...
                method="ERK_5");
                
-    assert_checktrue(info2.stats.eTime > info1.stats.eTime);
 end

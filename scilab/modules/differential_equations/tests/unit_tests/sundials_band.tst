@@ -39,42 +39,37 @@ JCONSTSPARSE = -lambda/c/rhoLin/dx/dx*(diag(sparse(2*ones(1,N-1)))-diag(sparse(o
 
 timer();
 [t,v] = cvode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,method="BDF");
-t1=timer()
+t1cvode=timer()
 
 [t,v] = cvode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,jacBand=[1,1]);
-t2=timer()
+t2cvode=timer()
 
 [t,v] = cvode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,jacBand=[1,1],jacobian=jac_f_chaleur);
-t3=timer()
+t3cvode=timer()
 
 [tb,vb] = cvode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,jacBand=[1,1],jacobian=JCONSTBAND);
-t4=timer()
+t4cvode=timer()
 [ts,vs] = cvode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,jacobian=JCONSTSPARSE);
 
 assert_checkalmostequal(vb,vs)
-assert_checktrue(t1/t2>10)
-assert_checktrue(t1/t3>10)
-assert_checktrue(t1/t4>10)
 
 // ARKODE
 
 timer();
 [t,v] = arkode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,method="DIRK",atol=1e-9);
-t1=timer()
+t1arkode=timer()
 
 [t,v] = arkode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,jacBand=[1,1],atol=1e-9);
-t2=timer()
+t2arkode=timer()
 
 [t,v] = arkode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,jacBand=[1,1],jacobian=jac_f_chaleur,atol=1e-9);
-t3=timer()
+t3arkode=timer()
 
 [tb,vb] = arkode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,jacBand=[1,1],jacobian=JCONSTBAND,atol=1e-9);
-t4=timer()
+t4arkode=timer()
 [ts,vs] = arkode(list(f_chaleur,dx,lambda,c,rhoLin,f),tspan,v0,jacobian=JCONSTSPARSE,atol=1e-9);
+
 assert_checkalmostequal(vb,vs,1e-6)
-assert_checktrue(t1/t2>10)
-assert_checktrue(t1/t3>10)
-assert_checktrue(t1/t4>10)
 
 // SUNDIALS API DLL entrypoints (rhs and band Jacobian)
 

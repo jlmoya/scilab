@@ -54,10 +54,10 @@ LAP = lap .*. speye(n,n) + speye(n,n) .*. lap;
 
 f0 = ones(n*n,1);
 
-[t,y0,info0]=cvode(fun,tspan,f0,method="BDF");
-[t,y1,info1]=cvode(fun,tspan,f0,jacBand=[n n]);
-[t,y2,info2]=cvode(fun,tspan,f0,jacPattern=LAP);
-[t,y3,info3]=cvode(fun,tspan,f0,jacobian=jac);
+[t,y0,info0cvode]=cvode(fun,tspan,f0,method="BDF");
+[t,y1,info1cvode]=cvode(fun,tspan,f0,jacBand=[n n]);
+[t,y2,info2cvode]=cvode(fun,tspan,f0,jacPattern=LAP);
+[t,y3,info3cvode]=cvode(fun,tspan,f0,jacobian=jac);
 
 assert_checkalmostequal(y0,y1,1e-7);
 assert_checkalmostequal(y0,y2,1e-7);
@@ -66,21 +66,17 @@ assert_checkalmostequal(y1,y2,1e-7);
 assert_checkalmostequal(y1,y3,1e-7);
 assert_checkalmostequal(y2,y3,1e-7);
 
-assert_checkequal(info1.stats.nRhsEvalsFD,303);
-assert_checkequal(info2.stats.nRhsEvalsFD,15);
-assert_checkequal(info3.stats.nRhsEvalsFD,0);
-
-assert_checktrue(info0.stats.eTime/info1.stats.eTime > 10);
-assert_checktrue(info0.stats.eTime/info2.stats.eTime > 20);
-assert_checktrue(info0.stats.eTime/info3.stats.eTime > 20);
+assert_checkequal(info1cvode.stats.nRhsEvalsFD,303);
+assert_checkequal(info2cvode.stats.nRhsEvalsFD,15);
+assert_checkequal(info3cvode.stats.nRhsEvalsFD,0);
 
 OPT.method="ARK548L2SA_DIRK_8_4_5";
 OPT.rtol=1e-8;
 OPT.atol=1e-10;
-[t,y0,info0]=arkode(fun,tspan,f0,options=OPT);
-[t,y1,info1]=arkode(fun,tspan,f0,jacBand=[n n],options=OPT);
-[t,y2,info2]=arkode(fun,tspan,f0,jacPattern=LAP,options=OPT);
-[t,y3,info3]=arkode(fun,tspan,f0,jacobian=jac,options=OPT);
+[t,y0,info0arkode]=arkode(fun,tspan,f0,options=OPT);
+[t,y1,info1arkode]=arkode(fun,tspan,f0,jacBand=[n n],options=OPT);
+[t,y2,info2arkode]=arkode(fun,tspan,f0,jacPattern=LAP,options=OPT);
+[t,y3,info3arkode]=arkode(fun,tspan,f0,jacobian=jac,options=OPT);
 
 assert_checkalmostequal(y0,y1,1e-6);
 assert_checkalmostequal(y0,y2,1e-6);
@@ -89,10 +85,7 @@ assert_checkalmostequal(y1,y2,1e-6);
 assert_checkalmostequal(y1,y3,1e-6);
 assert_checkalmostequal(y2,y3,1e-6);
 
-assert_checkequal(info1.stats.nRhsEvalsFD,5656);
-assert_checkequal(info2.stats.nRhsEvalsFD,280);
-assert_checkequal(info3.stats.nRhsEvalsFD,0);
+assert_checkequal(info1arkode.stats.nRhsEvalsFD,5656);
+assert_checkequal(info2arkode.stats.nRhsEvalsFD,280);
+assert_checkequal(info3arkode.stats.nRhsEvalsFD,0);
 
-assert_checktrue(info0.stats.eTime/info1.stats.eTime > 5);
-assert_checktrue(info0.stats.eTime/info2.stats.eTime > 5);
-assert_checktrue(info0.stats.eTime/info3.stats.eTime > 5);

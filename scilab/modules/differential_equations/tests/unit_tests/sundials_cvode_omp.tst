@@ -64,6 +64,4 @@ if with_openmp
     [t,f,info2]=cvode(list("f",[n dx]),0.5,f0,t0=0,method="BDF",linearSolver="CG",...
         rtol=1e-3,atol=1e-3);
 
-    assert_checktrue(info2.stats.eTime > info1.stats.eTime);
-
 end

@@ -226,7 +226,6 @@ t1=timer()
 v2=ode("stiff",v0,0,t,1e-5,1e-7,list(f_chaleur,dx,lambda,c,rhoLin));
 t2 = timer()
 assert_checktrue(max(abs(v-v2)) < 1e-6);
-//assert_checktrue(t2>t1);
 
 //POSITIVENESS
 function out=fp(t,y);
