@@ -422,10 +422,11 @@ bool Context::addClassdef(types::Classdef* def)
 
 types::Classdef* Context::getClassdef(const std::wstring& name)
 {
-    if (classes.find(symbol::Symbol(name)) != classes.end())
+    Classes::iterator it = classes.find(symbol::Symbol(name));
+    if (it != classes.end())
     {
-        types::Classdef* c = classes[symbol::Symbol(name)]->getAs<types::Classdef>();
-        return classes[symbol::Symbol(name)];
+        types::Classdef* c = it->second->getAs<types::Classdef>();
+        return c;
     }
 
     return nullptr;
