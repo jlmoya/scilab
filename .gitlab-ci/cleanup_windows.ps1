@@ -11,7 +11,7 @@ Write-Output "Timestamp : $(Get-Date)"
 Write-Output ""
 
 # --- Step 1: Kill old Scilab processes ---
-Write-Output "[1/4] Killing Scilab processes older than $KillHours hours"
+Write-Output "[1/5] Killing Scilab processes older than $KillHours hours"
 $oldProcs = Get-Process *scilex* -ErrorAction SilentlyContinue | Where-Object { $_.StartTime -lt (Get-Date).AddHours(-$KillHours) }
 if ($oldProcs) {
     foreach ($p in $oldProcs) {
@@ -28,7 +28,7 @@ if ($oldProcs) {
 Write-Output ""
 
 # --- Step 2: Uninstall old Scilab builds ---
-Write-Output "[2/4] Uninstalling Scilab builds older than $UninstallHours hours"
+Write-Output "[2/5] Uninstalling Scilab builds older than $UninstallHours hours"
 $uninstallers = Get-ChildItem -Path "$BasePath\*\install\unins000.exe" -ErrorAction SilentlyContinue
 $toUninstall = $uninstallers | Where-Object { $_.LastWriteTime -lt (Get-Date).AddHours(-$UninstallHours) }
 
@@ -46,7 +46,7 @@ if (-not $toUninstall) {
 Write-Output ""
 
 # --- Step 3: Remove old common path folders ---
-Write-Output "[3/4] Removing folders older than $DeleteHours hours"
+Write-Output "[3/5] Removing folders older than $DeleteHours hours"
 
 function Remove-ItemSafe {
     param([string]$Path)
@@ -76,7 +76,7 @@ if ($folders) {
 Write-Output ""
 
 # --- Step 4: Clean temporary folders ---
-Write-Output "[4/4] Cleaning TEMP folders (SCI_TMP*) older than $DeleteHours hours"
+Write-Output "[4/5] Cleaning TEMP folders (SCI_TMP*) older than $DeleteHours hours"
 $tempDirs = Get-ChildItem -Path "$env:TEMP" -Directory -Filter "SCI_TMP*" -ErrorAction SilentlyContinue |
     Where-Object { $_.LastWriteTime -lt (Get-Date).AddHours(-$DeleteHours) }
 
@@ -88,6 +88,28 @@ foreach ($d in $tempDirs) {
 if (-not $tempDirs) {
     Write-Output "No old TEMP folders found."
 }
+
+# --- Step 5: Uninstall the current Scilab build (in case of a retry) ---
+# This stage will fail if a pipeline (in test stage) is already running for the same commit,
+# hence will not try to generate an identical package which will potentially not be tested
+# because uninstall will fail in test stage (just after build stage).
+Write-Output "[5/5] Uninstalling current Scilab build $env:SCI_VERSION_STRING"
+$Path = "$BasePath\$env:SCI_VERSION_STRING"
+$exe = Get-Item "$Path\install\unins000.exe" -ErrorAction SilentlyContinue
+
+if (Test-Path -Path "$Path" -PathType Container) {
+    if ($exe) {
+        Write-Output "Running uninstaller: $($exe.FullName)"
+        try {
+            Start-Process $exe.FullName -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/FORCECLOSEAPPLICATIONS' -NoNewWindow -Wait -ErrorAction Stop
+        } catch {
+            Write-Output "Warning: Failed to run uninstaller $($exe.FullName): $($_.Exception.Message)"
+        }
+    }
+    Remove-Item -Path $Path -Recurse -Force -ErrorAction Stop
+    Write-Output "Removed: $Path"
+}
+Write-Output ""
 
 Write-Output ""
 Write-Output "Cleanup completed successfully at $(Get-Date)"

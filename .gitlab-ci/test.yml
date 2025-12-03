@@ -7,6 +7,31 @@
 # impacted are added for modules modified by Merge Request.
 #
 
+windows_install:
+  stage: test
+  tags: [x64_windows, shell, scilab]
+  variables:
+    ARTIFACT_DOWNLOAD_ATTEMPTS: 3
+    GET_SOURCES_ATTEMPTS: 3
+    GIT_STRATEGY: "fetch"
+  retry:
+    max: 2
+    when: runner_system_failure
+  needs:
+    - job: windows_build_release
+      optional: true
+    - job: windows_build_nightly
+      optional: true
+    - job: windows_build_mr
+      optional: true
+    - windows_set_env
+  script:
+    - .gitlab-ci\test_windows_install.ps1
+  artifacts:
+    paths:
+      - "${SCI_VERSION_STRING}/"
+    when: always
+
 .windows_test:
   stage: test
   tags: [x64_windows, shell, scilab]
@@ -23,21 +48,14 @@
     when: always
     paths:
       - "${SCI_VERSION_STRING}/${ARCH}-windows/${TEST}.xml"
-      - "${SCI_VERSION_STRING}/${ARCH}-windows/test_iss_install_${CI_COMMIT_SHORT_SHA}.log"
       - "${SCI_VERSION_STRING}/${ARCH}-windows/${TEST}/"
     reports:
       junit: "${SCI_VERSION_STRING}/${ARCH}-windows/${TEST}.xml"
 
 windows_basic:
   extends: .windows_test
-  needs: &WINDOWS_NEEDS
-    - job: windows_build_release
-      optional: true
-    - job: windows_build_nightly
-      optional: true
-    - job: windows_build_mr
-      optional: true
-    - windows_set_env
+  needs:
+    - windows_install
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -79,7 +97,8 @@ windows_basic:
 
 windows_intermediate:
   extends: .windows_test
-  needs: *WINDOWS_NEEDS
+  needs:
+    - windows_install
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -128,7 +147,8 @@ windows_intermediate:
 
 windows_advanced:
   extends: .windows_test
-  needs: *WINDOWS_NEEDS
+  needs:
+    - windows_install
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -161,7 +181,8 @@ windows_advanced:
 
 windows_only:
   extends: .windows_test
-  needs: *WINDOWS_NEEDS
+  needs:
+    - windows_install
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -278,7 +299,7 @@ linux_advanced:
 
 
 # ATOMS tests will modify Scilab installation, execute them on a dedicated stage
-# The installer is shared on a common directory for all tests
+# The installer is shared on a common directory for all tests, see windows_install:
 windows_atoms:
   extends: .windows_test
   stage: test_atoms
