@@ -90,6 +90,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <PreLinkEvent>
       <Message>Make dependencies</Message>
@@ -125,6 +126,7 @@ lib /DEF:"$(ProjectDir)elementary_functions_f_Import.def" /SUBSYSTEM:WINDOWS /MA
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <PreLinkEvent>
       <Message>Make dependencies</Message>
@@ -165,6 +167,7 @@ lib /DEF:"$(ProjectDir)elementary_functions_f_Import.def" /SUBSYSTEM:WINDOWS /MA
       <DebugInformationFormat>
       </DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <PreLinkEvent>
       <Message>Make dependencies</Message>
@@ -211,6 +214,7 @@ lib /DEF:"$(ProjectDir)elementary_functions_f_Import.def" /SUBSYSTEM:WINDOWS /MA
       <DebugInformationFormat>
       </DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <PreLinkEvent>
       <Message>Make dependencies</Message>
@@ -250,6 +254,7 @@ lib /DEF:"$(ProjectDir)elementary_functions_f_Import.def" /SUBSYSTEM:WINDOWS /MA
     <ClCompile Include="sci_gateway\c\sci_light.c" />
     <ClCompile Include="sci_gateway\c\sci_name2rgb.c" />
     <ClCompile Include="src\cpp\addColors.cpp" />
+    <ClCompile Include="src\cpp\setGetHashTable.cpp" />
     <ClCompile Include="src\cpp\get_tag_property.cpp" />
     <ClCompile Include="src\cpp\set_data_property.cpp" />
     <ClCompile Include="src\cpp\ContourOnMesh.cpp" />
@@ -673,7 +678,6 @@ lib /DEF:"$(ProjectDir)elementary_functions_f_Import.def" /SUBSYSTEM:WINDOWS /MA
     <ClCompile Include="src\c\getHandleProperty\set_z_ticks_property.c" />
     <ClCompile Include="src\c\getHandleProperty\set_zoom_box_property.c" />
     <ClCompile Include="src\c\getHandleProperty\set_zoom_state_property.c" />
-    <ClCompile Include="src\c\getHandleProperty\setGetHashTable.c" />
     <ClCompile Include="src\c\getHandleProperty\SetHashTable.c" />
     <ClCompile Include="src\c\SetProperty.c" />
     <ClCompile Include="src\c\getHandleProperty\SetPropertyStatus.c" />
@@ -728,10 +732,10 @@ lib /DEF:"$(ProjectDir)elementary_functions_f_Import.def" /SUBSYSTEM:WINDOWS /MA
     <ClInclude Include="includes\Plot2d.h" />
     <ClInclude Include="includes\sciCall.h" />
     <ClInclude Include="includes\sciMatrix.h" />
+    <ClInclude Include="includes\setGetHashTable.h" />
     <ClInclude Include="src\c\loadTextRenderingAPI.h" />
     <ClInclude Include="src\c\scitokenize.h" />
     <ClInclude Include="src\c\getHandleProperty\set_data_property.h" />
-    <ClInclude Include="src\c\getHandleProperty\setGetHashTable.h" />
     <ClInclude Include="src\c\getHandleProperty\setHandleProperty.h" />
     <ClInclude Include="src\c\getHandleProperty\SetHashTable.h" />
     <ClInclude Include="includes\SetProperty.h" />

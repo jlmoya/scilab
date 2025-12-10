@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2006 - INRIA - Jean-Baptiste Silvy
  * Copyright (C) 2011 - DIGITEO - Bruno JOFRET
@@ -23,21 +23,12 @@
 #ifndef _SET_GET_HASHTABLE_H_
 #define _SET_GET_HASHTABLE_H_
 
-#include <stdlib.h>
+#include <stddef.h>
 
-#include "hashtable.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/*--------------------------------------------------------------------------*/
-/**
- * Hide the real type of hashtable
- */
-typedef struct hashtable GetPropertyHashTable;
-
-/**
-* Hide the real type of hashtable
-*/
-typedef struct hashtable SetPropertyHashTable;
-/*--------------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------------*/
 /**
@@ -55,52 +46,28 @@ typedef void* (*getPropertyFunc)(void*, int);
 * an error occurred.
 */
 typedef int (*setPropertyFunc)(void*, int, void*, int, int, int);
+
+typedef struct
+{
+    const char* key;
+    setPropertyFunc func;
+} SetPropertyEntry;
+
+typedef struct
+{
+    const char* key;
+    getPropertyFunc func;
+} GetPropertyEntry;
 /*--------------------------------------------------------------------------*/
+getPropertyFunc searchGetHashtable(const char * key);
+setPropertyFunc searchSetHashtable(const char * key);
 
-/*--------------------------------------------------------------------------*/
-/**
- * Create a new hashTable of get functions
- */
-GetPropertyHashTable * createGetHashTable(void);
+const SetPropertyEntry* getSetPropertyEntries(size_t* count);
+const GetPropertyEntry* getGetPropertyEntries(size_t* count);
 
-/**
- * destroy the hashtable and free the used resources.
- */
-void destroyGetHashTable(GetPropertyHashTable * hashTable);
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
-/**
- * Search for a key in a hashtable. if succeed, return the value needed. if failed, return NULL
- * @return The corresponding value if the key was found, NULL otherwise.
- */
-getPropertyFunc searchGetHashtable(GetPropertyHashTable * hashTable , char * key);
-
-/*
- * Insert a new element in the hashtable
- */
-int insertGetHashtable(GetPropertyHashTable * hashTable, char * key, getPropertyFunc value);
-
-/*--------------------------------------------------------------------------*/
-/**
-* Create a new hashTable of set functions
-*/
-GetPropertyHashTable * createSetHashTable(void);
-
-/**
-* destroy the hashtable and free the used resources.
-*/
-void destroySetHashTable(SetPropertyHashTable * hashTable);
-
-/**
-* Search for a key in a hashtable. if succeed, return the value needed. if failed, return NULL
-* @return The corresponding value if the key was found, NULL otherwise.
-*/
-setPropertyFunc searchSetHashtable(SetPropertyHashTable * hashTable , char * key);
-
-/*
-* Insert a new element in the hashtable
-*/
-int insertSetHashtable(SetPropertyHashTable * hashTable, char * key, setPropertyFunc value);
-
-/*--------------------------------------------------------------------------*/
 
 #endif /* _SET_GET_HASHTABLE_H_ */

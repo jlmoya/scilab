@@ -223,8 +223,6 @@ am__objects_1 = src/c/libscicore_algo_la-csignal.lo \
 	src/c/libscicore_algo_la-saveCWDInPreferences.lo \
 	src/c/libscicore_algo_la-getmaxMALLOC.lo \
 	src/c/libscicore_algo_la-sci_mem_alloc.lo \
-	src/c/hashtable/libscicore_algo_la-hashtable.lo \
-	src/c/hashtable/libscicore_algo_la-hashtable_utility.lo \
 	src/c/libscicore_algo_la-InitializePreferences.lo \
 	src/c/libscicore_algo_la-hasHandleType.lo \
 	src/c/libscicore_algo_la-hasUIControlStyle.lo
@@ -517,8 +515,6 @@ am__depfiles_remade =  \
 	src/c/$(DEPDIR)/libscicore_algo_la-signal_mgmt.Plo \
 	src/c/$(DEPDIR)/libscicore_algo_la-suspendProcess.Plo \
 	src/c/$(DEPDIR)/libscicore_algo_la-transposeMatrix.Plo \
-	src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable.Plo \
-	src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable_utility.Plo \
 	src/cpp/$(DEPDIR)/libscicore_algo_la-InitScilab.Plo \
 	src/cpp/$(DEPDIR)/libscicore_algo_la-backtrace_print.Plo \
 	src/cpp/$(DEPDIR)/libscicore_algo_la-banner.Plo \
@@ -976,8 +972,6 @@ CORE_C_SOURCES = \
     src/c/saveCWDInPreferences.c \
     src/c/getmaxMALLOC.c \
     src/c/sci_mem_alloc.c \
-    src/c/hashtable/hashtable.c \
-    src/c/hashtable/hashtable_utility.c \
     src/c/InitializePreferences.c \
     src/c/hasHandleType.c \
     src/c/hasUIControlStyle.c
@@ -1148,8 +1142,6 @@ includes/getcommandlineargs.h \
 includes/getmemory.h \
 includes/getos.h \
 includes/getversion.h \
-includes/hashtable.h \
-includes/hashtable_utility.h \
 includes/machine.h \
 includes/PATH_MAX.h \
 includes/scilabDefaults.h \
@@ -1377,18 +1369,6 @@ src/c/libscicore_algo_la-getmaxMALLOC.lo: src/c/$(am__dirstamp) \
 	src/c/$(DEPDIR)/$(am__dirstamp)
 src/c/libscicore_algo_la-sci_mem_alloc.lo: src/c/$(am__dirstamp) \
 	src/c/$(DEPDIR)/$(am__dirstamp)
-src/c/hashtable/$(am__dirstamp):
-	@$(MKDIR_P) src/c/hashtable
-	@: > src/c/hashtable/$(am__dirstamp)
-src/c/hashtable/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) src/c/hashtable/$(DEPDIR)
-	@: > src/c/hashtable/$(DEPDIR)/$(am__dirstamp)
-src/c/hashtable/libscicore_algo_la-hashtable.lo:  \
-	src/c/hashtable/$(am__dirstamp) \
-	src/c/hashtable/$(DEPDIR)/$(am__dirstamp)
-src/c/hashtable/libscicore_algo_la-hashtable_utility.lo:  \
-	src/c/hashtable/$(am__dirstamp) \
-	src/c/hashtable/$(DEPDIR)/$(am__dirstamp)
 src/c/libscicore_algo_la-InitializePreferences.lo:  \
 	src/c/$(am__dirstamp) src/c/$(DEPDIR)/$(am__dirstamp)
 src/c/libscicore_algo_la-hasHandleType.lo: src/c/$(am__dirstamp) \
@@ -1716,8 +1696,6 @@ mostlyclean-compile:
 	-rm -f sci_gateway/cpp/*.lo
 	-rm -f src/c/*.$(OBJEXT)
 	-rm -f src/c/*.lo
-	-rm -f src/c/hashtable/*.$(OBJEXT)
-	-rm -f src/c/hashtable/*.lo
 	-rm -f src/cpp/*.$(OBJEXT)
 	-rm -f src/cpp/*.lo
 	-rm -f src/cpp/hash/*.$(OBJEXT)
@@ -1828,8 +1806,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscicore_algo_la-signal_mgmt.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscicore_algo_la-suspendProcess.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscicore_algo_la-transposeMatrix.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable_utility.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/cpp/$(DEPDIR)/libscicore_algo_la-InitScilab.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/cpp/$(DEPDIR)/libscicore_algo_la-backtrace_print.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/cpp/$(DEPDIR)/libscicore_algo_la-banner.Plo@am__quote@ # am--include-marker
@@ -2055,20 +2031,6 @@ src/c/libscicore_algo_la-sci_mem_alloc.lo: src/c/sci_mem_alloc.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/c/sci_mem_alloc.c' object='src/c/libscicore_algo_la-sci_mem_alloc.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscicore_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/c/libscicore_algo_la-sci_mem_alloc.lo `test -f 'src/c/sci_mem_alloc.c' || echo '$(srcdir)/'`src/c/sci_mem_alloc.c
-
-src/c/hashtable/libscicore_algo_la-hashtable.lo: src/c/hashtable/hashtable.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscicore_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT src/c/hashtable/libscicore_algo_la-hashtable.lo -MD -MP -MF src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable.Tpo -c -o src/c/hashtable/libscicore_algo_la-hashtable.lo `test -f 'src/c/hashtable/hashtable.c' || echo '$(srcdir)/'`src/c/hashtable/hashtable.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable.Tpo src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/c/hashtable/hashtable.c' object='src/c/hashtable/libscicore_algo_la-hashtable.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscicore_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/c/hashtable/libscicore_algo_la-hashtable.lo `test -f 'src/c/hashtable/hashtable.c' || echo '$(srcdir)/'`src/c/hashtable/hashtable.c
-
-src/c/hashtable/libscicore_algo_la-hashtable_utility.lo: src/c/hashtable/hashtable_utility.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscicore_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT src/c/hashtable/libscicore_algo_la-hashtable_utility.lo -MD -MP -MF src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable_utility.Tpo -c -o src/c/hashtable/libscicore_algo_la-hashtable_utility.lo `test -f 'src/c/hashtable/hashtable_utility.c' || echo '$(srcdir)/'`src/c/hashtable/hashtable_utility.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable_utility.Tpo src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable_utility.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/c/hashtable/hashtable_utility.c' object='src/c/hashtable/libscicore_algo_la-hashtable_utility.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscicore_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/c/hashtable/libscicore_algo_la-hashtable_utility.lo `test -f 'src/c/hashtable/hashtable_utility.c' || echo '$(srcdir)/'`src/c/hashtable/hashtable_utility.c
 
 src/c/libscicore_algo_la-InitializePreferences.lo: src/c/InitializePreferences.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscicore_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT src/c/libscicore_algo_la-InitializePreferences.lo -MD -MP -MF src/c/$(DEPDIR)/libscicore_algo_la-InitializePreferences.Tpo -c -o src/c/libscicore_algo_la-InitializePreferences.lo `test -f 'src/c/InitializePreferences.c' || echo '$(srcdir)/'`src/c/InitializePreferences.c
@@ -2776,7 +2738,6 @@ clean-libtool:
 	-rm -rf sci_gateway/c/.libs sci_gateway/c/_libs
 	-rm -rf sci_gateway/cpp/.libs sci_gateway/cpp/_libs
 	-rm -rf src/c/.libs src/c/_libs
-	-rm -rf src/c/hashtable/.libs src/c/hashtable/_libs
 	-rm -rf src/cpp/.libs src/cpp/_libs
 	-rm -rf src/cpp/hash/.libs src/cpp/hash/_libs
 	-rm -rf src/fortran/.libs src/fortran/_libs
@@ -2989,8 +2950,6 @@ distclean-generic:
 	-rm -f sci_gateway/cpp/$(am__dirstamp)
 	-rm -f src/c/$(DEPDIR)/$(am__dirstamp)
 	-rm -f src/c/$(am__dirstamp)
-	-rm -f src/c/hashtable/$(DEPDIR)/$(am__dirstamp)
-	-rm -f src/c/hashtable/$(am__dirstamp)
 	-rm -f src/cpp/$(DEPDIR)/$(am__dirstamp)
 	-rm -f src/cpp/$(am__dirstamp)
 	-rm -f src/cpp/hash/$(DEPDIR)/$(am__dirstamp)
@@ -3107,8 +3066,6 @@ distclean: distclean-am
 	-rm -f src/c/$(DEPDIR)/libscicore_algo_la-signal_mgmt.Plo
 	-rm -f src/c/$(DEPDIR)/libscicore_algo_la-suspendProcess.Plo
 	-rm -f src/c/$(DEPDIR)/libscicore_algo_la-transposeMatrix.Plo
-	-rm -f src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable.Plo
-	-rm -f src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable_utility.Plo
 	-rm -f src/cpp/$(DEPDIR)/libscicore_algo_la-InitScilab.Plo
 	-rm -f src/cpp/$(DEPDIR)/libscicore_algo_la-backtrace_print.Plo
 	-rm -f src/cpp/$(DEPDIR)/libscicore_algo_la-banner.Plo
@@ -3276,8 +3233,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f src/c/$(DEPDIR)/libscicore_algo_la-signal_mgmt.Plo
 	-rm -f src/c/$(DEPDIR)/libscicore_algo_la-suspendProcess.Plo
 	-rm -f src/c/$(DEPDIR)/libscicore_algo_la-transposeMatrix.Plo
-	-rm -f src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable.Plo
-	-rm -f src/c/hashtable/$(DEPDIR)/libscicore_algo_la-hashtable_utility.Plo
 	-rm -f src/cpp/$(DEPDIR)/libscicore_algo_la-InitScilab.Plo
 	-rm -f src/cpp/$(DEPDIR)/libscicore_algo_la-backtrace_print.Plo
 	-rm -f src/cpp/$(DEPDIR)/libscicore_algo_la-banner.Plo

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2006 - INRIA - Jean-Baptiste Silvy
  *
@@ -35,17 +35,7 @@ void loadGraphicModule(void)
         return;
     }
 
-    /* Create hastable for get and set functions */
-    createScilabGetHashTable();
-    createScilabSetHashTable();
-
-    /* Create hastable for handle storing */
-    //getScilabHandleTab();
-
-    /* Create data for synchronization */
-    //createGraphicSynchronizer();
-
-    C2F(graphicsmodels)();
+    InitGraphicModel();
 
     /* Register Scilab as a dedicated View */
     registerToController();

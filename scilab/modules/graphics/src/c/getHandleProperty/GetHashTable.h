@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2006 - INRIA - Jean-Baptiste Silvy
  *
@@ -21,19 +21,7 @@
 #ifndef _GET_HASH_TABLE_H_
 #define _GET_HASH_TABLE_H_
 
-#include "setGetHashTable.h"
-
 #include "dynlib_graphics.h"
-/**
- * create the fill hash table already filled for get functions
- * this use the singleton pattern since only one hashtable is useful.
- */
-GetPropertyHashTable * createScilabGetHashTable(void);
-
-/**
- * Delete the scilab get hashtable
- */
-void destroyScilabGetHashTable(void);
 
 /**
  * call the function which the property propertyName of object pObj

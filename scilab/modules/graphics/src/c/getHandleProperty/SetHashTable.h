@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2006 - INRIA - Jean-Baptiste Silvy
  * Copyright (C) 2011 - DIGITEO - Bruno JOFRET
@@ -23,18 +23,6 @@
 #define _SET_HASH_TABLE_H_
 
 #include "dynlib_graphics.h"
-#include "setGetHashTable.h"
-
-/**
- * create the fill hash table already filled for set functions
- * this use the singleton pattern since only one hashtable is useful.
- */
-GRAPHICS_IMPEXP SetPropertyHashTable * createScilabSetHashTable(void);
-
-/**
- * Delete the scilab set hashtable
- */
-GRAPHICS_IMPEXP void destroyScilabSetHashTable(void);
 
 /**
  * call the function which the property propertyName of object pObj

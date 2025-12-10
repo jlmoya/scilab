@@ -37,8 +37,6 @@ CORE_C_SOURCES = \
     src/c/saveCWDInPreferences.c \
     src/c/getmaxMALLOC.c \
     src/c/sci_mem_alloc.c \
-    src/c/hashtable/hashtable.c \
-    src/c/hashtable/hashtable_utility.c \
     src/c/InitializePreferences.c \
     src/c/hasHandleType.c \
     src/c/hasUIControlStyle.c
@@ -257,8 +255,6 @@ includes/getcommandlineargs.h \
 includes/getmemory.h \
 includes/getos.h \
 includes/getversion.h \
-includes/hashtable.h \
-includes/hashtable_utility.h \
 includes/machine.h \
 includes/PATH_MAX.h \
 includes/scilabDefaults.h \
