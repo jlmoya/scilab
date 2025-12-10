@@ -75,6 +75,7 @@ ELEMENTARY_FUNCTIONS_IMPEXP void hankel_matrix(int _iSizeC, int _iSizeR, double 
 ELEMENTARY_FUNCTIONS_IMPEXP void circul_matrix(int _iSize, double *_pIn,  double *_pData);
 ELEMENTARY_FUNCTIONS_IMPEXP void cauchy_matrix(int _iSize, double *_pInX, double *_pInXI, double *_pInY, double *_pInYI, double *_pdblRealOut, double *_pdblImgOut);
 ELEMENTARY_FUNCTIONS_IMPEXP void ris_matrix(int _iSize, double *_pData);
+ELEMENTARY_FUNCTIONS_IMPEXP void minij_moler_matrix(int _iSize, double dblV, double *_pData);
 
 ELEMENTARY_FUNCTIONS_IMPEXP void deyes(double *_pdblOut, int _iRows, int _iCols);
 

@@ -395,3 +395,26 @@ void ris_matrix(int _iSize, double *_pData)
         }
     }
 }
+
+void minij_moler_matrix(int _iSize, double dblV, double *_pData)
+{
+    if (_iSize == 1)
+    {
+        _pData[0] = 1;
+        return;
+    }
+
+    double dblVal = 1.0;
+    for (int i = 0; i < _iSize; i++)
+    {
+        _pData[i * _iSize + i] = dblVal;
+        double dblD = dblVal - dblV;
+        for (int j = i+1; j < _iSize; j++)
+        {
+            _pData[i * _iSize + j] = dblD;
+            _pData[j * _iSize + i] = dblD;
+        }
+        dblVal++;
+    }
+}
+

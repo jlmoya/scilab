@@ -267,7 +267,7 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
                 delete[] dataY;
             }
         }
-        else
+        else 
         {
             if (iSize == 0)
             {
@@ -292,6 +292,14 @@ types::Function::ReturnValue sci_gallery(types::typed_list &in, int _iRetCount, 
             if (wcsName == L"ris")
             {
                 ris_matrix(N, pDblOut->get());
+            }
+            else if (wcsName == L"minij")
+            {
+                minij_moler_matrix(N, 0, pDblOut->get());
+            }
+            else if (wcsName == L"moler")
+            {
+                minij_moler_matrix(N, 2, pDblOut->get());
             }
             else
             {
