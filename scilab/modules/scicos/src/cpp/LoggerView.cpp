@@ -451,7 +451,6 @@ static inline std::string to_string_link(Controller& controller, ScicosID uid, k
     return ss.str();
 };
 
-
 template<> inline
 std::to_chars_result to_chars(char* first, char* last, std::string t)
 {
@@ -493,10 +492,10 @@ void LoggerView::propertyUpdated(const ScicosID& uid, kind_t k, object_propertie
 {
     auto to_chars_fun = [=](char* first, char* last) -> std::to_chars_result {
         to_chars_t io(first, last);
-        
+
         io = io + "propertyUpdated( " + id(uid) + " , " + k + " , " + p + " ) : " + u;
 
-        // DEBUG Controller controller;
+        Controller controller;
         // DEBUG if (p == CHILDREN || p == INPUTS || p == OUTPUTS || p == EVENT_INPUTS || p == EVENT_OUTPUTS || p == CONNECTED_SIGNALS)
         // DEBUG {
         // DEBUG     std::vector<ScicosID> end;
@@ -510,6 +509,13 @@ void LoggerView::propertyUpdated(const ScicosID& uid, kind_t k, object_propertie
         // DEBUG     io = io + " " + id(end);
         // DEBUG }
 
+        // if (p == DESCRIPTION || p == NAME)
+        // {
+        //     std::string v;
+        //    controller.getObjectProperty(uid, k, p, v);
+        //     io = io + " " + v;
+        // }
+
         return io + "\n";
     };
 
@@ -521,7 +527,7 @@ void LoggerView::propertyUpdated(const ScicosID& uid, kind_t k, object_propertie
     {
         log(LOG_DEBUG, to_chars_fun);
     }
-    
+
     // DEBUG if (u == SUCCESS && p == NAME)
     // DEBUG {
     // DEBUG     log(LOG_INFO, [=](char* first, char* last) -> std::to_chars_result {;
@@ -534,7 +540,7 @@ void LoggerView::propertyUpdated(const ScicosID& uid, kind_t k, object_propertie
     // DEBUG         return io + "\n";
     // DEBUG     });
     // DEBUG }
-    // DEBUG 
+    // DEBUG
     // DEBUG if (u == SUCCESS && p == DESCRIPTION)
     // DEBUG {
     // DEBUG     log(LOG_INFO, [=](char* first, char* last) -> std::to_chars_result {;
@@ -547,7 +553,7 @@ void LoggerView::propertyUpdated(const ScicosID& uid, kind_t k, object_propertie
     // DEBUG         return io + "\n";
     // DEBUG     });
     // DEBUG }
-    // DEBUG 
+    // DEBUG
     // DEBUG if (u == SUCCESS && p == GEOMETRY)
     // DEBUG {
     // DEBUG     log(LOG_INFO, [=](char* first, char* last) -> std::to_chars_result {;

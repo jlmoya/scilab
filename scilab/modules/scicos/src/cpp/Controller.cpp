@@ -435,6 +435,8 @@ model::BaseObject* Controller::cloneBaseObject(cloned_t& mapped, model::BaseObje
             updateChildrenRelatedPropertiesAfterClone(mappedLayer);
             setObjectProperty(cloned, CHILDREN, children);
         }
+
+        mapProperty(mapped, initial, cloned, LABEL, true);
         // FIXME what about REFERENCED_PORT ?
     }
     else if (k == DIAGRAM)
@@ -455,6 +457,7 @@ model::BaseObject* Controller::cloneBaseObject(cloned_t& mapped, model::BaseObje
         mapProperty(mapped, initial, cloned, PARENT_BLOCK, false);
         mapProperty(mapped, initial, cloned, SOURCE_PORT, false);
         mapProperty(mapped, initial, cloned, DESTINATION_PORT, false);
+        mapProperty(mapped, initial, cloned, LABEL, true);
     }
     else if (k == PORT)
     {

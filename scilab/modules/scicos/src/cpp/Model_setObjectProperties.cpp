@@ -449,6 +449,8 @@ update_status_t Model::setObjectProperty(model::BaseObject* object, object_prope
         {
             case STYLE:
                 return o->setStyle(v);
+            case NAME:
+                return o->setName(v);
             case DESCRIPTION:
                 return o->setDescription(v);
             case UID:

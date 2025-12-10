@@ -1672,6 +1672,15 @@ int SSPResource::loadConnection(xmlTextReaderPtr reader, model::BaseObject* o)
                 // FIXME: not decoded yet ; should incompatible unit produce an error ?
                 break;
             }
+            case e_id:
+            {
+                std::string id = to_string(xmlTextReaderConstValue(reader));
+                if (controller.setObjectProperty(link, NAME, id) == FAIL)
+                {
+                    return -1;
+                }
+                break;
+            }
             case e_description:
             {
                 std::string description = to_string(xmlTextReaderConstValue(reader));
@@ -3171,9 +3180,19 @@ int SSPResource::processElement(xmlTextReaderPtr reader, const xmlChar* nsURI)
             case e_label:
             {
                 model::BaseObject* o = controller.createBaseObject(ANNOTATION);
-                if (controller.setObjectProperty(component, LABEL, o->id()) == FAIL)
+                if (component->kind() == PORT)
                 {
-                    return -1;
+                    if (controller.setObjectProperty(references.back().back().block, LABEL, o->id()) == FAIL)
+                    {
+                        return -1;
+                    }
+                }
+                else
+                {
+                    if (controller.setObjectProperty(component, LABEL, o->id()) == FAIL)
+                    {
+                        return -1;
+                    }
                 }
                 // TODO store it for decoding its values later, maybe on processed.back()
                 processed_push(reader, o);

@@ -92,7 +92,6 @@ class JGraphXHandler implements ScilabHandler {
                         XcosCell cell = (XcosCell) parent;
                         long[] parentUID = {0};
                         saxHandler.controller.getObjectProperty(cell.getUID(), cell.getKind(), ObjectProperties.RELATED_TO, parentUID);
-
                         Kind parentKind = saxHandler.controller.getKind(parentUID[0]);
 
                         double x = 0.;
@@ -105,7 +104,9 @@ class JGraphXHandler implements ScilabHandler {
                             {
                                 VectorOfDouble parentGeom = new VectorOfDouble(4);
                                 saxHandler.controller.getObjectProperty(parentUID[0], parentKind, ObjectProperties.GEOMETRY, parentGeom);
-                                
+                                if (parentGeom.size() < 4) {
+                                     break;
+                                }
                                 x = g.getX() * parentGeom.get(2);
                                 y = g.getY() * parentGeom.get(3);
                                 width = 0;

@@ -420,9 +420,9 @@ public final class XcosCellFactory {
         }
 
         String value;
-        String[] description = { null };
-        controller.getObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, description);
-        value = description[0];
+        String[] name = { "" };
+        controller.getObjectProperty(uid, kind, ObjectProperties.NAME, name);
+        value = name[0];
 
         VectorOfDouble geom = new VectorOfDouble(4);
         controller.getObjectProperty(uid, kind, ObjectProperties.GEOMETRY, geom);
@@ -682,9 +682,9 @@ public final class XcosCellFactory {
          */
 
         String value;
-        String[] description = { null };
-        controller.getObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, description);
-        value = description[0];
+        String[] name = { "" };
+        controller.getObjectProperty(uid, kind, ObjectProperties.NAME, name);
+        value = name[0];
 
         String[] style = new String[] { "" };
         controller.getObjectProperty(uid, kind, ObjectProperties.STYLE, style);

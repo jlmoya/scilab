@@ -38,6 +38,7 @@ namespace org_scilab_modules_scicos
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, double& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -94,6 +95,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, int& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -177,6 +179,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, bool& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -233,6 +236,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, std::string& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -370,6 +374,9 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
         model::Link* o = static_cast<model::Link*>(baseObject);
         switch (p)
         {
+            case NAME:
+                o->getName(v);
+                return true;
             case DESCRIPTION:
                 o->getDescription(v);
                 return true;
@@ -412,6 +419,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, ScicosID& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -505,6 +513,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, model::BaseObject*& v) const
 {
+    v = {};
     ScicosID id;
     if (getObjectProperty(object, p, id))
     {
@@ -520,6 +529,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, std::vector<double>& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -615,6 +625,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, std::vector<int>& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -694,8 +705,9 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
     return false;
 }
 
-bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, std::vector<bool>& /*v*/) const
+bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, std::vector<bool>& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -748,6 +760,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, std::vector<std::string>& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -913,6 +926,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, std::vector<ScicosID>& v) const
 {
+    v = {};
     model::BaseObject* baseObject = object;
     if (baseObject == nullptr)
     {
@@ -989,8 +1003,7 @@ bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, 
 
 bool Model::getObjectProperty(model::BaseObject* object, object_properties_t p, std::vector<model::BaseObject*>& v) const
 {
-    v.clear();
-
+    v = {};
     std::vector<ScicosID> ids;
     if (!getObjectProperty(object, p, ids))
     {

@@ -43,9 +43,9 @@ class Link: public BaseObject
 {
 public:
     Link() : BaseObject(LINK), m_parentDiagram(ScicosID()), m_parentBlock(ScicosID()), m_sourcePort(ScicosID()), m_destinationPort(ScicosID()), m_uid(), m_controlPoints(),
-        m_label(), m_style(), m_thick(2), m_color(1), m_linkKind(regular), m_ssp_annotation() {};
+        m_name(), m_description(), m_label(), m_style(), m_thick(2), m_color(1), m_linkKind(regular), m_ssp_annotation() {};
     Link(const Link& o) : BaseObject(LINK), m_parentDiagram(o.m_parentDiagram), m_parentBlock(o.m_parentBlock), m_sourcePort(o.m_sourcePort), m_destinationPort(o.m_destinationPort),  m_uid(o.m_uid),
-        m_controlPoints(o.m_controlPoints), m_label(o.m_label), m_style(o.m_style), m_thick(o.m_thick), m_color(o.m_color), m_linkKind(o.m_linkKind), m_ssp_annotation(o.m_ssp_annotation) {};
+        m_controlPoints(o.m_controlPoints), m_name(o.m_name), m_description(o.m_description), m_label(o.m_label), m_style(o.m_style), m_thick(o.m_thick), m_color(o.m_color), m_linkKind(o.m_linkKind), m_ssp_annotation(o.m_ssp_annotation) {};
 
 private:
     friend class ::org_scilab_modules_scicos::Model;
@@ -95,6 +95,22 @@ private:
         }
 
         m_controlPoints = v;
+        return SUCCESS;
+    }
+
+    void getName(std::string& data) const
+    {
+        data = m_name;
+    }
+
+    update_status_t setName(const std::string& data)
+    {
+        if (data == m_name)
+        {
+            return NO_CHANGES;
+        }
+
+        m_name = data;
         return SUCCESS;
     }
 
@@ -288,6 +304,7 @@ private:
     // used to store, user-defined control points
     std::vector<double> m_controlPoints;
 
+    std::string m_name;
     std::string m_description;
     ScicosID m_label;
 

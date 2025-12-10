@@ -25,7 +25,6 @@ import org.scilab.modules.xcos.VectorOfDouble;
 import org.scilab.modules.xcos.VectorOfInt;
 import org.scilab.modules.xcos.VectorOfScicosID;
 import org.scilab.modules.xcos.VectorOfString;
-import org.scilab.modules.xcos.block.BasicBlock;
 
 /**
  * Implement a custom model for Xcos

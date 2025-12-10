@@ -2006,13 +2006,7 @@ public class XcosDiagram extends ScilabGraph {
         JavaController controller = new JavaController();
         String[] property = {""};
 
-        if (getKind() == Kind.DIAGRAM) {
-            controller.getObjectProperty(getUID(), getKind(), ObjectProperties.NAME, property);
-        } else { // Kind.BLOCK
-            // use the one-line description
-            controller.getObjectProperty(getUID(), getKind(), ObjectProperties.DESCRIPTION, property);
-        }
-
+        controller.getObjectProperty(getUID(), getKind(), ObjectProperties.NAME, property);
         if (property[0].isEmpty()) {
             return super.getTitle();
         } else {

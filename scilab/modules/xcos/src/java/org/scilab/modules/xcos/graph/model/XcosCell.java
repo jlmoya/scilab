@@ -142,7 +142,7 @@ public class XcosCell extends mxCell {
 
     /**
      * Store the value on the C++ model.
-     * 
+     *
      * @param controller the controller
      * @param value      the value to store
      */
@@ -150,26 +150,24 @@ public class XcosCell extends mxCell {
         if (value == null) {
             return;
         }
+        String name = String.valueOf(value);
 
-        switch (getKind()) {
-            case BLOCK:
-                String name = String.valueOf(value);
-                if (name.isEmpty() || isValidCIdentifier(name)) {
-                    // a block name should be a valid C / Scilab identifier to ease codegeneration
-                    controller.setObjectProperty(getUID(), getKind(), ObjectProperties.NAME, name);
-                }
-                break;
-            case ANNOTATION:
-                controller.setObjectProperty(getUID(), getKind(), ObjectProperties.DESCRIPTION, String.valueOf(value));
-                break;
-            case LINK:
-                controller.setObjectProperty(getUID(), getKind(), ObjectProperties.DESCRIPTION, String.valueOf(value));
-                break;
-            case PORT:
-                controller.setObjectProperty(getUID(), getKind(), ObjectProperties.NAME, String.valueOf(value));
-                break;
-            default:
-                break;
+        if (getKind() == Kind.ANNOTATION)
+        {
+            // an annotation has no name but only text content
+            controller.setObjectProperty(getUID(), getKind(), ObjectProperties.DESCRIPTION, name);
+        }
+        else
+        {
+            if (isValidCIdentifier(name))
+            {
+                // use the value as the variable name on SSP
+                controller.setObjectProperty(getUID(), getKind(), ObjectProperties.NAME, name);
+            }
+            else
+            {
+                controller.setObjectProperty(getUID(), getKind(), ObjectProperties.NAME, "");
+            }
         }
     }
 
@@ -590,7 +588,7 @@ public class XcosCell extends mxCell {
 
     private void insertLabel(XcosCell c) {
         JavaController controller = new JavaController();
-        
+
         controller.setObjectProperty(getUID(), getKind(), ObjectProperties.LABEL, c.getUID());
     }
 
