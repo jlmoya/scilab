@@ -70,7 +70,6 @@ function [cluster_centers, labels] = meanshift(data, bandwidth, opts)
     [N, D] = size(data);
     cluster_centers = [];
     labels = zeros(N, 1);
-    c = [];
 
     if N == 0 then
         return;
@@ -89,7 +88,6 @@ function [cluster_centers, labels] = meanshift(data, bandwidth, opts)
     end
 
     [rows, cols] = size(data);
-    o1 = ones(rows, 1);
 
     [s_points, densities] = %_meanshift(seeds, data, bandwidth, kernel, max_iter);
  
@@ -100,10 +98,9 @@ function [cluster_centers, labels] = meanshift(data, bandwidth, opts)
     b = bandwidth ^ 2;
     while nbpts
         m = sorted_points(1,:);
-        d = distEuclidian(ones(nbpts, 1) * m, sorted_points);
+        d = pdist2(m, sorted_points, "squaredeuclidean");
         idx = find(d <= b);
         cluster_centers = [cluster_centers; m];
-        c = [c; o1 * m];
         sorted_points(idx, :) =[];
         nbpts = size(sorted_points, 1);
     end
@@ -111,15 +108,10 @@ function [cluster_centers, labels] = meanshift(data, bandwidth, opts)
     // label assignment (each point to the nearest center)
     K = size(cluster_centers, 1);
     if K <> 0 then
-        dists = distEuclidian(c, ones(K, 1) .*. data);
-        [m, labels] = min(matrix(dists, N, K), "c")
+        dists = pdist2(data, cluster_centers, "squaredeuclidean");
+        [m, labels] = min(dists, "c")
     end
 
-endfunction
-
-function d = distEuclidian(a, b)
-    x = a - b;
-    d = sum(x.*x, 2);
 endfunction
 
 function seeds = get_bin_seeds(X, bandwidth, min_bin_freq)

@@ -31,8 +31,50 @@ labels = dbscan(X, 1, 2);
 assert_checkequal(size(labels), [9 1]);
 assert_checkequal(labels, [1 1 1 2 2 2 3 3 3]');
 
+// Small dataset for reproducible clustering
+X = [0 0; 0.1 0; 0 0.1; // Cluster 1
+1 1; 1.1 1; 1 1.1; // Cluster 2
+5 5]; // Noise
+
+// Expected 2 clusters + 1 noise
+expected_labels = [1 1 1 2 2 2 -1]';
+
+// metric - euclidean
+[l, core_idx] = dbscan(X, 0.25, 2, "euclidean");
+assert_checkequal(l, expected_labels);
+
+// metric - squared euclidean
+[l, core_idx] = dbscan(X, 0.25, 2, "sqeuclidean");
+assert_checkequal(l, expected_labels);
+
+// metric - cityblock (manhattan)
+[l, core_idx] = dbscan(X, 0.3, 2, "cityblock");
+assert_checkequal(l, expected_labels);
+
+// metric - CHEBYCHEV (maximum norm)
+[l, core_idx] = dbscan(X, 0.12, 2, "chebychev");
+assert_checkequal(l, expected_labels);
+
+// metric - MINKOWSKI with p = 3
+param_p = 3;
+[l, core_idx] = dbscan(X, 0.25, 2, "minkowski", param_p);
+assert_checkequal(l, expected_labels);
+
+// metric - MINKOWSKI with p = 1 → should equal Manhattan
+param_p = 1;
+[l, core_idx] = dbscan(X, 0.3, 2, "minkowski", param_p);
+assert_checkequal(l, expected_labels);
+
+// metric - COSINE DISTANCE
+[l, core_idx] = dbscan(X, 0.1, 2, "cosine");
+assert_checkequal(length(unique(l)), 2);
+
+// metric - CORRELATION DISTANCE
+[l, core_idx] = dbscan(X, 0.15, 2, "correlation");
+assert_checkequal(length(unique(l(l > 0))), 2);
+
 // checkerror
-msg = msprintf(_("%s: Wrong number of input arguments: %d to %d expected.\n"), "dbscan", 1, 3);
+msg = msprintf(_("%s: Wrong number of input arguments: %d to %d expected.\n"), "dbscan", 1, 5);
 assert_checkerror("dbscan()", msg);
 
 msg = msprintf(_("%s: Wrong type for input argument #%d: Must be in ""%s"".\n"), "dbscan", 1, "double");
