@@ -128,19 +128,32 @@ types::String* TypeToString(T* _pI)
     Y* p = _pI->get();
 
     bool bWarning = getWarningMode() == 0;
+    int out_index = 0;
     for (int i = 0; i < len; i++)
     {
-        if (bWarning == false && p[i] > MAX_ASCII)
+        bool valid = 1 <= p[i] && p[i] <= MAX_ASCII;
+        // do not print a warning on the first nor last NUL char
+        bool report_nul = 0 < i && i < len - 1;
+        if (bWarning == false && report_nul && !valid)
         {
+            int v = static_cast<int>(p[i]);
             sciprint(_("WARNING : \n"));
-            sciprint(_("%s: Wrong value for input argument #%d: Must be between %d and %d.\n"), "ascii", 1, 0, MAX_ASCII);
+            sciprint(_("%s: Wrong value for input argument #%d: Contains value %d at index %d, value must be between %d and %d. \n"), "ascii", 1, v, i+1, 1, MAX_ASCII);
             bWarning = true;
         }
 
-        pcText[i] = static_cast<char>(p[i]);
+        if (!valid)
+        {
+            // stop on null character, see discussion on #15101
+            break;
+        }
+        else
+        {
+            pcText[out_index++] = static_cast<char>(p[i]);
+        }
 
     }
-    pcText[len] = '\0';
+    pcText[out_index] = '\0';
 
     pst = to_wide_string(pcText);
     pOut = new types::String(pst);

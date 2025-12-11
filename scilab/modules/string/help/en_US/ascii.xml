@@ -51,6 +51,10 @@
             If <varname>txt</varname> is a matrix of string, <code>ascii(txt)</code> is
             equivalent to <code>ascii(strcat(txt))</code>.
         </para>
+        <para>
+            If the ASCII code is out of range (eg. 0 or greater than 127) a warning
+            is displayed except on <code>ascii([0 ...])</code> or <code>ascii([... 0])</code>.
+        </para>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -67,5 +71,14 @@ ascii([115 99 105 108 97 98])
                 <link linkend="asciimat">asciimat</link>
             </member>
         </simplelist>
+    </refsection>
+    <refsection>
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>A warning is printed to report ASCII NUL char</revremark>
+            </revision>
+        </revhistory>
     </refsection>
 </refentry>
