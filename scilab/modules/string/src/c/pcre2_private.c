@@ -187,6 +187,31 @@ wchar_t* pcre2_split_pattern(const wchar_t* pattern, size_t* pat_len, int* optio
     }
 
     // pattern[0] is used as the separator, it is documented as "/" however some Scilab internal code use '|' or '#'
+    // ensure sed and Perl alternative delimiters works
+    switch (pattern[0])
+    {
+        case L'/':
+            break;
+        case L'|':
+            break;
+        case L'#':
+            break;
+        case L'~':
+            break;
+        case L'_':
+            break;
+        case L'@':
+            break;
+        default:
+            if (formattedErrorMessage)
+            {
+                *formattedErrorMessage = MALLOC(sizeof(wchar_t) * PCRE2_PRIV_MAX_ERROR_MESSAGE_SIZE);
+                wchar_t* msg = to_wide_string(_("pattern should start with the / delimiter, not %c"));
+                os_swprintf(*formattedErrorMessage, PCRE2_PRIV_MAX_ERROR_MESSAGE_SIZE, msg, pattern[0]);
+                FREE(msg);
+            }
+            return NULL;
+    }
 
     // Regex options are trailing flags
     *options = PCRE2_UTF;
