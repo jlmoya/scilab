@@ -19,10 +19,10 @@ extern "C"
 namespace types
 {
 Classdef::Classdef(const std::wstring& name,
-                   std::map<std::wstring, OBJ_ATTR>& properties,
-                   std::map<std::wstring, OBJ_ATTR>& methods,
-                   std::map<std::wstring, std::vector<types::InternalType*>>& enums,
-                   std::vector<std::wstring>& super)
+    const std::map<std::wstring, OBJ_ATTR>& properties,
+    const std::map<std::wstring, OBJ_ATTR>& methods,
+    const std::map<std::wstring, std::vector<types::InternalType*>>& enums,
+    const std::vector<std::wstring>& super)
     : name(name), props(properties), meths(methods), enumerations(enums), superclass(super), initialized(false)
 {
     std::reverse(superclass.begin(), superclass.end());
@@ -349,14 +349,14 @@ void Classdef::internalCall(typed_list& in, optional_list& opt, int _iRetCount, 
         }
     }
 
-    Object* obj = createEmptyInstance()->getAs<Object>();
+    Object* obj = createEmptyInstance();
     obj->IncreaseRef();
     obj->callConstructor(in, opt, _iRetCount, out, e);
     obj->DecreaseRef();
     out.push_back(obj);
 }
 
-InternalType* Classdef::createEmptyInstance()
+Object* Classdef::createEmptyInstance()
 {
     LoadClassdef();
     return new Object(this);
@@ -446,7 +446,7 @@ bool Classdef::extract(const std::wstring& name, InternalType*& out)
         optional_list opt;
         typed_list out1;
 
-        Object* obj = createEmptyInstance()->getAs<Object>();
+        Object* obj = createEmptyInstance();
         obj->IncreaseRef();
         obj->callConstructor(e->second, opt, 0, out1, ast::CommentExp(Location(), new std::wstring(L"")));
         instances[e->first] = obj;
@@ -456,25 +456,6 @@ bool Classdef::extract(const std::wstring& name, InternalType*& out)
     }
     
     return false;
-}
-
-std::wstring Classdef::getPropertyClassdef(const std::wstring& name)
-{
-    auto p = properties.find(name);
-    if (p != properties.end())
-    {
-        return this->name;
-    }
-
-    for (auto&& s : supers)
-    {
-        std::wstring p = std::get<1>(s)->getPropertyClassdef(name);
-        if (p != L"")
-        {
-            return p;
-        }
-    }
-    return L"";
 }
 
 Callable* Classdef::getMethod(const std::wstring& name)

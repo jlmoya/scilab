@@ -81,6 +81,7 @@ public:
 
     void loadClassdef(Classdef* def, int level = 0);
     Classdef* getClassdef() const { return def; }
+    void updateClassdef(Classdef* classdef);
 
     void setParent(Object* p) { parent = p; }
     Object* getParent() { return parent; }
