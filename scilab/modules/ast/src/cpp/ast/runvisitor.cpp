@@ -440,18 +440,11 @@ void RunVisitorT<T>::visitprivate(const FieldExp &e)
         setResult(pReturn);
         if (pValue->isDeletable())
         {
-            if (pValue->isContainer())
-            {
-                // prevent delete of pReturn in case where
-                // extract not return a clone
-                pReturn->IncreaseRef();
-                pValue->killMe();
-                pReturn->DecreaseRef();
-            }
-            else
-            {
-                pValue->killMe();
-            }
+            // prevent delete of pReturn in case where
+            // extract not return a clone
+            pReturn->IncreaseRef();
+            pValue->killMe();
+            pReturn->DecreaseRef();
         }
     }
     else if (pValue->isFieldExtractionOverloadable())
