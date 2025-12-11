@@ -78,7 +78,7 @@ types::Function::ReturnValue sci_properties(types::typed_list& in, int _iRetCoun
         }
         else
         {
-            types::String* pFields = new types::String(props.size(), 1);
+            types::String* pFields = new types::String((int)props.size(), 1);
             for (int i = 0; i < props.size(); ++i)
             {
                 pFields->set(i, props[i].data());

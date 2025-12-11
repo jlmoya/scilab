@@ -62,25 +62,51 @@ Object::~Object()
         prop.second->DecreaseRef();
         prop.second->killMe();
     }
+
+    def->removeObject(this);
 }
 
 void Object::loadClassdef(Classdef* def, int level)
 {
-    for (auto&& prop : def->getProperties())
+    def->addObject(this);
+    auto props = def->getProperties();
+
+    //remove properties from previous classdef that not exist in current classdef
+    std::vector<std::wstring> toRemove;
+    for (auto&& prop : properties)
+    {
+        if (props.find(prop.first) == props.end())
+        {
+            properties[prop.first]->IncreaseRef();
+            properties[prop.first]->killMe();
+            toRemove.push_back(prop.first);
+        }
+    }
+
+    for (auto&& r : toRemove)
+    {
+        properties.erase(r);
+    }
+
+
+    for (auto&& prop :props)
     {
         if (std::get<0>(prop.second).isStatic == false)
         {
-            // remove previous instance from superclass
-            if (properties.find(prop.first) != properties.end())
+            //do not replace variable from previous classdef (override of classdef)
+            if (properties.find(prop.first) == properties.end())
             {
-                properties[prop.first]->DecreaseRef();
-                properties[prop.first]->killMe();
+                properties[prop.first] = def->instantiateProperty(prop.first, std::get<0>(prop.second));
+                properties[prop.first]->IncreaseRef();
             }
-
-            properties[prop.first] = def->instantiateProperty(prop.first, std::get<0>(prop.second));
-            properties[prop.first]->IncreaseRef();
         }
     }
+}
+
+void Object::updateClassdef(Classdef* classdef)
+{
+    def = classdef;
+    loadClassdef(classdef);
 }
 
 bool Object::toString(std::wostringstream& ostr)

@@ -412,6 +412,10 @@ bool Context::addClassdef(types::Classdef* def)
     def->IncreaseRef();
     if (classes.find(s) != classes.end())
     {
+        for (auto&& obj : classes[s]->getObjects())
+        {
+            obj->updateClassdef(def);
+        }
         classes[s]->DecreaseRef();
         classes[s]->killMe();
     }
