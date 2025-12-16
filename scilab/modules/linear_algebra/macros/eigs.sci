@@ -124,14 +124,16 @@ function [d, v] = eigs(varargin)
             if issparse(A) | issparse(B)
                 d = speigs(A, B, nev, sigma, maxiter, tol, ncv, cholB, resid, info);
             else
-                d = %_eigs(A, B, nev, sigma, maxiter, tol, ncv, cholB, resid, info);
+                d = %_eigs(A, B, nev, sigma, maxiter, tol, ncv, cholB, resid, info);    
             end
+            d = update_data(isreal(A), isequal(A, A') , sigma, nev, d);
         case 2
             if issparse(A) | issparse(B)
                 [d, v] = speigs(A, B, nev, sigma, maxiter, tol, ncv, cholB, resid, info);
             else
                 [d, v] = %_eigs(A, B, nev, sigma, maxiter, tol, ncv, cholB, resid, info);
             end
+            [d, v] = update_data(isreal(A), isequal(A, A') , sigma, nev, d, v);
         end
     else
         select rhs
@@ -194,8 +196,10 @@ function [d, v] = eigs(varargin)
         select lhs
         case 1
             d = feigs(Af, Asize, B, nev, sigma, maxiter, tol, ncv, cholB, resid, info, a_real, a_sym);
+            d = update_data(a_real, a_sym, sigma, nev, d);
         case 2
             [d, v] = feigs(Af, Asize, B, nev, sigma, maxiter, tol, ncv, cholB, resid, info, a_real, a_sym);
+            [d, v] = update_data(a_real, a_sym, sigma, nev, d, v);
         end
     end
 endfunction
@@ -273,7 +277,7 @@ function [res_d, res_v] = speigs(A, %_B, nev, which, maxiter, tol, ncv, cholB, r
             error(msprintf(gettext("%s: Wrong type for input argument #%d: A scalar expected.\n"), "eigs", 4));
         end
         sigma = which;
-        which = "LM";
+        which = "sigma";
 
     case 10 then
         [mWHICH, nWHICH] = size(which);
@@ -299,7 +303,7 @@ function [res_d, res_v] = speigs(A, %_B, nev, which, maxiter, tol, ncv, cholB, r
         error(msprintf(gettext("%s: Wrong type for input argument #%d: a real scalar or a string expected.\n"), "eigs", 4));
     end
 
-    if(~Areal | ~Breal)
+    if (~Areal | ~Breal)
         sigma = complex(sigma);
     end
 
@@ -405,7 +409,7 @@ function [res_d, res_v] = speigs(A, %_B, nev, which, maxiter, tol, ncv, cholB, r
     ipntr = zeros(14,1);
 
     //MODE 1, 2, 3, 4, 5
-    if(~strcmp(which,"SM") | sigma <> 0)
+    if which == "sigma" then
         iparam(7) = 3;
         which = "LM";
     end
@@ -542,7 +546,7 @@ function [res_d, res_v] = speigs(A, %_B, nev, which, maxiter, tol, ncv, cholB, r
                 end
             elseif(iparam(7) == 3)
                 if(matB == 0)
-                    if(ido == 2)
+                    if(ido == 2 || ido == -1)
                         workd(ipntr(2):ipntr(2)+nA-1) = workd(ipntr(1):ipntr(1)+nA-1);
                     else
                         workd(ipntr(2):ipntr(2)+nA-1) = umf_lusolve(Lup, workd(ipntr(1):ipntr(1)+nA-1));
@@ -622,7 +626,7 @@ function [res_d, res_v] = speigs(A, %_B, nev, which, maxiter, tol, ncv, cholB, r
                 else
                     res_d = complex(dr, di);
                 end
-                res_d = res_d(1:nev);
+                //res_d = res_d(1:nev);
                 if(rvec)
                     index = find(di~=0);
                     index = index(1:2:$);
@@ -631,7 +635,7 @@ function [res_d, res_v] = speigs(A, %_B, nev, which, maxiter, tol, ncv, cholB, r
                         res_v(:,[index index+1]) = [complex(res_v(:,index),res_v(:,index+1)), complex(res_v(:,index),-res_v(:,index+1))];
                     end
                     res_d = diag(res_d);
-                    res_v = res_v(:,1:nev);
+                    //res_v = res_v(:,1:nev);
                 end
             end
         end
@@ -997,7 +1001,7 @@ function [res_d, res_v] = feigs(A_fun, nA, %_B, nev, which, maxiter, tol, ncv, c
                 end
             elseif(iparam(7) == 3)
                 if(matB == 0)
-                    if(ido == 2)
+                    if(ido == 2 || ido == -1)
                         workd(ipntr(2):ipntr(2)+nA-1) = workd(ipntr(1):ipntr(1)+nA-1);
                     else
                         ierr = execstr("workd(ipntr(2):ipntr(2)+nA-1) = A_fun(workd(ipntr(1):ipntr(1)+nA-1))", "errcatch");
@@ -1091,7 +1095,7 @@ function [res_d, res_v] = feigs(A_fun, nA, %_B, nev, which, maxiter, tol, ncv, c
                 else
                     res_d = complex(dr,di);
                 end
-                res_d = res_d(1:nev);
+                //res_d = res_d(1:nev);
                 if(rvec)
                     index = find(di~=0);
                     index = index(1:2:$);
@@ -1100,7 +1104,7 @@ function [res_d, res_v] = feigs(A_fun, nA, %_B, nev, which, maxiter, tol, ncv, c
                         res_v(:,[index index+1]) = [complex(res_v(:,index), res_v(:,index+1)), complex(res_v(:,index), -res_v(:,index+1))];
                     end
                     res_d = diag(res_d);
-                    res_v = res_v(:,1:nev);
+                    //res_v = res_v(:,1:nev);
                 end
             end
         end
@@ -1127,4 +1131,51 @@ function [res_d, res_v] = feigs(A_fun, nA, %_B, nev, which, maxiter, tol, ncv, c
             res_v = R \ res_v;
         end
     end
+endfunction
+
+function [d, v] = update_data(isrealA, issymA, sigma, nev, d, v)
+
+    dd = d;
+    if nargout == 2 then
+        dd = diag(dd);
+    end
+
+    if isrealA then
+        if issymA then
+            // symetric real matrix
+            if typeof(sigma) == "string" && sigma == "SM" then
+                [g, idx] = gsort(dd, "g", "i");
+                d = dd(idx);
+                if nargout == 2 then
+                    d = diag(d);
+                    v = v(:, idx);
+                end
+            end
+        else
+            if typeof(sigma) == "constant" then
+                sigma = "LM";
+            end
+            select sigma
+            case "LM"
+                [g, idx] = gsort(abs(dd), "g", "i");
+            case "SM"
+                idx = find(abs(dd) <> 0);
+            case "LR"
+                [g, idx] = gsort(real(dd), "g", "i");
+            case "SR"
+                idx = find(real(dd) <> 0);
+            case "LI"
+                [g, idx] = gsort(abs(imag(dd)), "g", "i");
+            case "SI"
+                idx = find(imag(dd) <> 0);
+            end
+            idx = idx($-nev+1:$);
+            d = dd(idx);
+            if nargout == 2 then
+                d = diag(d);
+                v = v(:, idx);
+            end
+        end
+    end
+    
 endfunction

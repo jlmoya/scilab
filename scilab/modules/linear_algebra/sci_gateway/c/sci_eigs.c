@@ -294,6 +294,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
         return 1;
     }
 
+    // which/sigma 
     if (iTypeVarFour == sci_strings)
     {
         int iErr = getAllocatedSingleString(pvApiCtx, piAddressVarFour, &pstData);
@@ -367,7 +368,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
             return 1;
         }
 
-        pstData = "LM";
+        pstData = "SIGMA";
     }
 
     /****************************************
@@ -721,7 +722,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
     }
 
     error = eigs(Areal, Acplx, N, Acomplex, Asym, Breal, Bcplx, Bcomplex, matB, iNEV, SIGMA, pstData, &dblMAXITER,
-                 &dblTOL, dblNCV, RESID, RESIDC, &iINFO, &dblCHOLB, INFO_EUPD, eigenvalue, eigenvector, eigenvalueC, eigenvectorC, RVEC);
+                 &dblTOL, dblNCV, RESID, RESIDC, &iINFO, &dblCHOLB, &INFO_EUPD, eigenvalue, eigenvector, eigenvalueC, eigenvectorC, RVEC);
 
     FREE_AB;
     FREE_PSTDATA;
@@ -821,6 +822,11 @@ int sci_eigs(char *fname, void* pvApiCtx)
             ReturnArguments(pvApiCtx);
             FREE(mat_eigenvalue);
             return 1;
+    }
+
+    if (!Asym && Areal)
+    {
+        iNEV = iNEV + 1;
     }
 
     if (nbOutputArgument(pvApiCtx) <= 1)
