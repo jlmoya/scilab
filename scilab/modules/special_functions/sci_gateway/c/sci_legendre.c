@@ -49,9 +49,9 @@ int sci_legendre(char *fname, void* pvApiCtx)
     *    AUTHOR
     *       Bruno Pincon <Bruno.Pincon@iecn.u-nancy.fr>
     */
-    int it = 0, lc = 0, mM = 0, nM = 0, m1 = 0, m2 = 0, mN = 0, nN = 0;
-    int n1 = 0, n2 = 0, mx = 0, nx = 0, mnx = 0, ms = 0, ns = 0;
-    int M_is_scalar = 0, N_is_scalar = 0, normalized = 0, MNp1 = 0, *ipqa = NULL;
+    int mM = 0, nM = 0, m1 = 0, m2 = 0, mN = 0, nN = 0;
+    int n1 = 0, n2 = 0, mx = 0, nx = 0, mnx = 0;
+    int M_is_scalar = 0, N_is_scalar = 0, normalized = 0, MNp1 = 0;
     double xx = 0., dnu1 = 0.;
     int id = 0, ierror = 0, i = 0, j = 0, nudiff = 0;
 

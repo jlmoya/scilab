@@ -35,7 +35,7 @@ FILEIO_IMPEXP fprintfMatError fprintfMat(char *filename, char *format, char *sep
         
 // Match `format` against %[parameter][flags][width][.precision][length]type
 // output allocated clean format with valid type
-FILEIO_IMPEXP char *fprintfMat_getCleanedFormat(char *format);
+FILEIO_IMPEXP char *fprintfMat_getCleanedFormat(const char *format);
 
 #endif /* __FPRINTFMAT_H__ */
 /*--------------------------------------------------------------------------*/

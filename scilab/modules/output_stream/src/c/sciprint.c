@@ -33,14 +33,7 @@
 #define MAXPRINTF bsiz /* bsiz size of internal chain buf */
 /*--------------------------------------------------------------------------*/
 /* sciprint uses scivprint */
-/* scivprint uses printf_scilab */
-/*--------------------------------------------------------------------------*/
-/**
-* print a string
-* @param[in] buffer to disp
-*/
-static void printf_scilab(const char* buffer);
-static void printf_scilabW(const wchar_t* buffer);
+/* scivprint uses stdlib vsprintf */
 /*--------------------------------------------------------------------------*/
 void sciprint(const char* fmt, ...)
 {
@@ -109,61 +102,5 @@ int scivprint(const char *fmt, va_list args)
     va_end(savedargs);
 
     return count;
-}
-/*--------------------------------------------------------------------------*/
-static void printf_scilabW(const wchar_t* buffer)
-{
-    if (buffer)
-    {
-        char* cBuffer = wide_string_to_UTF8(buffer);
-        if (cBuffer)
-        {
-            if (getScilabMode() == SCILAB_STD)
-            {
-                ConsolePrintf(cBuffer);
-            }
-            else
-            {
-#ifdef _MSC_VER
-                TermPrintf_Windows(cBuffer);
-#else
-                printf("%s", cBuffer);
-#endif
-            }
-
-            diaryWrite(buffer, FALSE);
-
-            FREE(cBuffer);
-            cBuffer = NULL;
-        }
-    }
-}
-/*--------------------------------------------------------------------------*/
-static void printf_scilab(const char *buffer)
-{
-    if (buffer)
-    {
-        wchar_t *wcBuffer = NULL;
-        if (getScilabMode() == SCILAB_STD)
-        {
-            ConsolePrintf(buffer);
-        }
-        else
-        {
-#ifdef _MSC_VER
-            TermPrintf_Windows(buffer);
-#else
-            printf("%s", buffer);
-#endif
-        }
-
-        wcBuffer = to_wide_string(buffer);
-        if (wcBuffer)
-        {
-            diaryWrite(wcBuffer, FALSE);
-            FREE(wcBuffer);
-            wcBuffer = NULL;
-        }
-    }
 }
 /*--------------------------------------------------------------------------*/

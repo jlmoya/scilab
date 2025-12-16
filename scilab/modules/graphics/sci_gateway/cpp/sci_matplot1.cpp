@@ -53,7 +53,6 @@ types::Function::ReturnValue sci_matplot1(types::typed_list &in, int _iRetCount,
 {
     int m1 = 0, n1 = 0, m2 = 0, n2 = 0;
     int plottype = -1;
-    int *dims = NULL;
 
     void* l1 = NULL;
     double* l2 = NULL;

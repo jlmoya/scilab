@@ -316,7 +316,7 @@ types::Function::ReturnValue sci_model2blk(types::typed_list &in, int _iRetCount
                 Scierror(888, _("%s : Undefined Function type\n"), name.data());
                 return types::Function::Error;
         }
-        Block.scsptr = static_cast<void*>(il_sim);
+        Block.scsptr = reinterpret_cast<voidg>(il_sim);
     }
 
     /* check input ports */

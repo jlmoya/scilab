@@ -19,6 +19,7 @@
 #endif
 #endif
 
+typedef void (*voidg) (void);
 
 
 typedef struct
@@ -48,7 +49,7 @@ typedef struct
 
 typedef struct
 {
-    void* ptr;
+    voidg ptr;
 }  SCSPTR_struct;
 
 

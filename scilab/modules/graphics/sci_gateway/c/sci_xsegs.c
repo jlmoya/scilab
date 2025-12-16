@@ -55,8 +55,6 @@ int sci_xsegs(char *fname, void *pvApiCtx)
     int mx = 0, nx = 0, my = 0, ny = 0, mz = 0, nz = 0, mc = 0, nc = 0;
     const double arsize = 0.0 ; // no arrow here
     int iSubwinUID = 0;
-    long long* outindex = NULL;
-    int* piChildrenUID = 0;
 
     CheckInputArgument(pvApiCtx, 2, 4);
     CheckOutputArgument(pvApiCtx, 0, 1);

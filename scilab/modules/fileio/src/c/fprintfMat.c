@@ -220,7 +220,7 @@ static char *replaceInFormat(char *format)
     return newFormat;
 }
 /*--------------------------------------------------------------------------*/
-char *fprintfMat_getCleanedFormat(char *format)
+char *fprintfMat_getCleanedFormat(const char *format)
 {
     char *cleanedFormat = NULL;
     if (format)

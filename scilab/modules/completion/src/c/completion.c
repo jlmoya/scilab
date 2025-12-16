@@ -169,7 +169,6 @@ char **completionOnMacros(const char *somechars, int *sizeArrayReturned)
 /*--------------------------------------------------------------------------*/
 char **completionOnVariables(const char *somechars, int *sizeArrayReturned)
 {
-    int i = 0;
     char **ListWords = NULL;
     char **dictionary = NULL;
     int sizedictionary = 0;

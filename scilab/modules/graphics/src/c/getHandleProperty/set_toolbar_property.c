@@ -63,7 +63,6 @@ int set_toolbar_property(void* _pvCtx, int iObjUID, void* _pvData, int valueType
 int set_toolbar_visible_property(void* _pvCtx, int iObjUID, void* _pvData, int valueType, int nbRow, int nbCol)
 {
     int b = (int)FALSE;
-    BOOL status = FALSE;
 
     b =  tryGetBooleanValueFromStack(_pvData, valueType, nbRow, nbCol, "toolbar_visible");
     if (b == NOT_A_BOOLEAN_VALUE)

@@ -25,7 +25,7 @@ void C2F(zpotrf)(char const uplo[1], int const* pN, doublecomplex* pA, int const
 int iRealCholProduct(double *_pdblReal, int _iLeadDim)
 {
     char cOrient = 'U';
-    int iInfo;
+    int iInfo = 0;
 
     C2F(dpotrf)(&cOrient, &_iLeadDim, _pdblReal, &_iLeadDim, &iInfo);
     if (iInfo > 0)
@@ -51,7 +51,7 @@ int iRealCholProduct(double *_pdblReal, int _iLeadDim)
 int iComplexCholProduct(doublecomplex *_poIn, int _iLeadDim)
 {
     char cOrient = 'U';
-    int iInfo;
+    int iInfo = 0;
 
     C2F(zpotrf)(&cOrient, &_iLeadDim, _poIn, &_iLeadDim, &iInfo);
     if (iInfo > 0)

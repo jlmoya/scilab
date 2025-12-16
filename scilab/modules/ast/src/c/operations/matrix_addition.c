@@ -55,7 +55,6 @@ int iAddScilabPolynomToComplexPoly(double* _pCoef1R, int _iRank1, double* _pCoef
     int iRankMax			= Max(_iRank1, _iRank2);
     int iRank					= 0;
     double* pCoefMaxR	= (_iRank1 > _iRank2) ? _pCoef1R : _pCoef2R;
-    double* pCoefMaxI	= NULL;
 
     for (iRank = 0; iRank < iRankMin ; iRank++)
     {

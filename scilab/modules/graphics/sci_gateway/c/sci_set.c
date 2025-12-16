@@ -56,14 +56,8 @@ int sci_set(char *fname, void *pvApiCtx)
 
     int isMatrixOfString = 0;
 
-    char* pstNewProperty = NULL;
-
     long long hdl;
     int iObjUID = 0;
-    int iType = 0;
-    int* piType = &iType;
-
-    int iSetProperty = 0;
 
     int iRhs = nbInputArgument(pvApiCtx);
     sciErr = getVarAddressFromPosition(pvApiCtx, 1, &piAddr1);
@@ -310,12 +304,10 @@ int sci_set(char *fname, void *pvApiCtx)
 
     for (i = 1 ; i < iRhs ; i = i + 2)
     {
-        int setStatus = 0;
         int* piAddr2 = NULL;
         int* piAddr3 = NULL;
 
         int iPos = i + 1;
-        int isData = 0;
 
         int iRows3 = 0;
         int iCols3 = 0;
@@ -348,12 +340,6 @@ int sci_set(char *fname, void *pvApiCtx)
             Scierror(999, _("%s: Can not read input argument #%d.\n"), fname, iPos + 1);
             freeAllocatedSingleString(pstProperty);
             return 1;
-        }
-
-        if ((pstProperty[0] == 'd' || pstProperty[0] == 'D') && stricmp("data", pstProperty) == 0)
-        {
-            //send to datamodel
-            isData = 1;
         }
 
         if (stricmp(pstProperty, "user_data") == 0 ||
@@ -458,7 +444,7 @@ int sci_set(char *fname, void *pvApiCtx)
             }
         }
 
-        setStatus = callSetProperty(pvApiCtx, iObjUID, pvData, iType3, iRows3, iCols3, pstProperty);
+        callSetProperty(pvApiCtx, iObjUID, pvData, iType3, iRows3, iCols3, pstProperty);
         if (iType3 == sci_strings)
         {
             //free allacted data

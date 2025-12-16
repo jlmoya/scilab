@@ -74,7 +74,6 @@ int sci_ricc(char *fname, void* pvApiCtx)
     int MA = 0, NA = 0;
     int MC = 0, NC = 0;
     int MD = 0, ND = 0;
-    int M1 = 0, N1 = 0;
 
     int iOne = 1, iSize = 0, k = 0;
 

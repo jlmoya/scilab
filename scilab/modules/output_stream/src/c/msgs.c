@@ -22,8 +22,6 @@
 #include "cvstr.h"
 #include "do_error_number.h"
 /*--------------------------------------------------------------------------*/
-static int msg_default(int *n, int *ierr);
-/*--------------------------------------------------------------------------*/
 void Msgs(int n, int ierr)
 {
     C2F(msgs)(&n, &ierr);

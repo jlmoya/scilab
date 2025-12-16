@@ -37,7 +37,7 @@ int sci_remez(char *fname, void *pvApiCtx)
      * -> watch the curious nc's cooking            *
      ************************************************/
 
-    int rows, cols, length, ngrid = 0, nc = 0, error = 0;
+    int rows, cols, ngrid = 0, nc = 0, error = 0;
     double *output = NULL, *argument = NULL;
     float *des = NULL, *grid = NULL, *wt = NULL;
     int *iext;
@@ -58,7 +58,6 @@ int sci_remez(char *fname, void *pvApiCtx)
     getMatrixOfDouble(pvApiCtx, p, &rows, &cols, &argument);
     des = (float *)argument;
     ngrid = cols * rows;
-    length = rows;
     C2F(simple) (&ngrid, argument, des);
 
     // GetRhsVarMatrixDouble(3, &rows, &cols, &argument);

@@ -43,8 +43,6 @@ int sci_xclick(char *fname, void *pvApiCtx)
 
     double* rep = NULL;
     int one = 1, three = 3;
-    int istr = 0;
-    //int iflag = 0;
 
     int mouseButtonNumber = 0;
     char * menuCallback = NULL;

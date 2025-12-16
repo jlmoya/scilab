@@ -235,7 +235,6 @@ void magic_matrix(int _iSize, double *_pData)
 void wilkinson_matrix(int _iSize, double *_pData)
 {
     int iIndex1		= 0;
-    int iIndex2		= 0;
     double dblVal	= 0;
     double N = _iSize;
 
@@ -376,11 +375,6 @@ void cauchy_matrix(int _iSize, double *_pInX, double *_pInXI, double *_pInY, dou
 
 void ris_matrix(int _iSize, double *_pData)
 {
-    int iIndex1		= 0;
-    int iIndex2		= 0;
-    double dblVal	= 0;
-    double N = _iSize;
-
     if (_iSize == 1)
     {
         _pData[0] = 1;

@@ -694,8 +694,6 @@ int SSPResource::updateSystem(model::BaseObject* o)
     else
     {
         // set some properties on connectors after layer loading completed
-        auto& r_parent_layer = *(references.rbegin() + 1);
-        auto parent_it = r_parent_layer.rbegin();
         for (auto it = r_layer.rbegin(); it != r_layer.rend(); it++)
         {
             int ret = set_ioblock_geometry(*it);
@@ -1921,9 +1919,9 @@ int SSPResource::loadElementGeometry(xmlTextReaderPtr reader, model::BaseObject*
 
     // for images
     std::string iconSource;
-    double iconRotation;
-    bool iconFlip;
-    bool fixedAspectRatio;
+    // double iconRotation;
+    // bool iconFlip;
+    // bool fixedAspectRatio;
 
     // iterate on attributes
     for (int rc = xmlTextReaderMoveToFirstAttribute(reader); rc > 0; rc = xmlTextReaderMoveToNextAttribute(reader))
@@ -2934,8 +2932,6 @@ void SSPResource::assignInnerPortIndexes(model::BaseObject* parent)
 
     for (portKind kind : {PORT_IN, PORT_OUT, PORT_EIN, PORT_EOUT})
     {
-        object_properties_t p = property_from_port(kind);
-
         // layer computes its port number from its already decoded children
         for (int i = 0; i < ioBlocks[(portKind)kind].size(); ++i)
         {

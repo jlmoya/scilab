@@ -111,7 +111,6 @@ void Fac3DDecomposer::fillTextureCoordinates(int id, float* buffer, int bufferLe
     int parentFigure = 0;
     int* pparentFigure = &parentFigure;
     int parent = 0;
-    int* pparent = &parent;
     int* colorRange = NULL;
 
     double* cData = NULL;

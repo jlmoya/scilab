@@ -71,7 +71,6 @@ int sci_delete(char *fname, void* pvApiCtx)
     int *piHidden = &iHidden;
 
     int iParentUID = 0;
-    int* piParentUID = &iParentUID;
     int iParentType = -1;
     int *piParentType = &iParentType;
     int iObjType = -1;
@@ -279,7 +278,6 @@ int sci_delete(char *fname, void* pvApiCtx)
             int iChild = 0;
             int iChildCount = 0;
             int *piChildCount = &iChildCount;
-            char **pstChildren = NULL;
             int iChildType = -1;
             int *piChildType = &iChildType;
             int iAxesFound = 0;

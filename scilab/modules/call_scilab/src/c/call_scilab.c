@@ -55,7 +55,6 @@ static void TermPrintf(const char* text)
 
 static ScilabEngineInfo* pGlobalSEI = NULL;
 static __threadId threadIdScilab;
-static char stacktrace[4096] = {'\0'};
 
 /*--------------------------------------------------------------------------*/
 static CALL_SCILAB_ENGINE_STATE csEngineState = CALL_SCILAB_ENGINE_STOP;
@@ -105,7 +104,7 @@ int Call_ScilabOpen(char* SCIpath, BOOL advancedMode, char* ScilabStartup, int S
 {
     __threadKey threadKeyScilab;
     char* InitStringToScilab = NULL;
-    static int iflag = -1, ierr = 0;
+    static int ierr = 0;
 
     if (advancedMode == FALSE)
     {

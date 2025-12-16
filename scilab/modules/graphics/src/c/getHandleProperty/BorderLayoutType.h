@@ -13,7 +13,7 @@
  *
  */
 
-typedef enum BorderLayoutType
+enum BorderLayoutType
 {
     BORDER_BOTTOM = 0,
     BORDER_TOP,

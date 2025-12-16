@@ -778,7 +778,7 @@ static void setAxesSettings(int iAxeUID, scicos_block * block, int index)
     margins[3] = 0.125;
     setGraphicObjectProperty(iAxeUID, __GO_MARGINS__, margins, jni_double_vector, 4);
 
-};
+}
 
 /*****************************************************************************
  *

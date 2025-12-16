@@ -50,7 +50,6 @@ int zexpms2(double *_pdblReal, double *_pdblImg, double *_pdblReturnReal, double
 {
     double dblRcond = 0;
     int iRet        = 0;
-    int iIndex1     = 0;
     int iMax        = 0;
     int iFlag       = 0;
     int iLoop1      = 0;
@@ -58,9 +57,6 @@ int zexpms2(double *_pdblReal, double *_pdblImg, double *_pdblReturnReal, double
     int iOne        = 1;
 
     int iComplex    = 0;
-
-    double dblZero	= 0;
-    double dblOne	= 1;
 
     double dblExp	= 0;
     double dblS		= 0;

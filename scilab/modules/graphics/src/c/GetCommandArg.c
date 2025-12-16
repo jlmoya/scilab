@@ -40,7 +40,7 @@ static char logFlagsCpy[4] ; /* real logflags may use either this or the stack *
 /*--------------------------------------------------------------------------*/
 int get_style_arg(void* _pvCtx, char *fname, int pos, int n1, rhs_opts opts[], int ** style)
 {
-    int m = 0, n = 0, first_opt = FirstOpt(_pvCtx), kopt = 0, un = 1, ix = 0, i = 0, l1 = 0;
+    int m = 0, n = 0, first_opt = FirstOpt(_pvCtx), kopt = 0, ix = 0, i = 0;
 
     if ( pos < first_opt ) /* regular argument  */
     {

@@ -34,7 +34,6 @@
 #include "stringToComplex.h"
 
 static void freeVar(wchar_t*** text, int sizeText, int** lengthText, wchar_t** separator, wchar_t** decimal, wchar_t** conversion, int** iRange);
-static void escapeDoubleQuotes(wchar_t* start, wchar_t* end);
 // =============================================================================
 #define CONVTOSTR L"string"
 #define CONVTODOUBLE L"double"
@@ -43,11 +42,8 @@ int sci_csvTextScan(char* fname, void* pvApiCtx)
 {
     SciErr sciErr;
     int iErr = 0;
-    int i = 0;
 
-    int* piAddressVarOne = NULL;
     int m1 = 0, n1 = 0;
-    int iType1 = 0;
 
     wchar_t** text = NULL;
     int* lengthText = NULL;
@@ -57,17 +53,12 @@ int sci_csvTextScan(char* fname, void* pvApiCtx)
     wchar_t* decimal = NULL;
     wchar_t* conversion = NULL;
 
-    double* dRealValues = NULL;
-
     int* iRange = NULL;
     int haveRange = 0;
 
     wchar_t** pstrValues = NULL;
     double* pDblRealValues = NULL;
     double* pDblImgValues = NULL;
-    csvResult* result = NULL;
-    stringToComplexError ierr = STRINGTOCOMPLEX_ERROR;
-
     char* errorMsg = NULL;
 
     CheckRhs(1, 5);

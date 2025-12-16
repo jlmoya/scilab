@@ -57,7 +57,6 @@ int sci_umf_lusolve(char* fname, void* pvApiCtx)
     int mb      = 0;
     int nb      = 0;
     int it_flag = 0;
-    int i       = 0;
     int j       = 0;
 
     int NoTranspose = 0;

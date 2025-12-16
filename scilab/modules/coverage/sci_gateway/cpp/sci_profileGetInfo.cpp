@@ -47,10 +47,11 @@ bool is_nested_function(const std::map<std::wstring, std::pair<int, int>>& fileD
 {
     if (found != fileDescription.end() && found->first == macro->getFileName())
     {
+        int macroFirstLine = macro->getFirstLine();
         int macroLastLine = macro->getLastLine();
         int functionFirstLine = found->second.first;
         int functionLastLine = found->second.second;
-        return (macro->getFirstLine() > found->second.first) && (macro->getLastLine() < found->second.second);
+        return (macroFirstLine > functionFirstLine) && (macroLastLine < functionLastLine);
     }
     return false;
 }
@@ -102,7 +103,6 @@ void populateFunctionTable(types::Struct* functionTable, const std::map<std::wst
     int i = 0;
     auto& data = functionTable->get(0, 0)->getData();
 
-    const auto& found = fileDescription.lower_bound(macro->getFileName());
     int previousSize = data[0]->getAs<types::String>()->getSize();
 
     types::String* functionName = data[i++]->getAs<types::String>();
@@ -130,7 +130,6 @@ void populateFunctionTable(types::Struct* functionTable, const std::map<std::wst
     for (int i = 0; i < fileName->getSize() - 1; i++)
     {
         bool sameFileName = wcscmp(fileName->get(i), macro->getFileName().c_str()) == 0;
-        auto macroName = macro->getName().c_str();
         bool isNested = (firstLine->get(i) < macro->getFirstLine()) && (lastLine->get(i) > macro->getLastLine());
         if (sameFileName && isNested)
         {

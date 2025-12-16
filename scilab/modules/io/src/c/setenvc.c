@@ -72,7 +72,6 @@ BOOL setenvc(const char *stringIn, const char *valueIn)
 BOOL setenvcW(const wchar_t *wstringIn, const wchar_t *wvalueIn)
 {
     BOOL ret = TRUE;
-    int len_env = 0;
 #ifdef _MSC_VER
     if (SetEnvironmentVariableW(wstringIn, wvalueIn) == 0)
     {

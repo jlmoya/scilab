@@ -32,7 +32,6 @@ int sci_besselh(char *fname, void* pvApiCtx)
     int K = 0;
 
     double* pdbl1   = NULL;
-    double* pdbl2   = NULL;
     double* pdblXR  = NULL;
     double* pdblXI  = NULL;
 

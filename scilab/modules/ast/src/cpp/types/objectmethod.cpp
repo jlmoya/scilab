@@ -18,7 +18,7 @@ extern "C"
 
 namespace types
 {
-ObjectMethod::ObjectMethod(Object* obj, const std::wstring& funcname, Callable* call) : Callable(), object(obj), name(funcname), callable(call)
+ObjectMethod::ObjectMethod(Object* obj, const std::wstring& funcname, Callable* call) : Callable(), object(obj), callable(call), name(funcname)
 {
     obj->IncreaseRef();
 }

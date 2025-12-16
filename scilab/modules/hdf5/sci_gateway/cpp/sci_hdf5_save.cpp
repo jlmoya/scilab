@@ -969,7 +969,7 @@ static hid_t export_macro(hid_t parent, const std::string& name, types::Macro* d
             std::string refname(cfield);
             FREE(cfield);
             // export data in refs group
-            hid_t ref = export_data(refs, refname, val, xfer_plist_id);
+            export_data(refs, refname, val, xfer_plist_id);
         }
 
         if (closeList6(refs) == -1)

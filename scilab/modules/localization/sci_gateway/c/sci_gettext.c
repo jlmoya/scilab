@@ -42,7 +42,6 @@ int sci_gettext(char *fname, void* pvApiCtx)
     int iCurrentRhs = 1;
 
     int iRhs = nbInputArgument(pvApiCtx);
-    int iLhs = nbOutputArgument(pvApiCtx);
 
     CheckInputArgument(pvApiCtx, 1, 2);
     CheckOutputArgument(pvApiCtx, 0, 1);

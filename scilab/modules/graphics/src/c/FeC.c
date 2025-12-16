@@ -88,13 +88,8 @@ int C2F(fec)(double *x, double *y, double *triangles, double *func, int *Nnode, 
     /* Fec code */
     int iSubwinUID = 0;
     int iFecUID = 0;
-    int iParentCompoundUID = 0;
 
-    int cmpt = 0;
     double drect[6];
-
-    BOOL bounds_changed = FALSE;
-    BOOL axes_properties_changed = FALSE;
 
     char textLogFlags[3];
     int clipState = 0;
@@ -177,16 +172,11 @@ int C2F(fec)(double *x, double *y, double *triangles, double *func, int *Nnode, 
 
         if (strflag[1] != '0')
         {
-            bounds_changed = update_specification_bounds(iSubwinUID, drect, 2);
+            update_specification_bounds(iSubwinUID, drect, 2);
         }
     }
 
-    if (firstPlot)
-    {
-        bounds_changed = TRUE;
-    }
-
-    axes_properties_changed = strflag2axes_properties(iSubwinUID, strflag);
+    strflag2axes_properties(iSubwinUID, strflag);
 
     /* just after strflag2axes_properties */
     firstPlot = 0;

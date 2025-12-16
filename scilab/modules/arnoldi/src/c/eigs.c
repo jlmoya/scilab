@@ -94,8 +94,6 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
     // GENERAL VARIABLES
     int i			= 0;
     int j			= 0;
-    int	k			= 0;
-    int	l			= 0;
     int INFO_CHOL	= 0;
     int INFO_LU		= 0;
     int INFO_INV    = 0;

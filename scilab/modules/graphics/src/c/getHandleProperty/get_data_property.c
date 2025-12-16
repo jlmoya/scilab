@@ -134,7 +134,7 @@ void* getmatplotdata(int iObjUID)
             {
                 status = sciReturnMatrixOfUnsignedInteger8((unsigned char*)data, 3 * (numY - 1), numX - 1);
             }
-            else if ((ImageType)imagetype == MATPLOT_GL_RGBA)
+            else if ((ImageType)imagetype == MATPLOT_RGBA)
             {
                 status = sciReturnMatrixOfUnsignedInteger8((unsigned char*)data, 4 * (numY - 1), numX - 1);
             }

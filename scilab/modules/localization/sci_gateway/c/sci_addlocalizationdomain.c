@@ -37,7 +37,6 @@ int sci_addlocalizationdomain(char *fname, void* pvApiCtx)
     char* pstRet = NULL;
 
     int iRhs = nbInputArgument(pvApiCtx);
-    int iLhs = nbOutputArgument(pvApiCtx);
 
 
     CheckInputArgument(pvApiCtx, 2, 2);

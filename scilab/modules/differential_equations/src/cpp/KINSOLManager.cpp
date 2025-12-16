@@ -448,8 +448,8 @@ void KINSOLManager::init()
     
         if (flag < 0 || logger == NULL)
         {
-            sprintf(errorMsg,"In KINSOLManager::init(), SUNLogger_Create error, logger=%d, flag=%d\n",logger, flag);
-            throw ast::InternalError(errorMsg);        
+            sprintf(errorMsg,"In KINSOLManager::init(), SUNLogger_Create error, flag=%d\n", flag);
+            throw ast::InternalError(errorMsg);
         }    
 
         logger->content = (void *)this;
@@ -645,7 +645,6 @@ void KINSOLManager::errHandler(int line, const char *func, const char *file, con
 void KINSOLManager::solve()
 {
     char msg[256];
-    char emptyStr[1]="";
     m_wstrState = L"init";
     SUNLogger logger;
     SUNErrCode sunerr;

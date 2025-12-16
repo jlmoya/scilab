@@ -933,14 +933,12 @@ struct label
             //FIXME: is this DESCRIPTION an identifier ?
         //    get_or_allocate_logger()->log(LOG_ERROR, _("Wrong value for field %s.%s : valid C identifier expected.\n"), "model", "label");
         //    return false;
-            controller.setObjectProperty(adaptee, NAME, name);
         }
         else
         {
-            controller.setObjectProperty(adaptee, NAME, "");
+            name = "";
         }
-
-        return true;
+        return controller.setObjectProperty(adaptee, NAME, name) != FAIL;
     }
 };
 

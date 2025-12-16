@@ -30,11 +30,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#ifdef _MSC_VER
-typedef void (*voidg) ();
-#else
 typedef void (*voidg) (void);
-#endif
 
 /* scicos_block structure definition
 * WARNING: take care that this sructure is
@@ -46,7 +42,7 @@ typedef struct
     int nevprt;     // Binary coding of activation inputs, -1 for internal activation (zero crossings)
     voidg funpt;    // Pointer to the computational function
     int type;       // Type of the computational function, in this case type 4
-    void* scsptr;   // Not used for C programming
+    voidg scsptr;   // Not used for C programming
     int nz;         // Size of discrete-time state vector
     double *z;      // Vector of discrete-time state
     int noz;        // Number of object states

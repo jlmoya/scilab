@@ -37,8 +37,6 @@ int sci_TCL_EvalFile(char *fname, void* pvApiCtx)
     int* piAddrl2 = NULL;
     char* l2 = NULL;
 
-    int m1, n1;
-    int m2, n2;
     int RET;
 
     Tcl_Interp *TCLinterpreter = NULL;

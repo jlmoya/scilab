@@ -34,7 +34,6 @@ int sci_drawlater(char * fname, void* pvApiCtx)
 {
     int iFalse =  (int)FALSE;
     int iParentFigureUID = 0;
-    int* piParentFigureUID = &iParentFigureUID;
     int iSubwinUID = 0;
     int iCurChildUID = 0;
     int iType = -1;

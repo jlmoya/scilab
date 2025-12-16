@@ -30,8 +30,8 @@ extern int *listentry(int *header, int i);
 /*--------------------------------------------------------------------------*/
 int MlistGetFieldNumber(int *ptr, const char *string)
 {
-    int nf = 0, longueur = 0, istart = 0, k = 0, ilocal = 0, retval = 0;
-    int *headerstr = NULL;
+    int retval = 0;
+
     /* allocate a place for the trailing '\0' */
     //    static char str[nlgh + 1];
 

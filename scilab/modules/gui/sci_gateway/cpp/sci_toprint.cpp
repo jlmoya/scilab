@@ -300,10 +300,17 @@ static int sci_toprint_two_rhs(void* _pvCtx, const char *fname)
 
                 if (mnOne > 0)
                 {
-                    sprintf(lines, "%s\n", pStVarOne[0]);
+                    int printedLen = 0;
+                    strncpy(lines+printedLen, pStVarOne[0], lenStVarOne[0] + 1);
+                    printedLen += lenStVarOne[0];
+                    strncpy(lines+printedLen, "\n", 2);
+                    printedLen += 1;
                     for (i = 1; i < mnOne; ++i)
                     {
-                        sprintf(lines, "%s%s\n", lines, pStVarOne[i]);
+                        strncpy(lines+printedLen, pStVarOne[i], lenStVarOne[i] + 1);
+                        printedLen += lenStVarOne[i];
+                        strncpy(lines+printedLen, "\n", 2);
+                        printedLen += 1;
                     }
                 }
                 freeArrayOfString(pStVarOne, mnOne);

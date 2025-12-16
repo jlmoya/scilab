@@ -48,7 +48,7 @@ int sci_xstringb(char *fname, void *pvApiCtx)
     int* piAddrl6 = NULL;
     char* l6 = NULL;
 
-    int m1 = 0, n1 = 0, m2 = 0, n2 = 0, m3 = 0, n3 = 0, m4 = 0, n4 = 0, m5 = 0, n5 = 0, m6 = 0, n6 = 0;
+    int m1 = 0, n1 = 0, m2 = 0, n2 = 0, m3 = 0, n3 = 0, m4 = 0, n4 = 0, m5 = 0, n5 = 0;
     BOOL autoSize = TRUE ;
     double x = 0., y = 0., w = 0., hx = 0.;
     char **Str = NULL;

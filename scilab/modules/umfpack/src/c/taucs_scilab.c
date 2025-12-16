@@ -885,6 +885,8 @@ tree_level(int j,
     }
 }
 
+#ifdef GILBERT_NG_PEYTON_ANALYSIS_SUP
+
 static void
 tree_first_descendant(int j,
                       int isroot,
@@ -913,6 +915,7 @@ tree_first_descendant(int j,
         first_descendant[j] = fd;
     }
 }
+#endif /* GILBERT_NG_PEYTON_ANALYSIS_SUP */
 
 int taucs_ccs_etree(taucs_ccs_matrix* A,
                     int* parent,
@@ -1442,7 +1445,7 @@ recursive_symbolic_elimination(int            j,
 {
     int  i, ip, c, c_sn;
     int  in_previous_sn;
-    int  nnz;
+    int  nnz = 0;
 
     for (c = first_child[j]; c != -1; c = next_child[c])
     {

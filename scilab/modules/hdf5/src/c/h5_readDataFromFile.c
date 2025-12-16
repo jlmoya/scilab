@@ -540,7 +540,6 @@ int readDoubleComplexMatrix(hid_t _iDatasetId, double *_pdblReal, double *_pdblI
     int iComplex = 0;
     int iSize = 1;
     doublecomplex* pData = NULL;
-    int i = 0;
 
     /*define compound dataset*/
     compoundId = H5Tcreate(H5T_COMPOUND, sizeof(doublecomplex));
@@ -698,11 +697,9 @@ int freeStringMatrix(hid_t _iDatasetId, char** _pstData)
 static int readComplexPoly(hid_t _iDatasetId, int *_piNbCoef, double **_pdblReal, double **_pdblImg)
 {
     int iComplex = 0;
-    int iSize = 0;
     int iDims = 0;
     //Get the datatype and its size.
-
-    iSize = getDatasetInfo(_iDatasetId, &iComplex, &iDims, _piNbCoef);
+    getDatasetInfo(_iDatasetId, &iComplex, &iDims, _piNbCoef);
 
     //Allocate space for string data.
     *_pdblReal = (double *)MALLOC(*_piNbCoef * sizeof(double));
@@ -715,10 +712,9 @@ static int readComplexPoly(hid_t _iDatasetId, int *_piNbCoef, double **_pdblReal
 static int readPoly(hid_t _iDatasetId, int *_piNbCoef, double **_pdblData)
 {
     int iComplex = 0;
-    int iSize = 0;
     int iDims = 0;
     //Get the datatype and its size.
-    iSize = getDatasetInfo(_iDatasetId, &iComplex, &iDims, _piNbCoef);
+    getDatasetInfo(_iDatasetId, &iComplex, &iDims, _piNbCoef);
 
     *_pdblData = (double *)MALLOC(*_piNbCoef * sizeof(double));
 
@@ -731,7 +727,6 @@ int readCommonPolyMatrix(hid_t _iDatasetId, char *_pstVarname, int _iComplex, in
     int i = 0;
     hid_t obj = 0;
     char *pstVarName = 0;
-    hsize_t* piDims = NULL;
     hobj_ref_t *pData = NULL;
     herr_t status;
     int iSize = 1;

@@ -129,7 +129,7 @@ types::Function::ReturnValue sci_intg(types::typed_list &in, int _iRetCount, typ
 
         // check function
         double t = pdA;
-        double ret = intg_f(&t);
+        intg_f(&t);
         if (*ierajf_ierror > 0)
         {
             DifferentialEquation::removeDifferentialEquationFunctions();

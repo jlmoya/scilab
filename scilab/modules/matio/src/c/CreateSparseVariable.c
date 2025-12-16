@@ -41,7 +41,7 @@ int CreateSparseVariable(void *pvApiCtx, int iVar, matvar_t *matVariable, int * 
 
     sparseData = (mat_sparse_t*) matVariable->data;
 
-    scilabSparse = (SciSparse*) MALLOC(sizeof(SciSparse));
+    scilabSparse = (SciSparse*) CALLOC(1, sizeof(SciSparse));
     if (scilabSparse == NULL)
     {
         Scierror(999, _("%s: No more memory.\n"), "CreateSparseVariable");
@@ -101,7 +101,7 @@ int CreateSparseVariable(void *pvApiCtx, int iVar, matvar_t *matVariable, int * 
     }
 
     /* Create transpose */
-    scilabSparseT = (SciSparse*) MALLOC(sizeof(SciSparse));
+    scilabSparseT = (SciSparse*) CALLOC(1, sizeof(SciSparse));
     if (scilabSparseT == NULL)
     {
         Scierror(999, _("%s: No more memory.\n"), "CreateSparseVariable");
@@ -187,7 +187,7 @@ int CreateSparseVariable(void *pvApiCtx, int iVar, matvar_t *matVariable, int * 
 
     if (scilabSparseT->it)
     {
-        scilabSparseT->I = (double*) MALLOC(sizeof(double) * scilabSparseT->nel);
+        scilabSparseT->I = (double*) CALLOC(scilabSparseT->nel, sizeof(double));
         if (scilabSparseT->I == NULL)
         {
             Scierror(999, _("%s: No more memory.\n"), "CreateSparseVariable");

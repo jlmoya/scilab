@@ -34,7 +34,7 @@ void costf(int *ind, int *n, double *x, double *f, double *g, int *ti, float *tr
         }
         opFunction->execCostf(ind, n, x, f, g, ti, tr, td);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ind=-1;
     }
@@ -100,7 +100,7 @@ void lsqrfct(int *m, int *n, double *x, double *v, int *iflag)
         }
         opFunction->execLsqrsolveFct(m, n, x, v, iflag);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *iflag=-1;
     }
@@ -126,7 +126,7 @@ void lsqrjac(int *m, int *n, double *x, double *v, double *jac, int *ldjac, int 
             opFunction->execLsqrsolveJac(m, n, x, v, jac, ldjac, iflag);
         }        
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *iflag=-1;
     }        

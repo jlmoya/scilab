@@ -53,7 +53,6 @@ static int ExecuteJob(char* job, char** msg, char** stack, int mode)
     }
 
     double Err_Job = 0.;
-    int m = 0, n = 0;
     ScilabEngineInfo* pSEI = InitScilabEngineInfo();
 
     SetLastJob(job);

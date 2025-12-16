@@ -58005,6 +58005,12 @@ WARNING_CFLAGS="$WARNING_CFLAGS -Werror=implicit"
 WARNING_CFLAGS="$WARNING_CFLAGS -Werror=incompatible-pointer-types"
 if test "$enable_stop_on_warning" = yes; then
     WARNING_CFLAGS="$WARNING_CFLAGS -Werror"
+    # FIXME: swig generated code contains unused static functions
+    WARNING_CFLAGS="$WARNING_CFLAGS -Wno-error=unused-function"
+    # FIXME: swig generated code break strict-aliasing rules
+    WARNING_CFLAGS="$WARNING_CFLAGS -Wno-error=strict-aliasing"
+    # FIXME: sundials arkode.c is calling N_VSpace, which sundials now marked as deprecated
+    WARNING_CFLAGS="$WARNING_CFLAGS -Wno-error=deprecated-declarations"
 
     WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Werror"
     # Scilab indexes are int, standard containers are size_t: do not error when comparing them
@@ -58013,6 +58019,8 @@ if test "$enable_stop_on_warning" = yes; then
     WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Wno-error=int-to-pointer-cast"
     # FIXME: sundials contains unused static functions
     WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Wno-error=unused-function"
+    # FIXME: swig generated code break strict-aliasing rules
+    WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Wno-error=strict-aliasing"
     # FIXME: Eigen/src/Core/AssignEvaluator.h:86:63: error: enum constant in boolean context
     WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Wno-error=int-in-bool-context"
 fi

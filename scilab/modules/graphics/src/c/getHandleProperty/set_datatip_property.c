@@ -316,7 +316,6 @@ int set_tip_detached_property(void* _pvCtx, int iObj, void* _pvData, int valueTy
 {
     BOOL status = FALSE;
     int isDetached = nbRow * nbCol != 0;
-    double* detached_position = NULL;
     if (valueType != sci_matrix)
     {
         Scierror(999, _("Wrong type for '%s' property: Matrix expected.\n"), "detached_position");

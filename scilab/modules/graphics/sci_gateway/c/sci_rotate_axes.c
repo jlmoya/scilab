@@ -44,7 +44,6 @@ int sci_rotate_axes(char *fname, void *pvApiCtx)
     int nbCol = 0;
 
     int iUID = 0;
-    int* piUID = &iUID;
     int iType = -1;
     int *piType = &iType;
 

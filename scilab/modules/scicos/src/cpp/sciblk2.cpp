@@ -134,7 +134,7 @@ void sciblk2(int* flag, int* nevprt, double* t, double xd[], double x[], int* nx
     /***********************
     * Call Scilab function *
     ***********************/
-    types::Callable* pCall = static_cast<types::Callable*>(scsptr);
+    types::Callable* pCall = reinterpret_cast<types::Callable*>(scsptr);
 
     if(!ConfigVariable::increaseRecursion())
         throw ast::RecursionException();

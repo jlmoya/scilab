@@ -367,10 +367,8 @@ types::Function::ReturnValue sci_lsqrsolve(types::typed_list &in, int _iRetCount
     // alloc output data
     pDblV = new types::Double(iM, 1);
 
-    char const* pstrFunc = "fct";
     if (bJac)
     {
-        pstrFunc = "jac";
         C2F(lmder)( lsqrjac, &iM, &iSizeX, pDblX->get(), pDblV->get(), pdblJac, &iM, &dFtol,
                     &dXtol, &dGtol, &iMaxfev, pdblDiag, &iMode, &dFactor, &iNprint, &iInfo,
                     &iNfev, &iNjev, piPvt, pDblQtf, pdblWork1, pdblWork2, pdblWork3, pdblWork4);

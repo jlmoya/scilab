@@ -49,9 +49,7 @@ int sci_swap_handles(char * fname, void *pvApiCtx)
     int * piType_1 = &iType_1;
     int * piType_2 = &iType_2;
     int iParent_1 = 0;
-    int* piParent_1 = &iParent_1;
     int iParent_2 = 0;
-    int* piParent_2 = &iParent_2;
     int iParentType_1 = 0;
     int iParentType_2 = 0;
     int * piParentType_1 = &iParentType_1;

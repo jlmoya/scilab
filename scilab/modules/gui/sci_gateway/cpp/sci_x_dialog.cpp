@@ -39,7 +39,6 @@ int sci_x_dialog(char *fname, void* pvApiCtx)
     int* piInitialValueAddr = NULL;
     char** pcInitialValue = 0;
 
-    int* piTitleAddr = NULL;
     char** pcTitle = 0;
 
     int* piPasswordAddr = NULL;

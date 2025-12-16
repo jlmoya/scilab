@@ -107,7 +107,7 @@ static char *getFileNameFromURL(char *url)
     else
     {
         char bname[PATH_MAX] = {0};
-        strncpy(bname, basename(c->path), sizeof(bname));
+        strncpy(bname, basename(c->path), PATH_MAX - 1);
         filename = (char *)MALLOC((strlen(bname) + 1) * sizeof(char));
         strcpy(filename, bname);
     }

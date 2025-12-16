@@ -287,6 +287,17 @@ SSPResource::Result SSPResource::SystemCanvas::grow_by_xcos_ccordinates(Controll
                 if (y > y2)
                     y2 = y;
             }
+            break;
+        }
+        case DIAGRAM:
+        {
+            // do not grow the viewport
+            break;
+        }
+        case PORT:
+        {
+            // do not grow the viewport
+            break;
         }
     }
 
@@ -324,7 +335,6 @@ SSPResource::Result export_ports_to_dot(Controller& controller, std::ostream& os
 {
     std::string name;
     std::vector<ScicosID> ports;
-    SSPResource::Result status = SSPResource::Result::Ok();
 
     if (!controller.getObjectProperty(block, prop, ports))
     {
@@ -549,8 +559,6 @@ SSPResource::Result export_block_to_dot(Controller& controller, std::ostream& os
 
 SSPResource::Result export_link_to_dot(Controller& controller, std::ostream& ostrm, model::BaseObject* link)
 {
-    SSPResource::Result status = SSPResource::Result::Ok();
-
     ScicosID src;
     if (!controller.getObjectProperty(link, SOURCE_PORT, src))
     {

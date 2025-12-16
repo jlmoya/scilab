@@ -276,7 +276,7 @@ bool Object::setProperty(const std::wstring& prop, InternalType* value)
 
                 properties[prop] = value;
                 value->IncreaseRef();
-                return this;
+                return true;
             }
             else
             {
@@ -306,6 +306,7 @@ bool Object::setProperty(const std::wstring& prop, InternalType* value)
         os_swprintf(szError, 128, _W("Wrong insertion: property '%ls' does not exist.\n").c_str(), prop.data());
         throw ast::InternalError(szError);
     }
+    return false;
 }
 
 Function::ReturnValue Object::callConstructor(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e)
@@ -523,7 +524,7 @@ bool Object::deserialize(InternalType* data)
         optional_list opt;
         auto ret = callMethod(L"loadobj", in, opt, 1, out,ast::CommentExp(Location(), new std::wstring(L"")));
         DecreaseRef();
-        return true;
+        return ret == Function::OK;
     }
 
     return false;

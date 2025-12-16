@@ -626,16 +626,13 @@ static int assembleEigenvectorsInPlace(int iRows, double * eigenvaluesImg, doubl
 
     double ZERO = 0;
     int j;
-    int INCY;
     int totalsize;
 
     totalsize = iRows * iRows;
 
-    INCY = 1;
     /*	C2F(dset)(&totalsize,&ZERO,EVImg,&INCY);*/
     memset(EVImg, 0, totalsize * sizeof(double));
     j = 0;
-    INCY = 1;
     while (j < iRows)
     {
         if (eigenvaluesImg[j] == ZERO)

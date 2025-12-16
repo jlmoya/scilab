@@ -19,12 +19,9 @@
 /*--------------------------------------------------------------------------*/
 int C2F(msgout)(int *io, int *lunit, char *str, long int str_len)
 {
-    static int ierr;
     int i__1 = str_len;
 
     C2F(basout)(io, lunit, str, str_len);
-    ierr = C2F(msgstore)(str, &i__1);
-
-    return 0;
+    return C2F(msgstore)(str, &i__1);
 }
 /*--------------------------------------------------------------------------*/

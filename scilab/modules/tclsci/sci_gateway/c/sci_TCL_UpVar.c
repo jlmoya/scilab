@@ -36,9 +36,6 @@ int sci_TCL_UpVar (char *fname, void* pvApiCtx)
 
     if (checkInputArgumentType(pvApiCtx, 1, sci_strings) && (checkInputArgumentType(pvApiCtx, 2, sci_strings)))
     {
-        int m1 = 0, n1 = 0;
-        int m2 = 0, n2 = 0;
-
         Tcl_Interp *TCLinterpreter = NULL;
         char *sourceName = NULL, *destName = NULL;
         int paramoutINT = 0;
@@ -85,7 +82,6 @@ int sci_TCL_UpVar (char *fname, void* pvApiCtx)
 
         if (nbInputArgument(pvApiCtx) == 3)
         {
-            int m3 = 0, n3 = 0;
             // three arguments given - get a pointer on the slave interpreter
             if (checkInputArgumentType(pvApiCtx, 3, sci_strings))
             {

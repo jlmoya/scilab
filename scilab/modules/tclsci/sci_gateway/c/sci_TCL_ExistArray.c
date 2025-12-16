@@ -30,9 +30,6 @@ int sci_TCL_ExistArray(char *fname, void* pvApiCtx)
     int* piAddrl2 = NULL;
     char* l2 = NULL;
 
-    static int n1, m1;
-    static int n2, m2;
-
     int ValRet = 0;
 
     Tcl_Interp *TCLinterpreter = NULL;

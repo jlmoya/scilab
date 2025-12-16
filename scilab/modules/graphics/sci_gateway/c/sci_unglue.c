@@ -51,7 +51,6 @@ int sci_unglue(char *fname, void *pvApiCtx)
     int iObjectType = -1;
     int *piObjectType = &iObjectType;
     int iParentUID = 0;
-    int* piParentUID = &iParentUID;
     int* piChildrenUID = 0;
     int iChildrenCount = 0;
     int *piChildrenCount = &iChildrenCount;

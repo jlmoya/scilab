@@ -69,7 +69,7 @@ int sciGetNumColors (int iObjUID)
     return -1;
 }
 
-/****************************************** TEXT ******************************
+/****************************************** TEXT ******************************/
 
 /**
 * Checks if a text object is empty #rows*#columns==0 or #rows*#columns==1 and entry is  zero length

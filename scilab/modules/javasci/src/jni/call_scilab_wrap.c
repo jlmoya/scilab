@@ -1350,7 +1350,7 @@ SWIGEXPORT jint JNICALL Java_org_scilab_modules_javasci_Call_1ScilabJNI_putPolyn
   }
   {
     // Convert the double[][] => double *
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0;
     arg4 = (*jenv)->GetArrayLength(jenv, jarg3);
     arg5 = 0;
     arg3 = NULL;
@@ -1425,7 +1425,7 @@ SWIGEXPORT jint JNICALL Java_org_scilab_modules_javasci_Call_1ScilabJNI_putCompl
   }
   {
     // Convert the double[][] => double *
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0;
     arg4 = (*jenv)->GetArrayLength(jenv, jarg3);
     arg5 = 0;
     arg3 = NULL;
@@ -1456,7 +1456,7 @@ SWIGEXPORT jint JNICALL Java_org_scilab_modules_javasci_Call_1ScilabJNI_putCompl
   }
   {
     // Convert the double[][] => double *
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0;
     arg8 = (*jenv)->GetArrayLength(jenv, jarg7);
     arg9 = 0;
     arg7 = NULL;

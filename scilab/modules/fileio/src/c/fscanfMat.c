@@ -71,7 +71,6 @@ fscanfMatResult *fscanfMat(char *filename, char *format, char *separator)
 {
     int fd = 0;
     int f_swap = 0;
-    double res = 0.0;
     int errMOPEN = MOPEN_INVALID_STATUS;
     int i = 0;
     int nbLinesTextDetected = 0;

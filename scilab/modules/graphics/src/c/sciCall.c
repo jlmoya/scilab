@@ -362,10 +362,7 @@ void Objsegs (int * style,
 {
     int iObjUID = 0;
     int iSubwinUID = 0;
-    int type = 0, colored = 0;
-    double *fx = NULL, *fy = NULL; // No fx or fy
-    int typeofchamp = -1; /* no champ here, only segs ; this info is useless */
-
+    
     checkRedrawing();
     iSubwinUID = getCurrentSubWin();
 

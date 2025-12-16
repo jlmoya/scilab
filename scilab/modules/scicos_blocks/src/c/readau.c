@@ -52,7 +52,7 @@ ipar[10:9+lfil] = character codes for file name
 */
 {
     char str[100], type[4];
-    int job = 1, three = 3;
+    int three = 3;
     FILE *fd = NULL;
     int n = 0, k = 0, kmax = 0, m = 0, i = 0, irep = 0, ierr = 0;
     double *buffer = NULL, *record = NULL;

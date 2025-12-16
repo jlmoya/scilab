@@ -544,7 +544,7 @@ int check_ND_symmetry(double *Ar, double *Ai, int ndims, int *dims, int *incr)
     int *dims1 = NULL;
     int *incr1 = NULL;
     int nSub = 0, nSubs2 = 0;
-    int k = 0, step = 0;
+    int step = 0;
 
     if (ndims == 2)
     {
@@ -1027,7 +1027,7 @@ int complete_ND_array(double *Ar, double *Ai, int ndims, int *dims, int *incr)
     int *temp = NULL;
     int *dims1 = NULL;
     int *incr1 = NULL;
-    int nSub = 0, nSubs2 = 0, step = 0, k = 0;
+    int nSub = 0, nSubs2 = 0, step = 0;
 
     if (ndims == 2)
     {

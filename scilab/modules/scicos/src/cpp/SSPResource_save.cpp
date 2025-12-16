@@ -809,7 +809,6 @@ SSPResource::Result SSPResource::ChildrenCategories::load_children(Controller& c
 }
 SSPResource::Result SSPResource::ChildrenCategories::load_ports(Controller& controller, model::BaseObject* o)
 {
-    Result status = Result::Ok();
     int index = 0;
 
     std::vector<known_t> all_known;
@@ -1120,7 +1119,7 @@ SSPResource::Result SSPResource::writeSystem(xmlTextWriterPtr writer, model::Bas
     auto logger = get_or_allocate_logger();
     if (logger->getLevel() <= LOG_DEBUG)
     {
-        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %ld", o->id()));
+        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %lld", o->id()));
         if (status.error())
         {
             return status;
@@ -1345,7 +1344,7 @@ SSPResource::Result SSPResource::writeConnector(xmlTextWriterPtr writer, const C
     auto logger = get_or_allocate_logger();
     if (logger->getLevel() <= LOG_DEBUG)
     {
-        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %ld", port->id()));
+        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %lld", port->id()));
         if (status.error())
         {
             return status;
@@ -1477,7 +1476,6 @@ SSPResource::Result SSPResource::writeType(xmlTextWriterPtr writer, enum portKin
     }
 
     // write rows
-    bool withinAnnotationBlock = false;
     if (rows > 1 || (rows == 1 && columns > 1))
     {
         // SSP supported dimension, use the Dimension element for rows
@@ -1873,7 +1871,7 @@ SSPResource::Result SSPResource::writeComponent(xmlTextWriterPtr writer, model::
     auto logger = get_or_allocate_logger();
     if (logger->getLevel() <= LOG_DEBUG)
     {
-        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %ld", component->id()));
+        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %lld", component->id()));
         if (status.error())
         {
             return status;
@@ -2370,7 +2368,7 @@ SSPResource::Result SSPResource::writeConnection(xmlTextWriterPtr writer, model:
     auto logger = get_or_allocate_logger();
     if (logger->getLevel() <= LOG_DEBUG)
     {
-        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %ld : from ScicosID %ld to ScicosID %ld", connection->id(), sourcePort->id(), destinationPort->id()));
+        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %lld : from ScicosID %lld to ScicosID %lld", connection->id(), sourcePort->id(), destinationPort->id()));
         if (status.error())
         {
             return status;

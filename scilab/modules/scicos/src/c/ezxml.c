@@ -590,7 +590,9 @@ short ezxml_internal_dtd(ezxml_root_t root, char *s, size_t len)
                 }
             }
 
-            while (*(n = (++s) + strspn(s, EZXML_WS)) && *n != '>')
+            ++s;
+            n = s + strspn(s, EZXML_WS);
+            while (*n && *n != '>')
             {
                 if (*(s = n + strcspn(n, EZXML_WS)))
                 {
@@ -663,6 +665,9 @@ short ezxml_internal_dtd(ezxml_root_t root, char *s, size_t len)
                                        : NULL;
                 root->attr[i][j] = n; // attribute name
             }
+            
+            ++s;
+            n = s + strspn(s, EZXML_WS);
         }
         else if (! strncmp(s, "<!--", 4))
         {
@@ -1538,7 +1543,7 @@ ezxml_t ezxml_set_attr(ezxml_t xml, const char *name, char *value)
         strcpy(xml->attr[l + 3] + c, " "); // set name/value as not malloced
         if (xml->flags & EZXML_DUP)
         {
-            xml->attr[l + 3][c] = EZXML_NAMEM;
+            xml->attr[l + 3][c] = (char) EZXML_NAMEM;
         }
     }
     else if (xml->flags & EZXML_DUP)

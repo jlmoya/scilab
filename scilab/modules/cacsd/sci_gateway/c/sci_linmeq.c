@@ -197,7 +197,7 @@ int sci_linmeq(char *fname, void* pvApiCtx)
     // .. Local variables and constant dimension arrays ..
     BOOL PERTRB = FALSE;
     int FLAG[3] = {0, 0, 0};
-    int IB = 0, IP = 0, LDW1 = 0, LDW2 = 0, NIWORK = 0, MXMN = 0, NM = 0, NSCHUR = 0, TASK = 0, TRANS = 0;
+    int IB = 0, IP = 0, LDW1 = 0, LDW2 = 0, NIWORK = 0, MXMN = 0, NSCHUR = 0, TASK = 0, TRANS = 0;
     double TEMP = 0.;
 
     int Mt = 0, Nt = 0;
@@ -944,7 +944,6 @@ int sci_linmeq(char *fname, void* pvApiCtx)
                 SCALE = ONE;
                 if (FLAG[0] == 0)
                 {
-                    int i = 0;
                     C2F(sb04md)(&N, &M, lA, &LDA, lB, &LDB, lC,
                                 &LDC, lU, &LDU, lIWORK, lDWORK, &NDWORK, &INFO);
                 }

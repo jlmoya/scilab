@@ -43,7 +43,6 @@ int sci_TCL_EvalStr(char *fname, void* pvApiCtx)
         char *tclSlave = NULL;
         char **Str = NULL;
         int m1, n1, i, j;
-        int m2, n2;
         char **ReturnArrayString = NULL;
         int k = 0;
         int tclInterpReturnValue;

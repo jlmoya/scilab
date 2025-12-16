@@ -52,7 +52,7 @@ int sci_calendar(char *fname, void* pvApiCtx)
     CheckRhs(2, 2);
     CheckLhs(0, 1);
 
-    sciErr = getVarAddressFromPosition(pvApiCtx, 1, &p1_in_address);
+    getVarAddressFromPosition(pvApiCtx, 1, &p1_in_address);
 
     if (getScalarDouble(pvApiCtx, p1_in_address, &dblReal))
     {
@@ -62,7 +62,7 @@ int sci_calendar(char *fname, void* pvApiCtx)
 
     year = (int)dblReal;
 
-    sciErr = getVarAddressFromPosition(pvApiCtx, 2, &p1_in_address);
+    getVarAddressFromPosition(pvApiCtx, 2, &p1_in_address);
     if (getScalarDouble(pvApiCtx, p1_in_address, &dblReal))
     {
         Scierror(999, _("%s: Wrong type for input arguments: Scalar values expected.\n"), fname);
@@ -122,6 +122,11 @@ int sci_calendar(char *fname, void* pvApiCtx)
         tmpMatrix = NULL;
     }
     sciErr = createMatrixOfDouble(pvApiCtx, Rhs + 1, m1, n1, CALMONTH);
+    if (sciErr.iErr != 0)
+    {
+        Scierror(999, _("%s: Unable to create variable in Scilab memory"), fname);
+        return 1;
+    }
 
 
     LhsVar(1) = Rhs + 1;

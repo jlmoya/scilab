@@ -212,7 +212,6 @@ int sciSetText (int iObjUID, char ** text, int nbRow, int nbCol)
 {
     int dimensions[2];
     BOOL status = FALSE;
-    char** interpreters = NULL;
 
     /* Check if we should load LaTex / MathML Java libraries */
     loadTextRenderingAPI(text, NULL, nbRow*nbCol, 0);

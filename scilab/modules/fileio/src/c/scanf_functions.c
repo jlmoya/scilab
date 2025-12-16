@@ -124,6 +124,10 @@ int Store_Scan(int *nrow, int *ncol, sfdir *type_s, sfdir *type, int *retval, in
             case SF_F:
                 Data[i + nc * rowcount].d = (double)buf[i].f;
                 break;
+            case NONE:
+                err = DO_XXPRINTF_RET_BUG;
+                goto bad1;
+                break;
         }
     } /* rowcount */
     return 0;

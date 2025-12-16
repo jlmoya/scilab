@@ -326,7 +326,7 @@ bool extractblklist(types::TList* t, scicos_block* const Block)
         types::Double* d = pIT->getAs<types::Double>();
         if (d->getSize() > 0)
         {
-            Block->scsptr = (void*)(long long)d->get()[0];
+            Block->scsptr = reinterpret_cast<voidg>(static_cast<long long>(d->get()[0]));
         }
     }
 

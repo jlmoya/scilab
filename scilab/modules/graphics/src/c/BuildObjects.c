@@ -297,13 +297,8 @@ int ConstructSurface(int iParentsubwinUID, sciTypeOf3D typeof3d,
     int *piParentType = &parentType;
     int const surfaceTypes[2] = { __GO_PLOT3D__, __GO_FAC3D__ };
 
-    double *clipRegion = NULL;
-
     int nx = 0, ny = 0, nz = 0, nc = 0;
     int result = 0;
-    int hiddenColor = 0;
-    int *piHiddenColor = &hiddenColor;
-    int surfaceMode = 0;
 
     /* To be modified: the MVC does not allow Plot3d objects with color data yet */
     if (typeof3d == SCI_PLOT3D)
@@ -539,7 +534,6 @@ int ConstructImplot(int iParentsubwinUID, double *pvecx, unsigned char *pvecz, i
 
     int iGrayplotID = 0;
     int result = 0;
-    int dataMapping = 0;
     int gridSize[4];
 
     int parentVisible = 0;
@@ -647,15 +641,6 @@ int ConstructFec(int iParentsubwinUID, double *pvecx, double *pvecy, double *pno
 
     int parentType = -1;
     int *piParentType = &parentType;
-
-    int parentVisible = 0;
-    int *piParentVisible = &parentVisible;
-
-    double *clipRegion = NULL;
-    int clipRegionSet = 0;
-    int *piClipRegionSet = &clipRegionSet;
-    int iClipState = 0;
-    int *piClipState = &iClipState;
 
     getGraphicObjectProperty(iParentsubwinUID, __GO_TYPE__, jni_int, (void **)&piParentType);
 
@@ -830,7 +815,6 @@ int ConstructCompoundSeq(int number)
 int ConstructLight(const char* fname, int iSubwin, int type, BOOL visible, double * position, double * direction, double * ambient_color, double * diffuse_color, double * specular_color)
 {
     int iLight = 0;
-    int * piType = &type;
     int hType = 0;
     int * pihType = &hType;
 

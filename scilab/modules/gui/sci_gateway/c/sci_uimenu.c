@@ -145,7 +145,6 @@ int sci_uimenu(char *fname, void *pvApiCtx)
         int isUserDataProperty = 0;
         int isTooltipStringProperty = 0;
         int iPropertyValuePositionIndex = inputIndex + 1;
-        size_t posStackOrAdr = 0;
 
         /* Read property name */
         if ((!checkInputArgumentType(pvApiCtx, inputIndex, sci_strings)))

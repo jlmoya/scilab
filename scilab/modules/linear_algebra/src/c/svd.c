@@ -152,7 +152,7 @@ int iSvdM(double* pData, int iRows, int iCols, int complexArg, int economy, doub
             /* openmp sections */
             /* openmp section */
             {
-                int unused = complexArg
+                complexArg
                              ? iComputeSandVComplex(_pSV, (doublecomplex*)pVT, iRows, iCols, economy, pS, (doublecomplex*)pV)
                              : iComputeSandVReal(_pSV, pVT, iRows, iCols, economy, pS, pV);
             }

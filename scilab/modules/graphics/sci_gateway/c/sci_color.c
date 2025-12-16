@@ -24,8 +24,6 @@
 int sci_color(char *fname, void* pvApiCtx)
 {
     SciErr sciErr;
-    int iRows = 0;
-    int iCols = 0;
     double pdblColor[3];
 
     int iCurrentFigure = 0;

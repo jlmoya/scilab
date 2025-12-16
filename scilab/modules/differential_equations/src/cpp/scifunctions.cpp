@@ -40,7 +40,7 @@ void ode_f(int* n, double* t, double* y, double* ydot)
 
         deFunction->execOdeF(n, t, y, ydot);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierode_ierror = 1;
     }
@@ -59,7 +59,7 @@ void ode_jac(int *n, double *t, double *y, int *ml, int *mu, double *J, int *nrp
 
         deFunction->execFunctionJac(n, t, y, ml, mu, J, nrpd);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierode_ierror = 1;
     }
@@ -79,7 +79,7 @@ void ode_g(int* n, double* t, double* y, int* ng, double* gout)
 
         deFunction->execFunctionG(n, t, y, ng, gout);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierode_ierror = 1;
     }
@@ -100,7 +100,7 @@ double intg_f(double* x)
 
         return deFunction->execIntgF(x);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierajf_ierror = 1;
         return NAN;
@@ -212,7 +212,7 @@ void impl_f(int* neq, double* t, double* y, double* s, double* r, int* ires)
 
         deFunction->execImplF(neq, t, y, s, r, ires);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierode_ierror = 1;
     }
@@ -231,7 +231,7 @@ void impl_g(int* neq, double* t, double* y, double* ml, double* mu, double* p, i
 
         deFunction->execImplG(neq, t, y, ml, mu, p, nrowp);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierode_ierror = 1;
     }
@@ -250,7 +250,7 @@ void impl_jac(int* neq, double* t, double* y, double* s, double* ml, double* mu,
 
         deFunction->execImplJac(neq, t, y, s, ml, mu, p, nrowp);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierode_ierror = 1;
     }
@@ -271,7 +271,7 @@ void dassl_f(double* t, double* y, double* ydot, double* delta, int* ires, doubl
 
         deFunction->execDasslF(t, y, ydot, delta, ires, rpar, ipar);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierdassl_ierror = 1;
         *ierode_ierror = 1;
@@ -291,7 +291,7 @@ void dassl_jac(double* t, double* y, double* ydot, double* pd, double* cj, doubl
 
         deFunction->execDasslJac(t, y, ydot, pd, cj, rpar, ipar);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierdassl_ierror = 1;
     }
@@ -312,7 +312,7 @@ void dasrt_g(int* ny, double* t, double* y, int* ng, double* gout, double* rpar,
 
         deFunction->execDasrtG(ny, t, y, ng, gout, rpar, ipar);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierdassl_ierror = 1;
         *ierode_ierror = 1;
@@ -349,7 +349,7 @@ void daskr_psol(int* neq, double* t, double* y, double* ydot, double* savr, doub
         deFunction->execDaskrPsol(neq, t, y, ydot, savr, wk, cj, wght, wp, iwp,
                                   b, eplin, ier, rpar, ipar);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierdassl_ierror = 1;
     }
@@ -371,7 +371,7 @@ void daskr_pjac(double* res, int* ires, int* neq, double* t, double* y, double* 
         deFunction->execDaskrPjac(res, ires, neq, t, y, ydot, rewt, savr, wk, h, cj,
                                   wp, iwp, ier, rpar, ipar);
     }
-    catch (const ast::InternalError)
+    catch (const ast::InternalError&)
     {
         *ierdassl_ierror = 1;
     }

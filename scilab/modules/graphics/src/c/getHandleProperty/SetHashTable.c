@@ -46,7 +46,7 @@ int callSetProperty(void* _pvCtx, int iObjUID, void* _pvData, int valueType, int
         {
             Scierror(999, _("Read-only property: %s.\n"), propertyName);                        
         }
-        return NULL;
+        return SET_PROPERTY_ERROR;
     }
     return accessor(_pvCtx, iObjUID, _pvData, valueType, nbRow, nbCol);
 }

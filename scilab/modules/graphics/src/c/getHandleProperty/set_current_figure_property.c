@@ -49,7 +49,6 @@
 int set_current_figure_property(void* _pvCtx, int iObjUID, void* _pvData, int valueType, int nbRow, int nbCol)
 {
     int figNum = -1;
-    int res = -1;
     int iFigureUID = 0;
     int iCurFigUID = 0;
     int iAxesUID = 0;
