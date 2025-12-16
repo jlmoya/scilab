@@ -1016,13 +1016,15 @@ cDEC$ ATTRIBUTES DLLIMPORT:: /ls0001/
      3   mxstep, mxhnil, nhnil, ntrep, nslast, nyh, iowns(6),
      4   icf, ierpj, iersl, jcur, jstart, kflag, l, meth, miter,
      5   maxord, maxcor, msbp, mxncf, n, nq, nst, nfe, nje, nqu
+
 cDEC$ ATTRIBUTES DLLIMPORT:: /lsa001/
       common /lsa001/ tsw, rowns2(20), pdnorm,
      1   insufr, insufi, ixpr, iowns2(2), jtyp, mused, mxordn, mxords
-c
-      data mord(1),mord(2)/12,5/, mxstp0/500/, mxhnl0/10/
+
 cDEC$ ATTRIBUTES DLLIMPORT:: /ierode/
       COMMON /ierode/ierror
+
+      data mord(1),mord(2)/12,5/, mxstp0/500/, mxhnl0/10/
 c-----------------------------------------------------------------------
 c block a.
 c this code block is executed on every call.

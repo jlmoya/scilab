@@ -40,6 +40,7 @@ public :
 CPP_GATEWAY_PROTOTYPE(sci_consolebox);
 CPP_GATEWAY_PROTOTYPE(sci_createGUID);
 CPP_GATEWAY_PROTOTYPE(sci_win64);
+CPP_GATEWAY_PROTOTYPE(sci_winarm64);
 CPP_GATEWAY_PROTOTYPE(sci_winqueryreg);
 CPP_GATEWAY_PROTOTYPE(sci_winopen);
 CPP_GATEWAY_PROTOTYPE(sci_findfileassociation);

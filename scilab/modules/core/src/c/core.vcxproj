@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -8,6 +12,10 @@
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -42,7 +50,18 @@
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
@@ -59,7 +78,13 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -71,12 +96,18 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(SolutionDir)bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(ProjectDir)$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(SolutionDir)bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(ProjectDir)$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -151,6 +182,47 @@ cd ..
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <ModuleDefinitionFile>core.def</ModuleDefinitionFile>
+    </Link>
+    <PreBuildEvent>
+      <Command>lib /DEF:"$(ProjectDir)functions_manager_Import.def" /SUBSYSTEM:WINDOWS /MACHINE:$(Platform) /OUT:"$(ProjectDir)functions_manager.lib" 1&gt;NUL 2&gt;NUL
+</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <Midl>
+      <TargetEnvironment>ARM64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;../../includes;../../../../libs/GetWindowsVersion;../../../../libs/intl;../../../../libs/pcre2/include;../../../../libs/libxml2;../../../../libs/libxml2/libxml;../../../mexlib/includes;../../../api_scilab/includes;../../../string/includes;../../../functions/includes;../../../dynamic_link/includes;../../../action_binding/includes;../../../output_stream/includes;../../../fileio/includes;../../../elementary_functions/includes;../../../tclsci/includes;../../../localization/includes;../../../tclsci/includes/tcltk;../../../windows_tools/includes;../../../windows_tools/src/c;../../../windows_tools/src/c/scilab_windows;../../../call_scilab/includes;../../../call_scilab/src/c;../../../graphics/includes;../../../io/includes;../../../console/includes;../../../preferences/includes;../../../history_manager/includes;../../../threads/includes;../../../external_objects/includes;../../../functions_manager/includes;../../../jvm/includes;../../../gui/includes;../../../ast/includes/types;../../../ast/includes/ast;../../../ast/includes/exps;../../../ast/includes/operations;../../../ast/includes/symbol;../../../ast/includes/system_env;../../../ast/includes/parse;../../../fftw/includes;../../../ui_data/includes</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;_DEBUG;_WINDOWS;_USRDLL;CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <PreLinkEvent>
+      <Message>Make dependencies</Message>
+      <Command>setlocal EnableDelayedExpansion
+set PWD=!cd!
+cd ..
+set LIST_OBJ=
+for /f %%f in ('dir /A-D /S /B *.c *.cpp *.f') do if exist %PWD%\$(ConfigurationName)\%%~nf.obj set LIST_OBJ=!LIST_OBJ! %PWD%\$(ConfigurationName)\%%~nf.obj
+cd %PWD%\$(ConfigurationName)
+"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ%
+copy $(ProjectName).def+..\core_export.def ..\$(ProjectName).def &gt;nul
+del *.def &gt;nul
+cd ..
+</Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalDependencies>functions_manager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)bin\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>$(SolutionDir)bin\$(ProjectName).lib</ImportLibrary>
+      <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <ModuleDefinitionFile>core.def</ModuleDefinitionFile>
+      <TargetMachine>MachineARM64</TargetMachine>
     </Link>
     <PreBuildEvent>
       <Command>lib /DEF:"$(ProjectDir)functions_manager_Import.def" /SUBSYSTEM:WINDOWS /MACHINE:$(Platform) /OUT:"$(ProjectDir)functions_manager.lib" 1&gt;NUL 2&gt;NUL
@@ -246,6 +318,52 @@ cd ..
 </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <Midl>
+      <TargetEnvironment>ARM64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>.;../../includes;../../../../libs/GetWindowsVersion;../../../../libs/intl;../../../../libs/pcre2/include;../../../../libs/libxml2;../../../../libs/libxml2/libxml;../../../mexlib/includes;../../../api_scilab/includes;../../../string/includes;../../../functions/includes;../../../dynamic_link/includes;../../../action_binding/includes;../../../output_stream/includes;../../../fileio/includes;../../../elementary_functions/includes;../../../tclsci/includes;../../../localization/includes;../../../tclsci/includes/tcltk;../../../windows_tools/includes;../../../windows_tools/src/c;../../../windows_tools/src/c/scilab_windows;../../../call_scilab/includes;../../../call_scilab/src/c;../../../graphics/includes;../../../io/includes;../../../console/includes;../../../preferences/includes;../../../history_manager/includes;../../../threads/includes;../../../external_objects/includes;../../../functions_manager/includes;../../../jvm/includes;../../../gui/includes;../../../ast/includes/types;../../../ast/includes/ast;../../../ast/includes/exps;../../../ast/includes/operations;../../../ast/includes/symbol;../../../ast/includes/system_env;../../../ast/includes/parse;../../../fftw/includes;../../../ui_data/includes</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;NDEBUG;_WINDOWS;_USRDLL;CORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <PreLinkEvent>
+      <Message>Make dependencies</Message>
+      <Command>setlocal EnableDelayedExpansion
+set PWD=!cd!
+cd ..
+set LIST_OBJ=
+for /f %%f in ('dir /A-D /S /B *.c *.cpp *.f') do if exist %PWD%\$(ConfigurationName)\%%~nf.obj set LIST_OBJ=!LIST_OBJ! %PWD%\$(ConfigurationName)\%%~nf.obj
+cd %PWD%\$(ConfigurationName)
+"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ%
+copy $(ProjectName).def+..\core_export.def ..\$(ProjectName).def &gt;nul
+del *.def &gt;nul
+cd ..
+</Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalDependencies>functions_manager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)bin\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImportLibrary>$(SolutionDir)bin\$(ProjectName).lib</ImportLibrary>
+      <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <ModuleDefinitionFile>core.def</ModuleDefinitionFile>
+      <TargetMachine>MachineARM64</TargetMachine>
+    </Link>
+    <PreBuildEvent>
+      <Command>lib /DEF:"$(ProjectDir)functions_manager_Import.def" /SUBSYSTEM:WINDOWS /MACHINE:$(Platform) /OUT:"$(ProjectDir)functions_manager.lib" 1&gt;NUL 2&gt;NUL
+</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\cpp\banner.cpp" />
     <ClCompile Include="..\cpp\getfunctionsname.cpp" />
@@ -304,8 +422,10 @@ cd ..
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">true</ExcludedFromBuild>
     </CustomBuildStep>
     <None Include="..\..\Makefile.am" />
     <None Include="core.def" />

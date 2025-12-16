@@ -16,7 +16,7 @@
 ;
 ;-------------------------------------------------------------------------------
 
-#ifndef SCILAB_X64
+#if !defined(SCILAB_X64) && !defined(SCILAB_ARM64)
 Filename: {app}\bin\SetupAtlas.exe; Description:{cm:DescriptionConfigureAtlas}; Flags: nowait; Components: {#COMPN_ATLAS_CPU_LIBRARY}
 #endif
 Filename: {code:getExecNameForDesktop}; Description: {cm:DescriptionLaunchScilab}; WorkingDir: "{userdocs}"; Flags: nowait postinstall skipifsilent;

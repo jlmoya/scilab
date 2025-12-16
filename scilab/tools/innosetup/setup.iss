@@ -21,6 +21,10 @@
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 #endif
+#ifdef SCILAB_ARM64
+ArchitecturesAllowed=arm64
+ArchitecturesInstallIn64BitMode=arm64
+#endif
 ; Detect if scilab runs
 AppMutex={#ScilabBaseDirectory}
 ;
@@ -43,7 +47,7 @@ SetupIconFile=tools\innosetup\scilab.ico
 LicenseFile=COPYING
 ChangesAssociations=yes
 WindowVisible=false
-AppPublisher=Dassault Systèmes
+AppPublisher=Dassault Systmes
 AppPublisherURL=https://www.scilab.org/
 AppSupportURL=https://gitlab.com/scilab/scilab/-/issues
 AppUpdatesURL=https://www.scilab.org/download/
@@ -54,11 +58,11 @@ WizardSmallImageFile=tools\innosetup\ScilabLogoSmall.bmp
 BackColor=clGray
 BackColor2=clBlack
 BackColorDirection=lefttoright
-AppCopyright=Dassault Systèmes - Copyright © {#CurrentYear}
+AppCopyright=Dassault Systmes - Copyright  {#CurrentYear}
 UninstallDisplayIcon={app}\bin\wscilex.exe
 SolidCompression=true
 VersionInfoVersion={#ScilabVersion}
-VersionInfoCompany=Dassault Systèmes
+VersionInfoCompany=Dassault Systmes
 ; minimum right to install Scilab
 PrivilegesRequired=none
 

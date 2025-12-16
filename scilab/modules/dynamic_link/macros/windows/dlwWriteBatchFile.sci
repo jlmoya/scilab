@@ -28,7 +28,11 @@ function filename = dlwWriteBatchFile(cmd)
         cmdenv = "@call """ + getIntelInformation() + "\setvars.bat"" " + "intel64" + sprintf(" vs%d", VSVer);
     else
         //call vcvarsall from Visual Studio to setup env (C/C++)
-        cmdenv = "@call """ + dlwGetVisualStudioPath() + "\VC\Auxiliary\Build\vcvarsall.bat"" " + "x64";
+        if winarm64() then
+            cmdenv = "@call """ + dlwGetVisualStudioPath() + "\VC\Auxiliary\Build\vcvarsall.bat"" " + "arm64";
+        else
+            cmdenv = "@call """ + dlwGetVisualStudioPath() + "\VC\Auxiliary\Build\vcvarsall.bat"" " + "x64";
+        end
     end
 
     scibuild = [ ...

@@ -36,6 +36,21 @@ DIFFERENTIAL_EQUATIONS_IMPEXP struct
 
 DIFFERENTIAL_EQUATIONS_IMPEXP struct
 {
+    int iero;
+} C2F(iercol);
+
+DIFFERENTIAL_EQUATIONS_IMPEXP struct
+{
+    int grd;
+} C2F(grd2);
+
+DIFFERENTIAL_EQUATIONS_IMPEXP struct
+{
+    int grd;
+} C2F(grd1);
+
+DIFFERENTIAL_EQUATIONS_IMPEXP struct
+{
     int itfeval;
 } C2F(fevaltyp);
 

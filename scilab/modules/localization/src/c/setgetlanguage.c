@@ -423,8 +423,26 @@ BOOL exportLocaleToSystem(const wchar_t *locale)
         wchar_t env[MAX_PATH];
         os_swprintf(env, MAX_PATH, L"%ls=%ls", EXPORTENVLOCALESTR, locale);
         pstr = wide_string_to_UTF8(env);
+#ifdef _M_ARM64
+        _putenv(pstr);
+        FREE(pstr);
+        // Initialize gettext state manually for ARM64
+        char exePath[MAX_PATH];
+        GetModuleFileNameA(NULL, exePath, MAX_PATH);
+        char* lastSlash = strrchr(exePath, '\\');
+        if (lastSlash)
+        {
+            *lastSlash = '\0';
+        }
+        char localePath[MAX_PATH];
+        snprintf(localePath, MAX_PATH, "%s\\..\\locale", exePath);
+        bindtextdomain("scilab", localePath);
+        bind_textdomain_codeset("scilab", "UTF-8");
+        textdomain("scilab");
+#else
         gettext_putenv(pstr);
         FREE(pstr);
+#endif
     }
 #endif
 #else

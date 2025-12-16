@@ -38,7 +38,12 @@
 #pragma comment(lib,"../../bin/tcl85.lib")
 #pragma comment(lib,"../../bin/tk85.lib")
 #else
+#if TCL_MINOR_VERSION == 6
+#pragma comment(lib,"../../bin/tcl86.lib")
+#pragma comment(lib,"../../bin/tk86.lib")
+#else
 #pragma message ("TCL/TK 8.4 or more required.")
+#endif
 #endif
 #endif
 #else

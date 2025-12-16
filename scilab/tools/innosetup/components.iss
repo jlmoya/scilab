@@ -38,11 +38,15 @@ Name: {#COMPN_JRE}; Description: {cm:DescriptionJVM} ({#javaUsed}); Types: full;
 #define COMPN_ATLAS_CPU_LIBRARY 'CPU_OPTIMIZATION\ATLAS'
 #define COMPN_MKL_CPU_LIBRARY 'CPU_OPTIMIZATION\MKL'
 Name: {#COMPN_CPU_OPTIMIZATION}; Description:{cm:DescriptionCPUOptimization}; Types: full custom cli; Flags: fixed;
+#ifdef SCILAB_ARM64 
+Name: {#COMPN_REF_CPU_LIBRARY}; Description:{cm:DescriptionRefBlasLibrary}; Flags: exclusive
+#else
+Name: {#COMPN_REF_CPU_LIBRARY}; Description:{cm:DescriptionRefBlasLibrary}; Flags: exclusive
 Name: {#COMPN_MKL_CPU_LIBRARY}; Description:{cm:DescriptionMKLLibrary}; Flags: exclusive
-#ifndef SCILAB_X64
+#if !defined(SCILAB_X64) && !defined(SCILAB_ARM64)
 Name: {#COMPN_ATLAS_CPU_LIBRARY}; Description:{cm:DescriptionATLASLibrary}; Flags: exclusive
 #endif
-Name: {#COMPN_REF_CPU_LIBRARY}; Description:{cm:DescriptionRefBlasLibrary}; Flags: exclusive
+#endif
 
 #define COMPN_FFTW 'FFTW'
 #define COMPN_FFTW_REF_LIBRARY 'FFTW\REF_LIBRARY'
@@ -60,8 +64,10 @@ Name: {#COMPN_MODULES_MANAGER}; Description: {cm:DescriptionModulesManager}; Typ
 Name: {#COMPN_TOOLBOX_SKELETON}; Description: {cm:DescriptionTlbxSkeleton}; Types: full;
 Name: {#COMPN_TESTS}; Description: {cm:DescriptionTests}; Types: full; ExtraDiskSpaceRequired: {#TESTS_SIZE}
 
+#ifndef SCILAB_ARM64
 #define COMPN_MPI 'MPI'
 Name: {#COMPN_MPI}; Description: {cm:DescriptionMPI}; Types: full;
+#endif
 
 #define COMPN_TCLSCI 'tclsci'
 Name: {#COMPN_TCLSCI}; Description: {cm:DescriptionTclTK}; Types: full;

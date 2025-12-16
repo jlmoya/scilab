@@ -85,10 +85,12 @@ function ret = Update_Script_Innosetup(ISSFilenameSource)
         return;
     end;
 
-    if win64() then
-        [SciFile, err] = FindAndReplace(SciFile, "#define ScilabBaseFilename", "#define ScilabBaseFilename """+ scilab_version_vstr + "_x64""");
+    if winarm64() then
+        [SciFile, err] = FindAndReplace(SciFile, "#define ScilabBaseFilename", "#define ScilabBaseFilename """ + scilab_version_vstr + "_arm64""");
+    elseif win64() then
+        [SciFile, err] = FindAndReplace(SciFile, "#define ScilabBaseFilename", "#define ScilabBaseFilename """ + scilab_version_vstr + "_x64""");
     else
-        [SciFile, err] = FindAndReplace(SciFile, "#define ScilabBaseFilename", "#define ScilabBaseFilename """+ scilab_version_vstr + """");
+        [SciFile, err] = FindAndReplace(SciFile, "#define ScilabBaseFilename", "#define ScilabBaseFilename """ + scilab_version_vstr + """");
     end
     if err == %F then
         ret = err;
@@ -101,7 +103,7 @@ function ret = Update_Script_Innosetup(ISSFilenameSource)
         return;
     end;
 
-    if win64() then
+    if winarm64() | win64() then
         [SciFile, err] = FindAndReplace(SciFile, "#define ScilabName", "#define ScilabName """ + scilab_version_vstr + " (64-bit)""");
     else
         [SciFile, err] = FindAndReplace(SciFile,"#define ScilabName","#define ScilabName """+ scilab_version_vstr +"""");
@@ -153,8 +155,15 @@ function ret = Update_Script_Innosetup(ISSFilenameSource)
         end
     end
 
-    if win64() then
-        [SciFile,err] = FindAndReplace(SciFile,";#define SCILAB_X64","#define SCILAB_X64");
+    if winarm64() then
+        [SciFile, err] = FindAndReplace(SciFile, ";#define SCILAB_X64", "#define SCILAB_ARM64");
+        if err == %F then
+            ret = err;
+            return;
+        end;
+
+    elseif win64() then
+        [SciFile, err] = FindAndReplace(SciFile, ";#define SCILAB_X64", "#define SCILAB_X64");
         if err == %F then
             ret = err;
             return;

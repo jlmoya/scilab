@@ -58,8 +58,8 @@ static void SetScilabVariables(void);
 /*--------------------------------------------------------------------------*/
 /**
 * Les variables d'environnements SCI, and some others
-* sont définies directement dans scilab
-* scilex peut donc etre executé seul
+* sont dfinies directement dans scilab
+* scilex peut donc etre execut seul
 */
 
 /*--------------------------------------------------------------------------*/
@@ -199,6 +199,11 @@ void Set_SOME_ENVIRONMENTS_VARIABLES_FOR_SCILAB(void)
     /* WIN64 variable Environment */
 #ifdef _WIN64
     _putenv ("WIN64=OK");
+#endif
+
+    /* WINARM64 variable Environment */
+#ifdef _M_ARM64
+    _putenv ("WINARM64=OK");
 #endif
 
     if ( GetSystemMetrics(SM_REMOTESESSION) )

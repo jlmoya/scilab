@@ -33,10 +33,14 @@
 #ifdef _ALPHA_
 #define e_magic_number IMAGE_FILE_MACHINE_ALPHA
 #else
+#ifdef _M_ARM64
+#define e_magic_number IMAGE_FILE_MACHINE_ARM64
+#else
 #ifdef _WIN64
 #define e_magic_number	IMAGE_FILE_MACHINE_AMD64
 #else
 #define e_magic_number IMAGE_FILE_MACHINE_I386
+#endif
 #endif
 #endif
 

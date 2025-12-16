@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -8,6 +12,10 @@
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -38,7 +46,15 @@
     <ConfigurationType>Makefile</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <ConfigurationType>Makefile</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
@@ -54,7 +70,13 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -84,18 +106,34 @@ javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/jav
 IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
 javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/javadoc" -sourcepath "$(SolutionDir)modules/javasci/src/java;$(SolutionDir)modules/types/src/java;$(SolutionDir)modules/localization/src/java" org.scilab.modules.javasci org.scilab.modules.types -exclude org.scilab.modules.localization
 </NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">set PATH=;$(SCILAB_JDK64)\bin;%PATH%;
+IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
+javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/javadoc" -sourcepath "$(SolutionDir)modules/javasci/src/java;$(SolutionDir)modules/types/src/java;$(SolutionDir)modules/localization/src/java" org.scilab.modules.javasci org.scilab.modules.types -exclude org.scilab.modules.localization
+</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">set PATH=;$(SCILAB_JDK64)\bin;%PATH%;
+IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
+javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/javadoc" -sourcepath "$(SolutionDir)modules/javasci/src/java;$(SolutionDir)modules/types/src/java;$(SolutionDir)modules/localization/src/java" org.scilab.modules.javasci org.scilab.modules.types -exclude org.scilab.modules.localization
+</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">set PATH=;$(SCILAB_JDK64)\bin;%PATH%;
 IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
 javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/javadoc" -sourcepath "$(SolutionDir)modules/javasci/src/java;$(SolutionDir)modules/types/src/java;$(SolutionDir)modules/localization/src/java" org.scilab.modules.javasci org.scilab.modules.types -exclude org.scilab.modules.localization
 </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
 </NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
+</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)$(Configuration)\</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">set PATH=;$(SCILAB_JDK32)\bin;%PATH%;
@@ -120,18 +158,34 @@ javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/jav
 IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
 javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/javadoc" -sourcepath "$(SolutionDir)modules/javasci/src/java;$(SolutionDir)modules/types/src/java;$(SolutionDir)modules/localization/src/java" org.scilab.modules.javasci org.scilab.modules.types -exclude org.scilab.modules.localization
 </NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">set PATH=;$(SCILAB_JDK64)\bin;%PATH%;
+IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
+javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/javadoc" -sourcepath "$(SolutionDir)modules/javasci/src/java;$(SolutionDir)modules/types/src/java;$(SolutionDir)modules/localization/src/java" org.scilab.modules.javasci org.scilab.modules.types -exclude org.scilab.modules.localization
+</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64'">set PATH=;$(SCILAB_JDK64)\bin;%PATH%;
+IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
+javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/javadoc" -sourcepath "$(SolutionDir)modules/javasci/src/java;$(SolutionDir)modules/types/src/java;$(SolutionDir)modules/localization/src/java" org.scilab.modules.javasci org.scilab.modules.types -exclude org.scilab.modules.localization
+</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">set PATH=;$(SCILAB_JDK64)\bin;%PATH%;
 IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
 javadoc -noindex -nohelp -nonavbar -notree -d "$(SolutionDir)modules/javasci/javadoc" -sourcepath "$(SolutionDir)modules/javasci/src/java;$(SolutionDir)modules/types/src/java;$(SolutionDir)modules/localization/src/java" org.scilab.modules.javasci org.scilab.modules.types -exclude org.scilab.modules.localization
 </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64'">IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
 </NMakeCleanCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">IF EXIST "$(SolutionDir)modules\javasci\javadoc" rmdir /s /q "$(SolutionDir)modules\javasci\javadoc"
+</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>

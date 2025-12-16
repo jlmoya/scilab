@@ -42,8 +42,13 @@ Source: modules\{#TCLSCI}\macros\cleanmacros.bat; DestDir: {app}\modules\{#TCLSC
 Source: modules\{#TCLSCI}\tcl\*.*; DestDir: {app}\modules\{#TCLSCI}\tcl; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;
 Source: bin\tclsci.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+#ifdef SCILAB_ARM64
+Source: bin\tcl86.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\tk86.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+#else
 Source: bin\tcl85.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
 Source: bin\tk85.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+#endif
 ;
 Source: modules\{#TCLSCI}\tests\*.*; DestDir: {app}\modules\{#TCLSCI}\tests; Flags: recursesubdirs; Components:  {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;

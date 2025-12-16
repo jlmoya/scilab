@@ -23,7 +23,11 @@
 ;
 Source: bin\{#ARNOLDI}.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB};
 ;
+#if defined(SCILAB_ARM64)
+Source: bin\libarpack.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+#else
 Source: bin\Arpack.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+#endif
 ;
 Source: modules\{#ARNOLDI}\license.txt; DestDir: {app}\modules\{#ARNOLDI}; Components: {#COMPN_SCILAB}
 ;

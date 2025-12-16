@@ -148,10 +148,12 @@ begin
         ModulesXmlFileLines[i] := '<module name="modules_manager" activate="yes"/>'; i := i + 1;
     end;
 
+#ifndef SCILAB_ARM64
     if IsComponentSelected( ExpandConstant('{#COMPN_MPI}') ) then
     begin
         ModulesXmlFileLines[i] := '<module name="mpi" activate="yes"/>'; i := i + 1;
     end;
+#endif
 
     ModulesXmlFileLines[i] := '</modules>'; i := i + 1;
 
