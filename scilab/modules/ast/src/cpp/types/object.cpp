@@ -167,7 +167,7 @@ bool Object::extract(const std::wstring& name, InternalType*& out)
         {
             out = getProperty(name);
             //static
-            /* 
+            /*
             if (out == nullptr)
             {
                 out = def->getStatic(name);
@@ -375,7 +375,7 @@ Function::ReturnValue Object::callMethod(const std::wstring& method, typed_list&
 
     return callMethod(method, call, in, opt, _iRetCount, out, e);
 }
- 
+
 Function::ReturnValue Object::callMethod(const std::wstring& method, Callable* call, typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e)
 {
     if (call == nullptr)
@@ -519,9 +519,11 @@ bool Object::deserialize(InternalType* data)
     {
         typed_list in, out;
         IncreaseRef();
-        in.push_back(this);
+        data->IncreaseRef();
+        in.push_back(data);
         optional_list opt;
         auto ret = callMethod(L"loadobj", in, opt, 1, out,ast::CommentExp(Location(), new std::wstring(L"")));
+        data->DecreaseRef();
         DecreaseRef();
         return true;
     }
