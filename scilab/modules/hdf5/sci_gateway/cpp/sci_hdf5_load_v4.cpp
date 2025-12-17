@@ -1298,11 +1298,13 @@ static types::InternalType* import_object(hid_t dataset)
         types::Object* obj = def->createEmptyInstance();
         if (obj->deserialize(data))
         {
+            delete it;
             return obj;
         }
 
         obj->killMe();
     }
 
+    delete it;
     return nullptr;
 }
