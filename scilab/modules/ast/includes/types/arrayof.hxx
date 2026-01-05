@@ -524,7 +524,6 @@ public :
         if (_iDim == 1)
         {
             //we have reach 2-dim matrix
-
             if (m_iDims > 2 && m_bPrintFromStart)
             {
                 //only print for dims > 2
@@ -561,14 +560,14 @@ public :
                     return false;
                 }
             }
-
-            //reset state to print from state
-            m_iSavePrintState = 0;
-            m_iRows1PrintState = 0;
-            m_iCols1PrintState = 0;
-            m_iRows2PrintState = 0;
-            m_iCols2PrintState = 0;
         }
+
+        //reset state to print from state
+        m_iSavePrintState = 0;
+        m_iRows1PrintState = 0;
+        m_iCols1PrintState = 0;
+        m_iRows2PrintState = 0;
+        m_iCols2PrintState = 0;
 
         return true;
     }
