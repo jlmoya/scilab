@@ -29,7 +29,35 @@ ObjectMethod::~ObjectMethod()
     object->killMe();
 }
 
+bool ObjectMethod::invoke(typed_list & in, optional_list & opt, int _iRetCount, typed_list & out, const ast::Exp & e)
+{
+    if (callable->isFunction())
+    {
+        symbol::Context::getInstance()->scope_object_begin(object, callable->getName());
+        Callable::ReturnValue ret = callable->call(in, opt, _iRetCount, out);
+        symbol::Context::getInstance()->scope_object_end();
+        return ret;
+    }
+
+    setParent();
+    return callable->invoke(in, opt, _iRetCount, out, e);
+}
+
 Callable::ReturnValue ObjectMethod::call(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out)
+{
+    if (callable->isFunction())
+    {
+        symbol::Context::getInstance()->scope_object_begin(object, callable->getName());
+        Callable::ReturnValue ret = callable->call(in, opt, _iRetCount, out);
+        symbol::Context::getInstance()->scope_object_end();
+        return ret;
+    }
+
+    setParent();
+    return callable->call(in, opt, _iRetCount, out);
+}
+
+void ObjectMethod::setParent()
 {
     if (callable->isMacro())
     {
@@ -39,14 +67,5 @@ Callable::ReturnValue ObjectMethod::call(typed_list& in, optional_list& opt, int
     {
         callable->getAs<MacroFile>()->getMacro()->setParent(object);
     }
-    else if (callable->isFunction())
-    {
-        symbol::Context::getInstance()->scope_object_begin(object, callable->getName());
-        Callable::ReturnValue ret = callable->call(in, opt, _iRetCount, out);
-        symbol::Context::getInstance()->scope_object_end();
-        return ret;
-    }
-
-    return callable->call(in, opt, _iRetCount, out);
 }
 } // namespace type

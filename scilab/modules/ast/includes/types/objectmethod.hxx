@@ -56,6 +56,10 @@ public:
     }
 
     virtual ReturnValue call(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out);
+    virtual bool invoke(typed_list & in, optional_list & opt, int _iRetCount, typed_list & out, const ast::Exp & e);
+
+private:
+    void setParent();
 
 private:
     Object* object;
