@@ -15,9 +15,11 @@ function out = %datetime_4_datetime(dt1, dt2)
         dt2 {mustBeEqualDimsOrScalar(dt1, dt2)}
     end
 
+    idx = isnat(dt1) | isnat(dt2);
     date_bool1 = dt1.date < dt2.date; //exclution
     date_bool2 = dt1.date > dt2.date; //equal date
     time_bool = dt1.time >= dt2.time; //time compare
 
     out = ~date_bool1 & (date_bool2 | time_bool);
+    out(idx) = %f;
 endfunction
