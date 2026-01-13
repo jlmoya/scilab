@@ -119,7 +119,7 @@ dollar_id         ([$]([a-zA-Z_0-9!#?$]|{utf})+)
 percent_id        ([%]([a-zA-Z_0-9!#?$]|{utf})*)
 id                ({alpha_id}|{dollar_id}|{percent_id})
 
-beginid           ^{spaces}*/{id}{spaces}([^ \t\v\f(=<>~@,;]|([~@]{spaces}*[^=]?))
+beginid           ^{spaces}*{id}{spaces}([^ \t\v\f(=<>~@,;]|([~@]{spaces}*[^=]?))
 
 newline           ("\r"|"\n"|"\r\n")
 blankline         {spaces}+{newline}
@@ -501,6 +501,19 @@ sharp             "#"
 <INITIAL>{beginid} {
   DEBUG("yy_push_state(BEGINID)");
   yy_push_state(BEGINID);
+
+  // rewind enforced to avoid "Variable trailing context rule"
+  // skip {spaces} and go to the beginning of {id}
+  int skipped_prefix_space = 0;
+  while (yytext[skipped_prefix_space] == ' ' ||
+         yytext[skipped_prefix_space] == '\t' ||
+         yytext[skipped_prefix_space] == '\v' ||
+         yytext[skipped_prefix_space] == '\f')
+  {
+    skipped_prefix_space++;
+  }
+  yyless(skipped_prefix_space);
+  yylloc.last_column = skipped_prefix_space + 1;
 }
 
 <BEGINID>{id}                        {
