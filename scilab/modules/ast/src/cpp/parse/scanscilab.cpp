@@ -2999,6 +2999,13 @@ case YY_STATE_EOF(CLASSDEC):
     }
 	YY_BREAK
 
+case YY_STATE_EOF(INITIAL):
+{
+      scan_reset();
+      return YYEOF;
+    }
+	YY_BREAK
+
 case 98:
 YY_RULE_SETUP
 {
@@ -3784,7 +3791,6 @@ case 158:
 YY_RULE_SETUP
 ECHO;
 	YY_BREAK
-case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(BEGINID):
 	yyterminate();
 
