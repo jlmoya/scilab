@@ -858,6 +858,13 @@ sharp             "#"
     }
 }
 
+<INITIAL>
+ {
+    <<EOF>> {
+      scan_reset();
+      return YYEOF;
+    }
+}
 
 <MATRIX>
  {
@@ -1527,7 +1534,6 @@ sharp             "#"
     yyerror(str);
     return scan_throw(FLEX_ERROR);
 }
-
 }
 
 %%
