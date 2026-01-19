@@ -135,7 +135,8 @@ windows_build_prereq:
 windows_cleanup:
   stage: prebuild
   tags: [x64_windows, shell, scilab]
-  needs: []
+  needs:
+    - windows_set_env
   script:
     - echo "Starting Windows Common path cleanup..."
     - powershell -NoProfile -ExecutionPolicy Bypass -File ".gitlab-ci\cleanup_windows.ps1"

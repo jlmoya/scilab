@@ -106,8 +106,9 @@ if (Test-Path -Path "$Path" -PathType Container) {
             Write-Output "Warning: Failed to run uninstaller $($exe.FullName): $($_.Exception.Message)"
         }
     }
-    Remove-Item -Path $Path -Recurse -Force -ErrorAction Stop
-    Write-Output "Removed: $Path"
+    # commented out as the log dir might be needed on other builds
+    # Remove-Item -Path $Path -Recurse -Force -ErrorAction Stop
+    Write-Output "Not Removed: $Path"
 }
 Write-Output ""
 
