@@ -36,7 +36,7 @@ bool ObjectMethod::invoke(typed_list & in, optional_list & opt, int _iRetCount, 
         symbol::Context::getInstance()->scope_object_begin(object, callable->getName());
         Callable::ReturnValue ret = callable->call(in, opt, _iRetCount, out);
         symbol::Context::getInstance()->scope_object_end();
-        return ret;
+        return ret != Callable::ReturnValue::Error;
     }
 
     setParent();
