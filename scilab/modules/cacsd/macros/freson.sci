@@ -51,7 +51,7 @@ function fr = freson(h)
         hh = h*horner(h, -%s);
         hh = clean(hh, 0, %eps);    // https://gitlab.com/scilab/scilab/-/issues/15368
         r = roots(derivat(hh).num)
-        k = find(imag(r)>0 & abs(real(r)) < %eps*abs(r));
+        k = find(imag(r)>0 & abs(real(r)) < 100*%eps*abs(r));
         fr = imag(r(k))/(2*%pi)
     else
         if dt=="d" | dt==[] then dt = 1; end
