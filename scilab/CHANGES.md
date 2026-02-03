@@ -1,7 +1,7 @@
-Welcome to Scilab 2026.0.0
+Welcome to Scilab 2026.0.1
 ==========================
 
-This file details the changes between Scilab 2026.0.0 (this version) and the previous 2025.1.0 stable release.
+This file details the changes between Scilab 2026.0.1 (this version) and the previous 2025.1.0 stable release.
 
 For changelogs of earlier releases, please see [Scilab 2025.1.0][1].
 
@@ -195,3 +195,13 @@ Issue Fixes
 - [#17478](https://gitlab.com/scilab/scilab/-/issues/17478): Compilation failed after SUNDIALS update.
 - [#17479](https://gitlab.com/scilab/scilab/-/issues/17479): Inline documentation failed for non existing language documentation.
 - [#17482](https://gitlab.com/scilab/scilab/-/issues/17482): Legend processing was broken if not all curves were given a string.
+
+### Scilab 2026.0.1
+
+* [#17488](https://gitlab.com/scilab/scilab/-/issues/17488): An interrupted string could freeze Scilab parser.
+* [#17493](https://gitlab.com/scilab/scilab/-/issues/17493): Inserting an empty matrix in last index of an empty matrix crashed Scilab.
+* [#17496](https://gitlab.com/scilab/scilab/-/issues/17496): Scilab crashed when using an object variable whose class has been updated after initial creation.
+* [#17502](https://gitlab.com/scilab/scilab/-/issues/17502): Accessing a property of an object could lead to a crash.
+* [#17508](https://gitlab.com/scilab/scilab/-/issues/17508): In `classdef` context, breakpoints were ignored in every methods except the creator one.
+* [#17511](https://gitlab.com/scilab/scilab/-/issues/17511): Parser state was not always reset after missing parenthesis error.
+* [#17513](https://gitlab.com/scilab/scilab/-/issues/17513): Input argument received by `loadobj()` was `this` instead of loaded structure.
