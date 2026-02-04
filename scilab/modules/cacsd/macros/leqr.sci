@@ -56,7 +56,7 @@ function [k,x,err]=leqr(p12,vx)
         ws=z*w(:,1:n);
         x12=ws(1:n,:);
         if rcond(x12) < 1.d-6 then
-            warning(msprintf(gettext("%s: Bad conditionning.\n"),"leqr"));
+            warning(msprintf(gettext("%s: Bad conditioning.\n"),"leqr"));
         end
         k=ws(2*n+1:2*n+nu,:)/x12;
         x=ws(n+1:2*n,:)/x12;
@@ -84,7 +84,7 @@ function [k,x,err]=leqr(p12,vx)
         ws=z*w(:,1:n);
         x12=ws(1:n,:);
         if rcond(x12) <1.d-6 then
-            warning(msprintf(gettext("%s: Bad conditionning.\n"),"leqr"));
+            warning(msprintf(gettext("%s: Bad conditioning.\n"),"leqr"));
             k=[];w=[];
             return;
         end

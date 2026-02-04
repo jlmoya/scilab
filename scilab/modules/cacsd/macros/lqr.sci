@@ -87,7 +87,7 @@ function [K,X]=lqr(P12,Q,R,S)
         phi12=wsmall(n+1:$,1:n);
         X=phi12/X12;
         if rcond(X12)< 1.d-5 then
-            warning(msprintf(gettext("%s: Bad conditionning.\n"),"lqr"));
+            warning(msprintf(gettext("%s: Bad conditioning.\n"),"lqr"));
         end
 
         K=-Ri*(B2'*X+S);
@@ -101,7 +101,7 @@ function [K,X]=lqr(P12,Q,R,S)
         //X12=ws(1:n,:);
         //phi12=ws(n+1:2*n,:);
         //u12=ws(2*n+1:2*n+nu,:);
-        //if rcond(X12)< 1.d-5 then warning('lqr: bad conditionning!');end
+        //if rcond(X12)< 1.d-5 then warning('lqr: bad conditioning!');end
         //K=u12/X12;
         //X=phi12/X12;
     elseif P12.dt == "d" | type(P12.dt)==1
@@ -130,7 +130,7 @@ function [K,X]=lqr(P12,Q,R,S)
 
         X12=wsmall(1:n,1:n);phi12=wsmall(n+1:$,1:n);X=phi12/X12;
         if rcond(X12)< 1.d-5 then
-            warning(msprintf(gettext("%s: Bad conditionning.\n"),"lqr"));
+            warning(msprintf(gettext("%s: Bad conditioning.\n"),"lqr"));
         end
 
         K=-pinv(B2'*X*B2+R)*(B2'*X*A+S);
@@ -143,7 +143,7 @@ function [K,X]=lqr(P12,Q,R,S)
         //X12=ws(1:n,:);
         //phi12=ws(n+1:2*n,:);
         //u12=ws(2*n+1:2*n+nu,:);
-        //if rcond(X12)< 1.d-5 then warning('lqr: bad conditionning!');end
+        //if rcond(X12)< 1.d-5 then warning('lqr: bad conditioning!');end
         //K=u12/X12;
         //X=phi12/X12;
     end
