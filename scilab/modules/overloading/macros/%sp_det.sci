@@ -46,19 +46,23 @@ function [res1, res2] = %sp_det(A)
         e10 = real(tmp)/log(10) + log10(abs(cos(phase)))
         res1 = int(e10)
         res2 = 10^(real(tmp)/log(10)-res1) * exp(%i*phase)
-        while abs(res2) >= 10
-            res2 = res2 / 10
-            res1 = res1 + 1
-        end
-        while abs(res2)<1 & abs(res2)<>0
+    end
+
+    if res1 == -%inf then
+        [res1, res2] = (0,0)
+        return
+    end
+
+    if lhs == 2 then   
+        while abs(res2) < 1 & abs(res2) <> 0
             res2 = res2 * 10
             res1 = res1 - 1
         end
-    end
-    if res1 == -%inf
-        [res1, res2] = (0,0)
-    end
-    if lhs == 1 then
+        while abs(res2) >= 10
+            res2 = res2 / 10
+            res1 = res1 + 1
+        end    
+    else
         res1 = res2 * 10^res1
     end
 endfunction
