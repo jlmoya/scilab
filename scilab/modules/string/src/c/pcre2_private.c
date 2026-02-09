@@ -204,6 +204,8 @@ wchar_t* pcre2_split_pattern(const wchar_t* pattern, size_t* pat_len, int* optio
             break;
         case L'=':
             break;
+        case L'!':
+            break;
         default:
             if (formattedErrorMessage)
             {
