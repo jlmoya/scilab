@@ -5,12 +5,15 @@
 //  This file is distributed under the same license as the Scilab package.
 // =============================================================================
 
+// <-- CLI SHELL MODE -->
+// <-- INTERACTIVE TEST -->
+// <-- WINDOWS ONLY -->
+// <-- NO CHECK REF -->
+
 // Please be sure that current scilab is associated with .sce & .sci extensions
-//
-if getos() == 'Windows' then
-  r = findfileassociation('.sce');
-  if r == [] then pause,end
-  
-  r = findfileassociation('.sci');
-  if r == [] then pause,end
-end  
+
+r = findfileassociation(".sce");
+assert_checktrue(convstr(part(r, ($-10):$), "l") == "wscilex.exe");
+
+r = findfileassociation(".sci");
+assert_checktrue(convstr(part(r, ($-10):$), "l") == "wscilex.exe");

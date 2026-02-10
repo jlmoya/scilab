@@ -27,6 +27,9 @@
         <para>
             <literal>findfileassociation('A file name extension, such as .txt')</literal> Searches for and retrieves a file association-related string from the registry.
         </para>
+        <note>
+            Since Windows 8, returned value ends with <literal>OpenWith.exe</literal> if extension is unknown. Returned value was <literal>[]</literal> for older versions.
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>
