@@ -46,10 +46,22 @@ BOOL CloseTCLsci(void);
 void setTkStarted(BOOL isTkSet);
 
 /**
- * Set if tcl/tk is started or not
+ * Get tcl/tk status
  * @return says if TCL/TK is started (TRUE) or not (FALSE)
  */
 BOOL isTkStarted(void);
+
+/**
+ * Set if Scilab tcl loop is alive or not
+ * @param isTclSet if enable or not
+ */
+void setTclLoopAlive(BOOL isTclLoopAlive);
+
+/**
+ * Get Scilab tcl loop status
+ * @return says if Scilab TCL loop is alive (TRUE) or not (FALSE)
+ */
+BOOL isTclLoopAlive(void);
 
 #endif /* __INITTCLTK__ */
 /*--------------------------------------------------------------------------*/

@@ -37,7 +37,12 @@
 #include "PATH_MAX.h"
 #include "getshortpathname.h"
 /*--------------------------------------------------------------------------*/
-BOOL TK_Started = FALSE;
+static BOOL TK_Started = FALSE;
+__threadLock TK_StartedLock;
+
+static BOOL TCLLoopAlive = FALSE;
+__threadLock TCLLoopAliveLock;
+
 /* The tclLoop thread Id, declared in TCL_Command.c
 in order to wait it ends when closing Scilab */
 extern __threadId TclThread;
@@ -270,6 +275,11 @@ static void *DaemonOpenTCLsci(void* in)
 int OpenTCLsci(void)
 {
     __threadKey key;
+
+    __InitLock(&TCLLoopAliveLock);
+    __InitLock(&TK_StartedLock);
+    setTkStarted(TRUE);
+
     __InitSignalLock(&InterpReadyLock);
     __InitSignal(&InterpReady);
     // Open TCL interpreter in a separated thread.
@@ -334,11 +344,37 @@ static char *GetSciPath(void)
 /*--------------------------------------------------------------------------*/
 BOOL isTkStarted(void)
 {
-    return TK_Started;
+    BOOL value = FALSE;
+    __Lock(&TK_StartedLock);
+    value = TK_Started;
+    __UnLock(&TK_StartedLock);
+    return value;
 }
 /*--------------------------------------------------------------------------*/
 void setTkStarted(BOOL isTkSet)
 {
+    __Lock(&TK_StartedLock);
+    if (isTkSet)
+    {
+        setTclLoopAlive(TRUE); // Set this value before TK_Started to be sure sleepAndSignal() will start immediately 
+    }
     TK_Started = isTkSet;
+    __UnLock(&TK_StartedLock);
+}
+/*--------------------------------------------------------------------------*/
+BOOL isTclLoopAlive(void)
+{
+    BOOL value = FALSE;
+    __Lock(&TCLLoopAliveLock);
+    value = TCLLoopAlive;
+    __UnLock(&TCLLoopAliveLock);
+    return value;
+}
+/*--------------------------------------------------------------------------*/
+void setTclLoopAlive(BOOL isTclLoopAlive)
+{
+    __Lock(&TCLLoopAliveLock);
+    TCLLoopAlive = isTclLoopAlive;
+    __UnLock(&TCLLoopAliveLock);
 }
 /*--------------------------------------------------------------------------*/
