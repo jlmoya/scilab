@@ -118,6 +118,7 @@ public class BrowseVar {
                 return TLIST_ICON;
             case 17:
             case 18:
+            case 21:
                 return MLIST_ICON;
             case 19:
                 return CELL_ICON;
@@ -172,7 +173,8 @@ public class BrowseVar {
             }
 
             if ((dataTypes[i] == ScilabTypeEnum.sci_tlist.swigValue()
-                    || dataTypes[i] == ScilabTypeEnum.sci_mlist.swigValue())
+                    || dataTypes[i] == ScilabTypeEnum.sci_mlist.swigValue()
+                    || dataTypes[i] == ScilabTypeEnum.sci_object.swigValue())
                     && !variableListTypes[i].equals("")) {
                 // Improve the display of the list
                 String varType = ScilabTypeEnumDescription.getListTypeDescription(variableListTypes[i]);

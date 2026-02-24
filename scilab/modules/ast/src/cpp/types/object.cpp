@@ -532,4 +532,23 @@ bool Object::deserialize(InternalType* data)
     return false;
 }
 
+bool Object::getMemory(long long* _piSize, long long* _piSizePlusType)
+{
+    *_piSize = 0;
+    *_piSizePlusType = 0;
+    for (auto&& p : getProperties())
+    {
+        long long s1;
+        long long s2;
+        if (p.second)
+        {
+            p.second->getMemory(&s1, &s2);
+            *_piSize += s1;
+            *_piSizePlusType += s2;
+        }
+    }
+
+    return true;
+}
+
 } // namespace types

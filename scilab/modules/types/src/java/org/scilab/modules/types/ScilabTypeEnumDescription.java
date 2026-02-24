@@ -52,6 +52,8 @@ public class ScilabTypeEnumDescription {
                     return Messages.gettext("Mlist");
                 case sci_struct:
                     return Messages.gettext("Struct");
+                case sci_object:
+                    return Messages.gettext("Object");
                 case sci_cell:
                     return Messages.gettext("Cell");
                 case sci_pointer:

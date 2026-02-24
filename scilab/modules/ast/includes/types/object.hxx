@@ -92,6 +92,8 @@ public:
 
     InternalType* serialize();
     bool deserialize(InternalType* data);
+
+    bool getMemory(long long* _piSize, long long* _piSizePlusType);
   private:
     Classdef* def;
     std::map<std::wstring, InternalType*> properties;
