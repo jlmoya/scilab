@@ -20,11 +20,11 @@ function vs = getVsWhereInformation()
     //-requires     MSBuild, version be able to build C++
 
     cmd = sprintf("""%s"" -products * -requires Microsoft.Component.MSBuild -prerelease -format json -utf8", fullfile(SCI, "tools", "vswhere", "vswhere"));
-    [_, x] = host(cmd);
+    [_, x] = host(cmd); // x will be equal to "[]" character string if no product found
     vs = [];
     vers = [];
+    x = fromJSON(x);
     if isempty(x) == %f then
-        x = fromJSON(x);
         for i = 1:length(x)
             xi = x(i);
             vs($+1) = struct("name", xi.displayName, "version", strtod(xi.catalog.productLineVersion), "path", xi.installationPath);
