@@ -47,9 +47,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 
 import org.scilab.modules.gui.SwingViewObject;
 import org.scilab.modules.gui.events.callback.CommonCallBack;
@@ -62,6 +60,7 @@ import org.scilab.modules.gui.widget.Widget;
 import org.scilab.modules.gui.SwingViewWidget;
 import org.scilab.modules.gui.utils.PositionConverter;
 import org.scilab.modules.gui.utils.ScilabBrowser;
+import org.scilab.modules.gui.utils.ScilabSwingUtilities;
 import org.scilab.modules.graphic_objects.graphicModel.GraphicModel;
 import org.scilab.modules.graphic_objects.graphicObject.CallBack;
 
@@ -316,7 +315,17 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
 
     @Override
     public void destroy() {
-        throw new UnsupportedOperationException("Unimplemented method 'destroy'");
+        ScilabSwingUtilities.removeFromParent(this);
+
+        if (devToolsOpened == true) {
+            browser_.closeDevTools();
+            devToolsOpened = false;
+        }
+        if (browser_ != null) {
+            browser_.close(true); // Must use true here to avoid issues with docked instances
+        }
+
+        ScilabBrowser.release(client_);
     }
 
     @Override
@@ -387,22 +396,7 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
             }
         }
     }
-
-    @Override
-    public void removeNotify() {
-        if (devToolsOpened == true) {
-            browser_.closeDevTools();
-            devToolsOpened = false;
-        }
-
-        if (browser_ != null) {
-            browser_.close(false);
-        }
-
-        ScilabBrowser.release(client_);
-        super.removeNotify();
-    }
-
+   
     public void openDebug(boolean toggle) {
         if (toggle)
         {

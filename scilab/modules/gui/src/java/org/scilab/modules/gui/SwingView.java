@@ -753,6 +753,10 @@ public final class SwingView implements GraphicView {
                     SwingScilabContextMenu m = (SwingScilabContextMenu) requestedObject.getValue();
                     m.destroy();
                     break;
+                case Browser:
+                    SwingScilabBrowser b = (SwingScilabBrowser) requestedObject.getValue();
+                    b.destroy();
+                    break;
                 default:
                     // Nothing to do
                     // uicontrol case: the object is destroyed when its parent updates its children
