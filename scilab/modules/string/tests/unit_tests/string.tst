@@ -7,6 +7,7 @@
 // =============================================================================
 
 // <-- CLI SHELL MODE -->
+// <-- NO CHECK REF -->
 
 //===============================
 // unit tests string
@@ -76,4 +77,9 @@ assert_checkequal(string(C), string(uint32(C)));
 assert_checkequal(string(D), string(int8(D)));
 assert_checkequal(string(E), string(int16(E)));
 assert_checkequal(string(F), string(int32(F)));
-
+//===============================
+myLambda = #(x) -> (2 * (x + 3));
+[out, in, text]=string(myLambda);
+assert_checkequal(out, []);
+assert_checkequal(in, "x");
+assert_checkequal(text, [" "; "2 * (x + 3)"; " "]);
