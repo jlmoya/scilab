@@ -419,6 +419,7 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
     private int ExecuteCallBack(String msg, long queryId) {
         if (callback != null && callback.equals("") == false) {
             String data = msg.replace("\"", "\"\"");
+            data = data.replace("\'", "\'\'");
             String str = "if exists(\"gcbo\") then %oldgcbo = gcbo; end;"
                     + "gcbo = getcallbackobject(" + uid + ");"
                     + "%cb = #(data) -> (u = gcbo;u.data = struct(\"scilabcallbackID\", " + queryId + ", \"data\", data););"
