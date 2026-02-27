@@ -74,6 +74,44 @@ fromJSON("[1, true, null]")
 // non-finite values
 fromJSON("[NaN, Infinity, -Infinity]")
  ]]></programlisting>
+ <screen><![CDATA[
+--> // JSON object
+--> fromJSON("{""status"": ""OK"", ""value"":12}")
+
+ ans = [struct] with fields:
+
+  status = "OK"
+  value = 12
+
+--> // JSON array
+--> fromJSON("[1, 2, 3]")
+
+ ans = [1x3 double]
+
+   1.   2.   3.
+
+--> // JSON null values
+--> fromJSON("[1, 2, null]")
+
+ ans = [1x3 double]
+
+   1.   2.   Nan
+
+--> fromJSON("[1, true, null]")
+
+ ans = (3-elements list)
+
+  (1) = 1
+  (2) = %t
+  (3) = []
+
+--> // non-finite values
+--> fromJSON("[NaN, Infinity, -Infinity]")
+
+ ans = [1x3 double]
+
+   Nan   Inf  -Inf   
+    ]]></screen>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
