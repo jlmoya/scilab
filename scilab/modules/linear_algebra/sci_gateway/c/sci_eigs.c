@@ -72,6 +72,8 @@ int sci_eigs(char *fname, void* pvApiCtx)
     char* pstData			= NULL;
     doublecomplex SIGMA;
 
+    int *piAddressVarWhich	= NULL;
+
     int *piAddressVarFive	= NULL;
     double dblMAXITER		= 0;
 
@@ -114,7 +116,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
     int i					= 0;
     int j					= 0;
 
-    CheckInputArgument(pvApiCtx, 1, 10);
+    CheckInputArgument(pvApiCtx, 1, 11);
     CheckOutputArgument(pvApiCtx, 0, 2);
 
     /****************************************
@@ -271,11 +273,10 @@ int sci_eigs(char *fname, void* pvApiCtx)
         return 1;
     }
 
-
     iNEV = (int)dblNEV;
 
     /****************************************
-    *    		SIGMA AND WHICH    			*
+    *    		SIGMA             			*
     *****************************************/
     sciErr = getVarAddressFromPosition(pvApiCtx, 4, &piAddressVarFour);
     if (sciErr.iErr)
@@ -286,37 +287,62 @@ int sci_eigs(char *fname, void* pvApiCtx)
         return 1;
     }
 
-    sciErr = getVarType(pvApiCtx, piAddressVarFour, &iTypeVarFour);
-    if (sciErr.iErr || (iTypeVarFour != sci_matrix && iTypeVarFour != sci_strings))
+    sciErr = getVarDimension(pvApiCtx, piAddressVarFour, &iRowsFour, &iColsFour);
+    if (iRowsFour * iColsFour != 1)
     {
         Scierror(999, _("%s: Wrong type for input argument #%d: A scalar expected.\n"), "eigs", 4);
         FREE_AB;
         return 1;
     }
 
-    // which/sigma 
-    if (iTypeVarFour == sci_strings)
+    if (getScalarComplexDouble(pvApiCtx, piAddressVarFour, &SIGMA.r, &SIGMA.i))
     {
-        int iErr = getAllocatedSingleString(pvApiCtx, piAddressVarFour, &pstData);
-        if (iErr)
-        {
-            FREE_AB;
-            return 1;
-        }
+        printError(&sciErr, 0);
+        Scierror(999, _("%s: Can not read input argument #%d.\n"), fname, 4);
+        FREE_AB;
+        return 1;
+    }
 
-        if (strcmp(pstData, "LM") != 0 && strcmp(pstData, "SM") != 0  && strcmp(pstData, "LR") != 0 && strcmp(pstData, "SR") != 0 && strcmp(pstData, "LI") != 0
-                && strcmp(pstData, "SI") != 0 && strcmp(pstData, "LA") != 0 && strcmp(pstData, "SA") != 0 && strcmp(pstData, "BE") != 0)
+    if (C2F(isanan)(&SIGMA.r) || C2F(isanan)(&SIGMA.i))
+    {
+        Scierror(999, _("%s: Wrong type for input argument #%d: sigma must be a real.\n"), "eigs", 4);
+        FREE_AB;
+        return 1;
+    }
+
+    /****************************************
+    *    		WHICH             			*
+    *****************************************/
+    sciErr = getVarAddressFromPosition(pvApiCtx, 5, &piAddressVarWhich);
+    if (sciErr.iErr)
+    {
+        printError(&sciErr, 0);
+        Scierror(999, _("%s: Can not read input argument #%d.\n"), fname, 5);
+        FREE_AB;
+        return 1;
+    }
+
+    iErr = getAllocatedSingleString(pvApiCtx, piAddressVarWhich, &pstData);
+    if (iErr)
+    {
+        FREE_AB;
+        return 1;
+    }
+
+    if (strcmp(pstData, "SIGMA") != 0)
+    {
+        if (strcmp(pstData, "LM") != 0 && strcmp(pstData, "SM") != 0 && strcmp(pstData, "LR") != 0 && strcmp(pstData, "SR") != 0 && strcmp(pstData, "LI") != 0 && strcmp(pstData, "SI") != 0 && strcmp(pstData, "LA") != 0 && strcmp(pstData, "SA") != 0 && strcmp(pstData, "BE") != 0)
         {
             if (!Acomplex && Asym)
             {
-                Scierror(999, _("%s: Wrong value for input argument #%d: Unrecognized sigma value.\n Sigma must be one of '%s', '%s', '%s', '%s' or '%s'.\n" ),
+                Scierror(999, _("%s: Wrong value for input argument #%d: Unrecognized sigma value.\n Sigma must be one of '%s', '%s', '%s', '%s' or '%s'.\n"),
                          "eigs", 4, "LM", "SM", "LA", "SA", "BE");
                 freeAllocatedSingleString(pstData);
                 return 1;
             }
             else
             {
-                Scierror(999, _("%s: Wrong value for input argument #%d: Unrecognized sigma value.\n Sigma must be one of '%s', '%s', '%s', '%s', '%s' or '%s'.\n " ),
+                Scierror(999, _("%s: Wrong value for input argument #%d: Unrecognized sigma value.\n Sigma must be one of '%s', '%s', '%s', '%s', '%s' or '%s'.\n"),
                          "eigs", 4, "LM", "SM", "LR", "SR", "LI", "SI");
                 FREE_AB;
                 freeAllocatedSingleString(pstData);
@@ -338,43 +364,13 @@ int sci_eigs(char *fname, void* pvApiCtx)
             freeAllocatedSingleString(pstData);
             return 1;
         }
-
-        SIGMA.r = 0;
-        SIGMA.i = 0;
     }
-
-    if (iTypeVarFour == sci_matrix)
-    {
-        sciErr = getVarDimension(pvApiCtx, piAddressVarFour, &iRowsFour, &iColsFour);
-        if (iRowsFour * iColsFour != 1)
-        {
-            Scierror(999, _("%s: Wrong type for input argument #%d: A scalar expected.\n"), "eigs", 4);
-            FREE_AB;
-            return 1;
-        }
-
-        if (getScalarComplexDouble(pvApiCtx, piAddressVarFour, &SIGMA.r, &SIGMA.i))
-        {
-            printError(&sciErr, 0);
-            Scierror(999, _("%s: Can not read input argument #%d.\n"), fname, 4);
-            FREE_AB;
-            return 1;
-        }
-
-        if (C2F(isanan)(&SIGMA.r) || C2F(isanan)(&SIGMA.i))
-        {
-            Scierror(999, _("%s: Wrong type for input argument #%d: sigma must be a real.\n"), "eigs", 4);
-            FREE_AB;
-            return 1;
-        }
-
-        pstData = "SIGMA";
-    }
+ 
 
     /****************************************
     *    			MAXITER    				*
     *****************************************/
-    sciErr = getVarAddressFromPosition(pvApiCtx, 5, &piAddressVarFive);
+    sciErr = getVarAddressFromPosition(pvApiCtx, 6, &piAddressVarFive);
     if (sciErr.iErr)
     {
         printError(&sciErr, 0);
@@ -404,7 +400,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
     /****************************************
     *    				TOL	    			*
     *****************************************/
-    sciErr = getVarAddressFromPosition(pvApiCtx, 6, &piAddressVarSix);
+    sciErr = getVarAddressFromPosition(pvApiCtx, 7, &piAddressVarSix);
     if (sciErr.iErr)
     {
         printError(&sciErr, 0);
@@ -434,7 +430,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
     /****************************************
     *    				NCV	    			*
     *****************************************/
-    sciErr = getVarAddressFromPosition(pvApiCtx, 7, &piAddressVarSeven);
+    sciErr = getVarAddressFromPosition(pvApiCtx, 8, &piAddressVarSeven);
     if (sciErr.iErr)
     {
         printError(&sciErr, 0);
@@ -496,7 +492,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
     /****************************************
     *    			CHOLB    			*
     *****************************************/
-    sciErr = getVarAddressFromPosition(pvApiCtx, 8, &piAddressVarEight);
+    sciErr = getVarAddressFromPosition(pvApiCtx, 9, &piAddressVarEight);
     if (sciErr.iErr)
     {
         printError(&sciErr, 0);
@@ -613,7 +609,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
     /****************************************
     *    			RESID    			*
     *****************************************/
-    sciErr = getVarAddressFromPosition(pvApiCtx, 9, &piAddressVarNine);
+    sciErr = getVarAddressFromPosition(pvApiCtx, 10, &piAddressVarNine);
     if (sciErr.iErr)
     {
         printError(&sciErr, 0);
@@ -680,7 +676,7 @@ int sci_eigs(char *fname, void* pvApiCtx)
     /****************************************
     *    			INFO    			*
     *****************************************/
-    sciErr = getVarAddressFromPosition(pvApiCtx, 10, &piAddressVarTen);
+    sciErr = getVarAddressFromPosition(pvApiCtx, 11, &piAddressVarTen);
     if (sciErr.iErr)
     {
         printError(&sciErr, 0);
