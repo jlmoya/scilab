@@ -32,8 +32,10 @@ import org.cef.misc.EventFlags;
 import com.google.gson.Gson;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -131,6 +133,20 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
         });
 
         client_.addLifeSpanHandler(new CefLifeSpanHandlerAdapter() {
+            @Override
+            public boolean onBeforePopup(CefBrowser browser, CefFrame frame, String target_url, String target_frame_name) {
+                // Open external links in the user's default system browser
+                if (browser == browser_ && target_url != null && !target_url.isEmpty()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI(target_url));
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                    return true; // cancel the popup in JCEF
+                }
+                return false;
+            }
+
             @Override
             public void onAfterCreated(CefBrowser browser) {
                 if (browser == browser_ && url != "") {
@@ -377,7 +393,13 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
                 String data = (String)value;
                 if (data.equals("")) return; //ignore empty data (used to clean previous value)
 
+                // Escape for JS double-quoted string literal:
+                // backslashes first, then double quotes, then newlines/tabs
+                data = data.replace("\\", "\\\\");
                 data = data.replace("\"", "\\\"");
+                data = data.replace("\n", "\\n");
+                data = data.replace("\r", "\\r");
+                data = data.replace("\t", "\\t");
                 String code = String.format("fromScilabInternal(\"%s\")", data);
                 browser_.executeJavaScript(code, "localhost", 1);
                 break;
@@ -396,7 +418,7 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
             }
         }
     }
-   
+
     public void openDebug(boolean toggle) {
         if (toggle)
         {
@@ -422,7 +444,7 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
             data = data.replace("\'", "\'\'");
             String str = "if exists(\"gcbo\") then %oldgcbo = gcbo; end;"
                     + "gcbo = getcallbackobject(" + uid + ");"
-                    + "%cb = #(data) -> (u = gcbo;u.data = struct(\"scilabcallbackID\", " + queryId + ", \"data\", data););"
+                    + "clear %cb;%cb = #(data) -> (u = gcbo;u.data = struct(\"scilabcallbackID\", " + queryId + ", \"data\", data););"
                     + callback + "(fromJSON(\"" + data + "\"), %cb);"
                     + "if exists(\"%oldgcbo\") then gcbo = %oldgcbo; else clear gcbo; end;"
                     + "clear %cb;";
