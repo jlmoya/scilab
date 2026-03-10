@@ -86,7 +86,9 @@
         <para>
             simulation of the controlled linear system <literal>sl</literal>.
             <literal>sl</literal> is assumed to be a continuous-time system
-            represented by a <literal>syslin</literal> list.
+            represented by a <literal>syslin</literal> list. Be warned that when <literal>sl</literal> is not given in state-space,
+            using a nonzero <literal>x0</literal> input argument may have unexpected results, as a nonzero initial condition
+            only makes sense with a given state-space realization. 
         </para>
         <para>
             <literal>u</literal> is the control and <literal>x0</literal> the initial state.
