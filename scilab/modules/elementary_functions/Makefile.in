@@ -274,7 +274,8 @@ am__objects_4 = src/c/libscielementary_functions_algo_la-finite.lo \
 	src/c/libscielementary_functions_algo_la-matrix_generation.lo \
 	src/c/libscielementary_functions_algo_la-vmul.lo \
 	src/c/libscielementary_functions_algo_la-add_vector.lo \
-	src/c/libscielementary_functions_algo_la-sub_vector.lo
+	src/c/libscielementary_functions_algo_la-sub_vector.lo \
+	src/c/libscielementary_functions_algo_la-issymmetric.lo
 am__objects_5 = src/fortran/wasum.lo src/fortran/dexpm1.lo \
 	src/fortran/wwdiv.lo src/fortran/wdotcr.lo src/fortran/iset.lo \
 	src/fortran/franck.lo src/fortran/dwpowe.lo \
@@ -409,7 +410,9 @@ am__objects_8 =  \
 	sci_gateway/cpp/libscielementary_functions_la-sci_vander.lo \
 	sci_gateway/cpp/libscielementary_functions_la-sci_gallery.lo \
 	sci_gateway/cpp/libscielementary_functions_la-sci_isempty.lo \
-	sci_gateway/cpp/libscielementary_functions_la-sci_percent_gallery.lo
+	sci_gateway/cpp/libscielementary_functions_la-sci_percent_gallery.lo \
+	sci_gateway/cpp/libscielementary_functions_la-sci_ishermitian.lo \
+	sci_gateway/cpp/libscielementary_functions_la-sci_issymmetric.lo
 am_libscielementary_functions_la_OBJECTS = $(am__objects_7) \
 	$(am__objects_8)
 libscielementary_functions_la_OBJECTS =  \
@@ -466,8 +469,10 @@ am__depfiles_remade = sci_gateway/c/$(DEPDIR)/libscielementary_functions_la-sci_
 	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_int.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isempty.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isequal.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_ishermitian.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isreal.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issquare.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issymmetric.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isvector.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_kron.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_linspace.Plo \
@@ -514,6 +519,7 @@ am__depfiles_remade = sci_gateway/c/$(DEPDIR)/libscielementary_functions_la-sci_
 	src/c/$(DEPDIR)/libscielementary_functions_algo_la-finite.Plo \
 	src/c/$(DEPDIR)/libscielementary_functions_algo_la-floor.Plo \
 	src/c/$(DEPDIR)/libscielementary_functions_algo_la-int2db.Plo \
+	src/c/$(DEPDIR)/libscielementary_functions_algo_la-issymmetric.Plo \
 	src/c/$(DEPDIR)/libscielementary_functions_algo_la-log.Plo \
 	src/c/$(DEPDIR)/libscielementary_functions_algo_la-matrix_generation.Plo \
 	src/c/$(DEPDIR)/libscielementary_functions_algo_la-mprod.Plo \
@@ -991,7 +997,8 @@ ELEMENTARIES_FUNCTIONS_C_SOURCES = \
     src/c/matrix_generation.c \
     src/c/vmul.c \
     src/c/add_vector.c \
-    src/c/sub_vector.c
+    src/c/sub_vector.c \
+    src/c/issymmetric.c
 
 
 # List of the cpp files
@@ -1290,7 +1297,9 @@ GATEWAY_CXX_SOURCES = \
     sci_gateway/cpp/sci_vander.cpp \
     sci_gateway/cpp/sci_gallery.cpp \
     sci_gateway/cpp/sci_isempty.cpp \
-    sci_gateway/cpp/sci_percent_gallery.cpp
+    sci_gateway/cpp/sci_percent_gallery.cpp \
+    sci_gateway/cpp/sci_ishermitian.cpp \
+    sci_gateway/cpp/sci_issymmetric.cpp
 
 EISPACK_SOURCES = src/fortran/eispack/balbak.f
 
@@ -1827,6 +1836,8 @@ src/c/libscielementary_functions_algo_la-add_vector.lo:  \
 	src/c/$(am__dirstamp) src/c/$(DEPDIR)/$(am__dirstamp)
 src/c/libscielementary_functions_algo_la-sub_vector.lo:  \
 	src/c/$(am__dirstamp) src/c/$(DEPDIR)/$(am__dirstamp)
+src/c/libscielementary_functions_algo_la-issymmetric.lo:  \
+	src/c/$(am__dirstamp) src/c/$(DEPDIR)/$(am__dirstamp)
 src/fortran/wasum.lo: src/fortran/$(am__dirstamp) \
 	src/fortran/$(DEPDIR)/$(am__dirstamp)
 src/fortran/dexpm1.lo: src/fortran/$(am__dirstamp) \
@@ -2278,6 +2289,12 @@ sci_gateway/cpp/libscielementary_functions_la-sci_isempty.lo:  \
 sci_gateway/cpp/libscielementary_functions_la-sci_percent_gallery.lo:  \
 	sci_gateway/cpp/$(am__dirstamp) \
 	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscielementary_functions_la-sci_ishermitian.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscielementary_functions_la-sci_issymmetric.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
 
 libscielementary_functions.la: $(libscielementary_functions_la_OBJECTS) $(libscielementary_functions_la_DEPENDENCIES) $(EXTRA_libscielementary_functions_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(CXXLINK) $(am_libscielementary_functions_la_rpath) $(libscielementary_functions_la_OBJECTS) $(libscielementary_functions_la_LIBADD) $(LIBS)
@@ -2338,8 +2355,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_int.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isempty.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isequal.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_ishermitian.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isreal.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issquare.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issymmetric.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isvector.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_kron.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_linspace.Plo@am__quote@ # am--include-marker
@@ -2386,6 +2405,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscielementary_functions_algo_la-finite.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscielementary_functions_algo_la-floor.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscielementary_functions_algo_la-int2db.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscielementary_functions_algo_la-issymmetric.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscielementary_functions_algo_la-log.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscielementary_functions_algo_la-matrix_generation.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscielementary_functions_algo_la-mprod.Plo@am__quote@ # am--include-marker
@@ -2697,6 +2717,13 @@ src/c/libscielementary_functions_algo_la-sub_vector.lo: src/c/sub_vector.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/c/sub_vector.c' object='src/c/libscielementary_functions_algo_la-sub_vector.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/c/libscielementary_functions_algo_la-sub_vector.lo `test -f 'src/c/sub_vector.c' || echo '$(srcdir)/'`src/c/sub_vector.c
+
+src/c/libscielementary_functions_algo_la-issymmetric.lo: src/c/issymmetric.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT src/c/libscielementary_functions_algo_la-issymmetric.lo -MD -MP -MF src/c/$(DEPDIR)/libscielementary_functions_algo_la-issymmetric.Tpo -c -o src/c/libscielementary_functions_algo_la-issymmetric.lo `test -f 'src/c/issymmetric.c' || echo '$(srcdir)/'`src/c/issymmetric.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/c/$(DEPDIR)/libscielementary_functions_algo_la-issymmetric.Tpo src/c/$(DEPDIR)/libscielementary_functions_algo_la-issymmetric.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/c/issymmetric.c' object='src/c/libscielementary_functions_algo_la-issymmetric.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/c/libscielementary_functions_algo_la-issymmetric.lo `test -f 'src/c/issymmetric.c' || echo '$(srcdir)/'`src/c/issymmetric.c
 
 sci_gateway/c/libscielementary_functions_la-sci_number_properties.lo: sci_gateway/c/sci_number_properties.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT sci_gateway/c/libscielementary_functions_la-sci_number_properties.lo -MD -MP -MF sci_gateway/c/$(DEPDIR)/libscielementary_functions_la-sci_number_properties.Tpo -c -o sci_gateway/c/libscielementary_functions_la-sci_number_properties.lo `test -f 'sci_gateway/c/sci_number_properties.c' || echo '$(srcdir)/'`sci_gateway/c/sci_number_properties.c
@@ -3247,6 +3274,20 @@ sci_gateway/cpp/libscielementary_functions_la-sci_percent_gallery.lo: sci_gatewa
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscielementary_functions_la-sci_percent_gallery.lo `test -f 'sci_gateway/cpp/sci_percent_gallery.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_percent_gallery.cpp
 
+sci_gateway/cpp/libscielementary_functions_la-sci_ishermitian.lo: sci_gateway/cpp/sci_ishermitian.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscielementary_functions_la-sci_ishermitian.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_ishermitian.Tpo -c -o sci_gateway/cpp/libscielementary_functions_la-sci_ishermitian.lo `test -f 'sci_gateway/cpp/sci_ishermitian.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_ishermitian.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_ishermitian.Tpo sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_ishermitian.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_ishermitian.cpp' object='sci_gateway/cpp/libscielementary_functions_la-sci_ishermitian.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscielementary_functions_la-sci_ishermitian.lo `test -f 'sci_gateway/cpp/sci_ishermitian.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_ishermitian.cpp
+
+sci_gateway/cpp/libscielementary_functions_la-sci_issymmetric.lo: sci_gateway/cpp/sci_issymmetric.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscielementary_functions_la-sci_issymmetric.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issymmetric.Tpo -c -o sci_gateway/cpp/libscielementary_functions_la-sci_issymmetric.lo `test -f 'sci_gateway/cpp/sci_issymmetric.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_issymmetric.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issymmetric.Tpo sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issymmetric.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_issymmetric.cpp' object='sci_gateway/cpp/libscielementary_functions_la-sci_issymmetric.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscielementary_functions_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscielementary_functions_la-sci_issymmetric.lo `test -f 'sci_gateway/cpp/sci_issymmetric.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_issymmetric.cpp
+
 .f.o:
 	$(AM_V_F77)$(F77COMPILE) -c -o $@ $<
 
@@ -3490,8 +3531,10 @@ distclean: distclean-am
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_int.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isempty.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isequal.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_ishermitian.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isreal.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issquare.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issymmetric.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isvector.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_kron.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_linspace.Plo
@@ -3538,6 +3581,7 @@ distclean: distclean-am
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-finite.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-floor.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-int2db.Plo
+	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-issymmetric.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-log.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-matrix_generation.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-mprod.Plo
@@ -3648,8 +3692,10 @@ maintainer-clean: maintainer-clean-am
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_int.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isempty.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isequal.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_ishermitian.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isreal.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issquare.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_issymmetric.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_isvector.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_kron.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscielementary_functions_la-sci_linspace.Plo
@@ -3696,6 +3742,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-finite.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-floor.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-int2db.Plo
+	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-issymmetric.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-log.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-matrix_generation.Plo
 	-rm -f src/c/$(DEPDIR)/libscielementary_functions_algo_la-mprod.Plo

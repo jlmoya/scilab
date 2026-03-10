@@ -321,6 +321,9 @@ struct EXTERN_AST Sparse : GenericType
     bool transpose(InternalType *& out);
     bool adjoint(InternalType *& out);
     int newCholLLT(Sparse** permut, Sparse** factor) const;
+    bool isSymmetric(int, int);
+    bool isHermitian(int, int);
+
 
     /** create a new sparse matrix containing the non zero values set to 1.
        equivalent but faster than calling one_set() on a new copy of the

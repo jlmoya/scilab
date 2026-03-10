@@ -2552,6 +2552,137 @@ bool Sparse::transpose(InternalType *& out)
     return true;
 }
 
+bool Sparse::isSymmetric(int _iRows, int _iCols)
+{
+    // Non-square matrices cannot be symmetric
+    if (_iRows != _iCols)
+    {
+        return false;
+    }
+
+    int nnzLower = 0;
+    int nnzUpper = 0;
+
+    if (isComplex())
+    {
+        // Complex case: check Strict input Symmetry property A(i, j) == A(j, i)
+        CplxSparse_t* mat = matrixCplx;
+        
+        for (int i = 0; i < mat->outerSize(); ++i) // rows
+        {
+            for (CplxSparse_t::InnerIterator it(*mat, i); it; ++it)
+            {
+                int j = it.col();
+
+                if (i != j)
+                {
+                    if (i > j) // Lower part
+                    {
+                        // Check if A(i,j) == A(j,i)
+                        if (it.value() != mat->coeff(j, i))
+                        {
+                            return false;
+                        }
+                        nnzLower++;
+                    }
+                    else // Upper part
+                    {
+                        nnzUpper++;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+         RealSparse_t* mat = matrixReal;
+
+         for (int i = 0; i < mat->outerSize(); ++i) // rows
+         {
+             for (RealSparse_t::InnerIterator it(*mat, i); it; ++it)
+             {
+                 int j = it.col();
+                 // Skip diagonal
+                 if (i != j)
+                 {
+                     if (j < i)
+                     {
+                         // Check if A(i,j) == A(j,i)
+                         if (it.value() != mat->coeff(j, i))
+                         {
+                             return false;
+                         }
+                         nnzLower++;
+                     }
+                     else
+                     {
+                         nnzUpper++;
+                     }
+                 }
+             }
+         }
+    }
+     return nnzLower == nnzUpper;
+}
+
+bool Sparse::isHermitian(int _iRows, int _iCols)
+{
+    // Non-square matrices cannot be symmetric
+    if (_iRows != _iCols)
+    {
+        return false;
+    }
+
+    int nnzLower = 0;
+    int nnzUpper = 0;
+
+    if (isComplex())
+    {
+        // Complex case: check Hermitian property
+        CplxSparse_t* mat = matrixCplx;
+        
+        for (int i = 0; i < mat->outerSize(); ++i) // rows
+        {
+            for (CplxSparse_t::InnerIterator it(*mat, i); it; ++it)
+            {
+                int j = it.col();
+                std::complex<double> val = it.value();
+
+                if (i == j)
+                {
+                    if (val.imag() != 0.0)
+                    {
+                        return false;
+                    }
+                }
+                else 
+                {
+                    if (j < i) // Lower part
+                    {
+                        std::complex<double> valji = mat->coeff(j, i);
+                        // Check if A(i,j) == conj(A(j,i))
+                        if (val.real() != valji.real() || val.imag() != -valji.imag())
+                        {
+                            return false;
+                        }
+                        nnzLower++;
+                    }
+                    else // Upper part
+                    {
+                        nnzUpper++;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+         // Real case: isHermitian == isSymmetric
+         return isSymmetric(_iRows, _iCols);
+    }
+     return nnzLower == nnzUpper;
+}
+
 bool Sparse::adjoint(InternalType *& out)
 {
     out = new Sparse(matrixReal ? new RealSparse_t(matrixReal->adjoint()) : 0, matrixCplx ? new CplxSparse_t(matrixCplx->adjoint()) : 0);
@@ -4666,4 +4797,6 @@ void neg(const int r, const int c, const T * const in, Eigen::SparseMatrix<bool,
     out->finalize();
 }
 }
+
+
 

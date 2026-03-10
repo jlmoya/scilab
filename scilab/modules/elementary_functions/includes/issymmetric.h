@@ -26,7 +26,7 @@
 
 #ifndef __ISSYMMETRIC__
 #define __ISSYMMETRIC__
-#include "dynlib_linear_algebra.h"
+#include "dynlib_elementary_functions.h"
 
 
 
@@ -37,6 +37,7 @@
 ** Check whether or not a Matrix is Symmetric.
 */
 
-LINEAR_ALGEBRA_IMPEXP int isSymmetric(double* _pdblReal, double* _pdblImg, int _iIsComplex, int _iRows, int _iCols);
+ELEMENTARY_FUNCTIONS_IMPEXP int isSymmetric(double* _pdblReal, double* _pdblImg, int _iIsComplex, int _iRows, int _iCols);
+ELEMENTARY_FUNCTIONS_IMPEXP int isHermitian(double* _pdblReal, double* _pdblImg, int _iIsComplex, int _iRows, int _iCols);
 
 #endif /* !__ISSYMMETRIC__ */

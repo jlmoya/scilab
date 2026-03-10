@@ -26,6 +26,55 @@
 ** Check whether or not a Matrix is Symmetric.
 */
 
+int isSymmetric(double* _pdblReal, double* _pdblImg, int _iIsComplex, int _iRows, int _iCols)
+{
+    int iRow    = 0;
+    int iCol    = 0;
+
+    // If the matrix is not Square, it can not be symmetric
+    if (_iRows != _iCols)
+    {
+        return NOT_SYMMETRIC;
+    }
+
+    if (_iIsComplex)
+    {
+        // complex case
+        for (iRow = 1 ; iRow < _iRows; iRow++)
+        {
+            for (iCol = 0 ; iCol < iRow ; iCol++)
+            {
+                int iRef    = iRow + iCol * _iRows;
+                int iCheck  = iCol + iRow * _iRows;
+
+                if (_pdblReal[iRef] != _pdblReal[iCheck] || _pdblImg[iRef] != _pdblImg[iCheck])
+                {
+                    return NOT_SYMMETRIC;
+                }
+            }
+        }
+    }
+    else
+    {
+        //real case
+        for (iRow = 1 ; iRow < _iRows; iRow++)
+        {
+            for (iCol = 0 ; iCol < iRow ; iCol++)
+            {
+                int iRef    = iRow + iCol * _iRows;
+                int iCheck  = iCol + iRow * _iRows;
+
+                if (_pdblReal[iRef] != _pdblReal[iCheck])
+                {
+                    return NOT_SYMMETRIC;
+                }
+            }
+        }
+    }
+
+    return SYMMETRIC;
+}
+
 /*
 **   Two cases :
 **   ~ Real Case :
@@ -38,8 +87,7 @@
 **   - Check that diagonal's elements are Real.
 */
 
-
-int isSymmetric(double* _pdblReal, double* _pdblImg, int _iIsComplex, int _iRows, int _iCols)
+int isHermitian(double* _pdblReal, double* _pdblImg, int _iIsComplex, int _iRows, int _iCols)
 {
     int iDiag   = 0;
     int iRow    = 0;
@@ -54,9 +102,7 @@ int isSymmetric(double* _pdblReal, double* _pdblImg, int _iIsComplex, int _iRows
     if (_iIsComplex)
     {
         // complex case
-
         //matrix must be an Hermitian matrix
-
         //Diag must be real
         for (iDiag = 0 ; iDiag < _iRows ; iDiag++)
         {
@@ -68,32 +114,24 @@ int isSymmetric(double* _pdblReal, double* _pdblImg, int _iIsComplex, int _iRows
         }
 
         //real part == real part and img part == -(img part)
-        for (iRow = 0 ; iRow < _iRows; iRow++)
+        for (iRow = 1 ; iRow < _iRows; iRow++)
         {
             for (iCol = 0 ; iCol < iRow ; iCol++)
             {
                 int iRef    = iRow + iCol * _iRows;
                 int iCheck  = iCol + iRow * _iRows;
 
-                if (_pdblReal[iRef] != _pdblReal[iCheck])
+                if (_pdblReal[iRef] != _pdblReal[iCheck] || _pdblImg[iRef] != -(_pdblImg[iCheck]))
                 {
-                    //real part
                     return NOT_SYMMETRIC;
                 }
-
-                if (_pdblImg[iRef] != -(_pdblImg[iCheck]))
-                {
-                    //real part
-                    return NOT_SYMMETRIC;
-                }
-
             }
         }
     }
     else
     {
         //real case
-        for (iRow = 0 ; iRow < _iRows; iRow++)
+        for (iRow = 1 ; iRow < _iRows; iRow++)
         {
             for (iCol = 0 ; iCol < iRow ; iCol++)
             {

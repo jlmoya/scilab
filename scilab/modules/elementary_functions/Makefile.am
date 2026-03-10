@@ -38,7 +38,8 @@ ELEMENTARIES_FUNCTIONS_C_SOURCES = \
     src/c/matrix_generation.c \
     src/c/vmul.c \
     src/c/add_vector.c \
-    src/c/sub_vector.c
+    src/c/sub_vector.c \
+    src/c/issymmetric.c
 
 # List of the cpp files
 ELEMENTARIES_FUNCTIONS_CXX_SOURCES = \
@@ -336,7 +337,9 @@ GATEWAY_CXX_SOURCES =  \
     sci_gateway/cpp/sci_vander.cpp \
     sci_gateway/cpp/sci_gallery.cpp \
     sci_gateway/cpp/sci_isempty.cpp \
-    sci_gateway/cpp/sci_percent_gallery.cpp
+    sci_gateway/cpp/sci_percent_gallery.cpp \
+    sci_gateway/cpp/sci_ishermitian.cpp \
+    sci_gateway/cpp/sci_issymmetric.cpp
 
 EISPACK_SOURCES = src/fortran/eispack/balbak.f
 
