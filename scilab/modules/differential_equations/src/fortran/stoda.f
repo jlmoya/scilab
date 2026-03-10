@@ -30,7 +30,9 @@ cDEC$ ATTRIBUTES DLLIMPORT:: /ls0001/
      2   ccmax, el0, h, hmin, hmxi, hu, rc, tn, uround, iownd(14),
      3   ialth, ipup, lmax, meo, nqnyh, nslp,
      4   icf, ierpj, iersl, jcur, jstart, kflag, l, meth, miter,
-     5   maxord, maxcor, msbp, mxncf, n, nq, nst, nfe, nje, nqu
+     5   maxord, maxcor, msbp, mxncf, n, nq, nst, nfe, nje, nqu  
+cDEC$ ATTRIBUTES DLLIMPORT:: /ierode/
+      COMMON /ierode/ierror
 cDEC$ ATTRIBUTES DLLIMPORT:: /lsa001/
       common /lsa001/ rownd2, pdest, pdlast, ratio, cm1(12), cm2(5),
      1   pdnorm,
@@ -38,8 +40,6 @@ cDEC$ ATTRIBUTES DLLIMPORT:: /lsa001/
       data sm1/0.500d+0, 0.5750d+0, 0.550d+0, 0.450d+0, 0.3500d+0,
      1         0.250d+0, 0.2000d+0, 0.150d+0, 0.100d+0, 0.0750d+0,
      2         0.050d+0, 0.0250d+0/
-cDEC$ ATTRIBUTES DLLIMPORT:: /ierode/
-      COMMON /ierode/ierror
 c-----------------------------------------------------------------------
 c%purpose
 c stoda performs one step of the integration of an initial value

@@ -22,6 +22,18 @@
 #define UMFPACK "umfpack"
 ;
 Source: bin\lib{#UMFPACK}.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+#if defined(SCILAB_ARM64)
+Source: bin\libamd.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libcamd.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libbtf.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libcolamd.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libccolamd.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libcholmod.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libklu.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libopenblas.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libomp.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+Source: bin\libsuitesparseconfig.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
+#endif
 Source: bin\{#UMFPACK}.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#UMFPACK}\license.txt; DestDir: {app}\modules\{#UMFPACK}; Components: {#COMPN_SCILAB}

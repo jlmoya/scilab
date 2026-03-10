@@ -21,6 +21,10 @@
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 #endif
+#ifdef SCILAB_ARM64
+ArchitecturesAllowed=arm64
+ArchitecturesInstallIn64BitMode=arm64
+#endif
 ; Detect if scilab runs
 AppMutex={#ScilabBaseDirectory}
 ;

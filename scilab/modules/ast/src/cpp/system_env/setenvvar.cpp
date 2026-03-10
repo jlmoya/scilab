@@ -201,6 +201,11 @@ void Set_SOME_ENVIRONMENTS_VARIABLES_FOR_SCILAB(void)
     _putenv ("WIN64=OK");
 #endif
 
+    /* WINARM64 variable Environment */
+#ifdef _M_ARM64
+    _putenv ("WINARM64=OK");
+#endif
+
     if ( GetSystemMetrics(SM_REMOTESESSION) )
     {
         _putenv ("SCILAB_MSTS_SESSION=OK");

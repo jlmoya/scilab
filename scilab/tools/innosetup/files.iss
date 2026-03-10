@@ -17,11 +17,13 @@
 ;-------------------------------------------------------------------------------
 
 #include BinariesSourcePath + "\tools\innosetup\base.iss"
-#ifndef SCILAB_X64
+#if !defined(SCILAB_X64) && !defined(SCILAB_ARM64)
 #include BinariesSourcePath + "\tools\innosetup\atlas.iss"
 #endif
+#ifndef SCILAB_ARM64
 #include BinariesSourcePath + "\tools\innosetup\MKL.iss"
 #include BinariesSourcePath + "\tools\innosetup\FFTW_MKL.iss"
+#endif
 #include BinariesSourcePath + "\tools\tools.iss"
 #include BinariesSourcePath + "\contrib\toolbox_skeleton.iss"
 #include BinariesSourcePath + "\modules\core\core.iss"
@@ -98,7 +100,9 @@
 #include BinariesSourcePath + "\modules\graphic_objects\graphic_objects.iss"
 #include BinariesSourcePath + "\modules\ast\ast.iss"
 #include BinariesSourcePath + "\modules\functions_manager\functions_manager.iss"
+#ifndef SCILAB_ARM64
 #include BinariesSourcePath + "\modules\mpi\mpi.iss"
+#endif
 #include BinariesSourcePath + "\modules\slint\slint.iss"
 #include BinariesSourcePath + "\modules\coverage\coverage.iss"
 #include BinariesSourcePath + "\modules\webtools\webtools.iss"
