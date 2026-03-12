@@ -9,6 +9,7 @@
 //
 // <-- CLI SHELL MODE -->
 // <-- NO CHECK REF -->
+// <-- ENGLISH IMPOSED -->
 //
 // <-- Gitlab URL -->
 // https://gitlab.com/scilab/scilab/-/issues/17511
