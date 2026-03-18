@@ -799,6 +799,14 @@ void OptimizationFunctions::callLsqrsolveFctMacro(int *m, int *n, double *x, dou
     }
 
     pDblOut = out[0]->getAs<types::Double>();
+    if (pDblOut->isComplex())
+    {
+         char* pstrName = wide_string_to_UTF8(m_pCallFsolveFctFunction->getName().c_str());
+         sprintf(errorMsg, _("%s: Wrong type for output argument #%d: Real vector expected.\n"), pstrName, 1);
+         FREE(pstrName);
+         throw ast::InternalError(errorMsg);
+    }
+
     if (pDblOut->getSize() != *m)
     {
         char* pstrName = wide_string_to_UTF8(m_pCallFsolveFctFunction->getName().c_str());
@@ -903,6 +911,14 @@ void OptimizationFunctions::callLsqrsolveJacMacro(int *m, int *n, double *x, dou
     }
 
     pDblOut = out[0]->getAs<types::Double>();
+    if (pDblOut->isComplex())
+    {
+         char* pstrName = wide_string_to_UTF8(m_pCallFsolveJacFunction->getName().c_str());
+         sprintf(errorMsg, _("%s: Wrong type for output argument #%d: Real matrix expected.\n"), pstrName, 1);
+         FREE(pstrName);
+         throw ast::InternalError(errorMsg);
+    }
+
     if (pDblOut->getSize() != *m **n)
     {
         char* pstrName = wide_string_to_UTF8(m_pCallFsolveJacFunction->getName().c_str());
