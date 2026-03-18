@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2013 - Scilab Enterprises
@@ -14,11 +13,7 @@
  * along with this program.
  *
  -->
-
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="ismatrix" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="ismatrix" xml:lang="ja">
 
     <refnamediv>
 
@@ -88,15 +83,20 @@
         <note>
           <itemizedlist>
             <listitem>
-               An hypermatrix H that would be a matrix after reordering its dimensions is
-               considered as a matrix, and <literal>ismatrix(H)</literal> returns <constant>%T</constant>.
+                 <para>
+                   An hypermatrix H that would be a matrix after reordering its dimensions is
+                   considered as a matrix, and <literal>ismatrix(H)</literal> returns <constant>%T</constant>.
+                </para>
             </listitem>
             <listitem>
-              To test that <varname>x</varname> is not an hypermatrix or an hyperarray -- whatever
-              are the sizes of its dimensions --, use simply <literal>ndims(x)&lt;3</literal>.
+                 <para>
+                  To test that <varname>x</varname> is not an hypermatrix or an hyperarray -- whatever
+                  are the sizes of its dimensions --, use simply <literal>ndims(x)&lt;3</literal>.
+                </para>
             </listitem>
             <listitem>
-              <literal>ismatrix([])</literal>はfalseを返します.
+                 <para><literal>ismatrix([])</literal>はfalseを返します.
+                </para>
             </listitem>
           </itemizedlist>
         </note>
@@ -202,4 +202,3 @@ ismatrix(s) // 構造体の3次元 (立法)配列
     </refsection>
 
 </refentry>
-

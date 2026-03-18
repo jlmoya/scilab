@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="error">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="error">
     <refnamediv>
         <refname>error</refname>
         <refpurpose>signale une erreur d'éxécution</refpurpose>
@@ -46,7 +43,7 @@
                 <term>n</term>
                 <listitem>
                     <para>
-                        entier > 0: identifiant numérique à attribuer à l'erreur. Par défaut = 10000.
+                        entier &gt; 0: identifiant numérique à attribuer à l'erreur. Par défaut = 10000.
                         Alors que le message apparaît le plus souvent traduit dans la langue
                         de la session, <varname>n</varname> permet d'identifier et de tester l'erreur
                         indépendamment de la langue.
@@ -62,16 +59,24 @@
             <literal>error</literal>
             <itemizedlist>
                 <listitem>
-                    stoppe l'éxécution en cours,
+                     <para>
+                        stoppe l'éxécution en cours,
+                    </para>
                 </listitem>
                 <listitem>
-                    affiche dans la console la liste des appels imbriqués ayant mené à l'erreur,
+                     <para>
+                        affiche dans la console la liste des appels imbriqués ayant mené à l'erreur,
+                    </para>
                 </listitem>
                 <listitem>
-                    affiche dans la console le <varname>message</varname> d'erreur donné,
+                     <para>
+                        affiche dans la console le <varname>message</varname> d'erreur donné,
+                    </para>
                 </listitem>
                 <listitem>
-                    et revient au niveau d'exécution initial.
+                     <para>
+                        et revient au niveau d'exécution initial.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

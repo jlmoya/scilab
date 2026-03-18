@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="det">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="det">
     <refnamediv>
         <refname>det </refname>
         <refpurpose>déterminant  </refpurpose>
@@ -34,38 +31,42 @@
             <varlistentry>
                 <term>X</term>
                 <listitem>
-                    matrice carrée de nombres ou polynômes ou fractions rationnelles (à coefficients)
-                    réels ou complexes. Matrices creuses acceptées.
-                    <para/>
-                </listitem>
+                     <para>
+                        matrice carrée de nombres ou polynômes ou fractions rationnelles (à coefficients)
+                        réels ou complexes. Matrices creuses acceptées.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>d</term>
                 <listitem>
-                    Scalaire du type de <varname>X</varname> : le déterminant de la matrice
-                    <varname>X</varname>. Si <varname>X</varname> est creuse,
-                    <varname>d</varname> est toujours dense.
-                    <para/>
-                </listitem>
+                     <para>
+                        Scalaire du type de <varname>X</varname> : le déterminant de la matrice
+                        <varname>X</varname>. Si <varname>X</varname> est creuse,
+                        <varname>d</varname> est toujours dense.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>m</term>
                 <listitem>
-                    nombre réel ou complexe : mantisse du déterminant en base 10, telle que
-                    <literal>abs(m) ∈ [1,10)</literal>. Argument non supporté lorsque <varname>X</varname>
-                    est polynômiale ou en fractions rationnelles.
-                    <para/>
-                </listitem>
+                     <para>
+                        nombre réel ou complexe : mantisse du déterminant en base 10, telle que
+                        <literal>abs(m) ∈ [1,10)</literal>. Argument non supporté lorsque <varname>X</varname>
+                        est polynômiale ou en fractions rationnelles.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>e</term>
                 <listitem>
-                    entier : la puissance de 10 du déterminant, telle que
-                    <literal>d = m * 10<superscript>e</superscript></literal>.
-                    Argument non supporté lorsque <varname>X</varname> est polynômiale ou
-                    en fractions rationnelles.
-                    <para/>
-                </listitem>
+                     <para>
+                        entier : la puissance de 10 du déterminant, telle que
+                        <literal>d = m * 10<superscript>e</superscript></literal>.
+                        Argument non supporté lorsque <varname>X</varname> est polynômiale ou
+                        en fractions rationnelles.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

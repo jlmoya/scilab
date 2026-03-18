@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="polyline_properties">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="polyline_properties">
     <refnamediv>
         <refname>polyline properties</refname>
         <refpurpose>description of the Polyline
@@ -110,7 +107,7 @@
                         (dash, dash dot, longdash dot, bigdash dot, bigdash longdash, dot, double dot, longblank dot, bigblank dot).
                         See example below.
                     </para>
-                    <scilab:image>
+                    <scilab:image><![CDATA[
                         plot2d([1 10], [1 1]'*(1:10), 2*ones(1,10));
                         a = gca();
                         a.children.children.line_style = (1:10)';
@@ -120,7 +117,7 @@
                         a.y_ticks=tlist(["ticks"  "locations"  "labels"],1:10,msprintf("%d\n",(10:-1:1)')')
                         ylabel("line_style value", "fontsize", 3)
                         gcf().axes_size = [300 185];
-                    </scilab:image>
+                    ]]></scilab:image>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -477,16 +474,19 @@
                         The value can be one of the following:
                         <itemizedlist>
                           <listitem>
-                            <literal>"always"</literal>: the datatip is always displayed (default mode).
+                               <para><literal>"always"</literal>: the datatip is always displayed (default mode).
+                              </para>
                           </listitem>
                           <listitem>
-                            <literal>"mouseclick"</literal>: clicking on the anchor of the datatip
-                             on the line toogles its display. The anchor is always displayed.
+                               <para><literal>"mouseclick"</literal>: clicking on the anchor of the datatip
+                                 on the line toogles its display. The anchor is always displayed.
+                              </para>
                           </listitem>
                           <listitem>
-                            <literal>"mouseover"</literal>: setting the mouse pointer over the
-                            datatip anchor on the line displays the datatip. When going away, the
-                            datatip is masked. Its anchor remains displayed.
+                               <para><literal>"mouseover"</literal>: setting the mouse pointer over the
+                                datatip anchor on the line displays the datatip. When going away, the
+                                datatip is masked. Its anchor remains displayed.
+                              </para>
                           </listitem>
                         </itemizedlist>
                     </para>
@@ -543,7 +543,7 @@ p.mark_style=9;
 d=p.data;d(1,:)=[0 0];p.data=d;
 a.rotation_angles=[0 45];
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             a=get("current_axes")
             a.data_bounds=[-2,-2;2,2];
             p=xpoly(sin(2*%pi*(0:5)/5),cos(2*%pi*(0:5)/5),"lines",0)
@@ -552,7 +552,7 @@ a.rotation_angles=[0 45];
             p.mark_style=9;
             d=p.data;d(1,:)=[0 0];p.data=d;
             a.rotation_angles=[0 45];
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // draw and get handle on the polyline entity
 p = xpoly(sin(2*%pi*(0:5)/5),cos(2*%pi*(0:5)/5),"lines",0)
@@ -561,13 +561,13 @@ p.mark_mode="off";
 p.polyline_style=3;
 p.line_style=4;
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             p=xpoly(sin(2*%pi*(0:5)/5),cos(2*%pi*(0:5)/5),"lines",0)
             p.data=[(-2:0.1:2)' sin((-2:0.1:2)*%pi)']
             p.mark_mode="off";
             p.polyline_style=3;
             p.line_style=4;
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -619,15 +619,18 @@ p.line_style=4;
                 <revremark>
                 <itemizedlist>
                     <listitem>
-                        <literal>.mark_stride</literal> and <literal>.mark_offset</literal>
-                        properties added.
+                         <para><literal>.mark_stride</literal> and <literal>.mark_offset</literal>
+                            properties added.
+                        </para>
                     </listitem>
                     <listitem>
-                        <literal>.datatips</literal> property added.
+                         <para><literal>.datatips</literal> property added.
+                        </para>
                     </listitem>
                     <listitem>
-                        <literal>.display_function</literal> and
-                        <literal>.display_function_data</literal> properties added.
+                         <para><literal>.display_function</literal> and
+                            <literal>.display_function_data</literal> properties added.
+                        </para>
                     </listitem>
                 </itemizedlist>
                 </revremark>
@@ -637,12 +640,15 @@ p.line_style=4;
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            New property <literal>.datatip_display_mode</literal> introduced.
+                             <para>
+                                New property <literal>.datatip_display_mode</literal> introduced.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>.mark_foreground</literal>, <literal>.mark_background</literal>
-                            and <literal>.mark_size</literal> can now be row vectors: Each point
-                            can have its own individual mark colors and size.
+                             <para><literal>.mark_foreground</literal>, <literal>.mark_background</literal>
+                                and <literal>.mark_size</literal> can now be row vectors: Each point
+                                can have its own individual mark colors and size.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="test_run" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="test_run" xml:lang="fr">
     <refnamediv>
         <refname>test_run</refname>
         <refpurpose>
@@ -116,7 +113,7 @@
                             <term>"create_ref"</term>
                             <listitem>
                                 <para>génère un fichier .dia.ref (pour les tests sans l'indicateur
-                                  <literal>&lt;-- NO CHECK REF --></literal>), et ignore la comparaison
+                                  <literal>&lt;-- NO CHECK REF --&gt;</literal>), et ignore la comparaison
                                   avec tout précédent fichier .dia.ref</para>
                             </listitem>
                         </varlistentry>
@@ -582,10 +579,14 @@ test_run string *ascii*
                 <revnumber>5.4.0</revnumber>
                 <revdescription>test_run renvoie un statut:
                     <itemizedlist><listitem>
-                            Renvoie %t si aucune erreur n'est détectée
+                                       <para>
+                                Renvoie %t si aucune erreur n'est détectée
+                            </para>
                         </listitem>
                         <listitem>
-                            Renvoie %f si une erreur est détectée
+                             <para>
+                                Renvoie %f si une erreur est détectée
+                            </para>
                         </listitem>
                     </itemizedlist>
                     <para>

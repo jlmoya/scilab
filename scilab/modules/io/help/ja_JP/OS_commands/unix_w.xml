@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="unix_w">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="unix_w">
     <refnamediv>
         <refname>unix_w</refname>
         <refpurpose>いくつかのWindows、LinuxまたはMacOS命令を実行し、結果をScilabコンソールに表示する</refpurpose>
@@ -56,13 +53,17 @@
             <varname>commands</varname>の命令がエラーを生成した場合、,
             <itemizedlist>
                 <listitem>
-                    OSからのエラーメッセージがScilabコンソールに表示されます
+                     <para>
+                        OSからのエラーメッセージがScilabコンソールに表示されます
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>unix_w</literal>が停止し、独自のエラーメッセージが表示されます。
+                     <para><literal>unix_w</literal>が停止し、独自のエラーメッセージが表示されます。
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>commands</varname>の残りの命令は無視されます。
+                     <para><varname>commands</varname>の残りの命令は無視されます。
+                    </para>
                 </listitem>
             </itemizedlist>
             <warning>

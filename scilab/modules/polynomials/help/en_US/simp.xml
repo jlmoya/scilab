@@ -62,21 +62,29 @@
             <warning>
                 <itemizedlist>
                     <listitem>
-                        no threshold is given, i.e. <literal>simp</literal> cannot forces a
-                        simplification.
+                         <para>
+                            no threshold is given, i.e. <literal>simp</literal> cannot forces a
+                            simplification.
+                        </para>
                     </listitem>
                     <listitem>
-                        For linear dynamic systems which include integrator(s) simplification
-                        changes the static gain. (<literal>H(0)</literal> for continuous systems or
-                        <literal>H(1)</literal> for discrete systems).
+                         <para>
+                            For linear dynamic systems which include integrator(s) simplification
+                            changes the static gain. (<literal>H(0)</literal> for continuous systems or
+                            <literal>H(1)</literal> for discrete systems).
+                        </para>
                     </listitem>
                     <listitem>
-                        For complex data, <literal>simp</literal> returns its input(s).
+                         <para>
+                            For complex data, <literal>simp</literal> returns its input(s).
+                        </para>
                     </listitem>
                     <listitem>
-                        Rational simplification is called after nearly each operations on
-                        rationals. It is possible to toggle simplification on or off using
-                        <literal>simp_mode</literal> function.
+                         <para>
+                            Rational simplification is called after nearly each operations on
+                            rationals. It is possible to toggle simplification on or off using
+                            <literal>simp_mode</literal> function.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </warning>

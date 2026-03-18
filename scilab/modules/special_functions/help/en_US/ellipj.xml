@@ -10,10 +10,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="ellipj">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="ellipj">
     <refnamediv>
         <refname>ellipj</refname>
         <refpurpose>Jacobi elliptic functions</refpurpose>
@@ -33,42 +30,47 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    Array of real or complex numbers inside the fundamental rectangle
-                    defined by the elliptic integral.
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of real or complex numbers inside the fundamental rectangle
+                        defined by the elliptic integral.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>m</term>
                 <listitem>
-                    Scalar decimal number in <literal>[0,1]</literal>: Parameter of the
-                    elliptic integral.
-                    <para/>
-                </listitem>
+                     <para>
+                        Scalar decimal number in <literal>[0,1]</literal>: Parameter of the
+                        elliptic integral.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>sn, cn, dn</term>
                 <listitem>
-                    Arrays of real or complex numbers, of the size of <varname>x</varname>:
-                    the x-element-wise values of the sn, cn and dn Jacobi elliptic functions.
-                    <para/>
-                </listitem>
+                     <para>
+                        Arrays of real or complex numbers, of the size of <varname>x</varname>:
+                        the x-element-wise values of the sn, cn and dn Jacobi elliptic functions.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>funames</term>
                 <listitem>
-                    vector of case-sensitive keywords among
-                    <literal>"cn", "dn", "sn", "nc", "nd", "ns"</literal>: Name(s) of Jacobi
-                    elliptic functions whose values must be computed and returned.
-                    <para/>
-                </listitem>
+                     <para>
+                        vector of case-sensitive keywords among
+                        <literal>"cn", "dn", "sn", "nc", "nd", "ns"</literal>: Name(s) of Jacobi
+                        elliptic functions whose values must be computed and returned.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>struc</term>
                 <listitem>
-                    Structure with fields named with the elements of <varname>funames</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Structure with fields named with the elements of <varname>funames</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -121,7 +123,7 @@
             <para>
                 The relative numerical accuracy on <emphasis>sn</emphasis> roughly goes as
                 <literal>x * [1 to 50] * %eps</literal>.
-                Therefore, numerical results for <literal>x > 10<superscript>14</superscript></literal>
+                Therefore, numerical results for <literal>x &gt; 10<superscript>14</superscript></literal>
                 are not relevant.
             </para>
             <para>
@@ -215,8 +217,8 @@ lg.position = [-0.095 -0.08];
             lg.position = [-0.095 -0.08];
 
             gcf().axes_size = [850 500];
-            ]]>
-        </scilab:image>
+            
+        ]]></scilab:image>
         <para>
             With some complex input numbers:
         </para>
@@ -259,7 +261,7 @@ legend(gca(), msprintf("m =%4.1f\n",m'),"out_upper_right");
             isoview
             legend(gca(), msprintf("m =%4.1f\n",m'),"out_upper_right");
             gcf().axes_size = [600 350];
-    ]]> </scilab:image>
+     ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

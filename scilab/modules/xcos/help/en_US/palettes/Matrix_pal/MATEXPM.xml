@@ -21,10 +21,7 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="MATEXPM" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATEXPM" xml:lang="en_US">
     <refnamediv>
         <refname>MATEXPM</refname>
         <refpurpose>Matrix Exponential</refpurpose>
@@ -170,10 +167,10 @@
     </refsection>
     <refsection id="Example_MATEXPM">
         <title>Examples</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             u = [1 2 3 ; 2 3 1 ; 4 2 1]
             y = [182.612 196.518 141.735 ; 172.973 190.770 133.577 ; 204.677 220.063 159.067]
-        </programlisting>
+        ]]></programlisting>
         <para>
             <emphasis role="bold">Matrix Exponential example: expm([0 sin(t) ; sqrt(t) 0])</emphasis>
         </para>
@@ -197,10 +194,14 @@
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_expm.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_expm.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_expm.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_expm.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

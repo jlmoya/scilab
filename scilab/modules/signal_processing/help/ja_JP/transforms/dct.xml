@@ -14,12 +14,7 @@
  * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="dct">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="dct">
     <refnamediv>
         <refname>dct</refname>
         <refpurpose>離散コサイン変換.</refpurpose>
@@ -57,74 +52,63 @@
             <varlistentry>
                 <term>X</term>
                 <listitem>
-                    <literal>A</literal>と同じ大きさの
-                    実数または複素配列.
+                     <para><literal>A</literal>と同じ大きさの
+                        実数または複素配列.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>sign</term>
                 <listitem>
-                    整数.値は <literal>1</literal>または
-                    <literal>-1</literal>となります.
-                    順方向または逆変換を選択します.
-                    デフォルト値は<literal>-1</literal>
-                    (順方向変換)です.
+                     <para>
+                        整数.値は <literal>1</literal>または
+                        <literal>-1</literal>となります.
+                        順方向または逆変換を選択します.
+                        デフォルト値は<literal>-1</literal>
+                        (順方向変換)です.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>selection</term>
                 <listitem>
-                    <literal>A</literal>の各配列次元への添字を有する
-                    ベクトル. 詳細は説明を参照ください.
+                     <para><literal>A</literal>の各配列次元への添字を有する
+                        ベクトル. 詳細は説明を参照ください.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>dims</term>
                 <listitem>
-                    整数値を有する正の数値ベクトル, または正の整数のベクトル.
-                    詳細は説明を参照ください.
-                    <para>
-                        各要素は
-                        <literal>A</literal>の要素の総数の約数となります.
-                    </para>
-                    <para>
-                        各要素の積は<literal>A</literal>の要素の総数よりも
-                        小さな値とする必要があります.
-                    </para>
-                </listitem>
+                     <para>
+                        整数値を有する正の数値ベクトル, または正の整数のベクトル.
+                        詳細は説明を参照ください.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>incr</term>
                 <listitem>
-                    整数値を有する正の数値ベクトル, または正の整数のベクトル.
-                    詳細は説明を参照ください.
-                    <para>
-                        <literal>incr</literal> は,
-                        <literal>dims</literal>の要素数と同じにする
-                        必要があります.
-                    </para>
-                    <para>
-                        各要素は,<literal>A</literal>の要素の総数の約数とする
-                        必要があります.
-                    </para>
-                    <para>
-                        <literal>incr</literal> の要素は,
-                        厳密に昇順とする必要があります.
-                    </para>
-                </listitem>
+                     <para>
+                        整数値を有する正の数値ベクトル, または正の整数のベクトル.
+                        詳細は説明を参照ください.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>option</term>
                 <listitem>
-                    文字列. 値は,順方向変換の場合,
-                    <literal>"dct1"</literal>, <literal>"dct2"</literal>,
-                    <literal>"dct4"</literal> または <literal>"dct"</literal>,
-                    逆変換の場合は <literal>"dct1"</literal>,
-                    <literal>"dct3"</literal>, <literal>"dct4"</literal>または
-                    <literal>"idct"</literal> です.
-                    デフォルト値は,順方向変換の場合に<literal>"dct"</literal>,
-                    逆変換の場合に<literal>"idct"</literal>です.
-                    詳細は説明を参照ください.
+                     <para>
+                        文字列. 値は,順方向変換の場合,
+                        <literal>"dct1"</literal>, <literal>"dct2"</literal>,
+                        <literal>"dct4"</literal> または <literal>"dct"</literal>,
+                        逆変換の場合は <literal>"dct1"</literal>,
+                        <literal>"dct3"</literal>, <literal>"dct4"</literal>または
+                        <literal>"idct"</literal> です.
+                        デフォルト値は,順方向変換の場合に<literal>"dct"</literal>,
+                        逆変換の場合に<literal>"idct"</literal>です.
+                        詳細は説明を参照ください.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -200,7 +184,7 @@
                             \sum_{i=1}^n {A(i) \cos\frac{\pi (i
                             -1/2)(k-1)}{n}}, k=1\ldots n \quad\text{with }
                             \omega(1)=\frac{1}{\sqrt{n}} \quad\text{and }
-                            \omega(k)=\sqrt{\frac{2}{n}} , k>1$
+                            \omega(k)=\sqrt{\frac{2}{n}} , k&gt;1$
                         </latex>
                     </para>
                 </listitem>
@@ -214,7 +198,7 @@
                             $X(i) = \sum_{k=1}^n {\omega(k) A(k) \cos\frac{\pi (i
                             -1/2)(k-1)}{n}}, k=1\ldots n \quad\text{with }
                             \omega(1)=\frac{1}{\sqrt{n}} \quad\text{and }
-                            \omega(k)=\sqrt{\frac{2}{n}} , k>1$
+                            \omega(k)=\sqrt{\frac{2}{n}} , k&gt;1$
                         </latex>
                     </para>
                 </listitem>
@@ -243,7 +227,7 @@
                     -1)(k_p-1)}{2 n}}, k_j=1\ldots n_j\\
                     \text{with}\\
                     \omega_j(1)=\frac{1}{\sqrt{n_j}}\\
-                    \omega_j(k)=\sqrt{\frac{2}{n_j}} , k>1
+                    \omega_j(k)=\sqrt{\frac{2}{n_j}} , k&gt;1
                     \end{array}$
                 </latex>
             </para>
@@ -262,7 +246,7 @@
                     n_j\\
                     \text{with}\\
                     \omega_j(1)=\frac{1}{\sqrt{n_j}}\\
-                    \omega_j(k)=\sqrt{\frac{2}{n_j}} , k>1 \end{array}$
+                    \omega_j(k)=\sqrt{\frac{2}{n_j}} , k&gt;1 \end{array}$
                 </latex>
             </para>
         </refsection>
@@ -380,8 +364,7 @@
                 計算時間が著しく改善されます.
             </para>
             <para>
-                <link linkend="get_fftw_wisdom">get_fftw_wisdom</link>, <link
-          linkend="set_fftw_wisdom">set_fftw_wisdom</link> 関数により
+                <link linkend="get_fftw_wisdom">get_fftw_wisdom</link>, <link linkend="set_fftw_wisdom">set_fftw_wisdom</link> 関数により
                 dctを更に最適化することができます.
             </para>
         </refsection>
@@ -457,8 +440,7 @@
     <refsection>
         <title>参考文献</title>
         <para>
-            Matteo Frigo and Steven G. Johnson, "FFTW Documentation" <ulink
-    url="http://www.fftw.org/#documentation">http://www.fftw.org/#documentation</ulink>
+            Matteo Frigo and Steven G. Johnson, "FFTW Documentation" <ulink url="http://www.fftw.org/#documentation">http://www.fftw.org/#documentation</ulink>
         </para>
     </refsection>
 </refentry>

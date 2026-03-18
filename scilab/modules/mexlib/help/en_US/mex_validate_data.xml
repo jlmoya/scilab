@@ -11,13 +11,7 @@
 * along with this program.
 *
 -->
-<refentry xml:id="mex_validate_data" xml:lang="en"
-    xmlns="http://docbook.org/ns/docbook"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg"
-    xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML"
-    xmlns:db="http://docbook.org/ns/docbook">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xml:id="mex_validate_data" xml:lang="en">
     <refnamediv>
         <refname>Validate Data</refname>
         <refpurpose>To determine the type or characteristic of an array data.</refpurpose>
@@ -28,58 +22,85 @@
             <varlistentry>
                 <term>These are the different functions present in the mexlib module of Scilab</term>
                 <itemizedlist>
-                    <listitem>mxIsDouble</listitem>
-                    <listitem>mxIsSingle</listitem>
-                    <listitem>mxIsComplex</listitem>
-                    <listitem>mxIsNumeric</listitem>
-                    <listitem>mxIsInt64</listitem>
-                    <listitem>mxIsUint64</listitem>
-                    <listitem>mxIsInt32</listitem>
-                    <listitem>mxIsUint32</listitem>
-                    <listitem>mxIsInt16</listitem>
-                    <listitem>mxIsUint16</listitem>
-                    <listitem>mxIsInt8</listitem>
-                    <listitem>mxIsUint8</listitem>
-                    <listitem>mxIsScalar</listitem>
-                    <listitem>mxIsChar</listitem>
-                    <listitem>mxIsLogical</listitem>
-                    <listitem>mxIsLogicalScalar</listitem>
-                    <listitem>mxIsLogicalScalarTrue</listitem>
-                    <listitem>mxIsStruct</listitem>
-                    <listitem>mxIsCell</listitem>
-                    <listitem>mxIsClass</listitem>
-                    <listitem>mxIsInf</listitem>
-                    <listitem>mxIsFinite</listitem>
-                    <listitem>mxIsNan</listitem>
-                    <listitem>mxIsEmpty</listitem>
-                    <listitem>mxIsSparse</listitem>
-                    <listitem>mxAssert</listitem>
-                    <listitem>mxAssertS</listitem>
-                </itemizedlist>
-            </varlistentry>
-        </variablelist>
-    </refsection>
-
-    <refsection role="see also">
-        <title>See also</title>
-
-        <simplelist type="inline">
-            <member>
-                <link linkend="mex_data_types"></link>
-            </member>
-            <member>
-                <link linkend="mex_convert_data"></link>
-            </member>
-            <member>
-                <link linkend="mex_access_data"></link>
-            </member>
-            <member>
-                <link linkend="mex_create_or_delete"></link>
-            </member>
-            <member>
-                <link xlink:href="https://www.mathworks.com/help/matlab/cc-matrix-library-api.html">Matlab C Matrix Library API</link>
-            </member>
-        </simplelist>
-    </refsection>
-
-</refentry>
+                    <listitem>
+                         <para>mxIsDouble</para></listitem>
+                        <listitem>
+                             <para>mxIsSingle</para></listitem>
+                            <listitem>
+                                 <para>mxIsComplex</para></listitem>
+                                <listitem>
+                                     <para>mxIsNumeric</para></listitem>
+                                    <listitem>
+                                         <para>mxIsInt64</para></listitem>
+                                        <listitem>
+                                             <para>mxIsUint64</para></listitem>
+                                            <listitem>
+                                                 <para>mxIsInt32</para></listitem>
+                                                <listitem>
+                                                     <para>mxIsUint32</para></listitem>
+                                                    <listitem>
+                                                         <para>mxIsInt16</para></listitem>
+                                                        <listitem>
+                                                             <para>mxIsUint16</para></listitem>
+                                                            <listitem>
+                                                                 <para>mxIsInt8</para></listitem>
+                                                                <listitem>
+                                                                     <para>mxIsUint8</para></listitem>
+                                                                    <listitem>
+                                                                         <para>mxIsScalar</para></listitem>
+                                                                        <listitem>
+                                                                             <para>mxIsChar</para></listitem>
+                                                                            <listitem>
+                                                                                 <para>mxIsLogical</para></listitem>
+                                                                                <listitem>
+                                                                                     <para>mxIsLogicalScalar</para></listitem>
+                                                                                    <listitem>
+                                                                                         <para>mxIsLogicalScalarTrue</para></listitem>
+                                                                                        <listitem>
+                                                                                             <para>mxIsStruct</para></listitem>
+                                                                                            <listitem>
+                                                                                                 <para>mxIsCell</para></listitem>
+                                                                                                <listitem>
+                                                                                                     <para>mxIsClass</para></listitem>
+                                                                                                    <listitem>
+                                                                                                         <para>mxIsInf</para></listitem>
+                                                                                                        <listitem>
+                                                                                                             <para>mxIsFinite</para></listitem>
+                                                                                                            <listitem>
+                                                                                                                 <para>mxIsNan</para></listitem>
+                                                                                                                <listitem>
+                                                                                                                     <para>mxIsEmpty</para></listitem>
+                                                                                                                    <listitem>
+                                                                                                                         <para>mxIsSparse</para></listitem>
+                                                                                                                        <listitem>
+                                                                                                                             <para>mxAssert</para></listitem>
+                                                                                                                            <listitem>
+                                                                                                                                 <para>mxAssertS</para></listitem>
+                                                                                                                            </itemizedlist>
+                                                                                                                        </varlistentry>
+                                                                                                                    </variablelist>
+                                                                                                                </refsection>
+                                                                                                            
+                                                                                                                <refsection role="see also">
+                                                                                                                    <title>See also</title>
+                                                                                                            
+                                                                                                                    <simplelist type="inline">
+                                                                                                                        <member>
+                                                                                                                            <link linkend="mex_data_types"/>
+                                                                                                                        </member>
+                                                                                                                        <member>
+                                                                                                                            <link linkend="mex_convert_data"/>
+                                                                                                                        </member>
+                                                                                                                        <member>
+                                                                                                                            <link linkend="mex_access_data"/>
+                                                                                                                        </member>
+                                                                                                                        <member>
+                                                                                                                            <link linkend="mex_create_or_delete"/>
+                                                                                                                        </member>
+                                                                                                                        <member>
+                                                                                                                            <link xlink:href="https://www.mathworks.com/help/matlab/cc-matrix-library-api.html">Matlab C Matrix Library API</link>
+                                                                                                                        </member>
+                                                                                                                    </simplelist>
+                                                                                                                </refsection>
+                                                                                                            
+                                                                                                            </refentry>

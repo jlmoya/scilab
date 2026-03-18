@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="lib">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="lib">
     <refnamediv>
         <refname>lib</refname>
         <refpurpose>loads a library of Scilab functions and variables, and sets its name</refpurpose>
@@ -77,16 +74,22 @@
             <literal><link linkend="genlib">genlib()</link></literal> function. It is made of
             <itemizedlist>
                 <listitem>
-                    a dedicated directory <varname>lib_dir</varname>.
+                     <para>
+                        a dedicated directory <varname>lib_dir</varname>.
+                    </para>
                 </listitem>
                 <listitem>
-                    a set of .bin files created by genlib() in the directory. These files
-                    contain the binary code of compiled Scilab functions.
-
+                     <para>
+                        a set of .bin files created by genlib() in the directory. These files
+                        contain the binary code of compiled Scilab functions.
+    
+                    </para>
                 </listitem>
                 <listitem>
-                    a file named <literal>lib</literal>. This file is an XML one and so is editable.
-                    It registers the list of *.bin files (and so features) belonging to the library.
+                     <para>
+                        a file named <literal>lib</literal>. This file is an XML one and so is editable.
+                        It registers the list of *.bin files (and so features) belonging to the library.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -104,13 +107,19 @@
             Then, <varname>namelib</varname> allows
             <itemizedlist>
                 <listitem>
-                    to get the path to the library (= <varname>lib_dir</varname>).
+                     <para>
+                        to get the path to the library (= <varname>lib_dir</varname>).
+                    </para>
                 </listitem>
                 <listitem>
-                    to get the list of functions belonging to the library
+                     <para>
+                        to get the list of functions belonging to the library
+                    </para>
                 </listitem>
                 <listitem>
-                    to address functions members, resolving possible names conflicts.
+                     <para>
+                        to address functions members, resolving possible names conflicts.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

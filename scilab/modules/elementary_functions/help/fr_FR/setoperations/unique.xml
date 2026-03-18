@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="unique" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="unique" xml:lang="fr">
     <refnamediv>
         <refname>unique</refname>
         <refpurpose>extrait (et trie) les éléments distincts d'un vecteur, matrice, hypermatrice
@@ -66,8 +63,10 @@
                         </para>
                     </listitem>
                     <listitem>
-                      Avec <varname>orient</varname>: Matrice de lignes ou de colonnes extraites
-                      de <varname>M</varname>, triées par ordre lexicographique croissant.
+                         <para>
+                          Avec <varname>orient</varname>: Matrice de lignes ou de colonnes extraites
+                          de <varname>M</varname>, triées par ordre lexicographique croissant.
+                        </para>
                     </listitem>
                 </itemizedlist>
                 <para/>
@@ -94,31 +93,35 @@
             <varlistentry>
                 <term>ku</term>
                 <listitem>
-                    Vecteur, matrice ou hypermatrice d'indices dans U, tel que, selon
-                    l'option <varname>orient</varname>
-                    <itemizedlist>
-                        <listitem>
-                            "*": <varname>ku</varname> est de taille size(M), avec <literal>U(ku) = M</literal>
-                        </listitem>
-                        <listitem>
-                            "r": <varname>ku</varname> est de taille [size(M,1), 1], avec <literal>U(ku,:) = M</literal>
-                        </listitem>
-                        <listitem>
-                            "c": <varname>ku</varname> est de taille [1, size(M,2)], avec <literal>U(:,ku) = M</literal>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                    <warning>
-                        <varname>ku</varname> est dense, y compris lorsque <varname>M</varname> est
-                        creuse et que le mode simple "*" est utilisé.
-                    </warning>
-                </listitem>
+                     <para>
+                        Vecteur, matrice ou hypermatrice d'indices dans U, tel que, selon
+                        l'option <varname>orient</varname><itemizedlist>
+                            <listitem>
+                                 <para>
+                                    "*": <varname>ku</varname> est de taille size(M), avec <literal>U(ku) = M</literal>
+                                                                                       </para>
+                                                                                   </listitem>
+                            <listitem>
+                                 <para>
+                                    "r": <varname>ku</varname> est de taille [size(M,1), 1], avec <literal>U(ku,:) = M</literal>
+                                                                                              </para>
+                                                                                          </listitem>
+                            <listitem>
+                                 <para>
+                                    "c": <varname>ku</varname> est de taille [1, size(M,2)], avec <literal>U(:,ku) = M</literal>
+                                                                                              </para>
+                                                                                          </listitem>
+                        </itemizedlist><warning>
+                            <varname>ku</varname> est dense, y compris lorsque <varname>M</varname> est
+                            creuse et que le mode simple "*" est utilisé.
+                        </warning></para>
+                              </listitem>
             </varlistentry>
             <varlistentry>
                 <term>nb</term>
                 <listitem>
                     <para>
-                      Vecteur d'entiers > 0, au format de <varname>km</varname> :
+                      Vecteur d'entiers &gt; 0, au format de <varname>km</varname> :
                       nombres d'exemplaires dans <varname>M</varname> de chaque entité
                       (élément, ligne, colonne) retournée dans <varname>U</varname>.
                     </para>
@@ -153,7 +156,7 @@
             <literal>unique(M,.. "uniqueNan")</literal> considère toute valeur Nan comme égale
             à toute autre Nan, et les dédoublonne comme pour n'importe quelle autre valeur numérique.
             Par défaut, toute valeur Nan est distincte de toute autre Nan, y compris elle-même :
-            <literal>%nan&lt;>%nan</literal> est vrai, à moins d'utiliser
+            <literal>%nan&lt;&gt;%nan</literal> est vrai, à moins d'utiliser
             <literal>"uniqueNan"</literal>. L'indicateur
             <literal>"uniqueNan"</literal> est insensible aux minuscules/majuscules.
         </para>
@@ -380,13 +383,19 @@ unique(M, "c")
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Extension aux booléens.
+                             <para>
+                                Extension aux booléens.
+                            </para>
                         </listitem>
                         <listitem>
-                            Options "keepOrder" et "uniqueNan" ajoutées.
+                             <para>
+                                Options "keepOrder" et "uniqueNan" ajoutées.
+                            </para>
                         </listitem>
                         <listitem>
-                            4ème résultat <literal>nb</literal> ajouté.
+                             <para>
+                                4ème résultat <literal>nb</literal> ajouté.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="intl" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intl" xml:lang="en">
     <refnamediv>
         <refname>intl</refname>
         <refpurpose>Cauchy integral along a circular arc</refpurpose>
@@ -35,34 +32,39 @@
             <varlistentry>
                 <term>z0</term>
                 <listitem>
-                    a complex number<para/>
-                </listitem>
+                     <para>
+                        a complex number</para>
+                                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                    two real numbers<para/>
-                </listitem>
+                     <para>
+                        two real numbers</para>
+                                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>r</term>
                 <listitem>
-                    positive real number<para/>
-                </listitem>
+                     <para>
+                        positive real number</para>
+                                        </listitem>
             </varlistentry>
             <varlistentry>
                 <term>f</term>
                 <listitem>
-                    identifier of the function to be integrated (type 13 or 130).<para/>
-                </listitem>
+                     <para>
+                        identifier of the function to be integrated (type 13 or 130).</para>
+                                                                                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>abserr, relerr</term>
                 <listitem>
-                    real scalars: absolute and relative numerical tolerances.
-                    Default values are <literal>1.d-13</literal> and <literal>1d-8</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        real scalars: absolute and relative numerical tolerances.
+                        Default values are <literal>1.d-13</literal> and <literal>1d-8</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

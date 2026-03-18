@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="fr" xml:id="end">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="end">
     <refnamediv>
         <refname>end</refname>
       <refpurpose>
@@ -98,18 +95,21 @@ a(end, end)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>end</literal> ne peut plus être suivi par une instruction sur la
-                            ligne sans séparateur <literal>,</literal> ou <literal>;</literal>
-                            (comme dans <literal>if %t, a=1; end b=2</literal>).
+                             <para><literal>end</literal> ne peut plus être suivi par une instruction sur la
+                                ligne sans séparateur <literal>,</literal> ou <literal>;</literal>
+                                (comme dans <literal>if %t, a=1; end b=2</literal>).
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>end</literal> peut désormais être utilisé pour conclure un bloc
-                            <literal>function</literal>, à la place de <literal>endfunction</literal>
-                            (lequel reste préférable).
+                             <para><literal>end</literal> peut désormais être utilisé pour conclure un bloc
+                                <literal>function</literal>, à la place de <literal>endfunction</literal>
+                                (lequel reste préférable).
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>end</literal> est désormais protégé. Les affectations telles que
-                            <literal>end=1</literal> ne sont plus possibles.
+                             <para><literal>end</literal> est désormais protégé. Les affectations telles que
+                                <literal>end=1</literal> ne sont plus possibles.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

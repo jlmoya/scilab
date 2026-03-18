@@ -13,10 +13,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  *-->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="comet">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="comet">
     <refnamediv>
         <refname>comet</refname>
         <refpurpose>двумерный график с анимированной кометой</refpurpose>
@@ -38,49 +35,53 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    вещественный вектор или матрица. Если не указать, то предполагается,
-                    что это вектор <literal>1:np</literal>, где <literal>np</literal> -
-                    это количество точек кривой (см. ниже). В качестве матрицы каждый столбец
-                    определяет абсциссы следа отдельной кометы.
-                    <para/>
-                </listitem>
+                     <para>
+                        вещественный вектор или матрица. Если не указать, то предполагается,
+                        что это вектор <literal>1:np</literal>, где <literal>np</literal> -
+                        это количество точек кривой (см. ниже). В качестве матрицы каждый столбец
+                        определяет абсциссы следа отдельной кометы.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    вещественный вектор или матрица. В качестве матрицы каждый столбец
-                    определяет ординаты следа отдельной кометы.
-                    <para/>
-                </listitem>
+                     <para>
+                        вещественный вектор или матрица. В качестве матрицы каждый столбец
+                        определяет ординаты следа отдельной кометы.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Lf</term>
                 <listitem>
-                    вещественный скаляр на интервале <literal>[0 1[</literal>. Значение по
-                    умолчанию <literal>0.1</literal>. Он определяет ведущую часть следа кометы.
-                    Самые последние точки <literal>k=Lf*np</literal> отображаются в более
-                    толстой строке.
-                    <para/>
-                </listitem>
+                     <para>
+                        вещественный скаляр на интервале <literal>[0 1[</literal>. Значение по
+                        умолчанию <literal>0.1</literal>. Он определяет ведущую часть следа кометы.
+                        Самые последние точки <literal>k=Lf*np</literal> отображаются в более
+                        толстой строке.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>fun</term>
                 <listitem>
-                    Scilab-функция с последовательностью вызова <literal>y=fun(x)</literal>.
-                    <varname>fun</varname> также может быть полиномом или рациональной дробью.
-                    <para/>
-                </listitem>
+                     <para>
+                        Scilab-функция с последовательностью вызова <literal>y=fun(x)</literal>.
+                        <varname>fun</varname> также может быть полиномом или рациональной дробью.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>c</term>
                 <listitem>
-                    <literal>nc</literal> цвета <literal>nc</literal> хвостов комет.
-                    Они могут определяться в виде вектора <literal>nc</literal> индексов цветов или
-                    <link linkend="color_list">названий цветов</link> либо шестнадцатеричных кодов
-                    цветов "#RRGGBB". Либо матрицей (ncx3) из векторов <literal>[r,g,b]</literal>
-                    интенсивности Красного-Зелёного-Синего в интервале [0,1].
-                    <para/>
-                </listitem>
+                     <para><literal>nc</literal> цвета <literal>nc</literal> хвостов комет.
+                        Они могут определяться в виде вектора <literal>nc</literal> индексов цветов или
+                        <link linkend="color_list">названий цветов</link> либо шестнадцатеричных кодов
+                        цветов "#RRGGBB". Либо матрицей (ncx3) из векторов <literal>[r,g,b]</literal>
+                        интенсивности Красного-Зелёного-Синего в интервале [0,1].
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

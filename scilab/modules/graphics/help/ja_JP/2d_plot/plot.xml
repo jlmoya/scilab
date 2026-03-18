@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="plot">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="plot">
     <refnamediv>
         <refname>plot</refname>
         <refpurpose>2Dプロット</refpurpose>
@@ -56,9 +53,10 @@
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    実数行列またはベクトル.
-                    <para/>
-                </listitem>
+                     <para>
+                        実数行列またはベクトル.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>func</term>
@@ -74,16 +72,18 @@
             <varlistentry>
                 <term>polynomial</term>
                 <listitem>
-                    Single polynomial or array of polynomials.
-                    <para/>
-                </listitem>
+                     <para>
+                        Single polynomial or array of polynomials.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rational</term>
                 <listitem>
-                    Single rational or array of rationals.
-                    <para/>
-                </listitem>
+                     <para>
+                        Single rational or array of rationals.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y1, y2, y3,..</term>
@@ -92,16 +92,24 @@
                         Can be any of the possible input types described above:
                         <itemizedlist>
                             <listitem>
-                                vectors or matrices of real numbers or of integers
+                                 <para>
+                                    vectors or matrices of real numbers or of integers
+                                </para>
                             </listitem>
                             <listitem>
-                                handle of a function (possibly in a list with its parameters).
+                                 <para>
+                                    handle of a function (possibly in a list with its parameters).
+                                </para>
                             </listitem>
                             <listitem>
-                                polynomials
+                                 <para>
+                                    polynomials
+                                </para>
                             </listitem>
                             <listitem>
-                                rationals
+                                 <para>
+                                    rationals
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -366,7 +374,7 @@ subplot(2,2,3), plot("nl", x, G), title("semilog-y : plot(""nl"", x, y)"); gca()
 subplot(2,2,4), plot("ll", x, G), title("loglog : plot(""ll"", x, y)");    gca().sub_ticks = [8 8];
 sda();
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             gda().grid = [1 1]*color("grey70");
             title(gda(), "", "fontsize", 3, "color", "lightseagreen", "fontname", "helvetica bold");
             x = linspace(1e-1,100,1000);
@@ -383,7 +391,7 @@ sda();
             gca().sub_ticks = [8 8];
             gcf().axes_size = [750 520];
             sda();
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">Simple plot of a single curve:</emphasis>
@@ -399,7 +407,7 @@ subplot(1,2,2)
 plot(x, sin(x))
 xlabel("Specified abscissae")
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             // Default abscissae = indices
             subplot(1,2,1)
             plot(sin(0:0.1:2*%pi))
@@ -410,7 +418,7 @@ xlabel("Specified abscissae")
             plot(x, sin(x))
             xlabel("Specified abscissae")
             gcf().axes_size = [700 350];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">Multiple curves with shared abscissae:</emphasis>
@@ -421,11 +429,11 @@ clf
 x = [0:0.1:2*%pi]';
 plot(x, [sin(x) sin(2*x) sin(3*x)])
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot(x,[sin(x) sin(2*x) sin(3*x)])
             gcf().axes_size = [700 350];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">
@@ -565,8 +573,8 @@ plot(t,sin,'ro', t,cos,'g+-', t,gauss,':b')
             gauss = 1.5*exp(-(t/2-1).^2)-1;
             plot(t,sin,'ro', t,cos,'g+-', t,gauss,':b')
             gcf().axes_size = [800 400];
-        ]]>
-        </scilab:image>
+        
+        ]]></scilab:image>
         </para>
         <para>
         Vertical segments between two curves, with automatic colors, and using Global properties
@@ -595,8 +603,8 @@ plot(ax3, t, sin)
             // Targeting a defined axes
             plot(ax3, t, sin)
             gcf().axes_size = [800 400];
-        ]]>
-        </scilab:image>
+        
+        ]]></scilab:image>
         </para>
         <para/>
         <para>
@@ -618,7 +626,7 @@ subplot(222); plot(x , y , "o-");    // x is transposed
 subplot(223); plot(x', y', "o-");    // y is transposed
 subplot(224); plot(x , y', "o-");    // x and y are transposed
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = [5 6 7 8]
             y = [1   1   1   1   8
                  2   3   4   5   9
@@ -630,7 +638,7 @@ subplot(224); plot(x , y', "o-");    // x and y are transposed
             subplot(222); plot(x , y , "o-");    // x is transposed
             subplot(223); plot(x', y', "o-");    // y is transposed
             subplot(224); plot(x , y', "o-");    // x and y are transposed
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             <emphasis role="bold">Case of a square Y matrix, and X implicit or square:</emphasis>
         </para>
@@ -648,7 +656,7 @@ subplot(235), plot(t', t,"o-"),  title("plot(t'', t)",   "fontsize",3)
 subplot(236), plot(t', t',"o-"), title("plot(t'', t'')", "fontsize",3)
 for i=1:6, gcf().children(i).data_bounds([1 3]) = 0.5; end
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             clf
             t = [1   1   1   1
                  2   3   4   5
@@ -662,7 +670,7 @@ for i=1:6, gcf().children(i).data_bounds([1 3]) = 0.5; end
             subplot(236), plot(t', t',"o-"), title("plot(t'', t'')", "fontsize",3)
             for i=1:6, gcf().children(i).data_bounds([1 3]) = 0.5; end
             gcf().axes_size = [800 450];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">Special cases of a matrix X and a vector Y:</emphasis>
@@ -681,7 +689,7 @@ subplot(222), plot(X',y,  "o-"), title("plot(X'', row)",  "fontsize",3)
 subplot(224), plot(X',y', "o-"), title("plot(X'', col)  (row = col'')",  "fontsize",3)
 for i = 1:4, gcf().children(i).data_bounds([1 3]) = 0.5; end
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             clf
             X = [1   1   1   1
                  2   3   4   5
@@ -694,7 +702,7 @@ for i = 1:4, gcf().children(i).data_bounds([1 3]) = 0.5; end
             subplot(222), plot(X',y,  "o-"), title("plot(X'', row)",  "fontsize",3)
             subplot(224), plot(X',y', "o-"), title("plot(X'', col)  (row = col'')",  "fontsize",3)
             for i = 1:4, gcf().children(i).data_bounds([1 3]) = 0.5; end
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para/>
         <para>
@@ -716,7 +724,7 @@ poly1.thickness = 3;  // ...曲線の太さ.
 poly1.clip_state='off' // 制御をクリップ
 isoview off
  ]]></programlisting>
- <scilab:image>
+ <scilab:image><![CDATA[
          x = [0:0.1:2*%pi]';
          h = plot(x-4,sin(x),x+2,cos(x))
          a = gca();
@@ -728,7 +736,7 @@ isoview off
          poly1.thickness = 3;
          poly1.clip_state='off'
          isoview off
- </scilab:image>
+ ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>参照</title>

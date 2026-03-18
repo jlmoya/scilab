@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="subplot">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="subplot">
     <refnamediv>
         <refname>subplot</refname>
         <refpurpose>
@@ -39,7 +36,7 @@
                 <term>m, n, p</term>
                 <listitem>
                     <para>
-                        целые числа > 0. (m,n) = числа строк и столбцов виртуальной сетки.
+                        целые числа &gt; 0. (m,n) = числа строк и столбцов виртуальной сетки.
                         р = индекс целевой ячейки.
                     </para>
                 </listitem>
@@ -55,9 +52,10 @@
             <varlistentry>
                 <term>ax</term>
                 <listitem>
-                    дескриптор созданной сущности Axes
-                    <para/>
-                </listitem>
+                     <para>
+                        дескриптор созданной сущности Axes
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -100,7 +98,7 @@
             subplot(2,2,4)
             bar3d()
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             subplot(221)
             plot2d()
             subplot(222)
@@ -109,7 +107,7 @@
             param3d()
             subplot(2,2,4)
             bar3d()
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">Более сложная компоновка</emphasis>, но по-прежнему
@@ -135,7 +133,7 @@
             param3d()
             xtitle("","","","")
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             clf
             subplot(1,2,2)
             Matplot1()
@@ -155,7 +153,7 @@
             param3d()
             xtitle("","","","")
             gcf().axes_size = [670 400];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">Usage on uicontrol frames</emphasis> :

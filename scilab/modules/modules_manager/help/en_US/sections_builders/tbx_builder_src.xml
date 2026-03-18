@@ -51,50 +51,20 @@
         </para>
         <itemizedlist>
             <listitem>
-                looks for a <varname>toolbox_path</varname><literal>/src/builder*.sce</literal> script, if found, executes it;
-            </listitem>
-            <listitem>
-                otherwise, looks for a <literal>builder</literal> script in each subdirectory of <literal>src/</literal> and executes them;
-            </listitem>
-            <listitem>
-                for <literal>c, cpp, java, fortran</literal> subdirectories, if no <literal>builder</literal> script is found, a default compilation process is done:
-                <para>
-                    <informaltable border="1">
-                        <tr>
-                            <th align="left">
-                                <literal>c</literal>
-                            </th>
-                            <td>
-                                compilation is done for all <literal>*.c</literal> files, headers must be present in the <literal>c/</literal> directory, function names must have the name of the file (without the <literal>.c</literal> extension)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th align="left">
-                                <literal>cpp</literal>
-                            </th>
-                            <td>
-                                compilation is done for all <literal>*.cpp or *.cxx</literal> files, headers must be present in the <literal>cpp</literal> directory, function names must have the name of the file (without the <literal>.cpp or .cxx</literal> extension)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th align="left">
-                                <literal>java</literal>
-                            </th>
-                            <td>
-                                compilation is done for all <literal>*.java</literal> files under <literal>org/scilab/contrib/package_name</literal> directories where <literal>package_name</literal> is given by the user
-                            </td>
-                        </tr>
-                        <tr>
-                            <th align="left">
-                                <literal>fortran</literal>
-                            </th>
-                            <td>
-                                compilation is done for all <literal>*.f</literal> files
-                            </td>
-                        </tr>
-                    </informaltable>
+                 <para>
+                    looks for a <varname>toolbox_path</varname><literal>/src/builder*.sce</literal> script, if found, executes it;
                 </para>
             </listitem>
+            <listitem>
+                 <para>
+                    otherwise, looks for a <literal>builder</literal> script in each subdirectory of <literal>src/</literal> and executes them;
+                </para>
+            </listitem>
+            <listitem>
+                 <para>
+                    for <literal>c, cpp, java, fortran</literal> subdirectories, if no <literal>builder</literal> script is found, a default compilation process is done:
+                    </para>
+                </listitem>
         </itemizedlist>
         <para>
             The function exits silently if the <literal>src</literal> directory is absent.

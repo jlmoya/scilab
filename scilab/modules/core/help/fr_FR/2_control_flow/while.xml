@@ -124,14 +124,19 @@ e,k
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            La syntaxe avec <literal>[,else instructions]</literal> n'est plus admise.
+                             <para>
+                                La syntaxe avec <literal>[,else instructions]</literal> n'est plus admise.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>while</literal> est désormais protégé. Les affectations telles que
-                            <literal>while=1</literal> ne sont plus possibles.
+                             <para><literal>while</literal> est désormais protégé. Les affectations telles que
+                                <literal>while=1</literal> ne sont plus possibles.
+                            </para>
                         </listitem>
                         <listitem>
-                            Le nombre de caractères constituant le corps d'une instruction conditionnelle (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, ou <literal>select/case</literal>) n'est plus limité à 16k.
+                             <para>
+                                Le nombre de caractères constituant le corps d'une instruction conditionnelle (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, ou <literal>select/case</literal>) n'est plus limité à 16k.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

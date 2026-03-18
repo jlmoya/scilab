@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="and_op" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="and_op" xml:lang="en">
 
     <refnamediv>
         <refname>&amp;, &amp;&amp;</refname>
@@ -168,17 +165,21 @@
                         <literal>if ~and(U), G = %F, else G = and(V), end</literal>.
                         <itemizedlist>
                             <listitem>
-                              <varname>U</varname> and <varname>V</varname> may have distinct sizes
-                              or numbers of dimensions.
+                                 <para><varname>U</varname> and <varname>V</varname> may have distinct sizes
+                                  or numbers of dimensions.
+                                </para>
                             </listitem>
                             <listitem>
-                                The result is always a single boolean.
+                                 <para>
+                                    The result is always a single boolean.
+                                </para>
                             </listitem>
                             <listitem>
-                                <code>and(V)</code>  is evaluated only if <code>and(U)</code> is true.
-                                This mainly avoids yielding errors when further operations with
-                                <varname>V</varname> are meaningless or prone to error when
-                                <varname>U</varname> is false. See examples.
+                                 <para><code>and(V)</code>  is evaluated only if <code>and(U)</code> is true.
+                                    This mainly avoids yielding errors when further operations with
+                                    <varname>V</varname> are meaningless or prone to error when
+                                    <varname>U</varname> is false. See examples.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -196,15 +197,19 @@
                     <para>Otherwise, <literal>&amp;</literal> has two different actions:
                         <orderedlist>
                             <listitem>
-                                When both operands are encoded integers,
-                                <literal>intA &amp; intB</literal> is processed element-wise and
-                                yields an array of integers resulting from the bitwise
-                                <literal>AND</literal> between corresponding components.
+                                 <para>
+                                    When both operands are encoded integers,
+                                    <literal>intA &amp; intB</literal> is processed element-wise and
+                                    yields an array of integers resulting from the bitwise
+                                    <literal>AND</literal> between corresponding components.
+                                </para>
                             </listitem>
                             <listitem>
-                                Otherwise, when operands are arrays of numbers or/and booleans,
-                                they are still processed element-wise. Provided that null numbers
-                                are equivalent to false booleans, the result is an array of booleans.
+                                 <para>
+                                    Otherwise, when operands are arrays of numbers or/and booleans,
+                                    they are still processed element-wise. Provided that null numbers
+                                    are equivalent to false booleans, the result is an array of booleans.
+                                </para>
                             </listitem>
                         </orderedlist>
                     </para>
@@ -218,14 +223,16 @@
             </emphasis> :
             <itemizedlist>
                 <listitem>
-                    <literal>and(A)</literal> is equivalent to <literal>A &amp;&amp; %T</literal>,
-                    whereas  <literal>and(A, side)</literal> has no equivalence with
-                    <literal>&amp;&amp;</literal>.
+                     <para><literal>and(A)</literal> is equivalent to <literal>A &amp;&amp; %T</literal>,
+                        whereas  <literal>and(A, side)</literal> has no equivalence with
+                        <literal>&amp;&amp;</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>intA &amp; intB</literal> accepts negative integers, while
-                    <code>bitand(intA, intB)</code> does not. <code>bitand(A,B)</code> works bitwise
-                    with decimal-encoded integers.
+                     <para><literal>intA &amp; intB</literal> accepts negative integers, while
+                        <code>bitand(intA, intB)</code> does not. <code>bitand(A,B)</code> works bitwise
+                        with decimal-encoded integers.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -236,11 +243,14 @@
         <warning>
             <itemizedlist>
                 <listitem>
-                    <constant>%nan</constant> is <literal>true</literal>.
+                     <para><constant>%nan</constant> is <literal>true</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    A constant polynomial or rational is not considered as a number and is not an
-                    acceptable operand for <literal>&amp;</literal> or <literal>&amp;&amp;</literal>.
+                     <para>
+                        A constant polynomial or rational is not considered as a number and is not an
+                        acceptable operand for <literal>&amp;</literal> or <literal>&amp;&amp;</literal>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </warning>

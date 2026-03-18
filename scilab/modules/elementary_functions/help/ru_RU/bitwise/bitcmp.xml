@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-      xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-      xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-      xmlns:scilab="http://www.scilab.org" xml:id="bitcmp" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bitcmp" xml:lang="ru">
     <refnamediv>
         <refname>bitcmp</refname>
         <refpurpose>побитовое дополнение целых чисел</refpurpose>
@@ -32,64 +29,68 @@
             <varlistentry>
                 <term>x, y</term>
                 <listitem>
-                    массивы знаковых и беззнаковых целых чисел (int8, .., uint64)
-                    или положительных десятичных целых чисел. Поддерживаются гиперматрицы.
-                    <varname>x</varname> и <varname>y</varname> одного типа целого
-                    числа и одинакового размера.
-                    <para/>
-                </listitem>
+                     <para>
+                        массивы знаковых и беззнаковых целых чисел (int8, .., uint64)
+                        или положительных десятичных целых чисел. Поддерживаются гиперматрицы.
+                        <varname>x</varname> и <varname>y</varname> одного типа целого
+                        числа и одинакового размера.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>bitnum</term>
                 <listitem>
-                    положительное кодированное иди десятичное целое число или массив
-                    положительных кодированных или десятичных целых чисел размером,
-                    равным size(x): учитываются и инвертируются биты от №1 до №bitnum
-                    в <varname>x</varname>. В соответствии с типом целого числа
-                    <varname>x</varname>, <varname>bitnum</varname> должен быть в
-                    интервале <literal>[1, bitmax]</literal>, где <literal>bitmax</literal>:
-                    <table>
-                        <tr><th>inttype :</th>
-                            <td>int8</td>
-                            <td>uint8</td>
-                            <td>int16</td>
-                            <td>uint16</td>
-                            <td>int32</td>
-                            <td>uint32</td>
-                            <td>int64</td>
-                            <td>uint64</td>
-                            <td>decimal</td>
-                        </tr>
-                        <tr><th>bitmax :</th>
-                            <td>8</td>
-                            <td>8</td>
-                            <td>16</td>
-                            <td>16</td>
-                            <td>32</td>
-                            <td>32</td>
-                            <td>64</td>
-                            <td>64</td>
-                            <td>1024</td>
-                        </tr>
-                    </table>
-                    <para/>
-                    Значение по умолчанию <varname>bitnum</varname> зависит от
-                    типа входного целого числа:
-                    <itemizedlist>
-                        <listitem>
-                            <literal>bitnum = bitmax</literal> для кодированных целых чисел
-                        </listitem>
-                        <listitem>
-                            <literal>bitnum = 53</literal> для десятичных целых чисел
-                            <literal>x ≤ 1/%eps</literal>
-                        </listitem>
-                        <listitem>
-                            <literal>bitnum = int(log2(x))+1</literal> для десятичных целых чисел
-                            <literal>x > 1/%eps</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        положительное кодированное иди десятичное целое число или массив
+                        положительных кодированных или десятичных целых чисел размером,
+                        равным size(x): учитываются и инвертируются биты от №1 до №bitnum
+                        в <varname>x</varname>. В соответствии с типом целого числа
+                        <varname>x</varname>, <varname>bitnum</varname> должен быть в
+                        интервале <literal>[1, bitmax]</literal>, где <literal>bitmax</literal>:
+                        <table>
+                            <tr><th>inttype :</th>
+                                <td>int8</td>
+                                <td>uint8</td>
+                                <td>int16</td>
+                                <td>uint16</td>
+                                <td>int32</td>
+                                <td>uint32</td>
+                                <td>int64</td>
+                                <td>uint64</td>
+                                <td>decimal</td>
+                            </tr>
+                            <tr><th>bitmax :</th>
+                                <td>8</td>
+                                <td>8</td>
+                                <td>16</td>
+                                <td>16</td>
+                                <td>32</td>
+                                <td>32</td>
+                                <td>64</td>
+                                <td>64</td>
+                                <td>1024</td>
+                            </tr>
+                        </table>
+                        Значение по умолчанию <varname>bitnum</varname> зависит от
+                        типа входного целого числа:
+                        <itemizedlist>
+                            <listitem>
+                                 <para><literal>bitnum = bitmax</literal> для кодированных целых чисел
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>bitnum = 53</literal> для десятичных целых чисел
+                                    <literal>x ≤ 1/%eps</literal>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>bitnum = int(log2(x))+1</literal> для десятичных целых чисел
+                                    <literal>x &gt; 1/%eps</literal>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -112,7 +113,7 @@
         </para>
         <para>
             Пример:
-            <screen>
+            <screen><![CDATA[
 --> bitget(180, 1:8)
  ans  =
    0.   0.   1.   0.   1.   1.   0.   1.
@@ -122,7 +123,7 @@
 --> bitget(11, 1:8)
  ans  =
    1.   1.   0.   1.   0.   0.   0.   0.
-</screen>
+]]></screen>
         </para>
         <para>
             Для <varname>x</varname> такого, что <literal>abs(x) &lt; 2^bitnum</literal>,
@@ -132,7 +133,7 @@
         </para>
         <para>
             Пример:
-            <screen>
+            <screen><![CDATA[
 --> x = 30; int(log2(30))+2
  ans  =
    6.
@@ -145,7 +146,7 @@
 --> bitget(97, 1:10)
  ans  =
    1.   0.   0.   0.   0.   1.   1.   0.   0.   0.
-</screen>
+]]></screen>
         </para>
     </refsection>
     <refsection>
@@ -251,7 +252,7 @@ bitcmp([0 0 0 0 0], 3:7)
 ]]></screen>
         <para/>
         <para>
-            bitnum может быть > 52:
+            bitnum может быть &gt; 52:
         </para>
         <programlisting role="example"><![CDATA[
 format(22)
@@ -318,19 +319,27 @@ bitcmp(r, 333)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Расширение до 64-битных целых чисел.
+                             <para>
+                                Расширение до 64-битных целых чисел.
+                            </para>
                         </listitem>
                         <listitem>
-                            Расширение до всех знаковых целых чисел.
+                             <para>
+                                Расширение до всех знаковых целых чисел.
+                            </para>
                         </listitem>
                         <listitem>
-                            Десятичные положительные целые числа > 2^52 вплоть до
-                            2^1024 = number_properties("huge")
-                            теперь могут быть обработаны с bitnum вплоть до 1024 вместо 52.
+                             <para>
+                                Десятичные положительные целые числа &gt; 2^52 вплоть до
+                                2^1024 = number_properties("huge")
+                                теперь могут быть обработаны с bitnum вплоть до 1024 вместо 52.
+                            </para>
                         </listitem>
                         <listitem>
-                            bitnum теперь необязательно как и входные десятичные целые числа.
-                            Оно на самом деле может быть массивом.
+                             <para>
+                                bitnum теперь необязательно как и входные десятичные целые числа.
+                                Оно на самом деле может быть массивом.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

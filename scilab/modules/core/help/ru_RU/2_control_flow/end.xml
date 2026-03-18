@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="ru" xml:id="end">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="end">
     <refnamediv>
         <refname>end</refname>
         <refpurpose>ключевое слово конца конструкции</refpurpose>
@@ -96,17 +93,21 @@ a(end, end)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Больше не нужно ставить <literal>,</literal> или <literal>;</literal> после
-                            <literal>end</literal> в инструкции одной строкой в качестве разделителя
-                            (например, <literal>if %t, a=1; end b=2</literal>).
+                             <para>
+                                Больше не нужно ставить <literal>,</literal> или <literal>;</literal> после
+                                <literal>end</literal> в инструкции одной строкой в качестве разделителя
+                                (например, <literal>if %t, a=1; end b=2</literal>).
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>end</literal> теперь может закрыть блок <literal>function</literal>
-                            вместо <literal>endfunction</literal> (это может быть все же предпочтительнее).
+                             <para><literal>end</literal> теперь может закрыть блок <literal>function</literal>
+                                вместо <literal>endfunction</literal> (это может быть все же предпочтительнее).
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>end</literal> is now protected:
-                            Assignments like <literal>end=1</literal> are no longer possible.
+                             <para><literal>end</literal> is now protected:
+                                Assignments like <literal>end=1</literal> are no longer possible.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

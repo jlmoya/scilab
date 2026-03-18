@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="ismatrix" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="ismatrix" xml:lang="en">
     <refnamediv>
         <refname>ismatrix</refname>
         <refpurpose>checks if an object is a non-empty 1D or 2D matrix or array</refpurpose>
@@ -54,15 +51,20 @@
         <note>
           <itemizedlist>
             <listitem>
-               An hypermatrix that would be a matrix after reordering its dimensions is
-               considered as a matrix.
+                 <para>
+                   An hypermatrix that would be a matrix after reordering its dimensions is
+                   considered as a matrix.
+                </para>
             </listitem>
             <listitem>
-              To test that <varname>x</varname> is not an hypermatrix or an hyperarray -- whatever
-              are the sizes of its dimensions --, use simply <literal>ndims(x)&lt;3</literal>.
+                 <para>
+                  To test that <varname>x</varname> is not an hypermatrix or an hyperarray -- whatever
+                  are the sizes of its dimensions --, use simply <literal>ndims(x)&lt;3</literal>.
+                </para>
             </listitem>
             <listitem>
-              <literal>ismatrix([])</literal> returns false.
+                 <para><literal>ismatrix([])</literal> returns false.
+                </para>
             </listitem>
           </itemizedlist>
         </note>

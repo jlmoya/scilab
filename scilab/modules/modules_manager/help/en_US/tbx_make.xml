@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="tbx_make" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="tbx_make" xml:lang="en">
 
     <refnamediv>
         <refname>tbx_make</refname>
@@ -51,32 +48,33 @@
             <varlistentry>
                 <term>sections</term>
                 <listitem>
-                    vector of strings: Names of the toolbox sections to build, among
-                    <literal>["macros", "help", "src", "sci_gateway", "localization"]</literal>.
-                    <para/>
-                    <literal>"*"</literal> can be used to force building all available sections,
-                    without running the builder script when it exists (see the description section).
-                    <para/>
-                </listitem>
+                     <para>
+                        vector of strings: Names of the toolbox sections to build, among
+                        <literal>["macros", "help", "src", "sci_gateway", "localization"]</literal>.
+                        <literal>"*"</literal> can be used to force building all available sections,
+                        without running the builder script when it exists (see the description section).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>languages</term>
                 <listitem>
-                    Vector of strings like <literal>"en_US"</literal>, specifying the subset of the
-                    languages for which help pages must be built.
-                    <para/>
-                    This is useful during the module's development, in order to  avoid rebuilding
-                    pages for ALL languages when this is not yet required, that can be very time
-                    consuming.
-                    <para/>
-                    The shortcuts <literal>"en", "fr", "pt", "ja", "ru"</literal>
-                    are automatically expanded respectively into
-                    <literal>"en_US", "fr_FR", "pt_BR", "ja_JP", "ru_RU"</literal>.
-                    <para/>
-                    If there is no help section or if its build is not requested,
-                    this option is ignored.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vector of strings like <literal>"en_US"</literal>, specifying the subset of the
+                        languages for which help pages must be built.
+                        
+                        This is useful during the module's development, in order to  avoid rebuilding
+                        pages for ALL languages when this is not yet required, that can be very time
+                        consuming.
+                        
+                        The shortcuts <literal>"en", "fr", "pt", "ja", "ru"</literal>
+                        are automatically expanded respectively into
+                        <literal>"en_US", "fr_FR", "pt_BR", "ja_JP", "ru_RU"</literal>.
+                        
+                        If there is no help section or if its build is not requested,
+                        this option is ignored.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -105,11 +103,13 @@
             a script named like <literal>build*.sce</literal>:
             <itemizedlist>
                 <listitem>
-                    If such a file is found, <literal>tbx_make(…)</literal> executes it,
-                    and then returns.
-                    <para/>
-                    An example of such a <literal>builder.sce</literal> script is provided in the
-                    template module available in <literal>SCI/contrib/toolbox_skeleton</literal>.
+                     <para>
+                        If such a file is found, <literal>tbx_make(…)</literal> executes it,
+                        and then returns.
+                        
+                        An example of such a <literal>builder.sce</literal> script is provided in the
+                        template module available in <literal>SCI/contrib/toolbox_skeleton</literal>.
+                    </para>
                 </listitem>
                 <listitem>
                     <para>
@@ -128,75 +128,63 @@
         <para>
             <orderedlist>
                 <listitem>
-                    <emphasis role="bold">macros</emphasis> :
-                    <itemizedlist>
-                        <listitem>
-                            If there is a custom macros builder script <literal>~/macros/*.sce</literal>,
-                            it is executed, and then returns to <literal>tbx_make(…)</literal>
-                            to go on building the remaining sections.
-                            <para/>
-                            Writing and using such a builder script is mandatory if macros are
-                            sorted in <literal>~/macros/*</literal> subdirectories corresponding
-                            to some toolbox sublibraries.
-                            <para/>
-                        </listitem>
-                        <listitem>
-                            Otherwise: All macros files <literal>~/macros/*.sci</literal> are
-                            compiled and gathered into a library named
-                            <literal><emphasis role="bold">tbx_name</emphasis>lib</literal> and
-                            recorded in the file
-                            <literal><emphasis role="bold">~/macros/lib</emphasis></literal>.
-                            Please see <link linkend="tbx_builder_macros">tbx_builder_macros</link>.
-                            <para/>
-                            <warning>
-                                No automatical recursive processing aiming to build sublibraries in
-                                subdirectories is performed.
-                            </warning>
-                            <para/>
-                        </listitem>
-                    </itemizedlist>
-                </listitem>
+                     <para><emphasis role="bold">macros</emphasis> :
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    If there is a custom macros builder script <literal>~/macros/*.sce</literal>,
+                                    it is executed, and then returns to <literal>tbx_make(…)</literal>
+                                    to go on building the remaining sections.
+                                    
+                                    Writing and using such a builder script is mandatory if macros are
+                                    sorted in <literal>~/macros/*</literal> subdirectories corresponding
+                                    to some toolbox sublibraries.
+                                    </para>
+                                </listitem>
+                            <listitem>
+                                 <para>
+                                    Otherwise: All macros files <literal>~/macros/*.sci</literal> are
+                                    compiled and gathered into a library named
+                                    <literal><emphasis role="bold">tbx_name</emphasis>lib</literal> and
+                                    recorded in the file
+                                    <literal><emphasis role="bold">~/macros/lib</emphasis></literal>.
+                                    Please see <link linkend="tbx_builder_macros">tbx_builder_macros</link>.
+                                    <warning>
+                                        No automatical recursive processing aiming to build sublibraries in
+                                        subdirectories is performed.
+                                    </warning></para>
+                                          </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
                 <listitem>
-                    <emphasis role="bold">help</emphasis> : Help pages are generated from XML
-                    source files stored in <literal>~/help/*</literal> available languages
-                    subdirectories (en_US, fr_FR, etc).
-                    <itemizedlist>
-                        <listitem>
-                            If <literal>~/help/builder.sce*</literal> is found and the
-                            <varname>languages</varname> option is not used, the builder
-                            is executed, and then returns to <literal>tbx_make(…)</literal>.
-                            <para/>
-                        </listitem>
-                        <listitem>
-                            Otherwise: Help pages are built with the default builder for
-                            each requested language <literal>la_LA</literal>.
-                            A file <literal>~/jar/scilab_la_LA_help.jar</literal> gathering
-                            all compiled pages and summaries is created for each processed
-                            language.
-                            <para/>
-                        </listitem>
-                    </itemizedlist>
-                    <para>
-                        If no page is translated for a given language, please just delete the
-                        corresponding empty language subdirectory.
-                    </para>
-                    <para>
-                        Pages can be organized in sections and subsections, in as many
-                        <literal>~/help/la_LA/*</literal> subdirectories. Then the same set of
-                        subdirectories must be defined for all existing languages.
-                    </para>
-                    <warning>
-                        Help pages may contain Scilab code samples using functions defined in the
-                        toolbox, and executed when building pages (&lt;scilab:image> tags,
-                        Xcos diagrams). When it is the case, the related functions must have been
-                        compiled <emphasis>before</emphasis> building the help pages.
-                    </warning>
-                    <para>
-                        For more details, please see the
-                        <link linkend="man">man</link> and
-                        <link linkend="tbx_builder_help">tbx_builder_help</link> pages.
-                    </para>
-                </listitem>
+                     <para><emphasis role="bold">help</emphasis> : Help pages are generated from XML
+                        source files stored in <literal>~/help/*</literal> available languages
+                        subdirectories (en_US, fr_FR, etc).
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    If <literal>~/help/builder.sce*</literal> is found and the
+                                    <varname>languages</varname> option is not used, the builder
+                                    is executed, and then returns to <literal>tbx_make(…)</literal>.
+                                    </para>
+                                </listitem>
+                            <listitem>
+                                 <para>
+                                    Otherwise: Help pages are built with the default builder for
+                                    each requested language <literal>la_LA</literal>.
+                                    A file <literal>~/jar/scilab_la_LA_help.jar</literal> gathering
+                                    all compiled pages and summaries is created for each processed
+                                    language.
+                                    </para>
+                                </listitem>
+                        </itemizedlist><warning>
+                            Help pages may contain Scilab code samples using functions defined in the
+                            toolbox, and executed when building pages (&lt;scilab:image&gt; tags,
+                            Xcos diagrams). When it is the case, the related functions must have been
+                            compiled <emphasis>before</emphasis> building the help pages.
+                        </warning></para>
+                              </listitem>
                 <listitem>
                     <para>
                         <emphasis role="bold">localization</emphasis> :  Localization files are built

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="deff">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="deff">
     <refnamediv>
         <refname>deff</refname>
         <refpurpose>in-line definition of a (anonymous) function in Scilab language</refpurpose>
@@ -45,97 +42,106 @@
             <varlistentry>
                 <term>x, y, in1, in2, ...</term>
                 <listitem>
-                    input arguments of the defined function. This one can have any number
-                    of input arguments, from 0 to any N.
-                    <para/>
-                </listitem>
+                     <para>
+                        input arguments of the defined function. This one can have any number
+                        of input arguments, from 0 to any N.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>r, r1, r2, ...</term>
                 <listitem>
-                    Output results of the defined function. This one can have any number
-                    of output results, from 0 to any M. If any, all output arguments
-                    must be explicit = written on the left-hand-side of the function name.
-                    <para/>
-                </listitem>
+                     <para>
+                        Output results of the defined function. This one can have any number
+                        of output results, from 0 to any M. If any, all output arguments
+                        must be explicit = written on the left-hand-side of the function name.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>funcHeadline</term>
                 <listitem>
-                    Single string: Function's headline = its first line giving the local
-                    function's name and the lists of its right-hand-side input arguments
-                    and left-hand-side output arguments. Examples:
-                    <itemizedlist>
-                        <listitem>
-                            <literal>"myFunction(x,y)"</literal> : no output
-                        </listitem>
-                        <listitem>
-                            <literal>"r = myFunction(x,y)"</literal> : single output
-                        </listitem>
-                        <listitem>
-                            <literal>"[a,b] = myFunction(x,y)"</literal> : two outputs. Etc..
-                        </listitem>
-                    </itemizedlist>
-                    Please note that a) the <literal>function</literal> keyword
-                    must not be provided. b) If any, writting output arguments in the
-                    left-hand-side part of the headline is mandatory.
-                    <para/>
-                </listitem>
+                     <para>
+                        Single string: Function's headline = its first line giving the local
+                        function's name and the lists of its right-hand-side input arguments
+                        and left-hand-side output arguments. Examples:
+                        <itemizedlist>
+                            <listitem>
+                                 <para><literal>"myFunction(x,y)"</literal> : no output
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>"r = myFunction(x,y)"</literal> : single output
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>"[a,b] = myFunction(x,y)"</literal> : two outputs. Etc..
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        Please note that a) the <literal>function</literal> keyword
+                        must not be provided. b) If any, writting output arguments in the
+                        left-hand-side part of the headline is mandatory.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>funcBody</term>
                 <listitem>
-                    a vector of texts = Scilab instructions of the function's body, in the order
-                    they must be executed. These instructions must define and assign the value
-                    of all output arguments. No trailing "endfunction" keyword is expected.
-                    <para/>
-                    This vector is expected when deff(…) is called with two input arguments.
-                    <para/>
-                    <warning>
-                        Single or double quotes included in instructions must be doubled to be
-                        protected.
-                    </warning>
-                    <para/>
-                </listitem>
+                     <para>
+                        a vector of texts = Scilab instructions of the function's body, in the order
+                        they must be executed. These instructions must define and assign the value
+                        of all output arguments. No trailing "endfunction" keyword is expected.
+                        
+                        This vector is expected when deff(…) is called with two input arguments.
+                        <warning>
+                            Single or double quotes included in instructions must be doubled to be
+                            protected.
+                        </warning></para>
+                              </listitem>
             </varlistentry>
             <varlistentry>
                 <term>definition</term>
                 <listitem>
-                    Single text or vector of texts, including both the function's headline and body.
-                    <itemizedlist>
-                        <listitem>
-                            If it's a vector, it is equivalent to
-                            <literal>definition = [funcHeadline ; funcBody]</literal>.
-                        </listitem>
-                        <listitem>
-                            Otherwise, the one-string definition is equivalent to
-                            <literal>funcHeadline + " " + strcat(funcBody,"; ")</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    Please see the Description and Examples sections.
-                    <para/>
-                </listitem>
+                     <para>
+                        Single text or vector of texts, including both the function's headline and body.
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    If it's a vector, it is equivalent to
+                                    <literal>definition = [funcHeadline ; funcBody]</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    Otherwise, the one-string definition is equivalent to
+                                    <literal>funcHeadline + " " + strcat(funcBody,"; ")</literal>.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        Please see the Description and Examples sections.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>myFunc</term>
                 <listitem>
-                    Public name and identifier of the defined function, as implicitly
-                    returned in the current environment, or explicitly assigned to the
-                    deff(…)'s output variable.
-                    <para/>
-                    <note>
-                        When deff(…) is called without explicit output argument but
-                        as an element of a container or as input argument of another function,
-                        it is implicitly assigned to this element or argument,
-                        which is anonymous. It is then an
-                        <emphasis role="bold">anonymous function</emphasis>. Example:
-                        <para/>
-                        <literal>L = list(3, deff("r=noName(x) x.^2+1"), "Hello");</literal>.
-                        The result of deff(…) is assigned to L(2). Then,
-                        <literal>L(2)(3.5) // ➜ 13.25</literal>.
-                    </note>
-                    <para/>
-                </listitem>
+                     <para>
+                        Public name and identifier of the defined function, as implicitly
+                        returned in the current environment, or explicitly assigned to the
+                        deff(…)'s output variable.
+                        <note>
+                            When deff(…) is called without explicit output argument but
+                            as an element of a container or as input argument of another function,
+                            it is implicitly assigned to this element or argument,
+                            which is anonymous. It is then an
+                            <emphasis role="bold">anonymous function</emphasis>. Example:
+                            <para/>
+                            <literal>L = list(3, deff("r=noName(x) x.^2+1"), "Hello");</literal>.
+                            The result of deff(…) is assigned to L(2). Then,
+                            <literal>L(2)(3.5) // ➜ 13.25</literal>.
+                        </note></para>
+                           </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -432,13 +438,17 @@ Undefined variable: myFunc
                 <revdescription>
                    <itemizedlist>
                      <listitem>
-                       The input option
-                       <ulink url="https://help.scilab.org/docs/5.5.2/en_US/deff.html">
-                         <varname>opt="c"|"p"|"n"</varname>
-                       </ulink> is no longer available.
+                          <para>
+                           The input option
+                           <ulink url="https://help.scilab.org/docs/5.5.2/en_US/deff.html">
+                             <varname>opt="c"|"p"|"n"</varname>
+                           </ulink> is no longer available.
+                         </para>
                      </listitem>
                      <listitem>
-                        The defined <varname>newfunction</varname> is now of type 13 (instead of 11).
+                          <para>
+                            The defined <varname>newfunction</varname> is now of type 13 (instead of 11).
+                         </para>
                      </listitem>
                   </itemizedlist>
                 </revdescription>
@@ -448,16 +458,24 @@ Undefined variable: myFunc
                 <revdescription>
                    <itemizedlist>
                      <listitem>
-                        Output optional argument added. Anonymous functions can be defined.
+                          <para>
+                            Output optional argument added. Anonymous functions can be defined.
+                         </para>
                      </listitem>
                      <listitem>
-                        Single input argument supported, concatenating the function headline and body.
+                          <para>
+                            Single input argument supported, concatenating the function headline and body.
+                         </para>
                      </listitem>
                      <listitem>
-                        Single string syntax supported, like <literal>deff "r = myFun(x,y) x.^2-y"</literal>
-                     </listitem>
+                          <para>
+                            Single string syntax supported, like <literal>deff "r = myFun(x,y) x.^2-y"</literal>
+                                                             </para>
+                                                         </listitem>
                      <listitem>
-                        "@" function's pseudo-name supported.
+                          <para>
+                            "@" function's pseudo-name supported.
+                         </para>
                      </listitem>
                   </itemizedlist>
                 </revdescription>

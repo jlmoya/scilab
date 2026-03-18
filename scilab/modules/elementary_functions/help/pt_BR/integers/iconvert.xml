@@ -15,10 +15,7 @@
  *
  -->
 <!--  module: integer  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="iconvert" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="iconvert" xml:lang="pt">
     <refnamediv>
         <refname>iconvert</refname>
         <refpurpose>conversão para representação inteira de 1 a 8 bytes
@@ -56,7 +53,7 @@
         <para>
             <table>
                 <tr><th>itype</th><th>y typeof</th> <th>range</th></tr>
-                <tr><th>0</th>  <td>(reals)</td>    <td></td></tr>
+                <tr><th>0</th>  <td>(reals)</td>    <td/></tr>
                 <tr><th>1</th>  <td>int8</td>   <td>[-128, 127]</td></tr>
                 <tr><th>2</th>  <td>int16</td>  <td>[-32768, 32767]</td></tr>
                 <tr><th>4</th>  <td>int32</td>  <td>[-2147483648, 2147483647]</td></tr>
@@ -146,7 +143,9 @@ iconvert(-1, 18)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Support to int64 and uint64 encodings added.
+                             <para>
+                                Support to int64 and uint64 encodings added.
+                            </para>
                         </listitem>
                         <listitem>
                             <table>

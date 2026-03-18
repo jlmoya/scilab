@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="write" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="write" xml:lang="en">
     <refnamediv>
         <refname>write</refname>
         <refpurpose>writes real numbers or strings in the console or in a formatted file</refpurpose>
@@ -38,12 +35,16 @@
                     <para>Either
                         <itemizedlist>
                             <listitem>
-                                A character string specifying the file name.
+                                 <para>
+                                    A character string specifying the file name.
+                                </para>
                             </listitem>
                             <listitem>
-                                or the integer id of a file opened with <literal>file(…)</literal>
-                                (see <link linkend="file">file</link>).
-                                Using <literal>%io(2)</literal> will write in the console.
+                                 <para>
+                                    or the integer id of a file opened with <literal>file(…)</literal>
+                                    (see <link linkend="file">file</link>).
+                                    Using <literal>%io(2)</literal> will write in the console.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>

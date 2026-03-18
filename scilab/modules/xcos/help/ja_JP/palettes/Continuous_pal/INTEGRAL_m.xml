@@ -21,10 +21,7 @@
 *
 * See the file ./license.txt
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="INTEGRAL_m" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="INTEGRAL_m" xml:lang="ja">
     <refnamediv>
         <refname>INTEGRAL_m</refname>
         <refpurpose>積分</refpurpose>
@@ -77,8 +74,7 @@
         <title>ダイアログボックス</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/INTEGRAL_m_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/INTEGRAL_m_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -254,10 +250,14 @@
         <title>計算用関数</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/integral_func.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/integral_func.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/integralz_func.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/integralz_func.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -15,10 +15,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:lang="ja"
-          xml:id="jims-getting-started">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:lang="ja" xml:id="jims-getting-started">
     <refnamediv>
         <refname>入門 - 第1ステップ</refname>
         <refpurpose>Java Scilab バインディングを使用するには?</refpurpose>
@@ -37,10 +34,12 @@
             これらの多く使用される関数は, 以下のScilab関数です:
             <itemizedlist>
                 <listitem>
-                    <link linkend="jimport">jimport</link>: Javaクラスをインポート
+                     <para><link linkend="jimport">jimport</link>: Javaクラスをインポート
+                    </para>
                 </listitem>
                 <listitem>
-                    <link linkend="jimport">jinvoke</link>: Javaオブジェクトのメソッドをコール
+                     <para><link linkend="jimport">jinvoke</link>: Javaオブジェクトのメソッドをコール
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -100,7 +99,7 @@ jcompile("com.foo.HelloWorld",javacode);
             Scilabに種々のメッセージを表示させることができます.
             HelloWorldクラスをワークスペースにインポートすることができます.
             これは, 前述のインポート手順により以下のように行うことができます:
-            <screen>
+            <screen><![CDATA[
 
 --> jimport com.foo.HelloWorld
 
@@ -111,7 +110,7 @@ class com.foo.HelloWorld
 --> whos -name HelloWorld
 Name                     Type           Size           Bytes
 HelloWorld               _EClass        ?              168
-</screen>
+]]></screen>
             <para>
                 完了後, HelloWorldという名前の変数が作成されています.
                 これは, Javaにおけるクラスオブジェクトと等価です. このクラスオブジェクトから,
@@ -124,7 +123,7 @@ HelloWorld               _EClass        ?              168
                 この処理の結果は, Javaオブジェクトへのリファレンスで,
                 後で使用するために変数に保存できます.
             </para>
-            <screen>
+            <screen><![CDATA[
 
 --> object = HelloWorld.new();
 HelloWorld constructed!
@@ -136,7 +135,7 @@ com.foo.HelloWorld@49aacd5f
 --> whos -name object
 Name                     Type           Size           Bytes
 object                   _EObj          ?              160
-</screen>
+]]></screen>
             <para>
                 <link linkend="new">new</link> 演算子が JClassでコールされた際,
                 Javaコンストラクタが透過的に呼び出され, メッセージ"HelloWorld constructed!"が
@@ -152,10 +151,10 @@ object                   _EObj          ?              160
                 <link linkend="new">new</link>と同様な技法を
                 メソッドを呼び出す際に使用できます:
             </para>
-            <screen>
+            <screen><![CDATA[
 --> object.message();
 Hello world!
-</screen>
+]]></screen>
             <para>
                 ドット演算子 (オブジェクトとメッセージの間にドット)は
                 便利なショートカットで,以下のようなScilabコードのスニペットを拡張します.
@@ -163,10 +162,10 @@ Hello world!
                 メソッドを呼び出したり,
                 メンバ変数を取得したりすることがより簡単かつ明快になります.
             </para>
-            <screen>
+            <screen><![CDATA[
 --> jinvoke(object, 'message');
 Hello world!
-</screen>
+]]></screen>
         </para>
     </refsection>
     <refsection>
@@ -209,19 +208,19 @@ jcompile("com.foo.Inspector",javacode);
       ]]></programlisting>
         まず, Inspectorクラスをインポートし,
         Inspectorオブジェクトを作成します:
-        <screen>
+        <screen><![CDATA[
 --> jimport('com.foo.Inspector');
 
 --> myInspector = Inspector.new()
 myInspector  =
 com.foo.Inspector@2a788315
-</screen>
+]]></screen>
         <para/>
         これにより, 2つのシステム間で情報を交換できるようになります.任意のScilabデータ型をJavaに指定すると,
         自動的に Javaの等価な型にラップ(<link linkend="jwrap">jwrap</link>参照)されます.まず,
         Scilabで最も良く使用される型の使用例として, 実数(定数)を示します. 実数を渡すと, この型は自動的に
         Scilab型doubleにマップされます. 試してみましょう;
-        <screen>
+        <screen><![CDATA[
 --> result = myInspector.eval(12.5)
 result  =
 6.25
@@ -233,10 +232,10 @@ ans  =
 --> whos -name result
 Name                     Type           Size           Bytes
 result                   constant       1 by 1         24
-</screen>
+]]></screen>
         <para/>
 自動変換は, jautoUnwrap関数により制御されます. この関数を利用しない場合,全ての変換を陽に行う必要があります.
-<screen>
+<screen><![CDATA[
 --> result = myInspector.eval(12.5)
 result  =
 6.25
@@ -248,14 +247,14 @@ null
 --> whos -name result
 Name                     Type           Size           Bytes
 result                   _EObj          ?              160
-</screen>
+]]></screen>
         <para/>
         返された結果は一見して正しいように見えます ($12.5/2=6.25$). しかし, よく見ると,
         関数コールから返された値は数値ではありません. 受けたものは, 別の Javaオブジェクト (この場合は Double)です.
         再びScilabで指定したデータを使用できるようにするには, jautoUnwrapを trueに設定していない場合, 前述の
         <link linkend="junwrap">junwrap</link>機能を使用できます.
         この変換は Java型を等価な Scilab形式に戻します. これを行うと, 通常の数値を再度得ることができます:
-        <screen>
+        <screen><![CDATA[
 --> result = junwrap(result)
 result  =
 6.25
@@ -267,12 +266,12 @@ result                   constant       1 by 1         24
 --> result * 2
 ans  =
 12.5
-</screen>
+]]></screen>
         <para/>
         この例から, doubleが Java VM により使用され,返される Doubleに自動的に変換される流れが明確になりました.
         返された変数を指定して <link linkend="junwrap">junwrap</link>をコールした際, ネーティブなScilab型に戻されます.
         しかし, 他の型の場合はどうでしょう? 他の基本型についても調べてみましょう;
-        <screen>
+        <screen><![CDATA[
 --> jautoUnwrap(%f) // 自動unwrapを無効にします
 
 --> result = myInspector.inspect("Hello world!");
@@ -316,11 +315,11 @@ T
 --> whos -name result
 Name                     Type           Size           Bytes
 result                   boolean        1 by 1         16
-</screen>
+]]></screen>
         <para/>
         見てわかるように, 全ての関連するデータ型は Scilab と Java型の間で透過的に変換できます. しかし,
         これはそのまま行列にも拡張できます;
-        <screen>
+        <screen><![CDATA[
 -->  jautoUnwrap(%t) // コールを自動unwrapするデフォルトのモードに戻します
 
 --> result = myInspector.inspect(1:5)
@@ -344,7 +343,7 @@ result  =
 --> whos -name result
 Name                     Type           Size           Bytes
 result                   constant       3 by 3         88
-</screen>
+]]></screen>
         <para/>
         これらのラップされた行列のクラスを見ると, Javaはこれらを適当な大きさの配列として保存していることがわかります.
         2次元行列の場合, これに等価なJava配列は列優先(デフォルト)または行優先モードで保存されます.

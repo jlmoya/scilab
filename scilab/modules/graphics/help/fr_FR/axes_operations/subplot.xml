@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="subplot">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="subplot">
     <refnamediv>
         <refname>subplot</refname>
         <refpurpose>
@@ -37,24 +34,27 @@
             <varlistentry>
                 <term>m, n, p</term>
                 <listitem>
-                    entiers > 0 : (m,n) = nombres de rangées et de colonnes du quadrillage
-                    virtuel. p = n° de la case ciblée.
-                    <para/>
-                </listitem>
+                     <para>
+                        entiers &gt; 0 : (m,n) = nombres de rangées et de colonnes du quadrillage
+                        virtuel. p = n° de la case ciblée.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>mnp</term>
                 <listitem>
-                    un entier avec <literal>mnp</literal> comme notation décimale.
-                    <para/>
-                </listitem>
+                     <para>
+                        un entier avec <literal>mnp</literal> comme notation décimale.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>ax</term>
                 <listitem>
-                    handle de l'entité de type Axes créée
-                    <para/>
-                </listitem>
+                     <para>
+                        handle de l'entité de type Axes créée
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -97,7 +97,7 @@
             subplot(2,2,4)
             bar3d()
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             subplot(221)
             plot2d()
             subplot(222)
@@ -106,7 +106,7 @@
             param3d()
             subplot(2,2,4)
             bar3d()
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">Placements plus complexes</emphasis>, mais toujours quadrillables :
@@ -131,7 +131,7 @@
             param3d()
             xtitle("","","","")
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             clf
             subplot(1,2,2)
             Matplot1()
@@ -151,7 +151,7 @@
             param3d()
             xtitle("","","","")
             gcf().axes_size = [670 400];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">Utilisation sur des uicontrol frames</emphasis> :

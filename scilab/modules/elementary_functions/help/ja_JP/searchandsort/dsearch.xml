@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="dsearch" xml:lang="ja">
 
     <refnamediv>
@@ -69,37 +68,41 @@
                         <itemizedlist>
 
                             <listitem>
-
-                                離散型の場合(pm="d"): <varname>bins</varname> は,
-
-                                <varname>X</varname>のエントリを特定する異なった値となります.
-
-                                If <varname>X</varname> が数値 (実数またはエンコードされた整数)の場合,
-
-                                <varname>bins</varname> は厳密に昇順にソートする必要があります.
-
+                                 <para>
+    
+                                    離散型の場合(pm="d"): <varname>bins</varname> は,
+    
+                                    <varname>X</varname>のエントリを特定する異なった値となります.
+    
+                                    If <varname>X</varname> が数値 (実数またはエンコードされた整数)の場合,
+    
+                                    <varname>bins</varname> は厳密に昇順にソートする必要があります.
+    
+                                </para>
                             </listitem>
 
                             <listitem>
-
-                                連続の場合 (デフォルト, pm="c"): <varname>bins</varname> は
-
-                                隣接する間隔の境界です:
-
-                                <literal>I1 = [bins(1), bins(2)]</literal>, <literal>I2 = (bins(2), bins(3)]</literal>,...,
-
-                                <literal>In = (bins(n), bins(n+1)]</literal>.
-
-                                <varname>X</varname>からのエントリはbins(1)に等しいものが
-
-                                <literal>I1</literal>に含まれることに注意してください.
-
-                                <varname>bins</varname>の値は厳密に昇順である必要があります:
-
-                                bins(1) &lt; bins(2) &lt; ... &lt; bins(n).
-
-                                テキスト処理の場合, 大文字小文字を区別する辞書順が使用されます.
-
+                                 <para>
+    
+                                    連続の場合 (デフォルト, pm="c"): <varname>bins</varname> は
+    
+                                    隣接する間隔の境界です:
+    
+                                    <literal>I1 = [bins(1), bins(2)]</literal>, <literal>I2 = (bins(2), bins(3)]</literal>,...,
+    
+                                    <literal>In = (bins(n), bins(n+1)]</literal>.
+    
+                                    <varname>X</varname>からのエントリはbins(1)に等しいものが
+    
+                                    <literal>I1</literal>に含まれることに注意してください.
+    
+                                    <varname>bins</varname>の値は厳密に昇順である必要があります:
+    
+                                    bins(1) &lt; bins(2) &lt; ... &lt; bins(n).
+    
+                                    テキスト処理の場合, 大文字小文字を区別する辞書順が使用されます.
+    
+                                </para>
                             </listitem>
 
                         </itemizedlist>
@@ -158,33 +161,11 @@
 
                 <term>counts</term>
 
-                <listitem>各ビンにおけるXエントリの数.
-
-                    <para>
-
-                        連続ケース (pm="c"):
-
-                        counts(i)は,
-
-                        上記 (<varname>bins</varname>パラメータ参照)の範囲<literal>Ik</literal> に属する
-
-                        <varname>X</varname>の要素数です.
-
-                        bins(1)にちょうど等しい<varname>X</varname>の要素はcounts(1)に含まれます.
-
-                        <varname>counts</varname> の大きさは <varname>bins</varname> - 1 です.
-
-                    </para>
-
-                    <para>
-
-                        離散ケース(pm="d"): <literal>counts(i)</literal> は,
-
-                        <literal>bins(i)</literal>に等しい<varname>X</varname> の要素の数です.
-
-                    </para>
-
-                </listitem>
+                <listitem>
+                     <para>各ビンにおけるXエントリの数.
+    
+                        </para>
+                    </listitem>
 
             </varlistentry>
 
@@ -535,7 +516,7 @@ legend(["Experiment", "Expectation"]);
 xtitle("Uniform random numbers", "X", "P(X)");
  ]]></programlisting>
 
-        <scilab:image>
+        <scilab:image><![CDATA[
 
             m = 50000 ;
 
@@ -559,7 +540,7 @@ xtitle("Uniform random numbers", "X", "P(X)");
 
             xtitle("Uniform random numbers", "X", "P(X)");
 
-        </scilab:image>
+        ]]></scilab:image>
 
         <para>
 
@@ -587,7 +568,7 @@ xtitle("Binomial distribution B(8,0.5)","X","P(X)");
 legend(["Experiment","Expectation"]);
 ]]></programlisting>
 
-        <scilab:image>
+        <scilab:image><![CDATA[
 
             N = 8 ;
 
@@ -615,7 +596,7 @@ legend(["Experiment","Expectation"]);
 
             legend(["Experiment","Expectation"]);
 
-        </scilab:image>
+        ]]></scilab:image>
 
         <para>
 
@@ -661,7 +642,7 @@ legend(["Experiment","Expectation"]);
       // YY = interp(X,x,y,d); plot2d(X,YY,3,"000")
       ]]></programlisting>
 
-        <scilab:image>
+        <scilab:image><![CDATA[
 
             function y=Ll(t,k,x)
 
@@ -721,7 +702,7 @@ legend(["Experiment","Expectation"]);
 
             legend(["Polynomial","Data"]);
 
-        </scilab:image>
+        ]]></scilab:image>
 
     </refsection>
 
@@ -772,4 +753,3 @@ legend(["Experiment","Expectation"]);
     </refsection>
 
 </refentry>
-

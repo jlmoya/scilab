@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="save" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="save" xml:lang="en">
     <refnamediv>
         <refname>save</refname>
         <refpurpose>Saves some chosen variables in a binary data file
@@ -259,7 +256,7 @@ clf reset, clear a
 xload(path);           // The right axes is restored and rendered
 gcf().axes_size = [700 300];
     ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             subplot(1,2,1), param3d()
             subplot(1,2,2), plot2d4(), xtitle("plot2d4()"); a = gca();
             path = TMPDIR + "/test.dat";
@@ -267,7 +264,7 @@ gcf().axes_size = [700 300];
             clf reset, clear a
             xload(path);           // The right axes is restored and rendered
             gcf().axes_size = [700 300];
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             With a global variable:
         </para>
@@ -407,14 +404,20 @@ c                        double         1 by 1          16
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            When called with variables names (character string) as input, variables
-                            are saved in SOD format (HDF5-based).
+                             <para>
+                                When called with variables names (character string) as input, variables
+                                are saved in SOD format (HDF5-based).
+                            </para>
                         </listitem>
                         <listitem>
-                            The Scilab &lt;5.4 binary data format is deprecated.
+                             <para>
+                                The Scilab &lt;5.4 binary data format is deprecated.
+                            </para>
                         </listitem>
                         <listitem>
-                            Using save() with a file descriptor as first input argument is deprecated.
+                             <para>
+                                Using save() with a file descriptor as first input argument is deprecated.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -424,14 +427,20 @@ c                        double         1 by 1          16
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            save() no longer supports the old Scilab &lt;5.4 data format.
+                             <para>
+                                save() no longer supports the old Scilab &lt;5.4 data format.
+                            </para>
                         </listitem>
                         <listitem>
-                            The syntaxes save(fid) and save(fid, x1,..) with a file id are no longer
-                            supported.
+                             <para>
+                                The syntaxes save(fid) and save(fid, x1,..) with a file id are no longer
+                                supported.
+                            </para>
                         </listitem>
                         <listitem>
-                            Lists with undefined components can now be saved.
+                             <para>
+                                Lists with undefined components can now be saved.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

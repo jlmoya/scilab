@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="tokens">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="tokens">
     <refnamediv>
         <refname>tokens</refname>
         <refpurpose>
@@ -35,24 +33,27 @@
             <varlistentry>
                 <term>str</term>
                 <listitem>
-                    A single string to be split. It can include extended UTF-8 international characters.
-                    <para/>
-                </listitem>
+                     <para>
+                        A single string to be split. It can include extended UTF-8 international characters.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>separators</term>
                 <listitem>
-                    Vector of characters. Default value =
-                    <literal>[" ", ascii(9)]</literal>, ascii(9) being the horizontal tab.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vector of characters. Default value =
+                        <literal>[" ", ascii(9)]</literal>, ascii(9) being the horizontal tab.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Chunks</term>
                 <listitem>
-                    Column vector: Pieces of the split string.
-                    <para/>
-                </listitem>
+                     <para>
+                        Column vector: Pieces of the split string.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

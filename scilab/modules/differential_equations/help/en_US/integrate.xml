@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="integrate" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="integrate" xml:lang="en">
     <refnamediv>
         <refname>integrate</refname>
         <refpurpose>integration of an expression by quadrature</refpurpose>
@@ -35,51 +32,58 @@
             <varlistentry>
                 <term>expr</term>
                 <listitem>
-                    a character string defining a Scilab expression.
-                    <para/>
-                </listitem>
+                     <para>
+                        a character string defining a Scilab expression.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    a character string, the integration variable name.
-                    <para/>
-                </listitem>
+                     <para>
+                        a character string, the integration variable name.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x0</term>
                 <listitem>
-                    a real number, the lower bound of integration.
-                    <para/>
-                </listitem>
+                     <para>
+                        a real number, the lower bound of integration.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x1</term>
                 <listitem>
-                    a vector of real numbers, upper bounds of integration.
-                    <para/>
-                </listitem>
+                     <para>
+                        a vector of real numbers, upper bounds of integration.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>atol</term>
                 <listitem>
-                    a real number (absolute error bound). Default value: 1e-13.
-                    <para/>
-                </listitem>
+                     <para>
+                        a real number (absolute error bound). Default value: 1e-13.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rtol</term>
                 <listitem>
-                    a real number, (relative error bound). Default value: 1e-8.
-                    <para/>
-                </listitem>
+                     <para>
+                        a real number, (relative error bound). Default value: 1e-8.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    a vector of real numbers, the integral value for each <literal>x1(i)</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        a vector of real numbers, the integral value for each <literal>x1(i)</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

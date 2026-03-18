@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATDET" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATDET" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATDET</refname>
         <refpurpose>Déterminant de matrice</refpurpose>
@@ -92,8 +89,7 @@
         <title>Paramètres</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATDET_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/MATDET_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -112,10 +108,10 @@
     </refsection>
     <refsection id="Example_MATDET">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             U=[1 0 63;2 -2 5;9 9 4]
             y=2215
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection id="Defaultproperties_MATDET">
         <title>Propriétés par défaut</title>
@@ -202,10 +198,14 @@
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_det.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_det.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_det.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_det.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

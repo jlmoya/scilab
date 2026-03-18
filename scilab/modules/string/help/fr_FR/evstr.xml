@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="evstr" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="evstr" xml:lang="fr">
     <refnamediv>
         <refname>evstr</refname>
         <refpurpose>évalue des expressions Scilab et concatène leurs résultats</refpurpose>
@@ -86,7 +83,7 @@
             La syntaxe alternative <literal>[H, ierr] = evstr(M)</literal> permet de capturer toute
             possible erreur, pour la gérer sans interrompre l'exécution du programme Scilab.
             Le cas échéant, <varname>H</varname> retourne <literal>[]</literal> et <varname>ierr</varname>
-            retourne <literal>999</literal> ou un autre code entier > 0.
+            retourne <literal>999</literal> ou un autre code entier &gt; 0.
         </para>
         <para>
             Si <varname>M</varname> est fournie en 1er élément d'une list(), les expressions Scilab
@@ -116,12 +113,14 @@
         <note>Alias autorisés :
             <itemizedlist>
                 <listitem>
-                        <literal>"Nan"</literal> et <literal>"NaN"</literal> sont compris comme
-                        <constant>%nan</constant>.
+                     <para><literal>"Nan"</literal> et <literal>"NaN"</literal> sont compris comme
+                            <constant>%nan</constant>.
+                    </para>
                 </listitem>
                 <listitem>
-                        <literal>"Inf"</literal> et <literal>"INF"</literal> sont compris comme
-                        <constant>%inf</constant>.
+                     <para><literal>"Inf"</literal> et <literal>"INF"</literal> sont compris comme
+                            <constant>%inf</constant>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>

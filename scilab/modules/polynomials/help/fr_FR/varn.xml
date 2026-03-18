@@ -13,10 +13,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="fr" xml:id="varn">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="varn">
     <refnamediv>
         <refname>varn</refname>
         <refpurpose>variable symbolique d'un polynôme ou d'une fraction rationnelle</refpurpose>
@@ -170,11 +167,15 @@ fx == f
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Le nom de la variable symbolique n'est plus limité à 4 caractères.
-                            Il peut désormais inclure des caractères UTF-8 étendus.
+                             <para>
+                                Le nom de la variable symbolique n'est plus limité à 4 caractères.
+                                Il peut désormais inclure des caractères UTF-8 étendus.
+                            </para>
                         </listitem>
                         <listitem>
-                            varn([]) produit désormais [] au lieu de diriger vers %s_varn().
+                             <para>
+                                varn([]) produit désormais [] au lieu de diriger vers %s_varn().
+                            </para>
                         </listitem>
                     </itemizedlist>
                     <para>

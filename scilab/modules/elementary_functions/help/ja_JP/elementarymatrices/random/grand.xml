@@ -14,10 +14,7 @@
  *
  -->
 <!-- module: randlib -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="grand">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="grand">
     <refnamediv>
         <refname>grand</refname>
         <refpurpose>乱数生成器</refpurpose>
@@ -432,20 +429,28 @@ grand("advnst", K)
                         complex numbers, of integers, booleans, polynomials or strings; full or sparse.
                         <itemizedlist>
                             <listitem>
-                                If <varname>array</varname> is a <literal>1 x m</literal> row vector,
-                                <varname>Y</varname> is a <literal>n x m</literal> matrix.
+                                 <para>
+                                    If <varname>array</varname> is a <literal>1 x m</literal> row vector,
+                                    <varname>Y</varname> is a <literal>n x m</literal> matrix.
+                                </para>
                             </listitem>
                             <listitem>
-                                If <varname>array</varname> is a <literal>m x 1</literal> column vector,
-                                <varname>Y</varname> is a <literal>m x n</literal> matrix.
+                                 <para>
+                                    If <varname>array</varname> is a <literal>m x 1</literal> column vector,
+                                    <varname>Y</varname> is a <literal>m x n</literal> matrix.
+                                </para>
                             </listitem>
                             <listitem>
-                                If <varname>array</varname> is a <literal>m x p</literal> matrix,
-                                <varname>Y</varname> is a <literal>m x p x n</literal> hypermatrix.
+                                 <para>
+                                    If <varname>array</varname> is a <literal>m x p</literal> matrix,
+                                    <varname>Y</varname> is a <literal>m x p x n</literal> hypermatrix.
+                                </para>
                             </listitem>
                             <listitem>
-                                If <varname>array</varname> is a <literal>m x p x q…</literal> hypermatrix,
-                                <varname>Y</varname> is a <literal>m x p x q… x n</literal> hypermatrix.
+                                 <para>
+                                    If <varname>array</varname> is a <literal>m x p x q…</literal> hypermatrix,
+                                    <varname>Y</varname> is a <literal>m x p x q… x n</literal> hypermatrix.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -815,11 +820,11 @@ scf();
 histplot(10,R);
 xtitle("Normal random numbers from grand","X","Frequency");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             R = grand(400,800,"nor",0,1);
             histplot(10,R);
             xtitle("Normal random numbers from grand","X","Frequency");
-        </scilab:image>
+        ]]></scilab:image>
 
         <programlisting role="example"><![CDATA[
 // Returns a 400 x 800 matrix of random doubles,
@@ -829,11 +834,11 @@ scf();
 histplot(10,R);
 xtitle("Uniform random numbers from grand","X","Frequency");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             R = grand(400,800,"def");
             histplot(10,R);
             xtitle("Uniform random numbers from grand","X","Frequency");
-        </scilab:image>
+        ]]></scilab:image>
 
         <programlisting role="example"><![CDATA[
 // Returns a 400 x 800 matrix of random doubles,
@@ -843,11 +848,11 @@ scf();
 histplot(10,R);
 xtitle("Poisson random numbers from grand","X","Frequency");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             R = grand(400,800,"poi",5);
             histplot(10,R);
             xtitle("Poisson random numbers from grand","X","Frequency");
-        </scilab:image>
+        ]]></scilab:image>
 
         <para>
             In the following example, we generate random numbers from the exponential distribution and
@@ -866,7 +871,7 @@ plot(x,y,"ro-");
 legend(["Empirical" "Theory"]);
 xtitle("Exponential random numbers from grand","X","Frequency");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             lambda=1.6;
             N=100000;
             X = grand(1,N,"exp",lambda);
@@ -877,7 +882,7 @@ xtitle("Exponential random numbers from grand","X","Frequency");
             plot(x,y,"ro-");
             legend(["Empirical" "Theory"]);
             xtitle("Exponential random numbers from grand","X","Frequency");
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             In the following example, we generate random numbers from the gamma distribution and
             then compare the empirical with the theoretical distribution.
@@ -896,7 +901,7 @@ plot(XS,P,"r-"); // Theoretical distribution
 legend(["Empirical" "Theory"]);
 xtitle("Cumulative distribution function of Gamma random numbers","X","F");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             N=10000;
             A=10;
             B=4;
@@ -909,7 +914,7 @@ xtitle("Cumulative distribution function of Gamma random numbers","X","F");
             plot(XS,P,"r-"); // Theoretical distribution
             legend(["Empirical" "Theory"]);
             xtitle("Cumulative distribution function of Gamma random numbers","X","F");
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             In the following example, we generate 10 random integers in the [1,365] interval.
         </para>
@@ -942,7 +947,7 @@ subplot(1,2,2)
 bar3d(R(:,:,10));
 xtitle("Layer 10");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             R = grand(10,10,10,"nor",0,1);
             subplot(1,2,1)
             bar3d(R(:,:,1));
@@ -950,7 +955,7 @@ xtitle("Layer 10");
             subplot(1,2,2)
             bar3d(R(:,:,10));
             xtitle("Layer 10");
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection>
         <title>Get predictable or less predictable numbers</title>

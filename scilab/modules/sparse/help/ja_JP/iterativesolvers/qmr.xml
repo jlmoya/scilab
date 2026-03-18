@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="qmr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="qmr">
     <refnamediv>
         <refname>qmr</refname>
         <refpurpose>プリコンディショナ付きのQuasi Minimal Residual法</refpurpose>
@@ -34,153 +31,173 @@
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    Square dense or sparse matrix of size n-by-n, or function:
-                    <para/>
-                    <itemizedlist>
-                        <listitem>
-                            If A is a function which returns <literal>A*x</literal>, it must
-                            have the following header :
-                            <para/>
-                            <literal>function y = A ( x )</literal>
-                        </listitem>
-                        <listitem>
-                            If A is a function which returns <literal>A*x</literal> or
-                            <literal>A'*x</literal> depending on a option t, it must
-                            have the following header :
-                            <para/>
-                            <literal>function y = A(x, t)</literal>
-                            <para/>
-                            <itemizedlist>
-                                <listitem>
-                                    If <literal>t = "notransp"</literal>: the function returns
-                                    <literal>A*x</literal>.
+                     <para>
+                        Square dense or sparse matrix of size n-by-n, or function:
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    If A is a function which returns <literal>A*x</literal>, it must
+                                    have the following header :
+                                    <literal>function y = A ( x )</literal>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    If A is a function which returns <literal>A*x</literal> or
+                                    <literal>A'*x</literal> depending on a option t, it must
+                                    have the following header :
+                                    <literal>function y = A(x, t)</literal><itemizedlist>
+                                        <listitem>
+                                             <para>
+                                                If <literal>t = "notransp"</literal>: the function returns
+                                                <literal>A*x</literal>.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                             <para>
+                                                If <literal>t = "transp"</literal>: the function returns
+                                                <literal>A'*x</literal>.
+                                            </para>
+                                        </listitem>
+                                      </itemizedlist>
+                                    </para>
                                 </listitem>
-                                <listitem>
-                                    If <literal>t = "transp"</literal>: the function returns
-                                    <literal>A'*x</literal>.
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Ap</term>
                 <listitem>
-                    function returning <literal>A'*x</literal>. It must have the following header :
-                    <para/>
-                    <literal>function y = Ap(x)</literal>
-                    <para/>
+                     <para>
+                        function returning <literal>A'*x</literal>. It must have the following header :
+                        <literal>function y = Ap(x)</literal>
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>b</term>
                 <listitem>
-                    右辺ベクトル.
-                    <para/>
-                </listitem>
+                     <para>
+                        右辺ベクトル.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x0</term>
                 <listitem>
-                    初期推定ベクトル (デフォルト: zeros(n,1)).
-                    <para/>
-                </listitem>
+                     <para>
+                        初期推定ベクトル (デフォルト: zeros(n,1)).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>M1</term>
                 <listitem>
-                    左プリコンディショナ: 行列または<literal>M1*x</literal>を返す関数
-                    (前者のデフォルト値: eye(n,n)).
-                    If <literal>M1</literal> is a function, it returns either,
-                    <itemizedlist>
-                        <listitem>
-                            only <literal>M1*x</literal>, or
-                        </listitem>
-                        <listitem>
-                            <literal>M1*x</literal> or <literal>M1'*x</literal>, depending on
-                            <literal>t</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        左プリコンディショナ: 行列または<literal>M1*x</literal>を返す関数
+                        (前者のデフォルト値: eye(n,n)).
+                        If <literal>M1</literal> is a function, it returns either,
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    only <literal>M1*x</literal>, or
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>M1*x</literal> or <literal>M1'*x</literal>, depending on
+                                    <literal>t</literal>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>M1p</term>
                 <listitem>
-                    <literal>M1</literal>が関数の場合のみ指定する
-                    必要があります. この場合, <literal>M1p</literal> は
-                    <literal>M1'*x</literal>を返す関数です.
-                    <para/>
-                </listitem>
+                     <para><literal>M1</literal>が関数の場合のみ指定する
+                        必要があります. この場合, <literal>M1p</literal> は
+                        <literal>M1'*x</literal>を返す関数です.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>M2</term>
                 <listitem>
-                    右プリコンディショナ: 行列または<literal>M2*x</literal>を
-                    返す関数 (前者のデフォルト値: eye(n,n))
-                    If <literal>M2</literal> is a function, it returns either
-                    <itemizedlist>
-                        <listitem>
-                            only <literal>M2*x</literal>, or
-                        </listitem>
-                        <listitem>
-                            <literal>M2*x</literal> or <literal>M2'*x</literal> depending on
-                            an option <literal>t</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        右プリコンディショナ: 行列または<literal>M2*x</literal>を
+                        返す関数 (前者のデフォルト値: eye(n,n))
+                        If <literal>M2</literal> is a function, it returns either
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    only <literal>M2*x</literal>, or
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>M2*x</literal> or <literal>M2'*x</literal> depending on
+                                    an option <literal>t</literal>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>M2p</term>
                 <listitem>
-                    <literal>M2</literal>が関数の場合のみ指定する
-                    必要があります. この場合,
-                    <literal>M2p</literal>は<literal>M2'*x</literal>を返す関数です.
-                    <para/>
-                </listitem>
+                     <para><literal>M2</literal>が関数の場合のみ指定する
+                        必要があります. この場合,
+                        <literal>M2p</literal>は<literal>M2'*x</literal>を返す関数です.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>maxi</term>
                 <listitem>
-                    最大反復回数 (デフォルト: n).
-                    <para/>
-                </listitem>
+                     <para>
+                        最大反復回数 (デフォルト: n).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>tol</term>
                 <listitem>
-                    許容誤差 (デフォルト: 1000*%eps).
-                    <para/>
-                </listitem>
+                     <para>
+                        許容誤差 (デフォルト: 1000*%eps).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    解ベクトル.
-                    <para/>
-                </listitem>
+                     <para>
+                        解ベクトル.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>flag</term>
                 <listitem>
                     <itemizedlist>
                         <listitem>
-                            <varname>flag</varname>=0:
-                            <literal>gmr</literal> は
-                            <literal>maxi</literal>回の反復の間に
-                            許容誤差内に収束しました
+                             <para><varname>flag</varname>=0:
+                                <literal>gmr</literal> は
+                                <literal>maxi</literal>回の反復の間に
+                                許容誤差内に収束しました
+                            </para>
                         </listitem>
                         <listitem>
-                            <varname>flag</varname>=1:
-                            指定した<literal>maxi</literal>回の反復の間に
-                            収束しませんでした
+                             <para><varname>flag</varname>=1:
+                                指定した<literal>maxi</literal>回の反復の間に
+                                収束しませんでした
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>-7 &lt; flag &lt; 0</literal>: A breakdown occurred because
-                            one of the scalar quantities calculated was equal to zero.
+                             <para><literal>-7 &lt; flag &lt; 0</literal>: A breakdown occurred because
+                                one of the scalar quantities calculated was equal to zero.
+                            </para>
                         </listitem>
                     </itemizedlist>
                     <para/>
@@ -189,23 +206,26 @@
             <varlistentry>
                 <term>res</term>
                 <listitem>
-                    残差ベクトル.
-                    <para/>
-                </listitem>
+                     <para>
+                        残差ベクトル.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>err</term>
                 <listitem>
-                    最終残差ノルム.
-                    <para/>
-                </listitem>
+                     <para>
+                        最終残差ノルム.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>iter</term>
                 <listitem>
-                    実行した反復回数.
-                    <para/>
-                </listitem>
+                     <para>
+                        実行した反復回数.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

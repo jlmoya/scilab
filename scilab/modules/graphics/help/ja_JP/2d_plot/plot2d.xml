@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="plot2d" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="plot2d" xml:lang="ja">
     <refnamediv>
         <refname>plot2d</refname>
         <refpurpose>2Dプロット</refpurpose>
@@ -124,44 +121,43 @@
             <varlistentry>
                 <term>strf</term>
                 <listitem>
-                    3-character-long string <literal>"abc"</literal> specifying all
-                    together if legends must be displayed, and the values of
-                    <varname>frameflag</varname> and <varname>axesflag</varname>.
-                    By default, <literal>strf= "081"</literal>. "a", "b" and "c" are:
-                    <para/>
-                    <table cellpadding="0">
-                        <tr valign="top">
-                            <th>a :</th>
-                            <td>凡例の表示を制御します.
-                                <table cellpadding="0">
-                                    <tr><th>a=0 :</th><td>凡例なし.</td></tr>
-                                    <tr><th>a=1 :</th>
-                                        <td>凡例が表示されます.凡例は,
-                                            オプションの引数 <varname>leg</varname>で指定されます.
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <th>b :</th>
-                            <td>
-                                <varname>frameflag</varname> integer code in [0,9],
-                                controlling the computation the actual coordinate ranges,
-                                as described below.
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <th>c :</th>
-                            <td>
-                                <varname>axesflag</varname> integer code in [0:5 9],
-                                controlling the display and position of X and Y axes,
-                                as described below.
-                            </td>
-                        </tr>
-                    </table>
-                    <para/>
-                </listitem>
+                     <para>
+                        3-character-long string <literal>"abc"</literal> specifying all
+                        together if legends must be displayed, and the values of
+                        <varname>frameflag</varname> and <varname>axesflag</varname>.
+                        By default, <literal>strf= "081"</literal>. "a", "b" and "c" are:
+                        <table cellpadding="0">
+                            <tr valign="top">
+                                <th>a :</th>
+                                <td>凡例の表示を制御します.
+                                    <table cellpadding="0">
+                                        <tr><th>a=0 :</th><td>凡例なし.</td></tr>
+                                        <tr><th>a=1 :</th>
+                                            <td>凡例が表示されます.凡例は,
+                                                オプションの引数 <varname>leg</varname>で指定されます.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th>b :</th>
+                                <td>
+                                    <varname>frameflag</varname> integer code in [0,9],
+                                    controlling the computation the actual coordinate ranges,
+                                    as described below.
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <th>c :</th>
+                                <td>
+                                    <varname>axesflag</varname> integer code in [0:5 9],
+                                    controlling the display and position of X and Y axes,
+                                    as described below.
+                                </td>
+                            </tr>
+                        </table></para>
+                            </listitem>
             </varlistentry>
             <varlistentry>
                 <term>leg</term>
@@ -247,11 +243,11 @@
                 <table border="1" cellpadding="2">
                     <tr><th>frameflag</th><th>axes bounds</th>      <th>other actions</th></tr>
                     <tr align="center">
-                        <th>0</th>        <td>unchanged</td>        <td></td></tr>
+                        <th>0</th>        <td>unchanged</td>        <td/></tr>
                     <tr align="center">
-                        <th>1</th>        <td>from rect</td>        <td></td></tr>
+                        <th>1</th>        <td>from rect</td>        <td/></tr>
                     <tr align="center">
-                        <th>2</th>        <td>from input x,y</td>   <td></td></tr>
+                        <th>2</th>        <td>from input x,y</td>   <td/></tr>
                     <tr align="center">
                         <th>3</th>        <td>from rect</td>        <td>isometric axes</td></tr>
                     <tr align="center">
@@ -294,19 +290,19 @@
         <table border="1" cellpadding="2">
             <tr><th>axesFlag</th><th>.box</th><th>.axes_visible</th><th>axes position</th><th>comments</th></tr>
             <tr align="center">
-                <th>0</th><td>"off"</td><td>["off" "off"]</td><td></td>     <td>Naked plot</td></tr>
+                <th>0</th><td>"off"</td><td>["off" "off"]</td><td/>     <td>Naked plot</td></tr>
             <tr align="center">
-                <th>1</th><td>"on"</td> <td>["on" "on"]</td>  <td></td>     <td></td></tr>
+                <th>1</th><td>"on"</td> <td>["on" "on"]</td>  <td/>     <td/></tr>
             <tr align="center">
-                <th>2</th><td>"on"</td> <td>["off" "off"]</td><td></td>     <td>Naked box</td></tr>
+                <th>2</th><td>"on"</td> <td>["off" "off"]</td><td/>     <td>Naked box</td></tr>
             <tr align="center">
-                <th>3</th><td>"off"</td><td>["on" "on"]</td>  <td>y_location="right"</td><td></td></tr>
+                <th>3</th><td>"off"</td><td>["on" "on"]</td>  <td>y_location="right"</td><td/></tr>
             <tr align="center">
-                <th>4</th><td>"off"</td><td>["on" "on"]</td>  <td>crossed @ middle</td><td></td></tr>
+                <th>4</th><td>"off"</td><td>["on" "on"]</td>  <td>crossed @ middle</td><td/></tr>
             <tr align="center">
-                <th>5</th><td>"on"</td> <td>["on" "on"]</td>  <td>crossed @ middle</td><td></td></tr>
+                <th>5</th><td>"on"</td> <td>["on" "on"]</td>  <td>crossed @ middle</td><td/></tr>
             <tr align="center">
-                <th>9</th><td>"off"</td><td>["on" "on"]</td>  <td></td>     <td>(default setting)</td></tr>
+                <th>9</th><td>"off"</td><td>["on" "on"]</td>  <td/>     <td>(default setting)</td></tr>
         </table>
                 </listitem>
             </varlistentry>
@@ -416,67 +412,67 @@ x=[0:0.1:2*%pi]';
 //簡単なプロット
 plot2d(sin(x));
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(sin(x));
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 clf();
 x=[0:0.1:2*%pi]';
 plot2d(x,sin(x));
 //複数のプロット
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,sin(x));
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 clf();
 x=[0:0.1:2*%pi]';
 plot2d(x,[sin(x) sin(2*x) sin(3*x)])
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,[sin(x) sin(2*x) sin(3*x)])
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // フレームの次元を指定した複数プロット
 clf();
 plot2d(x,[sin(x) sin(2*x) sin(3*x)],rect=[0,0,6,0.5]);
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,[sin(x) sin(2*x) sin(3*x)],rect=[0,0,6,0.5]);
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 //凡例と目盛/スタイルを指定した複数プロット
 clf();
 plot2d(x,[sin(x) sin(2*x) sin(3*x)],..
        [1,2,3],leg="L1@L2@L3",nax=[2,10,2,10],rect=[0,-2,2*%pi,2]);
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,[sin(x) sin(2*x) sin(3*x)],..
             [1,2,3],leg="L1@L2@L3",nax=[2,10,2,10],rect=[0,-2,2*%pi,2]);
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // 等軸
 clf();
 plot2d(x,sin(x),1,frameflag= 4);
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,sin(x),1,frameflag= 4);
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // スケール
 clf();
 plot2d(x,sin(x),1,frameflag= 6);
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,sin(x),1,frameflag= 6);
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // 前のプロット/スタイルでオートスケール
 clf();
@@ -484,12 +480,12 @@ plot2d(x,sin(x),-1);
 plot2d(x,2*sin(x),12);
 plot2d(2*x,cos(x),3);
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,sin(x),-1);
             plot2d(x,2*sin(x),12);
             plot2d(2*x,cos(x),3);
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // 軸を右に
 clf();
@@ -497,12 +493,12 @@ plot2d(x,sin(x),leg="sin(x)");
 a=gca(); // 軸エンティティのハンドル
 a.y_location ="right";
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,sin(x),leg="sin(x)");
             a=gca(); // Handle on axes entity
             a.y_location ="right";
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // 軸の中心を (0,0) に
 clf();
@@ -523,7 +519,7 @@ leg.font_style = 9;
 leg.line_mode = "on";
 isoview off
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             // axis centered at (0,0)
             clf();
             x = [0:0.1:2*%pi]';
@@ -542,7 +538,7 @@ isoview off
             leg.font_style = 9;
             leg.line_mode = "on";
             isoview("off")
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>参照</title>

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="assert_checkequal" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="assert_checkequal" xml:lang="ru">
     <refnamediv>
         <refname>assert_checkequal</refname>
         <refpurpose>Проверка того, что вычисленное и ожидаемое значения равны.</refpurpose>
@@ -196,21 +193,29 @@ assert_checkequal: Assertion failed: expected= lib@SCI\modules\core\macros\  whi
                 <revdescription>
                     <itemizedlist>
                       <listitem>
-                          Сравнение двух неявных списков, Scilab-функций, Scilab-библиотек,
-                          встроенных функций или графических дескрипторов теперь всегда возможны и
-                          и должным образом выполняются.
+                           <para>
+                              Сравнение двух неявных списков, Scilab-функций, Scilab-библиотек,
+                              встроенных функций или графических дескрипторов теперь всегда возможны и
+                              и должным образом выполняются.
+                          </para>
                       </listitem>
                       <listitem>
-                          В двух списках теперь поддерживаются элементы void и Nan и соответствующие
-                          элементы рассматриваются как равные.
+                           <para>
+                              В двух списках теперь поддерживаются элементы void и Nan и соответствующие
+                              элементы рассматриваются как равные.
+                          </para>
                       </listitem>
                       <listitem>
-                          Nan теперь поддерживаются во входных разрежённых матрицах и считаются
-                          равными.
+                           <para>
+                              Nan теперь поддерживаются во входных разрежённых матрицах и считаются
+                              равными.
+                          </para>
                       </listitem>
                       <listitem>
-                          При провалах тестов, когда на входе массивы, сообщение теперь указывает
-                          индекс первого несовпадающего элемента.
+                           <para>
+                              При провалах тестов, когда на входе массивы, сообщение теперь указывает
+                              индекс первого несовпадающего элемента.
+                          </para>
                       </listitem>
                    </itemizedlist>
                 </revdescription>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="gcd">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="gcd">
     <refnamediv>
         <refname>gcd</refname>
         <refpurpose>Greatest (positive) Common Divisor</refpurpose>
@@ -88,12 +85,14 @@
                     <literal>size(U) == [length(P) length(P)]</literal>
                 </listitem>
                 <listitem>
-                    <literal>matrix(P,1,-1)*U = [0...0 gpcd]</literal> with
-                    <literal>length(P)-1</literal> leading zeros
+                     <para><literal>matrix(P,1,-1)*U = [0...0 gpcd]</literal> with
+                        <literal>length(P)-1</literal> leading zeros
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>det(U)</literal> is <literal>1</literal> or
-                    <literal>-1</literal>.
+                     <para><literal>det(U)</literal> is <literal>1</literal> or
+                        <literal>-1</literal>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -164,15 +163,20 @@ gcd([0 0])
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>int64</literal> and <literal>uint64</literal> input integers
-                            are now supported.
+                             <para><literal>int64</literal> and <literal>uint64</literal> input integers
+                                are now supported.
+                            </para>
                         </listitem>
                         <listitem>
-                            The input <literal>P</literal> may be any array instead of a row vector.
+                             <para>
+                                The input <literal>P</literal> may be any array instead of a row vector.
+                            </para>
                         </listitem>
                         <listitem>
-                            For input integers possibly negative, the returned GCD is now always
-                            positive.
+                             <para>
+                                For input integers possibly negative, the returned GCD is now always
+                                positive.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

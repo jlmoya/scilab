@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="set">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="set">
     <refnamediv>
         <refname>set</refname>
         <refpurpose>
@@ -43,56 +40,62 @@
             <varlistentry>
                 <term>h</term>
                 <listitem>
-                    Handle of the graphic entity whose properti(es) must be set.
-                    <literal>h</literal> can be a vector of handles. In this case, set(..) modifies
-                    the property for all <literal>h</literal> components.
-                    <para/>
-                </listitem>
+                     <para>
+                        Handle of the graphic entity whose properti(es) must be set.
+                        <literal>h</literal> can be a vector of handles. In this case, set(..) modifies
+                        the property for all <literal>h</literal> components.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>tagsPath</term>
                 <listitem>
-                    Case-sensitive character string providing the tag or the tags-path leading
-                    to the graphic component to process.
-                    This path is made of the strings recorded in the <literal>.Tag</literal>
-                    property of the parent figure and of the chain of its children down to
-                    the target, like <literal>"figuretag"</literal> to target the figure
-                    with figure.tag=="figuretag", or <literal>"figuretag/entitytag"</literal>
-                    to target one of its children (as for an axes, a main uimenu item, a
-                    block of legends,..), or <literal>"figuretag/entity1tag/entity2tag"</literal>,
-                    etc. Wildcards can also be used for multi-paths search.
-                    <para/>
-                </listitem>
+                     <para>
+                        Case-sensitive character string providing the tag or the tags-path leading
+                        to the graphic component to process.
+                        This path is made of the strings recorded in the <literal>.Tag</literal>
+                        property of the parent figure and of the chain of its children down to
+                        the target, like <literal>"figuretag"</literal> to target the figure
+                        with figure.tag=="figuretag", or <literal>"figuretag/entitytag"</literal>
+                        to target one of its children (as for an axes, a main uimenu item, a
+                        block of legends,..), or <literal>"figuretag/entity1tag/entity2tag"</literal>,
+                        etc. Wildcards can also be used for multi-paths search.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>prop, prop2, ...</term>
                 <listitem>
-                    Scalar characters strings: Case-insensitive name of the properties to set.
-                    <para/>
-                </listitem>
+                     <para>
+                        Scalar characters strings: Case-insensitive name of the properties to set.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>val, val2, ...</term>
                 <listitem>
-                    value to assign to the property. Its type depends on the considered property.
-                    If <varname>h</varname> and <varname>val</varname> are vectors or matrices
-                    of same size, the multiple settings are done in an element-wise way.
-                    <para/>
-                </listitem>
+                     <para>
+                        value to assign to the property. Its type depends on the considered property.
+                        If <varname>h</varname> and <varname>val</varname> are vectors or matrices
+                        of same size, the multiple settings are done in an element-wise way.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>fig</term>
                 <listitem>
-                    Handle of a graphical figure.
-                    <para/>
-                </listitem>
+                     <para>
+                        Handle of a graphical figure.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>axes</term>
                 <listitem>
-                    Handle of an axes.
-                    <para/>
-                </listitem>
+                     <para>
+                        Handle of an axes.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -121,23 +124,26 @@
             When <varname>h</varname> is a matrix of handles,
             <itemizedlist>
                 <listitem>
-                    if <varname>val</varname> is a matrix of same size: assignments are done in a
-                    element-wise way: <literal>set(h, prop, val)</literal> sets
-                    <literal>h(1)(prop)=val(1)</literal>, <literal>h(2)(prop)=val(2)</literal>, ...,
-                    <literal>h($)(prop)=val($)</literal>.
-                    Most often, the simpler syntax <literal>h(tag) = val</literal> does it as well.
+                     <para>
+                        if <varname>val</varname> is a matrix of same size: assignments are done in a
+                        element-wise way: <literal>set(h, prop, val)</literal> sets
+                        <literal>h(1)(prop)=val(1)</literal>, <literal>h(2)(prop)=val(2)</literal>, ...,
+                        <literal>h($)(prop)=val($)</literal>.
+                        Most often, the simpler syntax <literal>h(tag) = val</literal> does it as well.
+                    </para>
                 </listitem>
                 <listitem>
-                    otherwise: The same and whole <varname>val</varname> value (that may be scalar
-                    or not) is assigned to every <literal>h(i)(prop)</literal> component.
-                    <warning>
-                        If <varname>val</varname> is a cell array of same size as
-                        <varname>h</varname>, it is assigned as a whole as well. For instance,
-                        <literal>set([gcf() gca()], "user_data", {"Text", 1})</literal> will do
-                        <literal>gcf().user_data = {"Text", 1}, gca().user_data = {"Text", 1}</literal>,
-                        not <literal>gcf().user_data = "Text", gca().user_data = 1</literal>.
-                    </warning>
-                </listitem>
+                     <para>
+                        otherwise: The same and whole <varname>val</varname> value (that may be scalar
+                        or not) is assigned to every <literal>h(i)(prop)</literal> component.
+                        <warning>
+                            If <varname>val</varname> is a cell array of same size as
+                            <varname>h</varname>, it is assigned as a whole as well. For instance,
+                            <literal>set([gcf() gca()], "user_data", {"Text", 1})</literal> will do
+                            <literal>gcf().user_data = {"Text", 1}, gca().user_data = {"Text", 1}</literal>,
+                            not <literal>gcf().user_data = "Text", gca().user_data = 1</literal>.
+                        </warning></para>
+                              </listitem>
             </itemizedlist>
         </para>
         <para>
@@ -295,10 +301,14 @@ get("myframe/example", "string")
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            First input argument can now be a path pointing to the graphic entity.
+                             <para>
+                                First input argument can now be a path pointing to the graphic entity.
+                            </para>
                         </listitem>
                         <listitem>
-                            Multiple property setting is now available at once.
+                             <para>
+                                Multiple property setting is now available at once.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

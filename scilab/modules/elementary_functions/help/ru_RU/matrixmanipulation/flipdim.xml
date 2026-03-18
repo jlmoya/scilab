@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="flipdim" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="flipdim" xml:lang="ru">
     <refnamediv>
         <refname>flipdim</refname>
         <refpurpose>меняем порядок (частей) строк, столбцов, страниц... массива</refpurpose>
@@ -81,7 +78,7 @@
             <varname>x</varname> на <literal>size(x,1)/blockSize</literal> блоков
             из <varname>blockSize</varname> строк (<literal>dim=1</literal>),
             или в <literal>size(x,2)/blockSize</literal> блоков из <varname>blockSize</varname>
-            столбцов (<literal>dim=2</literal>) и т.д. (<literal>dim>2</literal>)
+            столбцов (<literal>dim=2</literal>) и т.д. (<literal>dim&gt;2</literal>)
             и меняет их порядок. В каждом блоке меняется порядок элементов (строк, столбцов,
             страниц и т.д.).
         </para>
@@ -158,7 +155,7 @@ flipdim(X, 2, 6) // => [6 7 8 9 10 11   0 1 2 3 4 5]
   9 -6 -7  0
   8 -7 -8 -1
 ]]></screen>
-    <para></para>
+    <para/>
     <screen><![CDATA[
 --> x
  x  =
@@ -180,7 +177,7 @@ flipdim(X, 2, 6) // => [6 7 8 9 10 11   0 1 2 3 4 5]
   9  4 -3
  -4 -8 -3
 ]]></screen>
-    <para></para>
+    <para/>
     <screen><![CDATA[
 --> x
  x  =
@@ -226,12 +223,16 @@ flipdim(X, 2, 6) // => [6 7 8 9 10 11   0 1 2 3 4 5]
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Расширение на все обычные типы данных: логические, целые числа,
-                            строковые, полиномы, дробно-рациональны, графические указатели и т.д.
+                             <para>
+                                Расширение на все обычные типы данных: логические, целые числа,
+                                строковые, полиномы, дробно-рациональны, графические указатели и т.д.
+                            </para>
                         </listitem>
                         <listitem>
-                            Новый входной аргумент <literal>blockSize</literal> для поблокового
-                            переключения <literal>x</literal>.
+                             <para>
+                                Новый входной аргумент <literal>blockSize</literal> для поблокового
+                                переключения <literal>x</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

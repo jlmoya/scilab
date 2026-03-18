@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="typeof" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="typeof" xml:lang="en">
     <refnamediv>
         <refname>typeof</refname>
         <refpurpose>explicit type or overloading code of an object</refpurpose>
@@ -258,7 +255,7 @@
                 <td>is the typeof undefined elements in lists.</td>
             </tr>
             <tr>
-                <td colspan="2"></td>
+                <td colspan="2"/>
             </tr>
             <tr>
                 <td colspan="2">
@@ -275,7 +272,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2"></td>
+                <td colspan="2"/>
             </tr>
             <tr>
                 <td colspan="2">
@@ -648,27 +645,39 @@ h5close(a)
                 <revnumber>6.0</revnumber>
                 <revdescription>
                     <itemizedlist>
-                        <listitem>"overload" keyword added. </listitem>
-                        <listitem>typeof "uint64" and "int64" added. </listitem>
                         <listitem>
-                            typeof "hypermat" removed. Hypermatrices of any homogeneous type are now
-                            natively supported.
-                        </listitem>
-                        <listitem>typeof "listdelete" added (as returned by null()).</listitem>
-                        <listitem>typeof() can now be used for any undefined element of a list.
-                          It then returns the new "void" typeof.
-                        </listitem>
-                        <listitem>
-                            The typeof of T-lists and M-lists were limited to 8 characters. They may
-                            be longer now.
-                        </listitem>
-                        <listitem>
-                            typeof "size implicit" renamed "implicitlist" (<literal>1:$</literal>)
-                        </listitem>
-                        <listitem>Help page reviewed.</listitem>
-                    </itemizedlist>
-                </revdescription>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                             <para>"overload" keyword added. </para></listitem>
+                            <listitem>
+                                 <para>typeof "uint64" and "int64" added. </para></listitem>
+                                <listitem>
+                                     <para>
+                                        typeof "hypermat" removed. Hypermatrices of any homogeneous type are now
+                                        natively supported.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                     <para>typeof "listdelete" added (as returned by null()).</para></listitem>
+                                    <listitem>
+                                         <para>typeof() can now be used for any undefined element of a list.
+                                          It then returns the new "void" typeof.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>
+                                            The typeof of T-lists and M-lists were limited to 8 characters. They may
+                                            be longer now.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>
+                                            typeof "size implicit" renamed "implicitlist" (<literal>1:$</literal>)
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>Help page reviewed.</para></listitem>
+                                    </itemizedlist>
+                                </revdescription>
+                            </revision>
+                        </revhistory>
+                    </refsection>
+                </refentry>

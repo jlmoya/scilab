@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="uicontrol_properties" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="uicontrol_properties" xml:lang="ja">
     <refnamediv>
         <refname>uicontrolプロパティ</refname>
         <refpurpose>uicontrolプロパティの説明.</refpurpose>
@@ -373,10 +370,14 @@
                         Sets or gets the position and size of the component, the referential being
                         <itemizedlist>
                           <listitem>
-                            .parent.axes_size, if .parent is a Figure
+                               <para>
+                                .parent.axes_size, if .parent is a Figure
+                              </para>
                           </listitem>
                           <listitem>
-                            .parent.position, if .parent is a uicontrol Frame.
+                               <para>
+                                .parent.position, if .parent is a uicontrol Frame.
+                              </para>
                           </listitem>
                        </itemizedlist>
                     </para>
@@ -384,15 +385,21 @@
                        The value is a vector [x y w h] where
                        <itemizedlist>
                           <listitem>
-                            x is the horizontal position of the left side of the component with
-                            respect to the left edge of the referential.
+                               <para>
+                                x is the horizontal position of the left side of the component with
+                                respect to the left edge of the referential.
+                              </para>
                           </listitem>
                           <listitem>
-                            y is the vertical position of the bottom side of the component with
-                            respect to the bottom edge of the referential.
+                               <para>
+                                y is the vertical position of the bottom side of the component with
+                                respect to the bottom edge of the referential.
+                              </para>
                           </listitem>
                           <listitem>
-                            w and h are the width and height of the uicontrol component.
+                               <para>
+                                w and h are the width and height of the uicontrol component.
+                              </para>
                           </listitem>
                        </itemizedlist>
                        x, y, w, h can also be set through a "x|y|w|h" single string, with "|"
@@ -402,7 +409,7 @@
                         The unit is set by the .Units property.
                     </para>
                     <para>
-                        For sliders: w > h sets the slider horizontally, and vertically otherwise.
+                        For sliders: w &gt; h sets the slider horizontally, and vertically otherwise.
                     </para>
                 </listitem>
             </varlistentry>
@@ -587,12 +594,16 @@
                          Normalized positions and sizes are in [0, 1]:
                          <itemizedlist>
                              <listitem>
-                               If .parent is a "figure", they are within and refer to the
-                               .parent.axes_size area.
+                                  <para>
+                                   If .parent is a "figure", they are within and refer to the
+                                   .parent.axes_size area.
+                                 </para>
                              </listitem>
                              <listitem>
-                               If .parent is an uicontrol of style "frame", they are within and
-                               refer to the .parent.position area.
+                                  <para>
+                                   If .parent is an uicontrol of style "frame", they are within and
+                                   refer to the .parent.position area.
+                                 </para>
                              </listitem>
                          </itemizedlist>
                     </para>
@@ -806,26 +817,31 @@ counter_main_fig.visible = "on";
                     <para>
                     <itemizedlist>
                         <listitem>
-                            プロパティが追加・更新されました: <literal>.Border</literal>,
-                            <literal>.Scrollable</literal>, <literal>.Groupname</literal>,
-                            <literal>.Icon</literal>, <literal>.Margins</literal>,
-                            <literal>.Layout</literal>, <literal>.Layout_options</literal>, for tabs:
-                            <literal>.Title_position</literal>, <literal>.Title_scroll</literal>.
+                             <para>
+                                プロパティが追加・更新されました: <literal>.Border</literal>,
+                                <literal>.Scrollable</literal>, <literal>.Groupname</literal>,
+                                <literal>.Icon</literal>, <literal>.Margins</literal>,
+                                <literal>.Layout</literal>, <literal>.Layout_options</literal>, for tabs:
+                                <literal>.Title_position</literal>, <literal>.Title_scroll</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>.Max</literal>-<literal>.Min</literal> sets the maximal number
-                            of items that can be selected in a <literal>.listbox</literal>, or the
-                            number of multiple lines displayed in an <literal>.edit</literal>.
+                             <para><literal>.Max</literal>-<literal>.Min</literal> sets the maximal number
+                                of items that can be selected in a <literal>.listbox</literal>, or the
+                                number of multiple lines displayed in an <literal>.edit</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>.String</literal>プロパティが <literal>listbox</literal>および
-                            <literal>combobox</literal> uicontrolsで色を設定する
-                            際に使用されるようになりました.
+                             <para><literal>.String</literal>プロパティが <literal>listbox</literal>および
+                                <literal>combobox</literal> uicontrolsで色を設定する
+                                際に使用されるようになりました.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>.Backgroundcolor</literal> および
-                            <literal>.Foregroundcolor</literal> プロパティが
-                            オペレーティングシステム固有の値を管理するようになりました.
+                             <para><literal>.Backgroundcolor</literal> および
+                                <literal>.Foregroundcolor</literal> プロパティが
+                                オペレーティングシステム固有の値を管理するようになりました.
+                            </para>
                         </listitem>
                     </itemizedlist>
                    </para>

@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="cutaxes" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="cutaxes" xml:lang="fr">
     <refnamediv>
         <refname>cutaxes</refname>
         <refpurpose>
@@ -87,19 +84,25 @@
                         vecteur ou matrice d'abscisses réelles.
                         <itemizedlist>
                             <listitem>
-                                Si <varname>x</varname> et <varname>y</varname> sont des vecteurs,
-                                il faut <literal>length(x)==length(y)</literal>
+                                 <para>
+                                    Si <varname>x</varname> et <varname>y</varname> sont des vecteurs,
+                                    il faut <literal>length(x)==length(y)</literal>
+                                        </para>
+                                    </listitem>
+                            <listitem>
+                                 <para>
+                                    Si <varname>x</varname> est un vecteur et <varname>y</varname> est
+                                    une matrice, les mêmes abscisses sont partagées par toutes les
+                                    courbes données en colonnes de <varname>y</varname>, et nous devons
+                                    avoir <literal>length(x)==size(y,1)</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Si <varname>x</varname> est un vecteur et <varname>y</varname> est
-                                une matrice, les mêmes abscisses sont partagées par toutes les
-                                courbes données en colonnes de <varname>y</varname>, et nous devons
-                                avoir <literal>length(x)==size(y,1)</literal>.
-                            </listitem>
-                            <listitem>
-                                Si <varname>x</varname> et <varname>y</varname> sont des matrices,
-                                elles doivent être de mêmes tailles. <literal>x(:,i)</literal> sont
-                                alors les abscisses respectives de <literal>y(:,i)</literal>.
+                                 <para>
+                                    Si <varname>x</varname> et <varname>y</varname> sont des matrices,
+                                    elles doivent être de mêmes tailles. <literal>x(:,i)</literal> sont
+                                    alors les abscisses respectives de <literal>y(:,i)</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -148,7 +151,7 @@
                         portions de l'axe peuvent être ordonnées et présentées à souhait.
                     </para>
                     <para>
-                        Si un intervalle est spécifié tel que <literal>start > end</literal>, l'axe
+                        Si un intervalle est spécifié tel que <literal>start &gt; end</literal>, l'axe
                         est inversé sur la partie concernée.
                     </para>
                 </listitem>
@@ -266,13 +269,15 @@
                         liste de vecteurs d'identifiants graphiques des morceaux des courbes tracées.
                         <itemizedlist>
                             <listitem>
-                                <literal>curves(i)</literal> est le vecteur des identifiants graphiques
-                                de toutes les sections tracées pour la courbe n° i définie dans
-                                <literal>y(:,i)</literal>.
+                                 <para><literal>curves(i)</literal> est le vecteur des identifiants graphiques
+                                    de toutes les sections tracées pour la courbe n° i définie dans
+                                    <literal>y(:,i)</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>curves(i)(j)</literal> adresse la courbe n° i tracée sur
-                                l'intervalle n° j défini par <literal>intervals(j,:)</literal>.
+                                 <para><literal>curves(i)(j)</literal> adresse la courbe n° i tracée sur
+                                    l'intervalle n° j défini par <literal>intervals(j,:)</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -284,7 +289,7 @@
                         section en tirets. Un exemple est fourni et illustré plus loin.
                     </para>
                     <note>
-                        Le vecteur des identifiants des courbes n° c1 à c2 > c1 pour l'unique
+                        Le vecteur des identifiants des courbes n° c1 à c2 &gt; c1 pour l'unique
                         intervalle n° i est donné par
                         <literal>Axes(i).children($).children($-c1+1:-1:$-c2+1)</literal>.
                     </note>
@@ -325,13 +330,16 @@
             fonctionnalités suivantes :
             <itemizedlist>
                 <listitem>
-                    <literal>subplot(..)</literal> ou <literal>xsetech(..)</literal> peuvent être
-                    utilisées pour définir la zone de dessin avant d'appeler
-                    <function>cutaxes()</function>.
+                     <para><literal>subplot(..)</literal> ou <literal>xsetech(..)</literal> peuvent être
+                        utilisées pour définir la zone de dessin avant d'appeler
+                        <function>cutaxes()</function>.
+                    </para>
                 </listitem>
                 <listitem>
-                    Un rectangle à zoomer portant sur plusieurs intervalles peut être défini de
-                    manière interactive.
+                     <para>
+                        Un rectangle à zoomer portant sur plusieurs intervalles peut être défini de
+                        manière interactive.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>

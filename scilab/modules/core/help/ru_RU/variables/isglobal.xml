@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="ru" xml:id="isglobal">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="isglobal">
     <refnamediv>
         <refname>isglobal</refname>
         <refpurpose>проверяет имеет ли локальная переменная глобальную копию</refpurpose>
@@ -54,13 +51,17 @@
         <important>
             <itemizedlist>
                 <listitem>
-                    Если <literal>x</literal> определена в глобальном пространстве, но не в локальном,
-                    то <literal>isglobal("x")</literal> вернёт <literal>%F</literal>
-                    (как <literal>isdef("x")</literal>).
+                     <para>
+                        Если <literal>x</literal> определена в глобальном пространстве, но не в локальном,
+                        то <literal>isglobal("x")</literal> вернёт <literal>%F</literal>
+                        (как <literal>isdef("x")</literal>).
+                    </para>
                 </listitem>
                 <listitem>
-                    Если <varname>varname</varname> является текстом, не соответствующим имени какой-либо
-                    переменной, то ошибки не возникает и возвращается <literal>%F</literal>.
+                     <para>
+                        Если <varname>varname</varname> является текстом, не соответствующим имени какой-либо
+                        переменной, то ошибки не возникает и возвращается <literal>%F</literal>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </important>

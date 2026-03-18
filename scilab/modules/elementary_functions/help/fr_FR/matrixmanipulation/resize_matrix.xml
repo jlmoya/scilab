@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="fr">
     <refnamediv>
         <refname>resize_matrix</refname>
         <refpurpose>élague et/ou étend (et convertit) une matrice ou une hypermatrice</refpurpose>
@@ -86,7 +83,7 @@
                     </para>
                     <para>
                         Si <varname>newSizes</varname> est plus long que <literal>size(mat)</literal>
-                        avec <literal>newSizes($)>1</literal>, une ou plusieurs dimensions sont
+                        avec <literal>newSizes($)&gt;1</literal>, une ou plusieurs dimensions sont
                         ajoutées à <varname>mat</varname>. Exemple: si <varname>mat</varname> telle
                         que <literal>size(mat)==[ 4 3 ]</literal> est fournie avec
                         <literal>newSizes=[6 2 2]</literal>, le résultat sera une hypermatrice de
@@ -251,16 +248,24 @@ resize_matrix(P, [3 3 2], "", %z)
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Les polynômes et les hypermatrices sont désormais acceptés.
+                             <para>
+                                Les polynômes et les hypermatrices sont désormais acceptés.
+                            </para>
                         </listitem>
                         <listitem>
-                            La valeur affectée aux éléments d'extension peut être spécifiée.
+                             <para>
+                                La valeur affectée aux éléments d'extension peut être spécifiée.
+                            </para>
                         </listitem>
                         <listitem>
-                            Les nouvelles tailles peuvent être spécifiées dans un vecteur.
+                             <para>
+                                Les nouvelles tailles peuvent être spécifiées dans un vecteur.
+                            </para>
                         </listitem>
                         <listitem>
-                            resize_matrix() appelée sans paramètres affiche des exemples de démonstration.
+                             <para>
+                                resize_matrix() appelée sans paramètres affiche des exemples de démonstration.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

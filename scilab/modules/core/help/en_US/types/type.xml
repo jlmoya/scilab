@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-    xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-    xml:lang="en" xml:id="type">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="type">
     <refnamediv>
         <refname>type</refname>
         <refpurpose>returns the type of a Scilab object</refpurpose>
@@ -54,113 +51,144 @@
         <variablelist>
             <varlistentry>
                 <term>1</term>
-                <listitem>decimal or complex numbers
+                <listitem>
+                     <para>decimal or complex numbers
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>2</term>
                 <listitem>
-                    <link linkend="poly">polynomials</link> with real or complex coefficients
+                     <para><link linkend="poly">polynomials</link> with real or complex coefficients
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>4</term>
                 <listitem>
-                    booleans
+                     <para>
+                        booleans
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>5</term>
                 <listitem>
-                    a <link linkend="sparse">sparse matrix</link>.
+                     <para>
+                        a <link linkend="sparse">sparse matrix</link>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>6</term>
                 <listitem>
-                    a <link linkend="sparse">sparse boolean matrix</link>.
+                     <para>
+                        a <link linkend="sparse">sparse boolean matrix</link>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>7</term>
                 <listitem>
-                    Matlab sparse matrix
+                     <para>
+                        Matlab sparse matrix
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>8</term>
                 <listitem>
-                    <link linkend="int8">integers</link> stored on 1 (<literal>int8</literal>), 2 (<literal>int16</literal>), 4 (<literal>int32</literal>), or 8 (<literal>int64</literal>) bytes.
+                     <para><link linkend="int8">integers</link> stored on 1 (<literal>int8</literal>), 2 (<literal>int16</literal>), 4 (<literal>int32</literal>), or 8 (<literal>int64</literal>) bytes.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>9</term>
                 <listitem>
-                    <link linkend="graphics_entities">graphic handles</link>.
+                     <para><link linkend="graphics_entities">graphic handles</link>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>10</term>
                 <listitem>
-                    <link linkend="strings">character string</link>.
+                     <para><link linkend="strings">character string</link>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>13</term>
                 <listitem>
-                    a compiled <link linkend="function">function</link> in Scilab code.
+                     <para>
+                        a compiled <link linkend="function">function</link> in Scilab code.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>14</term>
                 <listitem>
-                    <link linkend="library">library</link> of compiled Scilab functions.
+                     <para><link linkend="library">library</link> of compiled Scilab functions.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>15</term>
                 <listitem>
-                    a simple <link linkend="list">list</link>.
+                     <para>
+                        a simple <link linkend="list">list</link>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>16</term>
                 <listitem>
-                    a typed list (<link linkend="tlist">tlist</link>).
+                     <para>
+                        a typed list (<link linkend="tlist">tlist</link>).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>17</term>
                 <listitem>
-                    a matrix-oriented typed list (<link linkend="mlist">mlist</link>).
+                     <para>
+                        a matrix-oriented typed list (<link linkend="mlist">mlist</link>).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>128</term>
                 <listitem>
-                    an identifier of a Xcos block, of a <link linkend="lufact">lufact</link>()'s result,
-                    etc.
+                     <para>
+                        an identifier of a Xcos block, of a <link linkend="lufact">lufact</link>()'s result,
+                        etc.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>129</term>
                 <listitem>
-                    a size implicit polynomial used for indexing.
+                     <para>
+                        a size implicit polynomial used for indexing.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>130</term>
                 <listitem>
-                    a built-in Scilab function, aka <emphasis role="italic">gateway</emphasis> (C, C++ or Fortran code).
+                     <para>
+                        a built-in Scilab function, aka <emphasis role="italic">gateway</emphasis> (C, C++ or Fortran code).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>0</term>
                 <listitem>
-                    An undefined element of a list (with a typeof <literal>void</literal>, such as
-                    in the function call <literal>foo(a,,b)</literal>, or in
-                    <literal>list(%pi,,%i,,,%z)</literal>), or a null object of typeof
-                    <literal>listdelete</literal> returned by <literal>null()</literal>.
+                     <para>
+                        An undefined element of a list (with a typeof <literal>void</literal>, such as
+                        in the function call <literal>foo(a,,b)</literal>, or in
+                        <literal>list(%pi,,%i,,,%z)</literal>), or a null object of typeof
+                        <literal>listdelete</literal> returned by <literal>null()</literal>.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>

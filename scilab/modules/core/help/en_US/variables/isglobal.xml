@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="isglobal">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="isglobal">
     <refnamediv>
         <refname>isglobal</refname>
         <refpurpose>checks if a local variable has a global counterpart</refpurpose>
@@ -54,13 +51,17 @@
         <important>
             <itemizedlist>
                 <listitem>
-                    If <literal>x</literal> is defined in the global space but not in the local
-                    one, <literal>isglobal("x")</literal> will return <literal>%F</literal>
-                    (as <literal>isdef("x")</literal>).
+                     <para>
+                        If <literal>x</literal> is defined in the global space but not in the local
+                        one, <literal>isglobal("x")</literal> will return <literal>%F</literal>
+                        (as <literal>isdef("x")</literal>).
+                    </para>
                 </listitem>
                 <listitem>
-                    If <varname>varname</varname> is a text not corresponding to the name of any
-                    variable, no error occurs and <literal>%F</literal> is returned.
+                     <para>
+                        If <varname>varname</varname> is a text not corresponding to the name of any
+                        variable, no error occurs and <literal>%F</literal> is returned.
+                    </para>
                 </listitem>
             </itemizedlist>
         </important>

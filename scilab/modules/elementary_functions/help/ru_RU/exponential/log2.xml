@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="log2" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="log2" xml:lang="ru">
     <refnamediv>
         <refname>log2</refname>
         <refpurpose>
@@ -69,11 +66,14 @@
             <note>
                 <itemizedlist>
                     <listitem>
-                        <literal>[m, e] = log2([0 %nan -%inf %inf])</literal> возвращает
-                        <literal>m=[0  NaN -Inf Inf]</literal> и <literal>e=[0 0 0 0]</literal>.
+                         <para><literal>[m, e] = log2([0 %nan -%inf %inf])</literal> возвращает
+                            <literal>m=[0  NaN -Inf Inf]</literal> и <literal>e=[0 0 0 0]</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                        Этот синтаксис соответствует функции frexp() ANSI C.
+                         <para>
+                            Этот синтаксис соответствует функции frexp() ANSI C.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </note>

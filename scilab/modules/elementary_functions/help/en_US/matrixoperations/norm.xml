@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="norm" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="norm" xml:lang="en">
     <refnamediv>
         <refname>norm</refname>
         <refpurpose>norms of a vector or a matrix</refpurpose>
@@ -41,22 +38,9 @@
             <varlistentry>
                 <term>normType</term>
                 <listitem>
-                    <para>
-                        <itemizedlist>
-                            <listitem>
-                                For a matrix <literal>x</literal>: a number among
-                                <literal>1, 2, %inf, -%inf</literal>, or a word among
-                                <literal>"inf"</literal> (or <literal>"i"</literal>) or
-                                <literal>"fro"</literal> (or <literal>"f"</literal>).
-                            </listitem>
-                            <listitem>
-                                For a vector <literal>x</literal>: any number or <literal>%inf</literal>,
-                                <literal>-%inf</literal>; or a word <literal>"inf"</literal>
-                                (<literal>"i"</literal>), <literal>"fro"</literal> (<literal>"f"</literal>).
-                            </listitem>
-                        </itemizedlist>
+                     <para>
+                        Default value = 2.
                     </para>
-                    Default value = 2.
                 </listitem>
             </varlistentry>
             <varlistentry>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="printf_conversion" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="printf_conversion" xml:lang="en">
     <refnamediv>
         <refname>printf_conversion</refname>
         <refpurpose>mprintf, msprintf, mfprintf C-format specifications
@@ -122,22 +119,30 @@
                 </para>
                 <itemizedlist>
                     <listitem>
-                        The minimum number of digits to appear for <literal>d</literal>,
-                        <literal>u</literal>, <literal>o</literal>, <literal>x</literal>, or
-                        <literal>X</literal> conversions.
+                         <para>
+                            The minimum number of digits to appear for <literal>d</literal>,
+                            <literal>u</literal>, <literal>o</literal>, <literal>x</literal>, or
+                            <literal>X</literal> conversions.
+                        </para>
                     </listitem>
                     <listitem>
-                        The number of digits to appear after the decimal point for
-                        <literal>e</literal>, <literal>E</literal>, and <literal>f</literal>
-                        conversions.
+                         <para>
+                            The number of digits to appear after the decimal point for
+                            <literal>e</literal>, <literal>E</literal>, and <literal>f</literal>
+                            conversions.
+                        </para>
                     </listitem>
                     <listitem>
-                        The maximum number of significant digits for
-                        <literal>g</literal> and <literal>G</literal> conversions.
+                         <para>
+                            The maximum number of significant digits for
+                            <literal>g</literal> and <literal>G</literal> conversions.
+                        </para>
                     </listitem>
                     <listitem>
-                        The maximum number of characters to be printed from a string in
-                        an <literal>s</literal> conversion.
+                         <para>
+                            The maximum number of characters to be printed from a string in
+                            an <literal>s</literal> conversion.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </listitem>
@@ -249,15 +254,21 @@
                             specification.
                             <itemizedlist>
                                 <listitem>
-                                    If no precision is specified, six digits are output.
+                                     <para>
+                                        If no precision is specified, six digits are output.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    If the precision is zero, no decimal point appears and
-                                    the system outputs a number rounded to the integer nearest to
-                                    <literal>value</literal>.
+                                     <para>
+                                        If the precision is zero, no decimal point appears and
+                                        the system outputs a number rounded to the integer nearest to
+                                        <literal>value</literal>.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    If a decimal point is output, at least one digit is output before it.
+                                     <para>
+                                        If a decimal point is output, at least one digit is output before it.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </td>
@@ -272,16 +283,22 @@
                             specification.
                             <itemizedlist>
                                 <listitem>
-                                    If no precision is specified, six digits are output.
+                                     <para>
+                                        If no precision is specified, six digits are output.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    If the precision is zero, no decimal point appears.
+                                     <para>
+                                        If the precision is zero, no decimal point appears.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    The <literal>E</literal> conversion character produces a
-                                    number with E instead of e before the exponent. The exponent
-                                    always contains at least two digits. If the value is zero, the
-                                    exponent is zero.
+                                     <para>
+                                        The <literal>E</literal> conversion character produces a
+                                        number with E instead of e before the exponent. The exponent
+                                        always contains at least two digits. If the value is zero, the
+                                        exponent is zero.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </td>

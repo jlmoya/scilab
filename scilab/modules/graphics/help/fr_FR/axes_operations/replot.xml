@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="replot">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="replot">
     <refnamediv>
         <refname>replot</refname>
         <refpurpose>recadre la zone affichée d'un ou plusieurs repères graphiques
@@ -48,14 +45,18 @@
                       <note>
                             <itemizedlist>
                                 <listitem>
-                                    La valeur <literal>%nan</literal> peut être
-                                    utilisée pour conserver une borne telle quelle.
+                                     <para>
+                                        La valeur <literal>%nan</literal> peut être
+                                        utilisée pour conserver une borne telle quelle.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    La valeur <literal>%inf</literal> peut être
-                                    utilisée pour établir une borne à la position
-                                    de l'objet graphique le plus marginal présent
-                                    dans le repère, dans la direction considérée.
+                                     <para>
+                                        La valeur <literal>%inf</literal> peut être
+                                        utilisée pour établir une borne à la position
+                                        de l'objet graphique le plus marginal présent
+                                        dans le repère, dans la direction considérée.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </note>
@@ -157,11 +158,11 @@
       plot2d(x,sin(x))
       replot([-1,-1,10,2])
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,sin(x))
             replot([-1,-1,10,2])
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // second exemple
 close(winsid());
@@ -170,13 +171,13 @@ f=gcf();
 replot([-1,-1,10,2],f.children(1)) // specify axes handle's value
 replot([-3,-2,8,4],f.children(2))
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             close(winsid());
             plot()
             f2=gcf();
             replot([-1,-1,10,2],f2.children(1))
             replot([-3,-2,8,4],f2.children(2))
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Les bornes signalées par la valeur %nan ne sont pas modifiées :
 x = linspace(0,360,200).';
@@ -187,7 +188,7 @@ ax.data_bounds              // bornes initiales
 replot([%nan,-10,%nan,10])  // Seules Ymin and Ymax sont modifiées
 ax.data_bounds              // nouvelles bornes
      ]]></programlisting>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // En 3D, les bornes en Z peuvent également être modifiées :
 clf
@@ -204,7 +205,7 @@ sleep(3000)
 replot([-5 0 -0.4 0 5 0.5])
 ax.data_bounds
      ]]></programlisting>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // Plusieurs repères graphiques peuvent être simultanément recadrés :
 clf
@@ -265,20 +266,28 @@ replot([-1 %nan 1.5 %nan], [ax1 ax2])
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Les identifiants de composants uicontrol de style frame
-                            ayant des children de type Axes à traiter sont
-                            désormais acceptés.
+                             <para>
+                                Les identifiants de composants uicontrol de style frame
+                                ayant des children de type Axes à traiter sont
+                                désormais acceptés.
+                            </para>
                         </listitem>
                         <listitem>
-                            %inf peut être utilisée pour fixer une borne à la
-                            position du contenu le plus marginal.
+                             <para>
+                                %inf peut être utilisée pour fixer une borne à la
+                                position du contenu le plus marginal.
+                            </para>
                         </listitem>
                         <listitem>
-                            Ajout de la syntaxe replot() abrégeant
-                            replot([%inf %inf %inf %inf]).
+                             <para>
+                                Ajout de la syntaxe replot() abrégeant
+                                replot([%inf %inf %inf %inf]).
+                            </para>
                         </listitem>
                         <listitem>
-                            Option tight_limits ajoutée.
+                             <para>
+                                Option tight_limits ajoutée.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

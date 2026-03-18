@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="en">
     <refnamediv>
         <refname>scilab</refname>
         <refpurpose>runs Scilab in interactive or batch mode with command line options.</refpurpose>
@@ -86,13 +83,21 @@ Developer Debug arguments:
                     <para>
                         This option allows to send some data to the Scilab session:
                         <itemizedlist>
-                            <listitem>Consecutive data are separated by one or several spaces.
+                            <listitem>
+                                 <para>Consecutive data are separated by one or several spaces.
+                                </para>
                             </listitem>
-                            <listitem>An expression between double-quotes is a single data.
+                            <listitem>
+                                 <para>An expression between double-quotes is a single data.
+                                </para>
                             </listitem>
-                            <listitem>To include a double-quote in a data, write <literal>\"</literal> instead of <literal>"</literal>.
+                            <listitem>
+                                 <para>To include a double-quote in a data, write <literal>\"</literal> instead of <literal>"</literal>.
+                                </para>
                             </listitem>
-                            <listitem>The single quote <literal>'</literal> is a regular character. It has no special meaning.
+                            <listitem>
+                                 <para>The single quote <literal>'</literal> is a regular character. It has no special meaning.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -312,11 +317,15 @@ evstr(a(i+2))*2
                         The actual Scilab binary file executed when using the "-nw" option is:
                         <itemizedlist>
                             <listitem>
-                                on Windows: <literal xml:id="wscilex-cli">WScilex-cli.exe</literal>.
+                                 <para>
+                                    on Windows: <literal xml:id="wscilex-cli">WScilex-cli.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                on Linux and MacOS: <literal xml:id="scilab-adv-cli">scilab-adv-cli</literal>
-                                (Scilab Advanced Command Line Interpreter).
+                                 <para>
+                                    on Linux and MacOS: <literal xml:id="scilab-adv-cli">scilab-adv-cli</literal>
+                                    (Scilab Advanced Command Line Interpreter).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -343,10 +352,14 @@ evstr(a(i+2))*2
                         provided:
                         <itemizedlist>
                             <listitem>
-                                Windows: <literal xml:id="scilex">Scilex.exe</literal>.
+                                 <para>
+                                    Windows: <literal xml:id="scilex">Scilex.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Others: <literal xml:id="scilab-cli">scilab-cli</literal> (Scilab Command Line Interpreter).
+                                 <para>
+                                    Others: <literal xml:id="scilab-cli">scilab-cli</literal> (Scilab Command Line Interpreter).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -558,7 +571,7 @@ echo "handle SIGSEGV nostop" > debug.txt
 export SCILAB_GDB_OPT="--command=debug.txt"
 # Start Scilab in debug mode
 scilab -debug ]]></screen>
-        <para></para>
+        <para/>
         <screen><![CDATA[
 # Under GNU/Linux, Mac OS X or Unix:
 $ echo "disp(%pi)" | scilab-cli
@@ -632,46 +645,55 @@ echo $? ]]></screen>
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            User options:
-                            <itemizedlist>
-                                <listitem>
-                                    Added: <literal>--help</literal>, <literal>-quit</literal>
-                                </listitem>
-                                <listitem>
-                                    Removed: <literal>-mem</literal>
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
+                             <para>
+                                User options:
+                                <itemizedlist>
+                                    <listitem>
+                                         <para>
+                                            Added: <literal>--help</literal>, <literal>-quit</literal>
+                                               </para>
+                                           </listitem>
+                                    <listitem>
+                                         <para>
+                                            Removed: <literal>-mem</literal>
+                                                 </para>
+                                             </listitem>
+                                  </itemizedlist>
+                                </para>
+                            </listitem>
                         <listitem>
-                            Developer options added:
-                            <itemizedlist>
-                                <listitem>
-                                    <literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
-                                    <literal>--pretty-print</literal>
+                             <para>
+                                Developer options added:
+                                <itemizedlist>
+                                    <listitem>
+                                         <para><literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
+                                            <literal>--pretty-print</literal>
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para><literal>--AST-timed</literal>, <literal>--timed</literal></para></listitem>
+                                        <listitem>
+                                             <para><literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
+                                                <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
+                                            </para>
+                                        </listitem>
+                                      </itemizedlist>
+                                    </para>
                                 </listitem>
-                                <listitem>
-                                    <literal>--AST-timed</literal>, <literal>--timed</literal>
-                                </listitem>
-                                <listitem>
-                                    <literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
-                                    <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
-            </revision>
-            <revision>
-                <revnumber>6.0.1</revnumber>
-                <revremark>
-                  <para><literal>-scihome</literal> option added.</para>
-                  <para>On Windows, a new <literal>scilab.bat</literal> file becomes the main
-                    executable script managing all launching options. There are now 3 binaries
-                    Wscilex.exe, Wscilex-cli.exe, and Scilex.exe corresponding to each Scilab
-                    running mode (STD, NW, NWNI).
-                  </para>
-                </revremark>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                        </itemizedlist>
+                    </revremark>
+                </revision>
+                <revision>
+                    <revnumber>6.0.1</revnumber>
+                    <revremark>
+                      <para><literal>-scihome</literal> option added.</para>
+                      <para>On Windows, a new <literal>scilab.bat</literal> file becomes the main
+                        executable script managing all launching options. There are now 3 binaries
+                        Wscilex.exe, Wscilex-cli.exe, and Scilex.exe corresponding to each Scilab
+                        running mode (STD, NW, NWNI).
+                      </para>
+                    </revremark>
+                </revision>
+            </revhistory>
+        </refsection>
+    </refentry>

@@ -13,10 +13,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="varn">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="varn">
     <refnamediv>
         <refname>varn</refname>
         <refpurpose>symbolic variable of a polynomial or a rational</refpurpose>
@@ -168,11 +165,15 @@ fx == f
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            The name of the symbolic variable is no longer limited to 4 characters.
-                            It can now include extended UTF-8 characters.
+                             <para>
+                                The name of the symbolic variable is no longer limited to 4 characters.
+                                It can now include extended UTF-8 characters.
+                            </para>
                         </listitem>
                         <listitem>
-                            varn([]) now returns [] instead of routing to %s_varn().
+                             <para>
+                                varn([]) now returns [] instead of routing to %s_varn().
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

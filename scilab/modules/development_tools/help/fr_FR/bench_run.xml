@@ -266,21 +266,28 @@ b = chol(a);
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>bench_run()</literal> peut maintenant retourner les résultats des tests de performance via les nouveaux paramètres de sortie
-                            <literal>modutests_names</literal>, <literal>elapsed_time</literal> et <literal>nb_iterations</literal>
+                             <para><literal>bench_run()</literal> peut maintenant retourner les résultats des tests de performance via les nouveaux paramètres de sortie
+                                <literal>modutests_names</literal>, <literal>elapsed_time</literal> et <literal>nb_iterations</literal>
+                            </para>
                         </listitem>
                         <listitem>
-                            L'export des résultats au format XML est désormais possible
+                             <para>
+                                L'export des résultats au format XML est désormais possible
+                            </para>
                         </listitem>
                         <listitem>
-                            Les paramètres de  configuration globale
-                            mode(),format(), ieee(), warning() et funcprot()
-                            sont protégés lors des tests.
+                             <para>
+                                Les paramètres de  configuration globale
+                                mode(),format(), ieee(), warning() et funcprot()
+                                sont protégés lors des tests.
+                            </para>
                         </listitem>
                         <listitem>
-                            Les libellés partiels/génériques de tests sont désormais
-                            permis afin de lancer un lot de tests dédiés à la même
-                            fonction/fonctionnalité.
+                             <para>
+                                Les libellés partiels/génériques de tests sont désormais
+                                permis afin de lancer un lot de tests dédiés à la même
+                                fonction/fonctionnalité.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

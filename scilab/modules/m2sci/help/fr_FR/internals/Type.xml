@@ -13,10 +13,7 @@
 * along with this program.
 *
     -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="Type">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="Type">
     <refnamediv>
         <refname>Type</refname>
         <refpurpose>Crée un arbre contenant les données d'inférence de type</refpurpose>
@@ -96,14 +93,14 @@
     </refsection>
     <refsection role="see also">
         <title>Exemples</title>
-        <programlisting role="no-scilab-exec">
+        <programlisting role="no-scilab-exec"><![CDATA[
 Type(Double, Complex)
 Type(Sparse, Unknown)
 Type(Int, 'uint32')
 Type(Handle, 'Axes')
 Type(Boolean, Sparse)
 Type(String, Char)
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>Voir aussi</title>
@@ -142,43 +139,57 @@ Type(String, Char)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Le vtype <literal>Function</literal> est désormais générique :
-                            la propriété peut désormais avoir la valeur
-                            <literal>Builtin</literal> ou <literal>Macro</literal>,
-                            au lieu de <literal>Unknown</literal>.
-                            <literal>Builtin</literal> est supprimé en tant que vtype.
+                             <para>
+                                Le vtype <literal>Function</literal> est désormais générique :
+                                la propriété peut désormais avoir la valeur
+                                <literal>Builtin</literal> ou <literal>Macro</literal>,
+                                au lieu de <literal>Unknown</literal>.
+                                <literal>Builtin</literal> est supprimé en tant que vtype.
+                            </para>
                         </listitem>
                         <listitem>
-                            vtype <literal>Polynomial</literal> ajouté. Les valeurs de la
-                            propriété peuvent être
-                            <literal>Real</literal>, <literal>Complex</literal>, ou <literal>Unknown</literal>.
+                             <para>
+                                vtype <literal>Polynomial</literal> ajouté. Les valeurs de la
+                                propriété peuvent être
+                                <literal>Real</literal>, <literal>Complex</literal>, ou <literal>Unknown</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            vtype <literal>String</literal> : valeurs de propriété ajoutées :
-                            <literal>String</literal> et <literal>Char</literal>, au lieu de
-                            <literal>Unknown</literal>.
+                             <para>
+                                vtype <literal>String</literal> : valeurs de propriété ajoutées :
+                                <literal>String</literal> et <literal>Char</literal>, au lieu de
+                                <literal>Unknown</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            vtype <literal>Handle</literal> : valeurs de propriété ajoutées :
-                            <literal>'Figure'</literal> et <literal>'Axes'</literal>, au lieu de
-                            <literal>Unknown</literal>.
+                             <para>
+                                vtype <literal>Handle</literal> : valeurs de propriété ajoutées :
+                                <literal>'Figure'</literal> et <literal>'Axes'</literal>, au lieu de
+                                <literal>Unknown</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            vtype <literal>Int</literal> : <literal>'int8'</literal>,
-                            <literal>'int16'</literal>, <literal>'int32'</literal>,
-                            <literal>'int64'</literal>, <literal>'uint8'</literal>,
-                            <literal>'uint16'</literal>, <literal>'uint32'</literal>,
-                            <literal>'uint64'</literal> ajoutées comme valeurs de propriété
-                            possibles.
+                             <para>
+                                vtype <literal>Int</literal> : <literal>'int8'</literal>,
+                                <literal>'int16'</literal>, <literal>'int32'</literal>,
+                                <literal>'int64'</literal>, <literal>'uint8'</literal>,
+                                <literal>'uint16'</literal>, <literal>'uint32'</literal>,
+                                <literal>'uint64'</literal> ajoutées comme valeurs de propriété
+                                possibles.
+                            </para>
                         </listitem>
                         <listitem>
-                            vtype <literal>Boolean</literal> : la valeur par défaut de la propriété
-                            est désormais
-                            <literal>Boolean</literal>, au lieu de <literal>Real</literal>.
-                            Valeur de propriété <literal>Sparse</literal> ajoutée.
+                             <para>
+                                vtype <literal>Boolean</literal> : la valeur par défaut de la propriété
+                                est désormais
+                                <literal>Boolean</literal>, au lieu de <literal>Real</literal>.
+                                Valeur de propriété <literal>Sparse</literal> ajoutée.
+                            </para>
                         </listitem>
                         <listitem>
-                            vtype <literal>Void</literal> supprimé (jamais utilisé dans m2sci).
+                             <para>
+                                vtype <literal>Void</literal> supprimé (jamais utilisé dans m2sci).
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

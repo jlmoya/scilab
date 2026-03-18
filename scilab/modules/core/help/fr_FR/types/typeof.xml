@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="typeof" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="typeof" xml:lang="fr">
     <refnamediv>
         <refname>typeof</refname>
         <refpurpose>type explicite ou code de surcharge d'un objet Scilab</refpurpose>
@@ -264,7 +261,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2"></td>
+                <td colspan="2"/>
             </tr>
             <tr><td colspan="2">
                     <emphasis role="bold italic">Listes typées T-Lists ou M-Lists :</emphasis>
@@ -280,7 +277,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2"></td>
+                <td colspan="2"/>
             </tr>
             <tr><td colspan="2">
                     <emphasis role="bold italic">Types de T-List ou M-List
@@ -659,27 +656,40 @@ h5close(a)
                 <revnumber>6.0</revnumber>
                 <revdescription>
                     <itemizedlist>
-                        <listitem>Ajout de l'option "overload". </listitem>
-                        <listitem>Ajout des typeof "uint64" et "int64". </listitem>
-                        <listitem>Suppression du typeof "hypermat". Toute hypermatrice
-                            de type "simple" homogène est désormais encodée de manière
-                            native.
-                        </listitem>
-                        <listitem>typeof "listdelete" ajouté (tel que retourné pour null()).</listitem>
-                        <listitem>typeof() peut désormais être appliquée aux éléments non définis
-                          des listes. Le nouveau typeof "void" est retourné.
-                        </listitem>
-                        <listitem>Ajout des typeof "listdelete" et "void".</listitem>
-                        <listitem>Le typeof des T-lists et M-lists était limité à 8 caractères.
-                            Les noms de types peuvent maintenant être plus longs.
-                        </listitem>
                         <listitem>
-                            Typeof "size implicit" renommé en "implicitlist" (<literal>1:$</literal>)
-                        </listitem>
-                        <listitem>Page d'aide revue.</listitem>
-                    </itemizedlist>
-                </revdescription>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                             <para>Ajout de l'option "overload". </para></listitem>
+                            <listitem>
+                                 <para>Ajout des typeof "uint64" et "int64". </para></listitem>
+                                <listitem>
+                                     <para>Suppression du typeof "hypermat". Toute hypermatrice
+                                        de type "simple" homogène est désormais encodée de manière
+                                        native.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                     <para>typeof "listdelete" ajouté (tel que retourné pour null()).</para></listitem>
+                                    <listitem>
+                                         <para>typeof() peut désormais être appliquée aux éléments non définis
+                                          des listes. Le nouveau typeof "void" est retourné.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>Ajout des typeof "listdelete" et "void".</para></listitem>
+                                        <listitem>
+                                             <para>Le typeof des T-lists et M-lists était limité à 8 caractères.
+                                                Les noms de types peuvent maintenant être plus longs.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                             <para>
+                                                Typeof "size implicit" renommé en "implicitlist" (<literal>1:$</literal>)
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                             <para>Page d'aide revue.</para></listitem>
+                                        </itemizedlist>
+                                    </revdescription>
+                                </revision>
+                            </revhistory>
+                        </refsection>
+                    </refentry>

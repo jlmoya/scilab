@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="uimenu_properties" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="uimenu_properties" xml:lang="ja">
     <refnamediv>
         <refname>uimenuプロパティ</refname>
         <refpurpose>uimenuプロパティの説明.</refpurpose>
@@ -115,16 +112,22 @@
                     <para>注意:
                         <itemizedlist>
                             <listitem>
-                                作成後にチェックボックスを削除する手段はありませんが,
-                                要素を削除することはできます.
+                                 <para>
+                                    作成後にチェックボックスを削除する手段はありませんが,
+                                    要素を削除することはできます.
+                                </para>
                             </listitem>
                             <listitem>
-                                デフォルトで,対話的にチェックをしたり,チェックを外すことは
-                                できません.
-                                このような処理はCallbackプロパティにより実装できます.
+                                 <para>
+                                    デフォルトで,対話的にチェックをしたり,チェックを外すことは
+                                    できません.
+                                    このような処理はCallbackプロパティにより実装できます.
+                                </para>
                             </listitem>
                             <listitem>
-                                このプロパティは親メニューでは無視されます.
+                                 <para>
+                                    このプロパティは親メニューでは無視されます.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -205,10 +208,10 @@
                         &lt; および &gt; で括られた場合, MathML式とみなされます.
                     </para>
                     <para>
-                        If the text value starts with <literal>&lt;html></literal>, then
+                        If the text value starts with <literal>&lt;html&gt;</literal>, then
                         all HTML-4 tags used in the label afterward are interpreted.
-                        This allows for instance to use HTML styling tags like &lt;b>..&lt;/>
-                        for bold, &lt;span color="red">..&lt;/span> to use a red font, etc.
+                        This allows for instance to use HTML styling tags like &lt;b&gt;..&lt;/&gt;
+                        for bold, &lt;span color="red"&gt;..&lt;/span&gt; to use a red font, etc.
                     </para>
                 </listitem>
             </varlistentry>

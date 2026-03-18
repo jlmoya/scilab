@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="unix_g" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="unix_g" xml:lang="ja">
     <refnamediv>
         <refname>unix_g</refname>
         <refpurpose>いくつかのWindows、LinuxまたはMacOS命令を実行し、変数で出力する</refpurpose>
@@ -78,15 +75,20 @@
             <varname>commands</varname>に誤った命令が含まれていると、
             <itemizedlist>
               <listitem>
-                <varname>rep</varname>が ""に設定されています.
+                   <para><varname>rep</varname>が ""に設定されています.
+                  </para>
               </listitem>
               <listitem>
-                出力変数<varname>msgerr</varname>を使用すると、
-                通常はOS端末に表示されるエラーメッセージがキャッチされて格納されます。
-                それ以外の場合は、OSエラーがScilabコンソールに表示されます。
+                   <para>
+                    出力変数<varname>msgerr</varname>を使用すると、
+                    通常はOS端末に表示されるエラーメッセージがキャッチされて格納されます。
+                    それ以外の場合は、OSエラーがScilabコンソールに表示されます。
+                  </para>
               </listitem>
               <listitem>
-                誤った命令の後の残りの命令は無視される。
+                   <para>
+                    誤った命令の後の残りの命令は無視される。
+                  </para>
               </listitem>
             </itemizedlist>
             <warning>

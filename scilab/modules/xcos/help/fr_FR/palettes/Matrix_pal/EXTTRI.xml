@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="EXTTRI" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="EXTTRI" xml:lang="fr_FR">
     <refnamediv>
         <refname>EXTTRI</refname>
         <refpurpose>Extraction triangulaire ou diagonale</refpurpose>
@@ -95,8 +92,7 @@
         <title>Paramètres</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/EXTTRI_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/EXTTRI_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -125,11 +121,11 @@
     </refsection>
     <refsection id="Example_EXTTRI">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A=[1 2 3;4 5 6;7 8 9;10 11 12]
             Si le type d'extraction est 2 alors la sortie est
             B=[1 0 0;4 5 0;7 8 9;10 11 12]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection id="Defaultproperties_EXTTRI">
         <title>Propriétés par défaut</title>
@@ -216,22 +212,34 @@
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttril.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttril.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttriu.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttriu.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/extdiag.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/extdiag.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttrilz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttrilz.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttriuz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttriuz.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/extdiagz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/extdiagz.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

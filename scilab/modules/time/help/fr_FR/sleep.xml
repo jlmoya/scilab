@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="sleep">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="sleep">
     <refnamediv>
         <refname>sleep</refname>
         <refpurpose>mise en sommeil de l'interprêteur (console, scripts, callbacks)</refpurpose>
@@ -34,12 +31,16 @@
         <variablelist>
             <varlistentry>
                 <term>milliseconds</term>
-                <listitem>Durée du sommeil, en millisecondes (nombre décimal)
+                <listitem>
+                     <para>Durée du sommeil, en millisecondes (nombre décimal)
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>seconds</term>
-                <listitem>Durée du sommeil, en secondes (nombre décimal)
+                <listitem>
+                     <para>Durée du sommeil, en secondes (nombre décimal)
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -52,48 +53,52 @@
             <variablelist>
                 <varlistentry>
                     <term>Console :</term>
-                    <listitem> les entrées et affichages sont suspendus.
-                        <warning>L'interruption avec CTRL-C est prise en compte mais
-                            est exécutée uniquement au terme de la période de sommeil
-                            programmée.
-                        </warning>
-                    </listitem>
+                    <listitem>
+                         <para> les entrées et affichages sont suspendus.
+                            <warning>L'interruption avec CTRL-C est prise en compte mais
+                                est exécutée uniquement au terme de la période de sommeil
+                                programmée.
+                            </warning></para>
+                                  </listitem>
                 </varlistentry>
                 <varlistentry>
                     <term>Scripts et functions :</term>
                     <listitem>
-                         lorsque <function>sleep(..)</function>
-                        est appelée depuis un script ou une function, Scilab attend
-                        la durée indiquée avant d'exécuter la ligne d'instruction suivante
-                        dans le script ou la function. Pendant ce temps, la console
-                        est bloquée. L'interruption CTRL-C est prise en compte mais
-                        exécutée uniquement au terme du sommeil programmé.
-                        <para/>
-                    </listitem>
+                         <para>
+                             lorsque <function>sleep(..)</function>
+                            est appelée depuis un script ou une function, Scilab attend
+                            la durée indiquée avant d'exécuter la ligne d'instruction suivante
+                            dans le script ou la function. Pendant ce temps, la console
+                            est bloquée. L'interruption CTRL-C est prise en compte mais
+                            exécutée uniquement au terme du sommeil programmé.
+                            </para>
+                        </listitem>
                 </varlistentry>
                 <varlistentry>
                     <term>callbacks :</term>
-                    <listitem> .. ce sont les actions programmées à exécuter
-                        lorsqu'on interagit avec les menus et les composants graphiques
-                        interactifs <literal>uicontrol</literal>. Durant le sommeil
-                        provoqué par sleep(..), les interactions avec les menus et les
-                        <literal>uicontrol</literal> sont possibles : les
-                        instructions/actions associées sont prises en compte et mémorisées,
-                        mais leur exécution est différée au terme du sommeil.
-                        <para/>
-                    </listitem>
+                    <listitem>
+                         <para> .. ce sont les actions programmées à exécuter
+                            lorsqu'on interagit avec les menus et les composants graphiques
+                            interactifs <literal>uicontrol</literal>. Durant le sommeil
+                            provoqué par sleep(..), les interactions avec les menus et les
+                            <literal>uicontrol</literal> sont possibles : les
+                            instructions/actions associées sont prises en compte et mémorisées,
+                            mais leur exécution est différée au terme du sommeil.
+                            </para>
+                        </listitem>
                 </varlistentry>
                 <varlistentry>
                     <term>Interactions graphiques :</term>
                     <listitem>
-                        <function>sleep(..)</function>
-                        n'empêche pas les interactions avec les graphiques (courbes,
-                        titres,...), pour peu que le mode graphique interactif soit activé
-                        avant la mise en sommeil.
-                        Il est alors possible de déplacer les courbes, de modifier les
-                        titres des axes, ou d'éditer les points d'une courbe (si cela a
-                        été activé). Le réveil ne remet pas en cause le résultat de ces
-                        actions.
+                         <para><function>sleep(..)</function>
+                            n'empêche pas les interactions avec les graphiques (courbes,
+                            titres,...), pour peu que le mode graphique interactif soit activé
+                            avant la mise en sommeil.
+                            Il est alors possible de déplacer les courbes, de modifier les
+                            titres des axes, ou d'éditer les points d'une courbe (si cela a
+                            été activé). Le réveil ne remet pas en cause le résultat de ces
+                            actions.
+                        </para>
                     </listitem>
                 </varlistentry>
             </variablelist>
@@ -160,10 +165,14 @@ sleep(30, "s")
                 <revnumber>6.0</revnumber>
                 <revdescription>
                     <itemizedlist>
-                        <listitem>Les fractions de millisecondes sont maintenant
-                            acceptées et prises en compte.
+                        <listitem>
+                             <para>Les fractions de millisecondes sont maintenant
+                                acceptées et prises en compte.
+                            </para>
                         </listitem>
-                        <listitem>Syntaxe sleep(secondes,"s") ajoutée.
+                        <listitem>
+                             <para>Syntaxe sleep(secondes,"s") ajoutée.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -171,4 +180,3 @@ sleep(30, "s")
         </revhistory>
     </refsection>
 </refentry>
-

@@ -14,11 +14,8 @@
  * along with this program.
  *
  -->
- <!--  module: core  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="mode" xml:lang="ru">
+<!--  module: core  -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="mode" xml:lang="ru">
     <refnamediv>
         <refname>mode</refname>
         <refpurpose>устанавливает или запрашивает режим отображения в командном окне инструкций Scilab</refpurpose>
@@ -128,19 +125,19 @@
             </tr>
             <tr style="text-align:center">
                 <td align="left">Результаты отображения [b]</td>
-                <td></td><td>всегда</td><td>всегда</td><td>всегда</td><td>всегда</td><td>всегда</td><td>всегда</td>
+                <td/><td>всегда</td><td>всегда</td><td>всегда</td><td>всегда</td><td>всегда</td><td>всегда</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Шаг за шагом [s]</td>
-                <td></td>  <td></td>  <td> </td>  <td></td>  <td></td> <td>S F K</td> <td>S F T K</td>
+                <td/>  <td/>  <td> </td>  <td/>  <td/> <td>S F K</td> <td>S F T K</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Кратко [c]</td>
-                <td>C++</td><td>+</td><td>++</td><td></td><td>SFT +</td><td>CK++ SFT+</td><td>S+</td>
+                <td>C++</td><td>+</td><td>++</td><td/><td>SFT +</td><td>CK++ SFT+</td><td>S+</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Комментарии</td>
-                <td>[d]</td>  <td></td>   <td>[e]</td>     <td>[f]</td> <td>[g]</td><td>[h]</td><td>[h,i]</td>
+                <td>[d]</td>  <td/>   <td>[e]</td>     <td>[f]</td> <td>[g]</td><td>[h]</td><td>[h,i]</td>
             </tr>
         </table>
         </refsect3>
@@ -152,8 +149,8 @@
                     <td valign="top">[a]: </td>
                     <td>
                         В нормальном режиме инструкции отображаются в предложением о вводе
-                        <literal>--></literal>, идущим впереди. В пошаговом режиме вместо
-                        этого используется <literal>>></literal>.
+                        <literal>--&gt;</literal>, идущим впереди. В пошаговом режиме вместо
+                        этого используется <literal>&gt;&gt;</literal>.
                     </td>
                 </tr>
                 <tr>
@@ -201,7 +198,7 @@
                                 остановки на нём.
                             </member>
                             <member>
-                                Некоторые паразитные предложения о вводе <literal>--></literal> и
+                                Некоторые паразитные предложения о вводе <literal>--&gt;</literal> и
                                 дополнительные пустые строки могут иногда отображаться (программная ошибка).
                             </member>
                             <member>
@@ -223,7 +220,7 @@
                     <td valign="top">[s]: </td>
                     <td>
                         Пошаговый режим останавливается после каждой строки инструкций и ждёт нажатия
-                        пользователем клавиш <literal>&lt;ввод></literal> или <literal>p&lt;ввод></literal>,
+                        пользователем клавиш <literal>&lt;ввод&gt;</literal> или <literal>p&lt;ввод&gt;</literal>,
                         чтобы  продолжить работу. Нажатие клавиши <literal>p</literal> вводит режим
                         <link linkend="pause">паузы</link>. Эти режимы могут быть использованы например
                         в демонстрационных примерах или режиме необработанной отладки.
@@ -361,17 +358,22 @@ delmenu mode_test
                 <revdescription>
                 <itemizedlist>
                     <listitem>
-                        <literal>mode(4)</literal> теперь выполняется пошагово и может быть
-                        приостановлен в сценариях и в функциях.
+                         <para><literal>mode(4)</literal> теперь выполняется пошагово и может быть
+                            приостановлен в сценариях и в функциях.
+                        </para>
                     </listitem>
                     <listitem>
-                      Для/внутри сценариев <literal>mode(4)</literal> теперь отображает каждую
-                      строчку инструкций и отображает результаты компактно. Он может использоваться
-                      для демонстрационных примеров.
+                         <para>
+                          Для/внутри сценариев <literal>mode(4)</literal> теперь отображает каждую
+                          строчку инструкций и отображает результаты компактно. Он может использоваться
+                          для демонстрационных примеров.
+                        </para>
                     </listitem>
                     <listitem>
-                      Обратные вызовы всегда исполнялись в режиме молчания <literal>mode(-1)</literal>.
-                      Теперь они исполняются по умолчанию в текущем режиме <literal>mode()</literal>.
+                         <para>
+                          Обратные вызовы всегда исполнялись в режиме молчания <literal>mode(-1)</literal>.
+                          Теперь они исполняются по умолчанию в текущем режиме <literal>mode()</literal>.
+                        </para>
                     </listitem>
                 </itemizedlist>
                 </revdescription>

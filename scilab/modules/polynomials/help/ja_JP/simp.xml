@@ -64,21 +64,29 @@
             <warning>
                 <itemizedlist>
                     <listitem>
-                        閾値は指定されません. すなわち,<literal>simp</literal> は強制的に簡単かを
-                        行うことはできません.
+                         <para>
+                            閾値は指定されません. すなわち,<literal>simp</literal> は強制的に簡単かを
+                            行うことはできません.
+                        </para>
                     </listitem>
                     <listitem>
-                        積分器を含む線形動的システムの場合,簡単化により定常ゲイン
-                        (連続系の場合は<literal>H(0)</literal>,離散系の場合は <literal>H(1)</literal>)
-                        が変化します.
+                         <para>
+                            積分器を含む線形動的システムの場合,簡単化により定常ゲイン
+                            (連続系の場合は<literal>H(0)</literal>,離散系の場合は <literal>H(1)</literal>)
+                            が変化します.
+                        </para>
                     </listitem>
                     <listitem>
-                        複素数のデータの場合, <literal>simp</literal> はその入力を返します.
+                         <para>
+                            複素数のデータの場合, <literal>simp</literal> はその入力を返します.
+                        </para>
                     </listitem>
                     <listitem>
-                        有理数の簡単化は,有理数に関するほぼ毎回の処理の後にコールされます.
-                        <literal>simp_mode</literal>関数によりこの簡単化のオン/オフを切り替える
-                        ことができます.
+                         <para>
+                            有理数の簡単化は,有理数に関するほぼ毎回の処理の後にコールされます.
+                            <literal>simp_mode</literal>関数によりこの簡単化のオン/オフを切り替える
+                            ことができます.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </warning>

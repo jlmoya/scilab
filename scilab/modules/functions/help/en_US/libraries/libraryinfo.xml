@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="libraryinfo">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="libraryinfo">
     <refnamediv>
         <refname>libraryinfo</refname>
         <refpurpose>gets the path and the set of primary functions of a loaded library</refpurpose>
@@ -77,16 +74,19 @@
                 example:
                 <itemizedlist>
                     <listitem>
-                        <emphasis role="bold">Getting the path</emphasis>:
-                        <literal>libpath = string(iolib)(1)</literal>
+                         <para><emphasis role="bold">Getting the path</emphasis>:
+                            <literal>libpath = string(iolib)(1)</literal>
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis role="bold">Getting the column vector of members functions</emphasis>:
-                        <literal>functions = string(iolib)(2:$)</literal>
+                         <para><emphasis role="bold">Getting the column vector of members functions</emphasis>:
+                            <literal>functions = string(iolib)(2:$)</literal>
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis role="bold">Getting the literal name of the library</emphasis>:
-                        <literal>libraryname = xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
+                         <para><emphasis role="bold">Getting the literal name of the library</emphasis>:
+                            <literal>libraryname = xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
+                        </para>
                     </listitem>
                 </itemizedlist>
             </para>
@@ -101,12 +101,14 @@
                 Provided that we know its libpath, we then can
                 <itemizedlist>
                     <listitem>
-                        <emphasis role="bold">get its literal name</emphasis>:
-                        <literal>xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
+                         <para><emphasis role="bold">get its literal name</emphasis>:
+                            <literal>xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis role="bold">get the column vector of members functions</emphasis>:
-                        <literal>functions = xmlGetValues("//scilablib/macro", "name", libpath+"/lib")</literal>
+                         <para><emphasis role="bold">get the column vector of members functions</emphasis>:
+                            <literal>functions = xmlGetValues("//scilablib/macro", "name", libpath+"/lib")</literal>
+                        </para>
                     </listitem>
                 </itemizedlist>
             </para>

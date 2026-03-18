@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="subplot">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="subplot">
     <refnamediv>
         <refname>subplot</refname>
         <refpurpose>
@@ -37,24 +34,27 @@
             <varlistentry>
                 <term>m, n, p</term>
                 <listitem>
-                    integers > 0. (m,n) = numbers of rows and columns of the virtual grid.
-                    p = index of the targeted cell.
-                    <para/>
-                </listitem>
+                     <para>
+                        integers &gt; 0. (m,n) = numbers of rows and columns of the virtual grid.
+                        p = index of the targeted cell.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>mnp</term>
                 <listitem>
-                    an integer with decimal notation <literal>mnp</literal>
-                    <para/>
-                </listitem>
+                     <para>
+                        an integer with decimal notation <literal>mnp</literal>
+                                                     </para>
+                                                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>ax</term>
                 <listitem>
-                    handle of the created Axes entity
-                    <para/>
-                </listitem>
+                     <para>
+                        handle of the created Axes entity
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -96,7 +96,7 @@
             subplot(2,2,4)
             bar3d()
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             subplot(221)
             plot2d()
             subplot(222)
@@ -105,7 +105,7 @@
             param3d()
             subplot(2,2,4)
             bar3d()
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">A more complex layout</emphasis>, but still gridable:
@@ -130,7 +130,7 @@
             param3d()
             xtitle("","","","")
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             clf
             subplot(1,2,2)
             Matplot1()
@@ -150,7 +150,7 @@
             param3d()
             xtitle("","","","")
             gcf().axes_size = [670 400];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">Usage on uicontrol frames</emphasis> :

@@ -14,10 +14,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="fr" xml:id="poly">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="poly">
     <refnamediv>
         <refname>poly</refname>
         <refpurpose>définition d'un polynôme selon racines ou coefficients, ou caractéristique d'une matrice carrée</refpurpose>
@@ -107,16 +104,19 @@
                                             <literal>degree(p)==length(vec)</literal>
                                         </listitem>
                                         <listitem>
-                                          <literal>poly()</literal> et <literal>roots()</literal>
-                                          sont réciproques.
+                                             <para><literal>poly()</literal> et <literal>roots()</literal>
+                                              sont réciproques.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                          Toute racine infinie produit un coefficient de haut degré
-                                          nul. Dans ce cas, le degré effectif de <varname>p</varname>
-                                            est inférieur à <literal>length(vec)</literal>.
-                                            Par exemple,
-                                            <literal>poly([-%inf -1 2 %inf ], "x")</literal>
-                                            produit <literal>(x-2)(x+1)</literal> de degré 2.
+                                             <para>
+                                              Toute racine infinie produit un coefficient de haut degré
+                                              nul. Dans ce cas, le degré effectif de <varname>p</varname>
+                                                est inférieur à <literal>length(vec)</literal>.
+                                                Par exemple,
+                                                <literal>poly([-%inf -1 2 %inf ], "x")</literal>
+                                                produit <literal>(x-2)(x+1)</literal> de degré 2.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                 </note>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="norm" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="norm" xml:lang="ru">
     <refnamediv>
         <refname>norm</refname>
         <refpurpose>нормы вектора или матрицы</refpurpose>
@@ -44,15 +41,19 @@
                     <para>
                         <itemizedlist>
                             <listitem>
-                                Для матрицы <literal>x</literal>: число из
-                                <literal>1, 2, %inf, -%inf</literal>, или слово среди
-                                <literal>"inf"</literal> (или <literal>"i"</literal>) или
-                                <literal>"fro"</literal> (или <literal>"f"</literal>).
+                                 <para>
+                                    Для матрицы <literal>x</literal>: число из
+                                    <literal>1, 2, %inf, -%inf</literal>, или слово среди
+                                    <literal>"inf"</literal> (или <literal>"i"</literal>) или
+                                    <literal>"fro"</literal> (или <literal>"f"</literal>).
+                                </para>
                             </listitem>
                             <listitem>
-                                Для вектора <literal>x</literal>: любое число или <literal>%inf</literal>,
-                                <literal>-%inf</literal>; либо слово <literal>"inf"</literal>
-                                (<literal>"i"</literal>), <literal>"fro"</literal> (<literal>"f"</literal>).
+                                 <para>
+                                    Для вектора <literal>x</literal>: любое число или <literal>%inf</literal>,
+                                    <literal>-%inf</literal>; либо слово <literal>"inf"</literal>
+                                    (<literal>"i"</literal>), <literal>"fro"</literal> (<literal>"f"</literal>).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="pt">
     <refnamediv>
         <refname>spec</refname>
         <refpurpose>autovalores, e autovetores de uma matriz ou feixes</refpurpose>
@@ -39,58 +36,65 @@
             <varlistentry>
                 <term>A, B</term>
                 <listitem>
-                    Matrizes quadradas de números reais ou complexos, de mesmos tamanhos.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrizes quadradas de números reais ou complexos, de mesmos tamanhos.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>evals</term>
                 <listitem>
-                    Vetor de reais ou complexos : os autovalores.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vetor de reais ou complexos : os autovalores.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>diagevals</term>
                 <listitem>
-                    Matriz diagonal de reais ou complexos : autovalores ao longo da diagonal.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matriz diagonal de reais ou complexos : autovalores ao longo da diagonal.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>R</term>
                 <listitem>
-                    Matriz quadrada de reais ou complexos invertível : autovetores
-                    direitos da matriz.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matriz quadrada de reais ou complexos invertível : autovetores
+                        direitos da matriz.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>alpha, beta</term>
                 <listitem>
-                    Vetores dos mesmos tamanhos : autovalores generalizados do feixe de matriz
-                    <literal> A - s.B</literal> (s é a variável).
-                    alpha./beta fornece os autovalores usuais.
-                    <varname>alpha</varname> são valores reais ou complexos.
-                    <varname>beta</varname> são valores reais.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vetores dos mesmos tamanhos : autovalores generalizados do feixe de matriz
+                        <literal> A - s.B</literal> (s é a variável).
+                        alpha./beta fornece os autovalores usuais.
+                        <varname>alpha</varname> são valores reais ou complexos.
+                        <varname>beta</varname> são valores reais.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Q</term>
                 <listitem>
-                    Matriz quadrada de reais ou complexos invertível : autovetores
-                    esquerdos do feixe de matriz.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matriz quadrada de reais ou complexos invertível : autovetores
+                        esquerdos do feixe de matriz.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Z</term>
                 <listitem>
-                    Matriz quadrada de reais ou complexos invertível : autovetores
-                    direitos do feixe de matriz.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matriz quadrada de reais ou complexos invertível : autovetores
+                        direitos do feixe de matriz.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

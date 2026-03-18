@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="mget" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="mget" xml:lang="ru">
     <refnamediv>
         <refname>mget</refname>
         <refpurpose>
@@ -214,13 +211,17 @@
             <varname>binFormat</varname>),
             <itemizedlist>
                 <listitem>
-                    файловый указатель увеличивается на <literal>N</literal>
-                    байтов и устанавливается в начало следующего блока;
+                     <para>
+                        файловый указатель увеличивается на <literal>N</literal>
+                        байтов и устанавливается в начало следующего блока;
+                    </para>
                 </listitem>
                 <listitem>
-                    блоки чтения идут в порядке, соответствующем выбранному или
-                    установленному по умолчанию режиму порядка байтов.
-                    Проверяемый блок затем сохраняется для возврата.
+                     <para>
+                        блоки чтения идут в порядке, соответствующем выбранному или
+                        установленному по умолчанию режиму порядка байтов.
+                        Проверяемый блок затем сохраняется для возврата.
+                    </para>
                 </listitem>
             </itemizedlist>
             Эти действия повторяются <varname>nNumb</varname> раз до тех пор,

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="intl" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intl" xml:lang="pt">
     <refnamediv>
         <refname>intl</refname>
         <refpurpose>integral de Cauchy ao longo de um arco circular</refpurpose>
@@ -35,34 +32,39 @@
             <varlistentry>
                 <term>z0</term>
                 <listitem>
-                    número complexo<para/>
-                </listitem>
+                     <para>
+                        número complexo</para>
+                                   </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                    dois números reais<para/>
-                </listitem>
+                     <para>
+                        dois números reais</para>
+                                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>r</term>
                 <listitem>
-                    número real positivo<para/>
-                </listitem>
+                     <para>
+                        número real positivo</para>
+                                        </listitem>
             </varlistentry>
             <varlistentry>
                 <term>f</term>
                 <listitem>
-                    Identificador da função a integrar (tipos 13 ou 130).<para/>
-                </listitem>
+                     <para>
+                        Identificador da função a integrar (tipos 13 ou 130).</para>
+                                                                         </listitem>
             </varlistentry>
             <varlistentry>
                 <term>abserr, relerr</term>
                 <listitem>
-                números reais: tolerâncias numéricas absolutas e relativas. Os valores padrão
-                são <literal>1.d-13</literal> e <literal>1d-8</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                    números reais: tolerâncias numéricas absolutas e relativas. Os valores padrão
+                    são <literal>1.d-13</literal> e <literal>1d-8</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

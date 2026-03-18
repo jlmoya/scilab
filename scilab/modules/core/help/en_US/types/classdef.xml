@@ -5,7 +5,6 @@
 
  * This file is distributed under the same license as the Scilab package.
   -->
-
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="classdef">
     <refnamediv>
         <refname>Classdef and objects</refname>
@@ -22,9 +21,9 @@
         <para>
             Classdef are used to define a set of properties and/or methods that work together.
             Properties are like variables and methods like functions.
-            <para></para>
-            <programlisting role='no-scilab-exec'>
-<![CDATA[
+            <para/>
+            <programlisting role="no-scilab-exec"><![CDATA[
+
 classdef <classname> < <superclass> & <superclass>
     properties (<modifiers>)
         var1 = []
@@ -48,24 +47,34 @@ classdef <classname> < <superclass> & <superclass>
         enum3(args...)
     end
 end
-]]>
-            </programlisting>
+
+            ]]></programlisting>
             <para>Classes are defined by :</para>
             <itemizedlist>
                 <listitem>
-                    Name: it will be used to use class
+                     <para>
+                        Name: it will be used to use class
+                    </para>
                 </listitem>
                 <listitem>
-                    Superclass: names of superclass from which it derives
+                     <para>
+                        Superclass: names of superclass from which it derives
+                    </para>
                 </listitem>
                 <listitem>
-                    Properties: variables used inside or outside class to store data
+                     <para>
+                        Properties: variables used inside or outside class to store data
+                    </para>
                 </listitem>
                 <listitem>
-                    Methods: functions to do some operations
+                     <para>
+                        Methods: functions to do some operations
+                    </para>
                 </listitem>
                 <listitem>
-                    Enumeration: Specific instances of class
+                     <para>
+                        Enumeration: Specific instances of class
+                    </para>
                 </listitem>
             </itemizedlist>
             <para>
@@ -105,12 +114,12 @@ end
             Classes can derive from one or multiple classes. (with <literal>&amp;</literal>)
             In this case, elements of the parent classes can be used in this class (depends of the modifiers)
 
-            <programlisting role='no-scilab-exec'>
-<![CDATA[
+            <programlisting role="no-scilab-exec"><![CDATA[
+
 classdef <classname> < <superclass> & <superclass>
 end
-]]>
-            </programlisting>
+
+            ]]></programlisting>
         </para>
     </refsection>
     <refsection>
@@ -119,15 +128,15 @@ end
             Define <literal>properties</literal> of class.
             Visibility modifier can be <literal>private</literal>, <literal>protected</literal> or <literal>public</literal>.
             A default value can be added to initialize variable during instantiation (default <literal>[]</literal>)
-            <programlisting role='no-scilab-exec'>
-<![CDATA[
+            <programlisting role="no-scilab-exec"><![CDATA[
+
 classdef <classname>
     properties (<modifier>)
         var1 = []
     end
 end
-]]>
-            </programlisting>
+
+            ]]></programlisting>
         </para>
     </refsection>
     <refsection>
@@ -136,8 +145,8 @@ end
             Define <literal>methods</literal> of class.
             Visibility modifier can be <literal>private</literal>, <literal>protected</literal> or <literal>public</literal>.
             In methods <literal>this</literal> must be used to access to properties or methods of the object
-            <programlisting role='no-scilab-exec'>
-<![CDATA[
+            <programlisting role="no-scilab-exec"><![CDATA[
+
 classdef <classname>
     methods (<modifier>)
         function rets = func(args...)
@@ -147,8 +156,8 @@ classdef <classname>
         func2 = externalfunc
     end
 end
-]]>
-            </programlisting>
+
+            ]]></programlisting>
             <para>Note: <literal>externalfunc</literal> can be a macro or a C/C++ gateway.</para>
             <para>In C/C++ gateway, <code>use symbol::Context::getInstance()-&gt;getCurrentObject()</code> to get <literal>this</literal></para>
         </para>
@@ -158,8 +167,8 @@ end
         <para>
             Define <literal>enumeration</literal> of class.
             They are specific instances of the class associated to a name.
-            <programlisting role='no-scilab-exec'>
-<![CDATA[
+            <programlisting role="no-scilab-exec"><![CDATA[
+
 classdef Color
     enumeration
         RED     (args...)
@@ -172,15 +181,15 @@ end
 Color.RED
 Color.GREEN
 Color.BLUE
-]]>
-            </programlisting>
+
+            ]]></programlisting>
         </para>
     </refsection>
     <refsection>
         <title>Overloads</title>
         <para>
             Overloads will be called for undefined operations or function calls. (<link linkend="overloading">overloading</link>)
-            <para></para>
+            <para/>
             There is 2 forms:
             <itemizedlist>
                 <listitem>
@@ -272,8 +281,8 @@ Color.BLUE
                             <td>rkron(a, b)</td>
                             <td>a .\. b</td>
                             <td>lkron(a, b)</td>
-                            <td></td>
-                            <td></td>
+                            <td/>
+                            <td/>
                         </tr>
                         <tr>
                             <td>a *. b</td>
@@ -282,11 +291,11 @@ Color.BLUE
                             <td>controlrdivide(a, b)</td>
                             <td>a \. b</td>
                             <td>controlldivide(a, b)</td>
-                            <td></td>
-                            <td></td>
+                            <td/>
+                            <td/>
                         </tr>
                     </informaltable>
-                    <para></para>
+                    <para/>
                     <informaltable border="1">
                         <tr>
                             <td>Comparisions</td>
@@ -325,7 +334,7 @@ Color.BLUE
                             <td>shortor(a, b)</td>
                         </tr>
                     </informaltable>
-                    <para></para>
+                    <para/>
                     <informaltable border="1">
                         <tr>
                             <td>Operations</td>
@@ -344,7 +353,7 @@ Color.BLUE
                             <td>transpose(a)</td>
                         </tr>
                     </informaltable>
-                    <para></para>
+                    <para/>
                     <informaltable border="1">
                         <tr>
                             <td>Matrix manipulations</td>
@@ -373,8 +382,8 @@ Color.BLUE
                     </para>
                 </listitem>
             </itemizedlist>
-            <programlisting role='example'>
-<![CDATA[
+            <programlisting role="example"><![CDATA[
+
 classdef Matrix
     properties
         value = []
@@ -421,16 +430,16 @@ a + 10
 10 + b
 a + int8(10)
 int8(10) + b
-]]>
-            </programlisting>
+
+            ]]></programlisting>
         </para>
     </refsection>
     <refsection>
         <title>Examples</title>
         <para>
             Usage of enumeration:
-            <programlisting role='example'>
-<![CDATA[
+            <programlisting role="example"><![CDATA[
+
 classdef Color
     properties
         R
@@ -478,8 +487,8 @@ end
 red = Color.RED
 gray1 = Color(128, 128, 128)
 gray2 = Color("#808080")
-]]>
-            </programlisting>
+
+            ]]></programlisting>
         </para>
         <!--para>
             Usage of static:

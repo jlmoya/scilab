@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="ru" xml:id="listvarinfile">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="listvarinfile">
     <refnamediv>
         <refname>listvarinfile</refname>
         <refpurpose>список переменных в файле сохранённых данных</refpurpose>
@@ -180,23 +177,33 @@ t                        string         2 by 2          40
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Теперь гиперматрицы перечисляются с типом их содержимого, вместо
-                            "mlist" и типа 17. Их размеры теперь являются фактическими размерами вместо 3.
+                             <para>
+                                Теперь гиперматрицы перечисляются с типом их содержимого, вместо
+                                "mlist" и типа 17. Их размеры теперь являются фактическими размерами вместо 3.
+                            </para>
                         </listitem>
                         <listitem>
-                            Cell-массивы и массивы структур теперь появлются в виде "cell" и "struct"
-                            вместо "mlist". Теперь их размеры являются фактичскими размерами вместо 3.
+                             <para>
+                                Cell-массивы и массивы структур теперь появлются в виде "cell" и "struct"
+                                вместо "mlist". Теперь их размеры являются фактичскими размерами вместо 3.
+                            </para>
                         </listitem>
                         <listitem>
-                            Массивы графических дескрипторов теперь появляются в виде "handle" и типа 9
-                            вместо "tlist" и типа 16.
-                            Теперь их размеры являются фактичскими размерами вместо 3.
+                             <para>
+                                Массивы графических дескрипторов теперь появляются в виде "handle" и типа 9
+                                вместо "tlist" и типа 16.
+                                Теперь их размеры являются фактичскими размерами вместо 3.
+                            </para>
                         </listitem>
                         <listitem>
-                            Сценарии теперь появляются в виде "macro" и типа 13 вместо "tlist" и типа 16.
+                             <para>
+                                Сценарии теперь появляются в виде "macro" и типа 13 вместо "tlist" и типа 16.
+                            </para>
                         </listitem>
                         <listitem>
-                            Вещественные и комплексные числа теперь появляются в виде "double" вместо "constant".
+                             <para>
+                                Вещественные и комплексные числа теперь появляются в виде "double" вместо "constant".
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -204,4 +211,3 @@ t                        string         2 by 2          40
         </revhistory>
     </refsection>
 </refentry>
-

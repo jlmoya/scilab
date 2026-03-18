@@ -13,9 +13,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="genlib">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="genlib">
     <refnamediv>
         <refname>genlib</refname>
         <refpurpose>
@@ -38,39 +36,42 @@
             <varlistentry>
                 <term>lib_name</term>
                 <listitem>
-                    Scilab string:  The identifying name ascribed to the library to build.
-                    <para/>
-                </listitem>
+                     <para>
+                        Scilab string:  The identifying name ascribed to the library to build.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>dir_name</term>
                 <listitem>
-                    Scilab string:  The pathname of the directory containing
-                    <literal>.sci</literal> functions files, and where the <literal>lib</literal>
-                    file generated and defining the library will be stored.
-                    By default, the current working directory is considered.
-                    <warning>
-                        The <varname>dir_name</varname> directory and its <literal>lib</literal>
-                        and <literal>.bin</literal> files must be writable.
-                    </warning>
-                    <para/>
-                </listitem>
+                     <para>
+                        Scilab string:  The pathname of the directory containing
+                        <literal>.sci</literal> functions files, and where the <literal>lib</literal>
+                        file generated and defining the library will be stored.
+                        By default, the current working directory is considered.
+                        <warning>
+                            The <varname>dir_name</varname> directory and its <literal>lib</literal>
+                            and <literal>.bin</literal> files must be writable.
+                        </warning></para>
+                              </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Force</term>
                 <listitem>
-                    boolean value (default value is <literal>%f</literal>). Set it to
-                    <literal>%t</literal> to force the sci-files recompilation.
-                    <para/>
-                </listitem>
+                     <para>
+                        boolean value (default value is <literal>%f</literal>). Set it to
+                        <literal>%t</literal> to force the sci-files recompilation.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>verb</term>
                 <listitem>
-                    boolean value (default value is <literal>%f</literal>). Set it to
-                    <literal>%t</literal> to display more information during the build.
-                    <para/>
-                </listitem>
+                     <para>
+                        boolean value (default value is <literal>%f</literal>). Set it to
+                        <literal>%t</literal> to display more information during the build.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -91,101 +92,29 @@
             Then, for each <literal>.sci</literal> file:
             <itemizedlist>
                 <listitem>
-                    If
-                    <itemizedlist>
-                        <listitem>
-                            there is no related <literal>.bin</literal> file in <varname>dir_name</varname>
-                            with the same basename (as for the initial build of the library), or
-                        </listitem>
-                        <listitem>
-                            the content of the <literal>.sci</literal> file has changed since
-                            the previous build,
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                    <para>
-                        the <literal>.sci</literal> file is compiled (<emphasis>almost</emphasis>
-                        as it would be with <literal>exec(..)</literal>):
+                     <para>
+                        If
                         <itemizedlist>
                             <listitem>
-                                <para>
-                                    If it contains at least one <literal>function .. endfunction</literal>
-                                    block, a <literal>.bin</literal> binary file with the same basename
-                                    is generated and stored in <varname>dir_name</varname>.
-                                    It contains the binary code of ALL functions defined in the
-                                    <literal>.sci</literal> source file.
-                                    <itemizedlist>
-                                        <listitem>
-                                            If the name of one of the function(s) defined in the
-                                            file is the basename of the <literal>.sci</literal>
-                                            file, this function is registered in the
-                                            <literal>lib</literal> file.
-                                            <para/>
-                                        </listitem>
-                                        <listitem>
-                                            Otherwise, no function from the <literal>.sci</literal>
-                                            file is registered: Its whole content is considered as
-                                            dead code.
-                                        </listitem>
-                                    </itemizedlist>
-                                </para>
-                                <para>
-                                    <warning>
-                                        If a <literal>test.sci</literal> file defines the
-                                        <literal>test()</literal> function AND other functions like
-                                        sub(), sub() functions are then considered as private to
-                                        test(). For instance,
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <screen>
-function r = sub(a)
-    r = 2*a
-endfunction
-
-function test()
-    disp("A test")
-endfunction
-
-function r = other(b)
-    r = 2^b
-endfunction
-</screen>
-                                                </td>
-                                                <td>
-                                                    is equivalent to
-                                                </td>
-                                                <td>
-                                                    <screen>
-function test()
-    function r = sub(a)
-        r = 2*a
-    endfunction
-    function r = other(b)
-        r = 2^b
-    endfunction
-
-    disp("A test")
-endfunction
-</screen>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        Hence, sub() and other() won't exist out of test(), and
-                                        won't be registered in the library.
-                                    </warning>
+                                 <para>
+                                    there is no related <literal>.bin</literal> file in <varname>dir_name</varname>
+                                    with the same basename (as for the initial build of the library), or
                                 </para>
                             </listitem>
                             <listitem>
-                                Otherwise, no <literal>.bin</literal> file is generated: The whole
-                                content of the <literal>.sci</literal> file is considered as dead code.
+                                 <para>
+                                    the content of the <literal>.sci</literal> file has changed since
+                                    the previous build,
+                                </para>
                             </listitem>
-                        </itemizedlist>
-                    </para>
-                </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
                 <listitem>
-                    Otherwise: If the file's content has not changed and has already a function
-                    entry in the <literal>lib</literal> file, this entry is kept.
+                     <para>
+                        Otherwise: If the file's content has not changed and has already a function
+                        entry in the <literal>lib</literal> file, this entry is kept.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -228,33 +157,47 @@ endfunction
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            The file <literal>names</literal> is no longer required.
-                            The <literal>Names</literal> option is removed.
+                             <para>
+                                The file <literal>names</literal> is no longer required.
+                                The <literal>Names</literal> option is removed.
+                            </para>
                         </listitem>
                         <listitem>
-                            When a .sci file contains functions not named accordingly with the
-                            file name, they are no longer public: They are visible and callable only
-                            from the main function.
+                             <para>
+                                When a .sci file contains functions not named accordingly with the
+                                file name, they are no longer public: They are visible and callable only
+                                from the main function.
+                            </para>
                         </listitem>
                         <listitem>
-                            When a library named <varname>lib_name</varname> is already loaded, the
-                            default <varname>dir_name</varname> directory is no longer its
-                            directory (update mode), but always the current working one.
+                             <para>
+                                When a library named <varname>lib_name</varname> is already loaded, the
+                                default <varname>dir_name</varname> directory is no longer its
+                                directory (update mode), but always the current working one.
+                            </para>
                         </listitem>
                         <listitem>
-                            The generated <literal>lib</literal> file is now a human-readable XML
-                            file, instead of a binary.
+                             <para>
+                                The generated <literal>lib</literal> file is now a human-readable XML
+                                file, instead of a binary.
+                            </para>
                         </listitem>
                         <listitem>
-                            genlib() can no longer register any variable as full member of a library.
+                             <para>
+                                genlib() can no longer register any variable as full member of a library.
+                            </para>
                         </listitem>
                         <listitem>
-                            By default, any .sci file is now recompiled if its content has
-                            changed, no longer if its modification date is newer than the .bin's one.
+                             <para>
+                                By default, any .sci file is now recompiled if its content has
+                                changed, no longer if its modification date is newer than the .bin's one.
+                            </para>
                         </listitem>
                         <listitem>
-                            The generated <literal>.bin</literal> files can no longer be loaded
-                            independently with load().
+                             <para>
+                                The generated <literal>.bin</literal> files can no longer be loaded
+                                independently with load().
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

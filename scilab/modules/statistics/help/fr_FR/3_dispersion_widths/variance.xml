@@ -53,13 +53,19 @@
                         variance selon les lignes ou les colonnes de <varname>x</varname>. Les valeurs possibles sont
                         <itemizedlist>
                             <listitem>
-                                1 or "r" : calcul par colonne. Le résultat est un vecteur ligne
+                                 <para>
+                                    1 or "r" : calcul par colonne. Le résultat est un vecteur ligne
+                                </para>
                             </listitem>
                             <listitem>
-                                2 or "c" : calcul par ligne. Le résultat est une <varname>c</varname>olonne
+                                 <para>
+                                    2 or "c" : calcul par ligne. Le résultat est une <varname>c</varname>olonne
+                                </para>
                             </listitem>
                             <listitem>
-                                "*" : calcul tous les éléments de <varname>x</varname> confondus (mode utilisé par défaut); requis si le 3ème paramètre <varname>m</varname> doit être utilisé.
+                                 <para>
+                                    "*" : calcul tous les éléments de <varname>x</varname> confondus (mode utilisé par défaut); requis si le 3ème paramètre <varname>m</varname> doit être utilisé.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -72,13 +78,19 @@
                         Espérance mathématique de la loi de distribution de probabilité sous-jacente (supposée connue).
                         <itemizedlist>
                             <listitem>
-                                mode "*" (par défaut) : <varname>m</varname> doit être scalaire
+                                 <para>
+                                    mode "*" (par défaut) : <varname>m</varname> doit être scalaire
+                                </para>
                             </listitem>
                             <listitem>
-                                mode "r" or 1 : <varname>m</varname> un vecteur ligne à <literal>size(x,2)</literal> éléments. La variance des éléments de la colonne #j de <varname>x</varname> est calculée en utilisant <literal>m(j)</literal> comme moyenne pour la colonne. Si <varname>m</varname> est la même pour toutes les colonnes, sa valeur scalaire peut être fournie au lieu d'une ligne.
+                                 <para>
+                                    mode "r" or 1 : <varname>m</varname> un vecteur ligne à <literal>size(x,2)</literal> éléments. La variance des éléments de la colonne #j de <varname>x</varname> est calculée en utilisant <literal>m(j)</literal> comme moyenne pour la colonne. Si <varname>m</varname> est la même pour toutes les colonnes, sa valeur scalaire peut être fournie au lieu d'une ligne.
+                                </para>
                             </listitem>
                             <listitem>
-                                mode "c" ou 2 : <varname>m</varname> un vecteur colonne à <literal>size(x,1)</literal> éléments. La variance des éléments de la ligne #i de <varname>x</varname> est calculée en utilisant <literal>m(i)</literal> comme moyenne pour la ligne. Si <varname>m</varname> est la même pour toutes les lignes, sa valeur scalaire peut être fournie au lieu d'une colonne.
+                                 <para>
+                                    mode "c" ou 2 : <varname>m</varname> un vecteur colonne à <literal>size(x,1)</literal> éléments. La variance des éléments de la ligne #i de <varname>x</varname> est calculée en utilisant <literal>m(i)</literal> comme moyenne pour la ligne. Si <varname>m</varname> est la même pour toutes les lignes, sa valeur scalaire peut être fournie au lieu d'une colonne.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -89,11 +101,15 @@
                         Sinon, la <literal>variance</literal> est estimée en divisant par <literal>n</literal> (au lieu de <literal>n-1</literal>) la distance quadratique totale des valeurs <literal>x(k)</literal> à <varname>m</varname> (<literal>n</literal> valant toujours <literal>length(x)</literal> ou <literal>size(x,1)</literal> ou <literal>size(x,2)</literal>). Alors :
                         <itemizedlist>
                             <listitem>
-                                Si une véritable valeur <varname>m</varname> indépendante des éléments de x est fournie, elle est utilisée comme moyenne de référence dans le calcul de la variance. La valeur obtenue et retournée pour celle-ci est alors réputée non biaisée.
+                                 <para>
+                                    Si une véritable valeur <varname>m</varname> indépendante des éléments de x est fournie, elle est utilisée comme moyenne de référence dans le calcul de la variance. La valeur obtenue et retournée pour celle-ci est alors réputée non biaisée.
+                                </para>
                             </listitem>
                             <listitem>
-                                Si la valeur spéciale <literal>m=%nan</literal> est fournie, la variance est toujours "normalisée" par n (non n-1) mais est estimée en utilisant l'estimation "empirique"
-                                <literal>m=mean(x)</literal> de la moyenne de référence (ou <literal>m = mean(x,"c")</literal> ou <literal>m = mean(x,"r")</literal>). Comme <varname>m=%nan</varname> n'apporte aucune information nouvelle à "l'équation", celle-ci retourne une estimation biaisée de la variance.
+                                 <para>
+                                    Si la valeur spéciale <literal>m=%nan</literal> est fournie, la variance est toujours "normalisée" par n (non n-1) mais est estimée en utilisant l'estimation "empirique"
+                                    <literal>m=mean(x)</literal> de la moyenne de référence (ou <literal>m = mean(x,"c")</literal> ou <literal>m = mean(x,"r")</literal>). Comme <varname>m=%nan</varname> n'apporte aucune information nouvelle à "l'équation", celle-ci retourne une estimation biaisée de la variance.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -102,13 +118,17 @@
             <varlistentry>
                 <term>s</term>
                 <listitem>
-                    Estimation de la variance des valeurs de <varname>x</varname> (non pondérées). <varname>s</varname> est un scalaire ou un vecteur ligne ou colonne selon l'option <varname>orien</varname> utilisée.
+                     <para>
+                        Estimation de la variance des valeurs de <varname>x</varname> (non pondérées). <varname>s</varname> est un scalaire ou un vecteur ligne ou colonne selon l'option <varname>orien</varname> utilisée.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>mc</term>
                 <listitem>
-                    Moyenne calculée à partir de <varname>x</varname> (<literal>= mean(x,..)</literal>) et utilisée comme référence dans le calcul de la variance. Valeur scalaire ou en vecteur colonne ou ligne, selon l'option <varname>orien</varname> utilisée.
+                     <para>
+                        Moyenne calculée à partir de <varname>x</varname> (<literal>= mean(x,..)</literal>) et utilisée comme référence dans le calcul de la variance. Valeur scalaire ou en vecteur colonne ou ligne, selon l'option <varname>orien</varname> utilisée.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>

@@ -37,17 +37,23 @@
                     <para>a vector of strings containing:</para>
                     <itemizedlist>
                         <listitem>
-                            absolute pathname of the function source file (.sci)
+                             <para>
+                                absolute pathname of the function source file (.sci)
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>"&lt;script&gt;"</literal> if <literal>fun_name</literal>
-                            is an user-defined function written in Scilab language executed in Scilab's console.
+                             <para><literal>"&lt;script&gt;"</literal> if <literal>fun_name</literal>
+                                is an user-defined function written in Scilab language executed in Scilab's console.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>"&lt;moduleName&gt;"</literal> if <literal>fun_name</literal>
-                            is a builtin function (so-called Scilab primitive)
+                             <para><literal>"&lt;moduleName&gt;"</literal> if <literal>fun_name</literal>
+                                is a builtin function (so-called Scilab primitive)
+                            </para>
                         </listitem>
-                        <listitem>Otherwise: <literal>[]</literal>.
+                        <listitem>
+                             <para>Otherwise: <literal>[]</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -60,14 +66,18 @@
             Given the name of a function get_function_path returns a vector containing 
             <itemizedlist>
                 <listitem>
-                    the absolute pathname of the function source file if the function is defined in a
-                    Scilab library (see lib)
+                     <para>
+                        the absolute pathname of the function source file if the function is defined in a
+                        Scilab library (see lib)
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>"&lt;script&gt;"</literal> if the function is an user-defined function executed in the console
+                     <para><literal>"&lt;script&gt;"</literal> if the function is an user-defined function executed in the console
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>"&lt;moduleName&gt;"</literal> if the function is a builtin written and compiled in an external language (C, C++..)
+                     <para><literal>"&lt;moduleName&gt;"</literal> if the function is a builtin written and compiled in an external language (C, C++..)
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

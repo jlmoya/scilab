@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="en">
     <refnamediv>
         <refname>spec</refname>
         <refpurpose>eigenvalues, and eigenvectors of a matrix or a pencil</refpurpose>
@@ -39,57 +36,64 @@
             <varlistentry>
                 <term>A, B</term>
                 <listitem>
-                    Square matrices of real or complex numbers, of same sizes.
-                    <para/>
-                </listitem>
+                     <para>
+                        Square matrices of real or complex numbers, of same sizes.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>evals</term>
                 <listitem>
-                    Real or complex vector: The eigenvalues.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex vector: The eigenvalues.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>diagevals</term>
                 <listitem>
-                    Real or complex diagonal matrix: Eigenvalues along the diagonal.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex diagonal matrix: Eigenvalues along the diagonal.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>R</term>
                 <listitem>
-                    Real or complex invertible square matrix: Matrix right eigenvectors.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex invertible square matrix: Matrix right eigenvectors.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>alpha, beta</term>
                 <listitem>
-                    Vectors of same size: Generalized eigenvalues of the matrix pencil
-                    <literal>A - s.B</literal> (s is the variable).
-                    alpha./beta gives the usual eigenvalues.
-                    <varname>alpha</varname> are real or complex values.
-                    <varname>beta</varname> are real values.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vectors of same size: Generalized eigenvalues of the matrix pencil
+                        <literal>A - s.B</literal> (s is the variable).
+                        alpha./beta gives the usual eigenvalues.
+                        <varname>alpha</varname> are real or complex values.
+                        <varname>beta</varname> are real values.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Q</term>
                 <listitem>
-                    Real or complex invertible square matrix: Generalized left eigenvectors
-                    of the pencil.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex invertible square matrix: Generalized left eigenvectors
+                        of the pencil.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Z</term>
                 <listitem>
-                    Real or complex invertible square matrix: Generalized right eigenvectors
-                    of the pencil.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex invertible square matrix: Generalized right eigenvectors
+                        of the pencil.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

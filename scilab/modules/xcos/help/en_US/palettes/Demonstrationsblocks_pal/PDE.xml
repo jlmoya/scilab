@@ -21,10 +21,7 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-		xml:id="PDE" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="PDE" xml:lang="en_US">
     <refnamediv>
         <refname>PDE</refname>
         <refpurpose>1D PDE block</refpurpose>
@@ -87,12 +84,16 @@
                 </para>
                 <itemizedlist>
                     <listitem>
-                        Check boxes to select the PDE operators.
-                        ai(x), bi(t) (i=1:7) are the operator coefficients.
+                         <para>
+                            Check boxes to select the PDE operators.
+                            ai(x), bi(t) (i=1:7) are the operator coefficients.
+                        </para>
                     </listitem>
                     <listitem>
-                        Discriminant type : constant or variable, in the
-                        later case, the sign should be given.
+                         <para>
+                            Discriminant type : constant or variable, in the
+                            later case, the sign should be given.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </listitem>
@@ -102,18 +103,26 @@
                 </para>
                 <itemizedlist>
                     <listitem>
-                        Choice (check box) : is the choice for the manual or the automatic mode.
+                         <para>
+                            Choice (check box) : is the choice for the manual or the automatic mode.
+                        </para>
                     </listitem>
                     <listitem>
-                        Type : in the manual mode we can give the method type
-                        (Finite differences, finite elements or finite volumes).
+                         <para>
+                            Type : in the manual mode we can give the method type
+                            (Finite differences, finite elements or finite volumes).
+                        </para>
                     </listitem>
                     <listitem>
-                        Degree : method degree (1 or 2 for the FD and FE methods,
-                        1 for the FV method).
+                         <para>
+                            Degree : method degree (1 or 2 for the FD and FE methods,
+                            1 for the FV method).
+                        </para>
                     </listitem>
                     <listitem>
-                        Number of nodes : to give the number of the nodal points.
+                         <para>
+                            Number of nodes : to give the number of the nodal points.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </listitem>
@@ -129,10 +138,14 @@
                 </para>
                 <itemizedlist>
                     <listitem>
-                        Type : two types of boundary conditions are possible : Dirichlet or Neumann.
+                         <para>
+                            Type : two types of boundary conditions are possible : Dirichlet or Neumann.
+                        </para>
                     </listitem>
                     <listitem>
-                        Expression : to give the boundary conditions expression.
+                         <para>
+                            Expression : to give the boundary conditions expression.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </listitem>

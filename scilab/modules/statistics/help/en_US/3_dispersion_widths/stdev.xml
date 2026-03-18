@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="stdev">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="stdev">
     <refnamediv>
         <refname>stdev</refname>
         <refpurpose>
@@ -98,11 +95,14 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    If <varname>m</varname> is a scalar, then it is expanded to match the size of
-                    <code>mean(x)</code> along the <literal>n</literal>-th dimension.
+                     <para>
+                        If <varname>m</varname> is a scalar, then it is expanded to match the size of
+                        <code>mean(x)</code> along the <literal>n</literal>-th dimension.
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>stdev()</literal> can be overloaded.
+                     <para><literal>stdev()</literal> can be overloaded.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
@@ -160,7 +160,7 @@ mean(sd)
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    stdev(x, orien>ndims(x)) no longer returns zeros(x) but yields an error.
+                    stdev(x, orien&gt;ndims(x)) no longer returns zeros(x) but yields an error.
                 </revdescription>
             </revision>
             <revision>

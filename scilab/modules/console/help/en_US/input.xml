@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="input">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="input">
     <refnamediv>
         <refname>input</refname>
         <refpurpose>prompts the user for keyboard input</refpurpose>
@@ -55,12 +52,15 @@
                     <para>
                         <itemizedlist>
                             <listitem>
-                                <emphasis>without <literal>"string"</literal></emphasis>:
-                                <literal>x = evstr(keyboard_input)</literal>
+                                 <para><emphasis>without <literal>"string"</literal></emphasis>:
+                                    <literal>x = evstr(keyboard_input)</literal>
+                                </para>
                             </listitem>
                             <listitem>
-                                With <emphasis>"string"</emphasis>: <literal>x = keyboard_input</literal>
-                            </listitem>
+                                 <para>
+                                    With <emphasis>"string"</emphasis>: <literal>x = keyboard_input</literal>
+                                                                    </para>
+                                                                </listitem>
                         </itemizedlist>
                     </para>
                 </listitem>
@@ -73,29 +73,41 @@
             <emphasis role="bold">x = input(message)</emphasis>
             <itemizedlist>
                 <listitem>
-                    prints the <varname>message</varname> on a new line;
+                     <para>
+                        prints the <varname>message</varname> on a new line;
+                    </para>
                 </listitem>
                 <listitem>
-                    sets the caret at the message's end;
+                     <para>
+                        sets the caret at the message's end;
+                    </para>
                 </listitem>
                 <listitem>
-                    waits for a direct literal <literal>keyboard_input</literal> of any
-                    length, + enter. <literal>keyboard_input</literal> must be a valid Scilab expression
-                    provided on the current line, without continuation mark <literal>..</literal>.
-                    <literal>keyboard_input</literal> can include extended UTF-8 characters.
+                     <para>
+                        waits for a direct literal <literal>keyboard_input</literal> of any
+                        length, + enter. <literal>keyboard_input</literal> must be a valid Scilab expression
+                        provided on the current line, without continuation mark <literal>..</literal>.
+                        <literal>keyboard_input</literal> can include extended UTF-8 characters.
+                    </para>
                 </listitem>
                 <listitem>
-                    tries to evaluate <literal>x = evstr(k_input)</literal> :
-                    <itemizedlist>
-                        <listitem>
-                            If it succeeds, <varname>x</varname> is output.
-                        </listitem>
-                        <listitem>
-                            Otherwise: an error is displayed, and the user is prompted
-                            again until a valid Scilab expression is entered.
-                        </listitem>
-                    </itemizedlist>
-                </listitem>
+                     <para>
+                        tries to evaluate <literal>x = evstr(k_input)</literal> :
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    If it succeeds, <varname>x</varname> is output.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    Otherwise: an error is displayed, and the user is prompted
+                                    again until a valid Scilab expression is entered.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </itemizedlist>
             If <literal>keyboard_input</literal> is empty or made of blanks, <varname>x</varname> is set to
             <literal>[]</literal>.

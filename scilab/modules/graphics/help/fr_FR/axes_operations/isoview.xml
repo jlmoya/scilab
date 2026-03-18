@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="isoview">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="isoview">
     <refnamediv>
         <refname>isoview</refname>
         <refpurpose>Règle la vue isométrique des repères graphiques
@@ -39,15 +36,19 @@
             <varlistentry>
                 <term>"on" | "off" | &lt;none&gt;</term>
                 <listitem>
-                    Active, désactive ou commute la vue isométrique pour les repères graphiques
-                    considérés.
+                     <para>
+                        Active, désactive ou commute la vue isométrique pour les repères graphiques
+                        considérés.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>idGraphics</term>
                 <listitem>
-                    Vecteur d'identifiants graphiques. Tous les repères graphiques afférents sont
-                    traités. Par défaut, le repère actif est traité.
+                     <para>
+                        Vecteur d'identifiants graphiques. Tous les repères graphiques afférents sont
+                        traités. Par défaut, le repère actif est traité.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -76,17 +77,23 @@
             impliqués dans le vecteur d'identifiants graphiques donné :
             <itemizedlist>
                 <listitem>
-                    Si <varname>idGraphics(i)</varname> désigne une figure, tous ses repères
-                    graphiques sont considérés.
+                     <para>
+                        Si <varname>idGraphics(i)</varname> désigne une figure, tous ses repères
+                        graphiques sont considérés.
+                    </para>
                 </listitem>
                 <listitem>
-                    Si <varname>idGraphics(i)</varname> représente un repère graphique, il est
-                    modifié comme tel.
+                     <para>
+                        Si <varname>idGraphics(i)</varname> représente un repère graphique, il est
+                        modifié comme tel.
+                    </para>
                 </listitem>
                 <listitem>
-                    Si <varname>idGraphics(i)</varname> désigne un sous-composant d'un repère
-                    (telle qu'une courbe polyline, un agrégat compound, etc), son repère graphique
-                    parent est considéré.
+                     <para>
+                        Si <varname>idGraphics(i)</varname> désigne un sous-composant d'un repère
+                        (telle qu'une courbe polyline, un agrégat compound, etc), son repère graphique
+                        parent est considéré.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -120,13 +127,13 @@
                                     amélioré lorsque les étendues en X/Y/Z sont très différentes.</td>
                 </tr>
                 <tr>
-                    <th></th><td align="center">off</td>
+                    <th/><td align="center">off</td>
                             <td align="center">off</td>
                             <td>Echelles en X, Y, Z indépendantes. En 3D, les facteurs d'échelles
                                 X/Y/Z rendus en perspective sont similaires à ceux des données.</td>
                 </tr>
                 <tr>
-                    <th></th><td align="center">on</td>
+                    <th/><td align="center">on</td>
                              <td align="center">on</td>
                              <td>Les échelles graphiques sont fixées de sorte que le repère
                                  graphique apparaisse carré ou cubique.
@@ -191,7 +198,7 @@ isoview off
 isoview(gcf(),"off")
 isoview([a1 a2 a3], "on")
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             t = [0:0.1:2*%pi]';
             clf
             f = gcf();
@@ -228,7 +235,7 @@ isoview([a1 a2 a3], "on")
             plot3d(xx, yy, zz, alpha=60, flag=[color("green") 8 4])
             zlabel("isoview on", "rotation", -90, "fontsize",4)
             isoview
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Utilisation de l'option frameflag=4  de plot2d() :
 r = linspace(1,10,200);
@@ -242,7 +249,7 @@ subplot(1,2,2)
 plot2d(r.*sin(t),r.*cos(t),frameflag=4)
 xtitle("with frameflag=4")
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             r = linspace(1,10,200);
             t = r*3;
             scf();
@@ -253,7 +260,7 @@ xtitle("with frameflag=4")
             subplot(1,2,2)
             plot2d(r.*sin(t),r.*cos(t),frameflag=4)
             xtitle("avec frameflag=4")
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>Voir aussi</title>
@@ -274,25 +281,27 @@ xtitle("with frameflag=4")
                 <revnumber>6.0</revnumber>
                 <revdescription>
                     <itemizedlist>
-                        <listitem>Ajout des drapeaux "on", "off".</listitem>
-                        <listitem>Ajout des paramètres d'entrée &lt;none&gt; et idGraphics.</listitem>
-                    </itemizedlist>
-                </revdescription>
-            </revision>
-            <revision>
-                <revnumber>6.0.2</revnumber>
-                <revdescription>
-                    "isoview on" désormais fixe .cube_scaling="off", et
-                    "isoview off" fixe .cube_scaling="on".
-                </revdescription>
-            </revision>
-            <revision>
-                <revnumber>6.1</revnumber>
-                <revdescription>
-                    La syntaxe <literal>isoview(xmin, xmax, ymin, ymax)</literal> n'est plus acceptée.
-                </revdescription>
-            </revision>
-        </revhistory>
-    </refsection>
-
-</refentry>
+                        <listitem>
+                             <para>Ajout des drapeaux "on", "off".</para></listitem>
+                            <listitem>
+                                 <para>Ajout des paramètres d'entrée &lt;none&gt; et idGraphics.</para></listitem>
+                            </itemizedlist>
+                        </revdescription>
+                    </revision>
+                    <revision>
+                        <revnumber>6.0.2</revnumber>
+                        <revdescription>
+                            "isoview on" désormais fixe .cube_scaling="off", et
+                            "isoview off" fixe .cube_scaling="on".
+                        </revdescription>
+                    </revision>
+                    <revision>
+                        <revnumber>6.1</revnumber>
+                        <revdescription>
+                            La syntaxe <literal>isoview(xmin, xmax, ymin, ymax)</literal> n'est plus acceptée.
+                        </revdescription>
+                    </revision>
+                </revhistory>
+            </refsection>
+        
+        </refentry>

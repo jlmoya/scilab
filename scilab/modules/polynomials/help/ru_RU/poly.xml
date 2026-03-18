@@ -14,10 +14,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="ru" xml:id="poly">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="poly">
     <refnamediv>
         <refname>poly</refname>
         <refpurpose>
@@ -110,16 +107,19 @@
                                             <literal>degree(p)==length(vec)</literal>
                                         </listitem>
                                         <listitem>
-                                            <literal>poly()</literal> и
-                                            <literal>roots()</literal> являются обратными функциями друг другу.
+                                             <para><literal>poly()</literal> и
+                                                <literal>roots()</literal> являются обратными функциями друг другу.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            Бесконечные корни дают нулевые коэффициенты наивысшей степени.
-                                            В этом случае фактическая степень <varname>p</varname>
-                                            меньше, чем <literal>length(vec)</literal>.
-                                            Например,
-                                            <literal>poly([-%inf -1 2 %inf ], "x")</literal>
-                                            даёт <literal>(x-2)(x+1)</literal>, чья степень 2.
+                                             <para>
+                                                Бесконечные корни дают нулевые коэффициенты наивысшей степени.
+                                                В этом случае фактическая степень <varname>p</varname>
+                                                меньше, чем <literal>length(vec)</literal>.
+                                                Например,
+                                                <literal>poly([-%inf -1 2 %inf ], "x")</literal>
+                                                даёт <literal>(x-2)(x+1)</literal>, чья степень 2.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                 </note>

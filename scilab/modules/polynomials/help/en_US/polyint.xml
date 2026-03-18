@@ -11,9 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="polyint">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="polyint">
     <refnamediv>
         <refname>polyint</refname>
         <refpurpose>
@@ -34,35 +32,43 @@
             <varlistentry>
                 <term>P, Q</term>
                 <listitem>
-                    arrays (from scalars to hypermatrices) of polynomials with real or complex
-                    coefficients, of same size.
-                    <para/>
-                </listitem>
+                     <para>
+                        arrays (from scalars to hypermatrices) of polynomials with real or complex
+                        coefficients, of same size.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Const</term>
                 <listitem>
-                    Set of real or complex constants of integration.
-                    <literal>length(Const)</literal> sets the number of consecutive integrations
-                    to perform. By default, 0 is used.
-                    <varname>Const</varname> can be one of the following:
-                    <itemizedlist>
-                        <listitem>
-                            a scalar: then only the first antiderivatives are computed, and all use
-                            the same <varname>Const</varname> value.
-                        </listitem>
-                        <listitem>
-                            an array of size size(P): then only the first antiderivatives are computed,
-                            with the respective <literal>Const(i)</literal> for <literal>Q(i)</literal>.
-                        </listitem>
-                        <listitem>
-                            a list that can mix scalars, arrays of size size(P), or undefined elements.
-                            Then <literal>Const(i)</literal> is used for the i<superscript>th</superscript>
-                            antiderivatives. Undefined elements are equivalent to 0.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        Set of real or complex constants of integration.
+                        <literal>length(Const)</literal> sets the number of consecutive integrations
+                        to perform. By default, 0 is used.
+                        <varname>Const</varname> can be one of the following:
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    a scalar: then only the first antiderivatives are computed, and all use
+                                    the same <varname>Const</varname> value.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    an array of size size(P): then only the first antiderivatives are computed,
+                                    with the respective <literal>Const(i)</literal> for <literal>Q(i)</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    a list that can mix scalars, arrays of size size(P), or undefined elements.
+                                    Then <literal>Const(i)</literal> is used for the i<superscript>th</superscript>
+                                    antiderivatives. Undefined elements are equivalent to 0.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

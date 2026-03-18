@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="length" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="length" xml:lang="pt">
     <refnamediv>
         <refname>length</refname>
         <refpurpose>
@@ -102,16 +99,20 @@ length(['olá mundo',SCI])
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            The <literal>length()</literal> of any array C of cells was formerly
-                            always 3, whatever are the number of dimensions and the sizes of the
-                            array. It is now the number of elements of the array at null depth
-                            (without recursive counting), equal to <literal>size(C, "*")</literal>.
+                             <para>
+                                The <literal>length()</literal> of any array C of cells was formerly
+                                always 3, whatever are the number of dimensions and the sizes of the
+                                array. It is now the number of elements of the array at null depth
+                                (without recursive counting), equal to <literal>size(C, "*")</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            The <literal>length()</literal> of any array S of structures was formerly
-                            equal to its number of fields +2, whatever are the number of dimensions
-                            and the sizes of the array. It is now the number of elements of the
-                            array at null depth, equal to <literal>size(S, "*")</literal>.
+                             <para>
+                                The <literal>length()</literal> of any array S of structures was formerly
+                                equal to its number of fields +2, whatever are the number of dimensions
+                                and the sizes of the array. It is now the number of elements of the
+                                array at null depth, equal to <literal>size(S, "*")</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

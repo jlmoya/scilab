@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="error">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="error">
     <refnamediv>
         <refname>error</refname>
         <refpurpose>reports a run time error</refpurpose>
@@ -47,7 +44,7 @@
                 <term>n</term>
                 <listitem>
                     <para>
-                        integer > 0: numerical identifier ascribed to the error. Default = 10000.
+                        integer &gt; 0: numerical identifier ascribed to the error. Default = 10000.
                         While the message is often translated into the current session language,
                         <varname>n</varname> allows to test the error in a language-independent way.
                     </para>
@@ -61,16 +58,24 @@
             <literal>error(…)</literal> allows to issue an error. By default <literal>error</literal>
             <itemizedlist>
                 <listitem>
-                    stops the current execution,
+                     <para>
+                        stops the current execution,
+                    </para>
                 </listitem>
                 <listitem>
-                    displays in the console the recursive calling tree leading to the error,
+                     <para>
+                        displays in the console the recursive calling tree leading to the error,
+                    </para>
                 </listitem>
                 <listitem>
-                    displays the given error <varname>message</varname>,
+                     <para>
+                        displays the given error <varname>message</varname>,
+                    </para>
                 </listitem>
                 <listitem>
-                    and resumes to the prompt level.
+                     <para>
+                        and resumes to the prompt level.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

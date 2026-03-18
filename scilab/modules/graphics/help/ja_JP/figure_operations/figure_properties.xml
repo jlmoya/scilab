@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="figure_properties">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="figure_properties">
     <refnamediv>
         <refname>figure_properties</refname>
         <refpurpose>グラフィックエンティティプロパティの説明</refpurpose>
@@ -436,26 +433,34 @@
                                     <literal>"off"</literal> means that
                                     <itemizedlist>
                                         <listitem>
-                                            the newly created figure has no default axes.
+                                             <para>
+                                                the newly created figure has no default axes.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            for an existing figure, it is possible to actually delete
-                                            all its existing axes.
+                                             <para>
+                                                for an existing figure, it is possible to actually delete
+                                                all its existing axes.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                     In both cases,
                                     <itemizedlist>
                                         <listitem>
-                                            without any axes, the figure can't be the default
-                                            target of any plotting instruction. This feature
-                                            can be used to protect an interactive interface built in a
-                                            figure (like the demos and the ATOMS ones) from being the default
-                                            plotting target when there is no other proper opened
-                                            graphical figures.
+                                             <para>
+                                                without any axes, the figure can't be the default
+                                                target of any plotting instruction. This feature
+                                                can be used to protect an interactive interface built in a
+                                                figure (like the demos and the ATOMS ones) from being the default
+                                                plotting target when there is no other proper opened
+                                                graphical figures.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            It is still possible to force creating an axes using the
-                                            <link linkend="newaxes">newaxes</link> function.
+                                             <para>
+                                                It is still possible to force creating an axes using the
+                                                <link linkend="newaxes">newaxes</link> function.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                 </para>
@@ -648,21 +653,33 @@ plot3d(t,t,sin(t)'*cos(t),35,45,'X@Y@Z',[15,2,4]);
                 <revnumber>5.5.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>"visible" プロパティの意味が変更されました (uicontrols が管理し,いくつかのケースでは図全体を不可視にできるようになりました.</listitem>
-                        <listitem>"icon" プロパティが追加され,図のアイコンを変更できるようになりました.</listitem>
-                        <listitem>"menubar_visible" プロパティ追加.</listitem>
-                        <listitem>"toolbar_visible" プロパティ追加.</listitem>
-                        <listitem>"infobar_visible" プロパティ追加.</listitem>
-                        <listitem>"resize" プロパティ追加.</listitem>
-                        <listitem>"dockable" プロパティ追加.</listitem>
-                        <listitem>"menubar" プロパティ追加.</listitem>
-                        <listitem>"toolbar" プロパティ追加.</listitem>
-                        <listitem>"default_axes" プロパティ追加.</listitem>
-                        <listitem>"layout" プロパティ追加.</listitem>
-                        <listitem>"layout_options" プロパティ追加.</listitem>
-                    </itemizedlist>
-                </revremark>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                        <listitem>
+                             <para>"visible" プロパティの意味が変更されました (uicontrols が管理し,いくつかのケースでは図全体を不可視にできるようになりました.</para></listitem>
+                            <listitem>
+                                 <para>"icon" プロパティが追加され,図のアイコンを変更できるようになりました.</para></listitem>
+                                <listitem>
+                                     <para>"menubar_visible" プロパティ追加.</para></listitem>
+                                    <listitem>
+                                         <para>"toolbar_visible" プロパティ追加.</para></listitem>
+                                        <listitem>
+                                             <para>"infobar_visible" プロパティ追加.</para></listitem>
+                                            <listitem>
+                                                 <para>"resize" プロパティ追加.</para></listitem>
+                                                <listitem>
+                                                     <para>"dockable" プロパティ追加.</para></listitem>
+                                                    <listitem>
+                                                         <para>"menubar" プロパティ追加.</para></listitem>
+                                                        <listitem>
+                                                             <para>"toolbar" プロパティ追加.</para></listitem>
+                                                            <listitem>
+                                                                 <para>"default_axes" プロパティ追加.</para></listitem>
+                                                                <listitem>
+                                                                     <para>"layout" プロパティ追加.</para></listitem>
+                                                                    <listitem>
+                                                                         <para>"layout_options" プロパティ追加.</para></listitem>
+                                                                    </itemizedlist>
+                                                                </revremark>
+                                                            </revision>
+                                                        </revhistory>
+                                                    </refsection>
+                                                </refentry>

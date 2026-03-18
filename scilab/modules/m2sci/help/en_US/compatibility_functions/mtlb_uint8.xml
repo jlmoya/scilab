@@ -14,10 +14,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="mtlb_uint8">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="mtlb_uint8">
     <refnamediv>
         <refname>mtlb_uint8</refname>
         <refpurpose>Matlab uint8 emulation function</refpurpose>
@@ -28,13 +25,17 @@
             Matlab and Scilab <literal>uint8</literal> behave differently :
             <itemizedlist>
                 <listitem>
-                    Beyong the main interval bounds, Scilab's <literal>uint8()</literal> wraps,
-                    while Matlab's <literal>mtlb_uint8()</literal> saturates.
+                     <para>
+                        Beyong the main interval bounds, Scilab's <literal>uint8()</literal> wraps,
+                        while Matlab's <literal>mtlb_uint8()</literal> saturates.
+                    </para>
                 </listitem>
                 <listitem>
-                    For non integer values, Scilab's <literal>uint8()</literal> truncates the
-                    fractional part, while Matlab's <literal>mtlb_uint8()</literal> rounds to the
-                    nearest integer.
+                     <para>
+                        For non integer values, Scilab's <literal>uint8()</literal> truncates the
+                        fractional part, while Matlab's <literal>mtlb_uint8()</literal> rounds to the
+                        nearest integer.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="sum" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="sum" xml:lang="pt">
     <refnamediv>
         <refname>sum</refname>
         <refpurpose>soma (soma linha, soma coluna) de entradas de um vetor ou
@@ -38,40 +35,48 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    Matriz ou hypermatriz de booleanos (densa ou esparsa), números inteiros codificados,
-                    números reais ou complexos (densa ou esparsa), polinômios ou racionais.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matriz ou hypermatriz de booleanos (densa ou esparsa), números inteiros codificados,
+                        números reais ou complexos (densa ou esparsa), polinômios ou racionais.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>orientation</term>
                 <listitem>
-                    it can be either
-                    <itemizedlist>
-                        <listitem>
-                            a character <literal>"*"</literal> (default), <literal>"r"</literal>,
-                          <literal>"c"</literal> or  <literal>"m"</literal>
-                        </listitem>
-                        <listitem>
-                            a positive integer: Index of the dimension along which the sums must be computed.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        it can be either
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    a character <literal>"*"</literal> (default), <literal>"r"</literal>,
+                                  <literal>"c"</literal> or  <literal>"m"</literal>
+                              </para>
+                          </listitem>
+                            <listitem>
+                                 <para>
+                                    a positive integer: Index of the dimension along which the sums must be computed.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>outtype</term>
                 <listitem>
-                    string <literal>"native"</literal> or <literal>"double"</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        string <literal>"native"</literal> or <literal>"double"</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    escalar ou vetor
-                    <para/>
-                </listitem>
+                     <para>
+                        escalar ou vetor
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

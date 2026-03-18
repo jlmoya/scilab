@@ -119,11 +119,14 @@
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>select</literal> est maintenant protégé. Les affectations telles que
-                            <literal>select=1</literal> ne sont plus possibles.
+                             <para><literal>select</literal> est maintenant protégé. Les affectations telles que
+                                <literal>select=1</literal> ne sont plus possibles.
+                            </para>
                         </listitem>
                         <listitem>
-                            Le nombre de caractères constituant le corps d'une instruction conditionnelle (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, ou <literal>select/case</literal>) n'est plus limité à 16k.
+                             <para>
+                                Le nombre de caractères constituant le corps d'une instruction conditionnelle (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, ou <literal>select/case</literal>) n'est plus limité à 16k.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -133,7 +136,9 @@
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Ajout du case groupé représenté par une cell <literal>case {2 3}</literal> pour correspondre à 2 ou 3.
+                             <para>
+                                Ajout du case groupé représenté par une cell <literal>case {2 3}</literal> pour correspondre à 2 ou 3.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

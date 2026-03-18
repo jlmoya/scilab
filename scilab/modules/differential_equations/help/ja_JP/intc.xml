@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="intc">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="intc">
     <refnamediv>
         <refname>intc</refname>
         <refpurpose>コーシー積分</refpurpose>
@@ -35,32 +32,36 @@
             <varlistentry>
                 <term>a,b</term>
                 <listitem>
-                    2つの複素数スカラー
-                    <para/>
-                </listitem>
+                     <para>
+                        2つの複素数スカラー
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>f</term>
                 <listitem>
-                    "外部" 関数
-                    <para/>
-                </listitem>
+                     <para>
+                        "外部" 関数
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>abserr, relerr</term>
                 <listitem>
-                    実スカラー, 絶対および相対エラー.
-                    デフォルト値: <literal>1.d-13</literal> および
-                    <literal>1d-8</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        実スカラー, 絶対および相対エラー.
+                        デフォルト値: <literal>1.d-13</literal> および
+                        <literal>1d-8</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>err</term>
                 <listitem>
-                    実数, 推定された結果の絶対誤差.
-                    <para/>
-                </listitem>
+                     <para>
+                        実数, 推定された結果の絶対誤差.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="ieee" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="ieee" xml:lang="ru">
     <refnamediv>
         <refname>ieee</refname>
         <refpurpose>установка режима исключения с плавающей запятой</refpurpose>
@@ -59,13 +56,17 @@
             <varlistentry>
                 <term>1</term>
                 <listitem>
-                    >исключение с плавающей запятой формирует предупреждение.
+                     <para>
+                        &gt;исключение с плавающей запятой формирует предупреждение.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>2</term>
                 <listitem>
-                    исключение с плавающей запятой формирует значение <constant>%inf</constant> или <constant>%nan</constant>.
+                     <para>
+                        исключение с плавающей запятой формирует значение <constant>%inf</constant> или <constant>%nan</constant>.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -78,18 +79,21 @@
             По умолчанию исходный режим 2. Это значение по умолчанию можно установить любым из следующих способов:
             <itemizedlist>
                 <listitem>
-                  Через графический интерфейс настроек: <code>preferences</code>, в разделе
-                  <emphasis role="italic">Общие => Рабочая среда => ieee</emphasis>.
+                     <para>
+                      Через графический интерфейс настроек: <code>preferences</code>, в разделе
+                      <emphasis role="italic">Общие =&gt; Рабочая среда =&gt; ieee</emphasis>.
+                    </para>
                 </listitem>
                 <listitem>
-                  Аналогично, используя <code>xmlSetValues</code> следующим образом
-                  (чтобы установить режим в 1) :
-                  <para>
-                  <literal>xmlSetValues("//general/body/environment", ["fpe";"1"])</literal>
-                  </para>
-                </listitem>
+                     <para>
+                      Аналогично, используя <code>xmlSetValues</code> следующим образом
+                      (чтобы установить режим в 1) :
+                      </para>
+                  </listitem>
                 <listitem>
-                    Или используя <literal>ieee(mod)</literal> в вашем файле запуска.
+                     <para>
+                        Или используя <literal>ieee(mod)</literal> в вашем файле запуска.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>

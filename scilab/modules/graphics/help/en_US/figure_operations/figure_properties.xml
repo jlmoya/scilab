@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="figure_properties">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="figure_properties">
     <refnamediv>
         <refname>figure properties</refname>
         <refpurpose>description of the graphics
@@ -377,26 +374,34 @@
                                     <literal>"off"</literal> means that
                                     <itemizedlist>
                                         <listitem>
-                                            the newly created figure has no default axes.
+                                             <para>
+                                                the newly created figure has no default axes.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            for an existing figure, it is possible to actually delete
-                                            all its existing axes.
+                                             <para>
+                                                for an existing figure, it is possible to actually delete
+                                                all its existing axes.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                     In both cases,
                                     <itemizedlist>
                                         <listitem>
-                                            without any axes, the figure can't be the default
-                                            target of any plotting instruction. This feature
-                                            can be used to protect an interactive interface built in
-                                            a figure (like the demos and the ATOMS ones) from being the default
-                                            plotting target when there is no other proper opened
-                                            graphical figures.
+                                             <para>
+                                                without any axes, the figure can't be the default
+                                                target of any plotting instruction. This feature
+                                                can be used to protect an interactive interface built in
+                                                a figure (like the demos and the ATOMS ones) from being the default
+                                                plotting target when there is no other proper opened
+                                                graphical figures.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            It is still possible to force creating an axes using the
-                                            <link linkend="newaxes">newaxes</link> function.
+                                             <para>
+                                                It is still possible to force creating an axes using the
+                                                <link linkend="newaxes">newaxes</link> function.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                 </para>
@@ -511,8 +516,8 @@
     </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example">
-            <![CDATA[
+        <programlisting role="example"><![CDATA[
+            
 lines(0) // disables vertical paging
 
 //Example 1
@@ -539,8 +544,8 @@ plot2d()
 scf(214);
 t=-%pi:0.3:%pi;
 plot3d(t,t,sin(t)'*cos(t),35,45,'X@Y@Z',[15,2,4]);
- ]]>
-        </programlisting>
+ 
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -591,25 +596,37 @@ plot3d(t,t,sin(t)'*cos(t),35,45,'X@Y@Z',[15,2,4]);
                 <revnumber>5.5.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>"visible" property meaning changed (uicontrols managed and the whole figure can be made invisible in some cases.</listitem>
-                        <listitem>"icon" property added to allow figure icon change.</listitem>
-                        <listitem>"menubar_visible" property added.</listitem>
-                        <listitem>"toolbar_visible" property added.</listitem>
-                        <listitem>"infobar_visible" property added.</listitem>
-                        <listitem>"resize" property added.</listitem>
-                        <listitem>"dockable" property added.</listitem>
-                        <listitem>"menubar" property added.</listitem>
-                        <listitem>"toolbar" property added.</listitem>
-                        <listitem>"default_axes" property added.</listitem>
-                        <listitem>"layout" property added.</listitem>
-                        <listitem>"layout_options" property added.</listitem>
-                    </itemizedlist>
-                </revremark>
-            </revision>
-            <revision>
-                <revnumber>2025.0.0</revnumber>
-                <revremark>"anti_aliasing" property default value is now "8x" and can now only be changed (specifically) at figure creation time using <link linkend="figure">figure</link> or (globally) by setting default its value using <link linkend="gdf">gdf</link>.</revremark>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                        <listitem>
+                             <para>"visible" property meaning changed (uicontrols managed and the whole figure can be made invisible in some cases.</para></listitem>
+                            <listitem>
+                                 <para>"icon" property added to allow figure icon change.</para></listitem>
+                                <listitem>
+                                     <para>"menubar_visible" property added.</para></listitem>
+                                    <listitem>
+                                         <para>"toolbar_visible" property added.</para></listitem>
+                                        <listitem>
+                                             <para>"infobar_visible" property added.</para></listitem>
+                                            <listitem>
+                                                 <para>"resize" property added.</para></listitem>
+                                                <listitem>
+                                                     <para>"dockable" property added.</para></listitem>
+                                                    <listitem>
+                                                         <para>"menubar" property added.</para></listitem>
+                                                        <listitem>
+                                                             <para>"toolbar" property added.</para></listitem>
+                                                            <listitem>
+                                                                 <para>"default_axes" property added.</para></listitem>
+                                                                <listitem>
+                                                                     <para>"layout" property added.</para></listitem>
+                                                                    <listitem>
+                                                                         <para>"layout_options" property added.</para></listitem>
+                                                                    </itemizedlist>
+                                                                </revremark>
+                                                            </revision>
+                                                            <revision>
+                                                                <revnumber>2025.0.0</revnumber>
+                                                                <revremark>"anti_aliasing" property default value is now "8x" and can now only be changed (specifically) at figure creation time using <link linkend="figure">figure</link> or (globally) by setting default its value using <link linkend="gdf">gdf</link>.</revremark>
+                                                            </revision>
+                                                        </revhistory>
+                                                    </refsection>
+                                                </refentry>

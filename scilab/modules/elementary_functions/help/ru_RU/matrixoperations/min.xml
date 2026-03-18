@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="min" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="min" xml:lang="ru">
     <refnamediv>
         <refname>min</refname>
         <refpurpose>минимум</refpurpose>
@@ -102,11 +99,15 @@
                         Когда используется <literal>[m,K]=min(A)</literal>, то
                         <itemizedlist>
                             <listitem>
-                                Если <literal>A</literal> вектор, то <varname>K</varname> - скаляр.
+                                 <para>
+                                    Если <literal>A</literal> вектор, то <varname>K</varname> - скаляр.
+                                </para>
                             </listitem>
                             <listitem>
-                                В противном случае <varname>K</varname> является вектор-строкой
-                                <literal>[i,j,..]</literal> индексов.
+                                 <para>
+                                    В противном случае <varname>K</varname> является вектор-строкой
+                                    <literal>[i,j,..]</literal> индексов.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -161,11 +162,13 @@
         <note>
             <itemizedlist>
                <listitem>
-                    <literal>min()</literal> игнорирует значения <literal>NaN</literal> (если есть не
-                    только значения <literal>NaN</literal>).
+                    <para><literal>min()</literal> игнорирует значения <literal>NaN</literal> (если есть не
+                        только значения <literal>NaN</literal>).
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>min([])</literal> возвращает <literal>[]</literal> для значений и индексов.
+                     <para><literal>min([])</literal> возвращает <literal>[]</literal> для значений и индексов.
+                    </para>
                 </listitem>
              </itemizedlist>
         </note>

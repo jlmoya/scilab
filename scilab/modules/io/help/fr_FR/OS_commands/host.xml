@@ -8,10 +8,7 @@
 * Copyright (C) 2025 - Dassault Systèmes S.E. - Cédric DELAMARRE
 *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="host">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="host">
     <refnamediv>
         <refname>host</refname>
         <refpurpose>exécute une commande Windows, Linux, ou MacOS</refpurpose>
@@ -91,26 +88,36 @@
             laquelle Scilab a été lancé. En conséquence, son contexte est le suivant :
             <itemizedlist>
                 <listitem>
-                    Son dossier initial de travail (CWD) est le dossier de travail de la session
-                    Scilab lors de l'appel à <literal>host(…)</literal>.
+                     <para>
+                        Son dossier initial de travail (CWD) est le dossier de travail de la session
+                        Scilab lors de l'appel à <literal>host(…)</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    Ses variables d'environnement initiales sont identiques (noms et valeurs)
-                    à celles du terminal OS dans lequel la session Scilab fonctionne (consolebox),
-                    au moment où host() est appelée. Elles peuvent être modifiées avec
-                    <link linkend="setenv">setenv</link> avant l'appel à host().
+                     <para>
+                        Ses variables d'environnement initiales sont identiques (noms et valeurs)
+                        à celles du terminal OS dans lequel la session Scilab fonctionne (consolebox),
+                        au moment où host() est appelée. Elles peuvent être modifiées avec
+                        <link linkend="setenv">setenv</link> avant l'appel à host().
+                    </para>
                 </listitem>
                 <listitem>
-                    Toute modification dans la session host() du dossier de travail et/ou des
-                    variables d'environnement n'a aucun effet ni sur le dossier de travail de la
-                    session Scilab, ni sur les variables d'environnement du terminal OS dans
-                    lequel la session Scilab fonctionne.
+                     <para>
+                        Toute modification dans la session host() du dossier de travail et/ou des
+                        variables d'environnement n'a aucun effet ni sur le dossier de travail de la
+                        session Scilab, ni sur les variables d'environnement du terminal OS dans
+                        lequel la session Scilab fonctionne.
+                    </para>
                 </listitem>
                 <listitem>
-                    Quand la fonction est appelée avec 3 sorties elle attend la fin de l'exécution de la commande.
+                     <para>
+                        Quand la fonction est appelée avec 3 sorties elle attend la fin de l'exécution de la commande.
+                    </para>
                 </listitem>
                 <listitem>
-                    Lorsque la fonction est appelée avec deux ou trois arguments de sortie, elle attendra la fin de l'execution de la commande pour retourner les sorties.
+                     <para>
+                        Lorsque la fonction est appelée avec deux ou trois arguments de sortie, elle attendra la fin de l'execution de la commande pour retourner les sorties.
+                    </para>
                 </listitem>
             </itemizedlist>
         </important>

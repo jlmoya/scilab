@@ -13,9 +13,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="asciimat">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="asciimat">
     <refnamediv>
         <refname>asciimat</refname>
         <refpurpose>
@@ -35,21 +33,22 @@
             <varlistentry>
                 <term>text</term>
                 <listitem>
-                    single text, or vector, matrix or hypermatrix of texts.
-                    Text elements may have various lengths, and may include UTF-8 extended characters.
-                    <para/>
-                    <literal>asciimat(…)</literal> always concatenates the columns of
-                    <varname>text</varname> along rows, as input or output argument.
-                    <para/>
-                </listitem>
+                     <para>
+                        single text, or vector, matrix or hypermatrix of texts.
+                        Text elements may have various lengths, and may include UTF-8 extended characters.
+                        <literal>asciimat(…)</literal> always concatenates the columns of
+                        <varname>text</varname> along rows, as input or output argument.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>unicodes</term>
                 <listitem>
-                    single integer ASCII code, or vector, matrix or hypermatrix of ASCII or unicode
-                    1-byte numbers.
-                    <para/>
-                </listitem>
+                     <para>
+                        single integer ASCII code, or vector, matrix or hypermatrix of ASCII or unicode
+                        1-byte numbers.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -130,7 +129,7 @@ asciimat(['ab';'cd']) - asciimat(['ef';'gh'])
             <para>
                 <emphasis role="bold">For an hypermatrix</emphasis> of <varname>text</varname>,
                 the processing is basically the same, as if all <varname>text</varname>
-                rows over all dimensions > 2 were beforehand stacked into a 2D matrix.
+                rows over all dimensions &gt; 2 were beforehand stacked into a 2D matrix.
                 The resulting 2D <varname>unicodes</varname> matrix is finally reshaped into
                 an hypermatrix..
             </para>
@@ -348,15 +347,21 @@ asciimat(r)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Text components with various lengths or/and including UTF-8 characters
-                            are accepted. Padding with the ascii(" ")==32 code implemented.
+                             <para>
+                                Text components with various lengths or/and including UTF-8 characters
+                                are accepted. Padding with the ascii(" ")==32 code implemented.
+                            </para>
                         </listitem>
                         <listitem>
-                            asciimat(unicodes) trims all trailing spaces.
+                             <para>
+                                asciimat(unicodes) trims all trailing spaces.
+                            </para>
                         </listitem>
                         <listitem>
-                            For any unicodes hypermatrix, r = asciimat(unicodes) no longer squeezes
-                            size(r,2).
+                             <para>
+                                For any unicodes hypermatrix, r = asciimat(unicodes) no longer squeezes
+                                size(r,2).
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

@@ -77,31 +77,39 @@
                         <varlistentry>
                             <term>"maxiter"</term>
                             <listitem>
-                                The maximum number of iterations, provided by the
-                                <literal>-maxiter</literal> option, is reached.
+                                 <para>
+                                    The maximum number of iterations, provided by the
+                                    <literal>-maxiter</literal> option, is reached.
+                                </para>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
                             <term>"maxfuneval"</term>
                             <listitem>
-                                The maximum number of function evaluations, provided by the
-                                <literal>-maxfunevals</literal> option, is reached.
+                                 <para>
+                                    The maximum number of function evaluations, provided by the
+                                    <literal>-maxfunevals</literal> option, is reached.
+                                </para>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
                             <term>"tolf"</term>
                             <listitem>
-                                The tolerance on the function value is reached. This status is associated
-                                with the <literal>-tolfunmethod</literal>, <literal>-tolfunabsolute</literal>
-                                and <literal>-tolfunrelative</literal> options.
+                                 <para>
+                                    The tolerance on the function value is reached. This status is associated
+                                    with the <literal>-tolfunmethod</literal>, <literal>-tolfunabsolute</literal>
+                                    and <literal>-tolfunrelative</literal> options.
+                                </para>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
                             <term>"tolx"</term>
                             <listitem>
-                                The tolerance on x is reached. This status is associated with the
-                                <literal>-tolxmethod</literal>, <literal>-tolxabsolute</literal> and
-                                <literal>-tolxrelative</literal> options.
+                                 <para>
+                                    The tolerance on x is reached. This status is associated with the
+                                    <literal>-tolxmethod</literal>, <literal>-tolxabsolute</literal> and
+                                    <literal>-tolxrelative</literal> options.
+                                </para>
                             </listitem>
                         </varlistentry>
                     </variablelist>
@@ -147,11 +155,11 @@
                     The number of iterations is examined and compared to the <literal>-maxiter</literal>
                     option. If the following condition
                 </para>
-                <programlisting role="no-scilab-exec">
-                    <![CDATA[
+                <programlisting role="no-scilab-exec"><![CDATA[
+                    
                    iterations >= maxiter
-                ]]>
-                </programlisting>
+                
+                ]]></programlisting>
                 <para>
                     is true, then the status is set to "maxiter" and terminate is set to %t.
                 </para>
@@ -161,11 +169,11 @@
                     The number of function evaluations and compared to the <literal>-maxfunevals</literal>
                     option is examined. I the following condition
                 </para>
-                <programlisting role="no-scilab-exec">
-                    <![CDATA[
+                <programlisting role="no-scilab-exec"><![CDATA[
+                    
                    funevals >= maxfunevals
-                ]]>
-                </programlisting>
+                
+                ]]></programlisting>
                 <para>
                     is true, then the status is set to "maxfunevals" and terminate is set to %t.
                 </para>
@@ -184,11 +192,11 @@
                         <term>"enabled" </term>
                         <listitem>
                             <para>if the following condition</para>
-                            <programlisting role="no-scilab-exec">
-                                <![CDATA[
+                            <programlisting role="no-scilab-exec"><![CDATA[
+                                
                    abs(currentfopt) < tolfunrelative * abs(previousfopt) + tolfunabsolute
-                ]]>
-                            </programlisting>
+                
+                            ]]></programlisting>
                             <para>
                                 is true, then the status is set to "tolf" and terminate is set to %t.
                             </para>
@@ -219,11 +227,11 @@
                         <term>%t </term>
                         <listitem>
                             <para>if the following condition</para>
-                            <programlisting role="no-scilab-exec">
-                                <![CDATA[
+                            <programlisting role="no-scilab-exec"><![CDATA[
+                                
                    norm(currentxopt - previousxopt) < tolxrelative * norm(currentxopt) + tolxabsolute
-                ]]>
-                            </programlisting>
+                
+                            ]]></programlisting>
                             <para>
                                 is true, then the status is set to "tolx" and terminate is set to %t.
                             </para>
@@ -250,8 +258,8 @@
             maximum number of iterations, ...). The <literal>-verbose</literal> option is enabled so that
             messages are generated during the algorithm, are printed.
         </para>
-        <programlisting role="example">
-            <![CDATA[
+        <programlisting role="example"><![CDATA[
+            
     function [f, index] = fun(x, index)
         f = 2*x - 4;
     endfunction
@@ -296,8 +304,8 @@
 endfunction
 
 x = Dicho(opt,a,b)
- ]]>
-        </programlisting>
+ 
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

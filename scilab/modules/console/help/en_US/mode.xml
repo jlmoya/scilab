@@ -15,10 +15,7 @@
  *
  -->
 <!--  module: core  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="mode" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="mode" xml:lang="en">
     <refnamediv>
         <refname>mode</refname>
         <refpurpose>sets or queries the mode echoing Scilab instructions in the console</refpurpose>
@@ -132,19 +129,19 @@
             </tr>
             <tr style="text-align:center">
                 <td align="left">Displays results [b]</td>
-                <td></td><td>always</td><td>always</td><td>always</td><td>always</td><td>always</td><td>always</td>
+                <td/><td>always</td><td>always</td><td>always</td><td>always</td><td>always</td><td>always</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Step by step [s]</td>
-                <td></td>  <td></td>  <td> </td>  <td></td>  <td></td> <td>S F K</td> <td>S F T K</td>
+                <td/>  <td/>  <td> </td>  <td/>  <td/> <td>S F K</td> <td>S F T K</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Compact [c]</td>
-                <td>C++</td><td>+</td><td>++</td><td></td><td>SFT +</td><td>CK++ SFT+</td><td>S+</td>
+                <td>C++</td><td>+</td><td>++</td><td/><td>SFT +</td><td>CK++ SFT+</td><td>S+</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Comments</td>
-                <td>[d]</td>  <td></td>   <td>[e]</td>     <td>[f]</td> <td>[g]</td><td>[h]</td><td>[h,i]</td>
+                <td>[d]</td>  <td/>   <td>[e]</td>     <td>[f]</td> <td>[g]</td><td>[h]</td><td>[h,i]</td>
             </tr>
         </table>
         </refsect3>
@@ -155,8 +152,8 @@
                 <tr>
                     <td valign="top">[a]: </td>
                     <td>
-                        In normal modes, instructions are displayed with the <literal>--></literal>
-                        heading prompt. In step-by-step modes, <literal>>></literal> is used instead.
+                        In normal modes, instructions are displayed with the <literal>--&gt;</literal>
+                        heading prompt. In step-by-step modes, <literal>&gt;&gt;</literal> is used instead.
                     </td>
                 </tr>
                 <tr>
@@ -204,7 +201,7 @@
                                 being stepped.
                             </member>
                             <member>
-                                Some parasitic <literal>--></literal> prompts and extra blank lines
+                                Some parasitic <literal>--&gt;</literal> prompts and extra blank lines
                                 may be sometimes displayed (bug).
                             </member>
                             <member>
@@ -226,8 +223,8 @@
                     <td valign="top">[s]: </td>
                     <td>
                         The step-by-step mode stops after each line of instruction(s) and waits for
-                        the user pressing the <literal>&lt;enter></literal> or
-                        <literal>p&lt;enter></literal> keys to go on. Entering <literal>p</literal>
+                        the user pressing the <literal>&lt;enter&gt;</literal> or
+                        <literal>p&lt;enter&gt;</literal> keys to go on. Entering <literal>p</literal>
                         enters the <link linkend="pause">pause</link> mode. These modes may be used
                         for instance in demos, or as a raw debugging mode.
                     </td>
@@ -364,15 +361,21 @@ delmenu mode_test
                 <revdescription>
                 <itemizedlist>
                     <listitem>
-                        mode(4) is now stepped and can be paused, in scripts as well as in functions.
+                         <para>
+                            mode(4) is now stepped and can be paused, in scripts as well as in functions.
+                        </para>
                     </listitem>
                     <listitem>
-                        For/in scripts, mode(4) now displays each line of instructions, and
-                        displays results in a compact way. It can be used for demos.
+                         <para>
+                            For/in scripts, mode(4) now displays each line of instructions, and
+                            displays results in a compact way. It can be used for demos.
+                        </para>
                     </listitem>
                     <listitem>
-                        Callbacks were always executed in silent mode(-1). They are now executed by
-                        default in the current <literal>mode()</literal>.
+                         <para>
+                            Callbacks were always executed in silent mode(-1). They are now executed by
+                            default in the current <literal>mode()</literal>.
+                        </para>
                     </listitem>
                 </itemizedlist>
                 </revdescription>

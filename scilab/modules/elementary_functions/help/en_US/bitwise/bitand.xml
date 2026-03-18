@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-xmlns:scilab="http://www.scilab.org" xml:id="bitand" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bitand" xml:lang="en">
     <refnamediv>
         <refname>bitand</refname>
         <refpurpose>bitwise logical AND between element-wise integers of 2 arrays</refpurpose>
@@ -46,17 +43,21 @@ xmlns:scilab="http://www.scilab.org" xml:id="bitand" xml:lang="en">
                         Otherwise,
                         <itemizedlist>
                             <listitem>
-                                if <literal>u</literal> or <literal>v</literal>
-                                is decimal-encoded, the working inttype is 0
-                                (real decimal), even if the other operand
-                                is int64- or uint64-encoded.
+                                 <para>
+                                    if <literal>u</literal> or <literal>v</literal>
+                                    is decimal-encoded, the working inttype is 0
+                                    (real decimal), even if the other operand
+                                    is int64- or uint64-encoded.
+                                </para>
                             </listitem>
                             <listitem>
-                                if <literal>u</literal> and <literal>v</literal>
-                                are both encoded integers, the working inttype
-                                is the widest of both: int8 &lt; uint8 &lt;
-                                int16 &lt; uint16 &lt; int32 &lt; uint32 &lt;
-                                int64 &lt; uint64.
+                                 <para>
+                                    if <literal>u</literal> and <literal>v</literal>
+                                    are both encoded integers, the working inttype
+                                    is the widest of both: int8 &lt; uint8 &lt;
+                                    int16 &lt; uint16 &lt; int32 &lt; uint32 &lt;
+                                    int64 &lt; uint64.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -69,21 +70,27 @@ xmlns:scilab="http://www.scilab.org" xml:id="bitand" xml:lang="en">
                         processed element-wise.
                         <itemizedlist>
                             <listitem>
-                                If <literal>u</literal> is a single value (scalar)
-                                and <literal>v</literal> is a vector, matrix or
-                                hypermatrix, <literal>u</literal> is priorly
-                                expanded as <literal>u*ones(v)</literal> in order
-                                to operate <literal>u</literal> with every
-                                <literal>v</literal> component.
+                                 <para>
+                                    If <literal>u</literal> is a single value (scalar)
+                                    and <literal>v</literal> is a vector, matrix or
+                                    hypermatrix, <literal>u</literal> is priorly
+                                    expanded as <literal>u*ones(v)</literal> in order
+                                    to operate <literal>u</literal> with every
+                                    <literal>v</literal> component.
+                                </para>
                             </listitem>
                             <listitem>
-                                Conversely, <literal>v</literal> is priorly
-                                expanded as <literal>v*ones(u)</literal> if it
-                                is a single value.
+                                 <para>
+                                    Conversely, <literal>v</literal> is priorly
+                                    expanded as <literal>v*ones(u)</literal> if it
+                                    is a single value.
+                                </para>
                             </listitem>
                             <listitem>
-                                If neither <literal>u</literal> nor <literal>v</literal>
-                                are scalars, they must have the same sizes.
+                                 <para>
+                                    If neither <literal>u</literal> nor <literal>v</literal>
+                                    are scalars, they must have the same sizes.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -134,7 +141,7 @@ dec2bin([54 107 34]')  // binary representations
 !1101011  !
 !0100010  !
 ]]></screen>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // Between 2 simple rows with zeros and ones
 u = [0 1 0 1];
@@ -166,7 +173,7 @@ bitand(u, v)     //  [ 0 0 0 1 ;  34 34 34 34 ]   expected
 bitand([1 2 4 8 9 10 12], 8)  // == bitand([1 2 4 8 9 10 12], [8 8 8 8 8 8 8])
 bitand(4, [1 2 4 8 9 10 12])  // == bitand([4 4 4 4 4 4 4], [1 2 4 8 9 10 12])
    ]]></programlisting>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // With encoded integers, bitand(u,v) and u & v are equivalent:
 u = int8([2 3 10]);
@@ -185,7 +192,7 @@ u &amp; 13    // mismatching int8- | decimal- encodings
 Undefined operation for the given operands.
 check or define function %i_h_s for overloading.
 ]]></screen>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // Examples with big decimal integers:
 
@@ -229,22 +236,32 @@ bitand(u, u-2^(n-53)) == u   // True: idem
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Extension to positive signed encoded integers
+                             <para>
+                                Extension to positive signed encoded integers
+                            </para>
                         </listitem>
                         <listitem>
-                            Extension to new int64 and uint64 inttypes
+                             <para>
+                                Extension to new int64 and uint64 inttypes
+                            </para>
                         </listitem>
                         <listitem>
-                            Operands of mixed types or inttypes are now accepted.
+                             <para>
+                                Operands of mixed types or inttypes are now accepted.
+                            </para>
                         </listitem>
                         <listitem>
-                            bitand(scalar, array) and bitand(array, scalar) are now supported.
+                             <para>
+                                bitand(scalar, array) and bitand(array, scalar) are now supported.
+                            </para>
                         </listitem>
                         <listitem>
-                            Extension to decimal numbers greater than
-                            2^32 and even than 2^52,
-                            up to 1.80D+308 (== number_properties("huge")), for
-                            the 52 heaviest encoded bits of their unsigned mantissa.
+                             <para>
+                                Extension to decimal numbers greater than
+                                2^32 and even than 2^52,
+                                up to 1.80D+308 (== number_properties("huge")), for
+                                the 52 heaviest encoded bits of their unsigned mantissa.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

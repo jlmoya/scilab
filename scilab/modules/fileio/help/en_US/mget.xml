@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="mget" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="mget" xml:lang="en">
     <refnamediv>
         <refname>mget</refname>
         <refpurpose>
@@ -69,7 +66,7 @@
                 <term>nNumb</term>
                 <listitem>
                     <para>
-                        Single integer > 0: number of numbers to be
+                        Single integer &gt; 0: number of numbers to be
                         parsed and returned. Each number is encoded over one or
                         several bytes, according to the used <varname>binFormat</varname>.
                         <note>To read all numbers remaining in the file, use a
@@ -95,7 +92,7 @@
                         <tr valign="top">
                             <td align="right">uc</td>
                             <td>: individual bytes parsed as
-                                <literal>uint8</literal> unsigned integers >0
+                                <literal>uint8</literal> unsigned integers &gt;0
                             </td>
                         </tr>
                         <tr valign="top">
@@ -107,7 +104,7 @@
                         <tr valign="top">
                             <td align="right">us</td>
                             <td>: 2-byte blocks parsed as
-                                <literal>uint16</literal> unsigned integers >0
+                                <literal>uint16</literal> unsigned integers &gt;0
                             </td>
                         </tr>
                         <tr valign="top">
@@ -120,7 +117,7 @@
                         <tr valign="top">
                             <td align="right">ui</td>
                             <td>: 4-byte blocks parsed as
-                                <literal>uint32</literal> unsigned integers >0
+                                <literal>uint32</literal> unsigned integers &gt;0
                             </td>
                         </tr>
                         <tr valign="top">
@@ -132,7 +129,7 @@
                         <tr valign="top">
                             <td align="right">ul</td>
                             <td>: 8-byte blocks parsed as
-                                <literal>uint64</literal> unsigned integers >0
+                                <literal>uint64</literal> unsigned integers &gt;0
                             </td>
                         </tr>
                         <tr>
@@ -211,13 +208,17 @@
             to the chosen <varname>binFormat</varname>),
             <itemizedlist>
                 <listitem>
-                    the file pointer is increased by N bytes and set to the
-                    beginning of next block.
+                     <para>
+                        the file pointer is increased by N bytes and set to the
+                        beginning of next block.
+                    </para>
                 </listitem>
                 <listitem>
-                    the read block is ordered according to the default or chosen
-                    swapping endian mode. The parsed block is then stored to
-                    be returned.
+                     <para>
+                        the read block is ordered according to the default or chosen
+                        swapping endian mode. The parsed block is then stored to
+                        be returned.
+                    </para>
                 </listitem>
             </itemizedlist>
             This is iterated <varname>nNumb</varname> times, unless
@@ -236,7 +237,7 @@
             converted into 8-byte decimal numbers and then returned.
             <warning>
             If <literal>int64</literal> or <literal>uint64</literal>
-            integers > 2<superscript>53</superscript> were parsed thanks
+            integers &gt; 2<superscript>53</superscript> were parsed thanks
             to the <literal>"ul*"</literal> or <literal>"l*"</literal> format,
             their final conversion into decimal numbers
             truncates their mantissa to their 53 highest bits.
@@ -326,7 +327,7 @@ end
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>mgeti(,"ul*"|"l*") is implemented
-                 to read uint64 or int64 integers > 2<superscript>52</superscript>.
+                 to read uint64 or int64 integers &gt; 2<superscript>52</superscript>.
                 </revdescription>
             </revision>
         </revhistory>

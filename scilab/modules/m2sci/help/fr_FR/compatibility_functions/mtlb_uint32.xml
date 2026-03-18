@@ -14,10 +14,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="mtlb_uint32">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="mtlb_uint32">
     <refnamediv>
         <refname>mtlb_uint32</refname>
         <refpurpose>Fonction d'émulation de la fonction Matlab uint32()</refpurpose>
@@ -29,15 +26,19 @@
             résultats le plus souvent différents :
             <itemizedlist>
                 <listitem>
-                    Hors des bornes de l'intervalle de travail principal, la version Scilab de
-                    <literal>uint32()</literal> travaille en congruence su rl'intervalle
-                    ("modulo"), alors que
-                    la version Matlab <literal>mtlb_uint32()</literal> sature et reste constante.
+                     <para>
+                        Hors des bornes de l'intervalle de travail principal, la version Scilab de
+                        <literal>uint32()</literal> travaille en congruence su rl'intervalle
+                        ("modulo"), alors que
+                        la version Matlab <literal>mtlb_uint32()</literal> sature et reste constante.
+                    </para>
                 </listitem>
                 <listitem>
-                    Pour les valeurs non entières, la version Scilab <literal>uint32()</literal>
-                    tronque la partie fractionnaire, alors que la version Matlab
-                    <literal>mtlb_uint32()</literal> arrondit à l'entier le plus proche.
+                     <para>
+                        Pour les valeurs non entières, la version Scilab <literal>uint32()</literal>
+                        tronque la partie fractionnaire, alors que la version Matlab
+                        <literal>mtlb_uint32()</literal> arrondit à l'entier le plus proche.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

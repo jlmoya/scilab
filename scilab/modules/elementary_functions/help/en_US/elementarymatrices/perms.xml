@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="perms" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="perms" xml:lang="en">
     <refnamediv>
         <refname>perms</refname>
         <refpurpose>Generate the table of permutations of given elements</refpurpose>
@@ -81,12 +78,15 @@
             When "unique" is used,
             <itemizedlist>
                 <listitem>
-                    if no duplicate is detected in <varname>x</varname>, the computations are done
-                    as without "unique", that is faster.
+                     <para>
+                        if no duplicate is detected in <varname>x</varname>, the computations are done
+                        as without "unique", that is faster.
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>x</varname> is first sorted in ascending direction, and
-                    <varname>y</varname> is built in ascending lexicographic order.
+                     <para><varname>x</varname> is first sorted in ascending direction, and
+                        <varname>y</varname> is built in ascending lexicographic order.
+                    </para>
                 </listitem>
             </itemizedlist>
             Otherwise : The initial order of <varname>x</varname> components is kept, and the order

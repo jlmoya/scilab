@@ -8,10 +8,7 @@
 * Copyright (C) 2025 - Dassault Systèmes S.E. - Cédric DELAMARRE
 *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="host">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="host">
     <refnamediv>
         <refname>host</refname>
         <refpurpose>executes a Windows, Linux, or MacOS command</refpurpose>
@@ -90,21 +87,29 @@
             Scilab session. As a consequence, it has the following properties:
             <itemizedlist>
                 <listitem>
-                    Its starting current working directory (CWD) is the current one in the Scilab
-                    session when running <literal>host(…)</literal>.
+                     <para>
+                        Its starting current working directory (CWD) is the current one in the Scilab
+                        session when running <literal>host(…)</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    Its starting environment variables are copied from the OS interpreter session
-                    homing the current Scilab session. They can be modified using
-                    <link linkend="setenv">setenv</link>, before calling host().
+                     <para>
+                        Its starting environment variables are copied from the OS interpreter session
+                        homing the current Scilab session. They can be modified using
+                        <link linkend="setenv">setenv</link>, before calling host().
+                    </para>
                 </listitem>
                 <listitem>
-                    Changing the CWD or/and the environment variables with instructions in
-                    <varname>commands</varname> does not change them in the Scilab session or/and
-                    in the underlying OS interpreter session homing it.
+                     <para>
+                        Changing the CWD or/and the environment variables with instructions in
+                        <varname>commands</varname> does not change them in the Scilab session or/and
+                        in the underlying OS interpreter session homing it.
+                    </para>
                 </listitem>
                 <listitem>
-                    When called with 2 or 3 outputs the function will wait for the end of the command execution to return outputs.
+                     <para>
+                        When called with 2 or 3 outputs the function will wait for the end of the command execution to return outputs.
+                    </para>
                 </listitem>
             </itemizedlist>
         </important>
@@ -133,8 +138,8 @@ end
         </refsect3>
         <refsect3>
             <title>Detached command</title>
-            <programlisting role="example">
-				<![CDATA[
+            <programlisting role="example"><![CDATA[
+				
 // Detach a command to avoid waiting for its end
 if getos() == "Windows" then
     host("start /b ping localhost")
@@ -152,8 +157,8 @@ end
         </refsect3>
         <refsect3>
             <title>Force command outputs in the Scilab's console</title>
-            <programlisting role="example">
-				<![CDATA[
+            <programlisting role="example"><![CDATA[
+				
 if getos() == "Windows" then
     host("ping localhost", echo=%t)
 else

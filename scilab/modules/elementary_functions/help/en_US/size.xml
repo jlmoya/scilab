@@ -80,37 +80,47 @@
                     </para>
                     <itemizedlist>
                         <listitem>
-                            <literal>sz = size(x)</literal> returns a <literal>1</literal>-by-<literal>ndims(x)</literal> vector. Each entry gives the corresponding dimension value.
+                             <para><literal>sz = size(x)</literal> returns a <literal>1</literal>-by-<literal>ndims(x)</literal> vector. Each entry gives the corresponding dimension value.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>[n1, n2, ...] = size(x)</literal>, the function returns in each argument the corresponding dimension value.
+                             <para><literal>[n1, n2, ...] = size(x)</literal>, the function returns in each argument the corresponding dimension value.
+                            </para>
                         </listitem>
                         <listitem>
-                            The syntax <literal>n = size(x, sel)</literal>
-                            may be used to specify what dimension to get:
-
-                            <itemizedlist mark="dash"><listitem>
-                                    Set <literal>sel</literal> to 1 or <literal>'r'</literal> to get the
-                                    number of rows.
-                                </listitem>
-                                <listitem>
-                                    Set <literal>sel</literal> to 2 or <literal>'c'</literal> to get the
-                                    number of columns.
-                                </listitem>
-                                <listitem>
-                                    Set <literal>sel</literal> to <literal>m</literal>,
-                                    where <literal>m</literal> is a positive integer to get the
-                                    <literal>m</literal>th dimension. If <literal>m</literal> is
-                                    greater than <literal>ndims(x)</literal>, then <literal>size(x,m)</literal> returns 1.
-                                </listitem>
-                                <listitem>
-                                    Set <literal>sel</literal> to <literal>'*'</literal> to get the product of
-                                    the dimensions.
-                                </listitem>
-                            </itemizedlist>
-
-
-                        </listitem>
+                             <para>
+                                The syntax <literal>n = size(x, sel)</literal>
+                                may be used to specify what dimension to get:
+    
+                                <itemizedlist mark="dash"><listitem>
+                                                               <para>
+                                            Set <literal>sel</literal> to 1 or <literal>'r'</literal> to get the
+                                            number of rows.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>
+                                            Set <literal>sel</literal> to 2 or <literal>'c'</literal> to get the
+                                            number of columns.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>
+                                            Set <literal>sel</literal> to <literal>m</literal>,
+                                            where <literal>m</literal> is a positive integer to get the
+                                            <literal>m</literal>th dimension. If <literal>m</literal> is
+                                            greater than <literal>ndims(x)</literal>, then <literal>size(x,m)</literal> returns 1.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>
+                                            Set <literal>sel</literal> to <literal>'*'</literal> to get the product of
+                                            the dimensions.
+                                        </para>
+                                    </listitem>
+                                  </itemizedlist>
+                                </para>
+                            </listitem>
                     </itemizedlist>
                 </listitem>
             </varlistentry>
@@ -143,7 +153,7 @@
     </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             [n, m] = size(rand(3, 2))
             [n, m] = size(['a', 'b'; 'c', 'd'])
 
@@ -158,7 +168,7 @@
             m = size(rand(3, 2), "c")
             // Returns the product of the dimensions
             nm = size(rand(3, 2), "*")
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="deff">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="deff">
     <refnamediv>
         <refname>deff</refname>
         <refpurpose>
@@ -47,103 +44,112 @@
             <varlistentry>
                 <term>x, y, in1, in2, ...</term>
                 <listitem>
-                    входные аргументы определяемой функции. Последняя может иметь
-                    любое количество входных аргументов, от 0 до любого N.
-                    <para/>
-                </listitem>
+                     <para>
+                        входные аргументы определяемой функции. Последняя может иметь
+                        любое количество входных аргументов, от 0 до любого N.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>r, r1, r2, ...</term>
                 <listitem>
-                    результаты на выходе определяемой функции. Последняя может
-                    иметь любое количество результатов на выходе, от 0 до любого
-                    M. Все выходные аргументы должны быть явными, то есть,
-                    записанными слева от имени функции.
-                    <para/>
-                </listitem>
+                     <para>
+                        результаты на выходе определяемой функции. Последняя может
+                        иметь любое количество результатов на выходе, от 0 до любого
+                        M. Все выходные аргументы должны быть явными, то есть,
+                        записанными слева от имени функции.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>funcHeadline</term>
                 <listitem>
-                    одиночная строка: заголовок функции, то есть, её первая строчка,
-                    указывающая локальное имя функции и списки её входных аргументов
-                    с правой стороны и выходных аргументов с левой стороны. Примеры:
-                    <itemizedlist>
-                        <listitem>
-                            <literal>"myFunction(x,y)"</literal> : нет аргументов на выходе
-                        </listitem>
-                        <listitem>
-                            <literal>"r = myFunction(x,y)"</literal> : один аргумент на выходе
-                        </listitem>
-                        <listitem>
-                            <literal>"[a,b] = myFunction(x,y)"</literal> : два аргумента
-                            на выходе. И т.д.
-                        </listitem>
-                    </itemizedlist>
-                    Пожалуйста, обратите внимание, что a) ключевое слово <literal>function</literal>
-                    не обязательно указывать. b) запись выходных аргументов, если они есть, на левой
-                    части заголовочной строчки является обязательной.
-                    <para/>
-                </listitem>
+                     <para>
+                        одиночная строка: заголовок функции, то есть, её первая строчка,
+                        указывающая локальное имя функции и списки её входных аргументов
+                        с правой стороны и выходных аргументов с левой стороны. Примеры:
+                        <itemizedlist>
+                            <listitem>
+                                 <para><literal>"myFunction(x,y)"</literal> : нет аргументов на выходе
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>"r = myFunction(x,y)"</literal> : один аргумент на выходе
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>"[a,b] = myFunction(x,y)"</literal> : два аргумента
+                                    на выходе. И т.д.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        Пожалуйста, обратите внимание, что a) ключевое слово <literal>function</literal>
+                        не обязательно указывать. b) запись выходных аргументов, если они есть, на левой
+                        части заголовочной строчки является обязательной.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>funcBody</term>
                 <listitem>
-                    вектор текстов, то есть Scilab-инструкций тела функции, в том
-                    порядке, в котором они должны быть выполнены. Эти инструкции
-                    должны определять и назначать значения всех выходных аргументов.
-                    Завершающее ключевое слово "endfunction" не ожидается.
-                    <para/>
-                    Этот вектор ожидается, когда <literal>deff(…)</literal> вызывается
-                    с двумя входными аргументами.
-                    <para/>
-                    <warning>
-                        Одинарные или двойные кавычки внутри инструкций должны
-                        дублироваться для защиты.
-                    </warning>
-                    <para/>
-                </listitem>
+                     <para>
+                        вектор текстов, то есть Scilab-инструкций тела функции, в том
+                        порядке, в котором они должны быть выполнены. Эти инструкции
+                        должны определять и назначать значения всех выходных аргументов.
+                        Завершающее ключевое слово "endfunction" не ожидается.
+                        
+                        Этот вектор ожидается, когда <literal>deff(…)</literal> вызывается
+                        с двумя входными аргументами.
+                        <warning>
+                            Одинарные или двойные кавычки внутри инструкций должны
+                            дублироваться для защиты.
+                        </warning></para>
+                              </listitem>
             </varlistentry>
             <varlistentry>
                 <term>definition</term>
                 <listitem>
-                    Отдельный текст или вектор текстов, включая как заголовочную
-                    строчку функции, так и тело.
-                    <itemizedlist>
-                        <listitem>
-                            Если это вектор, то это эквивалентно
-                            <literal>definition = [funcHeadline ; funcBody]</literal>.
-                        </listitem>
-                        <listitem>
-                            В противном случае одностроковое определение эквивалентно
-                            <literal>funcHeadline + " " + strcat(funcBody,"; ")</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    Пожалуйста, смотрите разделы "Описание" и "Примеры".
-                    <para/>
-                </listitem>
+                     <para>
+                        Отдельный текст или вектор текстов, включая как заголовочную
+                        строчку функции, так и тело.
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    Если это вектор, то это эквивалентно
+                                    <literal>definition = [funcHeadline ; funcBody]</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    В противном случае одностроковое определение эквивалентно
+                                    <literal>funcHeadline + " " + strcat(funcBody,"; ")</literal>.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        Пожалуйста, смотрите разделы "Описание" и "Примеры".
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>myFunc</term>
                 <listitem>
-                    Публичное имя и идентификатор определяемой функции, неявно
-                    возвращаемый в текущее окружение, либо явно присваиваемый
-                    переменной на выходе <literal>deff(…)</literal>.
-                    <para/>
-                    <note>
-                        Когда <literal>deff(…)</literal> вызывается без явных выходных
-                        аргументов, но в качестве элемента контейнера или в качестве
-                        входного аргумента другой функции, то она неявно присваивается
-                        этому элементу или аргументу, который является анонимным. То
-                        тогда она является
-                        <emphasis role="bold">анонимной функцией</emphasis>. Например:
-                        <para/>
-                        <literal>L = list(3, deff("r=noName(x) x.^2+1"), "Hello");</literal>.
-                        Результат <literal>deff(…)</literal> присваивается <literal>L(2)</literal>.
-                        Тогда <literal>L(2)(3.5) // ➜ 13.25</literal>.
-                    </note>
-                    <para/>
-                </listitem>
+                     <para>
+                        Публичное имя и идентификатор определяемой функции, неявно
+                        возвращаемый в текущее окружение, либо явно присваиваемый
+                        переменной на выходе <literal>deff(…)</literal>.
+                        <note>
+                            Когда <literal>deff(…)</literal> вызывается без явных выходных
+                            аргументов, но в качестве элемента контейнера или в качестве
+                            входного аргумента другой функции, то она неявно присваивается
+                            этому элементу или аргументу, который является анонимным. То
+                            тогда она является
+                            <emphasis role="bold">анонимной функцией</emphasis>. Например:
+                            <para/>
+                            <literal>L = list(3, deff("r=noName(x) x.^2+1"), "Hello");</literal>.
+                            Результат <literal>deff(…)</literal> присваивается <literal>L(2)</literal>.
+                            Тогда <literal>L(2)(3.5) // ➜ 13.25</literal>.
+                        </note></para>
+                           </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -455,14 +461,18 @@ Undefined variable: myFunc
                 <revdescription>
                    <itemizedlist>
                      <listitem>
-                       Входная опция
-                       <ulink url="https://help.scilab.org/docs/5.5.2/en_US/deff.html">
-                         <varname>opt="c"|"p"|"n"</varname>
-                       </ulink> больше не доступна.
+                          <para>
+                           Входная опция
+                           <ulink url="https://help.scilab.org/docs/5.5.2/en_US/deff.html">
+                             <varname>opt="c"|"p"|"n"</varname>
+                           </ulink> больше не доступна.
+                         </para>
                      </listitem>
                      <listitem>
-                        Определяемая <varname>newfunction</varname> теперь имеет
-                        тип 13 (вместо 11).
+                          <para>
+                            Определяемая <varname>newfunction</varname> теперь имеет
+                            тип 13 (вместо 11).
+                         </para>
                      </listitem>
                   </itemizedlist>
                 </revdescription>
@@ -472,19 +482,27 @@ Undefined variable: myFunc
                 <revdescription>
                    <itemizedlist>
                      <listitem>
-                        Добавлен необязательный выходной аргумент. Могут определяться
-                        анонимные функции.
+                          <para>
+                            Добавлен необязательный выходной аргумент. Могут определяться
+                            анонимные функции.
+                         </para>
                      </listitem>
                      <listitem>
-                        Поддерживаются одиночные входные аргументы, конкатенирующие
-                        заголовочную строку функции и её тело.
+                          <para>
+                            Поддерживаются одиночные входные аргументы, конкатенирующие
+                            заголовочную строку функции и её тело.
+                         </para>
                      </listitem>
                      <listitem>
-                        Поддерживается синтаксис одиночной строки, вроде
-                        <literal>deff "r = myFun(x,y) x.^2-y"</literal>
-                     </listitem>
+                          <para>
+                            Поддерживается синтаксис одиночной строки, вроде
+                            <literal>deff "r = myFun(x,y) x.^2-y"</literal>
+                        </para>
+                    </listitem>
                      <listitem>
-                        Поддерживается псевдоимя функции "@".
+                          <para>
+                            Поддерживается псевдоимя функции "@".
+                         </para>
                      </listitem>
                   </itemizedlist>
                 </revdescription>

@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="struct">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="struct">
     <refnamediv>
         <refname>struct</refname>
         <refpurpose>Builds a structure or an array of structures</refpurpose>
@@ -32,9 +30,10 @@
             <varlistentry>
                 <term>field1, field2, ...</term>
                 <listitem>
-                    strings: Case-sensitive names of the fields of the structure.
-                    <para/>
-                </listitem>
+                     <para>
+                        strings: Case-sensitive names of the fields of the structure.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>value1, value2, ...</term>
@@ -55,10 +54,11 @@
             <varlistentry>
                 <term>st</term>
                 <listitem>
-                    Scalar structure, or array of structures if at least one value is a non-scalar
-                    cells array.
-                    <para/>
-                </listitem>
+                     <para>
+                        Scalar structure, or array of structures if at least one value is a non-scalar
+                        cells array.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

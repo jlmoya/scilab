@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="unique" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="unique" xml:lang="ru">
     <refnamediv>
         <refname>unique</refname>
         <refpurpose>удалить все повторяющиеся компоненты из вектора или матрицы</refpurpose>
@@ -65,9 +62,11 @@
                             </para>
                         </listitem>
                         <listitem>
-                          Если <varname>orient</varname> используется: матрица извлечённых
-                          <varname>M</varname> строк или столбцов, сортированных в лексикографическом
-                          порядке возрастания.
+                             <para>
+                              Если <varname>orient</varname> используется: матрица извлечённых
+                              <varname>M</varname> строк или столбцов, сортированных в лексикографическом
+                              порядке возрастания.
+                            </para>
                         </listitem>
                       </itemizedlist>
                     </para>
@@ -94,31 +93,35 @@
             <varlistentry>
                 <term>ku</term>
                 <listitem>
-                    Массив индексов в <varname>U</varname>, таких что в соответствии с опцией
-                    <varname>orient</varname>
-                    <itemizedlist>
-                        <listitem>
-                          "*": <varname>ku</varname> имеет размер <literal>size(M)</literal>, и <literal>U(ku) = M</literal>
-                        </listitem>
-                        <listitem>
-                            "r": <varname>ku</varname> имеет размер <literal>[size(M,1), 1]</literal>, и <literal>U(ku,:) = M</literal>
-                        </listitem>
-                        <listitem>
-                            "c": <varname>ku</varname> имеет размер <literal>[1, size(M,2)]</literal>, и <literal>U(:,ku) = M</literal>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                    <warning>
-                        <varname>ku</varname> является плотной, даже когда <varname>M</varname>
-                        является разрежённой и используется всеобщий режим "*".
-                    </warning>
-                </listitem>
+                     <para>
+                        Массив индексов в <varname>U</varname>, таких что в соответствии с опцией
+                        <varname>orient</varname><itemizedlist>
+                            <listitem>
+                                 <para>
+                                  "*": <varname>ku</varname> имеет размер <literal>size(M)</literal>, и <literal>U(ku) = M</literal>
+                                                                      </para>
+                                                                  </listitem>
+                            <listitem>
+                                 <para>
+                                    "r": <varname>ku</varname> имеет размер <literal>[size(M,1), 1]</literal>, и <literal>U(ku,:) = M</literal>
+                                                                        </para>
+                                                                    </listitem>
+                            <listitem>
+                                 <para>
+                                    "c": <varname>ku</varname> имеет размер <literal>[1, size(M,2)]</literal>, и <literal>U(:,ku) = M</literal>
+                                                                        </para>
+                                                                    </listitem>
+                        </itemizedlist><warning>
+                            <varname>ku</varname> является плотной, даже когда <varname>M</varname>
+                            является разрежённой и используется всеобщий режим "*".
+                        </warning></para>
+                              </listitem>
             </varlistentry>
             <varlistentry>
                 <term>nb</term>
                 <listitem>
                     <para>
-                      Вектор целых чисел > 0 той же формы, что и <varname>k</varname>:
+                      Вектор целых чисел &gt; 0 той же формы, что и <varname>k</varname>:
                       количество случаев <varname>M</varname> соответствующих непродублированных элементов
                       (компонентов, строк, столбцов) возвращаемых в <varname>U</varname>.
                     </para>
@@ -147,7 +150,7 @@
         </para>
         <para>
             <literal>unique(M,.. "uniqueNan")</literal> принимает все значения Nan одинаковыми и не дублирует их.
-            По умолчанию любой Nan отличается от другого Nan включая себя самого: <literal>%nan&lt;>%nan</literal>
+            По умолчанию любой Nan отличается от другого Nan включая себя самого: <literal>%nan&lt;&gt;%nan</literal>
             равен истине, пока не будет использоваться <literal>"uniqueNan"</literal>. Определение
             <literal>"uniqueNan"</literal> нечувствительно к регистру.
         </para>
@@ -373,13 +376,19 @@ unique(M, "c")
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Расширено до логических значений.
+                             <para>
+                                Расширено до логических значений.
+                            </para>
                         </listitem>
                         <listitem>
-                            Введены опции "keepOrder" и "uniqueNan".
+                             <para>
+                                Введены опции "keepOrder" и "uniqueNan".
+                            </para>
                         </listitem>
                         <listitem>
-                            Введён четвертый выходной аргумент <literal>nb</literal>.
+                             <para>
+                                Введён четвертый выходной аргумент <literal>nb</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

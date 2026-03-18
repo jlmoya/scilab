@@ -12,7 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="RK">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="RK">
     <refnamediv>
         <refname>Runge-Kutta 4(5)</refname>
         <refpurpose>
@@ -65,31 +65,33 @@
             plus la moyenne pondérée de quatre incréments, où chaque incrément est le produit du pas, <emphasis>h</emphasis>, et une estimation de la pente spécifiée par la fonction <emphasis>f(t,y)</emphasis> :
             <itemizedlist>
                 <listitem>
-                    <emphasis>k1</emphasis> est l'incrément basé sur la pente au début de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript>
-                    </emphasis>
-                    (méthode d'Euler),
+                     <para><emphasis>k1</emphasis> est l'incrément basé sur la pente au début de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript>
+                        </emphasis>
+                        (méthode d'Euler),
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k2</emphasis> est l'incrément basé sur la pente au milieu de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript> + h*k1/2
-                    </emphasis>
-                    ,
+                     <para><emphasis>k2</emphasis> est l'incrément basé sur la pente au milieu de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript> + h*k1/2
+                        </emphasis>
+                        ,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k3</emphasis> est à nouveau l'incrément basé sur la pente au milieu de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript> + h*k2/2
-                    </emphasis>
-                </listitem>
+                     <para><emphasis>k3</emphasis> est à nouveau l'incrément basé sur la pente au milieu de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript> + h*k2/2
+                        </emphasis></para>
+                               </listitem>
                 <listitem>
-                    <emphasis>k4</emphasis> est l'incrément basé sur la pente à la fin de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript> + h*k3
-                    </emphasis>
-                </listitem>
+                     <para><emphasis>k4</emphasis> est l'incrément basé sur la pente à la fin de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript> + h*k3
+                        </emphasis></para>
+                               </listitem>
             </itemizedlist>
         </para>
         <para>
@@ -190,7 +192,7 @@ Temps pour Runge-Kutta :
         </para>
         <para>
             Maintenant, dans le script suivant, on compare la différence de temps entre <emphasis>Runge-Kutta</emphasis> et <emphasis>CVode</emphasis> en lançant l'exemple avec les cinq solveurs tour à tour :
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integRK.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integRK.sce">
                 Ouverture du script
             </link>
         </para>

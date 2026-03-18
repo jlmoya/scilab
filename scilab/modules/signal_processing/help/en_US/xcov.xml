@@ -84,34 +84,24 @@ along with this program.
         <title>Description</title>
         <itemizedlist>
             <listitem>
-                <literal>c=xcov(x)</literal>
-
-                computes the un-normalized discrete covariance:
-                <para>
-                  <latex>{\begin{matrix}C_k = \sum_{i=0}^{n-k-1}
-                      {(x_{i+k}-\mu_x})({x_i-\mu_x})^{*} , k \geq 0
-                      \mu_x=\sum_{i=0}^{n-1}{x_i} C_k = C^{*}_{-k}, k \leq
-                      -1\end{matrix}.}$
-                  </latex>
+                 <para><literal>c=xcov(x)</literal>
+    
+                    computes the un-normalized discrete covariance:
+                    
+                    and return in
+                    <literal>c</literal>
+                    the sequence of covariance lags C<subscript>k=-n:n</subscript> where
+                    <literal>n</literal> is the length of <literal>x</literal>
                 </para>
-                and return in
-                <literal>c</literal>
-                the sequence of covariance lags C<subscript>k=-n:n</subscript> where
-                <literal>n</literal> is the length of <literal>x</literal>
             </listitem>
             <listitem>
-                <literal>xcov(x,y)</literal>
-                computes the un-normalized discrete cross covariance:
-                <para>
-                  <latex>${\begin{matrix}C_k = \sum_{i=1}^{n-k}
-                      {(x_{i+k}-\mu_x})*({y_i}-\mu_y)^{*}, k \geq 0
-                      \mu_x=\sum_{i=0}^{n-1}{x_i} \mu_y=\sum_{i=0}^{n-1}{y_i} C_k =
-                      C^{*}_{-k}, k \leq -1\end{matrix}.}$
-                  </latex>
+                 <para><literal>xcov(x,y)</literal>
+                    computes the un-normalized discrete cross covariance:
+                    
+                    and return in <literal>c</literal> the sequence of cross covariance lags
+                    C<subscript>k=-n:n</subscript> where <literal>n</literal> is the maximum of
+                    <literal>x</literal> and <literal>y</literal> length's.
                 </para>
-                and return in <literal>c</literal> the sequence of cross covariance lags
-                C<subscript>k=-n:n</subscript> where <literal>n</literal> is the maximum of
-                <literal>x</literal> and <literal>y</literal> length's.
             </listitem>
         </itemizedlist>
         <para>
@@ -127,13 +117,16 @@ along with this program.
             <literal>c</literal>:
             <itemizedlist>
                 <listitem>
-                    <term>"biased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/n</literal>.
+                     <para><term>"biased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/n</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    <term>"unbiased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>./(n-(-maxlags:maxlags))</literal>.
+                     <para><term>"unbiased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>./(n-(-maxlags:maxlags))</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    <term>"coeff"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/(norm(x)*norm(y))</literal>.
+                     <para><term>"coeff"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/(norm(x)*norm(y))</literal>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -158,12 +151,12 @@ along with this program.
             [c, ind] = xcov(y, "biased");
             plot(ind, c)
         ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
           t = linspace(0, 100, 2000);
           y = 0.8 * sin(t) + 0.8 * sin(2 * t);
           [c, ind] = xcov(y, "biased");
           plot(ind, c)
-        </scilab:image>
+        ]]></scilab:image>
       </refsection>
       <refsection role="see also">
         <title>See also</title>

@@ -120,11 +120,14 @@ select_example(4); // "default"
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>select</literal> is now protected:
-                            Assignments like <literal>select=1</literal> are no longer possible.
+                             <para><literal>select</literal> is now protected:
+                                Assignments like <literal>select=1</literal> are no longer possible.
+                            </para>
                         </listitem>
                         <listitem>
-                            The number of characters used to define the body of any conditional instruction (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, or <literal>select/case</literal>) is no more limited to 16k.
+                             <para>
+                                The number of characters used to define the body of any conditional instruction (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, or <literal>select/case</literal>) is no more limited to 16k.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -134,7 +137,9 @@ select_example(4); // "default"
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Add grouped case with cell representation <literal>case {2 3}</literal> to match either 2 or 3
+                             <para>
+                                Add grouped case with cell representation <literal>case {2 3}</literal> to match either 2 or 3
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

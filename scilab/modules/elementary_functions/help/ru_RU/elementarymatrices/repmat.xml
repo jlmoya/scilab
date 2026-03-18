@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="repmat" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="repmat" xml:lang="ru">
     <refnamediv>
         <refname>repmat</refname>
         <refpurpose>дублирование массива и его мозаичное размещение</refpurpose>
@@ -35,34 +32,38 @@
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    массив любого встроенного типа (логический, числовой, текстовый, ...,
-                    cell-массив, структура), любого количества размерностей и любых размеров.
-                    <para/>
-                </listitem>
+                     <para>
+                        массив любого встроенного типа (логический, числовой, текстовый, ...,
+                        cell-массив, структура), любого количества размерностей и любых размеров.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>m, n, ...</term>
                 <listitem>
-                    целые числа, количество блоков <varname>A</varname> для каждой
-                    размерности <varname>B</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        целые числа, количество блоков <varname>A</varname> для каждой
+                        размерности <varname>B</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>siz</term>
                 <listitem>
-                    вектор числа репликаций: <literal>siz=[m,n,..]</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        вектор числа репликаций: <literal>siz=[m,n,..]</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>B</term>
                 <listitem>
-                    массив или ND-мерный массив, полученный мозаичным размещением, размерами
-                    <literal>[m*size(A,1), n*size(A,2), ..]</literal> или
-                    <literal>[siz(1)*size(A,1), siz(2)*size(A,2), ..]</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        массив или ND-мерный массив, полученный мозаичным размещением, размерами
+                        <literal>[m*size(A,1), n*size(A,2), ..]</literal> или
+                        <literal>[siz(1)*size(A,1), siz(2)*size(A,2), ..]</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

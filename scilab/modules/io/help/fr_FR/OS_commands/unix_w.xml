@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="unix_w">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="unix_w">
     <refnamediv>
         <refname>unix_w</refname>
         <refpurpose>
@@ -62,14 +59,19 @@
             Si dans <varname>commands</varname> une instruction produit une erreur,
             <itemizedlist>
                 <listitem>
-                    le message d'erreur issu de l'OS est affiché dans la console Scilab.
+                     <para>
+                        le message d'erreur issu de l'OS est affiché dans la console Scilab.
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>unix_w</literal> est interrompue et affiche son propre message d'erreur
-                    dans la console Scilab.
+                     <para><literal>unix_w</literal> est interrompue et affiche son propre message d'erreur
+                        dans la console Scilab.
+                    </para>
                 </listitem>
                 <listitem>
-                    Dans <varname>commands</varname>, les instructions suivantes sont ignorées.
+                     <para>
+                        Dans <varname>commands</varname>, les instructions suivantes sont ignorées.
+                    </para>
                 </listitem>
                 <warning>
                     Les opérations effectuées par les instructions valides figurant avant l'instruction

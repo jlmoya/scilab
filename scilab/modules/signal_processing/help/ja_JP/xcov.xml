@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
 This file is part Scilab
 Copyright (C) 2012 - INRIA - Serge Steer
@@ -12,7 +11,6 @@ and continues to be available under such terms.
 For more information, see the COPYING file which you should have received
 along with this program.
 -->
-
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="xcov" xml:lang="ja">
 
     <refnamediv>
@@ -157,36 +155,25 @@ along with this program.
         <itemizedlist>
 
             <listitem>
-
-                <literal>c=xcov(x)</literal>
-
-                は,以下の正規化しない離散共分散を計算します:
-                <para>
-                  <latex>{\begin{matrix}C_k = \sum_{i=0}^{n-k-1}
-                      {(x_{i+k}-\mu_x})({x_i-\mu_x})^{*} , k \geq 0
-                      \mu_x=\sum_{i=0}^{n-1}{x_i} C_k = C^{*}_{-k}, k \leq
-                      -1\end{matrix}.}$
-                  </latex>
+                 <para><literal>c=xcov(x)</literal>
+    
+                    は,以下の正規化しない離散共分散を計算します:
+                    
+                    そして,<literal>c</literal>を返します.
+                  共分散の並びは, C<subscript>k=-n:n</subscript>
+                    となります. ただし,<literal>n</literal> は
+                    <literal>x</literal>の長さです.
                 </para>
-                そして,<literal>c</literal>を返します.
-              共分散の並びは, C<subscript>k=-n:n</subscript>
-                となります. ただし,<literal>n</literal> は
-                <literal>x</literal>の長さです.
             </listitem>
             <listitem>
-                <literal>xcov(x,y)</literal>
-                は,以下のように正規化しない離散相互共分散を計算します:
-                 <para>
-                    <latex>${\begin{matrix}C_k = \sum_{i=1}^{n-k}
-                        {(x_{i+k}-\mu_x})*({y_i}-\mu_y)^{*}, k \geq 0
-                        \mu_x=\sum_{i=0}^{n-1}{x_i} \mu_y=\sum_{i=0}^{n-1}{y_i} C_k =
-                        C^{*}_{-k}, k \leq -1\end{matrix}.}$
-                    </latex>
+                 <para><literal>xcov(x,y)</literal>
+                    は,以下のように正規化しない離散相互共分散を計算します:
+                     
+                    結果を<literal>c</literal>に返します.
+                    相互共分散の並びは, C<subscript>k=-n:n</subscript> となります.ただし,<literal>n</literal>は
+                    <literal>x</literal>および<literal>y</literal>
+                    の長さの大きい方です.
                 </para>
-                結果を<literal>c</literal>に返します.
-                相互共分散の並びは, C<subscript>k=-n:n</subscript> となります.ただし,<literal>n</literal>は
-                <literal>x</literal>および<literal>y</literal>
-                の長さの大きい方です.
             </listitem>
         </itemizedlist>
         <para>
@@ -206,21 +193,21 @@ along with this program.
             <itemizedlist>
 
                 <listitem>
-
-                    <term>"biased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/n</literal>.
-
+                     <para><term>"biased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/n</literal>.
+    
+                    </para>
                 </listitem>
 
                 <listitem>
-
-                    <term>"unbiased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>./(n-(-maxlags:maxlags))</literal>.
-
+                     <para><term>"unbiased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>./(n-(-maxlags:maxlags))</literal>.
+    
+                    </para>
                 </listitem>
 
                 <listitem>
-
-                    <term>"coeff"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/(norm(x)*norm(y))</literal>.
-
+                     <para><term>"coeff"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/(norm(x)*norm(y))</literal>.
+    
+                    </para>
                 </listitem>
 
             </itemizedlist>
@@ -272,7 +259,7 @@ along with this program.
 
         ]]></programlisting>
 
-        <scilab:image>
+        <scilab:image><![CDATA[
 
           t = linspace(0, 100, 2000);
 
@@ -282,7 +269,7 @@ along with this program.
 
           plot(ind, c)
 
-        </scilab:image>
+        ]]></scilab:image>
 
       </refsection>
 

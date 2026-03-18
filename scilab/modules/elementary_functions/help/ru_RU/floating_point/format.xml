@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="format" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="format" xml:lang="ru">
     <refnamediv>
         <refname>format</refname>
         <refpurpose>установка выходного формата десятичных чисел по умолчанию</refpurpose>
@@ -38,14 +35,18 @@
                 <listitem>
                     <para>режим форматирования:
                         <itemizedlist>
-                          <listitem>1 или "v": форматирование адаптированное к переменной. 
-			    Scilab выбирает либо прямое представление (например -143.8757) либо
-                            экспоненциальную/инженерную/научную запись (например -1.438E+02),
-                            для того, чтобы справиться с каждым обрабатываемым значением, а также
-			    с требуемой шириной, с максимальным количеством символов на выходе.
+                          <listitem>
+                               <para>1 или "v": форматирование адаптированное к переменной. 
+    			    Scilab выбирает либо прямое представление (например -143.8757) либо
+                                экспоненциальную/инженерную/научную запись (например -1.438E+02),
+                                для того, чтобы справиться с каждым обрабатываемым значением, а также
+    			    с требуемой шириной, с максимальным количеством символов на выходе.
+                              </para>
                           </listitem>
-                          <listitem>0 или "e": Устанавливается экспоненциальная или инженерная запись
-                            и используется для всех чисел.
+                          <listitem>
+                               <para>0 или "e": Устанавливается экспоненциальная или инженерная запись
+                                и используется для всех чисел.
+                              </para>
                           </listitem>
                       </itemizedlist>
                   </para>
@@ -79,12 +80,14 @@
 		      вектор, возвращающий параметры текущего форматирования:
                         <itemizedlist>
                           <listitem>
-			    <literal>mw(1)</literal> это режим форматирования:
-                            0 для <literal>'e'</literal> и 1 для <literal>'v'</literal>
-                          </listitem>
+                               <para><literal>mw(1)</literal> это режим форматирования:
+                                0 для <literal>'e'</literal> и 1 для <literal>'v'</literal>
+                                  </para>
+                              </listitem>
                           <listitem>
-                            <literal>mw(2)</literal> это ширина:
-                            Количество символов, используемых для выдачи каждого числа.
+                               <para><literal>mw(2)</literal> это ширина:
+                                Количество символов, используемых для выдачи каждого числа.
+                              </para>
                           </listitem>
                          </itemizedlist>
                      </para>

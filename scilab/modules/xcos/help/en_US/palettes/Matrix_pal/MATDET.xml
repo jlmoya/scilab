@@ -21,10 +21,7 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="MATDET" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATDET" xml:lang="en_US">
     <refnamediv>
         <refname>MATDET</refname>
         <refpurpose>Matrix Determinant</refpurpose>
@@ -179,10 +176,10 @@
     </refsection>
     <refsection id="Example_MATDET">
         <title>Example</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             U = [1 0 63;2 -2 5;9 9 4]
             y = 2215
-        </programlisting>
+        ]]></programlisting>
         <para>
             <emphasis role="bold">Determinant example: det([tan(x) 0 ; 0 cos(x)]) = sin(x)</emphasis>
         </para>
@@ -208,10 +205,14 @@
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_det.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_det.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_det.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_det.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

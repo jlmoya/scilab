@@ -4,13 +4,7 @@
 * Copyright (C) 2011 - INRIA - Michael Baudin
 * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 -->
-<refentry version="5.0-subset Scilab" xml:id="csvTextScan" xml:lang="en"
-          xmlns="http://docbook.org/ns/docbook"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg"
-          xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="csvTextScan" xml:lang="en">
     <refnamediv>
         <refname>csvTextScan</refname>
 
@@ -71,11 +65,15 @@
                          With "double",
                         <itemizedlist>
                             <listitem>
-                                any input that can't be parsed as a literal number is converted to
-                                <literal>%nan</literal>.
+                                 <para>
+                                    any input that can't be parsed as a literal number is converted to
+                                    <literal>%nan</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                literal complex numbers are supported.
+                                 <para>
+                                    literal complex numbers are supported.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -146,8 +144,8 @@ Atext = [
 " 1,000000000D+00; Inf;-Inf; Nan; 0,000000000D+00"
 ];
 csvTextScan( Atext , ";" , "," )
-    ]]>
-        </programlisting>
+    
+        ]]></programlisting>
     </refsection>
 
     <refsection role="see also">
@@ -176,4 +174,3 @@ csvTextScan( Atext , ";" , "," )
         </revhistory>
     </refsection>
 </refentry>
-

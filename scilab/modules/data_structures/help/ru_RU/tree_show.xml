@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="tree_show">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="tree_show">
     <refnamediv>
         <refname>tree_show</refname>
         <refpurpose>
@@ -57,7 +54,7 @@
                     <note>
                         Для изменения стиля названия корня могут использоваться теги стилей
                         HTML.4.
-                        Например: "<literal>&lt;html>&lt;font color="red">&lt;b>Название&lt;/b></literal>"
+                        Например: "<literal>&lt;html&gt;&lt;font color="red"&gt;&lt;b&gt;Название&lt;/b&gt;</literal>"
                         отобразит <emphasis>Название</emphasis> жирным красным шрифтом.
                     </note>
                 </listitem>
@@ -75,23 +72,27 @@
                         либо адресов, либо соответствующее содержимое или и то и другое. Примеры:
                         <itemizedlist>
                             <listitem>
-                                <literal>"&lt;b>$&lt;/b>"</literal> : адрес жирным, содержимое нормальным чёрным шрифтом.
+                                 <para><literal>"&lt;b&gt;$&lt;/b&gt;"</literal> : адрес жирным, содержимое нормальным чёрным шрифтом.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>"$&lt;i>"</literal> : адрес нормальным, содержимое курсивным шрифтом.
+                                 <para><literal>"$&lt;i&gt;"</literal> : адрес нормальным, содержимое курсивным шрифтом.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>"&lt;i>$"</literal> : и адрес и содержимое курсивным шрифтом.
+                                 <para><literal>"&lt;i&gt;$"</literal> : и адрес и содержимое курсивным шрифтом.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>"&lt;font color=''grey''>$&lt;/font>&lt;i>"</literal> :
-                                адрес серым, содержимое курсивным шрифтом.
+                                 <para><literal>"&lt;font color=''grey''&gt;$&lt;/font&gt;&lt;i&gt;"</literal> :
+                                    адрес серым, содержимое курсивным шрифтом.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
                     <para>
                         По умолчанию =
-                        <literal>"&lt;font color=""blue"">$&lt;/font>"</literal>
+                        <literal>"&lt;font color=""blue""&gt;$&lt;/font&gt;"</literal>
                         (адрес синим, содержимое чёрным шрифтом).
                     </para>
                     <para>
@@ -302,10 +303,14 @@ tree_show(blk)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Добавлены входные опции rootTitle, styles и arrayByFields.
+                             <para>
+                                Добавлены входные опции rootTitle, styles и arrayByFields.
+                            </para>
                         </listitem>
                         <listitem>
-                            Теперь поддерживаются входные контейнеры, включающие пустые элементы.
+                             <para>
+                                Теперь поддерживаются входные контейнеры, включающие пустые элементы.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

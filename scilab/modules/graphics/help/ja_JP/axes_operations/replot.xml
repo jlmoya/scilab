@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-    xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-    xml:lang="ja" xml:id="replot">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="replot">
     <refnamediv>
         <refname>replot</refname>
         <refpurpose>
@@ -49,13 +46,16 @@
                         <note>
                             <itemizedlist>
                                 <listitem>
-                                    範囲を変えない場合は <literal>%nan</literal> を使用してください.
+                                     <para>
+                                        範囲を変えない場合は <literal>%nan</literal> を使用してください.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    <literal>%inf</literal> can be used to set
-                                    a bound to the position of the most marginal
-                                    graphical component existing in the axes,
-                                    for the considered direction.
+                                     <para><literal>%inf</literal> can be used to set
+                                        a bound to the position of the most marginal
+                                        graphical component existing in the axes,
+                                        for the considered direction.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </note>
@@ -144,11 +144,11 @@ x=[0:0.1:2*%pi]';
 plot2d(x,sin(x))
 replot([-1,-1,10,2])
       ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,sin(x))
             replot([-1,-1,10,2])
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // 二番目の例
 close(winsid());
@@ -157,13 +157,13 @@ f=gcf();
 replot([-1,-1,10,2],f.children(1)) // axesハンドルの値を指定
 replot([-3,-2,8,4],f.children(2))
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             close(winsid());
             plot()
             f2=gcf();
             replot([-1,-1,10,2],f2.children(1))
             replot([-3,-2,8,4],f2.children(2))
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 //値は%nanで示さ端子は変更されません。
 x = linspace(0,360,200).';
@@ -174,7 +174,7 @@ ax.data_bounds              // 初期限界
 replot([%nan,-10,%nan,10])  // YminとYmaxのだけ変更され
 ax.data_bounds              // 新しい制限
      ]]></programlisting>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // 3D端末Zも変更できます。
 clf
@@ -191,7 +191,7 @@ sleep(3000)
 replot([-5 0 -0.4 0 5 0.5])
 ax.data_bounds
      ]]></programlisting>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // いくつかのグラフィカルなマーカーを同時にトリミングすることができます。
 clf
@@ -230,12 +230,18 @@ replot([-1 %nan 1.5 %nan], [ax1 ax2])
                 <revnumber>5.5.0</revnumber>
                 <revdescription>
                     <itemizedlist>
-                        <listitem>3Dへの拡張
-                        </listitem>
-                        <listitem>axesHandles をベクトル化
+                        <listitem>
+                             <para>3Dへの拡張
+                            </para>
                         </listitem>
                         <listitem>
-                            範囲を維持するために <literal>%nan</literal> を使用できます.
+                             <para>axesHandles をベクトル化
+                            </para>
+                        </listitem>
+                        <listitem>
+                             <para>
+                                範囲を維持するために <literal>%nan</literal> を使用できます.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -245,18 +251,26 @@ replot([-1 %nan 1.5 %nan], [ax1 ax2])
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Handles of frame uicontrols having Axes children are
-                            now accepted.
+                             <para>
+                                Handles of frame uicontrols having Axes children are
+                                now accepted.
+                            </para>
                         </listitem>
                         <listitem>
-                            %inf can now be used to set a bound to the position
-                            of most marginal contents.
+                             <para>
+                                %inf can now be used to set a bound to the position
+                                of most marginal contents.
+                            </para>
                         </listitem>
                         <listitem>
-                            replot() as replot([%inf %inf %inf %inf]) is added.
+                             <para>
+                                replot() as replot([%inf %inf %inf %inf]) is added.
+                            </para>
                         </listitem>
                         <listitem>
-                            Option tight_limits added.
+                             <para>
+                                Option tight_limits added.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

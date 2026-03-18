@@ -12,7 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="ImpRK">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="ImpRK">
     <refnamediv>
         <refname>Implicit Runge-Kutta 4(5)</refname>
         <refpurpose>
@@ -68,25 +68,28 @@
             plus the weighted average of three increments, where each increment is the product of the size of the interval, <emphasis>h</emphasis>, and an estimated slope specified by the function <emphasis>f(t,y)</emphasis>. They are distributed approximately equally on the interval.
             <itemizedlist>
                 <listitem>
-                    <emphasis>k1</emphasis> is the increment based on the slope near the quarter of the interval, using
-                    <emphasis>
-                        y<subscript>n</subscript>+ a11*h*k1
-                    </emphasis>
-                    ,
+                     <para><emphasis>k1</emphasis> is the increment based on the slope near the quarter of the interval, using
+                        <emphasis>
+                            y<subscript>n</subscript>+ a11*h*k1
+                        </emphasis>
+                        ,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k2</emphasis> is the increment based on the slope near the midpoint of the interval, using
-                    <emphasis>
-                        y<subscript>n</subscript> + a21*h*k1 + a22*h*k2
-                    </emphasis>
-                    ,
+                     <para><emphasis>k2</emphasis> is the increment based on the slope near the midpoint of the interval, using
+                        <emphasis>
+                            y<subscript>n</subscript> + a21*h*k1 + a22*h*k2
+                        </emphasis>
+                        ,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k3</emphasis> is the increment based on the slope near the third quarter of the interval, using
-                    <emphasis>
-                        y<subscript>n</subscript> + a31*h*k1 + a32*h*k2 + a33*h*k3
-                    </emphasis>
-                    .
+                     <para><emphasis>k3</emphasis> is the increment based on the slope near the third quarter of the interval, using
+                        <emphasis>
+                            y<subscript>n</subscript> + a31*h*k1 + a32*h*k2 + a33*h*k3
+                        </emphasis>
+                        .
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -230,7 +233,7 @@ Time for implicit Runge-Kutta:
         </para>
         <para>
             Now, in the following script, we compare the time difference between <emphasis>implicit RK</emphasis> and <emphasis>CVode</emphasis> by running the example with the five solvers in turn:
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integImpRK.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integImpRK.sce">
                 Open the script
             </link>
         </para>

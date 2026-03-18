@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="REGISTER" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="REGISTER" xml:lang="fr">
     <refnamediv>
         <refname>REGISTER</refname>
         <refpurpose>Registre à décalage</refpurpose>
@@ -62,8 +59,7 @@
         <title>Paramètres</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/REGISTER_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/REGISTER_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -187,22 +183,34 @@ xcos_simulate(scs_m, 4);
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/delay4_i32.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/delay4_i32.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/delay4_i16.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/delay4_i16.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/delay4_i8.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/delay4_i8.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/delay4_ui32.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/delay4_ui32.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/delay4_ui16.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/delay4_ui16.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/delay4_ui8.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/delay4_ui8.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

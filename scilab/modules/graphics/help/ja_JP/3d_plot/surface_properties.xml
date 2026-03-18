@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="surface_properties">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="surface_properties">
     <refnamediv>
         <refname>surface_properties</refname>
         <refpurpose>3次元エンティティプロパティの説明</refpurpose>
@@ -320,16 +317,20 @@
                                             ベクトルを有する場合 :
                                             <itemizedlist>
                                                 <listitem>
-                                                    この場合,
-                                                    補間シェーディングモードを完成するにはデータが少なすぎます.
-                                                    この処理を行うには,大きさ (n,nf) のcolor行列が必要です
-                                                    (ただし, <literal>nf</literal> は小平面の数,
-                                                    <literal>n</literal>はポリゴン小平面を定義する点の数を意味します).
+                                                     <para>
+                                                        この場合,
+                                                        補間シェーディングモードを完成するにはデータが少なすぎます.
+                                                        この処理を行うには,大きさ (n,nf) のcolor行列が必要です
+                                                        (ただし, <literal>nf</literal> は小平面の数,
+                                                        <literal>n</literal>はポリゴン小平面を定義する点の数を意味します).
+                                                    </para>
                                                 </listitem>
                                                 <listitem>
-                                                    各小平面について,このアルゴリズムは,
-                                                    単一の小平面のcolorインデックスの値を,小平面の境界を定義する
-                                                    <literal>n</literal>個の頂点の色インデックスにコピーします.
+                                                     <para>
+                                                        各小平面について,このアルゴリズムは,
+                                                        単一の小平面のcolorインデックスの値を,小平面の境界を定義する
+                                                        <literal>n</literal>個の頂点の色インデックスにコピーします.
+                                                    </para>
                                                 </listitem>
                                             </itemizedlist>
                                         </para>
@@ -363,14 +364,16 @@
                                             ベクトルを有する場合 :
                                             <itemizedlist>
                                                 <listitem>
-                                                    <literal>color(i)</literal>が正の場合,
-                                                    この値は小平面<literal>i</literal>の色を指定し,
-                                                    小平面の境界はカレントの線種と色で描画されます.
+                                                     <para><literal>color(i)</literal>が正の場合,
+                                                        この値は小平面<literal>i</literal>の色を指定し,
+                                                        小平面の境界はカレントの線種と色で描画されます.
+                                                    </para>
                                                 </listitem>
                                                 <listitem>
-                                                    <literal>color(i)</literal>が負の場合,
-                                                    色ID <literal>-color(i)</literal> が使用され,小平面の境界は
-                                                    描画されません.
+                                                     <para><literal>color(i)</literal>が負の場合,
+                                                        色ID <literal>-color(i)</literal> が使用され,小平面の境界は
+                                                        描画されません.
+                                                    </para>
                                                 </listitem>
                                             </itemizedlist>
                                         </para>

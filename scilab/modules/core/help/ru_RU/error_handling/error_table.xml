@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="error_table" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="error_table" xml:lang="ru">
     <refnamediv>
         <refname>Таблица ошибок</refname>
         <refpurpose>список сообщений главных стандартных ошибок</refpurpose>
@@ -26,40 +23,42 @@
         <para>
             <itemizedlist>
                 <listitem>
-                    Сообщения
-                    <itemizedlist>
-                        <listitem>
-                            <link linkend="error_table_arg_number">Проверка количества аргументов</link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_type_checking">
-                                Проверка типов и кодировки контейнера и содержимого
-                            </link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_sizes_checking">
-                                Проверка размеров
-                            </link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_values_checking">Проверка значений</link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_interarguments_constrains">
-                                Связи между аргументами
-                            </link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_files_directories">Файлы, папки</link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_dynamical_systems">Динамические системы</link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_miscellaneous">Разное</link>
-                        </listitem>
-                    </itemizedlist>
-                </listitem>
+                     <para>
+                        Сообщения
+                        <itemizedlist>
+                            <listitem>
+                                <link linkend="error_table_arg_number">Проверка количества аргументов</link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_type_checking">
+                                    Проверка типов и кодировки контейнера и содержимого
+                                </link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_sizes_checking">
+                                    Проверка размеров
+                                </link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_values_checking">Проверка значений</link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_interarguments_constrains">
+                                    Связи между аргументами
+                                </link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_files_directories">Файлы, папки</link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_dynamical_systems">Динамические системы</link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_miscellaneous">Разное</link>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
                 <listitem>
                     <link linkend="error_table_examples">Примеры</link>
                 </listitem>
@@ -178,11 +177,15 @@
                 <emphasis role="bold">Размерности / размеры / форма контейнера:</emphasis>
                 <itemizedlist>
                     <listitem>
-                        "Массив" применяется к селл-массивам и структурам
+                         <para>
+                            "Массив" применяется к селл-массивам и структурам
+                        </para>
                     </listitem>
                     <listitem>
-                        "Скаляр", "Строка", "Столбец" применяются к матрицам и некоторым другим
-                        массивам (селл-массивам и структурам)
+                         <para>
+                            "Скаляр", "Строка", "Столбец" применяются к матрицам и некоторым другим
+                            массивам (селл-массивам и структурам)
+                        </para>
                     </listitem>
                 </itemizedlist>
             </para>

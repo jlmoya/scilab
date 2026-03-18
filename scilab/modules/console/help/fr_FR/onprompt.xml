@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr"
-        xml:id="percentonprompt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="percentonprompt">
     <refnamediv>
         <refname>%onprompt</refname>
         <refpurpose>fonction spéciale appelée après chaque ligne d'instructions en console</refpurpose>
@@ -27,14 +24,20 @@
             Si elle est définie, la fonction <literal>%onprompt()</literal>
             <itemizedlist>
                 <listitem>
-                    peut être écrite en langage Scilab
+                     <para>
+                        peut être écrite en langage Scilab
+                    </para>
                 </listitem>
                 <listitem>
-                    attend aucun argument d'entrée explicite
+                     <para>
+                        attend aucun argument d'entrée explicite
+                    </para>
                 </listitem>
                 <listitem>
-                    affecte à <literal>ans</literal> le contenu de son 1er argument de sortie
-                    (s'il y en un au moins un).
+                     <para>
+                        affecte à <literal>ans</literal> le contenu de son 1er argument de sortie
+                        (s'il y en un au moins un).
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -52,28 +55,31 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    <literal>%onprompt()</literal> peut être (re)définie à chaque niveau d'exécution.
+                     <para><literal>%onprompt()</literal> peut être (re)définie à chaque niveau d'exécution.
+                    </para>
                 </listitem>
                 <listitem>
-                    Si un journal est ouvert (avec <literal>diary()</literal>), tout affichage
-                    réalisé par <literal>%onprompt()</literal> en console est enregistré avec tous
-                    les autres contenus affichés.
+                     <para>
+                        Si un journal est ouvert (avec <literal>diary()</literal>), tout affichage
+                        réalisé par <literal>%onprompt()</literal> en console est enregistré avec tous
+                        les autres contenus affichés.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
     </refsection>
     <refsection>
         <title>Exemples</title>
-        <programlisting role="example">
-            <![CDATA[
+        <programlisting role="example"><![CDATA[
+            
 // Reaffichage de la dernière ligne d'instruction après son exécution :
 function %onprompt()
     mprintf("%s\n", gethistory()($));
 endfunction
 a = grand(3,5,"uin",-9,9), b = %pi;
 // Ceci est un commentaire
- ]]>
-        </programlisting>
+ 
+        ]]></programlisting>
         <screen><![CDATA[
 --> a = grand(3,5,"uin",-9,9), b = %pi
  a  =

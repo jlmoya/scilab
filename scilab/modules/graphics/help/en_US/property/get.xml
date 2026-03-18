@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="get">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="get">
     <refnamediv>
         <refname>get</refname>
         <refpurpose>
@@ -206,24 +203,34 @@
             get(..) allows two types of actions:
             <itemizedlist>
                 <listitem>
-                    retrieving the handle or index of a targeted object, according to its tag,
-                    to a tagspath leading to it, or to some key for special targets.
+                     <para>
+                        retrieving the handle or index of a targeted object, according to its tag,
+                        to a tagspath leading to it, or to some key for special targets.
+                    </para>
                 </listitem>
                 <listitem>
-                    retrieving the value of a given property for a given object.
+                     <para>
+                        retrieving the value of a given property for a given object.
+                    </para>
                 </listitem>
             </itemizedlist>
             These actions apply to
                 <itemizedlist>
                     <listitem>
-                        the Scilab console
+                         <para>
+                            the Scilab console
+                        </para>
                     </listitem>
                     <listitem>
-                        any opened graphical figures and all their contents
+                         <para>
+                            any opened graphical figures and all their contents
+                        </para>
                     </listitem>
                     <listitem>
-                        any existing interactive components, including uicontrol objects, menus,
-                        waitbars and progressionbars.
+                         <para>
+                            any existing interactive components, including uicontrol objects, menus,
+                            waitbars and progressionbars.
+                        </para>
                     </listitem>
                 </itemizedlist>
         </para>
@@ -280,35 +287,36 @@
                 property
                 <itemizedlist>
                     <listitem>
-                        is scalar: then <varname>val</varname> returns a column of the values for
-                        all objects in <varname>H</varname>. Example:
-                <screen>
---> plot2d(), get([gcf() gca() gce()], "visible")
- ans  =
-  "on"
-  "on"
-  "on"
-</screen>
-                        <para/>
-                    </listitem>
+                         <para>
+                            is scalar: then <varname>val</varname> returns a column of the values for
+                            all objects in <varname>H</varname>. Example:
+                    <screen><![CDATA[
+    --> plot2d(), get([gcf() gca() gce()], "visible")
+     ans  =
+      "on"
+      "on"
+      "on"
+    ]]></screen></para>
+            </listitem>
                     <listitem>
-                        is NOT scalar: then <varname>val</varname> returns the vertical concatenation
-                        of the values returned for all objects in <varname>H</varname>.
-                        Example:
-                <screen>
---> clf, plot
---> get(gcf().children(1), "data_bounds")
- ans  =
-   1.  -1.
-   2.   1.
---> get(gcf().children, "data_bounds")
- ans  =
-   1.         -1.
-   2.          1.
-   0.         -1.
-   6.2831853   1.
-</screen>
-                    </listitem>
+                         <para>
+                            is NOT scalar: then <varname>val</varname> returns the vertical concatenation
+                            of the values returned for all objects in <varname>H</varname>.
+                            Example:
+                    <screen><![CDATA[
+    --> clf, plot
+    --> get(gcf().children(1), "data_bounds")
+     ans  =
+       1.  -1.
+       2.   1.
+    --> get(gcf().children, "data_bounds")
+     ans  =
+       1.         -1.
+       2.          1.
+       0.         -1.
+       6.2831853   1.
+    ]]></screen></para>
+            </listitem>
                 </itemizedlist>
                 <note>
                     The <literal>H.prop</literal> syntax is the most compact and powerful, and should
@@ -363,7 +371,7 @@ p = h.position             // or p = get(h,'position');
 
 close(get("figures_id")); // close all figures
         ]]></programlisting>
-            <screen>
+            <screen><![CDATA[
 --> f1 = gcf();                  // or f1 = get("current_figure");
 --> f1.axes_size                 // or get(f1, "axes_size")
  ans  =
@@ -417,7 +425,7 @@ Axes
 --> p = h.position             // or p = get(h,'position');
  p  =
    20.   40.   40.   20.
-</screen>
+]]></screen>
         </para>
         <para>
             <emphasis role="bold">Console special handle</emphasis>:
@@ -425,7 +433,7 @@ Axes
 get(0)
 get(0, "screensize_px")
         ]]></programlisting>
-            <screen>
+            <screen><![CDATA[
 --> get(0)
  ans  =
 Handle of type "Console" with properties:
@@ -440,7 +448,7 @@ tag = ""
 --> get(0, "screensize_px")
  ans  =
    1.   1.   1920.   1080.
-</screen>
+]]></screen>
         </para>
         <para>
             <emphasis role="bold">Using tags and tagsPaths</emphasis>:

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  * Add some comments about XML file
 -->
-
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja_JP" xml:id="conv2">
 
     <refnamediv>
@@ -113,29 +111,29 @@
                     <itemizedlist>
 
                         <listitem>
-
-                            <literal>"full"</literal>, <literal>conv2</literal>
-
-                            は完全な2次元畳み込みを計算します. これがデフォルト値です.
-
+                             <para><literal>"full"</literal>, <literal>conv2</literal>
+    
+                                は完全な2次元畳み込みを計算します. これがデフォルト値です.
+    
+                            </para>
                         </listitem>
 
                         <listitem>
-
-                            <literal>"same"</literal>, <literal>conv2</literal>
-
-                            は<literal>A</literal>と同じ大きさの畳み込みの
-
-                            中央部を計算します.
-
+                             <para><literal>"same"</literal>, <literal>conv2</literal>
+    
+                                は<literal>A</literal>と同じ大きさの畳み込みの
+    
+                                中央部を計算します.
+    
+                            </para>
                         </listitem>
 
                         <listitem>
-
-                            <literal>"valid"</literal>, <literal>conv2</literal>
-
-                            は<literal>A</literal>のゼロパディングなしの畳み込み部分を計算します.
-
+                             <para><literal>"valid"</literal>, <literal>conv2</literal>
+    
+                                は<literal>A</literal>のゼロパディングなしの畳み込み部分を計算します.
+    
+                            </para>
                         </listitem>
 
                     </itemizedlist>
@@ -191,47 +189,47 @@
         <itemizedlist>
 
             <listitem>
-
-                <literal>shape=="full"</literal>
-
-                を指定した場合、結果<literal>C</literal>の次元は
-
-                <literal>size(A)+size(B)+1</literal>となります.
-
-                <literal>B</literal>の中心要素の添字は
-
-                <literal>floor((size(B)+1)/2)</literal>となります.
-
+                 <para><literal>shape=="full"</literal>
+    
+                    を指定した場合、結果<literal>C</literal>の次元は
+    
+                    <literal>size(A)+size(B)+1</literal>となります.
+    
+                    <literal>B</literal>の中心要素の添字は
+    
+                    <literal>floor((size(B)+1)/2)</literal>となります.
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                <literal>shape=="same"</literal> を指定した場合、
-
-                結果<literal>C</literal>の次元は <literal>size(A)</literal>となります.
-
-                <literal>B</literal>の中心要素の添字は
-
-                <literal>floor((size(B)+1)/2)</literal>となります.
-
+                 <para><literal>shape=="same"</literal> を指定した場合、
+    
+                    結果<literal>C</literal>の次元は <literal>size(A)</literal>となります.
+    
+                    <literal>B</literal>の中心要素の添字は
+    
+                    <literal>floor((size(B)+1)/2)</literal>となります.
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                <literal>shape=="valid"</literal>を指定した場合、
-
-                結果<literal>C</literal>の次元は,
-
-                <literal>and(size(A)-size(B))&gt;=0</literal>の場合に
-
-                <literal>size(A)-size(B)+1)</literal>,それ以外の場合に
-
-                <literal>C</literal>は空となります.
-
-                <literal>B</literal> の中心要素の添字は
-
-                <literal>[1 1]</literal>となります.
-
+                 <para><literal>shape=="valid"</literal>を指定した場合、
+    
+                    結果<literal>C</literal>の次元は,
+    
+                    <literal>and(size(A)-size(B))&gt;=0</literal>の場合に
+    
+                    <literal>size(A)-size(B)+1)</literal>,それ以外の場合に
+    
+                    <literal>C</literal>は空となります.
+    
+                    <literal>B</literal> の中心要素の添字は
+    
+                    <literal>[1 1]</literal>となります.
+    
+                </para>
             </listitem>
 
         </itemizedlist>
@@ -314,4 +312,3 @@
     </refsection>
 
 </refentry>
-

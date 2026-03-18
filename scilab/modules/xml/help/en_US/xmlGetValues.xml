@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="xmlGetValues" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="xmlGetValues" xml:lang="en">
     <refnamediv>
         <refname>xmlGetValues</refname>
         <refpurpose>Parses and gets values of chosen tags attributes in a XML file</refpurpose>
@@ -53,10 +50,14 @@
                         <note>
                             <itemizedlist>
                                 <listitem>
-                                    Attributes names are case-sensitive.
+                                     <para>
+                                        Attributes names are case-sensitive.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    If needed, the name of a given attribute may be specified several times.
+                                     <para>
+                                        If needed, the name of a given attribute may be specified several times.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </note>
@@ -71,13 +72,17 @@
                         can be one of the following:
                         <itemizedlist>
                             <listitem>
-                                unique string: path to the XML source file. By default, the main
-                                preferences file
-                                <literal>SCIHOME+'/XConfiguration.xml'</literal> is considered.
+                                 <para>
+                                    unique string: path to the XML source file. By default, the main
+                                    preferences file
+                                    <literal>SCIHOME+'/XConfiguration.xml'</literal> is considered.
+                                </para>
                             </listitem>
                             <listitem>
-                                XML handle of type <literal>XMLdoc</literal>, as returned by a
-                                prior <code>xmlRead(XMLsource)</code> external instruction.
+                                 <para>
+                                    XML handle of type <literal>XMLdoc</literal>, as returned by a
+                                    prior <code>xmlRead(XMLsource)</code> external instruction.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -90,23 +95,27 @@
                         matrix of strings: Values of the chosen attributes of the chosen tag:
                         <itemizedlist>
                             <listitem>
-                                If the set of chosen <varname>attributes</varname> is provided as a
-                                matrix with several rows, then only the first occurrence of the chosen
-                                tag is considered, and <varname>Values(i,j)</varname> is the value of
-                                its <varname>attributes(i,j)</varname>.
+                                 <para>
+                                    If the set of chosen <varname>attributes</varname> is provided as a
+                                    matrix with several rows, then only the first occurrence of the chosen
+                                    tag is considered, and <varname>Values(i,j)</varname> is the value of
+                                    its <varname>attributes(i,j)</varname>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Otherwise, if the names of <varname>attributes</varname> are
-                                provided in a row vector, then
-                                <emphasis role="italic">all occurrences</emphasis> of the chosen tag
-                                are considered: Results are returned with one row per occurrence,
-                                and one column per attribute. Thus, <varname>Values(i,j)</varname>
-                                is the value of the <varname>attributes(j)</varname> for the
-                                <literal>
-                                    i<superscript>th</superscript>
-                                </literal>
-                                occurrence of the
-                                tag in the document.
+                                 <para>
+                                    Otherwise, if the names of <varname>attributes</varname> are
+                                    provided in a row vector, then
+                                    <emphasis role="italic">all occurrences</emphasis> of the chosen tag
+                                    are considered: Results are returned with one row per occurrence,
+                                    and one column per attribute. Thus, <varname>Values(i,j)</varname>
+                                    is the value of the <varname>attributes(j)</varname> for the
+                                    <literal>
+                                        i<superscript>th</superscript>
+                                    </literal>
+                                    occurrence of the
+                                    tag in the document.
+                                </para>
                             </listitem>
                         </itemizedlist>
                         If some final values are expected to be numeric rather than literal (text),

@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="format" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="format" xml:lang="en">
     <refnamediv>
         <refname>format</refname>
         <refpurpose>set the default output format of decimal numbers</refpurpose>
@@ -38,16 +35,20 @@
                 <listitem>
                     <para>formatting mode:
                         <itemizedlist>
-                          <listitem>1 or "v": <emphasis role="bold">v</emphasis>ariable adaptative
-                            formatting. Scilab chooses either the direct representation
-                            (e.g. -143.8757) or
-                            the exponential/engineering/scientific notation (e.g. -1.438E+02),
-                            in order to cope with each processed value as well as with the
-                            required width, with a maximal number of output digits.
+                          <listitem>
+                               <para>1 or "v": <emphasis role="bold">v</emphasis>ariable adaptative
+                                formatting. Scilab chooses either the direct representation
+                                (e.g. -143.8757) or
+                                the exponential/engineering/scientific notation (e.g. -1.438E+02),
+                                in order to cope with each processed value as well as with the
+                                required width, with a maximal number of output digits.
+                              </para>
                           </listitem>
-                          <listitem>0 or "e": The <emphasis role="bold">e</emphasis>xponential
-                            /<emphasis role="bold">e</emphasis>ngineering notation is forced
-                            and used for all numbers.
+                          <listitem>
+                               <para>0 or "e": The <emphasis role="bold">e</emphasis>xponential
+                                /<emphasis role="bold">e</emphasis>ngineering notation is forced
+                                and used for all numbers.
+                              </para>
                           </listitem>
                       </itemizedlist>
                   </para>
@@ -76,12 +77,15 @@
                 <listitem>
                     <para>vector returning the current formatting parameters:
                         <itemizedlist>
-                          <listitem><literal>mw(1)</literal> is the formatting mode:
-                            0 for <literal>'e'</literal> and 1 for <literal>'v'</literal>
-                          </listitem>
                           <listitem>
-                            <literal>mw(2)</literal> is the width:
-                            Number of characters used to output each number.
+                               <para><literal>mw(1)</literal> is the formatting mode:
+                                0 for <literal>'e'</literal> and 1 for <literal>'v'</literal>
+                                  </para>
+                              </listitem>
+                          <listitem>
+                               <para><literal>mw(2)</literal> is the width:
+                                Number of characters used to output each number.
+                              </para>
                           </listitem>
                          </itemizedlist>
                      </para>

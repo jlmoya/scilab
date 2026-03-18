@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="ru">
     <refnamediv>
         <refname>scilab</refname>
         <refpurpose>
@@ -90,18 +87,26 @@ Developer Debug arguments:
                         Эта опция позволяет переслать  данные в сессию Scilab'а:
                         <itemizedlist>
                             <listitem>
-                              Последовательность данных, разделённых одним или несколькими пробелами.
+                                 <para>
+                                  Последовательность данных, разделённых одним или несколькими пробелами.
+                                </para>
                             </listitem>
                             <listitem>
-                              Выражение между двойными кавычками является единым куском данных.
+                                 <para>
+                                  Выражение между двойными кавычками является единым куском данных.
+                                </para>
                             </listitem>
                             <listitem>
-                              Чтобы внести двойные кавычки в данные, запишите <literal>\"</literal>
-                              вместо <literal>"</literal>.
+                                 <para>
+                                  Чтобы внести двойные кавычки в данные, запишите <literal>\"</literal>
+                                  вместо <literal>"</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                              Одинарная кавычка <literal>'</literal> является обычным символом.
-                              У неё нет специального значения.
+                                 <para>
+                                  Одинарная кавычка <literal>'</literal> является обычным символом.
+                                  У неё нет специального значения.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -119,8 +124,8 @@ i = find(a=="-args")
 a(i+1)
 evstr(a(i+2))*2
 "Эта сессия была запущена из " + a(i+3)
-                        ]]>
-                        </programlisting>
+                        
+                        ]]></programlisting>
                         <screen><![CDATA[
 --> // Внутри открытой сессии:
 --> a = sciargs()
@@ -151,7 +156,7 @@ evstr(a(i+2))*2
 ]]></screen>
                      </para>
                     <para>
-                      Заметим здесь, что <literal>>scilab -nw</literal> переведена в <literal>Wscilex-cli.exe</literal>
+                      Заметим здесь, что <literal>&gt;scilab -nw</literal> переведена в <literal>Wscilex-cli.exe</literal>
                       с помощью пакетного файла <literal>scilab</literal>, таким образом, что опция
                       "-nw" не возвращается с помощью <literal>sciargs()</literal>
                       (смотри ниже).
@@ -333,11 +338,15 @@ evstr(a(i+2))*2
                         Дистрибутив Scilab также предоставляет специальный бинарный файл, который
                         делает то же, что и <literal>-nw</literal>:
                         <listitem>
-                            Windows: <literal>WScilex-cli.exe</literal>.
+                             <para>
+                                Windows: <literal>WScilex-cli.exe</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            Linux и MacOS: <literal>scilab-adv-cli</literal>
-                            (Интерпретатор Scilab с улучшенной командной строкой).
+                             <para>
+                                Linux и MacOS: <literal>scilab-adv-cli</literal>
+                                (Интерпретатор Scilab с улучшенной командной строкой).
+                            </para>
                         </listitem>
                     </para>
                 </listitem>
@@ -363,11 +372,15 @@ evstr(a(i+2))*2
                         делает то же, что и <literal>-nwni</literal>:
                         <itemizedlist>
                             <listitem>
-                                Windows: <literal>Scilex.exe</literal>.
+                                 <para>
+                                    Windows: <literal>Scilex.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Другие: <literal>scilab-cli</literal> (Интерпретатор Scilab с
-                                улучшенной командной строкой).
+                                 <para>
+                                    Другие: <literal>scilab-cli</literal> (Интерпретатор Scilab с
+                                    улучшенной командной строкой).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -587,7 +600,7 @@ echo "handle SIGSEGV nostop" > debug.txt
 export SCILAB_GDB_OPT="--command=debug.txt"
 # Запуск Scilab'а в режиме отладки
 scilab -debug ]]></screen>
-        <para></para>
+        <para/>
         <screen><![CDATA[
 # В GNU/Linux, Mac OS X или Unix:
 $ echo "disp(%pi)"|scilab-cli
@@ -665,47 +678,56 @@ echo $? ]]></screen>
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Пользовательские опции:
-                            <itemizedlist>
-                                <listitem>
-                                    Добавлены: <literal>--help</literal>, <literal>-quit</literal>
-                                </listitem>
-                                <listitem>
-                                    Удалены: <literal>-mem</literal>
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
+                             <para>
+                                Пользовательские опции:
+                                <itemizedlist>
+                                    <listitem>
+                                         <para>
+                                            Добавлены: <literal>--help</literal>, <literal>-quit</literal>
+                                                   </para>
+                                               </listitem>
+                                    <listitem>
+                                         <para>
+                                            Удалены: <literal>-mem</literal>
+                                                 </para>
+                                             </listitem>
+                                  </itemizedlist>
+                                </para>
+                            </listitem>
                         <listitem>
-                            Добавлены опции разработчика:
-                            <itemizedlist>
-                                <listitem>
-                                    <literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
-                                    <literal>--pretty-print</literal>
+                             <para>
+                                Добавлены опции разработчика:
+                                <itemizedlist>
+                                    <listitem>
+                                         <para><literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
+                                            <literal>--pretty-print</literal>
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para><literal>--AST-timed</literal>, <literal>--timed</literal></para></listitem>
+                                        <listitem>
+                                             <para><literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
+                                                <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
+                                            </para>
+                                        </listitem>
+                                      </itemizedlist>
+                                    </para>
                                 </listitem>
-                                <listitem>
-                                    <literal>--AST-timed</literal>, <literal>--timed</literal>
-                                </listitem>
-                                <listitem>
-                                    <literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
-                                    <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
-                    </itemizedlist>
-               </revremark>
-            </revision>
-            <revision>
-                <revnumber>6.0.1</revnumber>
-                <revremark>
-                    Добавлена опция <literal>-scihome</literal>.
-                </revremark>
-            </revision>
-        </revhistory>
-    </refsection>
-    <!--add some kewywords -->
-    <refnamediv xml:id="wscilex"></refnamediv>
-    <refnamediv xml:id="wscilex-cli"></refnamediv>
-    <refnamediv xml:id="scilex"></refnamediv>
-    <refnamediv xml:id="scilab-cli"></refnamediv>
-    <refnamediv xml:id="scilab-adv-cli"></refnamediv>
-</refentry>
+                        </itemizedlist>
+                   </revremark>
+                </revision>
+                <revision>
+                    <revnumber>6.0.1</revnumber>
+                    <revremark>
+                        Добавлена опция <literal>-scihome</literal>.
+                    </revremark>
+                </revision>
+            </revhistory>
+        </refsection>
+        <!--add some kewywords -->
+        <refnamediv xml:id="wscilex"/>
+        <refnamediv xml:id="wscilex-cli"/>
+        <refnamediv xml:id="scilex"/>
+        <refnamediv xml:id="scilab-cli"/>
+        <refnamediv xml:id="scilab-adv-cli"/>
+    </refentry>

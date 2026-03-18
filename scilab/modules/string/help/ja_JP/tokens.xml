@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="tokens">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="tokens">
     <refnamediv>
         <refname>tokens</refname>
         <refpurpose>セパレータを使用してテキストをチャンクに分割する</refpurpose>
@@ -34,24 +31,27 @@
             <varlistentry>
                 <term>text</term>
                 <listitem>
-                    分割する単一のテキスト. 拡張UTF-8国際文字を含めることができます.
-                    <para/>
-                </listitem>
+                     <para>
+                        分割する単一のテキスト. 拡張UTF-8国際文字を含めることができます.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>separators</term>
                 <listitem>
-                    文字または文字のベクトル. トークンデリミタ. Default value =
-                    <literal>[" ", ascii(9)]</literal>, ascii(9) being the horizontal tab.
-                    <para/>
-                </listitem>
+                     <para>
+                        文字または文字のベクトル. トークンデリミタ. Default value =
+                        <literal>[" ", ascii(9)]</literal>, ascii(9) being the horizontal tab.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Chunks</term>
                 <listitem>
-                    みつかったトークンの列ベクトル
-                    <para/>
-                </listitem>
+                     <para>
+                        みつかったトークンの列ベクトル
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="qmr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="qmr">
     <refnamediv>
         <refname>qmr</refname>
         <refpurpose>quasi minimal residual method with preconditioning  </refpurpose>
@@ -41,12 +38,16 @@
                     </para>
                     <itemizedlist>
                         <listitem>
-                            If <literal>t = "notransp"</literal>: the function returns
-                            <literal>A*x</literal>.
+                             <para>
+                                If <literal>t = "notransp"</literal>: the function returns
+                                <literal>A*x</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            If <literal>t = "transp"</literal>: the function returns
-                            <literal>A'*x</literal>.
+                             <para>
+                                If <literal>t = "transp"</literal>: the function returns
+                                <literal>A'*x</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -55,16 +56,18 @@
             <varlistentry>
                 <term>b</term>
                 <listitem>
-                    right hand side vector
-                    <para/>
-                </listitem>
+                     <para>
+                        right hand side vector
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x0</term>
                 <listitem>
-                    initial guess vector (default: zeros(n,1)).
-                    <para/>
-                </listitem>
+                     <para>
+                        initial guess vector (default: zeros(n,1)).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>M1</term>
@@ -87,39 +90,45 @@
             <varlistentry>
                 <term>maxi</term>
                 <listitem>
-                    maximum number of iterations (default: n)
-                    <para/>
-                </listitem>
+                     <para>
+                        maximum number of iterations (default: n)
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>tol</term>
                 <listitem>
-                    error tolerance (default: 1000*%eps)
-                    <para/>
-                </listitem>
+                     <para>
+                        error tolerance (default: 1000*%eps)
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    solution vector.
-                    <para/>
-                </listitem>
+                     <para>
+                        solution vector.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>flag</term>
                 <listitem>
                     <itemizedlist>
                         <listitem>
-                            <varname>flag</varname>=0: <literal>qmr</literal> converged to the
-                            desired tolerance within <varname>maxi</varname> iterations.
+                             <para><varname>flag</varname>=0: <literal>qmr</literal> converged to the
+                                desired tolerance within <varname>maxi</varname> iterations.
+                            </para>
                         </listitem>
                         <listitem>
-                            <varname>flag</varname>=1: no convergence up to
-                            <varname>maxi</varname> iterations,
+                             <para><varname>flag</varname>=1: no convergence up to
+                                <varname>maxi</varname> iterations,
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>-7 &lt; flag &lt; 0</literal>: A breakdown occurred because
-                            one of the scalar quantities calculated was equal to zero.
+                             <para><literal>-7 &lt; flag &lt; 0</literal>: A breakdown occurred because
+                                one of the scalar quantities calculated was equal to zero.
+                            </para>
                         </listitem>
                     </itemizedlist>
                     <para/>
@@ -128,23 +137,26 @@
             <varlistentry>
                 <term>res</term>
                 <listitem>
-                    residual vector.
-                    <para/>
-                </listitem>
+                     <para>
+                        residual vector.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>err</term>
                 <listitem>
-                    final residual norm.
-                    <para/>
-                </listitem>
+                     <para>
+                        final residual norm.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>iter</term>
                 <listitem>
-                    number of iterations performed.
-                    <para/>
-                </listitem>
+                     <para>
+                        number of iterations performed.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

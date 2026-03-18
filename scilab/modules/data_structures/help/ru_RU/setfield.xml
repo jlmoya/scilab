@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="setfield">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="setfield">
     <refnamediv>
         <refname>setfield</refname>
         <refpurpose>изменение значения элемента списка типа mlist, tlist или list</refpurpose>
@@ -30,33 +28,37 @@
             <varlistentry>
                 <term>L</term>
                 <listitem>
-                    список типа <literal>list</literal>, <literal>tlist</literal> или
-                    <literal>mlist</literal>: список, в котором требуется изменить элемент.
-                    <para/>
-                </listitem>
+                     <para>
+                        список типа <literal>list</literal>, <literal>tlist</literal> или
+                        <literal>mlist</literal>: список, в котором требуется изменить элемент.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a</term>
                 <listitem>
-                    адрес элемента, который нужно изменить. Это может быть или его имя
-                    поля, указанного в виде строки, либо его индекс, указанный в виде
-                    положительного целого числа. См. подробности в <link linkend="insertion">вставке</link>.
-                    <para/>
-                </listitem>
+                     <para>
+                        адрес элемента, который нужно изменить. Это может быть или его имя
+                        поля, указанного в виде строки, либо его индекс, указанный в виде
+                        положительного целого числа. См. подробности в <link linkend="insertion">вставке</link>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    любой объект Scilab: значение для присвоения.
-                    <para/>
-                </listitem>
+                     <para>
+                        любой объект Scilab: значение для присвоения.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>uL</term>
                 <listitem>
-                    Обновлённый список.
-                    <para/>
-                </listitem>
+                     <para>
+                        Обновлённый список.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -164,11 +166,15 @@ Function not defined for given argument type(s),
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Теперь возвращается обновлённый список вместо изменения
-                            "на месте".
+                             <para>
+                                Теперь возвращается обновлённый список вместо изменения
+                                "на месте".
+                            </para>
                         </listitem>
                         <listitem>
-                            setfield() больше не может использоваться для cell-массивов.
+                             <para>
+                                setfield() больше не может использоваться для cell-массивов.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

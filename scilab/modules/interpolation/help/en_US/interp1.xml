@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="interp1" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="interp1" xml:lang="en">
     <refnamediv>
         <refname>interp1</refname>
         <refpurpose>1D interpolation in nearest, linear or spline mode</refpurpose>
@@ -36,166 +33,184 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    vector of at least 2 real numbers: Abscissas of known interpolation nodes,
-                    without duplicates. By default,
-                    <itemizedlist>
-                        <listitem>
-                            if <varname>y</varname> is a vector: <literal>x=1:length(y)</literal>.
-                        </listitem>
-                        <listitem>
-                            if <varname>y</varname> is a matrix or an hypermatrix:
-                            <literal>x=1:size(y,1)</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        vector of at least 2 real numbers: Abscissas of known interpolation nodes,
+                        without duplicates. By default,
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    if <varname>y</varname> is a vector: <literal>x=1:length(y)</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    if <varname>y</varname> is a matrix or an hypermatrix:
+                                    <literal>x=1:size(y,1)</literal>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    vector, matrix or hypermatrix of real or complex numbers: values at known
-                    interpolation nodes, at the corresponding <varname>x</varname> abscissas.
-                    <itemizedlist>
-                        <listitem>
-                            if <varname>y</varname> is a vector, <varname>x</varname> and
-                            <varname>y</varname> must have the same length.
-                        </listitem>
-                        <listitem>
-                            if <varname>y</varname> is a matrix or an hypermatrix, we must have
-                            <literal>length(x)==size(y,1)</literal>. Each column of
-                            <varname>y</varname> is then interpolated versus the same
-                            <varname>x</varname> abscissas, for the given <varname>xp</varname>.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        vector, matrix or hypermatrix of real or complex numbers: values at known
+                        interpolation nodes, at the corresponding <varname>x</varname> abscissas.
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    if <varname>y</varname> is a vector, <varname>x</varname> and
+                                    <varname>y</varname> must have the same length.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    if <varname>y</varname> is a matrix or an hypermatrix, we must have
+                                    <literal>length(x)==size(y,1)</literal>. Each column of
+                                    <varname>y</varname> is then interpolated versus the same
+                                    <varname>x</varname> abscissas, for the given <varname>xp</varname>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>xp</term>
                 <listitem>
-                    scalar, vector, matrix or hypermatrix or decimal numbers: abscissas of
-                    points whose values <varname>yp</varname> must be computed according
-                    to data of interpolation nodes.
-                    <para/>
-                </listitem>
+                     <para>
+                        scalar, vector, matrix or hypermatrix or decimal numbers: abscissas of
+                        points whose values <varname>yp</varname> must be computed according
+                        to data of interpolation nodes.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>yp</term>
                 <listitem>
-                    vector, matrix, or hypermatrix of numbers: interpolated <varname>y</varname>
-                    values at the given <varname>xp</varname>.
-                    <itemizedlist>
-                        <listitem>
-                            if <varname>y</varname> is a vector: <varname>yp</varname> has the
-                            size of <varname>xp</varname>.
-                            <para/>
-                        </listitem>
-                        <listitem>
-                            if <varname>y</varname> is a matrix or an hypermatrix:
-                            <itemizedlist>
-                                <listitem>
-                                    if <varname>xp</varname> is a scalar or a vector:
-                                    <literal>size(yp)</literal> is <literal>[length(xp) size(y)(2:$)]</literal>
+                     <para>
+                        vector, matrix, or hypermatrix of numbers: interpolated <varname>y</varname>
+                        values at the given <varname>xp</varname>.
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    if <varname>y</varname> is a vector: <varname>yp</varname> has the
+                                    size of <varname>xp</varname>.
+                                    </para>
                                 </listitem>
-                                <listitem>
-                                    if <varname>xp</varname> is a matrix or an hypermatrix:
-                                    <literal>size(yp)</literal> is <literal>[size(xp) size(y)(2:$)]</literal>
+                            <listitem>
+                                 <para>
+                                    if <varname>y</varname> is a matrix or an hypermatrix:
+                                    <itemizedlist>
+                                        <listitem>
+                                             <para>
+                                                if <varname>xp</varname> is a scalar or a vector:
+                                                <literal>size(yp)</literal> is <literal>[length(xp) size(y)(2:$)]</literal>
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                             <para>
+                                                if <varname>xp</varname> is a matrix or an hypermatrix:
+                                                <literal>size(yp)</literal> is <literal>[size(xp) size(y)(2:$)]</literal>
+                                            </para>
+                                        </listitem>
+                                      </itemizedlist>
+                                    </para>
                                 </listitem>
-                            </itemizedlist>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>method</term>
                 <listitem>
-                    string defining the interpolation method. Possible values and processing are:
-                    <para/>
-                    <table>
-                        <tr>
-                            <td><emphasis role="bold">"linear"</emphasis>:</td>
-                            <td>
-                                linear interpolation between consecutive nodes, used by default.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"spline"</emphasis>:</td>
-                            <td>
-                                interpolation by cubic splines
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"nearest"</emphasis>:</td>
-                            <td>
-                                <para>for each value xp(j), yp(j) takes the value or y(i)
-                                    corresponding to x(i) the nearest neighbor of xp(j)
-                                </para>
-                            </td>
-                        </tr>
-                    </table>
-                    <para/>
-                </listitem>
+                     <para>
+                        string defining the interpolation method. Possible values and processing are:
+                        <table>
+                            <tr>
+                                <td><emphasis role="bold">"linear"</emphasis>:</td>
+                                <td>
+                                    linear interpolation between consecutive nodes, used by default.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"spline"</emphasis>:</td>
+                                <td>
+                                    interpolation by cubic splines
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"nearest"</emphasis>:</td>
+                                <td>
+                                    <para>for each value xp(j), yp(j) takes the value or y(i)
+                                        corresponding to x(i) the nearest neighbor of xp(j)
+                                    </para>
+                                </td>
+                            </tr>
+                        </table></para>
+                            </listitem>
             </varlistentry>
             <varlistentry>
                 <term>extrapolation</term>
                 <listitem>
-                    string or number defining the yp(j) components for xp(j) values outside the
-                    [x(1)=min(x),x($)=max(x)] interval. We suppose here-below that <varname>x</varname>
-                    and <varname>y</varname> have already been sorted accordingly.
-                    <para/>
-                    <table>
-                        <tr>
-                            <td><emphasis role="bold">"extrap"</emphasis>:</td>
-                            <td>
-                                <literal>interp1(x,y,xp, method, "extrap")</literal> is equivalent
-                                to <literal>interp1(x,y,xp, method, method)</literal>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"linear"</emphasis>:</td>
-                            <td>
-                                Can be used with the <literal>"spline"</literal> (and obviously
-                                <literal>"linear"</literal>) interpolation methods.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"periodic"</emphasis>:</td>
-                            <td>
-                                This extrapolation type can be used with the
-                                <literal>"linear"</literal> or <literal>"spline"</literal>
-                                interpolation methods. Then: if <varname>y</varname> is a
-                                vector, <literal>y(1)==y($)</literal> is required ; otherwise
-                                <literal>y(1,:)==y($,:)</literal> is required.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"edgevalue"</emphasis>:</td>
-                            <td>
-                                Then <literal>yp(i)=y(1)</literal> for every
-                                <literal>xp(i)&lt;x(1)</literal>, and
-                                <literal>yp(i)=y($)</literal> for every <literal>xp(i)>x($)</literal>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">padding</emphasis>:</td>
-                            <td>
-                                <varname>padding</varname> is a decimal or complex number
-                                used to set <literal>yp(i)=padding</literal> for every
-                                <literal>xp(i) ∉ [min(x),max(x)]</literal>. Example:
-                                <literal>yi=interp1(x,y,xp,method, 0)</literal>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">(none)</emphasis>:</td>
-                            <td>
-                                By default, the extrapolation is performed by splines when
-                                splines are used for the interpolation, and by padding
-                                with %nan when the interpolation is linear or by "nearest" node.
-                            </td>
-                        </tr>
-                    </table>
-                </listitem>
+                     <para>
+                        string or number defining the yp(j) components for xp(j) values outside the
+                        [x(1)=min(x),x($)=max(x)] interval. We suppose here-below that <varname>x</varname>
+                        and <varname>y</varname> have already been sorted accordingly.
+                        <table>
+                            <tr>
+                                <td><emphasis role="bold">"extrap"</emphasis>:</td>
+                                <td>
+                                    <literal>interp1(x,y,xp, method, "extrap")</literal> is equivalent
+                                    to <literal>interp1(x,y,xp, method, method)</literal>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"linear"</emphasis>:</td>
+                                <td>
+                                    Can be used with the <literal>"spline"</literal> (and obviously
+                                    <literal>"linear"</literal>) interpolation methods.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"periodic"</emphasis>:</td>
+                                <td>
+                                    This extrapolation type can be used with the
+                                    <literal>"linear"</literal> or <literal>"spline"</literal>
+                                    interpolation methods. Then: if <varname>y</varname> is a
+                                    vector, <literal>y(1)==y($)</literal> is required ; otherwise
+                                    <literal>y(1,:)==y($,:)</literal> is required.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"edgevalue"</emphasis>:</td>
+                                <td>
+                                    Then <literal>yp(i)=y(1)</literal> for every
+                                    <literal>xp(i)&lt;x(1)</literal>, and
+                                    <literal>yp(i)=y($)</literal> for every <literal>xp(i)&gt;x($)</literal>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">padding</emphasis>:</td>
+                                <td>
+                                    <varname>padding</varname> is a decimal or complex number
+                                    used to set <literal>yp(i)=padding</literal> for every
+                                    <literal>xp(i) ∉ [min(x),max(x)]</literal>. Example:
+                                    <literal>yi=interp1(x,y,xp,method, 0)</literal>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">(none)</emphasis>:</td>
+                                <td>
+                                    By default, the extrapolation is performed by splines when
+                                    splines are used for the interpolation, and by padding
+                                    with %nan when the interpolation is linear or by "nearest" node.
+                                </td>
+                            </tr>
+                        </table></para>
+                            </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -270,7 +285,7 @@ h(1).mark_size = 8;
 title "Interpolation of a poorly sampled sin() function" fontsize 3
 legend(['nearest','linear','spline','nodes'], "in_lower_left");
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = linspace(0, 10, 11)';
             y = sin(x);
             xx = linspace(0,10,1000)';
@@ -283,7 +298,7 @@ legend(['nearest','linear','spline','nodes'], "in_lower_left");
             title "Interpolation of a poorly sampled sin() function" fontsize 3
             legend(['nearest','linear','spline','nodes'], "in_lower_left");
             gcf().axes_size = [600 400];
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -307,27 +322,34 @@ legend(['nearest','linear','spline','nodes'], "in_lower_left");
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            For complex <varname>y</varname> values, <literal>imag(y)</literal> is
-                            no longer ignored: <literal>real(y)</literal> and <literal>imag(y)</literal>
-                            parts are separately interpolated.
+                             <para>
+                                For complex <varname>y</varname> values, <literal>imag(y)</literal> is
+                                no longer ignored: <literal>real(y)</literal> and <literal>imag(y)</literal>
+                                parts are separately interpolated.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>"periodic"</literal> extrapolation added for the linear and
-                            spline interpolations.
+                             <para><literal>"periodic"</literal> extrapolation added for the linear and
+                                spline interpolations.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>"edgevalue"</literal> extrapolation added for all nearest,
-                            linear and spline interpolations.
+                             <para><literal>"edgevalue"</literal> extrapolation added for all nearest,
+                                linear and spline interpolations.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>"linear"</literal> extrapolation added for the spline
-                            interpolation.
+                             <para><literal>"linear"</literal> extrapolation added for the spline
+                                interpolation.
+                            </para>
                         </listitem>
                         <listitem>
-                            When <varname>xp</varname> is an hypermatrix and
-                            <literal>size(xp,1)==1</literal>, <literal>size(yp)</literal>
-                            is now always <literal>[size(xp) size(y)(2,$)</literal> instead of
-                            <literal>[size(xp,2:$), size(y)(2,$)</literal>.
+                             <para>
+                                When <varname>xp</varname> is an hypermatrix and
+                                <literal>size(xp,1)==1</literal>, <literal>size(yp)</literal>
+                                is now always <literal>[size(xp) size(y)(2,$)</literal> instead of
+                                <literal>[size(xp,2:$), size(y)(2,$)</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

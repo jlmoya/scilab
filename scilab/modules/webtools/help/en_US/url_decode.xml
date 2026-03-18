@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="url_decode" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="url_decode" xml:lang="en">
     <refnamediv>
         <refname>url_decode</refname>
         <refpurpose>
@@ -33,16 +30,18 @@
             <varlistentry>
                 <term>encodedStrings</term>
                 <listitem>
-                    Any single string or regular array of strings.
-                    <para/>
-                </listitem>
+                     <para>
+                        Any single string or regular array of strings.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>decoded</term>
                 <listitem>
-                    Array of strings. Its sizes match <varname>encodedStrings</varname> ones.
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of strings. Its sizes match <varname>encodedStrings</varname> ones.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="xmlGetValues" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="xmlGetValues" xml:lang="ru">
     <refnamediv>
         <refname>xmlGetValues</refname>
         <refpurpose>
@@ -55,11 +52,15 @@
                         <note>
                             <itemizedlist>
                                 <listitem>
-                                    Имена атрибутов чувствительны к регистру.
+                                     <para>
+                                        Имена атрибутов чувствительны к регистру.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    На самом деле имена указанного атрибута могут быть
-                                    определены несколько раз.
+                                     <para>
+                                        На самом деле имена указанного атрибута могут быть
+                                        определены несколько раз.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </note>
@@ -74,13 +75,17 @@
                         Это может быть одно из следующих:
                         <itemizedlist>
                             <listitem>
-                                уникальная строка: путь до исходного XML-файла. По умолчанию
-                                рассматривается файл главных настроек
-                                <literal>SCIHOME+'/XConfiguration.xml'</literal>.
+                                 <para>
+                                    уникальная строка: путь до исходного XML-файла. По умолчанию
+                                    рассматривается файл главных настроек
+                                    <literal>SCIHOME+'/XConfiguration.xml'</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                XML-указатель типа <literal>XMLdoc</literal>, возвращаемой
-                                ранее в качестве внешней инструкции <code>xmlRead(XMLsource)</code>,
+                                 <para>
+                                    XML-указатель типа <literal>XMLdoc</literal>, возвращаемой
+                                    ранее в качестве внешней инструкции <code>xmlRead(XMLsource)</code>,
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -93,19 +98,23 @@
                         матрица строковых значений: значения выбранных атрибутов выбранного тега:
                         <itemizedlist>
                             <listitem>
-                                Если набор выбранных атрибутов <varname>attributes</varname> 
-                                указан в виде матрицы с несколькими строками, то используется
-                                только первое появление выбранного тега, и <varname>Values(i,j)</varname> - это
-                                значение его атрибутов <varname>attributes(i,j)</varname>.
+                                 <para>
+                                    Если набор выбранных атрибутов <varname>attributes</varname> 
+                                    указан в виде матрицы с несколькими строками, то используется
+                                    только первое появление выбранного тега, и <varname>Values(i,j)</varname> - это
+                                    значение его атрибутов <varname>attributes(i,j)</varname>.
+                                </para>
                             </listitem>
                             <listitem>
-                                В противном случае, если имена атрибутов <varname>attributes</varname>
-                                указаны в виде вектора-строки, то рассматриваются
-                                <emphasis role="italic">все появления</emphasis> выбранного тега: 
-                                результаты возвращаются с одной строкой на появление, и одним
-                                столбцом на атрибут. Таким образом, <varname>Values(i,j)</varname> - это
-                                значение атрибутов <varname>attributes(j)</varname> для
-                                <literal>i</literal>-той встречи тега в документе.
+                                 <para>
+                                    В противном случае, если имена атрибутов <varname>attributes</varname>
+                                    указаны в виде вектора-строки, то рассматриваются
+                                    <emphasis role="italic">все появления</emphasis> выбранного тега: 
+                                    результаты возвращаются с одной строкой на появление, и одним
+                                    столбцом на атрибут. Таким образом, <varname>Values(i,j)</varname> - это
+                                    значение атрибутов <varname>attributes(j)</varname> для
+                                    <literal>i</literal>-той встречи тега в документе.
+                                </para>
                             </listitem>
                         </itemizedlist>
                         Если ожидаются какие-либо конечные значения в виде чисел, а не литералов

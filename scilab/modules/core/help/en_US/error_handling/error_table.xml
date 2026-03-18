@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="error_table" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="error_table" xml:lang="en">
     <refnamediv>
         <refname>error_table</refname>
         <refpurpose>list of main standard errors messages</refpurpose>
@@ -26,40 +23,42 @@
         <para>
             <itemizedlist>
                 <listitem>
-                    Messages
-                    <itemizedlist>
-                        <listitem>
-                            <link linkend="error_table_arg_number">Checking Arguments numbers</link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_type_checking">
-                                Checking container and content types and encoding
-                            </link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_sizes_checking">
-                                Checking sizes
-                            </link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_values_checking">Checking values</link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_interarguments_constrains">
-                                Inter-arguments constrains
-                            </link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_files_directories">Files, directories</link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_dynamical_systems">Dynamical systems</link>
-                        </listitem>
-                        <listitem>
-                            <link linkend="error_table_miscellaneous">Miscellaneous</link>
-                        </listitem>
-                    </itemizedlist>
-                </listitem>
+                     <para>
+                        Messages
+                        <itemizedlist>
+                            <listitem>
+                                <link linkend="error_table_arg_number">Checking Arguments numbers</link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_type_checking">
+                                    Checking container and content types and encoding
+                                </link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_sizes_checking">
+                                    Checking sizes
+                                </link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_values_checking">Checking values</link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_interarguments_constrains">
+                                    Inter-arguments constrains
+                                </link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_files_directories">Files, directories</link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_dynamical_systems">Dynamical systems</link>
+                            </listitem>
+                            <listitem>
+                                <link linkend="error_table_miscellaneous">Miscellaneous</link>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
                 <listitem>
                     <link linkend="error_table_examples">Examples</link>
                 </listitem>
@@ -178,11 +177,15 @@
                 <emphasis role="bold">Dimensions / sizes / shape of the container:</emphasis>
                 <itemizedlist>
                     <listitem>
-                        "array" applies to Cells and Structures
+                         <para>
+                            "array" applies to Cells and Structures
+                        </para>
                     </listitem>
                     <listitem>
-                        "Scalar", "Row", "Column" apply to matrices as well as to other arrays
-                        (Cells and Structures)
+                         <para>
+                            "Scalar", "Row", "Column" apply to matrices as well as to other arrays
+                            (Cells and Structures)
+                        </para>
                     </listitem>
                 </itemizedlist>
             </para>

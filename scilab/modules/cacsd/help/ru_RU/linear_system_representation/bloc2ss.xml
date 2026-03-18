@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="bloc2ss" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bloc2ss" xml:lang="ru">
     <refnamediv>
         <refname>bloc2ss</refname>
         <refpurpose>преобразование блок-схемы в пространство состояний</refpurpose>
@@ -101,18 +98,24 @@ list('link','name_of_link',
             Есть 4 связи :
             <itemizedlist>
               <listitem>
-                Первая (с именем <literal>'U'</literal>) связывает вход (порт 0  условного блока
-                -1 не рассматривается) с портом 1 сумматора.
+                   <para>
+                    Первая (с именем <literal>'U'</literal>) связывает вход (порт 0  условного блока
+                    -1 не рассматривается) с портом 1 сумматора.
+                  </para>
               </listitem>
               <listitem>
-                Вторая и третья связи соответственно (выходной) порт 1 сумматора с (входным)
-                портом 1 системы <literal>S1</literal>, а (выходной) порт 1
-                <literal>S1</literal> с (входным) портом  1 <literal>S2</literal>.
+                   <para>
+                    Вторая и третья связи соответственно (выходной) порт 1 сумматора с (входным)
+                    портом 1 системы <literal>S1</literal>, а (выходной) порт 1
+                    <literal>S1</literal> с (входным) портом  1 <literal>S2</literal>.
+                  </para>
               </listitem>
               <listitem>
-                Четвёртая связь (названная <literal>'Y'</literal>)  связывает (выходной)
-                порт 1 <literal>S2</literal> с выходом (порт 0 условного блока -1 не
-                рассматривается) и с (входным) портом 2 сумматора.
+                   <para>
+                    Четвёртая связь (названная <literal>'Y'</literal>)  связывает (выходной)
+                    порт 1 <literal>S2</literal> с выходом (порт 0 условного блока -1 не
+                    рассматривается) и с (входным) портом 2 сумматора.
+                  </para>
               </listitem>
             </itemizedlist>
         </para>

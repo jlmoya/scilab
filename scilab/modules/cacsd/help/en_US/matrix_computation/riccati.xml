@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="riccati">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="riccati">
     <refnamediv>
         <refname>riccati</refname>
         <refpurpose>Solves the matricial Riccati equation (continuous | discrete time domain)</refpurpose>
@@ -37,50 +34,56 @@
             <varlistentry>
                 <term>A, B, C</term>
                 <listitem>
-                    Square matrices of real numbers, of size n x n: Matricial coefficients
-                    of the equation.
-                    <para/>
-                </listitem>
+                     <para>
+                        Square matrices of real numbers, of size n x n: Matricial coefficients
+                        of the equation.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>H, E</term>
                 <listitem>
-                    Square matrices of real numbers, of size 2n x 2n: Hamiltonian matrices | pencil
-                    of the equation.
-                    <para/>
-                </listitem>
+                     <para>
+                        Square matrices of real numbers, of size 2n x 2n: Hamiltonian matrices | pencil
+                        of the equation.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>dom</term>
                 <listitem>
-                    Type / time domain of the Riccati equation:
-                    <literal>"c"</literal> or <literal>"continuous"</literal>, or
-                    <literal>"d"</literal> or <literal>"discrete"</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Type / time domain of the Riccati equation:
+                        <literal>"c"</literal> or <literal>"continuous"</literal>, or
+                        <literal>"d"</literal> or <literal>"discrete"</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>method</term>
                 <listitem>
-                    string : <literal>"eigen"</literal> for block diagonalization (default), or
-                    <literal>"schur"</literal> for  Schur method.
-                    <para/>
-                </listitem>
+                     <para>
+                        string : <literal>"eigen"</literal> for block diagonalization (default), or
+                        <literal>"schur"</literal> for  Schur method.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>X1, X2, X</term>
                 <listitem>
-                    square matrices of real numbers (X2 invertible). X is symetric when B and C
-                    are so.
-                    <para/>
-                </listitem>
+                     <para>
+                        square matrices of real numbers (X2 invertible). X is symetric when B and C
+                        are so.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>residual</term>
                 <listitem>
-                    real number: norm<subscript>1</subscript> of the actual Equation(X) residue.
-                    <para/>
-                </listitem>
+                     <para>
+                        real number: norm<subscript>1</subscript> of the actual Equation(X) residue.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
         <para/>
@@ -190,7 +193,7 @@ clean(A'*X + X*A - X*B*X + C)
 x = x1 / x2;
 and(x==X)
     ]]></programlisting>
-        <screen>
+        <screen><![CDATA[
 --> X = riccati(A, B, C, "c")
  X  =
   -0.1790367   0.4166084   0.2319152
@@ -234,7 +237,7 @@ and(x==X)
 --> and(x==X)
  ans  =
   T
-</screen>
+]]></screen>
         </para>
 
         <emphasis role="bold">Discrete time domain</emphasis>
@@ -281,14 +284,18 @@ end
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>riccati(H)</literal> and <literal>riccati(H,E)</literal> added.
+                             <para><literal>riccati(H)</literal> and <literal>riccati(H,E)</literal> added.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>residual</literal> output added.
+                             <para><literal>residual</literal> output added.
+                            </para>
                         </listitem>
                         <listitem>
-                            When no solution is found, <literal>X=[]</literal> |
-                            <literal>X1=[]</literal> is now returned, without error.
+                             <para>
+                                When no solution is found, <literal>X=[]</literal> |
+                                <literal>X1=[]</literal> is now returned, without error.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

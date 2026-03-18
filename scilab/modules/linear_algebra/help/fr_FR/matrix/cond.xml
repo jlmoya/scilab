@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="fr" xml:id="cond">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="cond">
     <refnamediv>
         <refname>cond</refname>
         <refpurpose>conditionnement  </refpurpose>
@@ -143,10 +140,14 @@ cond(A, 'fro')
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            cond(X) accepte désormais X non carrée.
+                             <para>
+                                cond(X) accepte désormais X non carrée.
+                            </para>
                         </listitem>
                         <listitem>
-                            Nouvel argument d'entrée p introduit.
+                             <para>
+                                Nouvel argument d'entrée p introduit.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

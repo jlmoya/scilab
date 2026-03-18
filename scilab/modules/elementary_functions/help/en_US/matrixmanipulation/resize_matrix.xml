@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="en">
     <refnamediv>
         <refname>resize_matrix</refname>
         <refpurpose>trim or/and extend (and cast) a matrix or hypermatrix</refpurpose>
@@ -253,16 +250,24 @@ resize_matrix(P, [3 3 2], "", %z)
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Polynomials and Hypermatrices are now accepted.
+                             <para>
+                                Polynomials and Hypermatrices are now accepted.
+                            </para>
                         </listitem>
                         <listitem>
-                            A custom padding can now be provided.
+                             <para>
+                                A custom padding can now be provided.
+                            </para>
                         </listitem>
                         <listitem>
-                            New sizes can be specified in a vector.
+                             <para>
+                                New sizes can be specified in a vector.
+                            </para>
                         </listitem>
                         <listitem>
-                            resize_matrix() with no parameters displays examples (demo).
+                             <para>
+                                resize_matrix() with no parameters displays examples (demo).
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

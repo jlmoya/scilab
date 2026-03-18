@@ -30,12 +30,16 @@
         <variablelist>
             <varlistentry>
                 <term>milliseconds</term>
-                <listitem>duration of the sleep, in milliseconds (decimal number)
+                <listitem>
+                     <para>duration of the sleep, in milliseconds (decimal number)
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>seconds</term>
-                <listitem>duration of the sleep, in seconds (decimal number)
+                <listitem>
+                     <para>duration of the sleep, in seconds (decimal number)
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -49,40 +53,46 @@
                 <variablelist>
                     <varlistentry>
                         <term>Console:</term>
-                        <listitem> input and output in console are suspended.
-                            <warning>The CTRL-C interruption is caught but performed only at
-                                the end of the sleep.
-                            </warning>
-                        </listitem>
+                        <listitem>
+                             <para> input and output in console are suspended.
+                                <warning>The CTRL-C interruption is caught but performed only at
+                                    the end of the sleep.
+                                </warning></para>
+                                      </listitem>
                     </varlistentry>
                     <varlistentry>
                         <term>Scripts and functions:</term>
                         <listitem>
-                            When <function>sleep(..)</function>
-                            is called inside a script or a function, Scilab waits for the
-                            given duration before processing the next instruction.
-                            CTRL-C in the console is caught but performed only at the end of
-                            the sleep.
+                             <para>
+                                When <function>sleep(..)</function>
+                                is called inside a script or a function, Scilab waits for the
+                                given duration before processing the next instruction.
+                                CTRL-C in the console is caught but performed only at the end of
+                                the sleep.
+                            </para>
                         </listitem>
                     </varlistentry>
                     <varlistentry>
                         <term>callbacks:</term>
-                        <listitem> .. are actions triggered by interactions
-                            with menus and with <literal>uicontrol</literal> interactive
-                            graphical components. During the sleep(..), these interactions
-                            are caught, and related instructions are buffered.
-                            Buffered actions are all performed after sleep()'s end.
+                        <listitem>
+                             <para> .. are actions triggered by interactions
+                                with menus and with <literal>uicontrol</literal> interactive
+                                graphical components. During the sleep(..), these interactions
+                                are caught, and related instructions are buffered.
+                                Buffered actions are all performed after sleep()'s end.
+                            </para>
                         </listitem>
                     </varlistentry>
                     <varlistentry>
                         <term>Graphics interactions:</term>
                         <listitem>
-                            <function>sleep(..)</function>
-                            does not prevent interacting with graphics, providing that the
-                            interaction mode has been turned on before entering the sleep.
-                            Then, moving curves, editing graphics labels, etc is still
-                            possible during Scilab's sleep. The wake-up does not reset these
-                            actions.
+                             <para><function>sleep(..)</function>
+                                does not prevent interacting with graphics, providing that the
+                                interaction mode has been turned on before entering the sleep.
+                                Then, moving curves, editing graphics labels, etc is still
+                                possible during Scilab's sleep. The wake-up does not reset these
+                                actions.
+                            </para>
                         </listitem>
                     </varlistentry>
                 </variablelist>
@@ -150,10 +160,14 @@ sleep(30, "s")
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            The fractional part of <varname>milliseconds</varname>
-                            is now accepted and processed.
+                             <para>
+                                The fractional part of <varname>milliseconds</varname>
+                                is now accepted and processed.
+                            </para>
                         </listitem>
-                        <listitem>Syntax sleep(seconds, "s") added.
+                        <listitem>
+                             <para>Syntax sleep(seconds, "s") added.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -161,4 +175,3 @@ sleep(30, "s")
         </revhistory>
     </refsection>
 </refentry>
-

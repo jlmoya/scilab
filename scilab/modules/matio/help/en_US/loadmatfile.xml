@@ -14,10 +14,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="loadmatfile">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="loadmatfile">
     <refnamediv>
         <refname>loadmatfile</refname>
         <refpurpose>loads some variables from an Octave or a Matlab MAT binary or ASCII data file</refpurpose>
@@ -141,41 +138,59 @@
 				<emphasis role="bold">About native Octave 5.1 text data files:</emphasis>
 				<itemizedlist>
 					<listitem>
-						Supported input data types: dense and sparse booleans, signed and unsigned
-						encoded integers (from int8 to uint64), real and complex numbers (including
-						Inf, NaN and NA special values) in sparse and dense encodings, strings,
-						arrays of cells of strings, any cell array or hyperarray of any dimension,
-						scalar or array of structures.
-					</listitem>
+          <para>
+    						Supported input data types: dense and sparse booleans, signed and unsigned
+    						encoded integers (from int8 to uint64), real and complex numbers (including
+    						Inf, NaN and NA special values) in sparse and dense encodings, strings,
+    						arrays of cells of strings, any cell array or hyperarray of any dimension,
+    						scalar or array of structures.
+    					</para>
+     </listitem>
 					<listitem>
-						NA values are converted into NaN.
-					</listitem>
+          <para>
+    						NA values are converted into NaN.
+    					</para>
+     </listitem>
 					<listitem>
-						The mantissa of single precision real and complex numbers is truncated to their
-						8 most significant figures.
-					</listitem>
+          <para>
+    						The mantissa of single precision real and complex numbers is truncated to their
+    						8 most significant figures.
+    					</para>
+     </listitem>
 					<listitem>
-						Any cells array of scalar strings is automatically converted into a regular
-						Scilab array of strings.
-					</listitem>
+          <para>
+    						Any cells array of scalar strings is automatically converted into a regular
+    						Scilab array of strings.
+    					</para>
+     </listitem>
 					<listitem>
-						In any input column of strings, appended padding spaces are left as is,
-						without being trimmed.
-					</listitem>
+          <para>
+    						In any input column of strings, appended padding spaces are left as is,
+    						without being trimmed.
+    					</para>
+     </listitem>
 					<listitem>
-						In strings, ascii(13) characters are read as ascii(10).
-					</listitem>
+          <para>
+    						In strings, ascii(13) characters are read as ascii(10).
+    					</para>
+     </listitem>
 					<listitem>
-						Cells and structures must contain only supported input data types. Otherwise,
-						an error occurs.
-					</listitem>
+          <para>
+    						Cells and structures must contain only supported input data types. Otherwise,
+    						an error occurs.
+    					</para>
+     </listitem>
 					<listitem>
-						Nested containers (cells, structures) are supported.
-					</listitem>
+          <para>
+    						Nested containers (cells, structures) are supported.
+    					</para>
+     </listitem>
 					<listitem>
-						Known limitation: int64 or uint64 integers bigger than 2<superscript>53</superscript>
-						can't be read properly (loss of precision).
-					</listitem>
+          <para>
+    						Known limitation: int64 or uint64 integers bigger than 2<superscript>53</superscript>
+    						can't be read properly (loss of precision).
+    					</para>
+     </listitem>
 				</itemizedlist>
 			</para>
 		</refsect3>
@@ -309,13 +324,18 @@ ste, sts
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>"-octave"</literal> option introduced.
+                             <para><literal>"-octave"</literal> option introduced.
+                            </para>
                         </listitem>
                         <listitem>
-                            Automatic input format detection added.
+                             <para>
+                                Automatic input format detection added.
+                            </para>
                         </listitem>
                         <listitem>
-                            Input <literal>"-toStruct"</literal> option and output argument added.
+                             <para>
+                                Input <literal>"-toStruct"</literal> option and output argument added.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

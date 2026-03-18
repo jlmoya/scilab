@@ -12,9 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="close">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="close">
     <refnamediv>
         <refname>close</refname>
         <refpurpose>
@@ -159,13 +157,17 @@ close editvar
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Теперь принимаются идентификаторы нескольких окон.
+                             <para>
+                                Теперь принимаются идентификаторы нескольких окон.
+                            </para>
                         </listitem>
                         <listitem>
-                            Расширение до <literal>close help</literal>, <literal>close xcos</literal>,
-                            <literal>close xcos!</literal>, <literal>close browsevar</literal>
-                            и <literal>close editvar</literal>
-                        </listitem>
+                             <para>
+                                Расширение до <literal>close help</literal>, <literal>close xcos</literal>,
+                                <literal>close xcos!</literal>, <literal>close browsevar</literal>
+                                и <literal>close editvar</literal>
+                              </para>
+                          </listitem>
                     </itemizedlist>
                 </revdescription>
             </revision>

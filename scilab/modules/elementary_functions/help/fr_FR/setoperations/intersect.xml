@@ -10,10 +10,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="intersect" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intersect" xml:lang="fr">
     <refnamediv>
         <refname>intersect</refname>
         <refpurpose>
@@ -35,26 +32,28 @@
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                    vecteurs ou matrices de booléens, d'entiers encodés, de nombres
-                    réels ou complexes, de texte, de <link linkend="duration">duration</link> ou de 
-                    <link linkend="datetime">datetime</link> et aussi <link linkend="table">table</link> et <link linkend="timeseries">timeseries</link>. 
-                    <varname>a</varname> et <varname>b</varname>
-                    doivent être du même type de données, mais ont des tailles indépendantes.
-                    Pour les données texte, les caractères UTF sont admis.
-                    Les matrices creuses booléennes ou numériques sont acceptées :
-                    <varname>a</varname> ou <varname>b</varname> ou les deux peuvent être creuses.
-                    Si <varname>a</varname> et <varname>b</varname> sont des tables ou timeseries, ils doivent avoir les mêmes noms de variables.
-                    <para/>
-                </listitem>
+                     <para>
+                        vecteurs ou matrices de booléens, d'entiers encodés, de nombres
+                        réels ou complexes, de texte, de <link linkend="duration">duration</link> ou de 
+                        <link linkend="datetime">datetime</link> et aussi <link linkend="table">table</link> et <link linkend="timeseries">timeseries</link>. 
+                        <varname>a</varname> et <varname>b</varname>
+                        doivent être du même type de données, mais ont des tailles indépendantes.
+                        Pour les données texte, les caractères UTF sont admis.
+                        Les matrices creuses booléennes ou numériques sont acceptées :
+                        <varname>a</varname> ou <varname>b</varname> ou les deux peuvent être creuses.
+                        Si <varname>a</varname> et <varname>b</varname> sont des tables ou timeseries, ils doivent avoir les mêmes noms de variables.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>orient</term>
                 <listitem>
-                    indicateur de traitement par colonnes ou lignes. Valeurs possibles :
-                    1 ou "r", 2 ou "c". Ne peut pas être utilisé lorsque <varname>a</varname>
-                    ou/et <varname>b</varname> est une hypermatrice, table ou timeseries.
-                    <para/>
-                </listitem>
+                     <para>
+                        indicateur de traitement par colonnes ou lignes. Valeurs possibles :
+                        1 ou "r", 2 ou "c". Ne peut pas être utilisé lorsque <varname>a</varname>
+                        ou/et <varname>b</varname> est une hypermatrice, table ou timeseries.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>M</term>
@@ -63,18 +62,24 @@
                         Matrice du type de <varname>a</varname> et <varname>b</varname>.
                         <itemizedlist>
                             <listitem>
-                                Sans <varname>orient</varname>: <varname>M</varname> est un vecteur
-                                ligne.
+                                 <para>
+                                    Sans <varname>orient</varname>: <varname>M</varname> est un vecteur
+                                    ligne.
+                                </para>
                             </listitem>
                             <listitem>
-                                Avec <literal>orient="r"|1</literal>: <varname>M</varname> est une
-                                matrice empilant les lignes communes à <varname>a</varname> et
-                                <varname>b</varname>.
+                                 <para>
+                                    Avec <literal>orient="r"|1</literal>: <varname>M</varname> est une
+                                    matrice empilant les lignes communes à <varname>a</varname> et
+                                    <varname>b</varname>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Avec <literal>orient="c"|2</literal>: <varname>M</varname> est une
-                                matrice concaténant les colonnes communes à <varname>a</varname> et
-                                <varname>b</varname>.
+                                 <para>
+                                    Avec <literal>orient="c"|2</literal>: <varname>M</varname> est une
+                                    matrice concaténant les colonnes communes à <varname>a</varname> et
+                                    <varname>b</varname>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -90,16 +95,18 @@
             <varlistentry>
                 <term>ka</term>
                 <listitem>
-                    Vecteur ligne dense d'indices dans <varname>a</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vecteur ligne dense d'indices dans <varname>a</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>kb</term>
                 <listitem>
-                    Vecteur ligne dense d'indices dans <varname>b</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vecteur ligne dense d'indices dans <varname>b</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -111,10 +118,14 @@
             triés en ordre croissant
             <itemizedlist>
                 <listitem>
-                    pour les nombres complexes : par modules croissants, puis par phases croissantes.
+                     <para>
+                        pour les nombres complexes : par modules croissants, puis par phases croissantes.
+                    </para>
                 </listitem>
                 <listitem>
-                    pour le texte : par ordre alphabétique.
+                     <para>
+                        pour le texte : par ordre alphabétique.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -332,8 +343,8 @@ issparse(M), full(M), ka, kb
             A = datetime("today") + A;
             B = datetime("today") + B;
             [M, ka, kb] = intersect(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <para/>
         <para>
         <literal>intersect()</literal> pour les tables:
@@ -346,8 +357,8 @@ issparse(M), full(M), ka, kb
             A = table([1;3;4;2], ["d";"c";"f";"h"], [%f;%t;%t; %f], "VariableNames", ["double", "string", "boolean"]);
             B = table([2;3;4;1], [%t;%t;%t;%t], ["d";"c";"f";"h"], "VariableNames", ["double", "boolean", "string"]);
             [M, ka, kb] = intersect(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <para/>
         <para>
         <literal>intersect()</literal> pour les timeseries:
@@ -356,8 +367,8 @@ issparse(M), full(M), ka, kb
             A = timeseries(hours([1:10])', floor(rand(10,1)*10));
             B = timeseries(hours(1:2:15)', floor(rand(8,1)*15));
             [M, ka, kb] = intersect(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>Voir aussi</title>

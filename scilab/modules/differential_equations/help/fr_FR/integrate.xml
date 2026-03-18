@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2008 - INRIA
@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="integrate" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="integrate" xml:lang="fr">
     <refnamediv>
         <refname>integrate</refname>
         <refpurpose>intégration numérique d'une expression</refpurpose>
@@ -35,52 +32,59 @@
             <varlistentry>
                 <term>expr</term>
                 <listitem>
-                    chaîne de caractères : expression scilab fournissant l'intégrande.
-                    <para/>
-                </listitem>
+                     <para>
+                        chaîne de caractères : expression scilab fournissant l'intégrande.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    chaîne de caractères : nom de la variable d'intégration.
-                    <para/>
-                </listitem>
+                     <para>
+                        chaîne de caractères : nom de la variable d'intégration.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x0</term>
                 <listitem>
-                    nombre réel, la borne inférieure de l'intégration.
-                    <para/>
-                </listitem>
+                     <para>
+                        nombre réel, la borne inférieure de l'intégration.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x1</term>
                 <listitem>
-                    vecteur de nombres réels, les bornes supérieures d'intégration.
-                    <para/>
-                </listitem>
+                     <para>
+                        vecteur de nombres réels, les bornes supérieures d'intégration.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>atol</term>
                 <listitem>
-                    nombre réel positif: erreur absolue maximale acceptable. Par défaut : 1d-13
-                    <para/>
-                </listitem>
+                     <para>
+                        nombre réel positif: erreur absolue maximale acceptable. Par défaut : 1d-13
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rtol</term>
                 <listitem>
-                    nombre réel positif: erreur relative maximale acceptable. Par défaut : 1d-8
-                    <para/>
-                </listitem>
+                     <para>
+                        nombre réel positif: erreur relative maximale acceptable. Par défaut : 1d-8
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    vecteur de nombres réels, la valeur de l'intégrale pour chaque
-                    <literal>x1(i)</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        vecteur de nombres réels, la valeur de l'intégrale pour chaque
+                        <literal>x1(i)</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

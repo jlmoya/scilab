@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="https://www.scilab.org"
-        xml:lang="ru" xml:id="gettext">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="https://www.scilab.org" xml:lang="ru" xml:id="gettext">
     <refnamediv>
         <refname>gettext</refname>
         <refpurpose>индексирует или/и переводит некоторые индексированные сообщения на английском языке</refpurpose>
@@ -419,102 +416,100 @@ gettext(["item#1" ;
                 <emphasis role="bold">Special characters and sequences</emphasis>:
                 <orderedlist>
                     <listitem>
-                        When a <emphasis role="bold">trailing \n</emphasis> is used in the
-                        <literal>msgid</literal>, it must also end the <literal>msgstr</literal>
-                        translated message.
-                        <para/>
-                    </listitem>
+                         <para>
+                            When a <emphasis role="bold">trailing \n</emphasis> is used in the
+                            <literal>msgid</literal>, it must also end the <literal>msgstr</literal>
+                            translated message.
+                            </para>
+                        </listitem>
                     <listitem>
-                        <emphasis role="bold">' single quotes</emphasis> are regular characters in
-                        <literal>msgstr</literal> strings. They do NOT need any special care or
-                        protection.
-                        <para/>
-                    </listitem>
+                         <para><emphasis role="bold">' single quotes</emphasis> are regular characters in
+                            <literal>msgstr</literal> strings. They do NOT need any special care or
+                            protection.
+                            </para>
+                        </listitem>
                     <listitem>
-                        <emphasis role="bold">" double quotes</emphasis> must be protected with \".
-                        <para/>
-                    </listitem>
+                         <para><emphasis role="bold">" double quotes</emphasis> must be protected with \".
+                            </para>
+                        </listitem>
                     <listitem>
-                        <emphasis role="bold">
-                        When some C-like placeholders like %s, %d, %f, or some C-like escaped
-                        sequences \n, \r, or \t</emphasis> are used in the <literal>msgid</literal>
-                        string, this means that later in the code the corresponding
-                        <varname>translated</varname>
-                        <literal>msgstr</literal> string is processed with <literal>msprintf()</literal>
-                        to replace placeholders with actual values, and/or to interpret \n as a
-                        new_line character, \r as a carriage-return, \t as a tabulation, etc.
-                        Hence, all the <link linkend="printf_conversion">C-like printf</link> rules
-                        apply on the considered <literal>msgstr</literal>, and translaters must take
-                        a major care to them.
-                        <itemizedlist>
-                            <listitem>
-                                <emphasis>All and Only</emphasis> the placeholders used in the
-                                <literal>msgid</literal> must also appear in the <literal>msgstr</literal>.
-                                <para/>
-                            </listitem>
-                            <listitem>
-                                If placeholders are not numbered: they must appear in the same order
-                                in the <varname>translated</varname> <literal>msgstr</literal>
-                                message than in the <varname>msgid</varname> message.
-                                Example (english to french):
-                                <screen>
-msgid  "%s is %d year old.\n"
-msgstr "%s a %d ans.\n"
-// первый %s (строка), второй %d (десятичное число), в обоих строках.
-
-Затем из Scilab-сессии установим французский язык и тогда получим
-gettext("%s is %d year old.\n") // => "%s a %d ans.\n"
-// и                                     первый v      v второй
-t = msprintf(gettext("%s is %d year old.\n"), "Peter", 18)
-// => "Peter a 18 ans."
-</screen>
-                                <para/>
-                            </listitem>
-                            <listitem>
-                                <para>
-                                В противном случае, <emphasis>ВСЕ</emphasis> заменители должны быть пронумерованы
-                                в переведённом сообщении <varname>translated</varname>. Каждый пронумерованный
-                                заменитель может быть использован только один раз в формате (ограничение Scilab).
-                                Например (с английского на японский):
-                                <screen>
-msgid "%s: Wrong number of input argument: %d to %d expected.\n"
-msgstr "%1$s: 入力引数で不正な数: %3$d への %2$d を想定します。\n"
-
-Тогда,
-msprintf(gettext("%s: Wrong number of input argument: %d to %d expected.\n"), "myFun", 2, 5)
-
-вернёт в Scilab-сессию, установленную на английский
-"myFun: Wrong number of input argument: 2 to 5 expected."
-
-а в Scilab-сессии, установленной на японский
-"myFun: 入力引数で不正な数: 5 への 2 を想定します。"
-</screen>
-                                </para>
-                            </listitem>
-                        </itemizedlist>
-                    </listitem>
+                         <para><emphasis role="bold">
+                            When some C-like placeholders like %s, %d, %f, or some C-like escaped
+                            sequences \n, \r, or \t</emphasis> are used in the <literal>msgid</literal>
+                            string, this means that later in the code the corresponding
+                            <varname>translated</varname><literal>msgstr</literal> string is processed with <literal>msprintf()</literal>
+                            to replace placeholders with actual values, and/or to interpret \n as a
+                            new_line character, \r as a carriage-return, \t as a tabulation, etc.
+                            Hence, all the <link linkend="printf_conversion">C-like printf</link> rules
+                            apply on the considered <literal>msgstr</literal>, and translaters must take
+                            a major care to them.
+                            <itemizedlist>
+                                <listitem>
+                                     <para><emphasis>All and Only</emphasis> the placeholders used in the
+                                        <literal>msgid</literal> must also appear in the <literal>msgstr</literal>.
+                                        </para>
+                                    </listitem>
+                                <listitem>
+                                     <para>
+                                        If placeholders are not numbered: they must appear in the same order
+                                        in the <varname>translated</varname><literal>msgstr</literal>
+                                        message than in the <varname>msgid</varname> message.
+                                        Example (english to french):
+                                        <screen><![CDATA[
+        msgid  "%s is %d year old.\n"
+        msgstr "%s a %d ans.\n"
+        // первый %s (строка), второй %d (десятичное число), в обоих строках.
+        
+        Затем из Scilab-сессии установим французский язык и тогда получим
+        gettext("%s is %d year old.\n") // => "%s a %d ans.\n"
+        // и                                     первый v      v второй
+        t = msprintf(gettext("%s is %d year old.\n"), "Peter", 18)
+        // => "Peter a 18 ans."
+        ]]></screen></para>
+                </listitem>
+                                <listitem>
+                                    <para>
+                                    В противном случае, <emphasis>ВСЕ</emphasis> заменители должны быть пронумерованы
+                                    в переведённом сообщении <varname>translated</varname>. Каждый пронумерованный
+                                    заменитель может быть использован только один раз в формате (ограничение Scilab).
+                                    Например (с английского на японский):
+                                    <screen><![CDATA[
+    msgid "%s: Wrong number of input argument: %d to %d expected.\n"
+    msgstr "%1$s: 入力引数で不正な数: %3$d への %2$d を想定します。\n"
+    
+    Тогда,
+    msprintf(gettext("%s: Wrong number of input argument: %d to %d expected.\n"), "myFun", 2, 5)
+    
+    вернёт в Scilab-сессию, установленную на английский
+    "myFun: Wrong number of input argument: 2 to 5 expected."
+    
+    а в Scilab-сессии, установленной на японский
+    "myFun: 入力引数で不正な数: 5 への 2 を想定します。"
+    ]]></screen>
+                                    </para>
+                                </listitem>
+                              </itemizedlist>
+                            </para>
+                        </listitem>
                     <listitem>
-                        <emphasis role="bold">\n, \r, \t</emphasis> sequences fortuitously appearing
-                        in a <literal>msgid</literal> ending with "\n" should be considered as prone
-                        to issues, due to a lack of care from the programmer. This can occur for
-                        instance when some literal paths are part of the <literal>msgid</literal>,
-                        like in
-                        <para/>
-                        <literal>msgid "Please use the file C:\users\you\net\record\time.txt instead.\n"</literal>
-                        <para/>
-                        The trailing <literal>\n</literal> suggests that the corresponding
-                        <literal>msgstr</literal>
-                        will be processed by <literal>msprintf()</literal> or so. Being done,
-                        <literal>\n</literal> in <literal>\net</literal>,
-                        <literal>\r</literal> in <literal>\record</literal> and
-                        <literal>\t</literal> in <literal>\time.txt</literal> will be also
-                        -- unexpectedly -- interpreted. These <literal>\</literal> will have
-                        to be protected in the <literal>msgstr</literal>, even in the reference
-                        version (often english):
-                        <para/>
-                        <literal>msgstr "Please use the file C:\users\you\\net\\record\\time.txt instead.\n"</literal>:
-                        <para/>
-                    </listitem>
+                         <para><emphasis role="bold">\n, \r, \t</emphasis> sequences fortuitously appearing
+                            in a <literal>msgid</literal> ending with "\n" should be considered as prone
+                            to issues, due to a lack of care from the programmer. This can occur for
+                            instance when some literal paths are part of the <literal>msgid</literal>,
+                            like in
+                            <literal>msgid "Please use the file C:\users\you\net\record\time.txt instead.\n"</literal>
+                            The trailing <literal>\n</literal> suggests that the corresponding
+                            <literal>msgstr</literal>
+                            will be processed by <literal>msprintf()</literal> or so. Being done,
+                            <literal>\n</literal> in <literal>\net</literal>,
+                            <literal>\r</literal> in <literal>\record</literal> and
+                            <literal>\t</literal> in <literal>\time.txt</literal> will be also
+                            -- unexpectedly -- interpreted. These <literal>\</literal> will have
+                            to be protected in the <literal>msgstr</literal>, even in the reference
+                            version (often english):
+                            <literal>msgstr "Please use the file C:\users\you\\net\\record\\time.txt instead.\n"</literal>:
+                            </para>
+                        </listitem>
                 </orderedlist>
             </para>
         </refsect3>

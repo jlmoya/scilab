@@ -56,39 +56,20 @@
         </para>
         <itemizedlist>
             <listitem>
-                looks for a <varname>toolbox_path</varname><literal>/sci_gateway/builder*.sce</literal> script, if found, executes it;
-            </listitem>
-            <listitem>
-                otherwise, looks for a <literal>builder</literal> script in each subdirectory of <literal>sci_gateway/</literal> and executes them;
-            </listitem>
-            <listitem>
-                for <literal>c</literal> subdirectory, if no <literal>builder</literal> script is found, a default compilation process is done:
-                <para>
-                    <informaltable border="1">
-                        <tr>
-                            <th align="left" width="50">
-                                <literal>c</literal>
-                            </th>
-                            <td>
-                                <itemizedlist>
-                                    <listitem>
-                                        compilation is done for all <literal>sci_*.c</literal> files;
-                                    </listitem>
-                                    <listitem>
-                                        headers for user (non-gateway code) must be present in the <varname>toolbox_path</varname><literal>/src/c/</literal> directory;
-                                    </listitem>
-                                    <listitem>
-                                        scilab function names will be th name of the file (without the <literal>sci_</literal> prefix and <literal>.c</literal> extension);
-                                    </listitem>
-                                    <listitem>
-                                        only the <link linkend="api_scilab">Scilab 6 API</link> is supported with this automated process.
-                                    </listitem>
-                                </itemizedlist>
-                            </td>
-                        </tr>
-                    </informaltable>
+                 <para>
+                    looks for a <varname>toolbox_path</varname><literal>/sci_gateway/builder*.sce</literal> script, if found, executes it;
                 </para>
             </listitem>
+            <listitem>
+                 <para>
+                    otherwise, looks for a <literal>builder</literal> script in each subdirectory of <literal>sci_gateway/</literal> and executes them;
+                </para>
+            </listitem>
+            <listitem>
+                 <para>
+                    for <literal>c</literal> subdirectory, if no <literal>builder</literal> script is found, a default compilation process is done:
+                    </para>
+                </listitem>
         </itemizedlist>
         <para>
             The function exits silently if the <literal>sci_gateway</literal> directory is absent.

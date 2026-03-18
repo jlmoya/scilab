@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="string" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="string" xml:lang="fr">
     <refnamediv>
         <refname>string</refname>
         <refpurpose>conversion en chaîne de caractères</refpurpose>
@@ -57,13 +54,16 @@
             retourne 3 vecteurs de chaînes de caractères :
             <itemizedlist>
                 <listitem>
-                    <varname>out</varname> est le vecteur des noms de ses variables de sortie,
+                     <para><varname>out</varname> est le vecteur des noms de ses variables de sortie,
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>in</varname> est le vecteur des noms de ses variables d'entrée, et
+                     <para><varname>in</varname> est le vecteur des noms de ses variables d'entrée, et
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>text</varname> est le vecteur colonne des lignes de code source de la fonction.
+                     <para><varname>text</varname> est le vecteur colonne des lignes de code source de la fonction.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

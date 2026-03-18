@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="cutaxes" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="cutaxes" xml:lang="en">
     <refnamediv>
         <refname>cutaxes</refname>
         <refpurpose>plots curves or an existing axes along a discontinuous or multiscaled axis</refpurpose>
@@ -83,18 +80,24 @@
                         vector or matrix of real abscissae of curves to plot.
                         <itemizedlist>
                             <listitem>
-                                If <varname>x</varname> and <varname>y</varname> are vectors, we
-                                must have <literal>length(x)==length(y)</literal>
+                                 <para>
+                                    If <varname>x</varname> and <varname>y</varname> are vectors, we
+                                    must have <literal>length(x)==length(y)</literal>
+                                          </para>
+                                      </listitem>
+                            <listitem>
+                                 <para>
+                                    If it is a vector and <varname>y</varname> is a matrix, the same
+                                    abscissae are shared for all curves given as <varname>y</varname>
+                                    columns, and we must have <literal>length(x)==size(y,1)</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                If it is a vector and <varname>y</varname> is a matrix, the same
-                                abscissae are shared for all curves given as <varname>y</varname>
-                                columns, and we must have <literal>length(x)==size(y,1)</literal>.
-                            </listitem>
-                            <listitem>
-                                If both <varname>x</varname> and <varname>y</varname> are matrices,
-                                they must have the same sizes, and <literal>x(:,i)</literal> are
-                                abscissae of <literal>y(:,i)</literal>.
+                                 <para>
+                                    If both <varname>x</varname> and <varname>y</varname> are matrices,
+                                    they must have the same sizes, and <literal>x(:,i)</literal> are
+                                    abscissae of <literal>y(:,i)</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -143,7 +146,7 @@
                         present them as wished.
                     </para>
                     <para>
-                        When an interval is specified such that <literal>start > end</literal>,
+                        When an interval is specified such that <literal>start &gt; end</literal>,
                         the axis is reversed on the interval.
                     </para>
                 </listitem>
@@ -255,12 +258,14 @@
                         list of vectors of pointers on plotted curves (only when they are provided):
                         <itemizedlist>
                             <listitem>
-                                <literal>curves(i)</literal> is a vector of graphic pointers on all
-                                sections drawn for the curve #i defined in <literal>y(:,i)</literal>.
+                                 <para><literal>curves(i)</literal> is a vector of graphic pointers on all
+                                    sections drawn for the curve #i defined in <literal>y(:,i)</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>curves(i)(j)</literal> points to the section #j drawn for
-                                the curve #i over <literal>intervals(j,:)</literal>.
+                                 <para><literal>curves(i)(j)</literal> points to the section #j drawn for
+                                    the curve #i over <literal>intervals(j,:)</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -273,7 +278,7 @@
                         An example is given and illustrated below.
                     </para>
                     <note>
-                        The vector of handles of curves #i1 to #i2 > #i1 of the same section #s may be
+                        The vector of handles of curves #i1 to #i2 &gt; #i1 of the same section #s may be
                         retrieved with <literal>Axes(s).children($).children($-i1+1:-1:$-i2+1)</literal>.
                     </note>
                 </listitem>
@@ -310,12 +315,15 @@
         <note><literal>cutaxes()</literal> can be used in conjunction to the following features:
             <itemizedlist>
                 <listitem>
-                    <literal>subplot(..)</literal> or <literal>xsetech(..)</literal> can be used
-                    to define the plotting area before calling <function>cutaxes()</function>.
+                     <para><literal>subplot(..)</literal> or <literal>xsetech(..)</literal> can be used
+                        to define the plotting area before calling <function>cutaxes()</function>.
+                    </para>
                 </listitem>
                 <listitem>
-                    A zoom box spanning over several pieces of the discontinuous axis may be
-                    selected interactively.
+                     <para>
+                        A zoom box spanning over several pieces of the discontinuous axis may be
+                        selected interactively.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>

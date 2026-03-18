@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="test_run" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="test_run" xml:lang="ja">
     <refnamediv>
         <refname>test_run</refname>
         <refpurpose>テストを実行</refpurpose>
@@ -108,7 +105,7 @@
                                 <para>.dia.refファイルを作成し,
                                     .dia と .dia.refが等しいかどうかをチェックしません.
                                   This option is applied only to chosen tests not having the
-                                  <literal>&lt;-- NO CHECK REF --></literal> flag.
+                                  <literal>&lt;-- NO CHECK REF --&gt;</literal> flag.
                                 </para>
                             </listitem>
                         </varlistentry>
@@ -582,10 +579,14 @@ test_run string *ascii*
                 <revnumber>5.4.0</revnumber>
                 <revdescription>test_runは以下のステータスを返します:
                     <itemizedlist><listitem>
-                            エラーが検出されなかった場合に %t を返します
+                                       <para>
+                                エラーが検出されなかった場合に %t を返します
+                            </para>
                         </listitem>
                         <listitem>
-                            エラーが検出された場合に %f を返します
+                             <para>
+                                エラーが検出された場合に %f を返します
+                            </para>
                         </listitem>
                     </itemizedlist>
                     <para>

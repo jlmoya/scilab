@@ -15,10 +15,7 @@
  *
  -->
 <!--  module: polynomials  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="lcm">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="lcm">
     <refnamediv>
         <refname>lcm</refname>
         <refpurpose>least common (positive) multiple of integers or of polynomials</refpurpose>
@@ -75,16 +72,22 @@
           If <literal>p</literal> is a set of integers,
             <itemizedlist>
                 <listitem>
-                    if they are encoded integers, they are then converted into decimal integers
-                    before processing.
+                     <para>
+                        if they are encoded integers, they are then converted into decimal integers
+                        before processing.
+                    </para>
                 </listitem>
                 <listitem>
-                    Any int64 or uint64 input |integers| > 2^53 will be truncated and lcm()
-                    will return a wrong result.
+                     <para>
+                        Any int64 or uint64 input |integers| &gt; 2^53 will be truncated and lcm()
+                        will return a wrong result.
+                    </para>
                 </listitem>
                 <listitem>
-                    If some of them are negative, the returned value <literal>pp</literal>
-                    of their LCM is always positive.
+                     <para>
+                        If some of them are negative, the returned value <literal>pp</literal>
+                        of their LCM is always positive.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -212,17 +215,22 @@ V = [3*2^52 , 3*5]
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            int64 and uint64 input encoded integers are now supported.
+                             <para>
+                                int64 and uint64 input encoded integers are now supported.
+                            </para>
                         </listitem>
                         <listitem>
-                            <varname>p</varname> can now be a matrix of any shape, not necessarily
-                            a row.
+                             <para><varname>p</varname> can now be a matrix of any shape, not necessarily
+                                a row.
+                            </para>
                         </listitem>
                         <listitem>
-                            When <varname>p</varname> is a matrix of encoded or decimal integers,
-                            computations are now performed in floating point instead of int32 format.
-                            <varname>pp</varname> and <varname>fact</varname> are now decimal
-                            integers (instead of int32 integers).
+                             <para>
+                                When <varname>p</varname> is a matrix of encoded or decimal integers,
+                                computations are now performed in floating point instead of int32 format.
+                                <varname>pp</varname> and <varname>fact</varname> are now decimal
+                                integers (instead of int32 integers).
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

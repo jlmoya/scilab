@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="https://www.scilab.org" xml:id="tbx_generate_pofile" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="https://www.scilab.org" xml:id="tbx_generate_pofile" xml:lang="en">
     <refnamediv>
         <refname>tbx_generate_pofile</refname>
         <refpurpose>
@@ -68,16 +65,18 @@
             Then, ~ being the toolbox root directory:
             <itemizedlist>
                 <listitem>
-                    If the <literal>~/locales/en_US.po</literal> reference file does not exist yet,
-                    it is created.
-                    <para/>
-                </listitem>
+                     <para>
+                        If the <literal>~/locales/en_US.po</literal> reference file does not exist yet,
+                        it is created.
+                        </para>
+                    </listitem>
                 <listitem>
-                    Otherwise, all existing <literal>~/locales/*.po</literal> files are updated with
-                    gettext msgid strings newly detected in all source files of the toolbox.
-                    Note: presently, obsolete msgids (no longer present in any source file) are kept.
-                    <para/>
-                </listitem>
+                     <para>
+                        Otherwise, all existing <literal>~/locales/*.po</literal> files are updated with
+                        gettext msgid strings newly detected in all source files of the toolbox.
+                        Note: presently, obsolete msgids (no longer present in any source file) are kept.
+                        </para>
+                    </listitem>
             </itemizedlist>
             For each processed .po file (but en_US.po), the number of messages whose translation
             is still missing is displayed.
@@ -90,16 +89,16 @@
                 msgstr strings the translation of the related msgid given in english as appearing
                 as gettext() argument in source files. Here is a sample of a fr_FR.po file:
                 </para>
-                <screen>
-#: ~\macros\scilab_add.sci:13       &lt;&lt; file:line_number places where gettext() is called for the msgid.
-#: ~\macros\scilab_error.sci:22     &lt;&lt; The same message is used in another file. etc.
-msgid "New message #2.\n"           &lt;&lt; gettext() argument = reference message (english)
-msgstr "Nouveau message n° 2.\n"    &lt;&lt; translated message (entered by a translator).
+                <screen><![CDATA[
+#: ~\macros\scilab_add.sci:13       << file:line_number places where gettext() is called for the msgid.
+#: ~\macros\scilab_error.sci:22     << The same message is used in another file. etc.
+msgid "New message #2.\n"           << gettext() argument = reference message (english)
+msgstr "Nouveau message n° 2.\n"    << translated message (entered by a translator).
 
 #: ~\macros\scilab_add.sci:16
 msgid "New message #3.\n"
-msgstr ""                            &lt;&lt; Missing translation, to complete.
-</screen>
+msgstr ""                            << Missing translation, to complete.
+]]></screen>
             </note>
         </para>
     </refsection>
@@ -147,14 +146,20 @@ edit(path+"/locales/en_US.po")
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            _() and gettext() references are now detected.
+                             <para>
+                                _() and gettext() references are now detected.
+                            </para>
                         </listitem>
                         <listitem>
-                            Literal double '' are now simplified in the msgid.
+                             <para>
+                                Literal double '' are now simplified in the msgid.
+                            </para>
                         </listitem>
                         <listitem>
-                            Files paths in comments are no longer absolute and refer to the toolbox
-                            root.
+                             <para>
+                                Files paths in comments are no longer absolute and refer to the toolbox
+                                root.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

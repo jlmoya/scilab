@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2008 - INRIA
@@ -14,7 +13,6 @@
  * along with this program.
  *
  -->
-
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="size" xml:lang="ja">
 
     <refnamediv>
@@ -150,72 +148,75 @@
                     <itemizedlist>
 
                         <listitem>
-
-                            <literal>sz = size(x)</literal> は
-
-                            <literal>1</literal>行<literal>ndims(x)</literal>列のベクトルを返します.
-
-                            各エントリは対応する次元の値を指定します.
-
+                             <para><literal>sz = size(x)</literal> は
+    
+                                <literal>1</literal>行<literal>ndims(x)</literal>列のベクトルを返します.
+    
+                                各エントリは対応する次元の値を指定します.
+    
+                            </para>
                         </listitem>
 
                         <listitem>
-
-                            <literal>[n1, n2, ...] = size(x)</literal>, この関数は各引数に対応する次元の値を返します.
-
+                             <para><literal>[n1, n2, ...] = size(x)</literal>, この関数は各引数に対応する次元の値を返します.
+    
+                            </para>
                         </listitem>
 
                         <listitem>
-
-                            構文 <literal>n = size(x, sel)</literal> を取得する次元を指定するために使用できます:
-
-
-
-                            <itemizedlist mark="dash"><listitem>
-
-                                    行数を取得するには,
-
-                                    <literal>sel</literal> に 1または <literal>'r'</literal> を指定してください.
-
-                                </listitem>
-
-                                <listitem>
-
-                                    列数を取得するには,
-
-                                    <literal>sel</literal> に2 または<literal>'c'</literal>を指定してください.
-
-                                </listitem>
-
-                                <listitem>
-
-                                    <literal>sel</literal> に<literal>m</literal>を指定してください.
-
-                                    ただし,<literal>m</literal> は,<literal>m</literal>番目の次元を得るための
-
-                                    正の整数です.
-
-                                    <literal>m</literal> が<literal>ndims(x)</literal>より大きい場合,
-
-                                    <literal>size(x,m)</literal>は 1を返します.
-
-                                </listitem>
-
-                                <listitem>
-
-                                    次元の積を得るには,
-
-                                    <literal>sel</literal> に<literal>'*'</literal> を指定してください.
-
-                                </listitem>
-
-                            </itemizedlist>
-
-
-
-
-
-                        </listitem>
+                             <para>
+    
+                                構文 <literal>n = size(x, sel)</literal> を取得する次元を指定するために使用できます:
+    
+    
+    
+                                <itemizedlist mark="dash"><listitem>
+                                                               <para>
+        
+                                            行数を取得するには,
+        
+                                            <literal>sel</literal> に 1または <literal>'r'</literal> を指定してください.
+        
+                                        </para>
+                                    </listitem>
+    
+                                    <listitem>
+                                         <para>
+        
+                                            列数を取得するには,
+        
+                                            <literal>sel</literal> に2 または<literal>'c'</literal>を指定してください.
+        
+                                        </para>
+                                    </listitem>
+    
+                                    <listitem>
+                                         <para><literal>sel</literal> に<literal>m</literal>を指定してください.
+        
+                                            ただし,<literal>m</literal> は,<literal>m</literal>番目の次元を得るための
+        
+                                            正の整数です.
+        
+                                            <literal>m</literal> が<literal>ndims(x)</literal>より大きい場合,
+        
+                                            <literal>size(x,m)</literal>は 1を返します.
+        
+                                        </para>
+                                    </listitem>
+    
+                                    <listitem>
+                                         <para>
+        
+                                            次元の積を得るには,
+        
+                                            <literal>sel</literal> に<literal>'*'</literal> を指定してください.
+        
+                                        </para>
+                                    </listitem>
+    
+                                  </itemizedlist>
+                                </para>
+                            </listitem>
 
                     </itemizedlist>
 
@@ -279,7 +280,7 @@
 
         <title>例</title>
 
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
 
             [n, m] = size(rand(3, 2))
 
@@ -309,7 +310,7 @@
 
             nm = size(rand(3, 2), "*")
 
-        </programlisting>
+        ]]></programlisting>
 
     </refsection>
 
@@ -342,4 +343,3 @@
     </refsection>
 
 </refentry>
-

@@ -23,40 +23,49 @@
         <title>Description</title>
         <para>The version V1 of javasci has some important limitations:</para>
         <itemizedlist>
-            <listitem>To retrieve any variable from the Scilab language, knowing the type of the variable is mandatory a priori.</listitem>
-            <listitem>Only a few types are managed by the interface (boolean, double, complex and string).</listitem>
-            <listitem>Lack of consistency between Scilab and Java. For example, in Scilab, a scalar (matrix of [1,1]) is a matrix. In the Java interface, there are two different datatypes (example: SciDouble and SciDoubleArray).</listitem>
-            <listitem>There is no serialization possible on most of the datatype.</listitem>
-            <listitem>Calling a Scilab function can be done only with the Exec method and increases the complexity of the retrieval of multiple output arguments.</listitem>
-            <listitem>The package name does not follow the package naming rules of Scilab and the Scilab Java checkstyle.</listitem>
-            <listitem>Hard to manage graphics windows (this problem is not addressed yet in Javasci v2)</listitem>
-            <listitem>No interaction with the event loop (this problem is not addressed yet in Javasci v2)</listitem>
-            <listitem>Cannot manage several instances of Scilab (this problem is not addressed yet in Javasci v2)</listitem>
-        </itemizedlist>
-    </refsection>
-    <refsection role="see also">
-        <title>See also</title>
-        <simplelist type="inline">
-            <member>
-                <link xlink:href="javasci/javadoc/index.html">Documentation of Javasci v2</link>
-            </member>
-            <member>
-                <link linkend="compile_and_run_javasci_v2">Compile and run with Javasci</link>
-            </member>
-            <member>
-                <link linkend="javasci_faq_v2">Javasci FAQ</link>
-            </member>
-        </simplelist>
-    </refsection>
-    <refsection>
-        <title>History</title>
-        <revhistory>
-            <revision>
-                <revnumber>5.4.0</revnumber>
-                <revdescription>
-                    Javasci v1 is removed.
-                </revdescription>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+            <listitem>
+                 <para>To retrieve any variable from the Scilab language, knowing the type of the variable is mandatory a priori.</para></listitem>
+                <listitem>
+                     <para>Only a few types are managed by the interface (boolean, double, complex and string).</para></listitem>
+                    <listitem>
+                         <para>Lack of consistency between Scilab and Java. For example, in Scilab, a scalar (matrix of [1,1]) is a matrix. In the Java interface, there are two different datatypes (example: SciDouble and SciDoubleArray).</para></listitem>
+                        <listitem>
+                             <para>There is no serialization possible on most of the datatype.</para></listitem>
+                            <listitem>
+                                 <para>Calling a Scilab function can be done only with the Exec method and increases the complexity of the retrieval of multiple output arguments.</para></listitem>
+                                <listitem>
+                                     <para>The package name does not follow the package naming rules of Scilab and the Scilab Java checkstyle.</para></listitem>
+                                    <listitem>
+                                         <para>Hard to manage graphics windows (this problem is not addressed yet in Javasci v2)</para></listitem>
+                                        <listitem>
+                                             <para>No interaction with the event loop (this problem is not addressed yet in Javasci v2)</para></listitem>
+                                            <listitem>
+                                                 <para>Cannot manage several instances of Scilab (this problem is not addressed yet in Javasci v2)</para></listitem>
+                                            </itemizedlist>
+                                        </refsection>
+                                        <refsection role="see also">
+                                            <title>See also</title>
+                                            <simplelist type="inline">
+                                                <member>
+                                                    <link xlink:href="javasci/javadoc/index.html">Documentation of Javasci v2</link>
+                                                </member>
+                                                <member>
+                                                    <link linkend="compile_and_run_javasci_v2">Compile and run with Javasci</link>
+                                                </member>
+                                                <member>
+                                                    <link linkend="javasci_faq_v2">Javasci FAQ</link>
+                                                </member>
+                                            </simplelist>
+                                        </refsection>
+                                        <refsection>
+                                            <title>History</title>
+                                            <revhistory>
+                                                <revision>
+                                                    <revnumber>5.4.0</revnumber>
+                                                    <revdescription>
+                                                        Javasci v1 is removed.
+                                                    </revdescription>
+                                                </revision>
+                                            </revhistory>
+                                        </refsection>
+                                    </refentry>

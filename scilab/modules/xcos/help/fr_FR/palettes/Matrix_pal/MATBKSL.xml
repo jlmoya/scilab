@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATBKSL" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATBKSL" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATBKSL</refname>
         <refpurpose>Division à gauche de matrice</refpurpose>
@@ -72,8 +69,7 @@
         <title>Paramètres</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATBKSL_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/MATBKSL_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -92,12 +88,12 @@
     </refsection>
     <refsection id="Example_MATBKSL">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A=[1 7 3;23 32 29]
             B=[21 18;13 10]
             alors le résultat de l'équation A*x=B  est (A\B):
             x=[-4.504 -3.922;3.643 3.132;0.000 0.000]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection id="Defaultproperties_MATBKSL">
         <title>Propriétés par défaut</title>
@@ -187,10 +183,14 @@
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_bksl.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_bksl.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_bksl.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_bksl.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

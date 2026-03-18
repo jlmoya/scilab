@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATINV" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATINV" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATINV</refname>
         <refpurpose>Matrice inverse</refpurpose>
@@ -67,8 +64,7 @@
         <title>Paramètres</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATINV_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/MATINV_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -170,10 +166,14 @@
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_inv.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_inv.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_inv.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_inv.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

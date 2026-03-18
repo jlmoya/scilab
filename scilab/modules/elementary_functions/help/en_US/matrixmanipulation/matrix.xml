@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="matrix">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="matrix">
     <refnamediv>
         <refname>matrix</refname>
         <refpurpose>reshapes an array with the same number and order of components</refpurpose>
@@ -100,136 +97,136 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    <literal>y = v(:)</literal> is equivalent to <literal>matrix(v,-1, 1)</literal>
-                </listitem>
-                <listitem>
-                    <literal>matrix()</literal> can be overloaded for any mlist() type, with a
-                    function named <literal>%&lt;type>_matrix(v,s,..)</literal> with at least 2
-                    input arguments.
-                </listitem>
-            </itemizedlist>
-        </note>
-    </refsection>
-    <refsection>
-        <title>Examples</title>
-        <para><emphasis role="bold">With a regular matrix of decimal numbers:</emphasis></para>
-        <programlisting role="example"><![CDATA[
-a = [1 3 5 7 9 11; 2 4 6 8 10 12]
-matrix(a, 4, 3)
-matrix(a, [3 4])
-matrix(a, 3, -1)
-// into an hypermatrix:
-matrix(a, 3, 2, 2)
- ]]></programlisting>
-    <para>
-        <emphasis role="bold">With texts:</emphasis>
-    </para>
-        <programlisting role="example"><![CDATA[
-t = strsplit("a":"x",1:23)'
-matrix(t,[3,8])
- ]]></programlisting>
-    <screen><![CDATA[
---> t = strsplit("a":"x",1:23)'
- t  =
-!a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  !
-
---> matrix(t,[3,8])
- ans  =
-!a  d  g  j  m  p  s  v  !
-!b  e  h  k  n  q  t  w  !
-!c  f  i  l  o  r  u  x  !
-]]></screen>
-    <para>
-        <emphasis role="bold">With a cells hyperarray:</emphasis>
-    </para>
-        <programlisting role="example"><![CDATA[
-c = makecell([2,3,2], %t,%z, %i,"abc", list(%pi,"a"), int8(23),cos,sind,"àèìòù",corelib, 0.5, 1/%z^2)
-rc = matrix(c, 3, 4)
-rc(8)==c(8)
-rc{8}.getshell
- ]]></programlisting>
-    <screen><![CDATA[
- c  =
-(:,:,1)
-  [1x1 boolean]  [1x1 polynomial]  [1x1 constant]
-  [1x1 string ]  [    list      ]  [1x1 int8    ]
-(:,:,2)
-  [      1 fptr   ]  [      1 function]  [1x1 string]
-  [        library]  [    1x1 constant]  [    r     ]
-
---> rc = matrix(c, 3, 4)
- rc  =
-  [1x1 boolean   ]  [    list    ]  [      1 fptr    ]  [1x1 constant]
-  [1x1 string    ]  [1x1 constant]  [        library ]  [1x1 string  ]
-  [1x1 polynomial]  [1x1 int8    ]  [      1 function]  [    r       ]
-
---> rc(8)==c(8)
- ans  =
-  T
-
---> rc{8}.getshell
- ans  =
- cmd
-]]></screen>
-    <para>
-        <emphasis role="bold">With a structures array:</emphasis>
-    </para>
-        <programlisting role="example"><![CDATA[
-clear s
-s(3,6).r = %pi
-matrix(s,2,9)
- ]]></programlisting>
-    <screen><![CDATA[
---> s(3,6).r = %pi
- s  =
-  3x6 struct array with fields:
-    r
-
---> matrix(s,2,9)
- ans  =
-  2x9 struct array with fields:
-    r
-]]></screen>
-    </refsection>
-    <refsection role="see also">
-        <title>See also</title>
-        <simplelist type="inline">
-            <member>
-                <link linkend="colon">colon (:)</link>
-            </member>
-            <member>
-                <link linkend="resize_matrix">resize_matrix</link>
-            </member>
-            <member>
-                <link linkend="ndims">ndims</link>
-            </member>
-            <member>
-                <link linkend="size">size</link>
-            </member>
-            <member>
-                <link linkend="extraction">extraction</link>
-            </member>
-            <member>
-                <link linkend="quote">transposition</link>
-            </member>
-            <member>
-                <link linkend="brackets">brackets [..]</link>
-            </member>
-            <member>
-                <link linkend="matrices">matrices</link>
-            </member>
-            <member>
-                <link linkend="hypermatrices">hypermatrices</link>
-            </member>
-            <member>
-                <link linkend="makecell">makecell</link>
-            </member>
-            <member>
-                <link linkend="struct">struct</link>
-            </member>
-            <member>
-                <link linkend="mlist">mlist</link>
-            </member>
-        </simplelist>
-    </refsection>
-</refentry>
+                     <para><literal>y = v(:)</literal> is equivalent to <literal>matrix(v,-1, 1)</literal></para></listitem>
+                    <listitem>
+                         <para><literal>matrix()</literal> can be overloaded for any mlist() type, with a
+                            function named <literal>%&lt;type&gt;_matrix(v,s,..)</literal> with at least 2
+                            input arguments.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </note>
+        </refsection>
+        <refsection>
+            <title>Examples</title>
+            <para><emphasis role="bold">With a regular matrix of decimal numbers:</emphasis></para>
+            <programlisting role="example"><![CDATA[
+    a = [1 3 5 7 9 11; 2 4 6 8 10 12]
+    matrix(a, 4, 3)
+    matrix(a, [3 4])
+    matrix(a, 3, -1)
+    // into an hypermatrix:
+    matrix(a, 3, 2, 2)
+     ]]></programlisting>
+        <para>
+            <emphasis role="bold">With texts:</emphasis>
+        </para>
+            <programlisting role="example"><![CDATA[
+    t = strsplit("a":"x",1:23)'
+    matrix(t,[3,8])
+     ]]></programlisting>
+        <screen><![CDATA[
+    --> t = strsplit("a":"x",1:23)'
+     t  =
+    !a  b  c  d  e  f  g  h  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  !
+    
+    --> matrix(t,[3,8])
+     ans  =
+    !a  d  g  j  m  p  s  v  !
+    !b  e  h  k  n  q  t  w  !
+    !c  f  i  l  o  r  u  x  !
+    ]]></screen>
+        <para>
+            <emphasis role="bold">With a cells hyperarray:</emphasis>
+        </para>
+            <programlisting role="example"><![CDATA[
+    c = makecell([2,3,2], %t,%z, %i,"abc", list(%pi,"a"), int8(23),cos,sind,"àèìòù",corelib, 0.5, 1/%z^2)
+    rc = matrix(c, 3, 4)
+    rc(8)==c(8)
+    rc{8}.getshell
+     ]]></programlisting>
+        <screen><![CDATA[
+     c  =
+    (:,:,1)
+      [1x1 boolean]  [1x1 polynomial]  [1x1 constant]
+      [1x1 string ]  [    list      ]  [1x1 int8    ]
+    (:,:,2)
+      [      1 fptr   ]  [      1 function]  [1x1 string]
+      [        library]  [    1x1 constant]  [    r     ]
+    
+    --> rc = matrix(c, 3, 4)
+     rc  =
+      [1x1 boolean   ]  [    list    ]  [      1 fptr    ]  [1x1 constant]
+      [1x1 string    ]  [1x1 constant]  [        library ]  [1x1 string  ]
+      [1x1 polynomial]  [1x1 int8    ]  [      1 function]  [    r       ]
+    
+    --> rc(8)==c(8)
+     ans  =
+      T
+    
+    --> rc{8}.getshell
+     ans  =
+     cmd
+    ]]></screen>
+        <para>
+            <emphasis role="bold">With a structures array:</emphasis>
+        </para>
+            <programlisting role="example"><![CDATA[
+    clear s
+    s(3,6).r = %pi
+    matrix(s,2,9)
+     ]]></programlisting>
+        <screen><![CDATA[
+    --> s(3,6).r = %pi
+     s  =
+      3x6 struct array with fields:
+        r
+    
+    --> matrix(s,2,9)
+     ans  =
+      2x9 struct array with fields:
+        r
+    ]]></screen>
+        </refsection>
+        <refsection role="see also">
+            <title>See also</title>
+            <simplelist type="inline">
+                <member>
+                    <link linkend="colon">colon (:)</link>
+                </member>
+                <member>
+                    <link linkend="resize_matrix">resize_matrix</link>
+                </member>
+                <member>
+                    <link linkend="ndims">ndims</link>
+                </member>
+                <member>
+                    <link linkend="size">size</link>
+                </member>
+                <member>
+                    <link linkend="extraction">extraction</link>
+                </member>
+                <member>
+                    <link linkend="quote">transposition</link>
+                </member>
+                <member>
+                    <link linkend="brackets">brackets [..]</link>
+                </member>
+                <member>
+                    <link linkend="matrices">matrices</link>
+                </member>
+                <member>
+                    <link linkend="hypermatrices">hypermatrices</link>
+                </member>
+                <member>
+                    <link linkend="makecell">makecell</link>
+                </member>
+                <member>
+                    <link linkend="struct">struct</link>
+                </member>
+                <member>
+                    <link linkend="mlist">mlist</link>
+                </member>
+            </simplelist>
+        </refsection>
+    </refentry>

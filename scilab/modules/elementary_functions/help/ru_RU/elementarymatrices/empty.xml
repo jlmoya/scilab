@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="empty">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="empty">
     <refnamediv>
         <refname>пустая матрица []</refname>
         <refpurpose>пустая матрица. Деструктор диапазонов массива.</refpurpose>
@@ -149,7 +146,7 @@
                     <table>
                         <tr><td colspan="2"><emphasis role="bold">Унарные операторы</emphasis></td></tr>
                         <tr><td colspan="2">[]', [].', -[],  ~[]</td></tr>
-                        <tr><td></td><td></td></tr>
+                        <tr><td/><td/></tr>
                         <tr><td colspan="2"><emphasis role="bold">Binary numerical operators</emphasis></td></tr>
                         <tr><td>суммирование:</td>      <td> [] + [1 2], [1 2] + []</td></tr>
                         <tr><td>вычитание:</td>   <td> [] - [1 2], [1 2] - []</td></tr>
@@ -158,47 +155,41 @@
                         <tr><td>умножение:</td><td> []*[1 2], [].*[1 2], [1 2]*[], [1 2].*[]</td></tr>
                         <tr><td>кронекер:</td>     <td> [].*.[1 2], [1 2].*.[]</td></tr>
                         <tr><td>степень:</td>         <td> []^[1 2], [].^[1 2], [1 2]^[], [1 2].^[]</td></tr>
-                        <tr><td></td><td></td></tr>
+                        <tr><td/><td/></tr>
                         <tr><td colspan="2"><emphasis role="bold">Сравнение на неравенство</emphasis></td></tr>
-                        <tr><td>больше:</td><td> []>[1 2], []>=[1 2], [1 2]>[], [1 2]>=[]</td></tr>
+                        <tr><td>больше:</td><td> []&gt;[1 2], []&gt;=[1 2], [1 2]&gt;[], [1 2]&gt;=[]</td></tr>
                         <tr><td>меньше:</td><td> []&lt;[1 2], []&lt;=[1 2], [1 2]&lt;[], [1 2]&lt;=[]</td></tr>
                     </table>
                     </para>
                 </listitem>
                 <listitem>
-                    <para>
-                    В качестве операнда булевых бинарных операторов [] <emphasis>эквивалентна %T</emphasis>:
-                    <table>
-                        <tr><td colspan="4"><emphasis role="bold">Двоичные числовые операторы</emphasis></td></tr>
-                        <tr><td>или:</td> <td> [] | [%T %F], [%T %F] | []        </td><td>→</td><td>[%T %T]</td></tr>
-                        <tr><td>и:</td><td> [] &amp; [%T %F], [%T %F] &amp; []</td><td>→</td><td>[%T %F]</td></tr>
-                    </table>
-                    </para>
-                    Но обратите внимание:
-                    <itemizedlist>
-                        <listitem>
-                            <para>
-                                <literal>or([])</literal> равно %F.
-                            </para>
-                        </listitem>
-                        <listitem>
-                            <para>
-                                В качестве условия любого <literal>if</literal> или <literal>while</literal>,
-                                [] равна %F:
-                                <screen><![CDATA[
---> if []
--->     r = "[] равно %T в любом условии if";
---> else
--->     r = "[] равно %F в любом условии if";
---> end
---> r
- r  =
- [] равно %F в любом условии if
-]]></screen>
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </listitem>
+                     <para>
+                        Но обратите внимание:
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    <literal>or([])</literal> равно %F.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    В качестве условия любого <literal>if</literal> или <literal>while</literal>,
+                                    [] равна %F:
+                                    <screen><![CDATA[
+    --> if []
+    -->     r = "[] равно %T в любом условии if";
+    --> else
+    -->     r = "[] равно %F в любом условии if";
+    --> end
+    --> r
+     r  =
+     [] равно %F в любом условии if
+    ]]></screen>
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
                 <listitem>
                     <para>
                     При конкатенации [] просто игнорируется:
@@ -230,7 +221,7 @@
                         <tr><td><literal>rcond([])</literal></td>   <td><literal>Inf</literal></td></tr>
                     </table>
                     </td>
-                    <td></td>
+                    <td/>
                     <td>
                     <table>
                         <tr><td><literal>diag([])</literal></td>    <td><literal>[]</literal></td></tr>
@@ -243,7 +234,7 @@
                         <tr><td><literal>svd([])</literal></td>     <td><literal>[]</literal></td></tr>
                     </table>
                     </td>
-                    <td></td>
+                    <td/>
                     <td>
                     <table>
                         <tr><td><literal>cumprod([])</literal></td> <td><literal>[]</literal></td></tr>
@@ -534,17 +525,19 @@ A([],:)
                 <revremark>
                     <itemizedlist>
                       <listitem>
-                          <literal>A+[]</literal>, <literal>[]+A</literal> и <literal>A-[]</literal>
-                          теперь возвращают <literal>[]</literal> вместо <literal>A</literal>.
-                          <literal>[]-A</literal> теперь возвращают <literal>[]</literal> вместо
-                          <literal>-A</literal>.
+                           <para><literal>A+[]</literal>, <literal>[]+A</literal> и <literal>A-[]</literal>
+                              теперь возвращают <literal>[]</literal> вместо <literal>A</literal>.
+                              <literal>[]-A</literal> теперь возвращают <literal>[]</literal> вместо
+                              <literal>-A</literal>.
+                          </para>
                       </listitem>
                       <listitem>
-                         <literal> A>[] </literal>, <literal> A>=[] </literal>,
-                         <literal> A&lt;[] </literal>, <literal> A&lt;=[] </literal>,
-                         <literal> []>A </literal>, <literal> []>=A </literal>,
-                         <literal> []&lt;A </literal> и <literal> []&lt;=A </literal> теперь возвращают
-                         <literal> [] </literal> вместо ошибки.
+                           <para><literal> A&gt;[] </literal>, <literal> A&gt;=[] </literal>,
+                             <literal> A&lt;[] </literal>, <literal> A&lt;=[] </literal>,
+                             <literal> []&gt;A </literal>, <literal> []&gt;=A </literal>,
+                             <literal> []&lt;A </literal> и <literal> []&lt;=A </literal> теперь возвращают
+                             <literal> [] </literal> вместо ошибки.
+                          </para>
                       </listitem>
                     </itemizedlist>
                 </revremark>
@@ -552,4 +545,3 @@ A([],:)
         </revhistory>
     </refsection>
 </refentry>
-

@@ -22,10 +22,7 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:id="Sigbuilder" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="Sigbuilder" xml:lang="en_US">
     <refnamediv>
         <refname>Sigbuilder</refname>
         <refpurpose>Signal creator/generator</refpurpose>
@@ -78,8 +75,7 @@
         <title>Parameters</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/Sigbuilder_gui.gif"
-                           align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/Sigbuilder_gui.gif" align="center" style="float:right"/>
                     <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -188,13 +184,17 @@
                             on each interval:
                             <itemizedlist>
                                 <listitem>
-                                    if y<subscript>i</subscript> ≤ y<subscript>i+1</subscript> :
-                                    <emphasis>S</emphasis> is increasing on
-                                    [x<subscript>i</subscript>, x<subscript>i+1</subscript>]
+                                     <para>
+                                        if y<subscript>i</subscript> ≤ y<subscript>i+1</subscript> :
+                                        <emphasis>S</emphasis> is increasing on
+                                        [x<subscript>i</subscript>, x<subscript>i+1</subscript>]
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    Otherwise: <emphasis>S</emphasis> is decreasing on
-                                       [x<subscript>i</subscript>, x<subscript>i+1</subscript>]
+                                     <para>
+                                        Otherwise: <emphasis>S</emphasis> is decreasing on
+                                           [x<subscript>i</subscript>, x<subscript>i+1</subscript>]
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </para>

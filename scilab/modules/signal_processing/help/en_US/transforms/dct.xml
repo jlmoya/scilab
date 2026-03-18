@@ -14,12 +14,7 @@
  * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="dct">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="dct">
     <refnamediv>
         <refname>dct</refname>
         <refpurpose>Discrete cosine transform.</refpurpose>
@@ -57,73 +52,65 @@
             <varlistentry>
                 <term>X</term>
                 <listitem>
-                    a real or complex array with same shape as <literal>A</literal>.
+                     <para>
+                        a real or complex array with same shape as <literal>A</literal>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>sign</term>
                 <listitem>
-                    an integer. with possible values <literal>1</literal> or
-                    <literal>-1</literal>. Select direct or inverse
-                    transform. The default value is <literal>-1</literal>
-                    (direct transform).
+                     <para>
+                        an integer. with possible values <literal>1</literal> or
+                        <literal>-1</literal>. Select direct or inverse
+                        transform. The default value is <literal>-1</literal>
+                        (direct transform).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>selection</term>
                 <listitem>
-                    a vector containing index on <literal>A</literal> array
-                    dimensions.  See the Description part for details.
+                     <para>
+                        a vector containing index on <literal>A</literal> array
+                        dimensions.  See the Description part for details.
+                    </para>
                 </listitem>
             </varlistentry>
 
             <varlistentry>
                 <term>dims</term>
                 <listitem>
-                    a vector of positive numbers with integer values, or a
-                    vector of positive integers.  See the Description part for details.
-                    <para>
-                        Each element must be a divisor
-                        of the total number of elements of <literal>A</literal>.
-                    </para>
-                    <para>
-                        The product of the elements must be less than the total
-                        number of elements of <literal>A</literal>.
-                    </para>
-                </listitem>
+                     <para>
+                        a vector of positive numbers with integer values, or a
+                        vector of positive integers.  See the Description part for details.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>incr</term>
                 <listitem>
-                    a vector of positive numbers with integer values, or a
-                    vector of positive integers.  See the Description part for
-                    details.
-                    <para>
-                        <literal>incr</literal> must have the same number of
-                        elements than <literal>dims</literal>.
-                    </para>
-                    <para>
-                        Each element must be a divisor of the total number of
-                        elements of <literal>A</literal>.
-                    </para>
-                    <para>
-                        The <literal>incr</literal> elements must be in strictly
-                        increasing order.
-                    </para>
-                </listitem>
+                     <para>
+                        a vector of positive numbers with integer values, or a
+                        vector of positive integers.  See the Description part for
+                        details.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>option</term>
                 <listitem>
-                    a character string. with possible values
-                    <literal>"dct1"</literal>, <literal>"dct2"</literal>,
-                    <literal>"dct4"</literal> or <literal>"dct"</literal> for
-                    direct transform and <literal>"dct1"</literal>,
-                    <literal>"dct3"</literal>, <literal>"dct4"</literal> or
-                    <literal>"idct"</literal> for inverse transform.  The
-                    default value is <literal>"dct"</literal> for direct
-                    transform and <literal>"idct"</literal> for inverse
-                    transform. See the Description part for details.
+                     <para>
+                        a character string. with possible values
+                        <literal>"dct1"</literal>, <literal>"dct2"</literal>,
+                        <literal>"dct4"</literal> or <literal>"dct"</literal> for
+                        direct transform and <literal>"dct1"</literal>,
+                        <literal>"dct3"</literal>, <literal>"dct4"</literal> or
+                        <literal>"idct"</literal> for inverse transform.  The
+                        default value is <literal>"dct"</literal> for direct
+                        transform and <literal>"idct"</literal> for inverse
+                        transform. See the Description part for details.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -195,7 +182,7 @@
                             \sum_{i=1}^n {A(i) \cos\frac{\pi (i
                             -1/2)(k-1)}{n}}, k=1\ldots n \quad\text{with }
                             \omega(1)=\frac{1}{\sqrt{n}} \quad\text{and }
-                            \omega(k)=\sqrt{\frac{2}{n}} , k>1$
+                            \omega(k)=\sqrt{\frac{2}{n}} , k&gt;1$
                         </latex>
                     </para>
                 </listitem>
@@ -209,7 +196,7 @@
                             $X(i) = \sum_{k=1}^n {\omega(k) A(k) \cos\frac{\pi (i
                             -1/2)(k-1)}{n}}, k=1\ldots n \quad\text{with }
                             \omega(1)=\frac{1}{\sqrt{n}} \quad\text{and }
-                            \omega(k)=\sqrt{\frac{2}{n}} , k>1$
+                            \omega(k)=\sqrt{\frac{2}{n}} , k&gt;1$
                         </latex>
                     </para>
                 </listitem>
@@ -237,7 +224,7 @@
                     -1)(k_p-1)}{2 n}}, k_j=1\ldots n_j\\
                     \text{with}\\
                     \omega_j(1)=\frac{1}{\sqrt{n_j}}\\
-                    \omega_j(k)=\sqrt{\frac{2}{n_j}} , k>1
+                    \omega_j(k)=\sqrt{\frac{2}{n_j}} , k&gt;1
                     \end{array}$
                 </latex>
             </para>
@@ -255,7 +242,7 @@
                     n_j\\
                     \text{with}\\
                     \omega_j(1)=\frac{1}{\sqrt{n_j}}\\
-                    \omega_j(k)=\sqrt{\frac{2}{n_j}} , k>1 \end{array}$
+                    \omega_j(k)=\sqrt{\frac{2}{n_j}} , k&gt;1 \end{array}$
                 </latex>
             </para>
 
@@ -371,8 +358,7 @@
             </para>
             <para>
                 It is possible to go further in dct optimization using
-                <link linkend="get_fftw_wisdom">get_fftw_wisdom</link>, <link
-          linkend="set_fftw_wisdom">set_fftw_wisdom</link> functions.
+                <link linkend="get_fftw_wisdom">get_fftw_wisdom</link>, <link linkend="set_fftw_wisdom">set_fftw_wisdom</link> functions.
             </para>
         </refsection>
     </refsection>
@@ -450,8 +436,7 @@
     <refsection>
         <title>Bibliography</title>
         <para>
-            Matteo Frigo and Steven G. Johnson, "FFTW Documentation" <ulink
-    url="http://www.fftw.org/#documentation">http://www.fftw.org/#documentation</ulink>
+            Matteo Frigo and Steven G. Johnson, "FFTW Documentation" <ulink url="http://www.fftw.org/#documentation">http://www.fftw.org/#documentation</ulink>
         </para>
     </refsection>
 </refentry>

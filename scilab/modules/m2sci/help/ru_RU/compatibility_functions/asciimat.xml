@@ -13,9 +13,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="asciimat">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="asciimat">
     <refnamediv>
         <refname>asciimat</refname>
         <refpurpose>
@@ -35,22 +33,23 @@
             <varlistentry>
                 <term>text</term>
                 <listitem>
-                    отдельный текст, или вектор, матрица или гиперматрица текстов.
-                    Элементы текста могут иметь разную длину и могут включать в
-                    себя расширенные символы UTF-8.
-                    <para/>
-                    <literal>asciimat(…)</literal> всегда конкатенирует столбцы текста
-                    <varname>text</varname> вдоль строк, как входной или выходной аргумент.
-                    <para/>
-                </listitem>
+                     <para>
+                        отдельный текст, или вектор, матрица или гиперматрица текстов.
+                        Элементы текста могут иметь разную длину и могут включать в
+                        себя расширенные символы UTF-8.
+                        <literal>asciimat(…)</literal> всегда конкатенирует столбцы текста
+                        <varname>text</varname> вдоль строк, как входной или выходной аргумент.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>unicodes</term>
                 <listitem>
-                    отдельный целочисленный ASCII-код, вектор, матрица или гиперматрица
-                    1-байтных чисел ASCII или юникода.
-                    <para/>
-                </listitem>
+                     <para>
+                        отдельный целочисленный ASCII-код, вектор, матрица или гиперматрица
+                        1-байтных чисел ASCII или юникода.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -356,16 +355,22 @@ asciimat(r)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Принимаются текстовые компоненты различной длины или/и
-                            включая символы UTF-8. Реализовано дополнение кодами
-                            ascii(" ")==32.
+                             <para>
+                                Принимаются текстовые компоненты различной длины или/и
+                                включая символы UTF-8. Реализовано дополнение кодами
+                                ascii(" ")==32.
+                            </para>
                         </listitem>
                         <listitem>
-                            asciimat(unicodes) отсекает все завершающие пробелы.
+                             <para>
+                                asciimat(unicodes) отсекает все завершающие пробелы.
+                            </para>
                         </listitem>
                         <listitem>
-                            Для любых гиперматрицы unicodes, r = asciimat(unicodes)
-                            больше не сжимает size(r,2).
+                             <para>
+                                Для любых гиперматрицы unicodes, r = asciimat(unicodes)
+                                больше не сжимает size(r,2).
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

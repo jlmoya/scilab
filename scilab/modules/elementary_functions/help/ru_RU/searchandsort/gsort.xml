@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="gsort" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="gsort" xml:lang="ru">
     <refnamediv>
         <refname>gsort</refname>
         <refpurpose>сортирует массивы логических, числовых и строковых значений</refpurpose>
@@ -38,189 +35,176 @@
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    Скаляр, вектор, матрица или гиперматрица логических значений, целых,
-                    вещественных или комплексных чисел, или строковых значений. Разрежённые матрицы
-                    вещественных чисел, комплексных чисел или логических значений также могут
-                    быть отсортированы.
-                    <note>
-                        Разрешена перегрузка необрабатываемых типов.
-                    </note>
-                    <para/>
-                </listitem>
+                     <para>
+                        Скаляр, вектор, матрица или гиперматрица логических значений, целых,
+                        вещественных или комплексных чисел, или строковых значений. Разрежённые матрицы
+                        вещественных чисел, комплексных чисел или логических значений также могут
+                        быть отсортированы.
+                        <note>
+                            Разрешена перегрузка необрабатываемых типов.
+                        </note></para>
+                           </listitem>
             </varlistentry>
             <varlistentry>
                 <term>method</term>
                 <listitem>
-                    Ключевое слово или индекс больше 0: метод сортировки:
-                    <informaltable>
-                        <tr valign="top">
-                            <th>'g'</th><td>:</td>
-                            <td>Общая сортировка: сортируются все элементы в <literal>A</literal>
-                                (метод по умолчанию).
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <td style="white-space:nowrap">
-                                <emphasis role="bold">'r'</emphasis> или
-                                <emphasis role="bold">1</emphasis></td>
-                            <td>:</td>
-                            <td>Сортируются строки в каждом столбце в <literal>A</literal>.</td>
-                        </tr>
-                        <tr valign="top">
-                            <td style="white-space:nowrap">
-                                <emphasis role="bold">'c'</emphasis> или
-                                <emphasis role="bold">2</emphasis></td>
-                            <td>:</td>
-                            <td>Сортируются столбцы в каждой строке в <literal>A</literal>.</td>
-                        </tr>
-                        <tr valign="top"><td><emphasis role="bold">'lr'</emphasis></td><td>:</td>
-                            <td>
-                                лексикографическая сортировка строк в <literal>A</literal>:
-                                Сортируются строки в соответствии со значениями в первом столбце.
-                                Если группа сортированных строк имеет то же значение, что и в
-                                столбце №1, то группа пересортировывается в соответствии со
-                                значениями в столбце №2, и так далее. Не применимо к гиперматрицам.
-                            </td>
-                        </tr>
-                        <tr valign="top"><td><emphasis role="bold">'lc'</emphasis></td><td>:</td>
-                            <td>
-                                лексикографическая сортировка столбцов в <literal>A</literal>
-                                (не для гиперматриц).
-                            </td>
-                        </tr>
-                    </informaltable>
-                    <para/>
-                </listitem>
+                     <para>
+                        Ключевое слово или индекс больше 0: метод сортировки:
+                        <informaltable>
+                            <tr valign="top">
+                                <th>'g'</th><td>:</td>
+                                <td>Общая сортировка: сортируются все элементы в <literal>A</literal>
+                                    (метод по умолчанию).
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td style="white-space:nowrap">
+                                    <emphasis role="bold">'r'</emphasis> или
+                                    <emphasis role="bold">1</emphasis></td>
+                                <td>:</td>
+                                <td>Сортируются строки в каждом столбце в <literal>A</literal>.</td>
+                            </tr>
+                            <tr valign="top">
+                                <td style="white-space:nowrap">
+                                    <emphasis role="bold">'c'</emphasis> или
+                                    <emphasis role="bold">2</emphasis></td>
+                                <td>:</td>
+                                <td>Сортируются столбцы в каждой строке в <literal>A</literal>.</td>
+                            </tr>
+                            <tr valign="top"><td><emphasis role="bold">'lr'</emphasis></td><td>:</td>
+                                <td>
+                                    лексикографическая сортировка строк в <literal>A</literal>:
+                                    Сортируются строки в соответствии со значениями в первом столбце.
+                                    Если группа сортированных строк имеет то же значение, что и в
+                                    столбце №1, то группа пересортировывается в соответствии со
+                                    значениями в столбце №2, и так далее. Не применимо к гиперматрицам.
+                                </td>
+                            </tr>
+                            <tr valign="top"><td><emphasis role="bold">'lc'</emphasis></td><td>:</td>
+                                <td>
+                                    лексикографическая сортировка столбцов в <literal>A</literal>
+                                    (не для гиперматриц).
+                                </td>
+                            </tr>
+                        </informaltable></para>
+                                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>direction</term>
                 <listitem>
-                    направление сортировки:
-                    "d": в порядке уменьшения (по умолчанию);
-                    "i": в порядке увеличения.
-                    <para/>
-                </listitem>
+                     <para>
+                        направление сортировки:
+                        "d": в порядке уменьшения (по умолчанию);
+                        "i": в порядке увеличения.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>directions</term>
                 <listitem>
-                    вектор символов "i" и "d", у которого столько же элементов, сколько
-                    элементов имеет <varname>rankFuncs</varname>.
-                    <literal>directions(k)</literal> используется для
-                    <varname>rankFuncs(k)</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        вектор символов "i" и "d", у которого столько же элементов, сколько
+                        элементов имеет <varname>rankFuncs</varname>.
+                        <literal>directions(k)</literal> используется для
+                        <varname>rankFuncs(k)</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rankFuncs</term>
                 <listitem>
-                    список <literal>list()</literal>, элементы которого имеют следующие типы:
-                    <itemizedlist>
-                        <listitem>
-                            идентификатор <literal>fun</literal> функции на языке Scilab,
-                            либо встроенной функции.
-                        </listitem>
-                        <listitem>
-                            : двоеточие. Ставится для такой <literal>fun</literal>, для которой
-                            <literal>fun(A)</literal> возвращает <literal>A</literal>.
-                        </listitem>
-                        <listitem>
-                            список <literal>list(fun, param1, param2,..)</literal>, в котором
-                            <itemizedlist>
-                                <listitem>
-                                    <literal>fun</literal> - это идентификатор функции Scilab или
-                                    встроенной функции.
-                                </listitem>
-                                <listitem>
-                                    <literal>param1, param2,..</literal> - это параметры.
-                                </listitem>
-                            </itemizedlist>
-                            так что будет вызываться <literal>fun(A, param1, param2, ..)</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    <para>
-                        Функции <literal>fun</literal> должны удовлетворять следующим условиям:
+                     <para>
+                        список <literal>list()</literal>, элементы которого имеют следующие типы:
                         <itemizedlist>
                             <listitem>
-                                должны поддерживаться <literal>R=fun(A)</literal> или
-                                <literal>R=fun(A, param1, param2,..)</literal>.
+                                 <para>
+                                    идентификатор <literal>fun</literal> функции на языке Scilab,
+                                    либо встроенной функции.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>fun</literal> должна работать поэлементно, то есть:
-                                <literal>size(R)==size(A)</literal> и <literal>R(k)</literal>
-                                по сути равно <literal>A(k)</literal>
+                                 <para>
+                                    : двоеточие. Ставится для такой <literal>fun</literal>, для которой
+                                    <literal>fun(A)</literal> возвращает <literal>A</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>R</literal> должен быть простым сортируемым типом:
-                                логические значения, целые числа, вещественные значения, строковое значение.
+                                 <para>
+                                    список <literal>list(fun, param1, param2,..)</literal>, в котором
+                                    <itemizedlist>
+                                        <listitem>
+                                             <para><literal>fun</literal> - это идентификатор функции Scilab или
+                                                встроенной функции.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                             <para><literal>param1, param2,..</literal> - это параметры.
+                                            </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                    так что будет вызываться <literal>fun(A, param1, param2, ..)</literal>.
+                                </para>
                             </listitem>
-                        </itemizedlist>
-                    </para>
-                    <para>
-                        <note>
-                            Если <literal>A</literal> содержит комплексные числа, то можно
-                            определить обычные функции <literal>real, imag, abs, atan</literal>.
-                            Тогда <literal>atan(imag(A),real(A))</literal> будет вызываться
-                            вместо <literal>atan(A)</literal>.
-                        </note>
-                    </para>
-                </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>B</term>
                 <listitem>
-                    Сортированный массив того же типа, кодирования и размера, что и <literal>A</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Сортированный массив того же типа, кодирования и размера, что и <literal>A</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>k</term>
                 <listitem>
-                    Массив десятичных целых чисел размера <literal>size(A)</literal>:
-                    исходные индексы элементов <literal>B</literal> в <literal>A</literal>.
-                    Если <literal>A</literal> матрица, то в соответствии с выбранным методом
-                    <table>
-                    <tr>
-                        <th valign="top">"g"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> это матрица размером <literal>size(A)</literal>:
-                            <literal>k(i)</literal> - это линейный индекс элемента
-                            <literal>B(i)</literal> в <literal>A</literal> такой, что <literal>B(:) = A(k)</literal>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">"r"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> это матрица размером <literal>size(A)</literal>:
-                            <literal>k(i,j)</literal> равна <literal>1 ≤ index ≤ size(A,1)</literal>
-                            элемента <literal>B(i,j)</literal> в столбце <literal>A(:,j)</literal>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">"c"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> это матрица размером <literal>size(A)</literal>:
-                            <literal>k(i,j)</literal> равна <literal>1 ≤ index ≤ size(A,2)</literal>
-                            элемента <literal>B(i,j)</literal> в строке <literal>A(i,:)</literal>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">"lr"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> - это столбец размером <literal>size(A,1)</literal>
-                            такой, что <literal>B = A(k,:)</literal>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">"lc"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> - это строка размером <literal>size(A,2)</literal>
-                            такая, что <literal>B = A(:,k)</literal>.
-                        </td>
-                    </tr>
-                    </table>
-                    <para/>
-                </listitem>
+                     <para>
+                        Массив десятичных целых чисел размера <literal>size(A)</literal>:
+                        исходные индексы элементов <literal>B</literal> в <literal>A</literal>.
+                        Если <literal>A</literal> матрица, то в соответствии с выбранным методом
+                        <table>
+                        <tr>
+                            <th valign="top">"g"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> это матрица размером <literal>size(A)</literal>:
+                                <literal>k(i)</literal> - это линейный индекс элемента
+                                <literal>B(i)</literal> в <literal>A</literal> такой, что <literal>B(:) = A(k)</literal>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">"r"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> это матрица размером <literal>size(A)</literal>:
+                                <literal>k(i,j)</literal> равна <literal>1 ≤ index ≤ size(A,1)</literal>
+                                элемента <literal>B(i,j)</literal> в столбце <literal>A(:,j)</literal>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">"c"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> это матрица размером <literal>size(A)</literal>:
+                                <literal>k(i,j)</literal> равна <literal>1 ≤ index ≤ size(A,2)</literal>
+                                элемента <literal>B(i,j)</literal> в строке <literal>A(i,:)</literal>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">"lr"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> - это столбец размером <literal>size(A,1)</literal>
+                                такой, что <literal>B = A(k,:)</literal>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">"lc"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> - это строка размером <literal>size(A,2)</literal>
+                                такая, что <literal>B = A(:,k)</literal>.
+                            </td>
+                        </tr>
+                        </table></para>
+                            </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -316,49 +300,47 @@
                 Примеры):
                 <orderedlist>
                     <listitem>
-                        <emphasis>Сортировка матрицы <literal>C</literal> комплексных чисел,
-                            сначала в порядке увеличения модуля, затем в порядке увеличения
-                            фазы</emphasis>:
-                        <para/>
-                        <literal>gsort(C, "g", ["i" "i"], list(abs, atan))</literal>
-                        <para/>
+                         <para><emphasis>Сортировка матрицы <literal>C</literal> комплексных чисел,
+                                сначала в порядке увеличения модуля, затем в порядке увеличения
+                                фазы</emphasis>:
+                            <literal>gsort(C, "g", ["i" "i"], list(abs, atan))</literal>
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis>Сортировка столбцов матрицы <literal>T</literal> строковых значений,
-                        сначала в порядке увеличения длины, затем в обратном алфавитном
-                        порядке</emphasis>:
-                        <para/>
-                        <literal>gsort(T, "c", ["i" "d"], list(length, :))</literal>
-                        <para/>
+                         <para><emphasis>Сортировка столбцов матрицы <literal>T</literal> строковых значений,
+                            сначала в порядке увеличения длины, затем в обратном алфавитном
+                            порядке</emphasis>:
+                            <literal>gsort(T, "c", ["i" "d"], list(length, :))</literal>
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis>Сортировка матрицы <literal>P</literal> полиномов,
-                        сначала в порядке увеличения степени, затем в порядке уменьшения значения
-                        постоянного коэффициента 0-й степени</emphasis>:
-                        <screen>
-function c = get_coef(p, i)
-    // i: степень возвращаемого коэффициента
-    c = matrix(coeff(p(:))(:,i+1), size(p))
-endfunction
-
-gsort(P, "c", ["i" "d"], list(degree, list(get_coef,0)))
-</screen>
-                        В этом примере функция второго ранжирования позволяет определить степень
-                        <literal>i</literal> того коэффициента, который рассматривается в
-                        качестве значения вторичной сортировки.
-                    <para/>
+                         <para><emphasis>Сортировка матрицы <literal>P</literal> полиномов,
+                            сначала в порядке увеличения степени, затем в порядке уменьшения значения
+                            постоянного коэффициента 0-й степени</emphasis>:
+                            <screen><![CDATA[
+    function c = get_coef(p, i)
+        // i: степень возвращаемого коэффициента
+        c = matrix(coeff(p(:))(:,i+1), size(p))
+    endfunction
+    
+    gsort(P, "c", ["i" "d"], list(degree, list(get_coef,0)))
+    ]]></screen>
+                            В этом примере функция второго ранжирования позволяет определить степень
+                            <literal>i</literal> того коэффициента, который рассматривается в
+                            качестве значения вторичной сортировки.
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis>Сортировка матрицы <literal>D</literal> десятичных чисел,
-                        сначала в порядке возрастания целых частей, затем в порядке уменьшения дробных частей</emphasis>:
-                        <screen>
-function r = get_frac(numbers)
-    r = numbers - int(numbers)
-endfunction
-
-gsort(D, "g", ["i" "d"], list(int, get_frac))
-</screen>
-                    </listitem>
+                         <para><emphasis>Сортировка матрицы <literal>D</literal> десятичных чисел,
+                            сначала в порядке возрастания целых частей, затем в порядке уменьшения дробных частей</emphasis>:
+                            <screen><![CDATA[
+    function r = get_frac(numbers)
+        r = numbers - int(numbers)
+    endfunction
+    
+    gsort(D, "g", ["i" "d"], list(int, get_frac))
+    ]]></screen></para>
+            </listitem>
                     <para/>
                 </orderedlist>
             </para>
@@ -376,7 +358,7 @@ m = [ 0.  2.  1.  2.  1.  0.
       2.  3   3.  2.  1.  1. ];
 
 [s, k] = gsort(m, "c")
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> [s, k] = gsort(m, "c")
  s  =
@@ -403,7 +385,7 @@ v = ['Scilab' '3.1'
      'Scilab' '4.0'];
 
 [s, k] = gsort(v,'lr','i'); s, k'
-]]>     </programlisting>
+     ]]></programlisting>
             <screen><![CDATA[
 --> [s, k] = gsort(v,'lr','i'); s, k'
  s  =
@@ -428,7 +410,7 @@ m  = [ 0 1 0 1 1 1 0 1
        0 0 1 1 0 0 0 0 ]==1;
 m
 [s, k] = gsort(m, "lc")  // сортировка столбцов в порядке убывания
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> m
  m  =
@@ -470,7 +452,7 @@ d = [
   ];
 // Сортировка
 [r, k] = gsort(d, "g", ["i" "d"], list(int, get_frac))
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
  r  =
    0.3   0.1   0.1   1.2   1.1   2.2
@@ -500,7 +482,7 @@ s = "complex([0,0,-1,-1;0,-1,1,1;1,1,0,0]," + ..
             "[%inf,2,%nan,1;-1,0,-1,%nan;1,-%inf,1,%nan])";
 c = evstr(s)
 [r, k] = gsort(c, "g", ["i" "i"], list(real, imag))
-]]>     </programlisting>
+     ]]></programlisting>
     <screen><![CDATA[
 --> c = evstr(s)
  c  =
@@ -536,7 +518,7 @@ t = [
   ];
 
 [r, k] = gsort(t, "r", ["i" "i"], list(length, :))
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> [r, k] = gsort(t, "r", ["i" "i"], list(length, :))
  r  =
@@ -585,7 +567,7 @@ x = varn(%s,"x");
 P = evstr(P)
 
 [r, k] = gsort(P, "g", ["d" "i"], list(list(get_coef, 0), degree))
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> P = evstr(P)
  P  =
@@ -615,7 +597,7 @@ P = evstr(P)
         <programlisting role="example"><![CDATA[
 h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
 [s, k] = gsort(h, "c", "i")
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
  h  =
@@ -651,7 +633,7 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
         <programlisting role="example"><![CDATA[
 h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
 [s, k] = gsort(h, 3, "i")   // по третьей размерности = 'толщина' гиперматрицы
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
  h  =
@@ -720,10 +702,14 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Теперь можно сортировать логические значения.
+                             <para>
+                                Теперь можно сортировать логические значения.
+                            </para>
                         </listitem>
                         <listitem>
-                            Многоуровневая сортировка, добавленная с помощью опции rankFuncs.
+                             <para>
+                                Многоуровневая сортировка, добавленная с помощью опции rankFuncs.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>
@@ -733,14 +719,18 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Для разрежённого входа, gsort() ранее была ограничена вещественными или
-                            комплексными векторами и только методом 'g'. Теперь она полностью способна
-                            к работе с разрежёнными векторами и двумерными матрицами логических,
-                            вещественных или комплексных чисел, всеми методами 'g, r, c, lr, lc'.
-                            Многоуровневая сортировка возможна для всех типов разрежённых входных данных.
+                             <para>
+                                Для разрежённого входа, gsort() ранее была ограничена вещественными или
+                                комплексными векторами и только методом 'g'. Теперь она полностью способна
+                                к работе с разрежёнными векторами и двумерными матрицами логических,
+                                вещественных или комплексных чисел, всеми методами 'g, r, c, lr, lc'.
+                                Многоуровневая сортировка возможна для всех типов разрежённых входных данных.
+                            </para>
                         </listitem>
                         <listitem>
-                            Теперь возможна сортировка вдоль размерности более 2.
+                             <para>
+                                Теперь возможна сортировка вдоль размерности более 2.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

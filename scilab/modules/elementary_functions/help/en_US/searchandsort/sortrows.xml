@@ -7,10 +7,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" 
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" 
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" 
-          version="5.0-subset Scilab" xml:id="sortrows" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="sortrows" xml:lang="en">
     <refnamediv>
         <refname>sortrows</refname>
         <refpurpose>Sort rows of a vector, matrix, table, or timeseries</refpurpose>
@@ -31,13 +28,17 @@
                     <para>Input argument, one of:</para>
                     <itemizedlist>
                         <listitem>
-                            vector, matrix of doubles, booleans, integers, strings, duration or datetime
+                             <para>
+                                vector, matrix of doubles, booleans, integers, strings, duration or datetime
+                            </para>
                         </listitem>
                         <listitem>
-                            <link linkend="table">table</link> object
+                             <para><link linkend="table">table</link> object
+                            </para>
                         </listitem>
                         <listitem>
-                            <link linkend="timeseries">timeseries</link> object
+                             <para><link linkend="timeseries">timeseries</link> object
+                            </para>
                         </listitem>
                     </itemizedlist>
                     <para/>
@@ -46,21 +47,24 @@
             <varlistentry>
                 <term>vars</term>
                 <listitem>
-                    <para>Depending on the type of <literal>t</literal></para>
-                    <itemizedlist>
-                        <listitem>
-                            vector of integers if <literal>t</literal> is vector or matrix.
-                        </listitem>
-                        <listitem>
-                            vector of integers, booleans or strings or cell if <literal>t</literal> is a table or timeseries. 
-                            <literal>"RowNames"</literal> can be used to sort the rows of the table.
-                        </listitem>
-                    </itemizedlist>
-                            Specifies the columns used for sorting. <literal>vars</literal> can contain  
-                            negative integers to sort in descending order and will be account only 
-                            if <literal>order</literal> is not set.
-                    <para/>
-                </listitem>
+                     <para><itemizedlist>
+                            <listitem>
+                                 <para>
+                                    vector of integers if <literal>t</literal> is vector or matrix.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    vector of integers, booleans or strings or cell if <literal>t</literal> is a table or timeseries. 
+                                    <literal>"RowNames"</literal> can be used to sort the rows of the table.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                                Specifies the columns used for sorting. <literal>vars</literal> can contain  
+                                negative integers to sort in descending order and will be account only 
+                                if <literal>order</literal> is not set.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>order</term>
@@ -68,13 +72,16 @@
                     <para>string or cell array of strings. Possible values: </para>
                     <itemizedlist>
                         <listitem>
-                            <literal>"i"</literal> (default value) or "ascend": sort in ascending order
+                             <para><literal>"i"</literal> (default value) or "ascend": sort in ascending order
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>"d"</literal> or "descend": sort in descending order
+                             <para><literal>"d"</literal> or "descend": sort in descending order
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>["i", "d"]</literal> or <literal>{"i", "d"}</literal>: specify order individually for each column
+                             <para><literal>["i", "d"]</literal> or <literal>{"i", "d"}</literal>: specify order individually for each column
+                            </para>
                         </listitem>
                     </itemizedlist>
                     <para/>
@@ -124,8 +131,8 @@
             D = sortrows(A, -2)
             C == D
             E = sortrows(A, [1 3], ["i", "d"]) // or sortrows(A, [1 -3])
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 -> [B, idx] = sortrows(A)
 
@@ -177,8 +184,8 @@
         <programlisting role="example"><![CDATA[
             A = ["b" "b"; "a" "y"; "c" "r"]
             [B, idx] = sortrows(A, 2, "d")
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 --> [B, idx] = sortrows(A, 2, "d")
 
@@ -198,8 +205,8 @@
         <programlisting role="example"><![CDATA[
             t = table(["a"; "b"; "c"; "b"], [1; 2; 1; 1], [1; 2; 3; 4])
             [t2, idx] = sortrows(t)
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 --> t = table(["a"; "b"; "c"; "b"], [1; 2; 1; 1], [1; 2; 3; 4])
 
@@ -238,8 +245,8 @@
             [B, idx] = sortrows(A, 2)
             [C, idxC] = sortrows(A, "Height", "d") // sortrows(A, -2) 
             [D, idxD] = sortrows(A, [%f %t %f], "i")
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 --> A = table(["Oak"; "Pine"; "Maple"; "Apple"; "Pear"], [15; 30; 25; 3; 2], ["Tree"; "Tree"; "Tree"; "FruitTree"; "FruitTree"], ..
   >             'VariableNames', ["Name","Height","Type"])
@@ -347,8 +354,8 @@
 
             // Sort by decreasing diameter
             [T2, idx] = sortrows(T, 'Diameter_km', 'd')
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <screen><![CDATA[
 -->  T = table(Category, Distance_Mkm, Diameter_km, Moons, ...
   >  'RowNames', Planet, "VariableNames", ....
@@ -451,8 +458,8 @@
             [tss, idx] = sortrows(ts, 1)
             ts2 = timeseries(datetime() + seconds([100; 200; 150]), [3; 1; 2])
             [tss, idx] = sortrows(ts2, 2, "d")
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 --> ts = timeseries(hours([10; 5; 8; 12]), (1:4)')
 

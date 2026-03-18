@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATDIAG" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATDIAG" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATDIAG</refname>
         <refpurpose>Création de matrice diagonale</refpurpose>
@@ -70,8 +67,7 @@
         <title>Paramètres</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATDIAG_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/MATDIAG_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -90,10 +86,10 @@
     </refsection>
     <refsection id="Example_MATDIAG">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             Si l'entrée du bloc est U = ones(5, 1) alors la sortie est :
             y = [1 0 0 0 0 ; 0 1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 1 0 ; 0 0 0 0 1]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection id="Defaultproperties_MATDIAG">
         <title>Propriétés par défaut</title>
@@ -180,10 +176,14 @@
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_diag.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_diag.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_diag.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_diag.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

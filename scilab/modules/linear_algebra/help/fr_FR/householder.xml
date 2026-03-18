@@ -13,10 +13,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="householder">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="householder">
     <refnamediv>
         <refname>householder</refname>
         <refpurpose>Matrice de Householder. Symétrique par rapport à un plan</refpurpose>
@@ -85,25 +82,33 @@
             Si <varname>v</varname> et <varname>w</varname> sont proportionels :
             <itemizedlist>
                 <listitem>
-                    S'ils sont opposés, <literal>u= v/|v|</literal> est retourné.
+                     <para>
+                        S'ils sont opposés, <literal>u= v/|v|</literal> est retourné.
+                    </para>
                 </listitem>
                 <listitem>
-                    S'ils sont à coordonnées réelles et sont dans la même direction,
-                    <varname>u</varname> est choisi dans le
-                    plan (xOy) avec a priori <literal>u(1)>0</literal>, et orthogonal à
-                    <varname>v</varname> (<literal>u'*v==0</literal>). Cependant,
-                    <itemizedlist>
-                        <listitem>
-                            S'ils sont selon (Ox), <literal>u = (Oy+)</literal> est retourné.
-                        </listitem>
-                        <listitem>
-                            S'ils sont scalaires (et de mêmes signes),
-                            le sous-espace orthogonal est réduit à <literal>{0}</literal> qui n'est
-                            pas normalisable :
-                            <varname>u</varname> et <varname>H</varname> sont mis à <literal>%nan</literal>.
-                        </listitem>
-                    </itemizedlist>
-                </listitem>
+                     <para>
+                        S'ils sont à coordonnées réelles et sont dans la même direction,
+                        <varname>u</varname> est choisi dans le
+                        plan (xOy) avec a priori <literal>u(1)&gt;0</literal>, et orthogonal à
+                        <varname>v</varname> (<literal>u'*v==0</literal>). Cependant,
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    S'ils sont selon (Ox), <literal>u = (Oy+)</literal> est retourné.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    S'ils sont scalaires (et de mêmes signes),
+                                    le sous-espace orthogonal est réduit à <literal>{0}</literal> qui n'est
+                                    pas normalisable :
+                                    <varname>u</varname> et <varname>H</varname> sont mis à <literal>%nan</literal>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </itemizedlist>
         </para>
 
@@ -202,7 +207,7 @@ a.children(2).foreground = 1;
 a.children(3).foreground = color("green");
 drawnow()
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             // (OA) = [0 0 1] is reflected in O into (OB) = [ 1 1 0.3 ]:
             [n, H] = householder([0 0 1]', [ 1 1 0.3 ]');
             // "n" is the unit vector orthogonal to the reflecting plane
@@ -247,7 +252,7 @@ drawnow()
             a.children(2).foreground = 1;
             a.children(3).foreground = color("green");
             drawnow
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>Voir aussi</title>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="polarplot" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="polarplot" xml:lang="pt">
     <refnamediv>
         <refname>polarplot</refname>
         <refpurpose>Esboço de coordenadas polares</refpurpose>
@@ -289,19 +286,24 @@
             are:
             <itemizedlist>
               <listitem>
-              <literal>h.children(1)</literal>: Compound whose children are the labels of angle values (Text entities)
+                   <para><literal>h.children(1)</literal>: Compound whose children are the labels of angle values (Text entities)
+                  </para>
               </listitem>
               <listitem>
-              <literal>h.children(2)</literal>: Compound whose children are the lines of radial frame for each angle value (Segs entities)
+                   <para><literal>h.children(2)</literal>: Compound whose children are the lines of radial frame for each angle value (Segs entities)
+                  </para>
               </listitem>
               <listitem>
-              <literal>h.children(3)</literal>: Compound whose children are the labels of radius values (Text entities)
+                   <para><literal>h.children(3)</literal>: Compound whose children are the labels of radius values (Text entities)
+                  </para>
               </listitem>
               <listitem>
-              <literal>h.children(4)</literal>: Compound whose children are the circles of constant radius for each radius value (Arc entities)
+                   <para><literal>h.children(4)</literal>: Compound whose children are the circles of constant radius for each radius value (Arc entities)
+                  </para>
               </listitem>
               <listitem>
-              <literal>h.children(5)</literal>: Polyline entity, the main curve.
+                   <para><literal>h.children(5)</literal>: Polyline entity, the main curve.
+                  </para>
               </listitem>
             </itemizedlist>
             Use <literal>h</literal> to modify properties

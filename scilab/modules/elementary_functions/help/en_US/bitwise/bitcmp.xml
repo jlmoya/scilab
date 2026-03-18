@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-      xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-      xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-      xmlns:scilab="http://www.scilab.org" xml:id="bitcmp" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bitcmp" xml:lang="en">
     <refnamediv>
         <refname>bitcmp</refname>
         <refpurpose>bitwise complement of integers</refpurpose>
@@ -32,62 +29,66 @@
             <varlistentry>
                 <term>x, y</term>
                 <listitem>
-                    arrays of signed or unsigned integers (int8, .., uint64), or of positive decimal
-                    integers. Hypermatrix supported. <varname>x</varname> and <varname>y</varname>
-                    have the same integer type and the same size.
-                    <para/>
-                </listitem>
+                     <para>
+                        arrays of signed or unsigned integers (int8, .., uint64), or of positive decimal
+                        integers. Hypermatrix supported. <varname>x</varname> and <varname>y</varname>
+                        have the same integer type and the same size.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>bitnum</term>
                 <listitem>
-                    positive encoded or decimal integer, or array of positive encoded or decimal
-                    integers of size equal to size(x): bits #1 to #bitnum of <varname>x</varname>
-                    are considered and inversed. According to the integer type of
-                    <varname>x</varname>, <varname>bitnum</varname> must be in the interval
-                    <literal>[1, bitmax]</literal> with bitmax as follows:
-                    <table>
-                        <tr><th>inttype :</th>
-                            <td>int8</td>
-                            <td>uint8</td>
-                            <td>int16</td>
-                            <td>uint16</td>
-                            <td>int32</td>
-                            <td>uint32</td>
-                            <td>int64</td>
-                            <td>uint64</td>
-                            <td>decimal</td>
-                        </tr>
-                        <tr><th>bitmax :</th>
-                            <td>8</td>
-                            <td>8</td>
-                            <td>16</td>
-                            <td>16</td>
-                            <td>32</td>
-                            <td>32</td>
-                            <td>64</td>
-                            <td>64</td>
-                            <td>1024</td>
-                        </tr>
-                    </table>
-                    <para/>
-                    The default <varname>bitnum</varname> value depends on the input integer
-                    type:
-                    <itemizedlist>
-                        <listitem>
-                            <literal>bitnum = bitmax</literal> for encoded integers
-                        </listitem>
-                        <listitem>
-                            <literal>bitnum = 53</literal> for decimal integers
-                            <literal>x ≤ 1/%eps</literal>
-                        </listitem>
-                        <listitem>
-                            <literal>bitnum = int(log2(x))+1</literal> for decimal integers
-                            <literal>x > 1/%eps</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        positive encoded or decimal integer, or array of positive encoded or decimal
+                        integers of size equal to size(x): bits #1 to #bitnum of <varname>x</varname>
+                        are considered and inversed. According to the integer type of
+                        <varname>x</varname>, <varname>bitnum</varname> must be in the interval
+                        <literal>[1, bitmax]</literal> with bitmax as follows:
+                        <table>
+                            <tr><th>inttype :</th>
+                                <td>int8</td>
+                                <td>uint8</td>
+                                <td>int16</td>
+                                <td>uint16</td>
+                                <td>int32</td>
+                                <td>uint32</td>
+                                <td>int64</td>
+                                <td>uint64</td>
+                                <td>decimal</td>
+                            </tr>
+                            <tr><th>bitmax :</th>
+                                <td>8</td>
+                                <td>8</td>
+                                <td>16</td>
+                                <td>16</td>
+                                <td>32</td>
+                                <td>32</td>
+                                <td>64</td>
+                                <td>64</td>
+                                <td>1024</td>
+                            </tr>
+                        </table>
+                        The default <varname>bitnum</varname> value depends on the input integer
+                        type:
+                        <itemizedlist>
+                            <listitem>
+                                 <para><literal>bitnum = bitmax</literal> for encoded integers
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>bitnum = 53</literal> for decimal integers
+                                    <literal>x ≤ 1/%eps</literal>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>bitnum = int(log2(x))+1</literal> for decimal integers
+                                    <literal>x &gt; 1/%eps</literal>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -109,7 +110,7 @@
         </para>
         <para>
             Example:
-            <screen>
+            <screen><![CDATA[
 --> bitget(180, 1:8)
  ans  =
    0.   0.   1.   0.   1.   1.   0.   1.
@@ -119,7 +120,7 @@
 --> bitget(11, 1:8)
  ans  =
    1.   1.   0.   1.   0.   0.   0.   0.
-</screen>
+]]></screen>
         </para>
         <para>
             For <varname>x</varname> such that <literal>abs(x) &lt; 2^bitnum</literal>,
@@ -129,7 +130,7 @@
         </para>
         <para>
             Example:
-            <screen>
+            <screen><![CDATA[
 --> x = 30; int(log2(30))+2
  ans  =
    6.
@@ -142,7 +143,7 @@
 --> bitget(97, 1:10)
  ans  =
    1.   0.   0.   0.   0.   1.   1.   0.   0.   0.
-</screen>
+]]></screen>
         </para>
     </refsection>
     <refsection>
@@ -248,7 +249,7 @@ bitcmp([0 0 0 0 0], 3:7)
 ]]></screen>
         <para/>
         <para>
-            bitnum can be > 52:
+            bitnum can be &gt; 52:
         </para>
         <programlisting role="example"><![CDATA[
 format(22)
@@ -315,18 +316,26 @@ bitcmp(r, 333)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Extension to 64 bit integers.
+                             <para>
+                                Extension to 64 bit integers.
+                            </para>
                         </listitem>
                         <listitem>
-                            Extension to all signed integers.
+                             <para>
+                                Extension to all signed integers.
+                            </para>
                         </listitem>
                         <listitem>
-                            Decimal positive integers > 2^52 up to 2^1024 = number_properties("huge")
-                            can now be processed, with bitnum up to 1024 instead of 52.
+                             <para>
+                                Decimal positive integers &gt; 2^52 up to 2^1024 = number_properties("huge")
+                                can now be processed, with bitnum up to 1024 instead of 52.
+                            </para>
                         </listitem>
                         <listitem>
-                            bitnum is now optional as well for input decimal integers.
-                            It can actually be an array.
+                             <para>
+                                bitnum is now optional as well for input decimal integers.
+                                It can actually be an array.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

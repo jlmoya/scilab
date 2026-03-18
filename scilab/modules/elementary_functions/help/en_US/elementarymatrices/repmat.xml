@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="repmat" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="repmat" xml:lang="en">
     <refnamediv>
         <refname>repmat</refname>
         <refpurpose>Replicate and tile an array</refpurpose>
@@ -35,34 +32,38 @@
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    Array of any native type (boolean, numeric, text,..., cells, structures),
-                    of any number of dimensions of any sizes. Boolean or numerical sparse
-                    matrices are supported.
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of any native type (boolean, numeric, text,..., cells, structures),
+                        of any number of dimensions of any sizes. Boolean or numerical sparse
+                        matrices are supported.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>m, n, ...</term>
                 <listitem>
-                    Positive integers: number of times that <varname>A</varname> must be replicated
-                    along the respective dimensions #1, #2, etc..
-                    <para/>
-                </listitem>
+                     <para>
+                        Positive integers: number of times that <varname>A</varname> must be replicated
+                        along the respective dimensions #1, #2, etc..
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>siz</term>
                 <listitem>
-                    Vector of replication numbers: <literal>siz=[m,n,..]</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vector of replication numbers: <literal>siz=[m,n,..]</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>B</term>
                 <listitem>
-                    Tiled array or ND-array, of sizes [m*size(A,1), n*size(A,2), ..] or
-                    [siz(1)*size(A,1), siz(2)*size(A,2), ..].
-                    <para/>
-                </listitem>
+                     <para>
+                        Tiled array or ND-array, of sizes [m*size(A,1), n*size(A,2), ..] or
+                        [siz(1)*size(A,1), siz(2)*size(A,2), ..].
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

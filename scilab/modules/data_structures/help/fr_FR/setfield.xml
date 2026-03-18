@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="setfield">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="setfield">
     <refnamediv>
         <refname>setfield</refname>
         <refpurpose>modifie la valeur d'un élément d'une mlist, tlist ou list</refpurpose>
@@ -30,34 +28,38 @@
             <varlistentry>
                 <term>L</term>
                 <listitem>
-                    liste de type <literal>list</literal>, <literal>tlist</literal> ou
-                    <literal>mlist</literal>, dont un élement doit être modifié.
-                    <para/>
-                </listitem>
+                     <para>
+                        liste de type <literal>list</literal>, <literal>tlist</literal> ou
+                        <literal>mlist</literal>, dont un élement doit être modifié.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a</term>
                 <listitem>
-                    Adresse de l'élément de liste à modifier. Elle peut être soit un mot texte
-                    spécifiant un nom de champ, soit un entier positif indiquant le n°
-                    de l'élément dans la liste.
-                    Voir <link linkend="insertion">insertion</link> pour plus de détails.
-                    <para/>
-                </listitem>
+                     <para>
+                        Adresse de l'élément de liste à modifier. Elle peut être soit un mot texte
+                        spécifiant un nom de champ, soit un entier positif indiquant le n°
+                        de l'élément dans la liste.
+                        Voir <link linkend="insertion">insertion</link> pour plus de détails.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    Tout objet Scilab : la valeur à affecter à l'élément.
-                    <para/>
-                </listitem>
+                     <para>
+                        Tout objet Scilab : la valeur à affecter à l'élément.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>uL</term>
                 <listitem>
-                    Liste modifiée.
-                    <para/>
-                </listitem>
+                     <para>
+                        Liste modifiée.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -165,11 +167,15 @@ Fonction non définie pour les types fournis.
 
                     <itemizedlist>
                         <listitem>
-                            La liste modifiée est désormais donnée en réponse, au lieu d'être
-                            modifiée "sur place".
+                             <para>
+                                La liste modifiée est désormais donnée en réponse, au lieu d'être
+                                modifiée "sur place".
+                            </para>
                         </listitem>
                         <listitem>
-                            setfield() ne peut plus être utilisée pour des tableaux de cellules.
+                             <para>
+                                setfield() ne peut plus être utilisée pour des tableaux de cellules.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

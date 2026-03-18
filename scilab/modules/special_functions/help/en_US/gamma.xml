@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="gamma" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="gamma" xml:lang="en">
     <refnamediv>
         <refname>gamma</refname>
         <refpurpose>gamma function, complete or incomplete normalized</refpurpose>
@@ -36,31 +33,33 @@
             <varlistentry>
                 <term>u</term>
                 <listitem>
-                    array of positive or negative real numbers
-                    <para/>
-                    <literal>gamma(u)</literal> and <literal>gamma(x,…)</literal> can be overloaded
-                    for complex numbers with <literal>%s_gamma_user()</literal>, and for other
-                    <varname>a</varname> types with the usual overload naming rule.
-                    <para/>
-                </listitem>
+                     <para>
+                        array of positive or negative real numbers
+                        <literal>gamma(u)</literal> and <literal>gamma(x,…)</literal> can be overloaded
+                        for complex numbers with <literal>%s_gamma_user()</literal>, and for other
+                        <varname>a</varname> types with the usual overload naming rule.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x, a, b</term>
                 <listitem>
-                    arrays of positive real numbers.
-                    If at least one input is not scalar, scalar ones are expanded to its size.
-                    If several inputs are not scalar, they must have the same size.
-                    <para/>
-                </listitem>
+                     <para>
+                        arrays of positive real numbers.
+                        If at least one input is not scalar, scalar ones are expanded to its size.
+                        If several inputs are not scalar, they must have the same size.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    array of real numbers, with the size of <varname>u</varname>
-                    or of (the non-scalar) <varname>x</varname>, <varname>a</varname>,
-                    or <varname>b</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        array of real numbers, with the size of <varname>u</varname>
+                        or of (the non-scalar) <varname>x</varname>, <varname>a</varname>,
+                        or <varname>b</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -161,7 +160,7 @@ plot2d(x, y, style=0, axesflag=5, rect=[a,-10,b,10])
 title("$\Gamma(u)$", "fontsize",3.5)
 xgrid(color("grey60"))
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             [a, b] = (-3, 5);
             x = linspace(a,b,40000);
             y = gamma(x);
@@ -170,7 +169,7 @@ xgrid(color("grey60"))
             title("$\Gamma(u)$", "fontsize",3.5)
             xgrid(color("grey60"))
             gcf().axes_size = [550,400];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             Incomplete normalized P(x,a) gamma function:
@@ -189,7 +188,7 @@ ylabel("x", "fontsize",2)
 zlabel("P(x,a)", "fontsize",2)
 xgrid
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = 0.1:0.2:8;
             a = 0.1:0.2:7;
             [X, A] = ndgrid(x, a);
@@ -203,7 +202,7 @@ xgrid
             zlabel("P(x,a)", "fontsize",2)
             xgrid
             gca().rotation_angles = [64 18];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             Incomplete generalized normalized P(x,a,b) function:
@@ -223,7 +222,7 @@ zlabel("")
 gca().rotation_angles = [58 75];
 xgrid
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             a = 0.1:0.2:8;
             b = 0.1:0.2:7;
             [A, B] = ndgrid(a, b);
@@ -237,7 +236,7 @@ xgrid
             zlabel("")
             gca().rotation_angles = [58 75];
             xgrid
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -268,10 +267,13 @@ xgrid
               <revremark>
                 <itemizedlist>
                   <listitem>
-                    The input can now be an hypermatrix.
+                       <para>
+                        The input can now be an hypermatrix.
+                      </para>
                   </listitem>
                   <listitem>
-                    <literal>gamma</literal> can now be overloaded for complex numbers.
+                       <para><literal>gamma</literal> can now be overloaded for complex numbers.
+                      </para>
                   </listitem>
                 </itemizedlist>
               </revremark>

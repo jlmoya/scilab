@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="x_matrix">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="x_matrix">
     <refnamediv>
         <refname>x_matrix</refname>
         <refpurpose>Edits a matrix and waits for validation (modal)</refpurpose>
@@ -31,30 +29,33 @@
             <varlistentry>
                 <term>Header</term>
                 <listitem>
-                    column vector of text: Text displayed before the matrix.
-                    Extended UTF-8 characters are supported.
-                    Any element starting with "&lt;body>" can use HTML.4 tags
-                    afterward.
-                    <para/>
-                </listitem>
+                     <para>
+                        column vector of text: Text displayed before the matrix.
+                        Extended UTF-8 characters are supported.
+                        Any element starting with "&lt;body&gt;" can use HTML.4 tags
+                        afterward.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>matrixIn</term>
                 <listitem>
-                    Initial vector or matrix of booleans, encoded integers, real or complex numbers,
-                    or text.
-                    <para/>
-                </listitem>
+                     <para>
+                        Initial vector or matrix of booleans, encoded integers, real or complex numbers,
+                        or text.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>matrixOut</term>
                 <listitem>
-                    Modified matrix, of the same type than <varname>matrixIn</varname>,
-                    if <emphasis role="bold">"OK"</emphasis> is pressed.
-                    Or <literal>[]</literal> if <emphasis role="bold">"Cancel"</emphasis>
-                    is pressed.
-                    <para/>
-                </listitem>
+                     <para>
+                        Modified matrix, of the same type than <varname>matrixIn</varname>,
+                        if <emphasis role="bold">"OK"</emphasis> is pressed.
+                        Or <literal>[]</literal> if <emphasis role="bold">"Cancel"</emphasis>
+                        is pressed.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -106,17 +107,17 @@ m = x_matrix("<body>Matrix of <b>text", t)
                 <td valign="top">
                     <inlinemediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/x_matrix_booleans.png" />
+                            <imagedata fileref="../images/x_matrix_booleans.png"/>
                         </imageobject>
                     </inlinemediaobject>
                     <inlinemediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/x_matrix_integers.png" />
+                            <imagedata fileref="../images/x_matrix_integers.png"/>
                         </imageobject>
                     </inlinemediaobject>
                     <inlinemediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/x_matrix_text.png" />
+                            <imagedata fileref="../images/x_matrix_text.png"/>
                         </imageobject>
                     </inlinemediaobject>
                 </td>
@@ -125,12 +126,12 @@ m = x_matrix("<body>Matrix of <b>text", t)
                 <td valign="top">
                     <inlinemediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/x_matrix_reals.png" />
+                            <imagedata fileref="../images/x_matrix_reals.png"/>
                         </imageobject>
                     </inlinemediaobject>
                     <inlinemediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/x_matrix_complex.png" />
+                            <imagedata fileref="../images/x_matrix_complex.png"/>
                         </imageobject>
                     </inlinemediaobject>
                 </td>
@@ -155,7 +156,7 @@ m = x_matrix(header, b)
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/x_matrix_header_scrollbars.png" />
+                    <imagedata fileref="../images/x_matrix_header_scrollbars.png"/>
                 </imageobject>
             </inlinemediaobject>
         </para>

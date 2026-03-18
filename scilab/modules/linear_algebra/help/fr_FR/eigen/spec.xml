@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="spec">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="spec">
     <refnamediv>
         <refname>spec</refname>
         <refpurpose>
@@ -41,58 +38,65 @@
             <varlistentry>
                 <term>A, B</term>
                 <listitem>
-                    Matrices carrées réelles ou complexes, de mêmes tailles.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrices carrées réelles ou complexes, de mêmes tailles.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>evals</term>
                 <listitem>
-                    Vecteur réel ou complexe
-                    <para/>
-                </listitem>
+                     <para>
+                        Vecteur réel ou complexe
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>diagevals</term>
                 <listitem>
-                    Matrice carrée diagonale réelle ou complexe : les éléments diagonaux sont
-                    les valeurs propres.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrice carrée diagonale réelle ou complexe : les éléments diagonaux sont
+                        les valeurs propres.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>R</term>
                 <listitem>
-                    Matrice carrée inversible réelle ou complexe des vecteurs propres à droite.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrice carrée inversible réelle ou complexe des vecteurs propres à droite.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>alpha, beta</term>
                 <listitem>
-                    Vecteurs de mêmes tailles: valeurs propres généralisées du faisceau
-                    de matrices <literal>A - s.B</literal>.
-                    alpha./beta donne les valeurs propres.
-                    <varname>alpha</varname> est à valeurs réelles ou complexes.
-                    <varname>beta</varname> est à valeurs réelles.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vecteurs de mêmes tailles: valeurs propres généralisées du faisceau
+                        de matrices <literal>A - s.B</literal>.
+                        alpha./beta donne les valeurs propres.
+                        <varname>alpha</varname> est à valeurs réelles ou complexes.
+                        <varname>beta</varname> est à valeurs réelles.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Q</term>
                 <listitem>
-                    Matrice carrée inversible réelle ou complexe des vecteurs propres
-                    généralisés à gauche.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrice carrée inversible réelle ou complexe des vecteurs propres
+                        généralisés à gauche.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Z</term>
                 <listitem>
-                    Matrice carrée inversible réelle ou complexe des vecteurs propres
-                    généralisés à droite.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrice carrée inversible réelle ou complexe des vecteurs propres
+                        généralisés à droite.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

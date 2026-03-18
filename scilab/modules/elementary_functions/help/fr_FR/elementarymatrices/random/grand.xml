@@ -16,10 +16,7 @@
  *
  -->
 <!-- module: randlib -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="grand">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="grand">
     <refnamediv>
         <refname>grand</refname>
         <refpurpose>Générateur de nombres pseudo-aléatoires</refpurpose>
@@ -429,21 +426,29 @@ grand("advnst", K)
                         ou textes ; dense ou creuse.
                         <itemizedlist>
                             <listitem>
-                                Si <varname>array</varname> est un vecteur ligne <literal>1 x m</literal>,
-                                <varname>Y</varname> est une matrice <literal>n x m</literal>.
+                                 <para>
+                                    Si <varname>array</varname> est un vecteur ligne <literal>1 x m</literal>,
+                                    <varname>Y</varname> est une matrice <literal>n x m</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Si <varname>array</varname> est un vecteur colonne <literal>m x 1</literal>,
-                                <varname>Y</varname> est une matrice <literal>m x n</literal>.
+                                 <para>
+                                    Si <varname>array</varname> est un vecteur colonne <literal>m x 1</literal>,
+                                    <varname>Y</varname> est une matrice <literal>m x n</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Si <varname>array</varname> est une matrice <literal>m x p</literal>,
-                                <varname>Y</varname> est une hypermatrice <literal>m x p x n</literal>.
+                                 <para>
+                                    Si <varname>array</varname> est une matrice <literal>m x p</literal>,
+                                    <varname>Y</varname> est une hypermatrice <literal>m x p x n</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                If <varname>array</varname> une hypermatrice <literal>m x p x q…</literal>,
-                                <varname>Y</varname> est une hypermatrice
-                                <literal>m x p x q… x n</literal>.
+                                 <para>
+                                    If <varname>array</varname> une hypermatrice <literal>m x p x q…</literal>,
+                                    <varname>Y</varname> est une hypermatrice
+                                    <literal>m x p x q… x n</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -808,11 +813,11 @@ scf();
 histplot(10, R);
 xtitle("Nombres aléatoires (loi normale) par grand", "X", "Fréquence");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             R = grand(400, 800, "nor", 0, 1);
             histplot(10, R);
             xtitle("Nombres aléatoires (loi normale) par grand", "X", "Fréquence");
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Renvoie une matrice de taille 400 x 800 de doubles aléatoires,
 // uniformes dans [0, 1).
@@ -821,11 +826,11 @@ scf();
 histplot(10, R);
 xtitle("Nombres aléatoires uniformes par grand", "X", "Fréquence");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             R = grand(400, 800, "def");
             histplot(10, R);
             xtitle("Nombres aléatoires uniformes par grand", "X", "Fréquence");
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Renvoie une matrice de taille 400 x 800 de doubles aléatoires,
 // avec une distribution de Poisson de moyenne 5.
@@ -834,11 +839,11 @@ scf();
 histplot(10, R);
 xtitle("Nombres aléatoires (loi de Poisson) par grand", "X", "Fréquence");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             R = grand(400, 800, "poi", 5);
             histplot(10, R);
             xtitle("Nombres aléatoires (loi de Poisson) par grand", "X", "Fréquence");
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Dans l'exemple suivant, nous produisons des nombres aléatoires
             suivant la loi exponentielle et comparons ensuite la distribution empirique
@@ -857,7 +862,7 @@ plot(x, y, "ro-");
 legend(["Empirique" "Theorique"]);
 xtitle("Loi exponentielle par grand", "X", "Fréquence");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             lambda = 1.6;
             N = 100000;
             X = grand(1, N, "exp", lambda);
@@ -868,7 +873,7 @@ xtitle("Loi exponentielle par grand", "X", "Fréquence");
             plot(x, y, "ro-");
             legend(["Empirique" "Theorique"]);
             xtitle("Loi exponentielle par grand", "X", "Fréquence");
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Dans l'exemple suivant, nous générons des nombres aléatoires selon la distribution
             gamma et comparons la distribution empirique et la loi de distribution théorique.
@@ -887,7 +892,7 @@ plot(XS, P, "r-"); // Theoretical distribution
 legend(["Empirique" "Théorique"]);
 xtitle("Fonction de distribution cumulée de nombres aléatoires selon la loi Gamma", "X", "F");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             N = 10000;
             A = 10;
             B = 4;
@@ -899,7 +904,7 @@ xtitle("Fonction de distribution cumulée de nombres aléatoires selon la loi Ga
             plot(XS, P, "r-");
             legend(["Empirique" "Théorique"]);
             xtitle("Fonction de distribution cumulée de nombres aléatoires selon la loi Gamma", "X", "F");
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Dans l'exemple suivant, nous générons 10 entiers aléatoires dans l'intervalle [1, 365].
         </para>
@@ -930,7 +935,7 @@ subplot(1,2,2)
 bar3d(R(:,:,10));
 xtitle("Couche 10");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             R = grand(10,10,10,"nor",0,1);
             subplot(1,2,1)
             bar3d(R(:,:,1));
@@ -938,7 +943,7 @@ xtitle("Couche 10");
             subplot(1,2,2)
             bar3d(R(:,:,10));
             xtitle("Couche 10");
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection>
         <title>Produire des nombres prévisibles ou moins prévisibles</title>

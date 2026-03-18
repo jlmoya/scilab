@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="unix_w" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="unix_w" xml:lang="pt">
     <refnamediv>
         <refname>unix_w</refname>
         <refpurpose>
@@ -61,15 +58,20 @@
             Se uma instrução nos <varname>commands</varname> gera um erro,
             <itemizedlist>
                 <listitem>
-                    A mensagem de erro do interpretador do sistema operacional é exibida no console
-                    do Scilab
+                     <para>
+                        A mensagem de erro do interpretador do sistema operacional é exibida no console
+                        do Scilab
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>unix_w</literal> para e exibe sua própria mensagem de erro no console
-                    do Scilab.
+                     <para><literal>unix_w</literal> para e exibe sua própria mensagem de erro no console
+                        do Scilab.
+                    </para>
                 </listitem>
                 <listitem>
-                    As instruções restantes nos <varname>commands</varname> são então ignoradas.
+                     <para>
+                        As instruções restantes nos <varname>commands</varname> são então ignoradas.
+                    </para>
                 </listitem>
             </itemizedlist>
             <warning>

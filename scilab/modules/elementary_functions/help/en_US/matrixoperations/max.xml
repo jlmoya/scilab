@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="max" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="max" xml:lang="en">
     <refnamediv>
         <refname>max</refname>
         <refpurpose>maximum</refpurpose>
@@ -96,10 +93,14 @@
                         When <literal>[m,K]=max(A)</literal> is used,
                         <itemizedlist>
                             <listitem>
-                                If <literal>A</literal> is a vector, K is a scalar.
+                                 <para>
+                                    If <literal>A</literal> is a vector, K is a scalar.
+                                </para>
                             </listitem>
                             <listitem>
-                                Otherwise, <varname>K</varname> is a row vector [i,j,..] of subscripts.
+                                 <para>
+                                    Otherwise, <varname>K</varname> is a row vector [i,j,..] of subscripts.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -154,11 +155,14 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    max() ignores NaN values (unless there are only NaN values).
+                     <para>
+                        max() ignores NaN values (unless there are only NaN values).
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>max([])</literal> returns
-                    <literal>[]</literal> for values and <varname>K</varname>.
+                     <para><literal>max([])</literal> returns
+                        <literal>[]</literal> for values and <varname>K</varname>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="edit_curv">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="edit_curv">
     <refnamediv>
         <refname>edit_curv</refname>
         <refpurpose>interactive modal (blocking) graphic curve editor</refpurpose>
@@ -44,99 +41,109 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    vector of initial or final x coordinates of the curve.
-                    Default value: <literal>1:length(y)</literal>.
+                     <para>
+                        vector of initial or final x coordinates of the curve.
+                        Default value: <literal>1:length(y)</literal>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    vector of initial or final y coordinates of the curve. Default value:
-                    <literal>[]</literal>.
+                     <para>
+                        vector of initial or final y coordinates of the curve. Default value:
+                        <literal>[]</literal>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>hCurve</term>
                 <listitem>
-                    Graphic handle of Polyline type: the existing curve to be edited.
+                     <para>
+                        Graphic handle of Polyline type: the existing curve to be edited.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Axes</term>
                 <listitem>
-                    Graphic handle of the axes in which the given curve must be displayed and
-                    edited. The axes may be in a figure or in a uicontrol frame.
+                     <para>
+                        Graphic handle of the axes in which the given curve must be displayed and
+                        edited. The axes may be in a figure or in a uicontrol frame.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>job</term>
                 <listitem>
-                    a character string made of one to four characters in any order among
-                    <literal>'a','d','x','y'</literal>, setting authorizations:
-                    <table>
-                        <tr><td valign="top"><emphasis role="bold">"a"</emphasis>:</td>
-                            <td>addition of points to the curve.</td>
-                        </tr>
-                        <tr><td valign="top"><emphasis role="bold">"d"</emphasis>:</td>
-                            <td>deletion of points of the curve.</td>
-                        </tr>
-                        <tr><td valign="top"><emphasis role="bold">"x"</emphasis>:</td>
-                            <td>moving points horizontally, along x.</td>
-                        </tr>
-                        <tr><td valign="top"><emphasis role="bold">"y"</emphasis>:</td>
-                            <td>moving points vertically, along y.</td>
-                        </tr>
-                    </table>
-                    Default value: <literal>"adxy"</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        a character string made of one to four characters in any order among
+                        <literal>'a','d','x','y'</literal>, setting authorizations:
+                        <table>
+                            <tr><td valign="top"><emphasis role="bold">"a"</emphasis>:</td>
+                                <td>addition of points to the curve.</td>
+                            </tr>
+                            <tr><td valign="top"><emphasis role="bold">"d"</emphasis>:</td>
+                                <td>deletion of points of the curve.</td>
+                            </tr>
+                            <tr><td valign="top"><emphasis role="bold">"x"</emphasis>:</td>
+                                <td>moving points horizontally, along x.</td>
+                            </tr>
+                            <tr><td valign="top"><emphasis role="bold">"y"</emphasis>:</td>
+                                <td>moving points vertically, along y.</td>
+                            </tr>
+                        </table>
+                        Default value: <literal>"adxy"</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>titles</term>
                 <listitem>
-                    a vector of three character strings:
-                    <literal>[axes_title, x_axis_legend, y_axis_legend]</literal>.
-                    By default, the current or default legends and title are unchanged.
-                    <para/>
-                </listitem>
+                     <para>
+                        a vector of three character strings:
+                        <literal>[axes_title, x_axis_legend, y_axis_legend]</literal>.
+                        By default, the current or default legends and title are unchanged.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>gc</term>
                 <listitem>
-                    a list of graphic parameters: <literal>gc=list(dataBounds, xyTicks, lineStyles)</literal>
-                    <table>
-                        <tr><td>dataBounds:</td>
-                            <td><literal>[xmin, ymin, xmax, ymax]</literal> values to assign to
-                            <literal>gca().data_bounds</literal> as new axes bounds.
-                            </td>
-                        </tr>
-                        <tr><td>xyTicks:</td>
-                            <td>
-                                (unused) graduation parameters <literal>[nx,Nx,ny,Ny]</literal>:
-                                Nx = number of major ticks along the x axis (-1 for autoticking).
-                                nx = number of minor ticks between 2 major ticks.
-                                Ny, ny: same thing along the y axis.
-                            </td>
-                        </tr>
-                        <tr><td>lineStyles:</td>
-                            <td><literal>[line_style, colorIndex, thickness, mark_style]</literal>
-                                of the curve. <literal>%nan</literal> stands for keeping the default
-                                value, that are <literal>[1 1 2 1]</literal>
-                                (solid black 2-thick line with "+" marks).
-                            </td>
-                        </tr>
-                    </table>
-                    <literal>list(,, lineStyles)</literal> will use default values for
-                    <literal>dataBounds</literal> and <literal>xyTicks</literal>.
-                    <para/>
-                    <para/>
-                </listitem>
+                     <para>
+                        a list of graphic parameters: <literal>gc=list(dataBounds, xyTicks, lineStyles)</literal><table>
+                            <tr><td>dataBounds:</td>
+                                <td><literal>[xmin, ymin, xmax, ymax]</literal> values to assign to
+                                <literal>gca().data_bounds</literal> as new axes bounds.
+                                </td>
+                            </tr>
+                            <tr><td>xyTicks:</td>
+                                <td>
+                                    (unused) graduation parameters <literal>[nx,Nx,ny,Ny]</literal>:
+                                    Nx = number of major ticks along the x axis (-1 for autoticking).
+                                    nx = number of minor ticks between 2 major ticks.
+                                    Ny, ny: same thing along the y axis.
+                                </td>
+                            </tr>
+                            <tr><td>lineStyles:</td>
+                                <td><literal>[line_style, colorIndex, thickness, mark_style]</literal>
+                                    of the curve. <literal>%nan</literal> stands for keeping the default
+                                    value, that are <literal>[1 1 2 1]</literal>
+                                    (solid black 2-thick line with "+" marks).
+                                </td>
+                            </tr>
+                        </table><literal>list(,, lineStyles)</literal> will use default values for
+                        <literal>dataBounds</literal> and <literal>xyTicks</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>ok</term>
                 <listitem>
-                    Boolean: %t when <literal>edit_curv()</literal> is quit through the 'ok' menu.
-                    %F otherwise ('Abort' menu, Figure closed through its X cross..).
+                     <para>
+                        Boolean: %t when <literal>edit_curv()</literal> is quit through the 'ok' menu.
+                        %F otherwise ('Abort' menu, Figure closed through its X cross..).
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -187,9 +194,9 @@
                             follow the mouse ; click to set and stop moving the point at its final
                             position.
                         </td></tr>
-                    <tr><td></td></tr>
+                    <tr><td/></tr>
                     <tr><td><emphasis role="bold">Delete a point</emphasis>: Click on it. Then press
-                            the &lt;suppr> key.</td></tr>
+                            the &lt;suppr&gt; key.</td></tr>
                     <tr><td><emphasis role="bold">Cancel the previous action (Undo)</emphasis>:
                             Press <literal>CTRL Z</literal> keys (or use the Control → Undo menu)</td></tr>
                     <tr><td><emphasis role="bold">Cancel the previous cancelation (Redo)</emphasis>:
@@ -279,23 +286,25 @@
                 x or y:
                 <itemizedlist>
                     <listitem>
-                        Activate the asynchronous editor for the targeted figure, either by running
-                        <literal>useeditor(gcf().figure_id)</literal>, or by clicking on the edit
-                        button
-                        <inlinemediaobject>
-                            <imageobject>
-                                <imagedata fileref="../../../../gui/images/icons/16x16/actions/data_modify.png"/>
-                            </imageobject>
-                        </inlinemediaobject>
-                        in the graphics toolbar.
+                         <para>
+                            Activate the asynchronous editor for the targeted figure, either by running
+                            <literal>useeditor(gcf().figure_id)</literal>, or by clicking on the edit
+                            button
+                            
+                            in the graphics toolbar.
+                        </para>
                     </listitem>
                     <listitem>
-                        Click or double-click on the curve to edit. Double-click shows its points.
-                        Then change its position or shape.
+                         <para>
+                            Click or double-click on the curve to edit. Double-click shows its points.
+                            Then change its position or shape.
+                        </para>
                     </listitem>
                     <listitem>
-                        Finally, disable the editor:
-                        <literal>useeditor(gcf().figure_id)</literal>
+                         <para>
+                            Finally, disable the editor:
+                            <literal>useeditor(gcf().figure_id)</literal>
+                        </para>
                     </listitem>
                 </itemizedlist>
                 Please see the <link linkend="ieditor">ieditor</link> page for more information.
@@ -365,14 +374,17 @@ ylabel("Y axis")
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>hCurve</literal> and <literal>Axes</literal> optional inputs added.
+                             <para><literal>hCurve</literal> and <literal>Axes</literal> optional inputs added.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>"d"</literal> job: deletion of points now allowed.
+                             <para><literal>"d"</literal> job: deletion of points now allowed.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>Undo</literal> action actually implemented. CTRL-Z implemented.
-                            <literal>Redo</literal> and CTRL-Y action added.
+                             <para><literal>Undo</literal> action actually implemented. CTRL-Z implemented.
+                                <literal>Redo</literal> and CTRL-Y action added.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

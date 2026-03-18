@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="sum" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="sum" xml:lang="fr">
     <refnamediv>
         <refname>sum</refname>
         <refpurpose>somme des éléments d'un tableau.</refpurpose>
@@ -36,45 +33,51 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    Tableau de booléens (dense ou creux),  entiers encodés,
-                    nombres (dense ou creux), polynômes, ou fractions rationnelles.
-                    <para/>
-                </listitem>
+                     <para>
+                        Tableau de booléens (dense ou creux),  entiers encodés,
+                        nombres (dense ou creux), polynômes, ou fractions rationnelles.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>orientation</term>
                 <listitem>
-                    Cet argument peut être
-                    <itemizedlist>
-                        <listitem>
-                            un caractère : <literal>"*"</literal>,
-                            <literal>"r"</literal>, <literal>"c"</literal> ou
-                            <literal>"m"</literal>
-                            <para/>
-                        </listitem>
-                        <listitem>
-                            un entier positif : n° de la dimension selon laquelle les sommes
-                            doivent être calculées.
-                            <para/>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        Cet argument peut être
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    un caractère : <literal>"*"</literal>,
+                                    <literal>"r"</literal>, <literal>"c"</literal> ou
+                                    <literal>"m"</literal>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    un entier positif : n° de la dimension selon laquelle les sommes
+                                    doivent être calculées.
+                                    </para>
+                                </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>outtype</term>
                 <listitem>
-                    une chaîne de caractères pouvant prendre les valeurs
-                    <literal>"native"</literal> ou <literal>"double"</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        une chaîne de caractères pouvant prendre les valeurs
+                        <literal>"native"</literal> ou <literal>"double"</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    un scalaire ou un tableau.
-                    <para/>
-                </listitem>
+                     <para>
+                        un scalaire ou un tableau.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -97,11 +100,11 @@
                     Si <literal>orientation</literal> est égal à  1 ou "r" alors:
                 </para>
                 <para>
-                    <latex><![CDATA[{ y(\mathbf{1},j) = \sum_{\mathbf{i}} x(\mathbf{i},j)}]]></latex>
+                    <latex>{ y(\mathbf{1},j) = \sum_{\mathbf{i}} x(\mathbf{i},j)}</latex>
                 </para>
                 <para>ou </para>
                 <para>
-                    <latex><![CDATA[ y(\mathbf{1},j,k,\ldots) = \sum_{\mathbf{i}} x(\mathbf{i},j,k,\ldots)]]></latex>
+                    <latex> y(\mathbf{1},j,k,\ldots) = \sum_{\mathbf{i}} x(\mathbf{i},j,k,\ldots)</latex>
                 </para>
             </listitem>
             <listitem>
@@ -109,11 +112,11 @@
                     Si <literal>orientation</literal>  est égal à  2 ou "c" alors:
                 </para>
                 <para>
-                    <latex><![CDATA[ y(i,\mathbf{1}) = \sum_{\mathbf{j}} x(i,\mathbf{j})]]></latex>
+                    <latex> y(i,\mathbf{1}) = \sum_{\mathbf{j}} x(i,\mathbf{j})</latex>
                 </para>
                 <para>ou</para>
                 <para>
-                    <latex><![CDATA[ y(i,\mathbf{1},k,\ldots) = \sum_{j} x(i,\mathbf{j},k,\ldots)]]></latex>
+                    <latex> y(i,\mathbf{1},k,\ldots) = \sum_{j} x(i,\mathbf{j},k,\ldots)</latex>
                 </para>
             </listitem>
             <listitem>
@@ -121,7 +124,7 @@
                     Si <literal>orientation</literal>  est égal à n  alors
                 </para>
                 <para>
-                    <latex><![CDATA[ y(i_1,\ldots,i_{n-1},\mathbf{1},i_{n+1},\ldots) = \sum_{\mathbf{i_n}} x(i_1,\ldots,i_{n-1},\mathbf{i_n},i_{n+1},\ldots)]]></latex>
+                    <latex> y(i_1,\ldots,i_{n-1},\mathbf{1},i_{n+1},\ldots) = \sum_{\mathbf{i_n}} x(i_1,\ldots,i_{n-1},\mathbf{i_n},i_{n+1},\ldots)</latex>
                 </para>
             </listitem>
             <listitem>

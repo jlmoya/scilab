@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org"  xml:id="ndgrid" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="ndgrid" xml:lang="fr">
     <refnamediv>
         <refname>ndgrid</refname>
         <refpurpose>construit des matrices ou hypermatrices en répliquant des vecteurs
@@ -59,20 +56,26 @@
         </para>
         <para>Pour ce faire,
             <itemizedlist>
-                <listitem>la matrice ou l'hypermatrice <literal>X</literal>
-                est construite en répliquant le vecteur  <literal>x</literal>
-                dans toutes ses colonnes ;
+                <listitem>
+                     <para>la matrice ou l'hypermatrice <literal>X</literal>
+                    est construite en répliquant le vecteur  <literal>x</literal>
+                    dans toutes ses colonnes ;
+                </para>
             </listitem>
             <listitem>
-                la matrice ou l'hypermatrice <literal>Y</literal>
-                est construite en répliquant le vecteur  <literal>y</literal>
-                dans toutes ses lignes ;
+                 <para>
+                    la matrice ou l'hypermatrice <literal>Y</literal>
+                    est construite en répliquant le vecteur  <literal>y</literal>
+                    dans toutes ses lignes ;
+                </para>
             </listitem>
             <listitem>
-                la matrice ou l'hypermatrice <literal>Z</literal>
-                est construite en répliquant le vecteur  <literal>z</literal>
-                en épaisseur pour tous les points (x,y) ;
-                etc.
+                 <para>
+                    la matrice ou l'hypermatrice <literal>Z</literal>
+                    est construite en répliquant le vecteur  <literal>z</literal>
+                    en épaisseur pour tous les points (x,y) ;
+                    etc.
+                </para>
             </listitem>
         </itemizedlist>
     </para>
@@ -102,12 +105,16 @@
         A titre d'exemple, considérons un ensemble d'objets ayant tous 2 attributs :
         <orderedlist>
             <listitem>
-                Le premier est un nombre <literal>n</literal>,
-                avec 2 valeurs possibles, par exemple: <literal>n = [ 3 7 ]</literal>
-            </listitem>
-            <listitem>Le second est une lettre, avec 6 choix possibles,
-                par exemple: <literal>c = ["a" "e" "i" "o" "u" "y"]</literal>
-            </listitem>
+                 <para>
+                    Le premier est un nombre <literal>n</literal>,
+                    avec 2 valeurs possibles, par exemple: <literal>n = [ 3 7 ]</literal>
+                                                       </para>
+                                                   </listitem>
+            <listitem>
+                 <para>Le second est une lettre, avec 6 choix possibles,
+                    par exemple: <literal>c = ["a" "e" "i" "o" "u" "y"]</literal>
+                             </para>
+                         </listitem>
         </orderedlist>
         Nous souhaitons maintenant générer l'ensemble complet des
         objets {n,c} possibles. Il s'agit juste d'une grille 2D
@@ -150,14 +157,14 @@ Z = X - 3*X.*sin(X).*cos(Y-4) ;
 clf()
 plot3d(x,y,Z, flag=[color("green") 2 4], alpha=7, theta=60); show_window()
  ]]></programlisting>
-    <scilab:image>
+    <scilab:image><![CDATA[
         x = linspace(-10,2,40);
         y = linspace(-5,5,40);
         [X,Y] = ndgrid(x,y);
         Z = X - 3*X.*sin(X).*cos(Y-4) ;
         clf()
         plot3d(x,y,Z, flag=[color("green") 2 4], alpha=7, theta=60); show_window()
-    </scilab:image>
+    ]]></scilab:image>
     <para>
         <emphasis role="bold">Exemple #2:</emphasis>
     </para>
@@ -189,7 +196,7 @@ clf()
 plot3d(XF,YF,ZF, flag=[0 6 3], 66, 61, leg="X@Y@Z")
 xtitle("A 3d grid !"); show_window()
  ]]></programlisting>
-    <scilab:image>
+    <scilab:image><![CDATA[
         nx = 10; ny = 6; nz = 4;
         x = linspace(0,2,nx);
         y = linspace(0,1,ny);
@@ -208,7 +215,7 @@ xtitle("A 3d grid !"); show_window()
         end
         plot3d(XF,YF,ZF, flag=[0 6 3], 66, 61, leg="X@Y@Z")
         xtitle("A 3d grid !");
-    </scilab:image>
+    ]]></scilab:image>
     <para>
         <emphasis role="bold">Exemple #3: création d'une table de digrammes</emphasis>
     </para>

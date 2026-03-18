@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="evstr" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="evstr" xml:lang="pt">
     <refnamediv>
         <refname>evstr</refname>
         <refpurpose>avaliação de expressões</refpurpose>
@@ -98,12 +95,14 @@
         <note>Special aliases:
             <itemizedlist>
                 <listitem>
-                        <literal>"Nan"</literal> and <literal>"NaN"</literal> are parsed as
-                        <constant>%nan</constant>.
+                     <para><literal>"Nan"</literal> and <literal>"NaN"</literal> are parsed as
+                            <constant>%nan</constant>.
+                    </para>
                 </listitem>
                 <listitem>
-                        <literal>"Inf"</literal> and <literal>"INF"</literal> are parsed as
-                        <constant>%inf</constant>.
+                     <para><literal>"Inf"</literal> and <literal>"INF"</literal> are parsed as
+                            <constant>%inf</constant>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
@@ -123,7 +122,7 @@ evstr('NaN'), evstr('Inf')
 [H, ierr] = evstr(Z) // no error
 Z = ['a', 'b', 'c'] ;// the variable c is undefined
 [H, ierr] = evstr(Z) // error 4: Undefined variable: c
-]]>     </programlisting>
+     ]]></programlisting>
     </refsection>
     <refsection>
         <title>Ver Também</title>

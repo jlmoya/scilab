@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="sample">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="sample">
     <refnamediv>
         <refname>sample</refname>
         <refpurpose>Sampling: random draw with replacement</refpurpose>
@@ -50,16 +47,19 @@
                         The shape of samples:
                         <itemizedlist>
                             <listitem>
-                                <literal>'*'</literal> (default): elements of <varname>X</varname>
-                                are sampled.
+                                 <para><literal>'*'</literal> (default): elements of <varname>X</varname>
+                                    are sampled.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>1</literal> or <literal>'r'</literal>: rows of
-                                <varname>X</varname> are sampled.
+                                 <para><literal>1</literal> or <literal>'r'</literal>: rows of
+                                    <varname>X</varname> are sampled.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>2</literal> or <literal>'c'</literal>: rolumns of
-                                <varname>X</varname> are sampled.
+                                 <para><literal>2</literal> or <literal>'c'</literal>: rolumns of
+                                    <varname>X</varname> are sampled.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -110,8 +110,8 @@
 
             seed = 0;
             grand("setsd", seed); //sets the seed to default value
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
     </refsection>
     <refsection>
         <title>Examples</title>

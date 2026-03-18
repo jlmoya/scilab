@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="libraryinfo">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="libraryinfo">
     <refnamediv>
         <refname>libraryinfo</refname>
         <refpurpose>
@@ -80,16 +77,19 @@
                 получения какой-либо информации? Продолжим с примером <literal>iolib</literal>:
                 <itemizedlist>
                     <listitem>
-                        <emphasis role="bold">Получение пути</emphasis>:
-                        <literal>libpath = string(iolib)(1)</literal>
+                         <para><emphasis role="bold">Получение пути</emphasis>:
+                            <literal>libpath = string(iolib)(1)</literal>
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis role="bold">Получение вектор-столбца составляющих функций</emphasis>:
-                        <literal>functions = string(iolib)(2:$)</literal>
+                         <para><emphasis role="bold">Получение вектор-столбца составляющих функций</emphasis>:
+                            <literal>functions = string(iolib)(2:$)</literal>
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis role="bold">Получение литерального имени библиотеки</emphasis>:
-                        <literal>libraryname = xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
+                         <para><emphasis role="bold">Получение литерального имени библиотеки</emphasis>:
+                            <literal>libraryname = xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
+                        </para>
                     </listitem>
                 </itemizedlist>
             </para>
@@ -105,13 +105,15 @@
                 При условии, что известен путь <varname>libpath</varname>, можно
                 <itemizedlist>
                     <listitem>
-                        <emphasis role="bold">получить его литеральное имя</emphasis>:
-                        <literal>xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
+                         <para><emphasis role="bold">получить его литеральное имя</emphasis>:
+                            <literal>xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
+                        </para>
                     </listitem>
                     <listitem>
-                        <emphasis role="bold">получить вектор-столбец составляющих
-                        функций</emphasis>:
-                        <literal>functions = xmlGetValues("//scilablib/macro", "name", libpath+"/lib")</literal>
+                         <para><emphasis role="bold">получить вектор-столбец составляющих
+                            функций</emphasis>:
+                            <literal>functions = xmlGetValues("//scilablib/macro", "name", libpath+"/lib")</literal>
+                        </para>
                     </listitem>
                 </itemizedlist>
             </para>

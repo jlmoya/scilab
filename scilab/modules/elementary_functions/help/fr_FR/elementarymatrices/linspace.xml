@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="linspace" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="linspace" xml:lang="fr">
     <refnamediv>
         <refname>linspace</refname>
         <refpurpose>suite de nombres équidistants entre 2 bornes atteintes</refpurpose>
@@ -198,10 +195,14 @@ x(:,1:$-1) - x(:,2:$)
                 <revnumber>5.4.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>Des vecteurs colonne de bornes peuvent être utilisées.
+                        <listitem>
+                             <para>Des vecteurs colonne de bornes peuvent être utilisées.
+                            </para>
                         </listitem>
-                        <listitem>Le nombre de colonnes générées doit
-                            être obligatoirement un entier.
+                        <listitem>
+                             <para>Le nombre de colonnes générées doit
+                                être obligatoirement un entier.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>
@@ -210,9 +211,13 @@ x(:,1:$-1) - x(:,2:$)
                 <revnumber>6.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>linspace(a, b, n&lt;=0) produit [] au lieu de b.
+                        <listitem>
+                             <para>linspace(a, b, n&lt;=0) produit [] au lieu de b.
+                            </para>
                         </listitem>
-                        <listitem>Toute borne %inf ou %nan est détectée et rejetée.
+                        <listitem>
+                             <para>Toute borne %inf ou %nan est détectée et rejetée.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

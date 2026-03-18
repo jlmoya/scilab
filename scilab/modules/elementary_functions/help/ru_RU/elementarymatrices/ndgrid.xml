@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="ndgrid" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="ndgrid" xml:lang="ru">
     <refnamediv>
         <refname>ndgrid</refname>
         <refpurpose>строит матрицы или N-мерные массивы путем репликации данных векторов
@@ -77,11 +74,15 @@
             Эта схема копирования может быть обобщена к любому числу измерений, а также
             к любому типу универсальных данных. Давайте, например, возьмём 2 атрибута:
             <orderedlist>
-                <listitem>Первый - это число, которое нужно выбрать из вектора, скажем
-                    <literal>n = [ 3 7 ]</literal>
+                <listitem>
+                     <para>Первый - это число, которое нужно выбрать из вектора, скажем
+                        <literal>n = [ 3 7 ]</literal>
+                    </para>
                 </listitem>
-                <listitem>Второй - это буква, которую нужно выбрать из вектора, скажем
-                    <literal>c = ["a" "e" "i" "o" "u" "y"]</literal>
+                <listitem>
+                     <para>Второй - это буква, которую нужно выбрать из вектора, скажем
+                        <literal>c = ["a" "e" "i" "o" "u" "y"]</literal>
+                    </para>
                 </listitem>
             </orderedlist>
             Тогда мы хотим построить множество всех <literal>{n,c}</literal> возможных пар.
@@ -122,15 +123,15 @@ Z = X - 3*X.*sin(X).*cos(Y-4) ;
 
 clf()
 plot3d(x,y,Z, flag=[color("green") 2 4], alpha=7, theta=60); show_window()
- ]]>    </programlisting>
-        <scilab:image>
+     ]]></programlisting>
+        <scilab:image><![CDATA[
             x = linspace(-10,2,40);
             y = linspace(-5,5,40);
             [X,Y] = ndgrid(x,y);
             Z = X - 3*X.*sin(X).*cos(Y-4) ;
             clf()
             plot3d(x,y,Z, flag=[color("green") 2 4], alpha=7, theta=60); show_window()
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             <emphasis role="bold">Пример #2:</emphasis>
         </para>
@@ -159,7 +160,7 @@ clf()
 plot3d(XF,YF,ZF, flag=[0 6 3], 66, 61, leg="X@Y@Z")
 xtitle("Трёхмерная сетка!"); show_window()
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             nx = 10; ny = 6; nz = 4;
             x = linspace(0,2,nx);
             y = linspace(0,1,ny);
@@ -179,14 +180,14 @@ xtitle("Трёхмерная сетка!"); show_window()
             clf()
             plot3d(XF,YF,ZF, flag=[0 6 3], 66, 61, leg="X@Y@Z")
             xtitle("Трёхмерная сетка!"); show_window()
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             <emphasis role="bold">Пример #3: Создание таблицы пар символов:</emphasis>
         </para>
         <programlisting role="example"><![CDATA[
 [c1, c2] = ndgrid(["a" "b" "c"], ["a" "b" "c" "d" "e" "f" "g" "h"])
 c1+c2
- ]]>    </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[--> [c1, c2] = ndgrid(["a" "b" "c"], ["a" "b" "c" "d" "e" "f" "g" "h"])
  c2  =
 !a  b  c  d  e  f  g  h  !

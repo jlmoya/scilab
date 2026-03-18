@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="test_run" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="test_run" xml:lang="en">
     <refnamediv>
         <refname>test_run</refname>
         <refpurpose>
@@ -117,7 +114,7 @@
                             <term>"create_ref"</term>
                             <listitem>
                                 <para>creates the .dia.ref file (for tests not having the
-                                  <literal>&lt;-- NO CHECK REF --></literal> flag)
+                                  <literal>&lt;-- NO CHECK REF --&gt;</literal> flag)
                                   and does not check if the .dia and .dia.ref are equal.
                                   </para>
                             </listitem>
@@ -620,10 +617,14 @@ test_run string *ascii*
                 <revnumber>5.4.0</revnumber>
                 <revdescription>test_run returns a status:
                     <itemizedlist><listitem>
-                            Returns %t if no error has been detected
+                                       <para>
+                                Returns %t if no error has been detected
+                            </para>
                         </listitem>
                         <listitem>
-                            Returns %f if any error has been detected
+                             <para>
+                                Returns %f if any error has been detected
+                            </para>
                         </listitem>
                     </itemizedlist>
                     <para>

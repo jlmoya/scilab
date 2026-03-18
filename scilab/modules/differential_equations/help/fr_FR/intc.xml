@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="intc">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="intc">
     <refnamediv>
         <refname>intc</refname>
         <refpurpose>intégrale dans le plan complexe, selon un chemin rectiligne</refpurpose>
@@ -36,32 +33,36 @@
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                      scalaires complexes : points de départ et d'arrivée de l'intégrale, dans le
-                      plan complexe.
-                    <para/>
-                </listitem>
+                     <para>
+                          scalaires complexes : points de départ et d'arrivée de l'intégrale, dans le
+                          plan complexe.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>f</term>
                 <listitem>
-                    Identifiant d'une fonction (exemple: sin)
-                    <para/>
-                </listitem>
+                     <para>
+                        Identifiant d'une fonction (exemple: sin)
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>abserr, rerr</term>
                 <listitem>
-                     Scalaires réels : erreurs absolue et relative recherchées.
-                        Valeurs par défaut: <literal>1.d-13</literal> et <literal>1d-8</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                         Scalaires réels : erreurs absolue et relative recherchées.
+                            Valeurs par défaut: <literal>1.d-13</literal> et <literal>1d-8</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>err</term>
                 <listitem>
-                    Scalaire réel : erreur absolue estimée sur le résultat.
-                    <para/>
-                </listitem>
+                     <para>
+                        Scalaire réel : erreur absolue estimée sur le résultat.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

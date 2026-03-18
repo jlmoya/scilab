@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="sparse">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="sparse">
     <refnamediv>
         <refname>sparse</refname>
         <refpurpose>sparse matrix definition</refpurpose>
@@ -86,12 +83,15 @@
         <warning>
             <itemizedlist>
               <listitem>
-                  For the building syntaxes, if several values are given for a same
-                  <varname>ij</varname> position, the sum of theses values is assigned.
+                   <para>
+                      For the building syntaxes, if several values are given for a same
+                      <varname>ij</varname> position, the sum of theses values is assigned.
+                  </para>
               </listitem>
               <listitem>
-                <literal>sparse([],[])</literal> yields the <literal>(0, 0) zero sparse matrix</literal>,
-                with <literal>sparse([],[]) ~= []</literal>.
+                   <para><literal>sparse([],[])</literal> yields the <literal>(0, 0) zero sparse matrix</literal>,
+                    with <literal>sparse([],[]) ~= []</literal>.
+                  </para>
               </listitem>
             </itemizedlist>
         </warning>

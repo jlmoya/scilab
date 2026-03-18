@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATEIG" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATEIG" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATEIG</refname>
         <refpurpose>Valeurs propres d'une matrice</refpurpose>
@@ -86,8 +83,7 @@
         <title>Paramètres</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATEIG_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/MATEIG_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -113,13 +109,13 @@
     </refsection>
     <refsection id="Example_MATEIG">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A = [1 12 32 ; 21 35 46 ; 70 8 19]
             Quand "Decomposition type" est mis à 1 la sortie est y = [-35.649 ; 14.279 ; 76.369]
             Quand "Decomposition type" est mis à 2 les sorties sont:
             y1 = [-35.649 0.000 0.000 ; 0.000 14.279 0.000 ; 0.000 0.000 76.369]
             y2 = [0.557 0.080 0.349 ; 0.330 -0.922 0.770 ; -0.762 0.379 0.533]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection id="Defaultproperties_MATEIG">
         <title>Propriétés par défaut</title>
@@ -206,16 +202,24 @@
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_vps.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_vps.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_vpv.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_vpv.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_vps.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_vps.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_vpv.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_vpv.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="write" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="write" xml:lang="ja">
     <refnamediv>
         <refname>write</refname>
         <refpurpose>フォーマットされたファイルに書き込む</refpurpose>
@@ -38,14 +35,18 @@
                     <para>
                     <itemizedlist>
                         <listitem>
-                            ファイル名を指定する文字列.
-                            既存のファイルを上書きしようとすると、エラーが発生します.
+                             <para>
+                                ファイル名を指定する文字列.
+                                既存のファイルを上書きしようとすると、エラーが発生します.
+                            </para>
                         </listitem>
                         <listitem>
-                            または、 ファイル（…） で開かれたファイルの整数 ID
-                            （<link linkend="file">file</link>参照）.
-                            <literal>%io(2)</literal> を使用すると、コンソールに書き込みが行われます.
-
+                             <para>
+                                または、 ファイル（…） で開かれたファイルの整数 ID
+                                （<link linkend="file">file</link>参照）.
+                                <literal>%io(2)</literal> を使用すると、コンソールに書き込みが行われます.
+    
+                            </para>
                         </listitem>
                     </itemizedlist>
                     </para>

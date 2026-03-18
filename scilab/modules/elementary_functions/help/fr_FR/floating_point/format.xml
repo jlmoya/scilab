@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="format" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="format" xml:lang="fr">
     <refnamediv>
         <refname>format</refname>
         <refpurpose>configure le format par défaut d'affichage des nombres décimaux</refpurpose>
@@ -38,19 +35,23 @@
                 <listitem>
                     <para>Type d'affichage :
                         <itemizedlist>
-                          <listitem>1 or "v": format
-                            <emphasis role="bold">v</emphasis>ariable auto-adaptatif
-                            (automatique) : pour chaque nombre décimal ou complexe
-                            à afficher, Scilab choisit soit la représentation
-                            directe (ex: -143.8757), soit le format scientifique
-                            avec <emphasis role="bold">e</emphasis>xposant
-                            (ex: -1.438E+02) le plus adapté, permettant d'afficher
-                            un maximum de digits de la mantisse.
+                          <listitem>
+                               <para>1 or "v": format
+                                <emphasis role="bold">v</emphasis>ariable auto-adaptatif
+                                (automatique) : pour chaque nombre décimal ou complexe
+                                à afficher, Scilab choisit soit la représentation
+                                directe (ex: -143.8757), soit le format scientifique
+                                avec <emphasis role="bold">e</emphasis>xposant
+                                (ex: -1.438E+02) le plus adapté, permettant d'afficher
+                                un maximum de digits de la mantisse.
+                              </para>
                           </listitem>
                           <listitem>
-                              0 or "e": force l'utilisation du format scientifique
-                              avec <emphasis role="bold">e</emphasis>xposant, pour
-                              tous les nombres décimaux.
+                               <para>
+                                  0 or "e": force l'utilisation du format scientifique
+                                  avec <emphasis role="bold">e</emphasis>xposant, pour
+                                  tous les nombres décimaux.
+                              </para>
                           </listitem>
                       </itemizedlist>
                   </para>
@@ -65,7 +66,7 @@
                         mantisse, séparateur décimal ("."), symbole de l'exposant
                         ("D", "E"), signe et digits de l'exposant. Par défaut,
                         <literal>width = 10</literal>.
-                        En notation exponentielle (mode "e"), il faut <literal>width >= 8</literal>.
+                        En notation exponentielle (mode "e"), il faut <literal>width &gt;= 8</literal>.
                     </para>
                 </listitem>
             </varlistentry>
@@ -84,11 +85,15 @@
                 <listitem>
                     <para>vecteur à 2 nombres retournés comme paramètres du format actif :
                         <itemizedlist>
-                          <listitem><literal>mw(1)</literal> représente le type du format :
-                            0 pour <literal>'e'</literal> et 1 pour <literal>'v'</literal>
-                          </listitem>
-                          <listitem><literal>mw(2)</literal> est le nombre de
-                            caractères utilisés pour formater chaque nombre.
+                          <listitem>
+                               <para><literal>mw(1)</literal> représente le type du format :
+                                0 pour <literal>'e'</literal> et 1 pour <literal>'v'</literal>
+                                   </para>
+                               </listitem>
+                          <listitem>
+                               <para><literal>mw(2)</literal> est le nombre de
+                                caractères utilisés pour formater chaque nombre.
+                              </para>
                           </listitem>
                          </itemizedlist>
                      </para>

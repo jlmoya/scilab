@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATMUL" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATMUL" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATMUL</refname>
         <refpurpose>Multiplication de matrice</refpurpose>
@@ -106,8 +103,7 @@
         <title>Paramètres</title>
         <inlinemediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATMUL_gui.gif"
-                            align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/MATMUL_gui.gif" align="center" style="float:right"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
         </inlinemediaobject>
@@ -148,11 +144,11 @@
     </refsection>
     <refsection id="Example_MATMUL">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A=[1 2 3;4 5 6]
             B=[9 8 7 6;5 4 3 2;9 7 5 3]
             y=[46 37 28 19;115 94 73 52]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection id="Defaultproperties_MATMUL">
         <title>Propriétés par défaut</title>
@@ -242,16 +238,24 @@
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matmul_m.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matmul_m.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matzmul_m.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matzmul_m.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matmul2_m.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matmul2_m.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matzmul2_m.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matzmul2_m.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

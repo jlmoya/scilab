@@ -13,10 +13,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="playsnd">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="playsnd">
     <refnamediv>
         <refname>playsnd</refname>
         <refpurpose>command-line sound player facility</refpurpose>
@@ -45,53 +42,59 @@
             <varlistentry>
                 <term>filename</term>
                 <listitem>
-                    single string: the path and name of the sound file to play.
-                    <para/>
-                </listitem>
+                     <para>
+                        single string: the path and name of the sound file to play.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>speed</term>
                 <listitem>
-                    real positive number: relative playing speed.
-                    <varname>speed</varname> &lt; 1 plays slower,
-                    while <varname>speed</varname> > 1 plays faster. (1.0 by default).
-                    <para/>
-                </listitem>
+                     <para>
+                        real positive number: relative playing speed.
+                        <varname>speed</varname> &lt; 1 plays slower,
+                        while <varname>speed</varname> &gt; 1 plays faster. (1.0 by default).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    matrix of normalized linear sound data, in [-1,1]. Each row feeds a channel.
-                    <para/>
-                </listitem>
+                     <para>
+                        matrix of normalized linear sound data, in [-1,1]. Each row feeds a channel.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rate</term>
                 <listitem>
-                    real positive number: sampling frequency in Hz (default value is 22050).
-                    <para/>
-                </listitem>
+                     <para>
+                        real positive number: sampling frequency in Hz (default value is 22050).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>nb_iter</term>
                 <listitem>
-                    positive decimal integer: number of consecutive times (iterations) that
-                    the sound must be played.
-                    <para/>
-                </listitem>
+                     <para>
+                        positive decimal integer: number of consecutive times (iterations) that
+                        the sound must be played.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>playerCmd</term>
                 <listitem>
-                    Only used on Unix and MacOS systems. Single string giving the OS command
-                    to use for playing sound (wav) files. The default value is
-                    <literal>"aplay"</literal> on Linux and <literal>"afplay"</literal> on MacOS.
-                    <para/>
-                    If <varname>playerCmd</varname> is set to <literal>/dev/audio</literal>,
-                    then a 8 bits mu-law raw sound file is created and send to
-                    <literal>/dev/audio</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Only used on Unix and MacOS systems. Single string giving the OS command
+                        to use for playing sound (wav) files. The default value is
+                        <literal>"aplay"</literal> on Linux and <literal>"afplay"</literal> on MacOS.
+                        
+                        If <varname>playerCmd</varname> is set to <literal>/dev/audio</literal>,
+                        then a 8 bits mu-law raw sound file is created and send to
+                        <literal>/dev/audio</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -202,23 +205,35 @@ playsnd("SCI/modules/sound/demos/chimes.wav",, 20);
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            playsnd(filename,..) can now be used. The relative speed wrt the native
-                            one in the file can be specified.
+                             <para>
+                                playsnd(filename,..) can now be used. The relative speed wrt the native
+                                one in the file can be specified.
+                            </para>
                         </listitem>
                         <listitem>
-                            nb_iter option introduced.
+                             <para>
+                                nb_iter option introduced.
+                            </para>
                         </listitem>
                         <listitem>
-                            playsnd([]) is introduced to stop a sound run without repetition.
+                             <para>
+                                playsnd([]) is introduced to stop a sound run without repetition.
+                            </para>
                         </listitem>
                         <listitem>
-                            playsnd(…) is now by default not-modal on Linux and MacOS, like on Windows.
+                             <para>
+                                playsnd(…) is now by default not-modal on Linux and MacOS, like on Windows.
+                            </para>
                         </listitem>
                         <listitem>
-                            playsnd(…) can now be modal on any OS, through any explicit nb_iter value.
+                             <para>
+                                playsnd(…) can now be modal on any OS, through any explicit nb_iter value.
+                            </para>
                         </listitem>
                         <listitem>
-                            Input argument bits removed.
+                             <para>
+                                Input argument bits removed.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

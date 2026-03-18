@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="linspace" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="linspace" xml:lang="en">
     <refnamediv>
         <refname>linspace</refname>
         <refpurpose>generates linearly spaced numbers between 2 reached bounds</refpurpose>
@@ -209,9 +206,13 @@ execstr(h.callback)
                 <revnumber>5.4.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>Column vectors can now be provided.
+                        <listitem>
+                             <para>Column vectors can now be provided.
+                            </para>
                         </listitem>
-                        <listitem>The third input argument (n) must be an integer value.
+                        <listitem>
+                             <para>The third input argument (n) must be an integer value.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>
@@ -220,9 +221,13 @@ execstr(h.callback)
                 <revnumber>6.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>linspace(a, b, n&lt;=0) now returns [] instead of b.
+                        <listitem>
+                             <para>linspace(a, b, n&lt;=0) now returns [] instead of b.
+                            </para>
                         </listitem>
-                        <listitem>bounds are now checked against %inf or %nan values.
+                        <listitem>
+                             <para>bounds are now checked against %inf or %nan values.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

@@ -11,9 +11,7 @@
  * along with this program.
     *
     -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="mapsound">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="mapsound">
     <refnamediv>
         <refname>mapsound</refname>
         <refpurpose>
@@ -37,79 +35,92 @@
             <varlistentry>
                 <term>signal</term>
                 <listitem>
-                    Vector or matrix of signed real numbers representing the sound signal.
-                    If it's a matrix, its smallest size is considered as the number of channels.
-                    Then, only the first channel is considered and mapped.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vector or matrix of signed real numbers representing the sound signal.
+                        If it's a matrix, its smallest size is considered as the number of channels.
+                        Then, only the first channel is considered and mapped.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>samplingRate</term>
                 <listitem>
-                    Positive decimal number: Value of the sampling rate of the input
-                    <varname>signal</varname>, in Hz. 22050 Hz is the default rate.
-                    <para/>
-                </listitem>
+                     <para>
+                        Positive decimal number: Value of the sampling rate of the input
+                        <varname>signal</varname>, in Hz. 22050 Hz is the default rate.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>freqRange</term>
                 <listitem>
-                    Specifies the interval [fmin, fmax] of positive sound frequencies to be
-                    analyzed and mapped:
-                    <itemizedlist>
-                        <listitem>
-                            If it's a scalar: It specifies the upper bound <varname>fmax</varname>.
-                            Then <literal>fmin=0</literal> is used.
-                        </listitem>
-                        <listitem>
-                            If it's a vector: It specifies [fmin, fmax].
-                        </listitem>
-                    </itemizedlist>
-                    If a bound is > 0, it is specified in Hz. If it's negative, its absolute value
-                    represents a fraction of the sampling rate. For instance, fmax=-0.2 actually
-                    specifies fmax = 0.2 * samplingRate.
-                    <para/>
-                    The default bounds are <literal>[0, 0.2*samplingRate]</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Specifies the interval [fmin, fmax] of positive sound frequencies to be
+                        analyzed and mapped:
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    If it's a scalar: It specifies the upper bound <varname>fmax</varname>.
+                                    Then <literal>fmin=0</literal> is used.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    If it's a vector: It specifies [fmin, fmax].
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        If a bound is &gt; 0, it is specified in Hz. If it's negative, its absolute value
+                        represents a fraction of the sampling rate. For instance, fmax=-0.2 actually
+                        specifies fmax = 0.2 * samplingRate.
+                        
+                        The default bounds are <literal>[0, 0.2*samplingRate]</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Dt</term>
                 <listitem>
-                    Specifies the time step of the map. The time step is also the
-                    duration of each sound chunk considered at every time step, since the
-                    <varname>signal</varname> is sliced into contiguous chunks without overlap.
-                    <para/>
-                </listitem>
+                     <para>
+                        Specifies the time step of the map. The time step is also the
+                        duration of each sound chunk considered at every time step, since the
+                        <varname>signal</varname> is sliced into contiguous chunks without overlap.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>data</term>
                 <listitem>
-                    Structure with 3 fields returning values of computed and plotted data:
-                    <itemizedlist>
-                        <listitem>
-                            <emphasis>times</emphasis>: Vector of mapped times, in seconds.
-                        </listitem>
-                        <listitem>
-                            <emphasis>frequencies</emphasis>: Vector of mapped frequencies, in Hz.
-                        </listitem>
-                        <listitem>
-                            <emphasis>amplitudes</emphasis>: Matrix of mapped absolute spectral
-                            amplitudes, of size length(.frequencies)×length(.times).
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        Structure with 3 fields returning values of computed and plotted data:
+                        <itemizedlist>
+                            <listitem>
+                                 <para><emphasis>times</emphasis>: Vector of mapped times, in seconds.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><emphasis>frequencies</emphasis>: Vector of mapped frequencies, in Hz.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><emphasis>amplitudes</emphasis>: Matrix of mapped absolute spectral
+                                    amplitudes, of size length(.frequencies)×length(.times).
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Colormap</term>
                 <listitem>
-                    Identifier of the colormap function to use: <literal>autumn</literal>, <literal>bone</literal>, etc.
-                    The actual colormap is based on and built with it, but is not equal to it.
-                    It can be inverted in order to get light colors for low amplitudes,
-                    and be extrapolated to white if it does not natively include light colors.
-                    <para/>
-                </listitem>
+                     <para>
+                        Identifier of the colormap function to use: <literal>autumn</literal>, <literal>bone</literal>, etc.
+                        The actual colormap is based on and built with it, but is not equal to it.
+                        It can be inverted in order to get light colors for low amplitudes,
+                        and be extrapolated to white if it does not natively include light colors.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -166,13 +177,13 @@ clf
 mapsound(y, 0.04, 1500)
 title "0.3 + [1.5⋅sin(2π⋅800⋅t), sin(2π⋅1200⋅t)]" fontsize 3.2
       ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             fs = 22050;
             t = (0:fs-1)/fs;
             y = 0.3 + [1.5*sin(2*%pi*800*t) sin(2*%pi*1200*t)];
             mapsound(y, 0.04, 1500)
             title "0.3 + [1.5⋅sin(2π⋅800⋅t), sin(2π⋅1200⋅t)]" fontsize 3.2
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Both frequencies and amplitudes values are reliably mapped, as well as the
             average level, with the 2×0.3 amplitude at the zero frequency.
@@ -194,13 +205,13 @@ clf
 mapsound(y, 0.05, [500 1300])
 title "sin(2π⋅100⋅t) ⋅ sin(2π⋅1000⋅t)" fontsize 3.2
       ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             fs = 22050;
             t = (0:2*fs-1)/fs;
             y = sin(2*%pi*100*t) .* sin(2*%pi*1000*t);
             mapsound(y, 0.05, [500 1300])
             title "sin(2π⋅100⋅t) ⋅ sin(2π⋅1000⋅t)" fontsize 3.2
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             As a consequence of the <literal>sin(a).sin(b)=(cos(a-b)-cos(a+b))/2</literal> formula,
             both resulting frequencies [Fc-Fm, Fc+Fm] expected from the amplitude
@@ -225,7 +236,7 @@ clf
 mapsound(y)
 title "Wobbling: y = sin(2π⋅f(t)⋅t), with f=500→2000→500 Hz" fontsize 3.5
       ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             fs = 22050;
             t = (0:fs-1)/fs;
             f = 500*(1-t) + 2000*t;
@@ -233,7 +244,7 @@ title "Wobbling: y = sin(2π⋅f(t)⋅t), with f=500→2000→500 Hz" fontsize 3
             y = [y0 y0($:-1:1)];
             mapsound(y)
             title "Wobbling: y = sin(2π⋅f(t)⋅t), with f=500→2000→500 Hz" fontsize 3.5
-        </scilab:image>
+        ]]></scilab:image>
 
         <para>
             <emphasis role="bold">Example #4:</emphasis> Chimes.wav : a quite structured sound
@@ -247,12 +258,12 @@ clf
 mapsound(s1,, 2300, , parula)
 title Chimes.wav fontsize 3.5
       ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             [s1, fs1] = wavread('SCI/modules/sound/demos/chimes.wav');
             clf
             mapsound(s1,,2300,,parula)
             title Chimes.wav fontsize 3.5
-        </scilab:image>
+        ]]></scilab:image>
 
         <para>
             <emphasis role="bold">Example #5:</emphasis> Another sound, longer and more noisy
@@ -266,11 +277,11 @@ clf
 mapsound(s2, , 4000)
 title Din fontsize 3.5
       ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             [s2, fs2] = wavread('SCI/modules/sound/tests/nonreg_tests/bug_467.wav');
             mapsound(s2, , 4000)
             title Din fontsize 3.5
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="load" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="load" xml:lang="en">
     <refnamediv>
         <refname>load</refname>
         <refpurpose>
@@ -87,8 +84,10 @@
                         </para>
                     </listitem>
                     <listitem>
-                        If a restored variable has the same name as an existing variable of
-                        the current scope, the current variable is silently overwritten.
+                         <para>
+                            If a restored variable has the same name as an existing variable of
+                            the current scope, the current variable is silently overwritten.
+                        </para>
                     </listitem>
                     <listitem>
                         <para>
@@ -118,7 +117,7 @@
             <para>
                 Any graphic figure can be saved in its whole either with <literal>save()</literal>
                 through its identifier as a variable (as described hereabove), or with
-                <literal>xsave()</literal> or the <emphasis>File => Save</emphasis> figure's Menu,
+                <literal>xsave()</literal> or the <emphasis>File =&gt; Save</emphasis> figure's Menu,
                 that do the same. The preferred (but not mandatory) file extension is
                 <emphasis role="bold">.scg</emphasis> (for SCilab Graphics).
                 Then, <literal>load(..)</literal> or <literal>xload()</literal>
@@ -147,7 +146,7 @@
             <para>
                 When loading a library, <literal>load(..)</literal> silently creates a variable
                 representing it. Its name is registered in the lib file (that is XML formatted),
-                in the <literal>&lt;scilablib name="..."></literal> tag.
+                in the <literal>&lt;scilablib name="..."&gt;</literal> tag.
             </para>
             <para>
                 The library's name can be retrieved with
@@ -157,7 +156,7 @@
         </refsect3>
         <warning>
             <para>
-                Scilab 6 can load data saved with Scilab>=5.4 in SOD format.
+                Scilab 6 can load data saved with Scilab&gt;=5.4 in SOD format.
             </para>
             <para>
                 Data saved in the old Scilab&lt;5.4 format
@@ -288,14 +287,20 @@ xcos(path)
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            The load function is able to handle both Scilab 5 and SOD (Scilab 6
-                            format) by default.
+                             <para>
+                                The load function is able to handle both Scilab 5 and SOD (Scilab 6
+                                format) by default.
+                            </para>
                         </listitem>
                         <listitem>
-                            The Scilab 5.X format is deprecated.
+                             <para>
+                                The Scilab 5.X format is deprecated.
+                            </para>
                         </listitem>
                         <listitem>
-                            Using load with a file descriptor as first input argument is deprecated.
+                             <para>
+                                Using load with a file descriptor as first input argument is deprecated.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>
@@ -305,12 +310,16 @@ xcos(path)
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            load() is no longer able to handle data files saved with the Scilab
-                            &lt; 5.4 format.
+                             <para>
+                                load() is no longer able to handle data files saved with the Scilab
+                                &lt; 5.4 format.
+                            </para>
                         </listitem>
                         <listitem>
-                            The syntaxes load(fid) and load(fid, x1,..) with a file id are no
-                            longer supported.
+                             <para>
+                                The syntaxes load(fid) and load(fid, x1,..) with a file id are no
+                                longer supported.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

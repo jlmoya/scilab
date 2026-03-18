@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="log2" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="log2" xml:lang="fr">
     <refnamediv>
         <refname>log2</refname>
         <refpurpose>logarithme en base 2. Exposant et mantisse en base 2 de nombres réels.</refpurpose>
@@ -66,11 +63,14 @@
             <note>
                 <itemizedlist>
                     <listitem>
-                        <literal>[m, e] = log2([0 %nan -%inf %inf])</literal> donne
-                        <literal>m=[0  NaN -Inf Inf]</literal> et <literal>e=[0 0 0 0]</literal>.
+                         <para><literal>[m, e] = log2([0 %nan -%inf %inf])</literal> donne
+                            <literal>m=[0  NaN -Inf Inf]</literal> et <literal>e=[0 0 0 0]</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                        Cette syntaxe correspond à la fonction nommée frexp() en langage C ANSI.
+                         <para>
+                            Cette syntaxe correspond à la fonction nommée frexp() en langage C ANSI.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </note>

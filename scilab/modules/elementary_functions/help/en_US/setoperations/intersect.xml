@@ -10,10 +10,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="intersect" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intersect" xml:lang="en">
     <refnamediv>
         <refname>intersect</refname>
         <refpurpose>
@@ -35,25 +32,27 @@
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                    vectors or matrices of booleans, encoded integers, real or
-                    complex numbers, strings, <link linkend="duration">duration</link> or <link linkend="datetime">datetime</link>. <varname>a</varname> and <varname>b</varname> must
-                    have the same datatype.
-                    For text inputs, UTF characters are accepted.
-                    Sparse numeric or boolean matrices are accepted: Either <varname>a</varname> or
-                    <varname>b</varname> or both <varname>a</varname> and <varname>b</varname> may
-                    be sparse.
-                    <link linkend="table">table</link> and <link linkend="timeseries">timeseries</link> are also accepted:  
-                    <varname>a</varname> and <varname>b</varname> must have the same variable names. 
-                    <para/>
-                </listitem>
+                     <para>
+                        vectors or matrices of booleans, encoded integers, real or
+                        complex numbers, strings, <link linkend="duration">duration</link> or <link linkend="datetime">datetime</link>. <varname>a</varname> and <varname>b</varname> must
+                        have the same datatype.
+                        For text inputs, UTF characters are accepted.
+                        Sparse numeric or boolean matrices are accepted: Either <varname>a</varname> or
+                        <varname>b</varname> or both <varname>a</varname> and <varname>b</varname> may
+                        be sparse.
+                        <link linkend="table">table</link> and <link linkend="timeseries">timeseries</link> are also accepted:  
+                        <varname>a</varname> and <varname>b</varname> must have the same variable names. 
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>orient</term>
                 <listitem>
-                    flag with possible values : 1 or "r", 2 or "c". Can't be used if
-                    <varname>a</varname> or/and <varname>b</varname> is an hypermatrix, table and timeseries.
-                    <para/>
-                </listitem>
+                     <para>
+                        flag with possible values : 1 or "r", 2 or "c". Can't be used if
+                        <varname>a</varname> or/and <varname>b</varname> is an hypermatrix, table and timeseries.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>M</term>
@@ -62,17 +61,23 @@
                         matrix of the same datatype as <varname>a</varname> and <varname>b</varname>.
                         <itemizedlist>
                             <listitem>
-                                Without <varname>orient</varname>: <varname>M</varname> is a row vector.
+                                 <para>
+                                    Without <varname>orient</varname>: <varname>M</varname> is a row vector.
+                                </para>
                             </listitem>
                             <listitem>
-                                With <literal>orient="r"|1</literal>: <varname>M</varname> is a
-                                matrix stacking the common rows of <varname>a</varname> and
-                                <varname>b</varname>.
+                                 <para>
+                                    With <literal>orient="r"|1</literal>: <varname>M</varname> is a
+                                    matrix stacking the common rows of <varname>a</varname> and
+                                    <varname>b</varname>.
+                                </para>
                             </listitem>
                             <listitem>
-                                With <literal>orient="c"|2</literal>: <varname>M</varname> is a
-                                matrix stacking the common columns of <varname>a</varname> and
-                                <varname>b</varname>.
+                                 <para>
+                                    With <literal>orient="c"|2</literal>: <varname>M</varname> is a
+                                    matrix stacking the common columns of <varname>a</varname> and
+                                    <varname>b</varname>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -89,16 +94,18 @@
             <varlistentry>
                 <term>ka</term>
                 <listitem>
-                    Dense row vector of indices in <varname>a</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Dense row vector of indices in <varname>a</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>kb</term>
                 <listitem>
-                    Dense row vector of indices in <varname>b</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Dense row vector of indices in <varname>b</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -110,10 +117,14 @@
             sorted in increasing order
             <itemizedlist>
                 <listitem>
-                    for complex numbers : par increasing magnitudes, then by increasing phases
+                     <para>
+                        for complex numbers : par increasing magnitudes, then by increasing phases
+                    </para>
                 </listitem>
                 <listitem>
-                    for text : in alphabetical order.
+                     <para>
+                        for text : in alphabetical order.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -331,8 +342,8 @@ issparse(M), full(M), ka, kb
             A = datetime("today") + A;
             B = datetime("today") + B;
             [M, ka, kb] = intersect(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <para/>
         <para>
         <literal>intersect()</literal> for table:
@@ -345,8 +356,8 @@ issparse(M), full(M), ka, kb
             A = table([1;3;4;2], ["d";"c";"f";"h"], [%f;%t;%t; %f], "VariableNames", ["double", "string", "boolean"]);
             B = table([2;3;4;1], [%t;%t;%t;%t], ["d";"c";"f";"h"], "VariableNames", ["double", "boolean", "string"]);
             [M, ka, kb] = intersect(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <para/>
         <para>
         <literal>intersect()</literal> for timeseries:
@@ -355,8 +366,8 @@ issparse(M), full(M), ka, kb
             A = timeseries(hours([1:10])', floor(rand(10,1)*10));
             B = timeseries(hours(1:2:15)', floor(rand(8,1)*15));
             [M, ka, kb] = intersect(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
- <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="nchoosek" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="nchoosek" xml:lang="en">
   <refnamediv>
     <refname>nchoosek</refname>
     <refpurpose>
@@ -40,42 +37,52 @@
         <varlistentry>
             <term>n, k</term>
             <listitem>
-                arrays of positive decimal integers. If both <varname>n</varname> and
-                <varname>k</varname> are not scalars, they must have the same size.
+                 <para>
+                    arrays of positive decimal integers. If both <varname>n</varname> and
+                    <varname>k</varname> are not scalars, they must have the same size.
+                </para>
             </listitem>
         </varlistentry>
         <varlistentry>
             <term>b</term>
             <listitem>
-                array of positive decimal integers, with the size of the biggest array
-                <varname>n</varname> or <varname>k</varname> :
-                C<subscript>n</subscript><superscript>k</superscript>
-            </listitem>
+                 <para>
+                    array of positive decimal integers, with the size of the biggest array
+                    <varname>n</varname> or <varname>k</varname> :
+                    C<subscript>n</subscript><superscript>k</superscript></para>
+                                                                     </listitem>
         </varlistentry>
         <varlistentry>
             <term>logb</term>
             <listitem>
-                array of positive decimal numbers, with the size of <varname>b</varname>:
-                <literal>log10(C<subscript>n</subscript><superscript>k</superscript>)</literal>
+                 <para>
+                    array of positive decimal numbers, with the size of <varname>b</varname>:
+                    <literal>log10(C<subscript>n</subscript><superscript>k</superscript>)</literal>
+                </para>
             </listitem>
         </varlistentry>
         <varlistentry>
             <term>logFormat</term>
             <listitem>
-                single word "log10" | "10.mant". "log10" by default.
-                <itemizedlist>
-                    <listitem>
-                        If "log10" is used, <varname>logb</varname> returns <literal>log10(b)</literal>.
-                        <para/>
-                    </listitem>
-                    <listitem>
-                        If "10.mant" is used, then <varname>logb</varname> returns
-                        <literal>int(log10(b)) + 10^(log10(b)-int(log10(b)))/10</literal>:
-                        The 10-exponent of b is the logb integer part, while its fractional part
-                        directly shows the mantissa/10 of b, in [1.0, 10)/10.
-                    </listitem>
-                </itemizedlist>
-            </listitem>
+                 <para>
+                    single word "log10" | "10.mant". "log10" by default.
+                    <itemizedlist>
+                        <listitem>
+                             <para>
+                                If "log10" is used, <varname>logb</varname> returns <literal>log10(b)</literal>.
+                                </para>
+                            </listitem>
+                        <listitem>
+                             <para>
+                                If "10.mant" is used, then <varname>logb</varname> returns
+                                <literal>int(log10(b)) + 10^(log10(b)-int(log10(b)))/10</literal>:
+                                The 10-exponent of b is the logb integer part, while its fractional part
+                                directly shows the mantissa/10 of b, in [1.0, 10)/10.
+                            </para>
+                        </listitem>
+                      </itemizedlist>
+                    </para>
+                </listitem>
         </varlistentry>
     </variablelist>
 </refsection>
@@ -96,7 +103,7 @@
     <refsect3>
         <title>Note about floating point accuracy</title>
         <para>
-            Despite n! overflows for n>170, nchoosek(n,k) is computed within almost the %eps relative
+            Despite n! overflows for n&gt;170, nchoosek(n,k) is computed within almost the %eps relative
             accuracy for n much beyond 170.
         </para>
         <para>
@@ -104,7 +111,7 @@
             is maximal for k=n/2. Scilab computes b = nchoosek(n,n/2) close to the %eps relative
             accuracy for n up to 1029. Beyond this value, b=%inf is returned.
         </para>
-        <para></para>
+        <para/>
         <para>
             This narrow n=1029 limit can be overcome by computing
             log10(C<subscript>n</subscript><superscript>k</superscript>) and returning
@@ -114,7 +121,7 @@
         <para>
             However, we must keep in mind that beyond n = 1/%eps ~ 4.10<superscript>15</superscript>,
             the numerical step between consecutive integers m and m+1 stored as floating point
-            numbers become > 1. Then <literal>n*(n-1)</literal> is numerically equal to
+            numbers become &gt; 1. Then <literal>n*(n-1)</literal> is numerically equal to
             <literal>n*n</literal>, and getting reliable results becomes harder.
        </para>
         <para>
@@ -192,7 +199,7 @@ relerror = abs(c-exact)/exact
     <para>
         The exact result for
         <literal>C<subscript>n</subscript><superscript>k</superscript>(n, 2)</literal> is
-        <literal>n.(n-1)/2</literal>. Now, for values <literal>n > 1/%eps = 4e15</literal>,
+        <literal>n.(n-1)/2</literal>. Now, for values <literal>n &gt; 1/%eps = 4e15</literal>,
         <literal>(n-1)</literal> is numerically identical to <literal>n</literal>. In no way
         we can expect an exact result below, but rather <literal>n^2/2</literal> :
     </para>
@@ -497,12 +504,16 @@ legend("$\large \left|{\frac{2^n}{\sqrt{\pi n/2}} / nchoosek(n, n/2)}-1\right|$"
                     <ulink url="http://en.wikipedia.org/wiki/Binomial_coefficients">Binomial coefficients (Wikipedia)</ulink>
                 </listitem>
                 <listitem>
-                    Boost C++ librairies, Binomial Coefficients, 2006 , 2007, 2008, 2009, 2010 :
-                    John Maddock, Paul A. Bristow, Hubert Holin, Xiaogang Zhang, Bruno Lalande,
-                    Johan Råde, Gautam Sewani and Thijs van den Berg.
+                     <para>
+                        Boost C++ librairies, Binomial Coefficients, 2006 , 2007, 2008, 2009, 2010 :
+                        John Maddock, Paul A. Bristow, Hubert Holin, Xiaogang Zhang, Bruno Lalande,
+                        Johan Råde, Gautam Sewani and Thijs van den Berg.
+                    </para>
                 </listitem>
                 <listitem>
-                    "Introduction to discrete probabilities with Scilab", Michael Baudin, 2010
+                     <para>
+                        "Introduction to discrete probabilities with Scilab", Michael Baudin, 2010
+                    </para>
                 </listitem>
             </itemizedlist>
     </refsection>

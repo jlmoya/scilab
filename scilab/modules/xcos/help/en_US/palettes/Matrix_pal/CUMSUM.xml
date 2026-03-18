@@ -21,10 +21,7 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="CUMSUM" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="CUMSUM" xml:lang="en_US">
     <refnamediv>
         <refname>CUMSUM</refname>
         <refpurpose>Cumulative Sum</refpurpose>
@@ -202,11 +199,11 @@
     </refsection>
     <refsection id="Example_CUMSUM">
         <title>Example</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A = [1 2 3 ; 4 5 6 ; 7 8 9]
             If the sum is along the row the result will be:
             B = [1 2 3 ; 5 7 9 ; 12 15 18]
-        </programlisting>
+        ]]></programlisting>
         <para>
             <emphasis role="bold">Cumulative Sum example</emphasis>
         </para>
@@ -230,22 +227,34 @@
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/cumsum_m.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/cumsum_m.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/cumsum_r.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/cumsum_r.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/cumsum_c.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/cumsum_c.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/cumsumz_m.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/cumsumz_m.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/cumsumz_r.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/cumsumz_r.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/cumsumz_c.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/cumsumz_c.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

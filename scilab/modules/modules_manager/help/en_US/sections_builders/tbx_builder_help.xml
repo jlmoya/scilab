@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="tbx_builder_help" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="tbx_builder_help" xml:lang="en">
     <refnamediv>
         <refname>tbx_builder_help</refname>
         <refpurpose>
@@ -39,22 +36,24 @@
             <varlistentry>
                 <term>toolbox_path</term>
                 <listitem>
-                  Root directory of toolbox sources ; builder_help.sce script will be
-                  searched in the help subdirectory of this directory.
-                    <para/>
-                </listitem>
+                     <para>
+                      Root directory of toolbox sources ; builder_help.sce script will be
+                      searched in the help subdirectory of this directory.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>languages</term>
                 <listitem>
-                    Vector of strings like <literal>"en_US"</literal>, specifying the subset of the
-                    languages for which help pages must be built.
-                    <para/>
-                    The shortcuts <literal>"en", "fr", "pt", "ja", "ru"</literal>
-                    can be used. They are automatically expanded into
-                    <literal>"en_US", "fr_FR", "pt_BR", "ja_JP", "ru_RU"</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vector of strings like <literal>"en_US"</literal>, specifying the subset of the
+                        languages for which help pages must be built.
+                        
+                        The shortcuts <literal>"en", "fr", "pt", "ja", "ru"</literal>
+                        can be used. They are automatically expanded into
+                        <literal>"en_US", "fr_FR", "pt_BR", "ja_JP", "ru_RU"</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -74,16 +73,20 @@
             looks for a script whose name starts by <literal>builder</literal>.
             <itemizedlist>
                 <listitem>
-                    If a file <literal>~/help/builder*</literal> is found,
-                    <literal>tbx_builder_help(…)</literal> executes it, and then returns.
-                    In this case, the <varname>languages</varname> option is ignored.
+                     <para>
+                        If a file <literal>~/help/builder*</literal> is found,
+                        <literal>tbx_builder_help(…)</literal> executes it, and then returns.
+                        In this case, the <varname>languages</varname> option is ignored.
+                    </para>
                 </listitem>
                 <listitem>
-                    Otherwise: <literal>tbx_builder_help(…)</literal> generates the help pages
-                    from all <literal>la_LA</literal> subdirectories, where <literal>la_LA</literal>
-                    specifies the language and country according to ISO 15897.
-                    If the <varname>languages</varname> option is used, pages are generated only
-                    for existing and selected languages.
+                     <para>
+                        Otherwise: <literal>tbx_builder_help(…)</literal> generates the help pages
+                        from all <literal>la_LA</literal> subdirectories, where <literal>la_LA</literal>
+                        specifies the language and country according to ISO 15897.
+                        If the <varname>languages</varname> option is used, pages are generated only
+                        for existing and selected languages.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

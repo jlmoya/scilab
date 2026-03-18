@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="tree_show">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="tree_show">
     <refnamediv>
         <refname>tree_show</refname>
         <refpurpose>
@@ -54,7 +51,7 @@
                     </para>
                     <note>
                         HTML.4 styling tags can be used to change the style of the root's title.
-                        Example: "<literal>&lt;html>&lt;font color="red">&lt;b>The title&lt;/b></literal>"
+                        Example: "<literal>&lt;html&gt;&lt;font color="red"&gt;&lt;b&gt;The title&lt;/b&gt;</literal>"
                         will display <emphasis>The title</emphasis> in bold red.
                     </note>
                 </listitem>
@@ -71,25 +68,29 @@
                         either of addresses, or of related contents, or both. Examples:
                         <itemizedlist>
                             <listitem>
-                                <literal>"&lt;b>$&lt;/b>"</literal> : address in bold, content in
-                                normal black.
+                                 <para><literal>"&lt;b&gt;$&lt;/b&gt;"</literal> : address in bold, content in
+                                    normal black.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>"$&lt;i>"</literal> : address in normal black, content
-                                in italic.
+                                 <para><literal>"$&lt;i&gt;"</literal> : address in normal black, content
+                                    in italic.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>"&lt;i>$"</literal> : both address and content in italic.
+                                 <para><literal>"&lt;i&gt;$"</literal> : both address and content in italic.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>"&lt;font color=''grey''>$&lt;/font>&lt;i>"</literal> :
-                                address in grey, content in italic.
+                                 <para><literal>"&lt;font color=''grey''&gt;$&lt;/font&gt;&lt;i&gt;"</literal> :
+                                    address in grey, content in italic.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
                     <para>
                         Default =
-                        <literal>"&lt;font color=""blue"">$&lt;/font>"</literal>
+                        <literal>"&lt;font color=""blue""&gt;$&lt;/font&gt;"</literal>
                         (address in blue, content in black).
                     </para>
                     <para>
@@ -299,10 +300,14 @@ tree_show(blk)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            rootTitle, styles, and arrayByFields input options added.
+                             <para>
+                                rootTitle, styles, and arrayByFields input options added.
+                            </para>
                         </listitem>
                         <listitem>
-                            Input containers including void elements are now supported.
+                             <para>
+                                Input containers including void elements are now supported.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

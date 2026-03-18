@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="string" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="string" xml:lang="en">
     <refnamediv>
         <refname>string</refname>
         <refpurpose>conversion to character string</refpurpose>
@@ -60,13 +57,16 @@
             returns three vectors of strings:
             <itemizedlist>
                 <listitem>
-                    <varname>out</varname> is the row vector of names of its output variables,
+                     <para><varname>out</varname> is the row vector of names of its output variables,
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>in</varname> is the row vector of names of its input variables, and
+                     <para><varname>in</varname> is the row vector of names of its input variables, and
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>text</varname> is the column vector of the source code of the function.
+                     <para><varname>text</varname> is the column vector of the source code of the function.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -86,7 +86,7 @@
     </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             string(rand(2, 2))
 
             deff("y = mymacro(x)", "y = x + 1")
@@ -108,7 +108,7 @@
             format(v(2))
 
             string(1:4:$)
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

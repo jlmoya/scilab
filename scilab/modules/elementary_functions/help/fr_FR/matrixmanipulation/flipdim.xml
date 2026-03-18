@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="flipdim" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="flipdim" xml:lang="fr">
     <refnamediv>
         <refname>flipdim</refname>
         <refpurpose>
@@ -83,7 +80,7 @@
             <literal>size(x,1)/blockSize</literal> blocs de <varname>blockSize</varname>
             lignes de <varname>x</varname> (<literal>dim=1</literal>), ou des
             <literal>size(x,2)/blockSize</literal> blocs de <varname>blockSize</varname>
-            colonnes (<literal>dim=2</literal>), etc (<literal>dim>2</literal>).
+            colonnes (<literal>dim=2</literal>), etc (<literal>dim&gt;2</literal>).
             À l'intérieur de chaque bloc, l'ordre des éléments (lignes, colonnes, etc) n'est pas modifié.
         </para>
     </refsection>
@@ -163,7 +160,7 @@ flipdim(X, 2, 6) // => [6 7 8 9 10 11   0 1 2 3 4 5]
   9 -6 -7  0
   8 -7 -8 -1
 ]]></screen>
-    <para></para>
+    <para/>
     <screen><![CDATA[
 --> x
  x  =
@@ -185,7 +182,7 @@ flipdim(X, 2, 6) // => [6 7 8 9 10 11   0 1 2 3 4 5]
   9  4 -3
  -4 -8 -3
 ]]></screen>
-    <para></para>
+    <para/>
     <screen><![CDATA[
 --> x
  x  =
@@ -231,12 +228,16 @@ flipdim(X, 2, 6) // => [6 7 8 9 10 11   0 1 2 3 4 5]
                 <revremark>
                   <itemizedlist>
                     <listitem>
-                        Extension aux matrices et hypermatrices de booléens, entiers encodés, textes,
-                        polynômes, fractions rationnelles, identifiants graphiques, etc.
+                         <para>
+                            Extension aux matrices et hypermatrices de booléens, entiers encodés, textes,
+                            polynômes, fractions rationnelles, identifiants graphiques, etc.
+                        </para>
                     </listitem>
                     <listitem>
-                        Nouveau paramètre optionnel <literal>blockSize</literal> pour réordonner
-                        <literal>x</literal> par blocs.
+                         <para>
+                            Nouveau paramètre optionnel <literal>blockSize</literal> pour réordonner
+                            <literal>x</literal> par blocs.
+                        </para>
                     </listitem>
                   </itemizedlist>
                 </revremark>

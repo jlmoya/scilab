@@ -9,7 +9,7 @@
  * The terms are also available at
  * https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="CRANI">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="CRANI">
     <refnamediv>
         <refname>Crank-Nicolson 2(3)</refname>
         <refpurpose>
@@ -76,18 +76,20 @@
             <emphasis>f(t,y)</emphasis>. Ils sont distribués de manière à peu près égale sur l'intervalle.
             <itemizedlist>
                 <listitem>
-                    <emphasis>k1</emphasis> est l'incrément basé sur la pente au milieu de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript>+ a11*h*k1/2 + a12*h*k2/2
-                    </emphasis>
-                    ,
+                     <para><emphasis>k1</emphasis> est l'incrément basé sur la pente au milieu de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript>+ a11*h*k1/2 + a12*h*k2/2
+                        </emphasis>
+                        ,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k2</emphasis> est l'incrément basé sur la pente au milieu de l'intervalle, mais utilisant
-                    <emphasis>
-                        y<subscript>n</subscript>
-                    </emphasis>
-                    ,
+                     <para><emphasis>k2</emphasis> est l'incrément basé sur la pente au milieu de l'intervalle, mais utilisant
+                        <emphasis>
+                            y<subscript>n</subscript>
+                        </emphasis>
+                        ,
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -241,7 +243,7 @@ Temps pour Crank-Nicolson :
         </para>
         <para>
             Maintenant, dans le script suivant, on compare la différence de temps entre <emphasis>Crank-Nicolson</emphasis> et <emphasis>CVode</emphasis> en lançant l'exemple avec différents solveurs tour à tour :
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integCRANI.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integCRANI.sce">
                 Ouverture du script
             </link>
         </para>

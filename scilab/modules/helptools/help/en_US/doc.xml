@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="doc">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="doc">
     <refnamediv>
         <refname>doc</refname>
         <refpurpose>queries and displays help pages in the Scilab help browser</refpurpose>
@@ -48,30 +46,33 @@
             in the table of known key ids.
             <itemizedlist>
                 <listitem>
-                    If the key is known: opens the corresponding page. Exact keys are case-sensitive:
-                    For instance, <literal>doc type</literal> and <literal>doc Type</literal>
-                    open two different pages.
-                    <para/>
-                </listitem>
+                     <para>
+                        If the key is known: opens the corresponding page. Exact keys are case-sensitive:
+                        For instance, <literal>doc type</literal> and <literal>doc Type</literal>
+                        open two different pages.
+                        </para>
+                    </listitem>
                 <listitem>
-                    Otherwise: calls <literal>apropos(key)</literal> that lists all pages
-                    including the given case-insensitive <varname>key</varname>, and opens
-                    the first page listed.
-                    The listed pages are ranked according to the frequency of the key occurrences
-                    in the page. The list entries are sorted by decreasing rank.
-                    <para/>
-                    In the <varname>key</varname>, any space or "|" character is considered as a
-                    sub-key separator. Each page including at least one subkey matches the query.
-                    For instance, <literal>help "linear sparse"</literal> will list all pages
-                    including any of the "linear" or "sparse" terms. Pages including both terms
-                    are at the top of the list.
+                     <para>
+                        Otherwise: calls <literal>apropos(key)</literal> that lists all pages
+                        including the given case-insensitive <varname>key</varname>, and opens
+                        the first page listed.
+                        The listed pages are ranked according to the frequency of the key occurrences
+                        in the page. The list entries are sorted by decreasing rank.
+                        
+                        In the <varname>key</varname>, any space or "|" character is considered as a
+                        sub-key separator. Each page including at least one subkey matches the query.
+                        For instance, <literal>help "linear sparse"</literal> will list all pages
+                        including any of the "linear" or "sparse" terms. Pages including both terms
+                        are at the top of the list.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
         <para>
             <note>
                 A preferences option can be activated by Scilab's newcomers coming from Octave or
-                Matlab languages, in the <literal>General => Help and demos</literal> preferences
+                Matlab languages, in the <literal>General =&gt; Help and demos</literal> preferences
                 pannel:
                 <programlisting role="example"><![CDATA[
                 preferences
@@ -166,8 +167,8 @@
     </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example">
-            <![CDATA[
+        <programlisting role="example"><![CDATA[
+            
 doc
 doc type
 doc Type
@@ -196,23 +197,30 @@ doc "linear sparse"
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <emphasis>Language</emphasis>, <emphasis>Online</emphasis> and
-                            <emphasis>Issues</emphasis> menus and features added.
+                             <para><emphasis>Language</emphasis>, <emphasis>Online</emphasis> and
+                                <emphasis>Issues</emphasis> menus and features added.
+                            </para>
                         </listitem>
                         <listitem>
-                            The languages used for the help browser and for the session are now
-                            independent.
+                             <para>
+                                The languages used for the help browser and for the session are now
+                                independent.
+                            </para>
                         </listitem>
                         <listitem>
-                            <emphasis>"Redirect Matlab terms to the closest Scilab equivalent"</emphasis>
-                            feature implemented on Preferences.
+                             <para><emphasis>"Redirect Matlab terms to the closest Scilab equivalent"</emphasis>
+                                feature implemented on Preferences.
+                            </para>
                         </listitem>
                         <listitem>
-                            Loading an ATOMS module and its documentation no longer requires
-                            reopening the help browser to access it.
+                             <para>
+                                Loading an ATOMS module and its documentation no longer requires
+                                reopening the help browser to access it.
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>close help</literal> implemented.
+                             <para><literal>close help</literal> implemented.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -222,7 +230,9 @@ doc "linear sparse"
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Introduction in Scilab. <literal>help</literal> was renamed to <literal>doc</literal>.
+                             <para>
+                                Introduction in Scilab. <literal>help</literal> was renamed to <literal>doc</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

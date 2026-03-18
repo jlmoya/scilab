@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="man" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="man" xml:lang="en">
     <refnamediv>
         <refname>Scilab documentation format</refname>
         <refpurpose>on line help XML file description format</refpurpose>
@@ -749,42 +746,56 @@ end
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
                   <itemizedlist>
-                    <listitem>Documentation updated to Docbook 5.1</listitem>
-                    <listitem>&lt;refsect1>, &lt;refsect2>, and &lt;refsect3> tags added.</listitem>
-                    <listitem>&lt;td>: valign and style attributes are now supported.</listitem>
-                    <listitem>&lt;th>: align, valign and style attributes are now supported.</listitem>
-                    <listitem>&lt;tr>: valign attribute now supported.</listitem>
-                 </itemizedlist>
-                </revdescription>
-            </revision>
-            <revision>
-                <revnumber>6.0.1</revnumber>
-                <revdescription>
-                  <itemizedlist>
                     <listitem>
-                      &lt;imagedata>: id, width, height, align and style attributes are now supported.
-                    </listitem>
-                    <listitem>&lt;tr>: id attribute now supported.</listitem>
-                  </itemizedlist>
-                </revdescription>
-            </revision>
-            <revision>
-                <revnumber>6.0.2</revnumber>
-                <revdescription>
-                  <itemizedlist>
-                    <listitem>
-                      &lt;latex>: attribute alt now supported. Default value is the tag content.
-                    </listitem>
-                    <listitem>
-                      &lt;tr>: now by default valign="top" instead of "middle".
-                    </listitem>
-                    <listitem>
-                      For external modules, pages in Farsi or Arabic are now correctly processed
-                      to be correctly displayed in a Right-To-Left way in their web version.
-                    </listitem>
-                  </itemizedlist>
-                </revdescription>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                         <para>Documentation updated to Docbook 5.1</para></listitem>
+                        <listitem>
+                             <para>&lt;refsect1&gt;, &lt;refsect2&gt;, and &lt;refsect3&gt; tags added.</para></listitem>
+                            <listitem>
+                                 <para>&lt;td&gt;: valign and style attributes are now supported.</para></listitem>
+                                <listitem>
+                                     <para>&lt;th&gt;: align, valign and style attributes are now supported.</para></listitem>
+                                    <listitem>
+                                         <para>&lt;tr&gt;: valign attribute now supported.</para></listitem>
+                                     </itemizedlist>
+                                    </revdescription>
+                                </revision>
+                                <revision>
+                                    <revnumber>6.0.1</revnumber>
+                                    <revdescription>
+                                      <itemizedlist>
+                                        <listitem>
+                                             <para>
+                                              &lt;imagedata&gt;: id, width, height, align and style attributes are now supported.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                             <para>&lt;tr&gt;: id attribute now supported.</para></listitem>
+                                          </itemizedlist>
+                                        </revdescription>
+                                    </revision>
+                                    <revision>
+                                        <revnumber>6.0.2</revnumber>
+                                        <revdescription>
+                                          <itemizedlist>
+                                            <listitem>
+                                                 <para>
+                                                  &lt;latex&gt;: attribute alt now supported. Default value is the tag content.
+                                                </para>
+                                            </listitem>
+                                            <listitem>
+                                                 <para>
+                                                  &lt;tr&gt;: now by default valign="top" instead of "middle".
+                                                </para>
+                                            </listitem>
+                                            <listitem>
+                                                 <para>
+                                                  For external modules, pages in Farsi or Arabic are now correctly processed
+                                                  to be correctly displayed in a Right-To-Left way in their web version.
+                                                </para>
+                                            </listitem>
+                                          </itemizedlist>
+                                        </revdescription>
+                                    </revision>
+                                </revhistory>
+                            </refsection>
+                        </refentry>

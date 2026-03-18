@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="perms" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="perms" xml:lang="fr">
     <refnamediv>
         <refname>perms</refname>
         <refpurpose>Génère le tableau des permutations des éléments donnés</refpurpose>
@@ -83,13 +80,16 @@
             Lorsque "unique" est utilisé,
             <itemizedlist>
                 <listitem>
-                    si aucun doublon n'est détecté dans <varname>x</varname>,
-                    l'algorithme sans "unique" est automatiquement utilisé pour effectuer
-                    les calculs plus rapidement.
+                     <para>
+                        si aucun doublon n'est détecté dans <varname>x</varname>,
+                        l'algorithme sans "unique" est automatiquement utilisé pour effectuer
+                        les calculs plus rapidement.
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>x</varname> est préalablement trié en ordre croissant, et
-                    <varname>y</varname> est construite en ordre lexicographique croissant.
+                     <para><varname>x</varname> est préalablement trié en ordre croissant, et
+                        <varname>y</varname> est construite en ordre lexicographique croissant.
+                    </para>
                 </listitem>
             </itemizedlist>
             Sinon : l'ordre initial des éléments de <varname>x</varname> est conservé, et l'ordre
@@ -165,7 +165,7 @@ perms(c)
   [1x1 string  ]  [1x1 constant]  [1x1 boolean ]
 ]]></screen>
     <para>
-        Avec des éléments de multiplicité > 1 (doublons ou plus) :
+        Avec des éléments de multiplicité &gt; 1 (doublons ou plus) :
     </para>
     <programlisting role="example"><![CDATA[
 perms([1 0 0])

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="unix_g" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="unix_g" xml:lang="fr">
     <refnamediv>
         <refname>unix_g</refname>
         <refpurpose>
@@ -89,15 +86,20 @@
             Si <varname>commands</varname> comporte une instruction erronée,
             <itemizedlist>
                 <listitem>
-                    <varname>rep</varname> vaut "".
+                     <para><varname>rep</varname> vaut "".
+                    </para>
                 </listitem>
                 <listitem>
-                    Si la variable de sortie <varname>msgerr</varname> est indiquée, le message d'erreur
-                    normalement affiché dans le terminal de l'interpréteur est capturé et enregistré
-                    dans celle-ci. Sinon, le message d'erreur est affiché dans la console Scilab.
+                     <para>
+                        Si la variable de sortie <varname>msgerr</varname> est indiquée, le message d'erreur
+                        normalement affiché dans le terminal de l'interpréteur est capturé et enregistré
+                        dans celle-ci. Sinon, le message d'erreur est affiché dans la console Scilab.
+                    </para>
                 </listitem>
                 <listitem>
-                    Les instructions suivant celle erronée sont ignorées.
+                     <para>
+                        Les instructions suivant celle erronée sont ignorées.
+                    </para>
                 </listitem>
                 <warning>
                     Les opérations effectuées par les instructions valides figurant dans

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="bar" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bar" xml:lang="pt">
     <refnamediv>
         <refname>bar</refname>
         <refpurpose>Histograma de barras</refpurpose>
@@ -48,10 +45,14 @@
                       with
                       <itemizedlist>
                         <listitem>
-                          N : number of groups (each group of bars gathered on/around an x position)
+                             <para>
+                              N : number of groups (each group of bars gathered on/around an x position)
+                            </para>
                         </listitem>
                         <listitem>
-                          M : number of categories in each group
+                             <para>
+                              M : number of categories in each group
+                            </para>
                         </listitem>
                       </itemizedlist>
                     </para>
@@ -202,14 +203,20 @@ bar(x,y,0.2,'green');
                 <revdescription>
                     <itemizedlist>
                       <listitem>
-                        A vector of M colors can now be provided, one for each category.
+                           <para>
+                            A vector of M colors can now be provided, one for each category.
+                          </para>
                       </listitem>
                       <listitem>
-                        Available colors are no longer restricted to the 10 major colors. All the
-                        predefined colors names can now be used.
+                           <para>
+                            Available colors are no longer restricted to the 10 major colors. All the
+                            predefined colors names can now be used.
+                          </para>
                       </listitem>
                       <listitem>
-                        Colors can now be specified also by their "#RRGGBB" hexadecimal codes.
+                           <para>
+                            Colors can now be specified also by their "#RRGGBB" hexadecimal codes.
+                          </para>
                       </listitem>
                     </itemizedlist>
                 </revdescription>
