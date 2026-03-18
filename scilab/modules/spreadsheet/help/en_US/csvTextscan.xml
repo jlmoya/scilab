@@ -19,7 +19,9 @@
             A = csvTextScan(M, separator)
             A = csvTextScan(M, separator, decimal)
             A = csvTextScan(M, separator, decimal, conversion)
+            A = csvTextScan(M, separator, decimal, conversion, substitute)
             A = csvTextScan(M, separator, decimal, conversion, range)
+            A = csvTextScan(M, separator, decimal, conversion, range, substitute)
         </synopsis>
     </refsynopsisdiv>
 
@@ -89,6 +91,19 @@
                         format <literal>[R1 C1 R2 C2]</literal> where (R1,C1) is the upper
                         left corner of the data to be read and (R2,C2) is the lower right
                         corner.
+                    </para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>substitute</term>
+                <listitem>
+                    <para>a m-by-2 matrix of strings, a replacing map (default = [],
+                        meaning no replacements). The first column
+                        <literal>substitute(:,1)</literal> contains the searched strings and
+                        the second column <literal>substitute(:,2)</literal> contains the
+                        replace strings. Every occurrence of a searched string in the file is
+                        replaced.
                     </para>
                 </listitem>
             </varlistentry>
@@ -169,6 +184,12 @@ csvTextScan( Atext , ";" , "," )
                     If <literal>decimal</literal> is not <literal>[]</literal> and
                     <literal>conversion</literal> is set to <literal>string</literal>,
                     the decimal conversion will be done.
+                </revremark>
+            </revision>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>
+                    <literal>substitute</literal> option is managed.
                 </revremark>
             </revision>
         </revhistory>
