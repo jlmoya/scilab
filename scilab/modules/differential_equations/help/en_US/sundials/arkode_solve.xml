@@ -241,7 +241,7 @@
             </listitem>
             <listitem>
                 <para>a string giving the name of a SUNDIALS DLL entrypoint with C prototype </para> 
-                <para><programlisting role="no-scilab-exec"><![CDATA[int sunMass(realtype t, SUNMatrix M, void* user_data, N_Vector tmp1, 
+                <para><programlisting role="no-scilab-exec"><![CDATA[int sunMass(sunrealtype t, SUNMatrix M, void* user_data, N_Vector tmp1, 
                                       N_Vector tmp2, N_Vector tmp3)]]>
         </programlisting></para>
                 <para>
@@ -249,7 +249,7 @@
                     code=[
                         "#include <nvector/nvector_serial.h>"
                         "#include <sunmatrix/sunmatrix_dense.h>"
-                        "int sunRhs(realtype t, N_Vector Y, N_Vector Yd, void *user_data)"    
+                        "int sunRhs(sunrealtype t, N_Vector Y, N_Vector Yd, void *user_data)"    
                         "{"
                         "double *y = NV_DATA_S(Y);"
                         "double *ydot = NV_DATA_S(Yd);"
@@ -257,7 +257,7 @@
                         "ydot[1] = (1-y[0]*y[0])*y[1]-y[0];"
                         "return 0;"
                         "}"
-                        "int sunMass(realtype t, SUNMatrix M, void* user_data, N_Vector tmp1,"
+                        "int sunMass(sunrealtype t, SUNMatrix M, void* user_data, N_Vector tmp1,"
                         "            N_Vector tmp2, N_Vector tmp3)"
                         "{"
                         "double *mass = SM_DATA_D(M);"

@@ -262,7 +262,7 @@
             </para>
             <para>
                 <programlisting role="no-scilab-exec"><![CDATA[
-                    int sunProj(realtype t, N_Vector X, N_Vector Corr, realtype epsProj, N_Vector Err, 
+                    int sunProj(sunrealtype t, N_Vector X, N_Vector Corr, sunrealtype epsProj, N_Vector Err, 
                     void *user_data)
                     ]]>
                 </programlisting>
@@ -277,7 +277,7 @@
                     code=[
                     "#include <math.h>"
                     "#include <nvector/nvector_serial.h>"
-                    "int sunRhs(realtype t, N_Vector X, N_Vector Xd, void *user_data)"
+                    "int sunRhs(sunrealtype t, N_Vector X, N_Vector Xd, void *user_data)"
                     "{"
                     "double *x = NV_DATA_S(X);"
                     "double *xd = NV_DATA_S(Xd);"
@@ -286,7 +286,7 @@
                     "xd[1] = alpha[0]*x[0];"
                     "return 0;"
                     "}"
-                    "int sunProj(realtype t, N_Vector X, N_Vector Corr, realtype epsProj, N_Vector Err, "
+                    "int sunProj(sunrealtype t, N_Vector X, N_Vector Corr, sunrealtype epsProj, N_Vector Err, "
                     "            void *user_data)"
                     "{"
                     "double *x = NV_DATA_S(X);"

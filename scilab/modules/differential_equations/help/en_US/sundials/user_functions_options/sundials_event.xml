@@ -160,8 +160,8 @@
         
                 <para>In that case <term>evFn</term> must have the C prototype</para> 
                 <para><programlisting role="no-scilab-exec"><![CDATA[
-                        int sunEvent(realtype t, N_Vector Y, realtype *gout, void *user_data)
-                        int sunEvent(realtype t, N_Vector Y, N_Vector Yp, realtype *gout, void *user_data)
+                        int sunEvent(sunrealtype t, N_Vector Y, sunrealtype *gout, void *user_data)
+                        int sunEvent(sunrealtype t, N_Vector Y, N_Vector Yp, sunrealtype *gout, void *user_data)
                     ]]>
         </programlisting></para>
                 <para>
@@ -176,7 +176,7 @@
                     <programlisting><![CDATA[
                         code=[
                             "#include <nvector/nvector_serial.h>"
-                            "int sunEvent(realtype t, N_Vector Y, realtype* gout, void* user_data)"
+                            "int sunEvent(sunrealtype t, N_Vector Y, sunrealtype* gout, void* user_data)"
                             "{ "
                             "double *y = NV_DATA_S(Y);"
                             "gout[0] = y[0]-1.7;"
@@ -194,7 +194,7 @@
                         <programlisting><![CDATA[
                             code=[
                                 "#include <nvector/nvector_serial.h>"
-                                "int sunEvent(realtype t, N_Vector Y, N_Vector Yd, realtype* gout, void* user_data)"
+                                "int sunEvent(sunrealtype t, N_Vector Y, N_Vector Yd, sunrealtype* gout, void* user_data)"
                                 "{ "
                                 "double *yd = NV_DATA_S(Yd);"
                                 "gout[0] = yd[1];"

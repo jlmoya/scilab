@@ -83,8 +83,8 @@
                 <para>In that case <term>cbFn</term> must have the C prototype</para> 
             <para><programlisting role="no-scilab-exec"><![CDATA[
                 int cbFn(int flag, N_Vector Y, void *user_data)
-                int cbFn(realtype t, int flag, N_Vector Y, void *user_data)
-                int cbFn(realtype t, int flag N_Vector Y, N_Vector Yp, void *user_data)
+                int cbFn(sunrealtype t, int flag, N_Vector Y, void *user_data)
+                int cbFn(sunrealtype t, int flag N_Vector Y, N_Vector Yp, void *user_data)
                 ]]>
         </programlisting></para>
                        
@@ -100,14 +100,14 @@
                 "#include <stdio.h>"
                 "#include <nvector/nvector_serial.h>"
                 "FILE *fp;"
-                "int sunRhs(realtype t, N_Vector Y, N_Vector Yd, void *user_data)"    
+                "int sunRhs(sunrealtype t, N_Vector Y, N_Vector Yd, void *user_data)"    
                 "{"
                 "double *y = NV_DATA_S(Y);"
                 "double *ydot = NV_DATA_S(Yd);"
                 "ydot[0] = -y[0]*y[0];"
                 "return 0;"
                 "}" 
-                "int sunCb(realtype t, int flag, N_Vector Y, void *user_data)"
+                "int sunCb(sunrealtype t, int flag, N_Vector Y, void *user_data)"
                 "{"
                 "double *y = NV_DATA_S(Y);"
                 "if (flag == -1) {"

@@ -79,7 +79,7 @@
                                    <programlisting><![CDATA[
                                        code=[
                                            "#include <nvector/nvector_serial.h>"
-                                           "int sunRhs(realtype t, N_Vector Y, N_Vector Yd, void *user_data)"
+                                           "int sunRhs(sunrealtype t, N_Vector Y, N_Vector Yd, void *user_data)"
                                            "{"
                                            "double *y = NV_DATA_S(Y);"
                                            "double *yd = NV_DATA_S(Yd);"

@@ -99,7 +99,7 @@
         <programlisting role="example"><![CDATA[
             mputl([
             "#include <nvector/nvector_serial.h>"
-            "int sunRhs(realtype t, N_Vector N_VectorY, N_Vector N_VectorYd, void *user_data)"
+            "int sunRhs(sunrealtype t, N_Vector N_VectorY, N_Vector N_VectorYd, void *user_data)"
             "{"
             "double *y = NV_DATA_S(N_VectorY);"
             "double *ydot = NV_DATA_S(N_VectorYd);"
