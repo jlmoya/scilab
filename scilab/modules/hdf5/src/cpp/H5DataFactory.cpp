@@ -349,33 +349,11 @@ void H5DataFactory::getNativeData(const hid_t obj, const hid_t space, hsize_t * 
     {
         if (isAttribute)
         {
-            // Specific case for 1x1 string such as "abcdef" stored as DATASPACE SCALAR with variable length
-            if (H5Tget_class(nativeType) == H5T_STRING && H5Sget_simple_extent_type(_space) == H5S_SCALAR && H5Tis_variable_str(nativeType))
-            {
-                char* tmpdata = NULL;
-                err = H5Aread(obj, nativeType, &tmpdata);
-                data[0] = new char[strlen(tmpdata) + 1];
-                memcpy(data[0], tmpdata, strlen(tmpdata) + 1);
-            }
-            else
-            {
-                err = H5Aread(obj, nativeType, *data);
-            }
+            err = H5Aread(obj, nativeType, *data);
         }
         else
         {
-            // Specific case for 1x1 string such as "abcdef" stored as DATASPACE SCALAR with variable length
-            if (H5Tget_class(nativeType) == H5T_STRING && H5Sget_simple_extent_type(_space) == H5S_SCALAR && H5Tis_variable_str(nativeType))
-            {
-                char* tmpdata = NULL;
-                err = H5Dread(obj, nativeType, H5S_ALL, H5S_ALL, H5P_DEFAULT, &tmpdata);
-                data[0] = new char[strlen(tmpdata) + 1];
-                memcpy(data[0], tmpdata, strlen(tmpdata) + 1);
-            }
-            else
-            {
-                err = H5Dread(obj, nativeType, H5S_ALL, H5S_ALL, H5P_DEFAULT, *data);
-            }
+            err = H5Dread(obj, nativeType, H5S_ALL, H5S_ALL, H5P_DEFAULT, *data);
         }
     }
 

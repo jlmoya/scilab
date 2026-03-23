@@ -106,7 +106,11 @@ public final class BlockDocumentationAction extends VertexSelectionDependantActi
                 JavaController controller = new JavaController();
 
                 String[] interfaceFunction = new String[1];
-                controller.getObjectProperty(((BasicBlock) selected).getUID(), Kind.BLOCK, ObjectProperties.INTERFACE_FUNCTION, interfaceFunction);
+                if (((BasicBlock) selected).getKind() == Kind.BLOCK) {
+                    controller.getObjectProperty(((BasicBlock) selected).getUID(), Kind.BLOCK, ObjectProperties.INTERFACE_FUNCTION, interfaceFunction);
+                } else { // ANNOTATION
+                    interfaceFunction[0] = "TEXT_f";
+                }
 
                 ScilabInterpreterManagement.asynchronousScilabExec(null, "doc", interfaceFunction[0]);
             } catch (InterpreterException ex) {
