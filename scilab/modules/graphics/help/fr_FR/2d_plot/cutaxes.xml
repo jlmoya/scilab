@@ -74,7 +74,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection role="arguments" id="cutaxes_arguments">
+    <refsection role="arguments" xml:id="cutaxes_arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -297,7 +297,7 @@
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection role="description" id="cutaxes_description">
+    <refsection role="description" xml:id="cutaxes_description">
         <title>Description</title>
         <para>
             <literal>cutaxes()</literal> permet de tracer des courbes selon un axe non régulier,
@@ -343,7 +343,7 @@
                 </listitem>
             </itemizedlist>
         </note>
-        <refsect3 id="cutaxes_titles">
+        <refsect3 xml:id="cutaxes_titles">
             <title>Titres, légendes, et étiquettes de courbes</title>
             <para>
                 <emphasis role="bold"><varname>axes0</varname> initial répliqué :</emphasis>
@@ -393,9 +393,9 @@ legend(["Curve 1" "Curve 2"],"in_upper_left");
             </para>
         </refsect3>
     </refsection>
-    <refsection role="examples" id="cutaxes_examples">
+    <refsection role="examples" xml:id="cutaxes_examples">
         <title>Exemples</title>
-        <refsect3 id="cutaxes_curves">
+        <refsect3 xml:id="cutaxes_curves">
             <title>Options "ticksmode" et "widths". Identification et modifications des courbes</title>
             <para/>
             <programlisting><![CDATA[
@@ -444,7 +444,7 @@ a(3).log_flags = "lnn";
          ]]></scilab:image>
             <para/>
             </refsect3>
-            <refsect3 id="cutaxes_xmultiscale">
+            <refsect3 xml:id="cutaxes_xmultiscale">
                 <title>Intervalle répliqué et inversé</title>
             <para>
                 <literal>cutaxes()</literal> permet d'utiliser des intervalles se recouvrant partiellement,
@@ -486,7 +486,7 @@ xlabel(a(2), "Rayon r")
          ]]></scilab:image>
         </refsect3>
 
-        <refsect3 id="cutaxes_ymultiscale">
+        <refsect3 xml:id="cutaxes_ymultiscale">
             <title>Axe Y multiéchelle :</title>
             <para>
                 <emphasis role="bold">Exemple n° 1, avec légendes des courbes</emphasis>
@@ -592,7 +592,7 @@ is_handle_valid(ax0)  // %F: le repère graphique initial a été supprimé
          ]]></scilab:image>
         </refsect3>
 
-    <refsect3 id="cutaxes_patch2D">
+    <refsect3 xml:id="cutaxes_patch2D">
         <title>Exemple avec Matplot1()</title>
         <para>
         <programlisting><![CDATA[
@@ -624,7 +624,7 @@ axes = cutaxes(x0, "y",intervals, "ticksmode","alt", "widths","isoscaled");
     </refsect3>
 
     </refsection>
-    <refsection role="see also" id="cutaxes_seealso">
+    <refsection role="see also" xml:id="cutaxes_seealso">
         <title>Voir aussi</title>
         <simplelist type="inline">
             <member>
@@ -641,7 +641,7 @@ axes = cutaxes(x0, "y",intervals, "ticksmode","alt", "widths","isoscaled");
             </member>
         </simplelist>
     </refsection>
-    <refsection role="history" id="cutaxes_history">
+    <refsection role="history" xml:id="cutaxes_history">
         <title>Historique</title>
         <revhistory>
             <revision>

@@ -157,15 +157,17 @@ iconvert(-1, 18)
                             </para>
                         </listitem>
                         <listitem>
-                            <table>
-                                <tr><th>This</th>              <th>is now</th>     <th>instead of</th></tr>
-                                <tr><td>iconvert([-%inf,%inf], 1)</td><td>[-128, 127]</td><td>[0, 0]</td></tr>
-                                <tr><td>iconvert([-%inf,%inf], 2)</td><td>[-32768, 32767]</td><td>[0, 0]</td></tr>
-                                <tr><td>iconvert(%inf, 4)</td>  <td>2147483647</td> <td>-2147483648</td></tr>
-                                <tr><td>iconvert(%inf, 11)</td> <td>255</td>        <td>0</td></tr>
-                                <tr><td>iconvert(%inf, 12)</td> <td>65535</td>      <td>0</td></tr>
-                                <tr><td>iconvert(%inf, 14)</td> <td>4294967295</td> <td>0</td></tr>
-                            </table>
+                            <para>
+                                <table>
+                                    <tr><th>This</th>              <th>is now</th>     <th>instead of</th></tr>
+                                    <tr><td>iconvert([-%inf,%inf], 1)</td><td>[-128, 127]</td><td>[0, 0]</td></tr>
+                                    <tr><td>iconvert([-%inf,%inf], 2)</td><td>[-32768, 32767]</td><td>[0, 0]</td></tr>
+                                    <tr><td>iconvert(%inf, 4)</td>  <td>2147483647</td> <td>-2147483648</td></tr>
+                                    <tr><td>iconvert(%inf, 11)</td> <td>255</td>        <td>0</td></tr>
+                                    <tr><td>iconvert(%inf, 12)</td> <td>65535</td>      <td>0</td></tr>
+                                    <tr><td>iconvert(%inf, 14)</td> <td>4294967295</td> <td>0</td></tr>
+                                </table>
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

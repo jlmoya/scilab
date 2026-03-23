@@ -181,17 +181,19 @@ find(u(2:$)<>u(1:$-1))
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <listitem>
-                         <para>
-                            prbs_a() now strictly complies with nc.
-                        </para>
-                    </listitem>
-                    <listitem>
-                         <para>
-                            The probability of the initial state u(1) is now unbiased: +1 and -1 are
-                            strictly equiprobable.
-                        </para>
-                    </listitem>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                prbs_a() now strictly complies with nc.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                The probability of the initial state u(1) is now unbiased: +1 and -1 are
+                                strictly equiprobable.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
                 </revdescription>
             </revision>
         </revhistory>

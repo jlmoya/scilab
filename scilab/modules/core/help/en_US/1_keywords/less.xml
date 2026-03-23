@@ -77,22 +77,24 @@
             <revision>
                 <revnumber>6.0</revnumber>
                 <revdescription>
-                  <listitem>
-                       <para><literal>~</literal> (not)'s priority is now higher than <literal>&lt;</literal>,
-                        <literal>&lt;=</literal>, <literal>&gt;</literal> and <literal>&gt;=</literal> one.
-                        For instance, <literal>~3&lt;1</literal> is parsed as <literal>(~3)&lt;1</literal>
-                        instead of <literal>~(3&lt;1)</literal> and now yields an error instead of
-                        <literal>%T</literal>.
-                      </para>
-                  </listitem>
-                  <listitem>
-                       <para><literal> A&gt;[] </literal>, <literal> A&gt;=[] </literal>,
-                        <literal> A&lt;[] </literal>, <literal> A&lt;=[] </literal>,
-                        <literal> []&gt;A </literal>, <literal> []&gt;=A </literal>,
-                        <literal> []&lt;A </literal>, and <literal> []&lt;=A </literal> now return
-                        <literal> [] </literal> instead of an error.
-                      </para>
-                  </listitem>
+                    <itemizedlist>
+                        <listitem>
+                            <para><literal>~</literal> (not)'s priority is now higher than <literal>&lt;</literal>,
+                                <literal>&lt;=</literal>, <literal>&gt;</literal> and <literal>&gt;=</literal> one.
+                                For instance, <literal>~3&lt;1</literal> is parsed as <literal>(~3)&lt;1</literal>
+                                instead of <literal>~(3&lt;1)</literal> and now yields an error instead of
+                                <literal>%T</literal>.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para><literal> A&gt;[] </literal>, <literal> A&gt;=[] </literal>,
+                                <literal> A&lt;[] </literal>, <literal> A&lt;=[] </literal>,
+                                <literal> []&gt;A </literal>, <literal> []&gt;=A </literal>,
+                                <literal> []&lt;A </literal>, and <literal> []&lt;=A </literal> now return
+                                <literal> [] </literal> instead of an error.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
                 </revdescription>
             </revision>
         </revhistory>
