@@ -257,7 +257,7 @@ result = http_patch("https://jsonplaceholder.typicode.com/posts/1", data, header
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -268,9 +268,11 @@ result = http_patch("https://jsonplaceholder.typicode.com/posts/1", data, header
             </revision>
             <revision>
                 <revnumber>2024.1</revnumber>
-                <revremark>
-                    <literal>headers</literal> output argument added.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>headers</literal> output argument added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

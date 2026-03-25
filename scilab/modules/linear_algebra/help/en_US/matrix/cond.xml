@@ -131,31 +131,33 @@ cond(A, 'fro')
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                cond(X) now accepts non square matrix.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                New input argument p introduced.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    cond(X) now accepts non square matrix.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New input argument p introduced.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     cond([]) now returns 0 instead of 1.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

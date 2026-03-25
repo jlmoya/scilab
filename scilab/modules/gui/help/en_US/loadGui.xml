@@ -105,14 +105,16 @@ loadGui("TMPDIR/foo2.xml")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    Function <function>loadGui</function> introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function <function>loadGui</function> introduced.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

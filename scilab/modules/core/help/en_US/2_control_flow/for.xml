@@ -201,27 +201,31 @@ for j = 1:n, v = a(:,j), write(%io(2),v), end
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The for <literal>expression</literal> can now be a vector of graphic handles.
-                                <literal>for</literal> is now protected:
-                                Assignments like <literal>for=1</literal> are no longer possible.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The number of characters used to define the body of any conditional instruction (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, or <literal>select/case</literal>) is no more limited to 16k.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The for <literal>expression</literal> can now be a vector of graphic handles.
+                                    <literal>for</literal> is now protected:
+                                    Assignments like <literal>for=1</literal> are no longer possible.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The number of characters used to define the body of any conditional instruction (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, or <literal>select/case</literal>) is no more limited to 16k.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2023.0.0</revnumber>
                 <revdescription>
-                    The <literal>expression</literal> can be a hypermatrix. It is then processed
-                    by column as <literal>matrix(expression, size(expression,1), -1)</literal>.
+                    <para>
+                        The <literal>expression</literal> can be a hypermatrix. It is then processed
+                        by column as <literal>matrix(expression, size(expression,1), -1)</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

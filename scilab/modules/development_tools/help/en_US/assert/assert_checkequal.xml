@@ -171,50 +171,51 @@ assert_checkequal: Assertion failed: expected= lib@SCI\modules\core\macros\  whi
         <title>Bibliography</title>
         <para>"Automated Software Testing for Matlab", Steven Eddins, 2009</para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>Function introduced
-                </revdescription>
+                <revremark>Function introduced</revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                      <listitem>
-                           <para>
-                              The comparison of two implicit lists, Scilab functions, Scilab libraries,
-                              built-in functions or graphic handles is now always possible and properly
-                              done.
-                          </para>
-                      </listitem>
-                      <listitem>
-                           <para>
-                              In two lists, void and Nan elements are now supported, and matching ones
-                              are considered as equal.
-                          </para>
-                      </listitem>
-                      <listitem>
-                           <para>
-                              Nan are now supported in input sparse matrices and are considered as equal.
-                          </para>
-                      </listitem>
-                      <listitem>
-                           <para>
-                              When the test fails while inputs are arrays, the message now indicates
-                              the index of the first mismatching element.
-                          </para>
-                      </listitem>
-                  </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The comparison of two implicit lists, Scilab functions, Scilab libraries,
+                                    built-in functions or graphic handles is now always possible and properly
+                                    done.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    In two lists, void and Nan elements are now supported, and matching ones
+                                    are considered as equal.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Nan are now supported in input sparse matrices and are considered as equal.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    When the test fails while inputs are arrays, the message now indicates
+                                    the index of the first mismatching element.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     Matching NaN or void elements in simple or nested containers are now considered equal.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

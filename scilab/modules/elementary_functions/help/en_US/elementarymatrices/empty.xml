@@ -553,30 +553,32 @@ A([],:)
             </member>
         </simplelist>
     </refsection>
-    <refsection id="empty_history">
+    <refsection  role="history" xml:id="empty_history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                      <listitem>
-                           <para><literal>A+[]</literal>, <literal>[]+A</literal> and <literal>A-[]</literal>
-                              now return <literal>[]</literal> instead of <literal>A</literal>.
-                              <literal>[]-A</literal> now returns <literal>[]</literal> instead of
-                              <literal>-A</literal>.
-                          </para>
-                      </listitem>
-                      <listitem>
-                           <para><literal> A&gt;[] </literal>, <literal> A&gt;=[] </literal>,
-                             <literal> A&lt;[] </literal>, <literal> A&lt;=[] </literal>,
-                             <literal> []&gt;A </literal>, <literal> []&gt;=A </literal>,
-                             <literal> []&lt;A </literal>, and <literal> []&lt;=A </literal> now return
-                             <literal> [] </literal> instead of an error.
-                          </para>
-                      </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para><literal>A+[]</literal>, <literal>[]+A</literal> and <literal>A-[]</literal>
+                                    now return <literal>[]</literal> instead of <literal>A</literal>.
+                                    <literal>[]-A</literal> now returns <literal>[]</literal> instead of
+                                    <literal>-A</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal> A&gt;[] </literal>, <literal> A&gt;=[] </literal>,
+                                    <literal> A&lt;[] </literal>, <literal> A&lt;=[] </literal>,
+                                    <literal> []&gt;A </literal>, <literal> []&gt;=A </literal>,
+                                    <literal> []&lt;A </literal>, and <literal> []&lt;=A </literal> now return
+                                    <literal> [] </literal> instead of an error.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

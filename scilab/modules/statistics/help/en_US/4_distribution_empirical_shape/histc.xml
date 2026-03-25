@@ -1117,97 +1117,101 @@ histc([2+%z %z %z ]) == [1 2]
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>
+                <revremark>
                     histc() introduced
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    histc() reforged:
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Data and nbins input arguments are commuted.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                New accepted Data types: complex numbers, sparse decimal or complex
-                                matrices, polynomials, texts.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Histogram binning:
-                                <itemizedlist>
-                                    <listitem>
-                                         <para>
-                                            binsWidth and binsAlgo = ["sqrt" "sturges" "freediac"] input
-                                            arguments added.
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                         <para>
-                                            histc() can now build categorial histograms: "discrete" option
-                                            added; binsValues input arguments added.
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                         <para>
-                                            Marginal bins are now handled with binsEdges(1)=-%inf and
-                                            binsEdges($)=%inf, or with binsEdges(1)="" and binsEdges($)="~"
-                                        </para>
-                                    </listitem>
-                                  </itemizedlist>
-                                </para>
-                            </listitem>
-                        <listitem>
-                             <para>
-                                Histogram scaling:
-                                <itemizedlist>
-                                    <listitem>
-                                         <para>
-                                            normalization option removed
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                         <para>
-                                            "counts", "countsNorm", "density" and "densityNorm" options added.
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                         <para>
-                                            "normWith:" option added, with flags among "leftout",
-                                            "rightout", "out", "inf", "nan", "zeros", "empty", "all"
-                                            possible values.
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                         <para>
-                                            "counts" is now the default scaling mode, instead of
-                                            "densityNorm" in Scilab 5.5.0 and 5.5.1, and
-                                            "countsNorm" in Scilab 5.5.2. The backward compatibility to the
-                                            former "densityNorm" default Scilab 5.5 mode is ensured.
-                                        </para>
-                                    </listitem>
-                                  </itemizedlist>
-                                </para>
-                            </listitem>
-                        <listitem>
-                             <para>
-                                jokers and bins output arguments are added and inserted after the
-                                histogram heights. The backward compatibility to Scilab 5.5 is ensured
-                                for the ind result.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>Extensive unit tests added.</para></listitem>
+                    <para>
+                        histc() reforged:
+                        <itemizedlist>
                             <listitem>
-                                 <para>Help page rewritten.</para></listitem>
-                            </itemizedlist>
-                        </revdescription>
-                    </revision>
-                </revhistory>
-            </refsection>
-        </refentry>
+                                <para>
+                                    Data and nbins input arguments are commuted.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New accepted Data types: complex numbers, sparse decimal or complex
+                                    matrices, polynomials, texts.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Histogram binning:
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>
+                                                binsWidth and binsAlgo = ["sqrt" "sturges" "freediac"] input
+                                                arguments added.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                histc() can now build categorial histograms: "discrete" option
+                                                added; binsValues input arguments added.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                Marginal bins are now handled with binsEdges(1)=-%inf and
+                                                binsEdges($)=%inf, or with binsEdges(1)="" and binsEdges($)="~"
+                                            </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                    </para>
+                                </listitem>
+                            <listitem>
+                                <para>
+                                    Histogram scaling:
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>
+                                                normalization option removed
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                "counts", "countsNorm", "density" and "densityNorm" options added.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                "normWith:" option added, with flags among "leftout",
+                                                "rightout", "out", "inf", "nan", "zeros", "empty", "all"
+                                                possible values.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                "counts" is now the default scaling mode, instead of
+                                                "densityNorm" in Scilab 5.5.0 and 5.5.1, and
+                                                "countsNorm" in Scilab 5.5.2. The backward compatibility to the
+                                                former "densityNorm" default Scilab 5.5 mode is ensured.
+                                            </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                    </para>
+                                </listitem>
+                            <listitem>
+                                <para>
+                                    jokers and bins output arguments are added and inserted after the
+                                    histogram heights. The backward compatibility to Scilab 5.5 is ensured
+                                    for the ind result.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>Extensive unit tests added.</para>
+                            </listitem>
+                            <listitem>
+                                    <para>Help page rewritten.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

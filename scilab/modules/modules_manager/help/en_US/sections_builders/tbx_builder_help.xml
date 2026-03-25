@@ -134,7 +134,7 @@ tbx_builder_help(get_absolute_file_path('builder.sce'))
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
+                <revdescription>
                     <para>
                         No longer restricts the build scripts to <literal>builder_help.sce</literal>.
                         Now any scripts called builder*.sce or builder*.sce is valid
@@ -145,13 +145,15 @@ tbx_builder_help(get_absolute_file_path('builder.sce'))
                         from all <literal>la_LA</literal> subdirectory inside the <literal>help</literal>
                         directory.
                     </para>
-                </revremark>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.2</revnumber>
-                <revremark>
-                    <literal>languages</literal> input option added.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>languages</literal> input option added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

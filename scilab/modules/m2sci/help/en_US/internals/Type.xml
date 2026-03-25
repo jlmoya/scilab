@@ -135,51 +135,53 @@ Type(String, Char)
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The <literal>Function</literal> type is now generic: Its property
-                                can now be <literal>Builtin</literal> or <literal>Macro</literal>,
-                                in addition to <literal>Unknown</literal>.
-                                <literal>Builtin</literal> as a type is removed.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>Polynomial</literal> type added, with property
-                                <literal>Real</literal>, <literal>Complex</literal>, or <literal>Unknown</literal>.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>String</literal> type: New property values:
-                                <literal>String</literal> and <literal>Char</literal>, in addition to
-                                <literal>Unknown</literal>.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>Handle</literal> type: <literal>'Figure'</literal> and
-                                <literal>'Axes'</literal> property values added, in addition to
-                                <literal>Unknown</literal>.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>Int</literal> integer type: <literal>'int8'</literal>,
-                                <literal>'int16'</literal>, <literal>'int32'</literal>,
-                                <literal>'int64'</literal>, <literal>'uint8'</literal>,
-                                <literal>'uint16'</literal>, <literal>'uint32'</literal>,
-                                <literal>'uint64'</literal> property values added.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>Boolean</literal> type: default property is now
-                                <literal>Boolean</literal>, instead of <literal>Real</literal>.
-                                <literal>Sparse</literal> property added.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>Void</literal> type removed (never ever used).
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The <literal>Function</literal> type is now generic: Its property
+                                    can now be <literal>Builtin</literal> or <literal>Macro</literal>,
+                                    in addition to <literal>Unknown</literal>.
+                                    <literal>Builtin</literal> as a type is removed.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>Polynomial</literal> type added, with property
+                                    <literal>Real</literal>, <literal>Complex</literal>, or <literal>Unknown</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>String</literal> type: New property values:
+                                    <literal>String</literal> and <literal>Char</literal>, in addition to
+                                    <literal>Unknown</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>Handle</literal> type: <literal>'Figure'</literal> and
+                                    <literal>'Axes'</literal> property values added, in addition to
+                                    <literal>Unknown</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>Int</literal> integer type: <literal>'int8'</literal>,
+                                    <literal>'int16'</literal>, <literal>'int32'</literal>,
+                                    <literal>'int64'</literal>, <literal>'uint8'</literal>,
+                                    <literal>'uint16'</literal>, <literal>'uint32'</literal>,
+                                    <literal>'uint64'</literal> property values added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>Boolean</literal> type: default property is now
+                                    <literal>Boolean</literal>, instead of <literal>Real</literal>.
+                                    <literal>Sparse</literal> property added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>Void</literal> type removed (never ever used).
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -678,7 +678,7 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
             23(11):1249-1265
         </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -689,41 +689,45 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Booleans can now be sorted.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Multilevel sorting added with the rankFuncs option.
-                                Complete sorting of complex numbers is now possible.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Booleans can now be sorted.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Multilevel sorting added with the rankFuncs option.
+                                    Complete sorting of complex numbers is now possible.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                For a sparse input, gsort() was limited to numerical vectors,
-                                and only to the `g` method. It is now fully enabled for vectors
-                                and 2D matrices of sparse booleans, real or complex numbers,
-                                in all `g, r, c, lr, lc` methods, including in multi-level mode.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Sorting along a dimension &gt; 2 is now possible.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    For a sparse input, gsort() was limited to numerical vectors,
+                                    and only to the `g` method. It is now fully enabled for vectors
+                                    and 2D matrices of sparse booleans, real or complex numbers,
+                                    in all `g, r, c, lr, lc` methods, including in multi-level mode.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Sorting along a dimension &gt; 2 is now possible.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

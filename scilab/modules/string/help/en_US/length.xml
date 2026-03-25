@@ -116,7 +116,7 @@ length(a)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -127,26 +127,28 @@ length(a)
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The <literal>length()</literal> of any array C of cells was formerly
-                                always 3, whatever are the number of dimensions and the sizes of the
-                                array. It is now the number of elements of the array at null depth
-                                (without recursive counting), equal to <literal>size(C, "*")</literal>.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The <literal>length()</literal> of any array S of structures was formerly
-                                equal to its number of fields +2, whatever are the number of dimensions
-                                and the sizes of the array. It is now the number of elements of the
-                                array at null depth, equal to <literal>size(S, "*")</literal>.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The <literal>length()</literal> of any array C of cells was formerly
+                                    always 3, whatever are the number of dimensions and the sizes of the
+                                    array. It is now the number of elements of the array at null depth
+                                    (without recursive counting), equal to <literal>size(C, "*")</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The <literal>length()</literal> of any array S of structures was formerly
+                                    equal to its number of fields +2, whatever are the number of dimensions
+                                    and the sizes of the array. It is now the number of elements of the
+                                    array at null depth, equal to <literal>size(S, "*")</literal>.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

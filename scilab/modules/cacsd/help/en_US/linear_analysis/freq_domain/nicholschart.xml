@@ -213,7 +213,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -222,32 +222,36 @@
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The default frames color is now grey85 instead of cyan.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Colors may now be specified by their Scilab names or their "#RRGGBB"
-                                hexadecimal code.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Output argument <literal>sh</literal> added.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The default frames color is now grey85 instead of cyan.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Colors may now be specified by their Scilab names or their "#RRGGBB"
+                                    hexadecimal code.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Output argument <literal>sh</literal> added.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revremark>
-                    The syntax where the input arguments are skipped like <literal>nicholschart(modules,, colors)</literal> is no more supported.
-                </revremark>
+                <revdescription>
+                    <para>
+                        The syntax where the input arguments are skipped like <literal>nicholschart(modules,, colors)</literal> is no more supported.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

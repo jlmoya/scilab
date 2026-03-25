@@ -135,40 +135,40 @@ edit(path+"/locales/en_US.po")
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>Function tbx_generate_pofile added.</revdescription>
+                <revremark>Function tbx_generate_pofile added.</revremark>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revdescription>tbx_name declared obsolete. It is no longer required.</revdescription>
+                <revremark>tbx_name declared obsolete. It is no longer required.</revremark>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                _() and gettext() references are now detected.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Literal double '' are now simplified in the msgid.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Files paths in comments are no longer absolute and refer to the toolbox
-                                root.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    _() and gettext() references are now detected.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Literal double '' are now simplified in the msgid.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Files paths in comments are no longer absolute and refer to the toolbox
+                                    root.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2023.0.0</revnumber>
-                <revdescription>
-                    Existing .po files are now automatically updated for every newly detected msgid.
-                </revdescription>
+                <revremark>Existing .po files are now automatically updated for every newly detected msgid.</revremark>
             </revision>
         </revhistory>
     </refsection>

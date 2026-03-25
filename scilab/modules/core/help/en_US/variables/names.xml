@@ -63,25 +63,27 @@ b
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     The underscore `_` variable is reserved, it is used to ignore a function output argument.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Scilab's parser no longer truncates names longer than 24 characters.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                UTF-8 characters are now accepted in names of variables and fields.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Scilab's parser no longer truncates names longer than 24 characters.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    UTF-8 characters are now accepted in names of variables and fields.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

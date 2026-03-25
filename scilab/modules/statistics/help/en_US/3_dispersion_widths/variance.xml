@@ -207,36 +207,40 @@
                     Wonacott, T.H. &amp; Wonacott, R.J.; Introductory Statistics, fifth edition, J.Wiley &amp; Sons, 1990.
                 </para>
             </refsection>
-            <refsection>
+            <refsection role="history">
                 <title>History</title>
                 <revhistory>
                     <revision>
                         <revnumber>5.5.0</revnumber>
                         <revdescription>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>variance(x, orien, 0|1) removed (as introduced in Scilab 5.4.1)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>variance(x, orien, m) introduced: the true mean m of the underlying statistical law can be used.</para>
-                                </listitem>
-                                <listitem>
-                                    <para>variance(x, orien, %nan) introduced: mean(x,..) is used but divided by n values (instead of n-1)</para>
-                                </listitem>
-                                <listitem>
-                                    <para>[s, mc] = variance(x,..) introduced: the mean mc computed from x is now also returned</para>
-                                </listitem>
-                            </itemizedlist>
+                            <para>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para>variance(x, orien, 0|1) removed (as introduced in Scilab 5.4.1)</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>variance(x, orien, m) introduced: the true mean m of the underlying statistical law can be used.</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>variance(x, orien, %nan) introduced: mean(x,..) is used but divided by n values (instead of n-1)</para>
+                                    </listitem>
+                                    <listitem>
+                                        <para>[s, mc] = variance(x,..) introduced: the mean mc computed from x is now also returned</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
                         </revdescription>
                     </revision>
                     <revision>
                         <revnumber>5.4.1</revnumber>
                         <revdescription>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>variance(complexes) fixed. variance(x,"*",1) introduced. Vectorization of the code for directional usages variance(x,"r"|"c"). Full revision of the help page</para>
-                                </listitem>
-                            </itemizedlist>
+                            <para>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para>variance(complexes) fixed. variance(x,"*",1) introduced. Vectorization of the code for directional usages variance(x,"r"|"c"). Full revision of the help page</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
                         </revdescription>
                     </revision>
                 </revhistory>

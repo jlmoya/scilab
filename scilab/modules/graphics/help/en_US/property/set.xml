@@ -293,25 +293,27 @@ get("myframe/example", "string")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                First input argument can now be a path pointing to the graphic entity.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Multiple property setting is now available at once.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    First input argument can now be a path pointing to the graphic entity.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Multiple property setting is now available at once.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

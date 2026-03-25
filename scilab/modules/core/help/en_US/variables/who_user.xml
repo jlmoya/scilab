@@ -65,15 +65,17 @@ who_user(%f)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revremark>
-                    <function>who_user</function> can now return user's
-                    variable names in a column vector of character strings.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <function>who_user</function> can now return user's
+                        variable names in a column vector of character strings.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

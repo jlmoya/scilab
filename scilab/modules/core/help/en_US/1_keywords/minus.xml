@@ -153,15 +153,17 @@ c = %t - int8(7), inttype(c)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <literal>A - []</literal> and <literal>[] - A</literal> now return
-                    <literal>[]</literal> instead of <literal>A</literal> or <literal>-A</literal>.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>A - []</literal> and <literal>[] - A</literal> now return
+                        <literal>[]</literal> instead of <literal>A</literal> or <literal>-A</literal>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

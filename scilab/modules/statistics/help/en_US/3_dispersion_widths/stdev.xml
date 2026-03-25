@@ -154,20 +154,22 @@ mean(sd)
             <revision>
                 <revnumber>5.5.0</revnumber>
                 <revdescription>
-                    Can now compute the mean squared deviation using the a priori mean defined by <varname>m</varname>
+                    <para>
+                        Can now compute the mean squared deviation using the a priori mean defined by <varname>m</varname>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     stdev(x, orien&gt;ndims(x)) no longer returns zeros(x) but yields an error.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revdescription>
+                <revremark>
                     stdev() is now overloadable.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

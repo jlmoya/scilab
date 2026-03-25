@@ -255,31 +255,33 @@ set(Leg,"legend_location","by_coordinates","position",[0.15 0.4]);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The default values for the modules are computed according to the data bounds.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The frames colors can be specified by their Scilab name or
-                                their "#RRGGBB" hexadecimal code. "" or 0 can be used as partial default.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Output argument <literal>sh</literal> added.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The default values for the modules are computed according to the data bounds.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The frames colors can be specified by their Scilab name or
+                                    their "#RRGGBB" hexadecimal code. "" or 0 can be used as partial default.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Output argument <literal>sh</literal> added.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

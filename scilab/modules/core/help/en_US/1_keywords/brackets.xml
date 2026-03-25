@@ -481,43 +481,49 @@ s.r([2 4 6])
             <revision>
                 <revnumber>6.0</revnumber>
                 <revdescription>
-                    Brackets <literal>[..]</literal> and braces
-                    <literal>{..}</literal> are no longer equivalent
+                    <para>
+                        Brackets <literal>[..]</literal> and braces
+                        <literal>{..}</literal> are no longer equivalent
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Booleans and encoded integers can now be concatenated together,
-                                as in [%t, int8(-5)].
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                [a, b, ..] = (A, B,..) now performs assignments from left to right.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Booleans and encoded integers can now be concatenated together,
+                                    as in [%t, int8(-5)].
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    [a, b, ..] = (A, B,..) now performs assignments from left to right.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Concatenations between encoded integers and decimal numbers are now supported.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Concatenated polynomials or/and rationals must have the same variable name.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Concatenations between encoded integers and decimal numbers are now supported.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Concatenated polynomials or/and rationals must have the same variable name.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

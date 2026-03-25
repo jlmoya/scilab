@@ -389,61 +389,67 @@ c                        double         1 by 1          16
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.0.0</revnumber>
-                <revremark>
-                    All <link linkend="uimenu">uimenu</link> or
-                    <link linkend="uicontrol">uicontrol</link> handles are also saved by this function.
-                </revremark>
+                <revdescription>
+                    <para>
+                        All <link linkend="uimenu">uimenu</link> or
+                        <link linkend="uicontrol">uicontrol</link> handles are also saved by this function.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>5.4.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                When called with variables names (character string) as input, variables
-                                are saved in SOD format (HDF5-based).
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The Scilab &lt;5.4 binary data format is deprecated.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Using save() with a file descriptor as first input argument is deprecated.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    When called with variables names (character string) as input, variables
+                                    are saved in SOD format (HDF5-based).
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The Scilab &lt;5.4 binary data format is deprecated.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Using save() with a file descriptor as first input argument is deprecated.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                save() no longer supports the old Scilab &lt;5.4 data format.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The syntaxes save(fid) and save(fid, x1,..) with a file id are no longer
-                                supported.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Lists with undefined components can now be saved.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    save() no longer supports the old Scilab &lt;5.4 data format.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The syntaxes save(fid) and save(fid, x1,..) with a file id are no longer
+                                    supported.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Lists with undefined components can now be saved.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>

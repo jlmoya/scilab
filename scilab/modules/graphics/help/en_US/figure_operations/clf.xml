@@ -213,20 +213,24 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <literal>clf</literal> now clears frames as well.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>clf</literal> now clears frames as well.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <literal>clf('reset')</literal> no longer resizes nor moves docked figures.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>clf('reset')</literal> no longer resizes nor moves docked figures.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

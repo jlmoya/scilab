@@ -206,11 +206,13 @@ num, "/"+trail+"/"
             </revision>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revremark>
-                    If <varname>str</varname> does not contain any numerical value,
-                    <varname>d</varname> now returns <literal>Nan</literal>
-                    instead of <literal>0</literal>.
-                </revremark>
+                <revdescription>
+                    <para>
+                        If <varname>str</varname> does not contain any numerical value,
+                        <varname>d</varname> now returns <literal>Nan</literal>
+                        instead of <literal>0</literal>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

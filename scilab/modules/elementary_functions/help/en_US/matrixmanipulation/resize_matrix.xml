@@ -247,36 +247,41 @@ resize_matrix(P, [3 3 2], "", %z)
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Polynomials and Hypermatrices are now accepted.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                A custom padding can now be provided.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                New sizes can be specified in a vector.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                resize_matrix() with no parameters displays examples (demo).
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Polynomials and Hypermatrices are now accepted.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    A custom padding can now be provided.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New sizes can be specified in a vector.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    resize_matrix() with no parameters displays examples (demo).
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revremark>The <literal>resType</literal> option is extended to the new
-                <literal>int64</literal> and <literal>uint64</literal> integer types.
-                </revremark>
+                <revdescription>
+                    <para>
+                        The <literal>resType</literal> option is extended to the new
+                        <literal>int64</literal> and <literal>uint64</literal> integer types.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

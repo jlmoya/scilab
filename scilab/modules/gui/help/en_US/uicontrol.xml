@@ -233,37 +233,40 @@ matrix(ut.string,size(table))
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
+                <revdescription>
                     <para>
                         New styles added:
                     </para>
                     <itemizedlist>
                         <listitem>
-                             <para>Tab</para></listitem>
-                            <listitem>
-                                 <para>Spinner</para></listitem>
-                                <listitem>
-                                     <para>Layer</para></listitem>
-                                </itemizedlist>
-                                <para>
-                                    Uicontrols rendering is now based on operating system look and feel (See <link linkend="console_properties">console properties</link>).
-                                </para>
-                                <para>
-                                    Uicontrols handles display is now limited to properties used by Java rendering (See <link linkend="console_properties">console properties</link>).
-                                </para>
-                            </revremark>
-                        </revision>
-                        <revision>
-                            <revnumber>2025.1.0</revnumber>
-                            <revremark>
-                                Uicontrol "Browser" added.
-                            </revremark>
-                        </revision>
-                    </revhistory>
-                </refsection>
-            </refentry>
+                             <para>Tab</para>
+                        </listitem>
+                        <listitem>
+                            <para>Spinner</para>
+                        </listitem>
+                        <listitem>
+                            <para>Layer</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>
+                        Uicontrols rendering is now based on operating system look and feel (See <link linkend="console_properties">console properties</link>).
+                    </para>
+                    <para>
+                        Uicontrols handles display is now limited to properties used by Java rendering (See <link linkend="console_properties">console properties</link>).
+                    </para>
+                </revdescription>
+            </revision>
+            <revision>
+                <revnumber>2025.1.0</revnumber>
+                    <revremark>
+                        Uicontrol "Browser" added.
+                    </revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

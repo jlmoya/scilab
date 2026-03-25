@@ -199,38 +199,42 @@ execstr(h.callback)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>Column vectors can now be provided.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>The third input argument (n) must be an integer value.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>Column vectors can now be provided.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>The third input argument (n) must be an integer value.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>linspace(a, b, n&lt;=0) now returns [] instead of b.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>bounds are now checked against %inf or %nan values.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>linspace(a, b, n&lt;=0) now returns [] instead of b.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>bounds are now checked against %inf or %nan values.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>

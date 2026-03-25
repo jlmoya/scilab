@@ -54,12 +54,16 @@ isvector(ones(10,1))
 isvector(1)
  ]]></programlisting>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revremark><literal>isvector(x)</literal> now returns true if <literal>x</literal> is a scalar.</revremark>
+                <revdescription>
+                    <para>
+                        <literal>isvector(x)</literal> now returns true if <literal>x</literal> is a scalar.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

@@ -87,7 +87,7 @@ tbx_builder_src(get_absolute_file_path('builder.sce'))
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
+                <revdescription>
                     <para>
                         No longer restricts the build scripts to <literal>builder_src.sce</literal>. Now any scripts called <literal>builder*.sce</literal> is valid
                         for source compilation.
@@ -98,7 +98,7 @@ tbx_builder_src(get_absolute_file_path('builder.sce'))
                     <para>
                         A default compilation process is introduced for <literal>c/, cpp/, fortran/, java/</literal>
                     </para>
-                </revremark>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

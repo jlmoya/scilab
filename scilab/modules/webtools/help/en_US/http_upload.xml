@@ -289,7 +289,7 @@ res = http_upload("url:port/route", [f1 f2], "varname", data);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -300,9 +300,11 @@ res = http_upload("url:port/route", [f1 f2], "varname", data);
             </revision>
             <revision>
                 <revnumber>2024.1</revnumber>
-                <revremark>
-                    <literal>headers</literal> output argument added.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>headers</literal> output argument added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

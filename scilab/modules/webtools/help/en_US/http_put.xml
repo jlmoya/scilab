@@ -261,7 +261,7 @@ result = http_get("https://jsonplaceholder.typicode.com/posts/1", headers=["myhe
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -272,9 +272,11 @@ result = http_get("https://jsonplaceholder.typicode.com/posts/1", headers=["myhe
             </revision>
             <revision>
                 <revnumber>2024.1</revnumber>
-                <revremark>
-                    <literal>headers</literal> output argument added.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>headers</literal> output argument added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

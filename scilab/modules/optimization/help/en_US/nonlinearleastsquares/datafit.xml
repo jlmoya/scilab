@@ -797,38 +797,40 @@ xstring(-2.5, 0.9, "dmin = " + msprintf("%5.3f", dmin))
             <revision>
                 <revnumber>6.1</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                New option <varname>Wd</varname> to weight measured data
-                                <varname>Data</varname>.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The gap function G() may now be vectorized over <literal>Data</literal>
-                                points.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Initial parameters <varname>p0</varname> and their bounds may now be
-                                provided as a matrix instead of a mandatory column.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The <literal>err</literal> output argument is replaced with
-                                <literal>dmin</literal> = average Model-to-data distance.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                New output argument <literal>status</literal> added
-                                (for the "qn" algorithm).
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    New option <varname>Wd</varname> to weight measured data
+                                    <varname>Data</varname>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The gap function G() may now be vectorized over <literal>Data</literal>
+                                    points.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Initial parameters <varname>p0</varname> and their bounds may now be
+                                    provided as a matrix instead of a mandatory column.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The <literal>err</literal> output argument is replaced with
+                                    <literal>dmin</literal> = average Model-to-data distance.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New output argument <literal>status</literal> added
+                                    (for the "qn" algorithm).
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

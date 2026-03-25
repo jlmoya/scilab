@@ -145,20 +145,22 @@ rand(2,8)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>lines is set by default to 0. Argument -1 added. See SEP #67 for more information.</para></listitem>
+                    <para>
+                        <itemizedlist>
                             <listitem>
-                                 <para>lines manages a 1x2 vector [nc, nl] as input argument
-                                </para>
+                                <para>lines is set by default to 0. Argument -1 added. See SEP #67 for more information.</para>
                             </listitem>
-                        </itemizedlist>
+                            <listitem>
+                                <para>lines manages a 1x2 vector [nc, nl] as input argument</para>
+                            </listitem>
+                            </itemizedlist>
+                        </para>
                     </revdescription>
                 </revision>
             </revhistory>

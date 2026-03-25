@@ -345,25 +345,27 @@ asciimat(r)
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Text components with various lengths or/and including UTF-8 characters
-                                are accepted. Padding with the ascii(" ")==32 code implemented.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                asciimat(unicodes) trims all trailing spaces.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                For any unicodes hypermatrix, r = asciimat(unicodes) no longer squeezes
-                                size(r,2).
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Text components with various lengths or/and including UTF-8 characters
+                                    are accepted. Padding with the ascii(" ")==32 code implemented.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    asciimat(unicodes) trims all trailing spaces.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    For any unicodes hypermatrix, r = asciimat(unicodes) no longer squeezes
+                                    size(r,2).
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

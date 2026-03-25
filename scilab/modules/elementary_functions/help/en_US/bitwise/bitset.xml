@@ -372,41 +372,43 @@ ns = bitset(n, [  10 40       61    63 64 65   ], ..
         <revhistory>
             <revision>
                 <revnumber>5.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function introduced
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                64-bit integers now supported.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Support to positive signed integers added.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                With decimal numbers, bits #53 to #1024 can now be properly set.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                For each input element, several bits can now be set at the same time.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Input arguments can now mixed arrays and scalars, instead of mandatory
-                                element-wise arrays.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    64-bit integers now supported.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Support to positive signed integers added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    With decimal numbers, bits #53 to #1024 can now be properly set.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    For each input element, several bits can now be set at the same time.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Input arguments can now mixed arrays and scalars, instead of mandatory
+                                    element-wise arrays.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

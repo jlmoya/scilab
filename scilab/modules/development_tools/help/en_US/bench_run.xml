@@ -264,33 +264,35 @@ b = chol(a);
             <revision>
                 <revnumber>6.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para><literal>bench_run()</literal> can now return its results through the new
-                                <literal>modutests_names</literal>, <literal>elapsed_time</literal>
-                                and <literal>nb_iterations</literal> output parameters.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Exportation of results in XML is now possible
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Global configuration settings mode(),
-                                format(), ieee(), warning() and funcprot()
-                                are now protected against tests.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Partial/generic test names are now allowed to run a
-                                subset
-                                of benchmarks dedicated to the same function/feature.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para><literal>bench_run()</literal> can now return its results through the new
+                                    <literal>modutests_names</literal>, <literal>elapsed_time</literal>
+                                    and <literal>nb_iterations</literal> output parameters.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Exportation of results in XML is now possible
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Global configuration settings mode(),
+                                    format(), ieee(), warning() and funcprot()
+                                    are now protected against tests.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Partial/generic test names are now allowed to run a
+                                    subset
+                                    of benchmarks dedicated to the same function/feature.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

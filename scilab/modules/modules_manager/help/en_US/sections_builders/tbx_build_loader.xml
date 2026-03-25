@@ -124,35 +124,37 @@ tbx_build_loader(get_absolute_file_path('builder.sce'))
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Syntaxes using <literal>toolbox_name</literal> are declared obsolete.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>The toolbox_skeleton.start file is now empty.</para></listitem>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
                             <listitem>
-                                 <para>
-                                    When <literal>~/etc/toolbox.start</literal> is empty,
-                                    <literal>tbx_build_loader</literal> now creates the default
-                                    loader.sce content that was formerly in the default toolbox.start file.
+                                <para>
+                                    Syntaxes using <literal>toolbox_name</literal> are declared obsolete.
                                 </para>
                             </listitem>
                             <listitem>
-                                 <para><literal>tbx_build_loader</literal> now creates a default
-                                    unloader.sce file when there is no <literal>~/etc/toolbox.quit</literal> file.
-                                </para>
-                            </listitem>
-                            <listitem>
-                                 <para><literal>loader.sce</literal> and <literal>unloader.sce</literal>
-                                    can no longer modify current <literal>mode()</literal> and <literal>lines()</literal>
-                                    settings in case of inner error.
-                                </para>
-                            </listitem>
-                        </itemizedlist>
-                    </revremark>
+                                <para>The toolbox_skeleton.start file is now empty.</para></listitem>
+                                <listitem>
+                                    <para>
+                                        When <literal>~/etc/toolbox.start</literal> is empty,
+                                        <literal>tbx_build_loader</literal> now creates the default
+                                        loader.sce content that was formerly in the default toolbox.start file.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><literal>tbx_build_loader</literal> now creates a default
+                                        unloader.sce file when there is no <literal>~/etc/toolbox.quit</literal> file.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><literal>loader.sce</literal> and <literal>unloader.sce</literal>
+                                        can no longer modify current <literal>mode()</literal> and <literal>lines()</literal>
+                                        settings in case of inner error.
+                                    </para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
+                    </revdescription>
                 </revision>
             </revhistory>
         </refsection>

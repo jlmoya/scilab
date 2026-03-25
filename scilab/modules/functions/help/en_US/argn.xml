@@ -174,8 +174,17 @@ endfunction
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
 	    <title>History</title>
-	    <revhistory><revision><revnumber>6.1.0</revnumber><revremark>The <code>lhs</code> argument is set to zero when the caller function has no output assignement.</revremark></revision></revhistory>
+	    <revhistory>
+            <revision>
+                <revnumber>6.1.0</revnumber>
+                <revdescription>
+                    <para>
+                        The <code>lhs</code> argument is set to zero when the caller function has no output assignement.
+                    </para>
+                </revdescription>
+            </revision>
+        </revhistory>
     </refsection>
 </refentry>

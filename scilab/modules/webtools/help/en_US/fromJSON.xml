@@ -141,7 +141,7 @@ fromJSON("[NaN, Infinity, -Infinity]")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -158,9 +158,11 @@ fromJSON("[NaN, Infinity, -Infinity]")
             </revision>
             <revision>
                 <revnumber>2024.1.0</revnumber>
-                <revremark>
-                    <literal>NaN</literal>, <literal>-Infinity</literal> and <literal>Infinity</literal> values are now managed.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>NaN</literal>, <literal>-Infinity</literal> and <literal>Infinity</literal> values are now managed.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

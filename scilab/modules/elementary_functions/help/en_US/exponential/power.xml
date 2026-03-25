@@ -205,9 +205,11 @@ s ^ (1:10)
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    With decimal or complex numbers, <literal>scalar ^ squareMat</literal> now
-                    yields <literal>expm(log(scalar)*squareMat)</literal> instead of
-                    <literal>scalar .^ squareMat</literal>
+                    <para>
+                        With decimal or complex numbers, <literal>scalar ^ squareMat</literal> now
+                        yields <literal>expm(log(scalar)*squareMat)</literal> instead of
+                        <literal>scalar .^ squareMat</literal>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

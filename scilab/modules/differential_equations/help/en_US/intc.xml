@@ -98,7 +98,7 @@ intc(1+%i, 4-%i, f)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -107,10 +107,12 @@ intc(1+%i, 4-%i, f)
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revremark>
-                    The default abserr value becomes 10<superscript>-13</superscript> instead of
-                    10<superscript>-14</superscript>.
-                </revremark>
+                <revdescription>
+                    <para>
+                        The default abserr value becomes 10<superscript>-13</superscript> instead of
+                        10<superscript>-14</superscript>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

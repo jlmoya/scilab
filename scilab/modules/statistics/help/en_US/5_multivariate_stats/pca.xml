@@ -211,39 +211,42 @@ show_pca(lambda, comprinc)
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revremark>Improvements of the function: 
-                    <itemizedlist>
-                        <listitem>
-                            <para>
-                                "Economy", "Centered", "NumComponents", "Weights" and "VariableWeights" options are added.
-                            </para> 
-                        </listitem>
-                        <listitem>
-                            <para>
-                                Returns now the percentage of the variance explained by each principal component and the estimated mean of each variable of X.
-                            </para> 
-                        </listitem>
-                        <listitem>
-                            <para>
-                                Warning, there is an incompatibility with previous versions: the order of the first three output arguments have changed.
-                            </para> 
-                            <para>
-                                The old <literal>[lambda, comprinc, scores] = pca(x)</literal> syntax has been replaced by <literal>[comprinc, scores, lambda] = pca(x)</literal>. 
-                                In previous versions, pca only computed the principal components with standardized variables. To obtain the same results, use "VariableWeights" 
-                                option with "variance" value: <literal>[comprinc, scores, lambda] = pca(x, "VariableWeights", "variance")</literal>. In this case,
-                                <literal>comprinc</literal> is not orthonormal. You can compute the orthonormal coefficient thanks to <literal>diag(stdev(x))\comprinc</literal>. 
-                                An other possibility is to use <literal>wcenter</literal> function i.e, <literal>[comprinc, scores, lambda] = pca(wcenter(x, 1))</literal>. 
-                                A warning is displayed when pca is called with 1, 2 or 3 output arguments. To avoid the warning to be displayed, call <literal>pca</literal> with at least 
-                                four output arguments (e.g. <literal>[comprinc, scores, lambda, _] = pca()</literal>).
-                            </para>
-                            <para>
-                                Note that <literal>lambda</literal> is a column vector containing the eigenvalues of the covariance matrix of x. To obtain 
-                                the ratio of the corresponding eigenvalue over the sum of eigenvalues, use the following formula: 
-                                <literal>lambda(:, 1) / sum(lambda(:, 1))</literal>
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        Improvements of the function: 
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    "Economy", "Centered", "NumComponents", "Weights" and "VariableWeights" options are added.
+                                </para> 
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Returns now the percentage of the variance explained by each principal component and the estimated mean of each variable of X.
+                                </para> 
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Warning, there is an incompatibility with previous versions: the order of the first three output arguments have changed.
+                                </para> 
+                                <para>
+                                    The old <literal>[lambda, comprinc, scores] = pca(x)</literal> syntax has been replaced by <literal>[comprinc, scores, lambda] = pca(x)</literal>. 
+                                    In previous versions, pca only computed the principal components with standardized variables. To obtain the same results, use "VariableWeights" 
+                                    option with "variance" value: <literal>[comprinc, scores, lambda] = pca(x, "VariableWeights", "variance")</literal>. In this case,
+                                    <literal>comprinc</literal> is not orthonormal. You can compute the orthonormal coefficient thanks to <literal>diag(stdev(x))\comprinc</literal>. 
+                                    An other possibility is to use <literal>wcenter</literal> function i.e, <literal>[comprinc, scores, lambda] = pca(wcenter(x, 1))</literal>. 
+                                    A warning is displayed when pca is called with 1, 2 or 3 output arguments. To avoid the warning to be displayed, call <literal>pca</literal> with at least 
+                                    four output arguments (e.g. <literal>[comprinc, scores, lambda, _] = pca()</literal>).
+                                </para>
+                                <para>
+                                    Note that <literal>lambda</literal> is a column vector containing the eigenvalues of the covariance matrix of x. To obtain 
+                                    the ratio of the corresponding eigenvalue over the sum of eigenvalues, use the following formula: 
+                                    <literal>lambda(:, 1) / sum(lambda(:, 1))</literal>
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

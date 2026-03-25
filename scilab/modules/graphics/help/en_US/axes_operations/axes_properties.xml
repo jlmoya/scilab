@@ -1346,7 +1346,7 @@ gcf().axes_size = [420 320];
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -1355,10 +1355,12 @@ gcf().axes_size = [420 320];
             </revision>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>.grid_style and .grid_thickness properties added.</para></listitem>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>.grid_style and .grid_thickness properties added.</para>
+                            </listitem>
                             <listitem>
                                  <para>
                                     .line_style values 9 and 10 can be used to have respectively longblank
@@ -1383,35 +1385,40 @@ gcf().axes_size = [420 320];
                                 </para>
                             </listitem>
                         </itemizedlist>
-                    </revremark>
-                </revision>
-                <revision>
-                    <revnumber>5.5.2</revnumber>
-                    <revremark>.tight_limits property can now manage X, Y and Z axis separately.</revremark>
-                </revision>
-                <revision>
-                    <revnumber>6.1.0</revnumber>
-                    <revremark>Default .grid_style is now [7 7] instead of [3 3].</revremark>
-                </revision>
-                <revision>
-                    <revnumber>6.1.1</revnumber>
-                    <revremark>
-                        Default .x|y|z_label.font_size=2, instead of 1.
-                        Default .title.font_size=3, instead of 1.
-                    </revremark>
-                </revision>
-                <revision>
-                    <revnumber>2023.0.0</revnumber>
-                    <revremark>
+                    </para>
+                </revdescription>
+            </revision>
+            <revision>
+                <revnumber>5.5.2</revnumber>
+                <revremark>.tight_limits property can now manage X, Y and Z axis separately.</revremark>
+            </revision>
+            <revision>
+                <revnumber>6.1.0</revnumber>
+                <revremark>Default .grid_style is now [7 7] instead of [3 3].</revremark>
+            </revision>
+            <revision>
+                <revnumber>6.1.1</revnumber>
+                <revremark>
+                    Default .x|y|z_label.font_size=2, instead of 1.
+                    Default .title.font_size=3, instead of 1.
+                </revremark>
+            </revision>
+            <revision>
+                <revnumber>2023.0.0</revnumber>
+                <revdescription>
+                    <para>
                         <literal>.auto_stretch</literal> property added.
-                    </revremark>
-                </revision>
-                <revision>
-                    <revnumber>2026.0.0</revnumber>
-                    <revremark>
+                    </para>
+                </revdescription>
+            </revision>
+            <revision>
+                <revnumber>2026.0.0</revnumber>
+                <revdescription>
+                    <para>
                         <literal>.color_map</literal> property added.
-                    </revremark>
-                </revision>
-            </revhistory>
-        </refsection>
-    </refentry>
+                    </para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

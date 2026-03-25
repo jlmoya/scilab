@@ -346,55 +346,57 @@ ylabel color orange  rotation -90
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The <literal>label</literal> becomes optional, to update only properties.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The full list of Scilab predefined colors names can now be used,
-                                as well as hexadecimal #RRGGBB colors codes.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Console-oriented usages are now possible, specifying any color index,
-                                font id, font size, or box angle as a string like "13" instead of 13,
-                                excepted for [r,g,b] and [x,y,z] position.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                When a non-integer font size is specified,
-                                <literal>.fractional_font</literal> is now automatically turned "on".
-                                It is conversely forced to "off" for any input integer font size.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Any specified font name is now space-insensitive.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                New property <literal>box="on"|"off"</literal> added.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                New property <literal>tag</literal> added.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The <literal>label</literal> becomes optional, to update only properties.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The full list of Scilab predefined colors names can now be used,
+                                    as well as hexadecimal #RRGGBB colors codes.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Console-oriented usages are now possible, specifying any color index,
+                                    font id, font size, or box angle as a string like "13" instead of 13,
+                                    excepted for [r,g,b] and [x,y,z] position.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    When a non-integer font size is specified,
+                                    <literal>.fractional_font</literal> is now automatically turned "on".
+                                    It is conversely forced to "off" for any input integer font size.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Any specified font name is now space-insensitive.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New property <literal>box="on"|"off"</literal> added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New property <literal>tag</literal> added.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

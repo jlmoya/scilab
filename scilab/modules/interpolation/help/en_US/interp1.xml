@@ -314,45 +314,47 @@ legend(['nearest','linear','spline','nodes'], "in_lower_left");
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                For complex <varname>y</varname> values, <literal>imag(y)</literal> is
-                                no longer ignored: <literal>real(y)</literal> and <literal>imag(y)</literal>
-                                parts are separately interpolated.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>"periodic"</literal> extrapolation added for the linear and
-                                spline interpolations.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>"edgevalue"</literal> extrapolation added for all nearest,
-                                linear and spline interpolations.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>"linear"</literal> extrapolation added for the spline
-                                interpolation.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                When <varname>xp</varname> is an hypermatrix and
-                                <literal>size(xp,1)==1</literal>, <literal>size(yp)</literal>
-                                is now always <literal>[size(xp) size(y)(2,$)</literal> instead of
-                                <literal>[size(xp,2:$), size(y)(2,$)</literal>.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    For complex <varname>y</varname> values, <literal>imag(y)</literal> is
+                                    no longer ignored: <literal>real(y)</literal> and <literal>imag(y)</literal>
+                                    parts are separately interpolated.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>"periodic"</literal> extrapolation added for the linear and
+                                    spline interpolations.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>"edgevalue"</literal> extrapolation added for all nearest,
+                                    linear and spline interpolations.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>"linear"</literal> extrapolation added for the spline
+                                    interpolation.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    When <varname>xp</varname> is an hypermatrix and
+                                    <literal>size(xp,1)==1</literal>, <literal>size(yp)</literal>
+                                    is now always <literal>[size(xp) size(y)(2,$)</literal> instead of
+                                    <literal>[size(xp,2:$), size(y)(2,$)</literal>.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

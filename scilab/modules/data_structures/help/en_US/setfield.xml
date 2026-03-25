@@ -154,24 +154,26 @@ Function not defined for given argument type(s),
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The updated list is now returned, instead of being changed "in place".
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                setfield() can no longer be used for cells arrays.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The updated list is now returned, instead of being changed "in place".
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    setfield() can no longer be used for cells arrays.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

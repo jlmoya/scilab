@@ -175,28 +175,34 @@ test: Wrong number of input arguments: 1 expected.
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.0.0</revnumber>
-                <revremark>
-                    <literal>error(n, message)</literal> syntax introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>error(n, message)</literal> syntax introduced.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revremark>
-                    The <literal>error</literal> function can take vector of strings as input argument.
-                </revremark>
+                <revdescription>
+                    <para>
+                        The <literal>error</literal> function can take vector of strings as input argument.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    The <literal>error(n)</literal> and <literal>error(n, pos)</literal> syntaxes
-                    are no longer supported: Providing an explicit error message is now mandatory.
-                    There is no longer any absolute error identifier.
-                </revremark>
+                <revdescription>
+                    <para>
+                        The <literal>error(n)</literal> and <literal>error(n, pos)</literal> syntaxes
+                        are no longer supported: Providing an explicit error message is now mandatory.
+                        There is no longer any absolute error identifier.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

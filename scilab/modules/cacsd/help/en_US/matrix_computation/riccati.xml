@@ -282,22 +282,24 @@ end
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para><literal>riccati(H)</literal> and <literal>riccati(H,E)</literal> added.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>residual</literal> output added.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                When no solution is found, <literal>X=[]</literal> |
-                                <literal>X1=[]</literal> is now returned, without error.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para><literal>riccati(H)</literal> and <literal>riccati(H,E)</literal> added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>residual</literal> output added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    When no solution is found, <literal>X=[]</literal> |
+                                    <literal>X1=[]</literal> is now returned, without error.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -80,7 +80,7 @@ end
  
         ]]></programlisting>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -89,15 +89,19 @@ end
             </revision>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>Manage shortcut root names.</para></listitem>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
                             <listitem>
-                                 <para>Can retrieve key list names.</para></listitem>
-                            </itemizedlist>
-                        </revremark>
-                    </revision>
-                </revhistory>
-            </refsection>
-        </refentry>
+                                <para>Manage shortcut root names.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Can retrieve key list names.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

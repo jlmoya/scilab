@@ -332,7 +332,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -341,7 +341,11 @@
             </revision>
             <revision>
                 <revnumber>2026.1.0</revnumber>
-                <revremark>dbscan now accepts the metric distances available in <literal>pdist2</literal> function.</revremark>
+                <revdescription>
+                    <para>
+                        dbscan now accepts the metric distances available in <literal>pdist2</literal> function.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

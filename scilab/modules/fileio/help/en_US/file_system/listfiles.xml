@@ -104,7 +104,7 @@ files=listfiles(['SCI/modules/core/macros/*.sci';'SCI/modules/core/macros/*.bin'
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -113,10 +113,12 @@ files=listfiles(['SCI/modules/core/macros/*.sci';'SCI/modules/core/macros/*.bin'
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revremark>
-                    Under Windows, up to 6.0.1, <literal>listfile("test")</literal> actually
-                    performed <literal>listfile("test.*")</literal>. It is no longer the case.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Under Windows, up to 6.0.1, <literal>listfile("test")</literal> actually
+                        performed <literal>listfile("test.*")</literal>. It is no longer the case.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

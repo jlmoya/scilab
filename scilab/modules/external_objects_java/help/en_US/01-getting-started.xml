@@ -346,16 +346,16 @@ result                   constant       3 by 3         88
         Whereas in row-major mode, the first array contains the pointers to each row of data.
         For more information see <link linkend="jautoTranspose">jautoTranspose</link>.
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    Function introduced. Based on the 'JIMS' module. The main difference in the
-                    behavior compared to the JIMS module is that
-                    <link linkend="jautoUnwrap">jautoUnwrap</link> is enabled by default.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function introduced. Based on the 'JIMS' module. The main difference in the behavior compared to the JIMS module is that <link linkend="jautoUnwrap">jautoUnwrap</link> is enabled by default.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

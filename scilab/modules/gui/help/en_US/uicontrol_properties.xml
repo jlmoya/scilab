@@ -785,54 +785,61 @@ counter_main_fig.visible = "on";
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
+                <revdescription>
                     <para>
-                    <itemizedlist>
-						<listitem>
-           <para>
-    							Properties added and updated: <literal>.Border</literal>,
-    							<literal>.Scrollable</literal>, <literal>.Groupname</literal>,
-    							<literal>.Icon</literal>, <literal>.Margins</literal>,
-    							<literal>.Layout</literal>, <literal>.Layout_options</literal>, for tabs:
-    							<literal>.Title_position</literal>, <literal>.Title_scroll</literal>.
-     						</para>
-       </listitem>
-						<listitem>
-           <para><literal>.Max</literal>-<literal>.Min</literal> sets the maximal number
-    							of items that can be selected in a <literal>.listbox</literal>, or the
-    							number of multiple lines displayed in an <literal>.edit</literal>.
-    						</para>
-      </listitem>
-						<listitem>
-           <para><literal>.String</literal> is now used to set colors on
-    							<literal>listbox</literal> and <literal>combobox</literal> uicontrols.
-    						</para>
-      </listitem>
-						<listitem>
-           <para><literal>.Backgroundcolor</literal> and <literal>.Foregroundcolor</literal>
-    							now manage Operating System specific values.
-    						</para>
-      </listitem>
-                    </itemizedlist>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Properties added and updated: <literal>.Border</literal>,
+                                    <literal>.Scrollable</literal>, <literal>.Groupname</literal>,
+                                    <literal>.Icon</literal>, <literal>.Margins</literal>,
+                                    <literal>.Layout</literal>, <literal>.Layout_options</literal>, for tabs:
+                                    <literal>.Title_position</literal>, <literal>.Title_scroll</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    <literal>.Max</literal>-<literal>.Min</literal> sets the maximal number
+                                    of items that can be selected in a <literal>.listbox</literal>, or the
+                                    number of multiple lines displayed in an <literal>.edit</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    <literal>.String</literal> is now used to set colors on
+                                    <literal>listbox</literal> and <literal>combobox</literal> uicontrols.
+                                </para>
+                            </listitem> 
+                            <listitem>
+                                <para>
+                                    <literal>.Backgroundcolor</literal> and <literal>.Foregroundcolor</literal>
+                                    now manage Operating System specific values.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
                    </para>
-                </revremark>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    By default, <literal>.callback_type</literal> is now interruptible but non prioritary.
-                </revremark>
+                <revdescription>
+                    <para>
+                        By default, <literal>.callback_type</literal> is now interruptible but non prioritary.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.1.0</revnumber>
-                <revremark>
-                    Properties <literal>Data</literal>, <literal>Debug</literal> added for uicontrol Browser.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Properties <literal>Data</literal>, <literal>Debug</literal> added for uicontrol Browser.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

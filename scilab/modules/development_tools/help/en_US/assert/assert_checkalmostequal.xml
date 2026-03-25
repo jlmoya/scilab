@@ -287,20 +287,20 @@ assert_checkalmostequal ( 1+%i , 1+(1+1.e-4)*%i , 1.e-5 , [], "element" );
 
    ]]></programlisting>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
-        <revhistory>
+        <revhistory role="history">
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function introduced.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revdescription>
+                <revremark>
                     Extension to polynomials.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

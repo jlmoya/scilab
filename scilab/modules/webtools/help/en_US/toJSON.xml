@@ -215,7 +215,7 @@ toJSON([[%nan, 1]; [1e+380, 1e-380]; [%inf, -%inf]], convertInfAndNaN=%f)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -232,9 +232,11 @@ toJSON([[%nan, 1]; [1e+380, 1e-380]; [%inf, -%inf]], convertInfAndNaN=%f)
             </revision>
             <revision>
                 <revnumber>2024.1.0</revnumber>
-                <revremark>
-                    <literal>convertInfAndNaN</literal> option added.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>convertInfAndNaN</literal> option added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

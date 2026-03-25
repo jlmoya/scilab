@@ -660,53 +660,57 @@ exec("SCI/modules/graphics/demos/colormap/colormaps.dem.sce",-1)
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                colorbar() syntax added.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                implicit umin or/and umax values can now be infered either from actual
-                                U data values, or from colminmax and the colormap size.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                colminmax bounds can now be specified as fractions of the colormap size.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                umin=-%inf and umax=%inf semantics are now available.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    colorbar() syntax added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    implicit umin or/and umax values can now be infered either from actual
+                                    U data values, or from colminmax and the colormap size.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    colminmax bounds can now be specified as fractions of the colormap size.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    umin=-%inf and umax=%inf semantics are now available.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                $ can be used in colminmax.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                After calling colorbar(), gce() provides the color bar's handle.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    $ can be used in colminmax.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    After calling colorbar(), gce() provides the color bar's handle.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

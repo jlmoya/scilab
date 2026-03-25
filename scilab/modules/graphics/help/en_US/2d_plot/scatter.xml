@@ -635,7 +635,7 @@ p.mark_background = bg;
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -646,22 +646,24 @@ p.mark_background = bg;
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Colors can be specified as well with their "#RRGGBB" hexadecimal
-                                standard code, or their index in the color map.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Options <emphasis>SmallOnTop</emphasis> and
-                                <emphasis>"datatips"</emphasis> added.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Colors can be specified as well with their "#RRGGBB" hexadecimal
+                                    standard code, or their index in the color map.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Options <emphasis>SmallOnTop</emphasis> and
+                                    <emphasis>"datatips"</emphasis> added.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

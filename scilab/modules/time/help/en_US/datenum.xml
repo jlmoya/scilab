@@ -135,23 +135,27 @@ datenum(dt)
             <revision>
                 <revnumber>2024.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Values out of <literal>1:12</literal> for <literal>M</literal> (month) and out of <literal>1:31</literal> for <literal>D</literal> (day) are now managed.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para><literal>datenum()</literal> contains milliseconds information.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Values out of <literal>1:12</literal> for <literal>M</literal> (month) and out of <literal>1:31</literal> for <literal>D</literal> (day) are now managed.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>datenum()</literal> contains milliseconds information.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
                 <revdescription>
-                    <literal>datenum</literal> allows a datetime as input argument.
+                    <para>
+                        <literal>datenum</literal> allows a datetime as input argument.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

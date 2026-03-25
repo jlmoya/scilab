@@ -227,19 +227,23 @@ plot(x, cosh(x)), title("cosh")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>2024.0</revnumber>
                 <revdescription>
-                    <literal>subplot(…)</literal> can be used on uicontrol frames.
+                    <para>
+                        <literal>subplot(…)</literal> can be used on uicontrol frames.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0</revnumber>
                 <revdescription>
-                    <literal>subplot(…)</literal> now returns created/selected axes handle.
+                    <para>
+                        <literal>subplot(…)</literal> now returns created/selected axes handle.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

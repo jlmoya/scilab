@@ -255,7 +255,7 @@ xgrid
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -264,19 +264,21 @@ xgrid
             </revision>
             <revision>
               <revnumber>6.0.2</revnumber>
-              <revremark>
-                <itemizedlist>
-                  <listitem>
-                       <para>
-                        The input can now be an hypermatrix.
-                      </para>
-                  </listitem>
-                  <listitem>
-                       <para><literal>gamma</literal> can now be overloaded for complex numbers.
-                      </para>
-                  </listitem>
-                </itemizedlist>
-              </revremark>
+              <revdescription>
+                <para>
+                    <itemizedlist>
+                    <listitem>
+                        <para>
+                            The input can now be an hypermatrix.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para><literal>gamma</literal> can now be overloaded for complex numbers.
+                        </para>
+                    </listitem>
+                    </itemizedlist>
+                </para>
+              </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>

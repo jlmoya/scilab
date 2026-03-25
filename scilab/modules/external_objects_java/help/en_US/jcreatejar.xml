@@ -130,14 +130,16 @@ jcreatejar(jar_dest_path, jar_src_path, '', manifest_path);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    Function introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function introduced. Based on the 'JIMS' module. The main difference in the behavior compared to the JIMS module is that <link linkend="jautoUnwrap">jautoUnwrap</link> is enabled by default.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

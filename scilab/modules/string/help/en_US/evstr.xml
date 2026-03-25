@@ -162,15 +162,19 @@ Z = ['a', 'b', 'c'] ;// the variable c is undefined
             <revision>
                 <revnumber>5.3.0</revnumber>
                 <revdescription>
-                <literal>"Nan"</literal> and <literal>"NaN"</literal> are now parsed as <literal>%nan</literal>.
-                <literal>"Inf"</literal> and <literal>"INF"</literal> are now parsed as <literal>%inf</literal>.
+                    <para>
+                        <literal>"Nan"</literal> and <literal>"NaN"</literal> are now parsed as <literal>%nan</literal>.
+                        <literal>"Inf"</literal> and <literal>"INF"</literal> are now parsed as <literal>%inf</literal>.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
                 <revdescription>
-                  Simple comments are now supported in almost all possible input expressions,
-                  whatever is the shape of <literal>M</literal>.
+                    <para>
+                        Simple comments are now supported in almost all possible input expressions,
+                        whatever is the shape of <literal>M</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

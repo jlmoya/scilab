@@ -296,33 +296,33 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.2</revnumber>
                 <revremark>
-                    <para>
-                        New "orientation" values available: "left", "right", "upper", "lower".
-                    </para>
+                    New "orientation" values available: "left", "right", "upper", "lower".
                 </revremark>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                   <itemizedlist>
-                     <listitem>
-                          <para><literal>.z_component</literal> is removed.
-                         </para>
-                     </listitem>
-                     <listitem>
-                          <para>
-                           New <literal>.display_components</literal> and
-                           <literal>.detached_position</literal> properties.
-                         </para>
-                     </listitem>
-                   </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para><literal>.z_component</literal> is removed.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                New <literal>.display_components</literal> and
+                                <literal>.detached_position</literal> properties.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

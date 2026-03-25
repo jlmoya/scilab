@@ -151,7 +151,7 @@ fx == f
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -162,21 +162,23 @@ fx == f
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The name of the symbolic variable is no longer limited to 4 characters.
-                                It can now include extended UTF-8 characters.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                varn([]) now returns [] instead of routing to %s_varn().
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The name of the symbolic variable is no longer limited to 4 characters.
+                                    It can now include extended UTF-8 characters.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    varn([]) now returns [] instead of routing to %s_varn().
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

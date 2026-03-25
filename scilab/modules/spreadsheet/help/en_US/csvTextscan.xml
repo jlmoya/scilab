@@ -171,7 +171,7 @@ csvTextScan( Atext , ";" , "," )
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -180,17 +180,21 @@ csvTextScan( Atext , ";" , "," )
             </revision>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revremark>
-                    If <literal>decimal</literal> is not <literal>[]</literal> and
-                    <literal>conversion</literal> is set to <literal>string</literal>,
-                    the decimal conversion will be done.
-                </revremark>
+                <revdescription>
+                    <para>
+                        If <literal>decimal</literal> is not <literal>[]</literal> and
+                        <literal>conversion</literal> is set to <literal>string</literal>,
+                        the decimal conversion will be done.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2026.1.0</revnumber>
-                <revremark>
-                    <literal>substitute</literal> option is managed.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>substitute</literal> option is managed.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

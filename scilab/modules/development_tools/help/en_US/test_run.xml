@@ -610,23 +610,29 @@ test_run string *ascii*
         </simplelist>
     </refsection>
 
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>test_run returns a status:
-                    <itemizedlist><listitem>
-                                       <para>
-                                Returns %t if no error has been detected
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Returns %f if any error has been detected
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                <revdescription>
+                    <para>
+                        test_run returns a status:
+                    </para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Returns %t if no error has been detected
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Returns %f if any error has been detected
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                     <para>
                         <literal>show_diff</literal> and <literal>show_error</literal> added as new options
                     </para>
@@ -643,7 +649,9 @@ test_run string *ascii*
             </revision>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>32/64bits separation available</revdescription>
+                <revdescription>
+                    <para>32/64bits separation available</para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>

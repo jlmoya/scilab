@@ -271,58 +271,64 @@ xcos(path)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.0.0</revnumber>
-                <revremark>
-                    All <link linkend="uimenu">uimenu</link> or
-                    <link linkend="uicontrol">uicontrol</link> handles are also loaded by this
-                    function.
-                </revremark>
+                <revdescription>
+                    <para>
+                        All <link linkend="uimenu">uimenu</link> or
+                        <link linkend="uicontrol">uicontrol</link> handles are also loaded by this
+                        function.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                The load function is able to handle both Scilab 5 and SOD (Scilab 6
-                                format) by default.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The Scilab 5.X format is deprecated.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Using load with a file descriptor as first input argument is deprecated.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The load function is able to handle both Scilab 5 and SOD (Scilab 6
+                                    format) by default.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The Scilab 5.X format is deprecated.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Using load with a file descriptor as first input argument is deprecated.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                load() is no longer able to handle data files saved with the Scilab
-                                &lt; 5.4 format.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                The syntaxes load(fid) and load(fid, x1,..) with a file id are no
-                                longer supported.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    load() is no longer able to handle data files saved with the Scilab
+                                    &lt; 5.4 format.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The syntaxes load(fid) and load(fid, x1,..) with a file id are no
+                                    longer supported.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

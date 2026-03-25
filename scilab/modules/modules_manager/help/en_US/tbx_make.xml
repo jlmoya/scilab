@@ -268,9 +268,11 @@ tbx_make("path/to/mytoolbox", ["macros", "help", "src"])
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <literal>tbx_make()</literal> introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>tbx_make()</literal> introduced.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
@@ -281,15 +283,19 @@ tbx_make("path/to/mytoolbox", ["macros", "help", "src"])
             <revision>
                 <revnumber>2023.0.0</revnumber>
                 <revdescription>
-                    <literal>tbx_make(".", "localization")</literal> automatically updates existing .po
-                    files for every newly detected msgid.
+                    <para>
+                        <literal>tbx_make(".", "localization")</literal> automatically updates existing .po
+                        files for every newly detected msgid.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2023.1</revnumber>
-                <revremark>
-                    <literal>languages</literal> input option added.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>languages</literal> input option added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

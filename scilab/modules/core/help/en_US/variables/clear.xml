@@ -118,25 +118,29 @@ clear value // will print "deleted"
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>Argument can now be a matrix of strings</revdescription>
+                <revremark>Argument can now be a matrix of strings</revremark>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                  <literal>clear</literal> is now protected:
-                  Assignments like <literal>clear=1</literal> are no longer possible.
+                    <para>
+                        <literal>clear</literal> is now protected:
+                        Assignments like <literal>clear=1</literal> are no longer possible.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <literal>clear</literal> becomes overloadable for any
-                    <literal>mlist("foo")</literal>, with <literal>%foo_clear()</literal>.
+                    <para>
+                        <literal>clear</literal> becomes overloadable for any
+                        <literal>mlist("foo")</literal>, with <literal>%foo_clear()</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

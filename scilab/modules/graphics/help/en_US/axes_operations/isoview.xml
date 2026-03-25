@@ -273,31 +273,36 @@ xtitle("with frameflag=4")
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>input flags "on"|"off" added.</para></listitem>
+                    <para>
+                        <itemizedlist>
                             <listitem>
-                                 <para>input parameters &lt;none&gt; or idGraphics added.</para></listitem>
-                                <listitem>
-                                     <para><literal>isoview(xmin, xmax, ymin, ymax)</literal> marked as deprecated.
-                                    </para>
-                                </listitem>
-                            </itemizedlist>
-                        </revdescription>
-                    </revision>
-                    <revision>
-                        <revnumber>6.0.2</revnumber>
-                        <revdescription>
-                            "isoview on" now forces .cube_scaling="off", and
-                            "isoview off" forces .cube_scaling="on".
-                        </revdescription>
-                    </revision>
-                    <revision>
-                        <revnumber>6.1</revnumber>
-                        <revdescription>
-                            The syntax <literal>isoview(xmin, xmax, ymin, ymax)</literal> is no longer available.
-                        </revdescription>
-                    </revision>
-                </revhistory>
-            </refsection>
-        </refentry>
+                                <para>input flags "on"|"off" added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>input parameters &lt;none&gt; or idGraphics added.</para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>isoview(xmin, xmax, ymin, ymax)</literal> marked as deprecated.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
+            </revision>
+            <revision>
+                <revnumber>6.0.2</revnumber>
+                <revremark>
+                    "isoview on" now forces .cube_scaling="off", and
+                    "isoview off" forces .cube_scaling="on".
+                </revremark>
+            </revision>
+            <revision>
+                <revnumber>6.1</revnumber>
+                <revdescription>
+                    <para>
+                        The syntax <literal>isoview(xmin, xmax, ymin, ymax)</literal> is no longer available.
+                    </para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>
