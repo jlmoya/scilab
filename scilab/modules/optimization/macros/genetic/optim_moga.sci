@@ -26,7 +26,9 @@ function [pop_opt, fobj_pop_opt, pop_init, fobj_pop_init] = optim_moga(ga_f, pop
     [selection_func,err] = get_param(param,"selection_func",selection_ga_elitist);
     [nb_couples,err]     = get_param(param,"nb_couples",100);
     [pressure,err]       = get_param(param,"pressure",0.05);
-    [output_func, err] = get_param(param, "output_func", output_moga_default);
+    [output_func, err]   = get_param(param, "output_func", output_moga_default);
+    [usevec, err]        = get_param(param, "use_vectorized", %F);
+    [dims, err]          = get_param(param, "dimension", 2);
 
     if ~isdef("ga_f","local") then
         error(gettext("optim_moga: ga_f is mandatory"));
@@ -69,8 +71,13 @@ function [pop_opt, fobj_pop_opt, pop_init, fobj_pop_init] = optim_moga(ga_f, pop
     // Code the individuals
     Pop = codage_func(Pop,"code",param);
 
-    for i=1:length(Pop)
-        MO_FObj_Pop(i,:) = _ga_f(Pop(i));
+    if usevec then
+        p = ga_list_to_mat(Pop, [], dims);
+        MO_FObj_Pop = _ga_f(p);
+    else
+        for i=1:length(Pop)
+            MO_FObj_Pop(i,:) = _ga_f(Pop(i));
+        end
     end
 
     // Compute the domination rank
@@ -146,9 +153,17 @@ function [pop_opt, fobj_pop_opt, pop_init, fobj_pop_init] = optim_moga(ga_f, pop
         //
         // Computation of the objective functions
         //
-        for j=1:length(Indiv1)
-            if ToCompute_I1(j) then MO_FObj_Indiv1(j,:) = _ga_f(Indiv1(j)); end
-            if ToCompute_I2(j) then MO_FObj_Indiv2(j,:) = _ga_f(Indiv2(j)); end
+        if usevec then
+            p = ga_list_to_mat(Indiv1, ToCompute_I1, dims)
+            MO_FObj_Indiv1(ToCompute_I1) = _ga_f(p);
+            
+            p = ga_list_to_mat(Indiv2, ToCompute_I2, dims)
+            MO_FObj_Indiv2(ToCompute_I2) = _ga_f(p);
+        else
+            for j=1:nb_couples
+                if ToCompute_I1(j) then MO_FObj_Indiv1(j,:) = _ga_f(Indiv1(j)); end
+                if ToCompute_I2(j) then MO_FObj_Indiv2(j,:) = _ga_f(Indiv2(j)); end
+            end
         end
 
         // Reinit ToCompute lists

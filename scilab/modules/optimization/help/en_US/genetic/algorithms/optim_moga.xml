@@ -137,6 +137,14 @@ y = list(f,p1,p2,...)
                                 function <literal>output_moga_default</literal>).
                             </para>
                         </listitem>
+                        <listitem>
+                            <para>
+                                "use_vectorized": indicates if the objective function is vectorized or not.
+                                If "use_vectorized" is <literal>%T</literal> then the function will be called with the whole population at once 
+                                (matrix with one individual per line) instead of individual by individual. Using vectorized functions will improve performances.
+                                (default value: <literal>%F</literal>).
+                            </para>
+                        </listitem>
                     </itemizedlist>
                 </listitem>
             </varlistentry>
@@ -226,5 +234,15 @@ ga_params = add_param(ga_params,'maxbound',ones(2,1));
                 <link linkend="optim_nsga2"> optim_nsga2 </link>
             </member>
         </simplelist>
+    </refsection>
+
+    <refsection>
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark><literal>use_vectorized</literal> parameter added.</revremark>
+            </revision>
+        </revhistory>
     </refsection>
 </refentry>

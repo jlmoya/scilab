@@ -142,6 +142,14 @@
                                 function <link linkend="output_ga_default">output_ga_default</link>).
                             </para>
                         </listitem>
+                        <listitem>
+                            <para>
+                                "use_vectorized": indicates if the objective function is vectorized or not.
+                                If "use_vectorized" is <literal>%T</literal> then the function will be called with the whole population at once 
+                                (matrix with one individual per line) instead of individual by individual. Using vectorized functions will improve performances.
+                                (default value: <literal>%F</literal>).
+                            </para>
+                        </listitem>
                     </itemizedlist>
                 </listitem>
             </varlistentry>
@@ -422,5 +430,14 @@ myobjfun = list(f,a1,a2);
                 </para>
             </listitem>
         </itemizedlist>
+    </refsection>
+    <refsection>
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark><literal>use_vectorized</literal> parameter added.</revremark>
+            </revision>
+        </revhistory>
     </refsection>
 </refentry>
