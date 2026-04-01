@@ -88,7 +88,7 @@ void OdeManager::solve()
     dblFinalTime = m_pDblTSpan->get(m_pDblTSpan->getSize()-1);
     setStopTime(m_prob_mem,dblFinalTime);
 
-    for (; m_dblT0 != dblFinalTime; iStep++)
+    for (; dblTime != dblFinalTime; iStep++)
     {
         // Solver internal step
         double dblPrevTime = dblTime;
@@ -161,9 +161,7 @@ void OdeManager::solve()
                 saveInterpBasisVectors();
             }
             if (bTerminalEvent == true
-                || (iFlag == ODE_TSTOP_RETURN && m_bHas[PROJ] == false) 
-                || (m_bHas[INTCB] && intermediateCallback(dblTime, iFlag == ODE_ROOT_RETURN ? 1 : 0, m_N_VectorY, m_N_VectorYp))
-                || (ODE_MODE == ODE_NORMAL && dblNextTime == dblFinalTime))
+                || (m_bHas[INTCB] && intermediateCallback(dblTime, iFlag == ODE_ROOT_RETURN ? 1 : 0, m_N_VectorY, m_N_VectorYp)))
             {
                 break;
             }
