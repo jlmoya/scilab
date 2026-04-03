@@ -62,4 +62,5 @@ Source: modules\{#GRAPHICS}\demos\*.*; DestDir: {app}\modules\{#GRAPHICS}\demos;
 ;
 Source: modules\{#GRAPHICS}\tests\*.*; DestDir: {app}\modules\{#GRAPHICS}\tests; Flags: recursesubdirs; Components: {#COMPN_GRAPHICS} and {#COMPN_TESTS}
 ;
+Source: modules\{#GRAPHICS}\help\*.*; DestDir: {app}\modules\{#GRAPHICS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

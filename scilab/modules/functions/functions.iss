@@ -50,4 +50,5 @@ Source: modules\{#FUNCTIONS}\examples\*.*; DestDir: {app}\modules\{#FUNCTIONS}\e
 ;
 Source: modules\{#FUNCTIONS}\tests\*.*; DestDir: {app}\modules\{#FUNCTIONS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#FUNCTIONS}\help\*.*; DestDir: {app}\modules\{#FUNCTIONS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

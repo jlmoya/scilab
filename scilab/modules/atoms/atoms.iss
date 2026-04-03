@@ -42,6 +42,7 @@ Source: modules\{#ATOMS}\gui\*.xml; DestDir: {app}\modules\{#ATOMS}\gui; Compone
 ;
 Source: modules\{#ATOMS}\tests\*.*; DestDir: {app}\modules\{#ATOMS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#ATOMS}\help\*.*; DestDir: {app}\modules\{#ATOMS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------
 #include BinariesSourcePath + "\contrib\external_modules.iss"
 ;--------------------------------------------------------------------------------------------------------------

@@ -41,5 +41,6 @@ Source: modules\{#EXTERNAL_OBJECTS_JAVA}\macros\cleanmacros.bat; DestDir: {app}\
 Source: modules\{#EXTERNAL_OBJECTS_JAVA}\tests\*.*; DestDir: {app}\modules\{#EXTERNAL_OBJECTS_JAVA}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_JVM_MODULE} and {#COMPN_TESTS}
 ;
 Source: modules\{#EXTERNAL_OBJECTS_JAVA}\examples\com\foo\*.java; DestDir: {app}\modules\{#EXTERNAL_OBJECTS_JAVA}\examples\com\foo; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_JVM_MODULE} and {#COMPN_TESTS}
-
+;
+Source: modules\{#EXTERNAL_OBJECTS_JAVA}\help\*.*; DestDir: {app}\modules\{#EXTERNAL_OBJECTS_JAVA}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

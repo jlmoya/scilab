@@ -44,4 +44,5 @@ Source: modules\{#SPFUNCTIONS}\macros\cleanmacros.bat; DestDir: {app}\modules\{#
 ;
 Source: modules\{#SPFUNCTIONS}\tests\*.*; DestDir: {app}\modules\{#SPFUNCTIONS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#SPFUNCTIONS}\help\*.*; DestDir: {app}\modules\{#SPFUNCTIONS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

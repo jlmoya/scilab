@@ -45,4 +45,5 @@ Source: modules\{#JAVASCI}\examples\*.*; DestDir: {app}\modules\{#JAVASCI}\examp
 ;
 Source: modules\{#JAVASCI}\tests\*.*; DestDir: {app}\modules\{#JAVASCI}\tests; Flags: recursesubdirs; Components:  {#COMPN_SCILAB} and {#COMPN_JVM_MODULE} and {#COMPN_TESTS}
 ;
+Source: modules\{#JAVASCI}\help\*.*; DestDir: {app}\modules\{#JAVASCI}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

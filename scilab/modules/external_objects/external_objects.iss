@@ -41,4 +41,5 @@ Source: modules\{#EXTERNAL_OBJECTS}\macros\lib; DestDir: {app}\modules\{#EXTERNA
 ;
 ;Source: modules\{#EXTERNAL_OBJECTS}\tests\*.*; DestDir: {app}\modules\{#EXTERNAL_OBJECTS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#EXTERNAL_OBJECTS}\help\*.*; DestDir: {app}\modules\{#EXTERNAL_OBJECTS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

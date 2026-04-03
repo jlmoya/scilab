@@ -43,4 +43,5 @@ Source: modules\{#STATISTICS}\demos\*.*; DestDir: {app}\modules\{#STATISTICS}\de
 ;
 Source: modules\{#STATISTICS}\tests\*.*; DestDir: {app}\modules\{#STATISTICS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#STATISTICS}\help\*.*; DestDir: {app}\modules\{#STATISTICS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

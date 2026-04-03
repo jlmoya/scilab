@@ -49,4 +49,5 @@ Source: modules\{#PREFERENCES}\macros\*.bin; DestDir: {app}\modules\{#PREFERENCE
 ;
 Source: modules\{#PREFERENCES}\tests\*.*; DestDir: {app}\modules\{#PREFERENCES}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#PREFERENCES}\help\*.*; DestDir: {app}\modules\{#PREFERENCES}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

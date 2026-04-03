@@ -41,4 +41,5 @@ Source: modules\{#DEMO_TOOLS}\gui\*.xml; DestDir: {app}\modules\{#DEMO_TOOLS}\gu
 ;
 Source: modules\{#DEMO_TOOLS}\tests\*.*; DestDir: {app}\modules\{#DEMO_TOOLS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#DEMO_TOOLS}\help\*.*; DestDir: {app}\modules\{#DEMO_TOOLS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

@@ -47,4 +47,5 @@ Source: modules\{#SCINOTES}\macros\cleanmacros.bat; DestDir: {app}\modules\{#SCI
 ;
 Source: modules\{#SCINOTES}\tests\*.*; DestDir: {app}\modules\{#SCINOTES}\tests; Flags: recursesubdirs; Components: {#COMPN_SCINOTES} and {#COMPN_TESTS}
 ;
+Source: modules\{#SCINOTES}\help\*.*; DestDir: {app}\modules\{#SCINOTES}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

@@ -45,4 +45,5 @@ Source: modules\{#WINDOWS_TOOLS}\macros\lib; DestDir: {app}\modules\{#WINDOWS_TO
 ;
 Source: modules\{#WINDOWS_TOOLS}\tests\*.*; DestDir: {app}\modules\{#WINDOWS_TOOLS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#WINDOWS_TOOLS}\help\*.*; DestDir: {app}\modules\{#WINDOWS_TOOLS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

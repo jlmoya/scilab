@@ -41,4 +41,5 @@ Source: modules\{#MODULES_MANAGER}\macros\cleanmacros.bat; DestDir: {app}\module
 ;
 Source: modules\{#MODULES_MANAGER}\tests\*.*; DestDir: {app}\modules\{#MODULES_MANAGER}\tests; Flags: recursesubdirs; Components: {#COMPN_MODULES_MANAGER} and {#COMPN_TESTS}
 ;
+Source: modules\{#MODULES_MANAGER}\help\*.*; DestDir: {app}\modules\{#MODULES_MANAGER}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

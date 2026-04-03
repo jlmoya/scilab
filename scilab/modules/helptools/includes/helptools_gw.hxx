@@ -18,6 +18,7 @@
 
 #include "function.hxx"
 #include "context.hxx"
+#include "cpp_gateway_prototype.hxx"
 
 extern "C"
 {

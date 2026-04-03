@@ -61,4 +61,5 @@ Source: modules\{#XCOS}\demos\*.*; DestDir: {app}\modules\{#XCOS}\demos; Flags: 
 ;
 Source: modules\{#XCOS}\tests\*.*; DestDir: {app}\modules\{#XCOS}\tests; Flags: recursesubdirs; Components: {#COMPN_XCOS} and {#COMPN_TESTS}
 ;
+Source: modules\{#XCOS}\help\*.*; DestDir: {app}\modules\{#XCOS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

@@ -40,4 +40,6 @@ Source: modules\{#MATIO}\macros\cleanmacros.bat; DestDir: {app}\modules\{#MATIO}
 Source: modules\{#MATIO}\sci_gateway\{#MATIO}_gateway.xml; DestDir: {app}\modules\{#MATIO}\sci_gateway; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#MATIO}\tests\*.*; DestDir: {app}\modules\{#MATIO}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
+;
+Source: modules\{#MATIO}\help\*.*; DestDir: {app}\modules\{#MATIO}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

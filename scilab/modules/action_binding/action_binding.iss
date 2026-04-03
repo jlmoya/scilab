@@ -48,3 +48,5 @@ Source: modules\{#ACTION_BINDING}\macros\cleanmacros.bat; DestDir: {app}\modules
 ;
 Source: modules\{#ACTION_BINDING}\tests\*.*; DestDir: {app}\modules\{#ACTION_BINDING}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS} and {#COMPN_JVM_MODULE}
 ;--------------------------------------------------------------------------------------------------------------
+Source: modules\{#ACTION_BINDING}\help\*.*; DestDir: {app}\modules\{#ACTION_BINDING}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
+;--------------------------------------------------------------------------------------------------------------

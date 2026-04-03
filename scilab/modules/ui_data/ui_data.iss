@@ -44,4 +44,5 @@ Source: modules\{#UI_DATA}\images\icons\*.png; DestDir: {app}\modules\{#UI_DATA}
 ;
 Source: modules\{#UI_DATA}\tests\*.*; DestDir: {app}\modules\{#UI_DATA}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS} and {#COMPN_JVM_MODULE}
 ;
+Source: modules\{#UI_DATA}\help\*.*; DestDir: {app}\modules\{#UI_DATA}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

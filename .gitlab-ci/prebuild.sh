@@ -107,6 +107,7 @@ CEF_VERSION=135.0.20+ge7de5c3+chromium-135.0.7049.85
 OPENXLSX_VERSION=0.3.2
 LIBARCHIVE_VERSION=3.7.1
 RAPIDJSON_VERSION=24b5e7a
+LIBXSLT_VERSION=1.1.35
 
 # # CppServer and its deps
 # CPPSERVER_VERSION=1.0.4.1
@@ -149,6 +150,7 @@ make_versions() {
     echo "OPENXLSX_VERSION      = $OPENXLSX_VERSION"
     echo "LIBARCHIVE_VERSION    = $LIBARCHIVE_VERSION"
     echo "RAPIDJSON_VERSION     = $RAPIDJSON_VERSION"
+    echo "LIBXSLT_VERSION       = $LIBXSLT_VERSION"
     # echo "CPPSERVER_VERSION     = $CPPSERVER_VERSION"
     # echo "ASIO_VERSION          = $ASIO_VERSION"
     # echo "CPPCOMMON_VERSION     = $CPPCOMMON_VERSION"
@@ -214,6 +216,7 @@ download_dependencies() {
     # curl -o rapidjson-$RAPIDJSON_VERSION.tar.gz https://github.com/Tencent/rapidjson/archive/$RAPIDJSON_VERSION.tar.gz
     [ ! -f rapidjson-$RAPIDJSON_VERSION.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/rapidjson-$RAPIDJSON_VERSION.tar.gz
 
+    [ ! -f libxslt-$LIBXSLT_VERSION.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/libxslt-$LIBXSLT_VERSION.tar.xz
     # # CppServer and its deps
     # [ ! -f cppserver-$CPPSERVER_VERSION.zip ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/cppserver-$CPPSERVER_VERSION.zip
     # [ ! -f asio-$ASIO_VERSION.zip ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/asio-$ASIO_VERSION.zip
@@ -249,6 +252,7 @@ make_all() {
     build_openxlsx
     build_libarchive
     build_rapidjson
+    build_libxslt
     # build_cppserver
 }
 
@@ -356,6 +360,9 @@ make_binary_directory() {
 
     rm -f "$LIBTHIRDPARTYDIR"/libOpenXLSX.*
     cp -d "$INSTALLUSRDIR"/lib/libOpenXLSX.* "$LIBTHIRDPARTYDIR/"
+
+    rm -f "$LIBTHIRDPARTYDIR"/libxslt*.*
+    cp -d "$INSTALLUSRDIR"/lib/libxslt*.* "$LIBTHIRDPARTYDIR/"
 
     # Scilab dependencies where the system ones are not recent enough to be used.
     #
@@ -1183,6 +1190,22 @@ build_openxlsx() {
         -Wl,--no-whole-archive
 
     cp -a libOpenXLSX.so "$INSTALLUSRDIR/lib/"
+}
+
+build_libxslt() {
+    cd "$BUILDDIR" || exit 1
+
+    INSTALL_DIR=$BUILDDIR/libxslt-$LIBXSLT_VERSION/install_dir
+
+    tar -xJf "$DOWNLOADDIR/libxslt-$LIBXSLT_VERSION.tar.xz"
+    cd "libxslt-$LIBXSLT_VERSION" || exit 1
+
+    ./configure --prefix= --without-python CFLAGS="-I$INSTALLUSRDIR/include/libxml2" LDFLAGS="-L$INSTALLUSRDIR/lib"
+    make "-j$(nproc)"
+    make install DESTDIR="$INSTALL_DIR"
+
+    cp -a "$INSTALL_DIR"/lib/*.so* "$INSTALLUSRDIR/lib/"
+    cp -a "$INSTALL_DIR"/include/* "$INSTALLUSRDIR/include/"
 }
 
 # build_cppserver() {

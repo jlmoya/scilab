@@ -43,4 +43,5 @@ Source: modules\{#SPREADSHEET}\demos\*.*; DestDir: {app}\modules\{#SPREADSHEET}\
 ;
 Source: modules\{#SPREADSHEET}\tests\*.*; DestDir: {app}\modules\{#SPREADSHEET}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#SPREADSHEET}\help\*.*; DestDir: {app}\modules\{#SPREADSHEET}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

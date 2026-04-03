@@ -46,4 +46,5 @@ Source: modules\{#SLINT}\macros\cleanmacros.bat; DestDir: {app}\modules\{#SLINT}
 ;
 Source: modules\{#SLINT}\tests\*.*; DestDir: {app}\modules\{#SLINT}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB}  and {#COMPN_TESTS}
 ;
+Source: modules\{#SLINT}\help\*.*; DestDir: {app}\modules\{#SLINT}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

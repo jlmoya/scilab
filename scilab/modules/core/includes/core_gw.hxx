@@ -19,6 +19,7 @@
 
 #include "cpp_gateway_prototype.hxx"
 #include "dynlib_core_gw.h"
+#include "inlinehelp.hxx"
 
 class CoreModule
 {
@@ -29,6 +30,7 @@ public :
     CORE_GW_IMPEXP static int Load();
     CORE_GW_IMPEXP static int Unload()
     {
+        clearInlineHelpLinks();
         return 1;
     }
 };
@@ -97,6 +99,10 @@ CPP_GATEWAY_PROTOTYPE(sci_properties);
 CPP_GATEWAY_PROTOTYPE(sci_methods);
 CPP_GATEWAY_PROTOTYPE(sci_enumeration);
 CPP_GATEWAY_PROTOTYPE(sci_show_vtable);
+CPP_GATEWAY_PROTOTYPE(sci_percent_help);
+CPP_GATEWAY_PROTOTYPE(sci_generate_inline_links);
+CPP_GATEWAY_PROTOTYPE(sci_loadToolboxInlineHelp);
+
 
 #ifndef NDEBUG
 CPP_GATEWAY_PROTOTYPE(sci_inspectorGetItemCount);

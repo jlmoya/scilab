@@ -59,4 +59,5 @@ Source: modules\{#JVM}\macros\*.bin; DestDir: {app}\modules\{#JVM}\macros; Compo
 ;
 Source: modules\{#JVM}\tests\*.*; DestDir: {app}\modules\{#JVM}\tests; Flags: recursesubdirs; Components: {#COMPN_JVM_MODULE} and {#COMPN_TESTS}
 ;
+Source: modules\{#JVM}\help\*.*; DestDir: {app}\modules\{#JVM}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

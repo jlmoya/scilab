@@ -112,7 +112,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../includes;../../src/c;../../src/cpp/hash;../../../../libs/intl;../../../functions_manager/includes;../../../elementary_functions/includes;../../../api_scilab/includes;../../../output_stream/includes;../../../localization/includes;../../../string/includes;../../../fileio/includes;../../../threads/includes;../../../console/includes;../../../dynamic_link/includes;../../../ast/includes/types;../../../ast/includes/ast;../../../ast/includes/exps;../../../ast/includes/operations;../../../ast/includes/symbol;../../../ast/includes/system_env;../../../ast/includes/parse;../../../jvm/src/c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../includes;../../src/c;../../src/cpp/hash;../../../../libs/intl;../../../../libs/libxml2;../../../../libs/libxslt/include;../../../../libs/rapidjson/include;../../../functions_manager/includes;../../../elementary_functions/includes;../../../api_scilab/includes;../../../output_stream/includes;../../../localization/includes;../../../string/includes;../../../fileio/includes;../../../threads/includes;../../../console/includes;../../../dynamic_link/includes;../../../ast/includes/types;../../../ast/includes/ast;../../../ast/includes/exps;../../../ast/includes/operations;../../../ast/includes/symbol;../../../ast/includes/system_env;../../../ast/includes/parse;../../../jvm/src/c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;CORE_GW_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -179,7 +179,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>../../includes;../../src/c;../../src/cpp/hash;../../../../libs/intl;../../../functions_manager/includes;../../../elementary_functions/includes;../../../api_scilab/includes;../../../output_stream/includes;../../../localization/includes;../../../string/includes;../../../fileio/includes;../../../threads/includes;../../../console/includes;../../../dynamic_link/includes;../../../ast/includes/types;../../../ast/includes/ast;../../../ast/includes/exps;../../../ast/includes/operations;../../../ast/includes/symbol;../../../ast/includes/system_env;../../../ast/includes/parse;../../../jvm/src/c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../includes;../../src/c;../../src/cpp/hash;../../../../libs/intl;../../../../libs/libxml2;../../../../libs/libxslt/include;../../../../libs/rapidjson/include;../../../functions_manager/includes;../../../elementary_functions/includes;../../../api_scilab/includes;../../../output_stream/includes;../../../localization/includes;../../../string/includes;../../../fileio/includes;../../../threads/includes;../../../console/includes;../../../dynamic_link/includes;../../../ast/includes/types;../../../ast/includes/ast;../../../ast/includes/exps;../../../ast/includes/operations;../../../ast/includes/symbol;../../../ast/includes/system_env;../../../ast/includes/parse;../../../jvm/src/c;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CORE_GW_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -269,8 +269,10 @@
     <ClCompile Include="sci_format.cpp" />
     <ClCompile Include="sci_funcprot.cpp" />
     <ClCompile Include="sci_funptr.cpp" />
+    <ClCompile Include="sci_generate_inline_links.cpp" />
     <ClCompile Include="sci_getmemory.cpp" />
     <ClCompile Include="sci_hash.cpp" />
+    <ClCompile Include="sci_percent_help.cpp" />
     <ClCompile Include="sci_ieee.cpp" />
     <ClCompile Include="sci_insert.cpp" />
     <ClCompile Include="sci_inspectorDeleteUnreferencedItems.cpp">
@@ -311,6 +313,7 @@
     <ClCompile Include="sci_isa.cpp" />
     <ClCompile Include="sci_isfield.cpp" />
     <ClCompile Include="sci_list.cpp" />
+    <ClCompile Include="sci_loadToolboxInlineHelp.cpp" />
     <ClCompile Include="sci_macr2tree.cpp" />
     <ClCompile Include="sci_makecell.cpp" />
     <ClCompile Include="sci_methods.cpp" />

@@ -47,9 +47,11 @@ assert_checkfalse(or(isfile(subDirs + "testbox.po")));
 reset_test_module(source, mytb_dir);
 tbx_make(mytb_dir, "help");
 Building help...
+Building the links file [inline] in TMPDIR/testbox/inline/en_US.
 Building the manual file [javaHelp] in TMPDIR/testbox/help/en_US.
 Generate image ./csub6_1.png from Scilab code from file csub6.xml
 Generate image ./csub6_en_US_2.png from Scilab code from file csub6.xml
+Building the links file [inline] in TMPDIR/testbox/inline/fr_FR.
 Building the manual file [javaHelp] in TMPDIR/testbox/help/fr_FR.
 Generate image ./csub6_1.png from Scilab code from file csub6.xml
 Generate image ./csub6_fr_FR_2.png from Scilab code from file csub6.xml
@@ -71,6 +73,7 @@ reset_test_module(source, mytb_dir);
 assert_checkfalse(isfile(mytb_dir + "/jar/scilab_fr_FR_help.jar"));
 tbx_make(mytb_dir, "help", "en");
 Building help...
+Building the links file [inline] in TMPDIR/testbox/inline/en_US.
 Building the manual file [javaHelp] in TMPDIR/testbox/help/en_US.
 Generate image ./csub6_1.png from Scilab code from file csub6.xml
 Generate image ./csub6_en_US_2.png from Scilab code from file csub6.xml
@@ -83,6 +86,7 @@ assert_checkfalse(isfile(mytb_dir + "/jar/scilab_fr_FR_help.jar"));
 reset_test_module(source, mytb_dir);
 tbx_make(mytb_dir, "help", "fr");
 Building help...
+Building the links file [inline] in TMPDIR/testbox/inline/fr_FR.
 Building the manual file [javaHelp] in TMPDIR/testbox/help/fr_FR.
 Generate image ./csub6_1.png from Scilab code from file csub6.xml
 Generate image ./csub6_fr_FR_2.png from Scilab code from file csub6.xml

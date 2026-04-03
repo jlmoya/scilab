@@ -41,4 +41,5 @@ Source: modules\{#XML}\tests\*.*; DestDir: {app}\modules\{#XML}\tests; Flags: re
 ;
 Source: modules\{#XML}\demos\*.*; DestDir: {app}\modules\{#XML}\demos; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;
+Source: modules\{#XML}\help\*.*; DestDir: {app}\modules\{#XML}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

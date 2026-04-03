@@ -1807,6 +1807,24 @@ fi
 AC_SUBST(KLU_ENABLE)
 AM_CONDITIONAL(KLU, test "$with_klu" != no)
 
+#######################
+## LIBXSLT
+#######################
+if $WITH_DEVTOOLS; then # Scilab thirdparties
+    LIBXSLT_CFLAGS="-I$DEVTOOLS_INCDIR"
+    LIBXSLT_LDFLAGS="-L$DEVTOOLS_LIBDIR"
+    LIBXSLT_LIBS="-lxslt"
+else
+    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors libxslt]) || {
+        AC_MSG_ERROR([cannot find pkg-config package for libxslt])
+    }
+    LIBXSLT_CFLAGS=`$PKG_CONFIG --cflags libxslt`
+    LIBXSLT_LDFLAGS=`$PKG_CONFIG --libs-only-L libxslt`
+    LIBXSLT_LIBS=`$PKG_CONFIG --libs-only-l libxslt`
+fi
+AC_SUBST(LIBXSLT_CFLAGS)
+AC_SUBST(LIBXSLT_LDFLAGS)
+AC_SUBST(LIBXSLT_LIBS)
 
 #######################
 ## Test for PCRE2
@@ -1988,17 +2006,6 @@ fi
 AC_SUBST(HELP_ENABLE)
 
 AM_CONDITIONAL(BUILD_HELP, test $HELP_ENABLE = yes)
-
-## Install XML help files ###
-
-AC_ARG_WITH(install-help-xml,
-        AS_HELP_STRING([--with-install-help-xml],[make install will install XML files])
-        )
-HELP_INSTALL_ENABLE=no
-if test "$with_install_help_xml" != no -a "$with_install_help_xml" != ""; then
-   HELP_INSTALL_ENABLE=yes
-fi
-AM_CONDITIONAL(INSTALL_HELP_XML, test "$HELP_INSTALL_ENABLE" != "")
 
 ## Doxygen help generation
 AC_ARG_ENABLE(build-doxygen,
@@ -2397,7 +2404,6 @@ echo "  TCL include (--with-tcl-include) ................. = $USER_TCL_INC_PATH"
 echo "  TCL library (--with-tcl-library) ................. = $USER_TCL_LIB_PATH"
 echo "  TK include (--with-tk-include) ................... = $USER_TK_INC_PATH"
 echo "  TK library (--with-tk-library) ................... = $USER_TK_LIB_PATH"
-echo "  Install XML Help (--with-install-help-xml) ....... = $with_install_help_xml"
 echo "  Compilation tests (--enable-compilation-tests) ... = $COMPILATION_TESTS"
 echo "  Make the package relocatable (--enable-relocatable)= $RELOCATABLE"
 echo "  Use FFTW (--without-fftw) ........................ = $with_fftw"

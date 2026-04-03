@@ -125,6 +125,9 @@ Source: bin\libcrypto-3-x64.dll; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
 ; JCEF
 Source: bin\jcef\*.*; DestDir: {app}\bin\jcef; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;
+; xslt
+Source: bin\libxslt.dll; DestDir: {app}\bin; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
+;
 ; batch files
 Source: bin\scinotes.bat; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
 Source: bin\xcos.bat; DestDir: {app}\bin; Components: {#COMPN_SCILAB}

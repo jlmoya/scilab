@@ -17,9 +17,8 @@
 // along with this program.
 
 function generated_files = xmltoformat(output_format,dirs,titles,directory_language,default_language)
-
     // =========================================================================
-    // + output_format : "javaHelp", "pdf", "chm", "ps", "inline"
+    // + output_format : "javaHelp", "pdf", "chm", "ps"
     //
     // + dirs : A set of directories for which help files (jar, pdf, chm, ...) are
     //        genereated
@@ -361,12 +360,8 @@ function generated_files = xmltoformat(output_format,dirs,titles,directory_langu
         modules_tree("master_document") = master_doc;
         master_str = x2f_tree_to_master(modules_tree);
 
-        //shortcut rest of process
-        if output_format == "inline"
-            generated_files = [];
-            generate_inline_help(modules_tree);
-            return;
-        end
+        //index of pages for inline help
+        generate_inline_links(my_wanted_language, modules_tree.path);
 
         mputl(master_str,master_doc);
 
@@ -404,14 +399,8 @@ function generated_files = xmltoformat(output_format,dirs,titles,directory_langu
             contrib_tree(dirs(k)) = this_tree;
         end
 
-        if output_format == "inline"
-            generated_files = [];
-            for p = fieldnames(contrib_tree)'
-                generate_inline_help(contrib_tree(p));
-            end
-            return;
-        end
-
+        //index of page for inline help
+        generate_inline_links(contrib_tree(dirs(1)).language, contrib_tree(dirs(1)).path);
     end
 
     // =========================================================================
@@ -1925,165 +1914,3 @@ function [timestamp,path] = x2f_get_most_recent( tree )
 
 endfunction
 
-//inline help generation
-function all = getXMLFiles(st)
-    fields = fieldnames(st);
-    idx = grep(fields, "/^dir_/", "r");
-    fields = fields(idx);
-
-    if st.xml_list == []
-        all = [];
-    else
-        all = st.xml_list(:, [2, 4]);
-    end
-
-    for f = fields'
-        all = [all ; getXMLFiles(st(f))];
-    end
-end
-
-function x = getNode(doc, key)
-    x = xmlXPath(doc, key, ["ns", "http://docbook.org/ns/docbook"]);
-end
-
-function x = getNodeContent(doc, key)
-    node = getNode(doc, key);
-    s = size(node, "*");
-    x = [];
-    for i = 1:s
-        x(1,i) = getNodes(node(i), i == 1, i == s);
-    end
-end
-
-function x = getNodeSynopsis(doc, key)
-    node = getNode(doc, key);
-    x = [];
-    for i = 1:size(node, "*")
-        c = [];
-        for j = 1:size(node(i).content, "*")
-            c1 = stripblanks(strsplit(node(i).content(j), "/\n/"));
-            c = [c c1(:)'];
-        end
-        c(c == "") = [];
-        x(1,i) = struct("type", "synopsis", "children", [], "string", c);
-    end
-end
-
-function x = contentToString(content, first, last)
-    x = [];
-    for i = 1:size(content, "*")
-        x1 = strsplit(content(i), "/\n/");
-        x = [x x1(:)'];
-    end
-
-    if first then
-        x(1) = strsubst(x(1), "/^\s{1,}/", "", "r");
-    else
-        x(1) = strsubst(x(1), "/\s{1,}/", " ", "r");
-    end
-
-    x(2:$) = strsubst(x(2:$), "/\s{1,}/", " ", "r");
-    x(x == "") = [];
-    if last then
-        x(x == " ") = [];
-    end
-    x = strcat(x);
-end
-
-function x = getSeeAlso(doc)
-    x = [];
-    data = getNode(doc, "//ns:refsection[@role=""see also""]");
-    if size(data, "*") <> 0 then
-        links = getNode(data(1), ".//ns:link[@linkend]");
-        for i = 1:size(links, "*")
-            x = [x, links(i).attributes(1)];
-        end
-    end
-end
-
-function ret = reduceNode(node)
-    ret = node;
-    s = size(node.children, "*")
-
-    if s == 1 then
-        if node.type == "text" then
-            ret = struct("type", node.type, "children", [], "string", node.children(1).string);
-        end
-    end
-end
-
-function ret = getNodes(node, first, last)
-    select node.name
-    case {"text" "term" "constant" "link" "ulink" "function" "literal" "varname", "emphasis", "subscript" "superscript" "command" "replaceable" "xref"}
-        x = contentToString(node.content, first, last)
-        if x <> [] then
-            ret = struct("type", node.name, "children", [], "string", x);
-        else
-            ret = [];
-        end
-    case {"title" "synopsis" "refsection" "refsect1" "refsect2" "refsect3" "refsynopsisdiv" "refpurpose" "refname" "refentry" "refnamediv" "para" "listitem" "varlistentry" "variablelist" "itemizedlist" "simplelist" "member" "orderedlist" "warning" "important" "caution" "tip"}
-        c = [];
-        s = size(node.children, "*")
-        for i = 1:s
-            c(1, $+1) = getNodes(node.children(i), i == 1, i == s);
-        end
-
-        ret = struct("type", node.name, "children", c, "string", []);
-        ret = reduceNode(ret);
-    else
-        ret = [];
-    end
-end
-
-function generate_inline_help(modules_tree)
-
-    lang = modules_tree.language;
-    xmlfiles = getXMLFiles(modules_tree);
-
-    if modules_tree.path == SCI then
-        output_path = fullfile(SCI, "modules", "helptools", "inline", lang);
-    else
-        tbx_path = fullpath(fullfile(modules_tree.path, "..", ".."));
-        output_path = fullfile(tbx_path, "inline", lang);
-    end
-
-    mprintf(_("\nBuilding the manual file [%s] in %s.\n"), "inline", strsubst(output_path, SCI_long, "SCI"));
-
-    links = [];
-    pages = [];
-    xmlCount = size(xmlfiles, 1)
-    for k = 1:xmlCount
-        x = xmlfiles(k, 1);
-
-        doc = xmlRead(x(1));
-        xp = xmlXPath(doc, "//@xml:id");
-        first = xp(1).content;
-        for i = 1:size(xp, "*")
-            links(xp(i).content) = first;
-        end
-
-        nodes = getNodes(doc.root, %T, %F);
-        st.refname = getNodeContent(doc, "//ns:refname");
-        st.refpurpose = getNodeContent(doc, "//ns:refpurpose");
-        st.synopsis = getNodeSynopsis(doc, "//ns:synopsis");
-        st.varlist = getNodeContent(doc, "//ns:refsection[1]/ns:variablelist");
-        st.seealso = getSeeAlso(doc);
-        pages(first) = st;
-
-        xmlDelete(doc);
-    end
-
-    if modules_tree.path == SCI then
-        mkdir(fullfile(SCI, "modules", "helptools", "inline"));
-        mkdir(fullfile(SCI, "modules", "helptools", "inline", lang));
-        toJSON(links, fullfile(output_path, "links.json"));
-        toJSON(pages, fullfile(output_path, "pages.json"));
-    else //toolbox
-        if isdir(tbx_path) then
-            mkdir(fullfile(tbx_path, "inline"));
-            mkdir(fullfile(tbx_path, "inline", lang));
-            toJSON(links, fullfile(output_path, "links.json"));
-            toJSON(pages, fullfile(output_path, "pages.json"));
-        end
-    end
-end
