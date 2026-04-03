@@ -291,7 +291,7 @@ const std::string XMLElement::toString() const
 
 int XMLElement::getDefinitionLine() const
 {
-    return node->line;
+    return xmlGetLineNo(node);
 }
 
 const XMLNs *XMLElement::getNodeNameSpace() const

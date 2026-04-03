@@ -345,7 +345,7 @@ xmlDoc *XMLDocument::readDocument(const char *filename, const char * encoding, b
 {
     xmlParserCtxt *ctxt = initContext(error, validate);
     xmlDoc *doc = 0;
-    int options = XML_PARSE_NSCLEAN | XML_PARSE_NOBLANKS;
+    int options = XML_PARSE_NSCLEAN | XML_PARSE_NOBLANKS | XML_PARSE_BIG_LINES;
 
     if (validate)
     {
