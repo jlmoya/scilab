@@ -57,7 +57,6 @@ function tt = readtable(varargin)
     end
     
     fmt = opts.inputFormat;
-    emptyCol = opts.emptyCol;
 
     if names <> "" then
         [nb, _kk] = members(names, variableNames);
@@ -77,7 +76,6 @@ function tt = readtable(varargin)
     end
 
     mat = csvTextScan(f(opts.datalines, :), opts.delimiter, opts.decimal, "string");//(:,_kk);
-    mat(:, emptyCol) = [];
     mat = mat(:, _kk);
 
     l = list();

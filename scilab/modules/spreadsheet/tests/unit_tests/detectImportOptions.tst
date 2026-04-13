@@ -34,15 +34,15 @@ assert_checkequal(opts.delimiter, ";");
 assert_checkequal(opts.decimal, ",");
 
 opts = detectImportOptions(fullfile(path, "t1.csv"));
-assert_checkequal(opts.variableNames, ["val", "time", "a", "b"]);
-assert_checkequal(opts.variableTypes, ["double", "datetime", "double", "string"]);
+assert_checkequal(opts.variableNames, ["result", "Var2", "val", "time", "a", "b"]);
+assert_checkequal(opts.variableTypes, ["string", "string", "double", "datetime", "double", "string"]);
 assert_checkequal(opts.delimiter, ",");
 assert_checkequal(opts.decimal, ".");
-assert_checkequal(opts.inputFormat, ["", "yyyy-MM-dd HH:mm:ss", "", ""]);
+assert_checkequal(opts.inputFormat, ["", "", "", "yyyy-MM-dd HH:mm:ss", "", ""]);
 
 ts = readtimeseries(fullfile(path, "t1.csv"), opts);
-assert_checkequal(ts.Properties.VariableNames, ["time", "val", "a", "b"]);
-expected = [string(datetime(2021, 11, 12, 1:4, 0, 0)'), string([zeros(4,1), [20; 24; 21; 24]]), ["on"; "on"; "off"; "on"]];
+assert_checkequal(ts.Properties.VariableNames, ["time", "result", "Var2", "val", "a", "b"]);
+expected = [string(datetime(2021, 11, 12, 1:4, 0, 0)'), emptystr(4, 2), string([zeros(4,1), [20; 24; 21; 24]]), ["on"; "on"; "off"; "on"]];
 assert_checkequal(string(ts), expected);
 
 // Test case-sensitivity on options

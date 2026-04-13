@@ -112,7 +112,6 @@ function opts = detectImportOptions(filename, varargin)
     // detect variable names and type
     test = csvTextScan(f(1), delim, decimal);
     variableNames = [];
-    hasheader = %f;
     index = [];
 
     if size(f, "*") > 1 then
@@ -120,23 +119,17 @@ function opts = detectImportOptions(filename, varargin)
             h = csvTextScan(f(1), delim, decimal, "string");
             variableNames = h;
             index = find(variableNames == "");
+            if index <> [] then
+                variableNames(index) = "Var" + string(index);
+            end
             datalines(1) = [];
             headlines(1) = [];
-            hasheader = %t;
         end
         f(1) = [];
     end
 
     // csvTextScan on all the file
     h = csvTextScan(f, delim, decimal, "string");
-
-    if ~hasheader & index <> [] & variableNames <> [] then
-        for i = index
-            if and(h(:, i) == "") then
-                variableNames(index) = [];
-            end
-        end
-    end
 
     variableTypes = emptystr(variableNames);
     inputFormat = [];
@@ -164,10 +157,6 @@ function opts = detectImportOptions(filename, varargin)
             inputFormat(1,i) = infmt
         end
     end
-
-    variableNames(index) = [];
-    variableTypes(index) = [];
-    inputFormat(index) = [];
 
     opts.variableNames = variableNames;
     opts.variableTypes = variableTypes;

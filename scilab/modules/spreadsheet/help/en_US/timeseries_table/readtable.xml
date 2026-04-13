@@ -176,6 +176,15 @@
                     Introduction in Scilab.
                 </revremark>
             </revision>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revdescription>
+                    Empty columns are now preserved. 
+                    Previously, columns with missing or undefined names were not returned. 
+                    Similarly, columns with a defined name but containing no data were ignored. 
+                    As a result, the returned <literal>table</literal> accurately reflects the original data.
+                </revdescription>
+            </revision>
         </revhistory>
     </refsection>
 </refentry>

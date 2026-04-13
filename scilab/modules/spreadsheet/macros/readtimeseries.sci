@@ -121,7 +121,6 @@ function tt = readtimeseries(varargin)
     end
     
     fmt = opts.inputFormat;
-    emptyCol = opts.emptyCol;
 
     if names <> "" then
         [nb, _kk] = members(names, variableNames);
@@ -148,7 +147,6 @@ function tt = readtimeseries(varargin)
 
     mat = csvTextScan(f(opts.datalines, :), opts.delimiter, opts.decimal, "string");//(:,_kk);
 
-    mat(:, emptyCol) = [];
     mat = mat(:, _kk);
     index = 1;
 
