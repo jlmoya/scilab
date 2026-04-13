@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 
 set ARCH=x64
 set LOGDIR="%SCI_VERSION_STRING%"
