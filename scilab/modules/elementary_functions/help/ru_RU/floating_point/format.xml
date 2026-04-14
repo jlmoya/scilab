@@ -48,6 +48,9 @@
                                 и используется для всех чисел.
                               </para>
                           </listitem>
+                          <listitem>2 или "eng": используется инженерная
+нотация. Эта нотация похожа на экспоненциальную/научную,
+но показатель степени выбран таким образом, чтобы делиться на три.</listitem>
                       </itemizedlist>
                   </para>
                 </listitem>
@@ -68,8 +71,8 @@
                 <listitem>
                     <para>вектор для установки нового формата</para>
                     <para><literal>wm(1)</literal> это ширина</para>
-                    <para><literal>wm(2)</literal> это режим форматирования: 0 для
-                      <literal>'e'</literal> и 1 для <literal>'v'</literal>
+                    <para><literal>wm(2)</literal> это режим форматирования: 
+                    0 для <literal>'e'</literal> 1 для <literal>'v'</literal> и 2 для <literal>'eng'</literal>
                     </para>
                 </listitem>
             </varlistentry>
@@ -80,10 +83,9 @@
 		      вектор, возвращающий параметры текущего форматирования:
                         <itemizedlist>
                           <listitem>
-                               <para><literal>mw(1)</literal> это режим форматирования:
-                                0 для <literal>'e'</literal> и 1 для <literal>'v'</literal>
-                                  </para>
-                              </listitem>
+			    <literal>mw(1)</literal> это режим форматирования:
+                0 для <literal>'e'</literal> 1 для <literal>'v'</literal> и 2 для <literal>'eng'</literal>
+                          </listitem>
                           <listitem>
                                <para><literal>mw(2)</literal> это ширина:
                                 Количество символов, используемых для выдачи каждого числа.
@@ -131,7 +133,8 @@
 // format() не принимается в расчёт для кодированных целых чисел
 // -------------------------------------------------------------
 format("e",8)
-int32(2.^grand(3,5,"uin",0,30))
+int32(2.^grand(3,5,"uin",0,30)
+
 // format() влияет на вывод в командном окне disp(), string(), sci2exp(),...
 // -------------------------------------------------------------------------
 a = %pi; p = %pi + %z - %e*%z^2;
@@ -140,12 +143,22 @@ a, p
 disp(a,p)
 string(a), string(p)
 [sci2exp(a) sci2exp(p)]
+
 format("e",15);
 a, p
 disp(a,p)
 string(a), string(p)
 [sci2exp(a) sci2exp(p)]
 format("v",10); // сброс
+
+// в инженерной нотации показатель степени десяти делится на 3
+x = %pi*10^(-5:5)'
+format("e")
+xs = string(x);
+format("eng")
+xs = [xs string(x)];
+table(xs,"VariableNames",["format(""e"")" "format(""eng"")"])
+
 // format() устанавливает ширину, не фиксированное количество символов:
 // --------------------------------------------------------------------
 format("v",10)

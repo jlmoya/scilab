@@ -43,12 +43,13 @@
 
 typedef struct __DOUBLE_FORMAT__
 {
-    __DOUBLE_FORMAT__() : iWidth(0), iPrec(0), bExp(false), bPrintPoint(true),
+    __DOUBLE_FORMAT__() : iWidth(0), iPrec(0), bExp(false), bEng(false), bPrintPoint(true),
                     bPrintPlusSign(false), bPrintOne(true), bPaddSign(true), iSignLen(SIGN_LENGTH),
                     bPrintBlank(true), bPrintComplexPlusSpace(false), bPrintTrailingZeros(false) {}
     int iWidth;
     int iPrec;
     bool bExp;
+    bool bEng;
     bool bPrintPoint;
     bool bPrintPlusSign;
     bool bPrintOne;

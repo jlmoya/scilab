@@ -35,20 +35,20 @@
                 <listitem>
                     <para>formatting mode:
                         <itemizedlist>
-                          <listitem>
-                               <para>1 or "v": <emphasis role="bold">v</emphasis>ariable adaptative
-                                formatting. Scilab chooses either the direct representation
-                                (e.g. -143.8757) or
-                                the exponential/engineering/scientific notation (e.g. -1.438E+02),
-                                in order to cope with each processed value as well as with the
-                                required width, with a maximal number of output digits.
-                              </para>
+                          <listitem>1 or "v": <emphasis role="bold">v</emphasis>ariable adaptative
+                            formatting. Scilab chooses either the direct representation
+                            (e.g. -143.8757) or
+                            the exponential/scientific notation (e.g. -1.438E+02),
+                            in order to cope with each processed value as well as with the
+                            required width, with a maximal number of output digits.
                           </listitem>
-                          <listitem>
-                               <para>0 or "e": The <emphasis role="bold">e</emphasis>xponential
-                                /<emphasis role="bold">e</emphasis>ngineering notation is forced
-                                and used for all numbers.
-                              </para>
+                          <listitem>0 or "e": The <emphasis role="bold">e</emphasis>xponential
+                            /scientific notation is forced
+                            and used for all numbers.
+                          </listitem>
+                          <listitem>2 or "eng": The <emphasis role="bold">eng</emphasis>ineering
+                            notation is used. This notation is similar to the exponential/scientific notation
+                            but the exponent value is selected to be divisible by three.
                           </listitem>
                       </itemizedlist>
                   </para>
@@ -68,7 +68,7 @@
                     <para>a vector to set new format </para>
                     <para><literal>wm(1)</literal> is the width</para>
                     <para><literal>wm(2)</literal> is the formatting mode: 0 for
-                      <literal>'e'</literal> and 1 for <literal>'v'</literal>
+                      <literal>'e'</literal>, 1 for <literal>'v'</literal> and 2 for <literal>'eng'</literal>
                     </para>
                 </listitem>
             </varlistentry>
@@ -77,6 +77,9 @@
                 <listitem>
                     <para>vector returning the current formatting parameters:
                         <itemizedlist>
+                          <listitem><literal>mw(1)</literal> is the formatting mode:
+                            0 for <literal>'e'</literal>, 1 for <literal>'v'</literal> and 2 for <literal>'eng'</literal>
+                          </listitem>
                           <listitem>
                                <para><literal>mw(1)</literal> is the formatting mode:
                                 0 for <literal>'e'</literal> and 1 for <literal>'v'</literal>
@@ -142,6 +145,14 @@ disp(a,p)
 string(a), string(p)
 [sci2exp(a) sci2exp(p)]
 format("v",10); // reset
+
+// with engineering notation the exponent of ten is divisible by 3
+x = %pi*10^(-5:5)'
+format("e")
+xs = string(x);
+format("eng")
+xs = [xs string(x)];
+table(xs,"VariableNames",["format(""e"")" "format(""eng"")"])
 
 // format() set the width, not a fixed number of digits:
 // ----------------------------------------------------
@@ -212,6 +223,11 @@ format("v",10) // reset
                 <revremark>For wide format(), digits that may be displayed
                     beyond the relative accuracy %eps are now set to 0.
                 </revremark>
+            </revision>
+            <revision>
+                <revnumber>2026.1</revnumber>
+                <revdescription>Engineering notation added.
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

@@ -35,23 +35,23 @@
                 <listitem>
                     <para>Type d'affichage :
                         <itemizedlist>
-                          <listitem>
-                               <para>1 or "v": format
-                                <emphasis role="bold">v</emphasis>ariable auto-adaptatif
-                                (automatique) : pour chaque nombre décimal ou complexe
-                                à afficher, Scilab choisit soit la représentation
-                                directe (ex: -143.8757), soit le format scientifique
-                                avec <emphasis role="bold">e</emphasis>xposant
-                                (ex: -1.438E+02) le plus adapté, permettant d'afficher
-                                un maximum de digits de la mantisse.
-                              </para>
+                          <listitem>1 ou "v": format
+                            <emphasis role="bold">v</emphasis>ariable auto-adaptatif
+                            (automatique) : pour chaque nombre décimal ou complexe
+                            à afficher, Scilab choisit soit la représentation
+                            directe (ex: -143.8757), soit le format scientifique
+                            avec <emphasis role="bold">e</emphasis>xposant
+                            (ex: -1.438E+02) le plus adapté, permettant d'afficher
+                            un maximum de digits de la mantisse.
                           </listitem>
                           <listitem>
-                               <para>
-                                  0 or "e": force l'utilisation du format scientifique
-                                  avec <emphasis role="bold">e</emphasis>xposant, pour
-                                  tous les nombres décimaux.
-                              </para>
+                              0 ou "e": force l'utilisation du format scientifique
+                              avec <emphasis role="bold">e</emphasis>xposant, pour
+                              tous les nombres décimaux.
+                          </listitem>
+                          <listitem>2 ou "eng": La notation ingénieur
+                            est utilisée. Cette notation est similaire au format exponentiel/scientifique 
+                            mais l'exposant est toujours divisible par 3.
                           </listitem>
                       </itemizedlist>
                   </para>
@@ -76,7 +76,7 @@
                     <para>vecteur de 2 entiers configurant le format :</para>
                     <para><literal>wm(1)</literal> est la largeur des nombres</para>
                     <para><literal>wm(2)</literal> est le type du format :
-                      0 pour <literal>'e'</literal> et 1 pour <literal>'v'</literal>
+                      0 pour <literal>'e'</literal>, 1 pour <literal>'v'</literal> et 2 pour <literal>'eng'</literal>
                     </para>
                 </listitem>
             </varlistentry>
@@ -85,15 +85,11 @@
                 <listitem>
                     <para>vecteur à 2 nombres retournés comme paramètres du format actif :
                         <itemizedlist>
-                          <listitem>
-                               <para><literal>mw(1)</literal> représente le type du format :
-                                0 pour <literal>'e'</literal> et 1 pour <literal>'v'</literal>
-                                   </para>
-                               </listitem>
-                          <listitem>
-                               <para><literal>mw(2)</literal> est le nombre de
-                                caractères utilisés pour formater chaque nombre.
-                              </para>
+                          <listitem><literal>mw(1)</literal> représente le type du format :
+                          0 pour <literal>'e'</literal>, 1 pour <literal>'v'</literal> et 2 pour <literal>'eng'</literal>
+                          </listitem>
+                          <listitem><literal>mw(2)</literal> est le nombre de
+                            caractères utilisés pour formater chaque nombre.
                           </listitem>
                          </itemizedlist>
                      </para>
@@ -158,6 +154,14 @@ disp(a,p)
 string(a), string(p)
 [sci2exp(a) sci2exp(p)]
 format("v",10); // reset
+
+// avec la notation ingénieur l'exposant est divisible par 3
+x = %pi*10^(-5:5)'
+format("e")
+xs = string(x);
+format("eng")
+xs = [xs string(x)];
+table(xs,"VariableNames",["format(""e"")" "format(""eng"")"])
 
 // format() configure le nombre de caractères. Le nombre de digits peut varier
 // -------------------------------------------
