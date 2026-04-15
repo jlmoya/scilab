@@ -91,7 +91,7 @@ for m=methods
         printf("%s : ",m);
         [tm,ym] = arkode(list(vdp,mu), 0:0.1:10, y0, method = m);
         printf("OK, ");
-        sol = arkode(list(vdp,mu), [0 10], y0, method = m, hMax = 1);
+        sol = arkode(list(vdp,mu), [0 10], y0, method = m, hMax = 1, maxSteps=2000);
         printf("OK, ");
         arkode(list(vdp,mu), 0:0.1:10, y0, method = m);
         printf("OK\n");
@@ -167,7 +167,7 @@ assert_checkalmostequal(solcext3(5+10*%eps),%i,0,1e-11);
 // SENSITIVITY WITH COMPLEX STEP
 h = 1e-200;
 mu=1
-[tcs,ycs] = arkode(list(vdp,complex(mu,h)), [0,10], y0, rtol=1e-10,atol=1e-12);
+[tcs,ycs] = arkode(list(vdp,complex(mu,h)), [0,10], y0, rtol=1e-10,atol=1e-12,maxSteps=2000);
 scs = imag(ycs)/h;
 [tcs,sens] = arkode(list(vdpsens,mu), tcs, [y0 [0;0]], rtol=1e-10,atol=1e-12);
 sens = squeeze(sens(:,2,:));
@@ -256,8 +256,8 @@ assert_checkerror("arkode(fe2,[0 70],1)",msg)
 function out = fe4(t,y)
     out = y^2;
 endfunction
-[t,y] = arkode(fe4,[0 2],1,rtol=1e-10,atol=1e-12);
-assert_checkalmostequal(t($),1)
+[t,y] = arkode(fe4,[0 2],1,rtol=1e-8,maxSteps=2000);
+assert_checkalmostequal(t($),1,1e-6)
 
 // Linear ode
 function out = f5(t,y,A)

@@ -16,8 +16,8 @@ b = [0.5 0.5];
 d = [1 0];
 q = 2;
 p = 1;
-[t1,y1] = arkode(%SUN_vdp1,[1 10],[2;1], DIRKButcherTab=[c A;q b;p d]);
-[t2,y2] = arkode(%SUN_vdp1,[1 10],[2;1], method="SDIRK_2_1_2");
+[t1,y1] = arkode(%SUN_vdp1,1:10,[2;1], DIRKButcherTab=[c A;q b;p d]);
+[t2,y2] = arkode(%SUN_vdp1,1:10,[2;1], method="SDIRK_2_1_2");
 assert_checkequal(t1,t2)
 assert_checkequal(y1,y2)
 
@@ -28,8 +28,8 @@ b = [0.5 0.5];
 d = [1 0];
 q = 2;
 p = 1;
-[t1,y1] = arkode(%SUN_vdp1,[1 10],[2;1], ERKButcherTab=[c A;q b;p d]);
-[t2,y2] = arkode(%SUN_vdp1,[1 10],[2;1], method="HEUN_EULER_2_1_2");
+[t1,y1] = arkode(%SUN_vdp1,1:10,[2;1], ERKButcherTab=[c A;q b;p d]);
+[t2,y2] = arkode(%SUN_vdp1,1:10,[2;1], method="HEUN_EULER_2_1_2");
 assert_checkequal(t1,t2)
 assert_checkequal(y1,y2)
 

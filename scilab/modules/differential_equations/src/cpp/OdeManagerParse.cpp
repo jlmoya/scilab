@@ -458,7 +458,7 @@ void OdeManager::parseOptions(types::optional_list &opt)
     getDoubleInPlist(getSolverName().c_str(),opt, L"h0", &m_dblInitialStep,
         m_odeIsExtension ? prevManager->m_dblInitialStep : 0, {0, std::numeric_limits<double>::infinity()});
     getIntInPlist(getSolverName().c_str(),opt, L"maxSteps", &m_iMaxNumSteps,
-        m_odeIsExtension ? prevManager->m_iMaxNumSteps : 0, {0, INT_MAX});
+        m_odeIsExtension ? prevManager->m_iMaxNumSteps : 500, {0, INT_MAX});
     getDoubleInPlist(getSolverName().c_str(),opt, L"hMax", &m_dblMaxStep,
         m_odeIsExtension ? prevManager->m_dblMaxStep : 0, {0, std::numeric_limits<double>::infinity()});
     getDoubleInPlist(getSolverName().c_str(),opt, L"hMin", &m_dblMinStep,

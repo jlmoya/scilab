@@ -19,6 +19,7 @@ void OdeManager::solve()
 {
     solverReturnCode iFlag;
     int iStep = 0;
+    int iMaxSteps = INT_MAX;
     int iNbSteps = 0;
     int iFirstStep = 0;
     solverTaskCode ODE_MODE;
@@ -43,6 +44,7 @@ void OdeManager::solve()
         // a solution structure with a pointer to the OdeManager instance for further custom evaluation by interpolation
         // or time extension.
         ODE_MODE = ODE_ONE_STEP;
+        iMaxSteps = m_iMaxNumSteps == 0 ? INT_MAX : m_iMaxNumSteps;
     }
     else
     {
@@ -88,7 +90,7 @@ void OdeManager::solve()
     dblFinalTime = m_pDblTSpan->get(m_pDblTSpan->getSize()-1);
     setStopTime(m_prob_mem,dblFinalTime);
 
-    for (; dblTime != dblFinalTime; iStep++)
+    for (; (dblTime != dblFinalTime) && (iStep < iMaxSteps); iStep++)
     {
         // Solver internal step
         double dblPrevTime = dblTime;
@@ -171,7 +173,13 @@ void OdeManager::solve()
             // Errors/Warnings not trapped by SUNDIALS ErrorFunc
             solverErrHandler(fromODEReturn[iFlag], NULL);
             break;
-        }            
+        }
+    }
+
+    if (iStep == iMaxSteps && dblTime != dblFinalTime)
+    {
+      sprintf(errorMsg,"At t = %.15g, mxstep steps taken before reaching tout.", dblTime);
+      solverErrHandler(fromODEReturn[ODE_TOO_MUCH_WORK], errorMsg);
     }
 
     if (m_iRetCount == 1) // Solution structure output

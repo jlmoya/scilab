@@ -49,10 +49,10 @@ assert_checkalmostequal(sol2(sol.t),sol.y)
 assert_checkalmostequal(sol2(sol2.t),sol2.y)
 
 // compute initial condition
-[t,y] = ida(list(sir,bet,gam,N),[0,400],y0,yp0,rtol=1e-14);
+[t,y] = ida(list(sir,bet,gam,N),0:400,y0,yp0,rtol=1e-14);
 y0=[N-1;1;0];
 yp0 = [0;0;0];
-[tt,yy]= ida(list(sir,bet,gam,N),[0 400],y0,yp0,rtol=1e-14,calcIc="y0yp0",yIsAlgebraic=3);
+[tt,yy]= ida(list(sir,bet,gam,N),0:400,y0,yp0,rtol=1e-14,calcIc="y0yp0",yIsAlgebraic=3);
 assert_checkalmostequal(yy(:,$),y(:,$),1e-6);
 
 // Robertson problem
@@ -65,12 +65,12 @@ end
 y0 = [1-1e-3; 0; 1e-3];
 yp0 = [-0.0400; 0.0400; 0];
 tspan = [0 4e6];
-[t,y] = ida(robertsidae,tspan,y0,yp0,h0=1e-6);
-solr = ida(robertsidae,tspan,y0,yp0,h0=1e-6);
+[t,y] = ida(robertsidae,tspan,y0,yp0,h0=1e-6,maxSteps=2000);
+solr = ida(robertsidae,tspan,y0,yp0,h0=1e-6,maxSteps=2000);
 // compute initial condition of algebraic state
 y0 = [1-1e-3; 0; 0];
 yp0 = [-0.0400; 0.0400; 0];
-[t,y] = ida(robertsidae,tspan,y0,yp0,h0=1e-6,calcIc="y0yp0",yIsAlgebraic=3);
+[t,y] = ida(robertsidae,tspan,y0,yp0,h0=1e-6,calcIc="y0yp0",yIsAlgebraic=3,maxSteps=2000);
 
 // Linear DAE
 function out = res(t,y,yp,A,B)
@@ -152,8 +152,8 @@ y0 = [1-1e-3; 0; 1e-3];
 yp0 = [-0.0400; 0.0400; 0];
 tspan = [0 4e6];
 
-[t1,y1,info1] = ida("SUN_chemres",tspan,y0,yp0);
-[t2,y2,info2] = ida(robertsidae,tspan,y0,yp0);
+[t1,y1,info1] = ida("SUN_chemres",tspan,y0,yp0,maxSteps=2000);
+[t2,y2,info2] = ida(robertsidae,tspan,y0,yp0,maxSteps=2000);
 [t3,y3,info3] = ida("SUN_chemres",tspan,y0,yp0,jacobian="SUN_chemjac");
 
 assert_checktrue(max(abs(y1(:,$)-y2(:,$)))<=1e-6)
@@ -165,6 +165,6 @@ assert_checktrue(size(t1)/size(t3) > 2)
 assert_checkequal(info.te,4.84950409816763735D-03)
 
 //test dynamic callback
-[t1,y1] = ida("SUN_chemres",tspan,y0,yp0,callback="SUN_chemcb");
+[t1,y1] = ida("SUN_chemres",tspan,y0,yp0,callback="SUN_chemcb",maxSteps=2000);
 
 

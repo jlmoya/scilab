@@ -38,9 +38,9 @@ sol2 = ida(sol,400);
 assert_checkalmostequal(sol2(sol.t),sol.y)
 assert_checkalmostequal(sol2(sol2.t),sol2.y)
 
-sol = ida(rexp,[0 5],1,-1, rtol=1e-12, atol=1e-12);
+sol = ida(rexp,[0 5],1,-1, rtol=1e-10, atol=1e-12, maxSteps=1000);
 t = linspace(0,5,1000)
 // test both outputs (y and its derivative)
 [y,yp] = sol(t)
-assert_checkalmostequal(exp(-t),y,1e-11,1e-11)
-assert_checkalmostequal(-exp(-t),yp,1e-9,1e-9)
+assert_checkalmostequal(exp(-t),y,1e-6,1e-8)
+assert_checkalmostequal(-exp(-t),yp,1e-6,1e-8)

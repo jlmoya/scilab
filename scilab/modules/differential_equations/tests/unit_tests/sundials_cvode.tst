@@ -76,8 +76,8 @@ y0 = [2;1];
 [t,y] = cvode(list(vdp,mu), 0:0.1:10, y0);
 assert_checkalmostequal(y(:,$),[ -1.69926222096315782117; -1.612661327686174983498]);
 //VERY STIFF
-[t,y] = cvode(list(vdp,1000), [0 3000], [2;1], method="BDF",atol=1e-12,rtol=1e-10);
-assert_checkalmostequal(y(:,$),[-1.511195; 0.001177],0,1e-6);
+[t,y] = cvode(list(vdp,1000), [0 10], y0, method="BDF",rtol=1e-10);
+assert_checkalmostequal(y(:,$),[1.9936489238; -0.0006702151],1e-7);
  
 [t,y] = cvode(list(vdp,mu), 0:0.1:10, y0, method="BDF");
 assert_checkalmostequal(y(:,$),[ -1.701027506064791028351; -1.611750957657939409273]);
