@@ -17,7 +17,7 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="readmps">
     <refnamediv>
         <refname>readmps</refname>
-        <refpurpose>Reads a Linear Program from a MPS file.</refpurpose>
+        <refpurpose>Reads a Linear Program from a MPS file. <emphasis role="bold">This function is obsolete.</emphasis></refpurpose>
     </refnamediv>
     <refsynopsisdiv>
         <title>Syntax</title>
@@ -349,6 +349,17 @@ filename = fullfile(path,"25FV47.SIF");
 huge = number_properties("huge");
 P=readmps(filename,[-huge huge])
  ]]></programlisting>
+    </refsection>
+    <refsection>
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revdescription>
+                    <para>This function is obsolete, will be removed from Scilab 2027.0.0 and added to <literal>quapro</literal> toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
     </refsection>
     <refsection>
         <title>Implementation notes</title>

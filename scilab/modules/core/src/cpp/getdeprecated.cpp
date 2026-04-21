@@ -19,6 +19,9 @@ extern "C" {
 std::unordered_map<std::wstring, std::wstring> getDeprecated()
 {
     return {
+        // Scilab 2026.0.1 => 2027.0.0
+        {L"read_mps", L"'quapro' toolbox"},
+
         // Scilab 2026.0.0 => 2027.0.0
         {L"dos", L"host"},
         {L"unix", L"host"},

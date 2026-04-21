@@ -5,11 +5,14 @@
 //  This file is distributed under the same license as the Scilab package.
 // =============================================================================
 // <-- CLI SHELL MODE -->
+// <-- ENGLISH IMPOSED -->
 path = fullfile(SCI,"modules","optimization","tests","unit_tests");
 //
 filename = fullfile(path,"test1.mps");
 huge = number_properties("huge");
 P=readmps(filename,[-huge huge]);
+Warning: readmps is obsolete and will be removed from Scilab 2027.0.0
+Warning: Please use 'quapro' toolbox instead.
 assert_checkequal(typeof(P),"mps");
 assert_checkequal(P.irobj,1);
 assert_checkequal(P.namec,"COST    ");
@@ -52,14 +55,22 @@ bounds: 3-by-2 constant matrix
 stavar: 3-by-1 constant matrix
 refMsg = msprintf(_(" RDMPS1 ERROR: Number of nonzeros of matrix A exceeds MAXNZA."));
 assert_checkerror("P=readmps(filename,[0 10^30],[4 3 8]);", refMsg);
+Warning: readmps is obsolete and will be removed from Scilab 2027.0.0
+Warning: Please use 'quapro' toolbox instead.
 P=readmps(filename,[0 10^30],[4 3 9]);
+Warning: readmps is obsolete and will be removed from Scilab 2027.0.0
+Warning: Please use 'quapro' toolbox instead.
 assert_checkequal(size(P.acoeff), [9 1]);
 P=readmps(filename,[0 10^30],[4 3 10]);
+Warning: readmps is obsolete and will be removed from Scilab 2027.0.0
+Warning: Please use 'quapro' toolbox instead.
 assert_checkequal(size(P.acoeff), [10 1]);
 //
 filename = fullfile(path,"25FV47.SIF");
 huge = number_properties("huge");
 P=readmps(filename,[-huge huge]);
+Warning: readmps is obsolete and will be removed from Scilab 2027.0.0
+Warning: Please use 'quapro' toolbox instead.
 assert_checkequal(typeof(P),"mps");
 assert_checkequal(P.irobj,1);
 assert_checkequal(P.namec,"R0000   ");
