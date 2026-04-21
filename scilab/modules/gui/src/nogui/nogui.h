@@ -27,6 +27,10 @@ GUI_IMPEXP int gw_gui(void);
 
 GUI_IMPEXP BOOL TerminateGUI(void);
 
+GUI_IMPEXP int getUIStyle(long handle);
+
+GUI_IMPEXP int getHandleType(long handle);
+
 /**
 * set Main Window visibility
 * @param[in] new state

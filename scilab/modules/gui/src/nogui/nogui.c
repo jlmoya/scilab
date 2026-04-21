@@ -43,6 +43,16 @@ BOOL TerminateGUI(void)
     return TRUE;
 }
 /*--------------------------------------------------------------------------*/
+int getUIStyle(long handle)
+{
+    return 0;
+}
+/*--------------------------------------------------------------------------*/
+int getHandleType(long handle)
+{
+    return 0;
+}
+/*--------------------------------------------------------------------------*/
 #ifdef _MSC_VER
 void setVisibleMainWindow(BOOL newVisibleState) {}
 /*--------------------------------------------------------------------------*/
@@ -179,16 +189,6 @@ void main_sci (char *startup, int lstartup, int memory)
 void InitXsession(void)
 {
     Scierror(999, _("Scilab '%s' module not installed.\n"), "GUI");
-}
-
-int getUIStyle(long handle)
-{
-    return 0;
-}
-
-int getHandleType(long handle)
-{
-    return 0;
 }
 /*--------------------------------------------------------------------------*/
 #endif /* not  _MSC_VER */
