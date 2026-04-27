@@ -2602,7 +2602,7 @@ install-data-local:
 	@echo "-------- Install help source files (if any) --------"; \
 	$(mkinstalldirs) $(DESTDIR)$(pkgdocdir) && \
 	  if test -d $(srcdir)/$(HELP_CHAPTERDIR); then \
-		if test -d $(DESTDIR)$(pkgdocdir)/; then \
+		if test ! -d $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); then \
 		  echo "cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)"; \
 		  cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); \
 		fi \

@@ -1301,7 +1301,7 @@ uninstall-am: uninstall-libjavasci2_la_etcDATA \
 @JAVASCI_TRUE@	@echo "-------- Install help source files (if any) --------"; \
 @JAVASCI_TRUE@	$(mkinstalldirs) $(DESTDIR)$(pkgdocdir) && \
 @JAVASCI_TRUE@	  if test -d $(srcdir)/$(HELP_CHAPTERDIR); then \
-@JAVASCI_TRUE@		if test -d $(DESTDIR)$(pkgdocdir)/; then \
+@JAVASCI_TRUE@		if test ! -d $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); then \
 @JAVASCI_TRUE@		  echo "cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)"; \
 @JAVASCI_TRUE@		  cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); \
 @JAVASCI_TRUE@		fi \
