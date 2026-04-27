@@ -16,19 +16,19 @@
 // <-- Short Description -->
 // HTTP functions does not manage cookies
 
-mode = xmlGetValues("//web/body/cookies", "mode");
+cookie_mode = xmlGetValues("//web/body/cookies", "mode");
 // private mode
 xmlSetValues("//web/body/cookies", ["mode"; "2"]);
 try
-    http_get("https://3ds.com", follow=%t);
+    http_get("https://login.3ds.com", follow=%t);
 catch
     // reset mode
-    xmlSetValues("//web/body/cookies", ["mode"; mode]);
+    xmlSetValues("//web/body/cookies", ["mode"; cookie_mode]);
     error(lasterror());
 end
 
 // reset mode
-xmlSetValues("//web/body/cookies", ["mode"; mode]);
+xmlSetValues("//web/body/cookies", ["mode"; cookie_mode]);
 // get lines where there is the string "3ds.com"
 found = strstr(mgetl(TMPDIR+"/cookies.txt"), "3ds.com");
 assert_checkfalse(isempty(found(found <> "")));
