@@ -129,46 +129,47 @@
         <para>
             A complex hermitian matrix is equal to its own conjugate transposed.
         </para>
-        <refsect3>
-            <title>Matrix Pencil A - s.B</title>
-            <para>
-                <emphasis role="bold">evals = spec(A, B)</emphasis>
-                returns the eigenvalues of the matrix pencil,
-                i.e. the roots of the polynomial matrix <literal>s.B - A</literal>.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta] = spec(A, B)</emphasis>
-                returns the generalized eigenvalues <varname>alpha</varname> and
-                <varname>beta</varname> of the matrix pencil <literal>A - s.B</literal>.
-                They are such that the usual eigenvalues of the pencil are given by
-                <literal>alpha./beta</literal>.
-                The matrix <literal>A - alpha./beta × B</literal> is then singular.
-                If <literal>beta(i) = 0</literal>, the i<superscript>th</superscript> eigenvalue
-                is infinite.
-            </para>
-            <para>
-                For <literal>B = eye(A)</literal>, <literal>alpha./beta</literal> are equal to
-                <literal>spec(A)</literal>. It is usually represented as the pair
-                (alpha,beta), as there is a reasonable interpretation for <literal>beta=0</literal>,
-                 even when both are zero.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta, Z] = spec(A, B)</emphasis>
-                returns in addition the matrix <varname>Z</varname> of the
-                generalized right eigenvectors of the pencil.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta, Q, Z] = spec(A, B)</emphasis>
-                returns in addition the matrix <varname>Q</varname> of generalized left eigenvectors
-                of the pencil.
-            </para>
-        </refsect3>
+
         <para>
-            <note>
-            For large dense or sparse matrices, the <link linkend="eigs">eigs()</link> function
-            can be used.
-            </note>
+            <emphasis role="bold">Matrix Pencil A - s.B</emphasis>
         </para>
+        <para>
+            <emphasis role="bold">evals = spec(A, B)</emphasis>
+            returns the eigenvalues of the matrix pencil,
+            i.e. the roots of the polynomial matrix <literal>s.B - A</literal>.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta] = spec(A, B)</emphasis>
+            returns the generalized eigenvalues <varname>alpha</varname> and
+            <varname>beta</varname> of the matrix pencil <literal>A - s.B</literal>.
+            They are such that the usual eigenvalues of the pencil are given by
+            <literal>alpha./beta</literal>.
+            The matrix <literal>A - alpha./beta × B</literal> is then singular.
+            If <literal>beta(i) = 0</literal>, the i<superscript>th</superscript> eigenvalue
+            is infinite.
+        </para>
+        <para>
+            For <literal>B = eye(A)</literal>, <literal>alpha./beta</literal> are equal to
+            <literal>spec(A)</literal>. It is usually represented as the pair
+            (alpha,beta), as there is a reasonable interpretation for <literal>beta=0</literal>,
+                even when both are zero.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta, Z] = spec(A, B)</emphasis>
+            returns in addition the matrix <varname>Z</varname> of the
+            generalized right eigenvectors of the pencil.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta, Q, Z] = spec(A, B)</emphasis>
+            returns in addition the matrix <varname>Q</varname> of generalized left eigenvectors
+            of the pencil.
+        </para>
+        <note>
+            <para>
+                For large dense or sparse matrices, the <link linkend="eigs">eigs()</link> function
+                can be used.
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Used routines</title>

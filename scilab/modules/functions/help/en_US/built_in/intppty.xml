@@ -69,13 +69,13 @@ foo(A,1+2)
             the argument associated with <literal>A</literal> will be passed by reference, and
             the argument associated with <literal>1+2</literal> will be passed by value.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Warning: declaring that the interface with number
                 <literal>fun</literal> can handle arguments passed by reference if it is not the
                 case should produce unpredictable results.
-            </warning>
-        </para>
+            </para>
+        </warning>
         <para>
             <literal>intppty(fun, "remove")</literal> suppress this property
             for the interface <literal>fun</literal>.

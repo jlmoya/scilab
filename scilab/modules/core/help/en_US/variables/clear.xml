@@ -52,24 +52,26 @@
         <para>
             Normally, protected variables are standard libraries and variables with the percent prefix.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note the particular syntax <code>clear a</code> and <code>clear('a')</code>
                 and not <code>clear(a)</code>. Note also that <code>a=[]</code> does not kill
                 <varname>a</varname> but sets <varname>a</varname> to an empty matrix.
-            </note>
-        </para>
+            </para>
+        </note>
         <para>
             If a name <emphasis>Var</emphasis> matches no variable, <literal>clear Var</literal>
             does nothing silently.
         </para>
-      <note>
-        <literal>clear()</literal> can be overloaded for any <literal>mlist("foo")</literal> type,
-        by defining a <literal>%foo_clear()</literal> macro. It will be called either when
-        <literal>clear</literal> is explicitly applied to any mlist of this type, or implicitly
-        when any mlist of this type is deleted when leaving the environment where it has been
-        defined.
-      </note>
+        <note>
+            <para>
+                <literal>clear()</literal> can be overloaded for any <literal>mlist("foo")</literal> type,
+                by defining a <literal>%foo_clear()</literal> macro. It will be called either when
+                <literal>clear</literal> is explicitly applied to any mlist of this type, or implicitly
+                when any mlist of this type is deleted when leaving the environment where it has been
+                defined.
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>

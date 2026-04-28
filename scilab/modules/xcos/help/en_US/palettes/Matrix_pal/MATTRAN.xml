@@ -28,41 +28,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/MATTRAN.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATTRAN">
+    <refsection xml:id="Contents_MATTRAN">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATTRAN">Description</xref>
+                <para><link linkend="Description_MATTRAN">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATTRAN">Parameters</xref>
+                <para><link linkend="Dialogbox_MATTRAN">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_MATTRAN">Example</xref>
+                <para><link linkend="Example_MATTRAN">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATTRAN">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATTRAN">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATTRAN">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATTRAN">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATTRAN">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATTRAN">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATTRAN">See also</xref>
+                <para><link linkend="Seealso_MATTRAN">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATTRAN">
+    <refsection xml:id="Description_MATTRAN">
         <title>Description</title>
         <para>
             This block transposes an MxN matrix to a NxM matrix. The result depends on
@@ -87,14 +87,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_MATTRAN">
+    <refsection xml:id="Dialogbox_MATTRAN">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATTRAN_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATTRAN_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -115,7 +114,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATTRAN">
+    <refsection xml:id="Defaultproperties_MATTRAN">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -188,7 +187,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_MATTRAN">
+    <refsection xml:id="Example_MATTRAN">
         <title>Example</title>
         <screen><![CDATA[
 .                        Complex
@@ -211,7 +210,7 @@
 .                            --      --
 ]]></screen>
     </refsection>
-    <refsection id="Interfacingfunction_MATTRAN">
+    <refsection xml:id="Interfacingfunction_MATTRAN">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -219,7 +218,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATTRAN">
+    <refsection xml:id="Computationalfunction_MATTRAN">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

@@ -100,47 +100,48 @@
     <para>
         If n &lt; 0, or k &lt; 0, or k &gt; n, then an error is generated.
     </para>
-    <refsect3>
-        <title>Note about floating point accuracy</title>
-        <para>
-            Despite n! overflows for n&gt;170, nchoosek(n,k) is computed within almost the %eps relative
-            accuracy for n much beyond 170.
-        </para>
-        <para>
-            For any given n value, we know that C<subscript>n</subscript><superscript>k</superscript>
-            is maximal for k=n/2. Scilab computes b = nchoosek(n,n/2) close to the %eps relative
-            accuracy for n up to 1029. Beyond this value, b=%inf is returned.
-        </para>
-        <para/>
-        <para>
-            This narrow n=1029 limit can be overcome by computing
-            log10(C<subscript>n</subscript><superscript>k</superscript>) and returning
-            it through the second output argument logb. This allows to use still bigger n values,
-            and to get some valid information about the exponent and the mantissa of the true result.
-        </para>
-        <para>
-            However, we must keep in mind that beyond n = 1/%eps ~ 4.10<superscript>15</superscript>,
-            the numerical step between consecutive integers m and m+1 stored as floating point
-            numbers become &gt; 1. Then <literal>n*(n-1)</literal> is numerically equal to
-            <literal>n*n</literal>, and getting reliable results becomes harder.
-       </para>
-        <para>
-            The integer part of logb represents the exponent (of 10) of
-            C<subscript>n</subscript><superscript>k</superscript>, whereas its fractional part
-            is the log10 of its mantissa. When the integer part of logb increases, the more digits
-            it takes among the 16 available ones in floating point encoding, the less remain
-            to encode the mantissa. Then,
-            knowing the mantissa of C<subscript>n</subscript><superscript>k</superscript> with
-            at least one significant digit requires
-            C<subscript>n</subscript><superscript>k</superscript>
-            &lt; 10<superscript>10<superscript>14</superscript></superscript>.
-       </para>
-       <para>
-            <emphasis role="bold">Relative accuracy on logb</emphasis>: As a rule of thumb,
-            except for special k cases, the relative uncertainty on logb is of the order of
-            %eps * n / k.
-       </para>
-    </refsect3>
+
+    <para>
+        <emphasis role="bold">Note about floating point accuracy</emphasis>
+    </para>
+    <para>
+        Despite n! overflows for n&gt;170, nchoosek(n,k) is computed within almost the %eps relative
+        accuracy for n much beyond 170.
+    </para>
+    <para>
+        For any given n value, we know that C<subscript>n</subscript><superscript>k</superscript>
+        is maximal for k=n/2. Scilab computes b = nchoosek(n,n/2) close to the %eps relative
+        accuracy for n up to 1029. Beyond this value, b=%inf is returned.
+    </para>
+    <para/>
+    <para>
+        This narrow n=1029 limit can be overcome by computing
+        log10(C<subscript>n</subscript><superscript>k</superscript>) and returning
+        it through the second output argument logb. This allows to use still bigger n values,
+        and to get some valid information about the exponent and the mantissa of the true result.
+    </para>
+    <para>
+        However, we must keep in mind that beyond n = 1/%eps ~ 4.10<superscript>15</superscript>,
+        the numerical step between consecutive integers m and m+1 stored as floating point
+        numbers become &gt; 1. Then <literal>n*(n-1)</literal> is numerically equal to
+        <literal>n*n</literal>, and getting reliable results becomes harder.
+    </para>
+    <para>
+        The integer part of logb represents the exponent (of 10) of
+        C<subscript>n</subscript><superscript>k</superscript>, whereas its fractional part
+        is the log10 of its mantissa. When the integer part of logb increases, the more digits
+        it takes among the 16 available ones in floating point encoding, the less remain
+        to encode the mantissa. Then,
+        knowing the mantissa of C<subscript>n</subscript><superscript>k</superscript> with
+        at least one significant digit requires
+        C<subscript>n</subscript><superscript>k</superscript>
+        &lt; 10<superscript>10<superscript>14</superscript></superscript>.
+    </para>
+    <para>
+        <emphasis role="bold">Relative accuracy on logb</emphasis>: As a rule of thumb,
+        except for special k cases, the relative uncertainty on logb is of the order of
+        %eps * n / k.
+    </para>
 </refsection>
 
 <refsection>
@@ -501,7 +502,9 @@ legend("$\large \left|{\frac{2^n}{\sqrt{\pi n/2}} / nchoosek(n, n/2)}-1\right|$"
         <title>Bibliography</title>
             <itemizedlist>
                 <listitem>
-                    <ulink url="http://en.wikipedia.org/wiki/Binomial_coefficients">Binomial coefficients (Wikipedia)</ulink>
+                    <para>
+                        <link xlink:href="http://en.wikipedia.org/wiki/Binomial_coefficients">Binomial coefficients (Wikipedia)</link>
+                    </para>
                 </listitem>
                 <listitem>
                      <para>

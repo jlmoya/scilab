@@ -26,7 +26,7 @@
         <refname>scicos_state</refname>
         <refpurpose>Define a state structure</refpurpose>
     </refnamediv>
-    <refsection id="state_scicos_state">
+    <refsect1 xml:id="state_scicos_state">
         <title>state</title>
         <para>
             States of the model, that is, everything than
@@ -43,7 +43,7 @@
             <link linkend="scicos_cpr_state_pointi">pointi</link> and
             <link linkend="scicos_cpr_state_outtb">outtb</link>.
         </para>
-        <refsect2 id="scicos_cpr_state_x">
+        <refsect2 xml:id="scicos_cpr_state_x">
             <title>x</title>
             <para> The continuous-time state register, which is obtained by concatenating the continuous-time states of all the blocks.</para>
             <para>
@@ -53,7 +53,7 @@
                 Type : column vector of real numbers.
             </para>
         </refsect2>
-        <refsect2 id="scicos_cpr_state_z">
+        <refsect2 xml:id="scicos_cpr_state_z">
             <title>z</title>
             <para> The discrete-time state register, which is obtained by concatenating the discrete-time states of all the blocks.</para>
             <para>
@@ -63,7 +63,7 @@
                 Type : column vector of real number.
             </para>
         </refsect2>
-        <refsect2 id="scicos_cpr_state_oz">
+        <refsect2 xml:id="scicos_cpr_state_oz">
             <title>oz</title>
             <para> The list of the object discrete-time state, which is obtained by concatenating the object discrete-time states of all the blocks.</para>
             <para>
@@ -73,7 +73,7 @@
                 Type : list of scilab object.
             </para>
         </refsect2>
-        <refsect2 id="scicos_cpr_state_iz">
+        <refsect2 xml:id="scicos_cpr_state_iz">
             <title>iz</title>
             <para> Vector of size equal to the number of blocks.</para>
             <para> That vector is used to store pointers of the working state register (work). If a block needs to allocate memory at initialization (flag 4), the associated pointer is saved here.</para>
@@ -84,7 +84,7 @@
                 Type : column vector of real numbers.
             </para>
         </refsect2>
-        <refsect2 id="scicos_cpr_state_tevts">
+        <refsect2 xml:id="scicos_cpr_state_tevts">
             <title>tevts</title>
             <para> Vector of size equal to the number of activation sources. It contains the scheduled times for programmed activations in evtspt.</para>
             <para>
@@ -94,7 +94,7 @@
                 Type : column vector of integers.
             </para>
         </refsect2>
-        <refsect2 id="scicos_cpr_state_evtspt">
+        <refsect2 xml:id="scicos_cpr_state_evtspt">
             <title>evtspt</title>
             <para> Vector of size equal to the number of activation sources. It is an event scheduler.</para>
             <para>
@@ -104,7 +104,7 @@
                 Type : column vector of integers.
             </para>
         </refsect2>
-        <refsect2 id="scicos_cpr_state_pointi">
+        <refsect2 xml:id="scicos_cpr_state_pointi">
             <title>pointi</title>
             <para> The number of the next programmed event.</para>
             <para>
@@ -114,7 +114,7 @@
                 Type : integer.
             </para>
         </refsect2>
-        <refsect2 id="scicos_cpr_state_outtb">
+        <refsect2 xml:id="scicos_cpr_state_outtb">
             <title>outtb</title>
             <para> Scilab list containing all output registers of blocks. Each element of that list contains typed matrix-based data.</para>
             <para>
@@ -124,5 +124,5 @@
                 Type : list of scilab matrix.
             </para>
         </refsect2>
-    </refsection>
+    </refsect1>
 </refentry>

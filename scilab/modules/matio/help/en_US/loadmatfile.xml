@@ -106,8 +106,10 @@
             through <literal>struc.varname</literal>. Only <varname>struc</varname> is returned
             to the calling environment.
             <note>
-                This option avoids unexpectedly overwriting a variable existing in the calling
-                environment with an homonymous variable from the file.
+                <para>
+                    This option avoids unexpectedly overwriting a variable existing in the calling
+                    environment with an homonymous variable from the file.
+                </para>
             </note>
         </para>
         <para>
@@ -132,68 +134,69 @@
         <para>
             In all ways, the Octave or Matlab data types are converted into the Scilab equivalents.
         </para>
-		<refsect3>
-			<title>Remarks</title>
-			<para>
-				<emphasis role="bold">About native Octave 5.1 text data files:</emphasis>
-				<itemizedlist>
-					<listitem>
-          <para>
-    						Supported input data types: dense and sparse booleans, signed and unsigned
-    						encoded integers (from int8 to uint64), real and complex numbers (including
-    						Inf, NaN and NA special values) in sparse and dense encodings, strings,
-    						arrays of cells of strings, any cell array or hyperarray of any dimension,
-    						scalar or array of structures.
-    					</para>
-     </listitem>
-					<listitem>
-          <para>
-    						NA values are converted into NaN.
-    					</para>
-     </listitem>
-					<listitem>
-          <para>
-    						The mantissa of single precision real and complex numbers is truncated to their
-    						8 most significant figures.
-    					</para>
-     </listitem>
-					<listitem>
-          <para>
-    						Any cells array of scalar strings is automatically converted into a regular
-    						Scilab array of strings.
-    					</para>
-     </listitem>
-					<listitem>
-          <para>
-    						In any input column of strings, appended padding spaces are left as is,
-    						without being trimmed.
-    					</para>
-     </listitem>
-					<listitem>
-          <para>
-    						In strings, ascii(13) characters are read as ascii(10).
-    					</para>
-     </listitem>
-					<listitem>
-          <para>
-    						Cells and structures must contain only supported input data types. Otherwise,
-    						an error occurs.
-    					</para>
-     </listitem>
-					<listitem>
-          <para>
-    						Nested containers (cells, structures) are supported.
-    					</para>
-     </listitem>
-					<listitem>
-          <para>
-    						Known limitation: int64 or uint64 integers bigger than 2<superscript>53</superscript>
-    						can't be read properly (loss of precision).
-    					</para>
-     </listitem>
-				</itemizedlist>
-			</para>
-		</refsect3>
+
+        <para>
+            <emphasis role="bold">Remarks</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">About native Octave 5.1 text data files:</emphasis>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Supported input data types: dense and sparse booleans, signed and unsigned
+                        encoded integers (from int8 to uint64), real and complex numbers (including
+                        Inf, NaN and NA special values) in sparse and dense encodings, strings,
+                        arrays of cells of strings, any cell array or hyperarray of any dimension,
+                        scalar or array of structures.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        NA values are converted into NaN.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        The mantissa of single precision real and complex numbers is truncated to their
+                        8 most significant figures.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Any cells array of scalar strings is automatically converted into a regular
+                        Scilab array of strings.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        In any input column of strings, appended padding spaces are left as is,
+                        without being trimmed.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        In strings, ascii(13) characters are read as ascii(10).
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Cells and structures must contain only supported input data types. Otherwise,
+                        an error occurs.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Nested containers (cells, structures) are supported.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Known limitation: int64 or uint64 integers bigger than 2<superscript>53</superscript>
+                        can't be read properly (loss of precision).
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -311,7 +314,7 @@ ste, sts
         <para>
             The binary mode of this function is based on the MATIO library (
             <literal>
-                <ulink url="http://sourceforge.net/projects/matio/">http://sourceforge.net/projects/matio/</ulink>
+                <link xlink:href="http://sourceforge.net/projects/matio/">http://sourceforge.net/projects/matio/</link>
             </literal>
             ).
         </para>

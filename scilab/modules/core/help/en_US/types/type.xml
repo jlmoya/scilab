@@ -192,8 +192,10 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-        <refsect2>
-            <title>Remarks</title>
+
+        <para>
+            <emphasis role="bold">Remarks</emphasis>
+        </para>
             <para>
                 Some data may be stored in custom containers defined as typed lists of type 16
                 (tlist) or 17 (matrix-oriented typed mlist). This is also the case for embedded
@@ -213,30 +215,32 @@
                 (like the concatenation) is applied between two operands of distinct but
                 compatible types, usually the type of one of both is implicitly converted,
                 and the other operand sets the type of the result to its own type.
-                <para>
-                    Examples with the <link linkend="brackets">concatenation</link> :
-                    <literal>[%t, 3.124]</literal>, <literal>[int8(5), 3.124]</literal>, etc.
-                </para>
-                <para>
+            </para>
+            <para>
+                Examples with the <link linkend="brackets">concatenation</link> :
+                <literal>[%t, 3.124]</literal>, <literal>[int8(5), 3.124]</literal>, etc.
+            </para>
+            <para>
                 For the concatenation, addition, substraction, multiplication, division,
                 and the power operation, the hierarchy between operands types is as follows
                 (read "A &lt; B": B imposes its type to A) :
-                <simplelist>
-                    <member>
-                        boolean &lt; (decimal number, complex encoded number)
-                    </member>
-                    <member>
+                <itemizedlist>
+                    <listitem>
+                        <para>boolean &lt; (decimal number, complex encoded number)</para>
+                    </listitem>
+                    <listitem>
                         <warning>
-                            (decimal number, complex-encoded number) &lt; encoded integer.
+                            <para>
+                                (decimal number, complex-encoded number) &lt; encoded integer.
+                            </para>
                         </warning>
-                    </member>
-                    <member>
-                        polynomial (real | complex) &lt; rational (real | complex)
-                    </member>
-                </simplelist>
-                </para>
+                    </listitem>
+                    <listitem>
+                        <para>polynomial (real | complex) &lt; rational (real | complex)</para>
+                    </listitem>
+                </itemizedlist>
             </para>
-        </refsect2>
+
     </refsection>
     <refsection>
         <title>Examples</title>

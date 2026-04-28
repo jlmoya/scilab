@@ -26,7 +26,7 @@
         <refname>scicos_diagram</refname>
         <refpurpose>Define a scs_m structure</refpurpose>
     </refnamediv>
-    <refsection id="diagram_scicos_diagram">
+    <refsection xml:id="diagram_scicos_diagram">
         <title>diagram</title>
         <para>
             Type : scilab tlist of type <code>"diagram"</code> with fields :
@@ -34,38 +34,45 @@
             <link linkend="scicos_diagram_objs">objs</link> and
             <link linkend="scicos_diagram_version">version</link>.
         </para>
-        <refsect2 id="scicos_diagram_props">
-            <title>props</title>
-            <para>Diagram properties.</para>
-            <para>This entry contains various information such some main diagram initials values.</para>
-            <para>
-                Type : <link linkend="scicos_params">params</link> .
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_diagram_objs">
-            <title>objs</title>
-            <para> List of objects included in the Xcos diagram.</para>
-            <para>
-                The objects can also be deleted object data structure. Deleted object data structure is marked <code>list('Deleted')</code>. This objects are temporaries that will be removed on save or load.
-            </para>
-            <para>
-                Size : total number of objects in the diagram.
-            </para>
-            <para>
-                Type : list of <link linkend="scicos_block">"Block"</link>, <link linkend="scicos_link">"Link"</link> or <code>"Text"</code>.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_diagram_version">
-            <title>version</title>
-            <para> A string that gives the version of the Xcos diagram. This is used to provide compatibility with old diagram.</para>
-            <para> Note that you can get the current version of Xcos by using the entry 'About Xcos' in the help menu or by using the function get_scicos_version().</para>
-            <para>
-                Size : 1.
-            </para>
-            <para>
-                Type : String.
-            </para>
-        </refsect2>
+
+        <para>
+            <emphasis role="bold">props</emphasis>
+            <anchor xml:id="scicos_diagram_props"/>
+        </para>
+        <para>Diagram properties.</para>
+        <para>This entry contains various information such some main diagram initials values.</para>
+        <para>
+            Type : <link linkend="scicos_params">params</link> .
+        </para>
+
+        <para>
+            <emphasis role="bold">objs</emphasis>
+            <anchor xml:id="scicos_diagram_objs"/>
+        </para>
+        <para> List of objects included in the Xcos diagram.</para>
+        <para>
+            The objects can also be deleted object data structure. Deleted object data structure is marked <code>list('Deleted')</code>. This objects are temporaries that will be removed on save or load.
+        </para>
+        <para>
+            Size : total number of objects in the diagram.
+        </para>
+        <para>
+            Type : list of <link linkend="scicos_block">"Block"</link>, <link linkend="scicos_link">"Link"</link> or <code>"Text"</code>.
+        </para>
+
+        <para>
+            <emphasis role="bold">version</emphasis>
+            <anchor xml:id="scicos_diagram_version"/>
+        </para>
+        <para> A string that gives the version of the Xcos diagram. This is used to provide compatibility with old diagram.</para>
+        <para> Note that you can get the current version of Xcos by using the entry 'About Xcos' in the help menu or by using the function get_scicos_version().</para>
+        <para>
+            Size : 1.
+        </para>
+        <para>
+            Type : String.
+        </para>
+
     </refsection>
     <refsection>
         <title>Examples</title>

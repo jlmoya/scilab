@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/PerteDP.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_PerteDP">
+    <refsection xml:id="Contents_PerteDP">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_PerteDP">Description</xref>
+                <para><link linkend="Description_PerteDP">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_PerteDP">Parameters</xref>
+                <para><link linkend="Dialogbox_PerteDP">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_PerteDP">Default properties</xref>
+                <para><link linkend="Defaultproperties_PerteDP">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_PerteDP">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_PerteDP">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="PerteDP">Modelica model</xref>
+                <para><link linkend="PerteDP">Modelica model</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_PerteDP">
+    <refsection xml:id="Description_PerteDP">
         <title>Description</title>
         <para>
             A <emphasis role="bold">PertDP</emphasis> block represents a
@@ -69,22 +69,23 @@
             flows from the black port to the white port. The pressure loss is
             obtained with :
         </para>
-        <emphasis>
-            P<subscript>loss</subscript> = P<subscript>black</subscript> - P<subscript>white</subscript>
-        </emphasis>
+        <para>
+            <emphasis>
+                P<subscript>loss</subscript> = P<subscript>black</subscript> - P<subscript>white</subscript>
+            </emphasis>
+        </para>
         <para>The key parameters of this block are the pipes' length, the pipe's
             diameter, inlet and outlet altitudes, and some other thermal-hydraulic
             coefficients.
         </para>
     </refsection>
-    <refsection id="Dialogbox_PerteDP">
+    <refsection xml:id="Dialogbox_PerteDP">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/PerteDP_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/PerteDP_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -136,7 +137,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Defaultproperties_PerteDP">
+    <refsection xml:id="Defaultproperties_PerteDP">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -251,7 +252,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_PerteDP">
+    <refsection xml:id="Interfacingfunction_PerteDP">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -259,7 +260,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_PerteDP">
+    <refsection xml:id="Modelicamodel_PerteDP">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

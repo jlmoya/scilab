@@ -72,15 +72,18 @@
             files.
         </para>
         <note>
-            Paths prefixed with the predefined constants <literal>SCI</literal>,
-            <literal>SCIHOME</literal>, <literal>SCI</literal>.. are  automatically expanded.
+            <para>
+                Paths prefixed with the predefined constants <literal>SCI</literal>,
+                <literal>SCIHOME</literal>, <literal>SCI</literal>.. are  automatically expanded.
+            </para>
         </note>
     </refsection>
     <refsection>
       <title>Examples</title>
-        <refsect3>
-            <title>Basic example</title>
-            <programlisting role="example"><![CDATA[
+        <para>
+            <emphasis role="bold">Basic example</emphasis>
+        </para>
+        <programlisting role="example"><![CDATA[
 covStart(isnan)                        // activate isnan for performance measurement
 for i = 1:1e5; isnan(i); end           // run it
 covWrite("html", "TMPDIR/coverage")    // write runtime performance results to a directory
@@ -98,10 +101,12 @@ browser = uicontrol(fr, ...
     "string", fullfile(TMPDIR, "coverage/isnan.html"), ...
     "tag", "browser"); // Displays results
         ]]></programlisting>
-        </refsect3>
-        <refsect3>
-        <title>Create two binaries, merge them, and export merged results into HTML</title>
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">Create two binaries, merge them, and export merged results into HTML</emphasis>
+        </para>
+
+        <programlisting role="example"><![CDATA[
 covStart(isnan)
 for i=1:1e5; isnan(i); end
 covWrite("binary", "TMPDIR/isnan1")    // write the 1st binary
@@ -115,7 +120,6 @@ covStop();
 covMerge(["TMPDIR/isnan1" "TMPDIR/isnan2"], "TMPDIR/isnan") // merge them
 covWrite("html", "TMPDIR/isnan", "TMPDIR/coverage") // render the results as HTML
         ]]></programlisting>
-        </refsect3>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

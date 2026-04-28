@@ -40,10 +40,11 @@
                     <para/>
                 </listitem>
             </varlistentry>
-            <para>
-                Optional pairs <emphasis role="bold">OptionName, Value</emphasis> are:
-            </para>
-            <para/>
+        </variablelist>
+        <para>
+            Optional pairs <emphasis role="bold">OptionName, Value</emphasis> are:
+        </para>
+        <variablelist>
             <varlistentry>
                 <term><emphasis role="bold">"VariableNames"</emphasis>, vector of strings</term>
                 <listitem>
@@ -161,10 +162,12 @@
             <revision>
                 <revnumber>2026.1.0</revnumber>
                 <revdescription>
-                    Empty columns are now preserved. 
-                    Previously, columns with missing or undefined names were not returned. 
-                    Similarly, columns with a defined name but containing no data were ignored. 
-                    As a result, the returned <literal>timeseries</literal> accurately reflects the original data.
+                    <para>
+                        Empty columns are now preserved. 
+                        Previously, columns with missing or undefined names were not returned. 
+                        Similarly, columns with a defined name but containing no data were ignored. 
+                        As a result, the returned <literal>timeseries</literal> accurately reflects the original data.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

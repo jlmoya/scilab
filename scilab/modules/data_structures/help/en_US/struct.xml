@@ -64,67 +64,76 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <refsect3>
-            <title>Scalar structure</title>
-            <para>
-                <emphasis role="bold">If none of values <literal>value1</literal>,
-                <literal>value2</literal>, ..., <literal>valueN</literal> is a non-scalar
-                cells array</emphasis>,
-                <literal>st = struct(field1, value1, field2, value2, ...)</literal> builds
-                a scalar structure <varname>st</varname> (of size 1×1) with fields and values
-                <literal>st.field1=value1</literal>, <literal>st.field2=value2</literal>, ...,
-                <literal>st.fieldN=valueN</literal>.
-            </para>
-            <para>
-                The value of any field of such a scalar structure can be a scalar or an array.
-                The sizes of values of distinct fields can be distinct. Example:
-                <literal>st = struct("u",[2 3], "v",[%t %f ; %f %t], "w","Hello")</literal> is
-                perfectly allowed and sets <literal>st.u=[2 3]</literal>,
-                <literal>st.v=[%t %f ; %f %t]</literal>, and <literal>st.w="Hello"</literal>
-            </para>
-            <para>
-                It is possible to assign a scalar or non-scalar cells array to the field of a
-                scalar structure by embedding it in a scalar cell. Examples:
-                <literal>st = struct("num",1:3, "c",{{sin}})</literal> will set
-                <literal>st.num=1:3</literal> and <literal>st.c={sin}</literal> ; while
-                <literal>st = struct("text","Hello", "test",{{1, sin ; %t %z}})</literal> will set
-                <literal>st.text="Hello"</literal> and <literal>st.test={1,sin;%t,%z}</literal>.
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Array of structures</title>
-            <para>
-                struct(..) allows to build any array -- vector, matrix or ND-array -- of structures.
-                All elements of the array have then the same set of fields <varname>field1</varname>,
-                <varname>field2</varname>, .., <varname>fieldN</varname>.
-            </para>
-            <para>
-                Indeed, <emphasis role="bold">when at least one of the given values is a non-scalar
-                cells array</emphasis>
-                <literal>C</literal>, <literal>st=struct(..,field,C,..)</literal> builds an array
-                of structures with <literal>size(st)==size(C)</literal>, and sets
-                <literal>st(i).field=C{i}</literal> for any index i.
-            </para>
-            <para>
-                In this case, any scalar values defined for some other specified fields are
-                replicated and set for all <varname>st</varname> elements.
-            </para>
-            <para>
-                Example #1: <literal>st=struct("u", {-1,%f,%z})</literal> defines a 1×3 row vector
-                of structures with a single field "u" with values <literal>st(1).u=-1</literal>,
-                <literal>st(2).u=%f</literal>, and <literal>st(3).u=%z</literal>.
-            </para>
-            <para>
-                Example #2: <literal>st=struct("u", {-1 ; %f}, "t", "Hi")</literal> defines a 2×1
-                column vector of structures with two fields "u" and "t" with values
-                <literal>st(1,1).u=-1</literal>, <literal>st(1,1).t="Hi"</literal>,
-                <literal>st(2,1).u=%f</literal>, <literal>st(2,1).t="Hi"</literal>.
-            </para>
-        </refsect3>
+
+        <para>
+            <emphasis role="bold">Scalar structure</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">If none of values <literal>value1</literal>,
+            <literal>value2</literal>, ..., <literal>valueN</literal> is a non-scalar
+            cells array</emphasis>,
+            <literal>st = struct(field1, value1, field2, value2, ...)</literal> builds
+            a scalar structure <varname>st</varname> (of size 1×1) with fields and values
+            <literal>st.field1=value1</literal>, <literal>st.field2=value2</literal>, ...,
+            <literal>st.fieldN=valueN</literal>.
+        </para>
+        <para>
+            The value of any field of such a scalar structure can be a scalar or an array.
+            The sizes of values of distinct fields can be distinct. Example:
+            <literal>st = struct("u",[2 3], "v",[%t %f ; %f %t], "w","Hello")</literal> is
+            perfectly allowed and sets <literal>st.u=[2 3]</literal>,
+            <literal>st.v=[%t %f ; %f %t]</literal>, and <literal>st.w="Hello"</literal>
+        </para>
+        <para>
+            It is possible to assign a scalar or non-scalar cells array to the field of a
+            scalar structure by embedding it in a scalar cell. Examples:
+            <literal>st = struct("num",1:3, "c",{{sin}})</literal> will set
+            <literal>st.num=1:3</literal> and <literal>st.c={sin}</literal> ; while
+            <literal>st = struct("text","Hello", "test",{{1, sin ; %t %z}})</literal> will set
+            <literal>st.text="Hello"</literal> and <literal>st.test={1,sin;%t,%z}</literal>.
+        </para>
+
+        <para>
+            <emphasis role="bold">Array of structures</emphasis>
+        </para>
+        <para>
+            struct(..) allows to build any array -- vector, matrix or ND-array -- of structures.
+            All elements of the array have then the same set of fields <varname>field1</varname>,
+            <varname>field2</varname>, .., <varname>fieldN</varname>.
+        </para>
+        <para>
+            Indeed, <emphasis role="bold">when at least one of the given values is a non-scalar
+            cells array</emphasis>
+            <literal>C</literal>, <literal>st=struct(..,field,C,..)</literal> builds an array
+            of structures with <literal>size(st)==size(C)</literal>, and sets
+            <literal>st(i).field=C{i}</literal> for any index i.
+        </para>
+        <para>
+            In this case, any scalar values defined for some other specified fields are
+            replicated and set for all <varname>st</varname> elements.
+        </para>
+        <para>
+            Example #1: <literal>st=struct("u", {-1,%f,%z})</literal> defines a 1×3 row vector
+            of structures with a single field "u" with values <literal>st(1).u=-1</literal>,
+            <literal>st(2).u=%f</literal>, and <literal>st(3).u=%z</literal>.
+        </para>
+        <para>
+            Example #2: <literal>st=struct("u", {-1 ; %f}, "t", "Hi")</literal> defines a 2×1
+            column vector of structures with two fields "u" and "t" with values
+            <literal>st(1,1).u=-1</literal>, <literal>st(1,1).t="Hi"</literal>,
+            <literal>st(2,1).u=%f</literal>, <literal>st(2,1).t="Hi"</literal>.
+        </para>
+
+        <para>
+            <emphasis role="bold">Type</emphasis>
+        </para>
         <note>
-            <literal>type(st)</literal> returns <literal>17</literal>,
-            and <literal>typeof(st)</literal> returns <literal>"st"</literal>.
+            <para>
+                <literal>type(st)</literal> returns <literal>17</literal>,
+                and <literal>typeof(st)</literal> returns <literal>"st"</literal>.
+            </para>
         </note>
+
     </refsection>
     <refsection>
         <title>Examples</title>

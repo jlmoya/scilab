@@ -92,12 +92,12 @@
         </para>
         <para>
             <emphasis role="bold">y = cumsum(x, orientation)</emphasis> returns the partial
-            cumulative sums of <term>x</term> along the dimension given by <term>orientation</term>:
+            cumulative sums of <literal>x</literal> along the dimension given by <literal>orientation</literal>:
         </para>
         <itemizedlist>
             <listitem>
                 <para>
-                    if <term>orientation</term> is equal to 1 or "r" then:
+                    if <literal>orientation</literal> is equal to 1 or "r" then:
                 </para>
                 <para>
                     <latex alt="y(i,j) = ∑u=1→i x(u,j)"><![CDATA[
@@ -112,7 +112,7 @@
             </listitem>
             <listitem>
                 <para>
-                    if <term>orientation</term> is equal to 2 or "c" then:
+                    if <literal>orientation</literal> is equal to 2 or "c" then:
                 </para>
                 <para>
                     <latex alt="y(i,j) = ∑u=1→j x(i,u)"><![CDATA[
@@ -127,7 +127,7 @@
             </listitem>
             <listitem>
                 <para>
-                    if <term>orientation</term> is equal to n then:
+                    if <literal>orientation</literal> is equal to n then:
                 </para>
                 <para>
                     <latex alt="y(i₁,…,iₙ₋₁, iₙ,iₙ₊₁,…) = ∑u=1…iₙ  x(i₁,…,iₙ₋₁, u,iₙ₊₁,…)"><![CDATA[
@@ -145,15 +145,15 @@
             <listitem>
                 <para>
                     <emphasis role="bold">y = cumsum(x, "m")</emphasis> is equivalent to
-                    <literal>y = cumsum(x, orientation)</literal> where <term>orientation</term>
-                    is the index of the first dimension of <term>x</term> that is greater than 1.
+                    <literal>y = cumsum(x, orientation)</literal> where <literal>orientation</literal>
+                    is the index of the first dimension of <literal>x</literal> that is greater than 1.
                     This option is used for Matlab compatibility.
                 </para>
             </listitem>
         </itemizedlist>
         <para/>
         <para>
-            The <term>outtype</term> argument rules the way the summations are done:
+            The <literal>outtype</literal> argument rules the way the summations are done:
         </para>
         <itemizedlist>
             <listitem>
@@ -193,8 +193,10 @@
             </listitem>
         </itemizedlist>
         <warning>
-            When the input <varname>x</varname> is sparse, please keep in mind that the density
-            of the result <varname>y</varname> will be almost always close to 100%.
+            <para>
+                When the input <varname>x</varname> is sparse, please keep in mind that the density
+                of the result <varname>y</varname> will be almost always close to 100%.
+            </para>
         </warning>
     </refsection>
 

@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/EVTVARDLY.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_EVTVARDLY">
+    <refsection xml:id="Contents_EVTVARDLY">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_EVTVARDLY">Description</xref>
+                <para><link linkend="Description_EVTVARDLY">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_EVTVARDLY">Parameters</xref>
+                <para><link linkend="Dialogbox_EVTVARDLY">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_EVTVARDLY">Default properties</xref>
+                <para><link linkend="Defaultproperties_EVTVARDLY">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_EVTVARDLY">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_EVTVARDLY">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_EVTVARDLY">Computational function</xref>
+                <para><link linkend="Computationalfunction_EVTVARDLY">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_EVTVARDLY">Example</xref>
+                <para><link linkend="Example_EVTVARDLY">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_EVTVARDLY">
+    <refsection xml:id="Description_EVTVARDLY">
         <title>Description</title>
         <para>
             One event is generated Delay after an event enters the unique input
@@ -71,13 +71,12 @@
             Block may also generate an initial output event.
         </para>
     </refsection>
-    <refsection id="Dialogbox_EVTVARDLY">
+    <refsection xml:id="Dialogbox_EVTVARDLY">
         <title>Parameters</title>
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../../../../images/gui/EVTVARDLY_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    <imagedata fileref="../../../../images/gui/EVTVARDLY_gui.gif" align="center"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
@@ -94,7 +93,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_EVTVARDLY">
+    <refsection xml:id="Defaultproperties_EVTVARDLY">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -158,7 +157,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Interfacingfunction_EVTVARDLY">
+    <refsection xml:id="Interfacingfunction_EVTVARDLY">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -166,7 +165,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_EVTVARDLY">
+    <refsection xml:id="Computationalfunction_EVTVARDLY">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -174,8 +173,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_EVTVARDLY">
+    <refsection xml:id="Example_EVTVARDLY">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/EVTVARDLY_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -183,5 +183,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

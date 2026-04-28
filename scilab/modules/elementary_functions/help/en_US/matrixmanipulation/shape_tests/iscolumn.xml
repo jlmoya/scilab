@@ -43,16 +43,16 @@
         <title>Description</title>
         <para>
             <literal>
-                iscolumn(<varname>x</varname>)
+                iscolumn(x)
             </literal>
             returns true if <varname>x</varname>
             is a column vector. Scalars are considered as columns.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note that <literal>iscolumn([])</literal> returns false.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>

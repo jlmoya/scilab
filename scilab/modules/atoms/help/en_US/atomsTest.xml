@@ -77,9 +77,11 @@
             The ATOMS <varname>module</varname> needs to be installed, not necessarily loaded.
         </para>
         <note>
-            <literal>test_run(module, tests_name, …)</literal> can also be used to run
-            the tests of an ATOMS module, after having loaded the <varname>module</varname>.
-            <literal>test_run(…)</literal> offers useful options.
+            <para>
+                <literal>test_run(module, tests_name, …)</literal> can also be used to run
+                the tests of an ATOMS module, after having loaded the <varname>module</varname>.
+                <literal>test_run(…)</literal> offers useful options.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -216,14 +218,15 @@ end
  ans  =
   T
 </screen>
-        <refsect3>
-            <title>Explanations on the printing</title>
+        <para>
+            <emphasis role="bold">Explanations on the printing</emphasis>
+        </para>
             <para>
                 <literal>TMPDIR</literal> is the general folder where all the temporary files of the
                 tests will be saved. The list of the tests is then shown, with their ending status.
             </para>
             <para>
-                <emphasis role="bold">Possible endings</emphasis>
+                <emphasis role="italic">Possible endings</emphasis>
                 <informaltable border="1">
                     <!-- Passed -->
                     <tr>
@@ -364,14 +367,14 @@ end
                         </td>
                     </tr>
                 </informaltable>
-                <para>
+            </para>
+            <para>
                 You then have a summary of the execution, indicating
                 how many tests were skipped, failed or succeed, and the duration time of
                 the whole. In details, you have a report for each test that failed,
                 indicating where to check for error logs.
-                </para>
             </para>
-        </refsect3>
+
     </refsection>
     <refsection role="see also">
         <title>See also</title>

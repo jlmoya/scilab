@@ -67,10 +67,12 @@
             <literal>n</literal>th dimension.
         </para>
         <note>
-            <literal>ifftshift()</literal> is designed in such a way that whatever is
-            <literal>x</literal> with even or/and odd sizes,
-            <literal>ifftshift(fftshift(x))</literal> and <literal>fftshift(ifftshift(x))</literal>
-            are always equal to <literal>x</literal>.
+            <para>
+                <literal>ifftshift()</literal> is designed in such a way that whatever is
+                <literal>x</literal> with even or/and odd sizes,
+                <literal>ifftshift(fftshift(x))</literal> and <literal>fftshift(ifftshift(x))</literal>
+                are always equal to <literal>x</literal>.
+            </para>
         </note>
     </refsection>
     <refsection>

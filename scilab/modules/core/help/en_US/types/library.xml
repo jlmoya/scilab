@@ -61,12 +61,15 @@
                         compilation with <code>genlib(..)</code> has generated the
                         <literal>lib</literal> and <literal>.bin</literal> files.
                         <warning>
-                            When the <literal>foo.sci</literal> source file of a foo()
-                            function is not provided in the library's directory,
-                            <literal>edit foo</literal> won't be able to edit its Scilab code, and
-                            will open a empty file from scratch.
-                        </warning></para>
-                              </listitem>
+                            <para>
+                                When the <literal>foo.sci</literal> source file of a foo()
+                                function is not provided in the library's directory,
+                                <literal>edit foo</literal> won't be able to edit its Scilab code, and
+                                will open a empty file from scratch.
+                            </para>
+                        </warning>
+                    </para>
+                </listitem>
             </itemizedlist>
         </para>
         <para>
@@ -167,8 +170,8 @@ interp1  mesh2d  interpln  smooth
             Without the step #3, a user's function not belonging to any library and that would
             be cleared can not be automatically retrieved.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 If the <literal>foo.sci</literal> file is modified while foo() has been already
                 called, then recompiling and reloading its library won't update the current
                 foo() behavior: foo() being already known, Scilab will stop at the step #2,
@@ -176,8 +179,8 @@ interp1  mesh2d  interpln  smooth
                 Entering <literal>clear foo</literal> before the next call to foo(..)
                 will force Scilab going up to the step #3 during the next call, and so
                 load and use the updated foo().
-            </warning>
-        </para>
+            </para>
+        </warning>
         <para>
             <emphasis role="bold">Homonymous functions in distinct libraries: libname.foo()</emphasis>
         </para>

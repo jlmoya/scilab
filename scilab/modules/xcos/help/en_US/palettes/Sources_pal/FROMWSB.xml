@@ -31,52 +31,51 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/FROMWSB.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_FROMWSB">
+    <refsection xml:id="Contents_FROMWSB">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_FROMWSB">Description</xref>
+                <para><link linkend="Description_FROMWSB">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_FROMWSB">Parameters</xref>
+                <para><link linkend="Dialogbox_FROMWSB">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_FROMWSB">Default properties</xref>
+                <para><link linkend="Defaultproperties_FROMWSB">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_FROMWSB">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_FROMWSB">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="FROMWSB">Compiled Super Block content</xref>
+                <para><link linkend="FROMWSB">Compiled Super Block content</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_FROMWSB">See also</xref>
+                <para><link linkend="Seealso_FROMWSB">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_FROMWSB">
+    <refsection xml:id="Description_FROMWSB">
         <title>Description</title>
         <para>That block is used to get data defined in the Scilab workspace and
             use them in Xcos. Data should have "time" and "values" fields.
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_FROMWSB">
+    <refsection xml:id="Dialogbox_FROMWSB">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/FROMWSB_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/FROMWSB_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -84,7 +83,10 @@
                     defined in Scilab, with two fields:
                     <literal>.time</literal> is a column vector of real numbers, of size (Nx1) ;
                     <literal>.values</literal> is a matrix with N rows, whose type can be
-                    be , , , , , , , and .
+                    be <emphasis role="italic">Real</emphasis>, <emphasis role="italic">Complex</emphasis>, 
+                    <emphasis role="italic">int8</emphasis>, <emphasis role="italic">int16</emphasis>, 
+                    <emphasis role="italic">int32</emphasis>, <emphasis role="italic">uint8</emphasis>, 
+                    <emphasis role="italic">uint16</emphasis>, and <emphasis role="italic">uint32</emphasis>.
                 </para>
             </listitem>
             <listitem>
@@ -203,7 +205,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_FROMWSB">
+    <refsection xml:id="Defaultproperties_FROMWSB">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -269,7 +271,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_FROMWSB">
+    <refsection xml:id="Example_FROMWSB">
         <title>Example</title>
         <programlisting role="example"><![CDATA[
             // Create the variable to load from
@@ -287,7 +289,7 @@
         </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_FROMWSB">
+    <refsection xml:id="Interfacingfunction_FROMWSB">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

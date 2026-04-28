@@ -107,18 +107,20 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <refsect2>
-            <title>Regulation around zero</title>
-            <mediaobject>
-                <imageobject>
-                    <imagedata fileref="../../../images/lqg.png"/>
-                </imageobject>
-            </mediaobject>
-            <variablelist>
-                <varlistentry>
-                    <term>
-                        Syntax  <literal>K=lqg(P_aug,r)</literal>
-                    </term>
+        <para>
+            <emphasis role="bold">Regulation around zero</emphasis>
+        </para>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="../../../images/lqg.png"/>
+            </imageobject>
+        </mediaobject>
+        <variablelist>
+            <varlistentry>
+                <term>
+                    Syntax  <literal>K=lqg(P_aug,r)</literal>
+                </term>
+                <listitem>
                     <para>
                         Computes the linear optimal LQG (H2) controller for the
                         "augmented" plant <literal>P_aug</literal> which can be
@@ -127,38 +129,40 @@
                         weighting matrix <literal>Qxu</literal> and the noise
                         covariance matrix <literal>Qwv</literal>.
                     </para>
-                </varlistentry>
-                <varlistentry>
-                    <term>
-                        Syntax  <literal>K=lqg(P,Qxu,Qwv)</literal>
-                    </term>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>
+                    Syntax  <literal>K=lqg(P,Qxu,Qwv)</literal>
+                </term>
+                <listitem>
                     <para>
                         Computes the linear optimal LQG (H2) controller for the nominal
                         plant <literal>P</literal>, the weighting matrix
                         <literal>Qxu</literal> and the noise covariance matrix
                         <literal>Qwv</literal>
                     </para>
-                </varlistentry>
-            </variablelist>
-        </refsect2>
-        <refsect2>
-            <title>
-                Regulation around a reference signal, Syntax <literal>K=lqg(P,Qxu,Qwv,Qi [,#dof])</literal>
-            </title>
-            <para>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata align="center" contentwidth="360" contentdepth="100"  fileref="../../../images/lqgi.png"/>
-                    </imageobject>
-                </mediaobject>
-            </para>
-            <para>
-                Computes the linear optimal LQG (H2) reference tracking controller for the
-                plant <literal>P</literal>, the weighting matrix
-                <literal>Qxu</literal> and the noise covariance matrix
-                <literal>Qwv</literal>
-            </para>
-        </refsect2>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
+        <para>
+            <emphasis role="bold">Regulation around a reference signal, Syntax <literal>K=lqg(P,Qxu,Qwv,Qi [,#dof])</literal></emphasis>
+        </para>
+        <para>
+            <mediaobject>
+                <imageobject>
+                    <imagedata align="center" contentwidth="360" contentdepth="100"  fileref="../../../images/lqgi.png"/>
+                </imageobject>
+            </mediaobject>
+        </para>
+        <para>
+            Computes the linear optimal LQG (H2) reference tracking controller for the
+            plant <literal>P</literal>, the weighting matrix
+            <literal>Qxu</literal> and the noise covariance matrix
+            <literal>Qwv</literal>
+        </para>
+
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -206,9 +210,11 @@
       align="left"><![CDATA[\sum_0^\infty\left[\begin{array}{ll}x'&u'\end{array}\right]\left[\begin{array}{ll}Q_{xx}&0\\0&R_{uu}\end{array}\right]\left[\begin{array}{l}x\\u\end{array}\right]
       dt]]></latex>
         </para>
-        <refsect2>
-            <title>Regulation around zero</title>
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">Regulation around zero</emphasis>
+        </para>
+        <programlisting role="example"><![CDATA[
       // Form the state space model
       M = 1; m = 0.2; k = 0.1; b = 0.004;
       A = [0     1    0    0
@@ -254,7 +260,7 @@
       L=legend(["$dy_1$","$dy_2$"]);L.font_size=4;
       xlabel('Time (s)')
       ]]></programlisting>
-            <scilab:image>
+        <scilab:image>
                 // Form the state space model
                 M = 1; m = 0.2; k = 0.1; b = 0.004;
                 A = [0     1    0    0
@@ -294,18 +300,17 @@
                 e=gce();e.children.polyline_style=2;
                 L=legend(["$dy_1$","$dy_2$"]);L.font_size=4;
                 xlabel('Time (s)')
-            </scilab:image>
-        </refsect2>
-        <refsect2>
-            <title>
-                Regulation around a reference signal, Syntax <literal>K=lqg(P,Qxu,Qwv,Qi [,#dof])</literal>
-            </title>
-            <para>
-                The purpose of the controller is here to assign
-                <emphasis>dy<subscript>2</subscript></emphasis> using the measure of
-                <emphasis>dy<subscript>2</subscript></emphasis>.
-            </para>
-            <programlisting role="example"><![CDATA[
+        </scilab:image>
+
+        <para>
+            <emphasis role="bold">Regulation around a reference signal, Syntax <literal>K=lqg(P,Qxu,Qwv,Qi [,#dof])</literal></emphasis>
+        </para>
+        <para>
+            The purpose of the controller is here to assign
+            <emphasis>dy<subscript>2</subscript></emphasis> using the measure of
+            <emphasis>dy<subscript>2</subscript></emphasis>.
+        </para>
+        <programlisting role="example"><![CDATA[
       M = 1; m = 0.2; k = 0.1; b = 0.004;
       A = [0     1    0    0
       -k/M  -b/M  k/M  b/M
@@ -342,9 +347,8 @@
       subplot(211);plot(t',dy2');xlabel("Time");ylabel("dy2")
       u=flts([r;dy2],J);
       subplot(212);plot(t',u');xlabel("Time");ylabel("u")
-      ]]>
-            </programlisting>
-            <scilab:image>
+      ]]></programlisting>
+        <scilab:image>
                 M = 1; m = 0.2; k = 0.1; b = 0.004;
                 A = [0     1    0    0
                 -k/M  -b/M  k/M  b/M
@@ -381,13 +385,13 @@
                 subplot(211);plot(t',dy2');xlabel("Time");ylabel("dy2")
                 u=flts([r;dy2],J);
                 subplot(212);plot(t',u');xlabel("Time");ylabel("u")
-            </scilab:image>
-        </refsect2>
+        </scilab:image>
+
     </refsection>
     <refsection>
         <title>Reference</title>
         <para>
-            <ulink url="http://www.springer.com/us/book/9780817640095"> Engineering and Scientific Computing with Scilab</ulink>, Claude Gomez and al.,Springer Science+Business Media, LLC,1999, ISNB:978-1-4612-7204-5
+            <link xlink:href="http://www.springer.com/us/book/9780817640095"> Engineering and Scientific Computing with Scilab</link>, Claude Gomez and al.,Springer Science+Business Media, LLC,1999, ISNB:978-1-4612-7204-5
         </para>
     </refsection>
     <refsection role="see also">

@@ -289,10 +289,12 @@
                                 y axis. Etc.
                               </para>
                               <warning>
-                                Editing ticks (labels and/or locations) via
-                                <literal>x_ticks, y_ticks</literal> or  <literal>z_ticks</literal>
-                                automatically sets <literal>auto_ticks</literal> to <literal>"off"</literal>
-                                for the corresponding axes.
+                                <para>
+                                    Editing ticks (labels and/or locations) via
+                                    <literal>x_ticks, y_ticks</literal> or  <literal>z_ticks</literal>
+                                    automatically sets <literal>auto_ticks</literal> to <literal>"off"</literal>
+                                    for the corresponding axes.
+                                </para>
                               </warning>
                             </listitem>
                         </varlistentry>
@@ -455,9 +457,9 @@
                                   positioned at X, the value used to format the label will be
                                   <literal>x_s*(X-x_t)</literal>. It could be particularly useful
                                   when the axes bounds are too closed.
-                                    <para>
-                                        It is a matrix with 2 rows and at most 3 columns.
-                                    </para>
+                                </para>
+                                <para>
+                                    It is a matrix with 2 rows and at most 3 columns.
                                 </para>
                                 <para>
                                     So, for example <literal>base=B</literal>, labels could be
@@ -490,18 +492,20 @@
                                     <literal>"back_half"</literal>, the X, Y and Z axis are also drawn. If
                                     the property is <literal>"on"</literal> the whole box is drawn.
                                 </para>
-                                <scilab:image><![CDATA[
-                                    box = ["on" "back_half" "hidden_axes" "off"];
-                                    for i = 1:4
-                                        subplot(1,4,i)
-                                        plot3d([0 1],[0 1],[0 1])
-                                        a = gca();
-                                        a.box = box(i);
-                                        a.rotation_angles = [235 326];
-                                        title(msprintf("%s", box(i)), "fontsize",3)
-                                    end
-                                    gcf().axes_size = [840 222];
-                                ]]></scilab:image>
+                                <para>
+                                    <scilab:image><![CDATA[
+                                        box = ["on" "back_half" "hidden_axes" "off"];
+                                        for i = 1:4
+                                            subplot(1,4,i)
+                                            plot3d([0 1],[0 1],[0 1])
+                                            a = gca();
+                                            a.box = box(i);
+                                            a.rotation_angles = [235 326];
+                                            title(msprintf("%s", box(i)), "fontsize",3)
+                                        end
+                                        gcf().axes_size = [840 222];
+                                    ]]></scilab:image>
+                                </para>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
@@ -686,24 +690,26 @@
                                     <literal>'l'</literal> for the
                                     <emphasis role="bold">l</emphasis>ogarithmic one.
                                 </para>
-                                <scilab:image><![CDATA[
-                                    x = linspace(0,10,100)(2:$);
-                                    m = ["nn" "ln" "nl" "ll"];
-                                    clf
-                                    for i = 1:4
-                                        subplot(1,4,i)
-                                        plot2d(m(i), x, x.^2)
-                                        xgrid(color("grey75"),1,7)
-                                        title(msprintf("""%s""",m(i)),"fontsize",3)
-                                        select i
-                                        case 1, gca().sub_ticks = [3 3];
-                                        case 2, gca().sub_ticks = [8 3];
-                                        case 3, gca().sub_ticks = [3 8];
-                                        case 4, gca().sub_ticks = [8 8];
+                                <para>
+                                    <scilab:image><![CDATA[
+                                        x = linspace(0,10,100)(2:$);
+                                        m = ["nn" "ln" "nl" "ll"];
+                                        clf
+                                        for i = 1:4
+                                            subplot(1,4,i)
+                                            plot2d(m(i), x, x.^2)
+                                            xgrid(color("grey75"),1,7)
+                                            title(msprintf("""%s""",m(i)),"fontsize",3)
+                                            select i
+                                            case 1, gca().sub_ticks = [3 3];
+                                            case 2, gca().sub_ticks = [8 3];
+                                            case 3, gca().sub_ticks = [3 8];
+                                            case 4, gca().sub_ticks = [8 8];
+                                            end
                                         end
-                                    end
-                                    gcf().axes_size = [800 220];
-                                ]]></scilab:image>
+                                        gcf().axes_size = [800 220];
+                                    ]]></scilab:image>
+                                </para>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
@@ -1017,9 +1023,11 @@
                                     mark to be displayed. Its value should be an integer in [0 5]
                                     which stands for 8pt, 10pt, 12pt, 14pt, 18pt and 24pt.
                                 </para>
-                                <para>
-                                    <warning>In the special case where mark_style and mark_size are 0, a dot of one pixel is drawn.</warning>
-                                </para>
+                                <warning>
+                                    <para>
+                                        In the special case where mark_style and mark_size are 0, a dot of one pixel is drawn.
+                                    </para>
+                                </warning>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
@@ -1289,7 +1297,7 @@ a.ticks_st = [1 1;0 m(2)];
         <para>
             Example with vertical x_ticks labels:
         </para>
-        <programlisting role="example" id="axes_properties_vertical_xticks"><![CDATA[
+        <programlisting role="example" xml:id="axes_properties_vertical_xticks"><![CDATA[
 rain_Nice  = [51  45  39 69 45 34 12 18 73 133 104 93 ];
 months = _(["January" "February" "March" "April" "May" "June" "July" ...
             "August" "September" "October" "November" "December"]);

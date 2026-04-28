@@ -54,6 +54,7 @@
     </refsection>
     <refsection>
         <title>Examples</title>
+        <programlisting role="example"><![CDATA[
 // We get some square sparse matrix that we are sure it is symetric positive definite:
 A = ReadHBSparse(SCI+"/modules/umfpack/demos/bcsstk24.rsa");
 size(A)
@@ -71,6 +72,7 @@ x = taucs_chsolve(Cfact, b);
 r = res_with_prec(A, x, b);
 stdev(r, "*", 0)
 norm(r)
+        ]]></programlisting>
         <para>
             Other examples are provided in the <link linkend="taucs_chfact">taucs_chfact</link> page.
         </para>

@@ -26,7 +26,7 @@
         <refname>scicos_block</refname>
         <refpurpose>Define a block structure</refpurpose>
     </refnamediv>
-    <refsection id="block_scicos_block">
+    <refsection xml:id="block_scicos_block">
         <title>block</title>
         <para>
             Basic structure that define a xcos block.
@@ -38,39 +38,48 @@
             <link linkend="scicos_block_gui">gui</link> and
             <link linkend="scicos_block_doc">doc</link>.
         </para>
-        <refsect2 id="scicos_block_graphics">
-            <title>graphics</title>
-            <para> Scilab object including graphical information concerning the features of the block.</para>
-            <para>
-                Type : <link linkend="scicos_graphics">graphics</link>.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_block_model">
-            <title>model</title>
-            <para> Scilab list that contains the features of the block used for the compilation.</para>
-            <para>
-                Type : <link linkend="scicos_model">model</link>.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_block_gui">
-            <title>gui</title>
-            <para> The name of the Scilab GUI function associated with the block.</para>
-            <para>
-                Size : 1.
-            </para>
-            <para>
-                Type : string.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_block_doc">
-            <title>doc</title>
-            <para> Field used for documentation of the block
-                Size : 1.
-            </para>
-            <para>
-                Type : list or string.
-            </para>
-        </refsect2>
+
+        <para>
+            <emphasis role="bold">graphics</emphasis>
+            <anchor xml:id="scicos_block_graphics"/>
+        </para>
+        <para> Scilab object including graphical information concerning the features of the block.</para>
+        <para>
+            Type : <link linkend="scicos_graphics">graphics</link>.
+        </para>
+
+        <para>
+            <emphasis role="bold">model</emphasis>
+            <anchor xml:id="scicos_block_model"/>
+        </para>
+        <para> Scilab list that contains the features of the block used for the compilation.</para>
+        <para>
+            Type : <link linkend="scicos_model">model</link>.
+        </para>
+
+        <para>
+            <emphasis role="bold">gui</emphasis>
+            <anchor xml:id="scicos_block_gui"/>
+        </para>
+        <para> The name of the Scilab GUI function associated with the block.</para>
+        <para>
+            Size : 1.
+        </para>
+        <para>
+            Type : string.
+        </para>
+
+        <para>
+            <emphasis role="bold">doc</emphasis>
+            <anchor xml:id="scicos_block_doc"/>
+        </para>
+        <para> Field used for documentation of the block
+            Size : 1.
+        </para>
+        <para>
+            Type : list or string.
+        </para>
+
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -86,4 +95,3 @@ blk.model.rpar = 1
  ]]></programlisting>
     </refsection>
 </refentry>
-

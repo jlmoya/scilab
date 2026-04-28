@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DEMUX.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_DEMUX">
+    <refsection xml:id="Contents_DEMUX">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DEMUX">Description</xref>
+                <para><link linkend="Description_DEMUX">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DEMUX">Parameters</xref>
+                <para><link linkend="Dialogbox_DEMUX">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DEMUX">Default properties</xref>
+                <para><link linkend="Defaultproperties_DEMUX">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DEMUX">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DEMUX">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DEMUX">Computational function</xref>
+                <para><link linkend="Computationalfunction_DEMUX">Computational function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_DEMUX">
+    <refsection xml:id="Description_DEMUX">
         <title>Description</title>
         <para>
             Given a vector valued input this block splits inputs over vector
@@ -69,14 +69,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_DEMUX">
+    <refsection xml:id="Dialogbox_DEMUX">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/DEMUX_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/DEMUX_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -90,7 +89,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_DEMUX">
+    <refsection xml:id="Defaultproperties_DEMUX">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -166,7 +165,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DEMUX">
+    <refsection xml:id="Interfacingfunction_DEMUX">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -174,7 +173,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DEMUX">
+    <refsection xml:id="Computationalfunction_DEMUX">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

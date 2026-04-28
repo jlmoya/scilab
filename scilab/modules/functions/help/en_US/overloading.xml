@@ -65,9 +65,12 @@
         <para>extraction and insertion operators which are n-nary operators are
             described below.
         </para>
-        <warning>Be careful, only the types registered by the
-            <function>typename</function> function can be used in an overloading
-            macros.
+        <warning>
+            <para>
+                Be careful, only the types registered by the
+                <function>typename</function> function can be used in an overloading
+                macros.
+            </para>
         </warning>
         <para>
             <literal>&lt;operand_type&gt;</literal>,
@@ -552,9 +555,7 @@
     </refsection>
     <refsection>
         <title>Examples</title>
-    </refsection>
-    <refsection>
-        <programlisting role="example">//DISPLAY
+        <programlisting role="example"><![CDATA[//DISPLAY
             var = tlist('tab', ['a', 'b'], ['x'; 'y'], rand(2, 2)) // the type of var is 'tab'
 
             typeof(var)
@@ -564,10 +565,8 @@
             endfunction
 
             var // after overloading
-        </programlisting>
-    </refsection>
-    <refsection>
-        <programlisting role="example">//OPERATOR
+        ]]></programlisting>
+        <programlisting role="example"><![CDATA[//OPERATOR
             's' + 1 // it is impossible to add a number to a string
 
             function x = %c_a_s(a, b)
@@ -575,10 +574,8 @@
             endfunction
 
             's' + 1 // after overloading
-        </programlisting>
-    </refsection>
-    <refsection>
-        <programlisting role="example">//FUNCTION
+        ]]></programlisting>
+        <programlisting role="example"><![CDATA[//FUNCTION
             sin('2 * x') // the sin function does not work with a string
 
             function x = %c_sin(a)
@@ -586,7 +583,7 @@
             endfunction
 
             sin('2 * x') // after overloading
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

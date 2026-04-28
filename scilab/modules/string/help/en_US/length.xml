@@ -74,16 +74,16 @@
             <code>length('123')</code> is <literal>3</literal>.
             <code>length([1,2;3,4])</code> is <literal>4</literal>.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 WARNING : <function>length</function> of a sparse matrix
                 returns the max of dimensions and not the product
                 of the dimensions. (For example:
                 <code>length(sparse(eye(12,2)))</code>
                 returns <code>max(12,2)</code> and not <literal>24</literal>).
                 Please use <literal>size(...,'*')</literal> with sparse matrix.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>

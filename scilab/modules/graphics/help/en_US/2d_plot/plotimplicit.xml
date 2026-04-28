@@ -104,14 +104,14 @@
                             </listitem>
                         </itemizedlist>
                     </para>
-                    <para>
-                        <warning>
+                    <warning>
+                        <para>
                             The bounds of the 1st plot drawn by <literal>plotimplicit(..)</literal>
                             are set according to the bounds <emphasis>of the solutions of
                             <varname>fun</varname></emphasis>. Most often they are (much) narrower
                             than <varname>x_grid</varname> and <varname>y_grid</varname> bounds.
-                        </warning>
-                    </para>
+                        </para>
+                    </warning>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -123,11 +123,16 @@
                         </para>
                     </listitem>
             </varlistentry>
-            <para>This optional output is a vector containing the handles of
-              the created Polyline objects. Use <literal>h</literal> to modify properties
-              of a specific or all Polyline objects after they are created. For a list of
-              properties, see <link linkend="polyline_properties">polyline_properties</link>.
-            </para>
+            <varlistentry>
+                <term>h</term>
+                <listitem>
+                    <para>This optional output is a vector containing the handles of
+                    the created Polyline objects. Use <literal>h</literal> to modify properties
+                    of a specific or all Polyline objects after they are created. For a list of
+                    properties, see <link linkend="polyline_properties">polyline_properties</link>.
+                    </para>
+                    </listitem>
+            </varlistentry>
         </variablelist>
     </refsection>
     <refsection>

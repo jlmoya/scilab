@@ -32,44 +32,44 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/RFILE_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_RFILE_f">
+    <refsection xml:id="Contents_RFILE_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_RFILE_f">Description</xref>
+                <para><link linkend="Description_RFILE_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatype_RFILE_f">Data types</xref>
+                <para><link linkend="Datatype_RFILE_f">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_RFILE_f">Parameters</xref>
+                <para><link linkend="Dialogbox_RFILE_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_RFILE_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_RFILE_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_RFILE_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_RFILE_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_RFILE_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_RFILE_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_RFILE_f">Example</xref>
+                <para><link linkend="Example_RFILE_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_RFILE_f">See also</xref>
+                <para><link linkend="Seealso_RFILE_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_RFILE_f">
+    <refsection xml:id="Description_RFILE_f">
         <title>Description</title>
         <para>
             This block allows user to read data in a file with the name defined with the
@@ -126,7 +126,7 @@ box "Field #N";
         </itemizedlist>
         <para>Each event on the activation input of the block advances one record in the file.</para>
     </refsection>
-    <refsection id="Datatype_RFILE_f">
+    <refsection xml:id="Datatype_RFILE_f">
         <title>Data types</title>
         <itemizedlist>
             <listitem>
@@ -139,15 +139,14 @@ box "Field #N";
         </itemizedlist>
     </refsection>
 
-    <refsection id="Dialogbox_RFILE_f">
+    <refsection xml:id="Dialogbox_RFILE_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/sources_pal/en_US/RFILE_f_gui.png"
-                        align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                        align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -235,7 +234,7 @@ box "Field #N";
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_RFILE_f">
+    <refsection xml:id="Defaultproperties_RFILE_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -301,7 +300,7 @@ box "Field #N";
         <para/>
     </refsection>
 
-    <refsection id="Example_RFILE_f">
+    <refsection xml:id="Example_RFILE_f">
         <title>Example</title>
         <para>
             This example reads the file:
@@ -324,7 +323,7 @@ box "Field #N";
         </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_RFILE_f">
+    <refsection xml:id="Interfacingfunction_RFILE_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -334,7 +333,7 @@ box "Field #N";
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_RFILE_f">
+    <refsection xml:id="Computationalfunction_RFILE_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

@@ -28,41 +28,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATEIG.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATEIG">
+    <refsection xml:id="Contents_MATEIG">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATEIG">Description</xref>
+                <para><link linkend="Description_MATEIG">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATEIG">Parameters</xref>
+                <para><link linkend="Dialogbox_MATEIG">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATEIG">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATEIG">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_MATEIG">Example</xref>
+                <para><link linkend="Example_MATEIG">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATEIG">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATEIG">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATEIG">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATEIG">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATEIG">See also</xref>
+                <para><link linkend="Seealso_MATEIG">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATEIG">
+    <refsection xml:id="Description_MATEIG">
         <title>Description</title>
         <para>
             The MATEIG block computes the eigenvalues and the eigenvectors of a square input matrix U.
@@ -87,14 +87,13 @@
             The equivalent of the MATEIG block in Scilab is <link linkend="spec">spec</link>
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATEIG">
+    <refsection xml:id="Dialogbox_MATEIG">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATEIG_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATEIG_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -118,7 +117,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATEIG">
+    <refsection xml:id="Defaultproperties_MATEIG">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -191,7 +190,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_MATEIG">
+    <refsection xml:id="Example_MATEIG">
         <title>Example</title>
         <screen><![CDATA[
 A = [1 12 32 ; 21 35 46 ; 70 8 19]
@@ -203,6 +202,7 @@ y2 = [0.557 0.080 0.349 ; 0.330 -0.922 0.770 ; -0.762 0.379 0.533]
         <para>
             <emphasis role="bold">Eigenvalues example: spec([sin(t) 0; 0 t]) = [sin(t); t]</emphasis>
         </para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATEIG_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -210,8 +210,9 @@ y2 = [0.557 0.080 0.349 ; 0.330 -0.922 0.770 ; -0.762 0.379 0.533]
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
-    <refsection id="Interfacingfunction_MATEIG">
+    <refsection xml:id="Interfacingfunction_MATEIG">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -219,7 +220,7 @@ y2 = [0.557 0.080 0.349 ; 0.330 -0.922 0.770 ; -0.762 0.379 0.533]
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATEIG">
+    <refsection xml:id="Computationalfunction_MATEIG">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

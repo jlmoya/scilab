@@ -123,11 +123,15 @@
             command.
         </para>
         <note>
-            The archives files generated with save() are portable to other operating systems and
-            architectures (little and big endian automatically handled).
+            <para>
+                The archives files generated with save() are portable to other operating systems and
+                architectures (little and big endian automatically handled).
+            </para>
         </note>
         <warning>
-            Built-in functions and implicit lists (like 10:2:$) can't be saved.
+            <para>
+                Built-in functions and implicit lists (like 10:2:$) can't be saved.
+            </para>
         </warning>
     </refsection>
     <refsection>

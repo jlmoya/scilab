@@ -52,13 +52,13 @@
             If <literal>X</literal> is well conditioned, <literal>rcond(X)</literal> is close to 1.
             If not, <literal>rcond(X)</literal> is close to 0.
         </para>
-        <para>
-          <note>
-            Estimating the 1-norm inverse condition number with <literal>rcond</literal> is
-            much faster than computing the 2-norm condition number with <literal>cond</literal>.
-            As a trade-off, <literal>rcond</literal> may be less reliable.
-          </note>
-        </para>
+        <note>
+            <para>
+                Estimating the 1-norm inverse condition number with <literal>rcond</literal> is
+                much faster than computing the 2-norm condition number with <literal>cond</literal>.
+                As a trade-off, <literal>rcond</literal> may be less reliable.
+            </para>
+        </note>
         <para>
             Algorithm: We compute the 1-norm of X with Lapack/DLANGE, compute its LU decomposition
             with Lapack/DGETRF, and finally estimate the condition with Lapack/DGECON.

@@ -25,51 +25,51 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
         xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xmln.mml="http://www.w3.org/1998/Math/MathML" xml:id="BITCLEAR" xml:lang="en_US">
+        xmlns:mml="http://www.w3.org/1998/Math/MathML" xml:id="BITCLEAR" xml:lang="en_US">
     <refnamediv>
         <refname>BITCLEAR</refname>
         <refpurpose>Clear a Bit</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/BITCLEAR.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_BITCLEAR">
+    <refsection xml:id="Contents_BITCLEAR">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_BITCLEAR">Description</xref>
+                <para><link linkend="Description_BITCLEAR">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_BITCLEAR">Data types</xref>
+                <para><link linkend="Data_Type_BITCLEAR">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_BITCLEAR">Parameters</xref>
+                <para><link linkend="Dialogbox_BITCLEAR">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_BITCLEAR">Default properties</xref>
+                <para><link linkend="Defaultproperties_BITCLEAR">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_BITCLEAR">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_BITCLEAR">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_BITCLEAR">Computational function</xref>
+                <para><link linkend="Computationalfunction_BITCLEAR">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_BITCLEAR">Example</xref>
+                <para><link linkend="Example_BITCLEAR">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_BITCLEAR">See also</xref>
+                <para><link linkend="Seealso_BITCLEAR">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_BITCLEAR">
+    <refsection xml:id="Description_BITCLEAR">
         <title>Description</title>
         <para>
             This block sets to <literal>0</literal> the specified bit of its input.
@@ -88,7 +88,7 @@
         </para>
     </refsection>
 
-    <refsection id="Data_Type_BITCLEAR">
+    <refsection xml:id="Data_Type_BITCLEAR">
         <title>Data types</title>
         <para>
             The block supports the following types :
@@ -106,14 +106,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_BITCLEAR">
+    <refsection xml:id="Dialogbox_BITCLEAR">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/integer_pal/en_US/BITCLEAR_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/integer_pal/en_US/BITCLEAR_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -150,7 +149,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_BITCLEAR">
+    <refsection xml:id="Defaultproperties_BITCLEAR">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -224,7 +223,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_BITCLEAR">
+    <refsection xml:id="Example_BITCLEAR">
         <title>Example</title>
         <para>
             Below a simple use case of the block.
@@ -239,7 +238,7 @@
             </link>
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_BITCLEAR">
+    <refsection xml:id="Interfacingfunction_BITCLEAR">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -249,7 +248,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_BITCLEAR">
+    <refsection xml:id="Computationalfunction_BITCLEAR">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

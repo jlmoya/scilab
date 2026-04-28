@@ -34,13 +34,13 @@
             <varlistentry>
                 <term>nb</term>
                 <listitem>
-                    <para>The size of the vector yielded by the DLL entrypoint when <term>evFn</term> is a string.</para>
+                    <para>The size of the vector yielded by the DLL entrypoint when <literal>evFn</literal> is a string.</para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>dir,term</term>
                 <listitem>
-                    <para>Two vectors of length <term>nb</term>, when <term>evFn</term> is a string</para>
+                    <para>Two vectors of length <literal>nb</literal>, when <literal>evFn</literal> is a string</para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -48,7 +48,7 @@
 
     <refsection role="description">
         <title>Description</title>
-        <para>While integrating an ODE or a DAE, the solver can also find the roots of a set of <term>nb</term> user-defined functions that depend both
+        <para>While integrating an ODE or a DAE, the solver can also find the roots of a set of <literal>nb</literal> user-defined functions that depend both
              on t and on the solution vector y (and also y' for a DAE). The number of these roots or event functions is arbitrary, 
              and if more than one function is found to have a root in any given interval, the various root locations are found and reported in the order 
              that they occur on the t axis, in the direction of integration. The syntax
@@ -61,7 +61,7 @@
             <para>
                 for an ODE or a DAE, allows to recover the event locations
                 and the vanishing function(s) in the respective fields <literal>te,ye,ype,ie</literal> of the output 
-                arguments <term>info</term> or <term>sol</term>. Field <literal>te</literal> is a vector giving the time of 
+                arguments <literal>info</literal> or <literal>sol</literal>. Field <literal>te</literal> is a vector giving the time of 
                 events, <literal>ye</literal> an array with solution at each event time
                 (<literal>ype</literal> gives the derivative of the solution in the case of a DAE)
                 and <literal>ie</literal> is a matrix with as many lines as the number of event functions and as many columns
@@ -76,7 +76,7 @@
     <refsection role="description">
         <title>Event function given as a Scilab function</title>    
                 <para>
-                    In that case <term>evFn</term> is a Scilab function with prototype
+                    In that case <literal>evFn</literal> is a Scilab function with prototype
                 </para>
                <para><programlisting role="no-scilab-exec"><![CDATA[
                         [eq,term,dir] = evFn(t,y,...)
@@ -126,8 +126,8 @@
                     </scilab:image>
                 </para>
                 <para>
-                    In this other example, we find the time and value of the maximum of  <latex style="text">y_2</latex> in SIR model by finding the
-                    time when <latex style="text">y_2'</latex> vanishes:
+                    In this other example, we find the time and value of the maximum of  <latex>y_2</latex> in SIR model by finding the
+                    time when <latex>y_2'</latex> vanishes:
                 </para>
                 <para>
                        <programlisting role="example"><![CDATA[
@@ -158,7 +158,7 @@
         <refsection role="description">
             <title>Event function given as a SUNDIALS DLL entrypoint</title>    
         
-                <para>In that case <term>evFn</term> must have the C prototype</para> 
+                <para>In that case <literal>evFn</literal> must have the C prototype</para> 
                 <para><programlisting role="no-scilab-exec"><![CDATA[
                         int sunEvent(sunrealtype t, N_Vector Y, sunrealtype *gout, void *user_data)
                         int sunEvent(sunrealtype t, N_Vector Y, N_Vector Yp, sunrealtype *gout, void *user_data)
@@ -169,7 +169,7 @@
                     must be set in order to define the number of events. If 
                     the direction of the events have to be set or if some events should
                     terminate the solver iterations, the <literal>evDir</literal> and <literal>evTerm</literal> can be used
-                    and the values of <term>dir</term> and <term>term</term> follow the same convention as when <term>evFn</term> is
+                    and the values of <literal>dir</literal> and <literal>term</literal> follow the same convention as when <literal>evFn</literal> is
                     a Scilab function. See the examples below (Van Der Pol ODE and SIR model DAE):
                 </para>
                 <para>

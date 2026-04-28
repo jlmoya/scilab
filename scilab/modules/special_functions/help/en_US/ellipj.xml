@@ -79,7 +79,7 @@
         <para>
             If <varname>x</varname> is real, <literal>sn = ellipj(x, m)</literal>
             computes <varname>sn</varname> such that
-            <latex style="inline" alt="x = integral_0^{sn} du/sqrt{(1-u^2)(1-m.u^2)}">
+            <latex alt="x = integral_0^{sn} du/sqrt{(1-u^2)(1-m.u^2)}">
                 \int_0^{sn}\frac{du}{\sqrt{(1-u^2)(1-m\,u^2)}}=x
             </latex>
         </para>
@@ -117,7 +117,7 @@
           <literal>amell()</literal> is used to compute the elliptic amplitude separately of
           the real and imaginary parts of <varname>x</varname>. Then, addition formulae are used
           to compute the complex <literal>sn</literal>, <literal>cn</literal> etc
-          [<ulink url="https://researchspace.auckland.ac.nz/bitstream/handle/2292/5042/390.pdf">Tee, 1997</ulink>].
+          [<link xlink:href="https://researchspace.auckland.ac.nz/bitstream/handle/2292/5042/390.pdf">Tee, 1997</link>].
         </para>
         <warning>
             <para>

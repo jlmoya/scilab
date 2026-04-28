@@ -31,7 +31,7 @@
         <title>Syntax</title>
         <synopsis>var = vec2var(vec)</synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_vec2var">
+    <refsection xml:id="Parameters_vec2var">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -52,7 +52,7 @@
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="Description_vec2var">
+    <refsection xml:id="Description_vec2var">
         <title>Description</title>
         <para>
             var2vec / vec2var functions are used inside the interfacing functions of Scilab blocks
@@ -60,7 +60,7 @@
             parameters (rpar) and with the discrete state register (z).
         </para>
     </refsection>
-    <refsection id="Example_vec2var">
+    <refsection xml:id="Example_vec2var">
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 a = list("cos", [1.1 2])

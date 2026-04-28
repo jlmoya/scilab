@@ -75,29 +75,33 @@
             Otherwise, the permutations are computed and returned.
         </para>
         <note>
-            When "unique" is used,
-            <itemizedlist>
-                <listitem>
-                     <para>
-                        if no duplicate is detected in <varname>x</varname>, the computations are done
-                        as without "unique", that is faster.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para><varname>x</varname> is first sorted in ascending direction, and
-                        <varname>y</varname> is built in ascending lexicographic order.
-                    </para>
-                </listitem>
-            </itemizedlist>
-            Otherwise : The initial order of <varname>x</varname> components is kept, and the order
-            of permutations in <varname>y</varname> takes it into account. Thus, if necessary,
-            <varname>x</varname> can be sorted according to the order <emphasis>chosen by the user,
-            before</emphasis> calling <literal>perms()</literal>.
+            <para>
+                When "unique" is used,
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            if no duplicate is detected in <varname>x</varname>, the computations are done
+                            as without "unique", that is faster.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para><varname>x</varname> is first sorted in ascending direction, and
+                            <varname>y</varname> is built in ascending lexicographic order.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+                Otherwise : The initial order of <varname>x</varname> components is kept, and the order
+                of permutations in <varname>y</varname> takes it into account. Thus, if necessary,
+                <varname>x</varname> can be sorted according to the order <emphasis>chosen by the user,
+                before</emphasis> calling <literal>perms()</literal>.
+            </para>
         </note>
         <warning>
-            As a reminder, here is the weight <varname>n*n!*8</varname> of <varname>y</varname>
-            in bytes, vs the length <literal>n</literal> of <varname>x</varname>,
-            if <varname>x</varname> are decimal numbers and "unique" is not used:
+            <para>
+                As a reminder, here is the weight <varname>n*n!*8</varname> of <varname>y</varname>
+                in bytes, vs the length <literal>n</literal> of <varname>x</varname>,
+                if <varname>x</varname> are decimal numbers and "unique" is not used:
+            </para>
         </warning>
         <para>
             <table border="1">

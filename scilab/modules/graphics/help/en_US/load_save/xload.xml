@@ -172,12 +172,11 @@ subplot(1,2,1), plot3d() // => The figure is no longer clear => its properties a
 xload(graypolar)         // This new figure does not impose its properties: too late!
 gcf().axes_size = [700 350];
  ]]></programlisting>
-        <para/>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/xload_70p.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
     <refsection role="see also">

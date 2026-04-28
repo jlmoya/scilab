@@ -49,8 +49,8 @@
                 
                 <refsection>
                    <title>Description</title>
-                   <para>First and foremost, you need a Scilab function <term>g</term> which computes the gradient (preferably exact) of the function for wich the Hessian is to be approximated.</para>   
-                   <para>The spCompHessian function consructs a compressed Hessian engine from the given sparsity pattern using column intersection graph coloring. Internally, after using a heuristic coloring algorithm, a "seed matrix" is generated, available as <code>hess.seed</code>, and later used by the engine to compute (approximate) directional derivatives of the gradient function <term>g</term> in each seed column direction. Then the uncompressed Hessian is recovered. The typical call sequence starts by calling <code>spCompHessian</code> then continues by invoking the returned MList with the vectors at which the Hessian is to be computed:</para>
+                   <para>First and foremost, you need a Scilab function <literal>g</literal> which computes the gradient (preferably exact) of the function for wich the Hessian is to be approximated.</para>   
+                   <para>The spCompHessian function consructs a compressed Hessian engine from the given sparsity pattern using column intersection graph coloring. Internally, after using a heuristic coloring algorithm, a "seed matrix" is generated, available as <code>hess.seed</code>, and later used by the engine to compute (approximate) directional derivatives of the gradient function <literal>g</literal> in each seed column direction. Then the uncompressed Hessian is recovered. The typical call sequence starts by calling <code>spCompHessian</code> then continues by invoking the returned MList with the vectors at which the Hessian is to be computed:</para>
                    <para>
                      <programlisting role="no-scilab-exec"><![CDATA[
                      hess = spCompHessian(g,sp);
@@ -71,11 +71,11 @@
                        <para/>
                      </listitem>
                      <listitem>
-                       <para><emphasis>FiniteDifferenceType</emphasis> : this field gives the chosen approximation scheme. The possible values are "CENTERED" (the default order 2 centered scheme), "FORWARD" (the usual forward order 1 scheme) and "COMPLEXSTEP" (the order 2 complex step scheme). If you choose the complex step scheme check that <term>g</term> accepts complex input and handles it correctly (for example transposition operator has to be the dot-prefixed non-conjugate transposition <code>.'</code>).</para>
+                       <para><emphasis>FiniteDifferenceType</emphasis> : this field gives the chosen approximation scheme. The possible values are "CENTERED" (the default order 2 centered scheme), "FORWARD" (the usual forward order 1 scheme) and "COMPLEXSTEP" (the order 2 complex step scheme). If you choose the complex step scheme check that <literal>g</literal> accepts complex input and handles it correctly (for example transposition operator has to be the dot-prefixed non-conjugate transposition <code>.'</code>).</para>
                        <para/>
                      </listitem>
                      <listitem>
-                       <para><emphasis>FiniteDifferenceStepSize</emphasis> : this is the relative stepsize (see also <emphasis>"TypicalX"</emphasis> below). For a given <term>x0</term> the actual step is </para>
+                       <para><emphasis>FiniteDifferenceStepSize</emphasis> : this is the relative stepsize (see also <emphasis>"TypicalX"</emphasis> below). For a given <literal>x0</literal> the actual step is </para>
                        <para/>
                        <para>
                          <code>sign(x0).*FiniteDifferenceStepSize.*max(TypicalX,x0)</code>
@@ -89,7 +89,7 @@
                        <para/>
                      </listitem>
                      <listitem>
-                       <para><emphasis>Vectorized</emphasis> : "on" or "off" : allows to inform the engine if <term>g</term> can be called with a matrix <code>X</code> as argument, with the convention that <code>g(X)(:,i) == g(X(:,i))</code>.
+                       <para><emphasis>Vectorized</emphasis> : "on" or "off" : allows to inform the engine if <literal>g</literal> can be called with a matrix <code>X</code> as argument, with the convention that <code>g(X)(:,i) == g(X(:,i))</code>.
                        </para>
                        <para>for each column of <code>X</code>.
                      </para>
@@ -97,7 +97,7 @@
                    </itemizedlist>     
                    </para>
                    <para>
-                     The <term>hess</term> MList can be invoked with more than one arguments. In this case the remaining argument after the first are used by the engine as complimentary arguments when calling the gradient <term>g</term>.
+                     The <literal>hess</literal> MList can be invoked with more than one arguments. In this case the remaining argument after the first are used by the engine as complimentary arguments when calling the gradient <literal>g</literal>.
                    </para>
                 </refsection>
                 

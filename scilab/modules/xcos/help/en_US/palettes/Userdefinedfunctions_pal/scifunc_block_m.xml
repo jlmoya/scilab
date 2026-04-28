@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/scifunc_block_m.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_scifunc_block_m">
+    <refsection xml:id="Contents_scifunc_block_m">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_scifunc_block_m">Description</xref>
+                <para><link linkend="Description_scifunc_block_m">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_scifunc_block_m">Parameters</xref>
+                <para><link linkend="Dialogbox_scifunc_block_m">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Functions_scifunc_block_m">User-defined functions</xref>
+                <para><link linkend="Functions_scifunc_block_m">User-defined functions</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_scifunc_block_m">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_scifunc_block_m">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_scifunc_block_m">Computational function</xref>
+                <para><link linkend="Computationalfunction_scifunc_block_m">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_scifunc_block_m">Example</xref>
+                <para><link linkend="Example_scifunc_block_m">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_scifunc_block_m">
+    <refsection xml:id="Description_scifunc_block_m">
         <title>Description</title>
         <para>
             This block can realize any type of Scicos block. The function of the
@@ -72,15 +72,14 @@
             is slower.
         </para>
     </refsection>
-    <refsection id="Dialogbox_scifunc_block_m">
+    <refsection xml:id="Dialogbox_scifunc_block_m">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/scifunc_block_m_gui.gif"
-                            align="center" style="float:right" />
-                    <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -175,7 +174,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Functions_scifunc_block_m">
+    <refsection xml:id="Functions_scifunc_block_m">
         <title>User-defined functions</title>
         <para>The behavior of the Scilab function block is defined by user-written Scilab instructions. Each instruction set must be defined depending on the block configuration (and should match their count and size). The variables used are:</para>
         <variablelist>
@@ -249,7 +248,7 @@
         </variablelist>
     </refsection>
 
-    <refsection id="Example_scifunc_block_m">
+    <refsection xml:id="Example_scifunc_block_m">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/userdefinedfunctions_pal/en_US/scifunc_block_m_en_US.zcos">
@@ -266,7 +265,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_scifunc_block_m">
+    <refsection xml:id="Interfacingfunction_scifunc_block_m">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -274,7 +273,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_scifunc_block_m">
+    <refsection xml:id="Computationalfunction_scifunc_block_m">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

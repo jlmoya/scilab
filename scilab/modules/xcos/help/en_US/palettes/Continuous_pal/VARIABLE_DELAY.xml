@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/VARIABLE_DELAY.png" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_VARIABLE_DELAY">
+    <refsection xml:id="Contents_VARIABLE_DELAY">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_VARIABLE_DELAY">Description</xref>
+                <para><link linkend="Description_VARIABLE_DELAY">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_VARIABLE_DELAY">Parameters</xref>
+                <para><link linkend="Dialogbox_VARIABLE_DELAY">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_VARIABLE_DELAY">Default properties</xref>
+                <para><link linkend="Defaultproperties_VARIABLE_DELAY">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_VARIABLE_DELAY">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_VARIABLE_DELAY">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_VARIABLE_DELAY">Computational function</xref>
+                <para><link linkend="Computationalfunction_VARIABLE_DELAY">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_VARIABLE_DELAY">Example</xref>
+                <para><link linkend="Example_VARIABLE_DELAY">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_VARIABLE_DELAY">
+    <refsection xml:id="Description_VARIABLE_DELAY">
         <title>Description</title>
         <para>The Variable Transport Delay block can be used to simulate a
             variable time delay between an action and its effect. The block might be
@@ -87,14 +87,13 @@
             <emphasis>y(t) = y(θ) - u(t - τ(t))</emphasis>
         </para>
     </refsection>
-    <refsection id="Dialogbox_VARIABLE_DELAY">
+    <refsection xml:id="Dialogbox_VARIABLE_DELAY">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../examples/variable_delay1.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../examples/variable_delay1.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -126,7 +125,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_VARIABLE_DELAY">
+    <refsection xml:id="Defaultproperties_VARIABLE_DELAY">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -202,7 +201,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_VARIABLE_DELAY">
+    <refsection xml:id="Interfacingfunction_VARIABLE_DELAY">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -210,7 +209,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_VARIABLE_DELAY">
+    <refsection xml:id="Computationalfunction_VARIABLE_DELAY">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -218,7 +217,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_VARIABLE_DELAY">
+    <refsection xml:id="Example_VARIABLE_DELAY">
         <title>Example</title>
         <para>In this example, the max time delay in the Block Parameters dialog
             box is set to 4. The input signal is a sine wave with amplitude 1 and

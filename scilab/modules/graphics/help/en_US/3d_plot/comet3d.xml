@@ -116,23 +116,23 @@
                     </td>
                 </tr>
             </table>
-            <para>
-                if <literal>z</literal> is a matrix and <literal>x</literal> and <literal>y</literal>
-                are vectors, then animated curves are drawn for each triple
-                <literal>(x, y, z(:,j))</literal>.
-            </para>
-            <para>
-                if <literal>x,y,z</literal> are matrices with the same dimensions then animated curves
-                are drawn for each triple <literal>(x(:,j), y(:,j), z(:,j))</literal>.
-            </para>
-            <para>
-                <literal>comet3d(x, y, fun,...)</literal> computes the <literal>z</literal> vector as
-                <literal>z(i)=fun(x(i),y(i))</literal>.
-            </para>
-            <para>
-                <literal>comet3d(..,"colors",c)</literal> can be used to set the colors of each
-                trajectory.
-            </para>
+        </para>
+        <para>
+            if <literal>z</literal> is a matrix and <literal>x</literal> and <literal>y</literal>
+            are vectors, then animated curves are drawn for each triple
+            <literal>(x, y, z(:,j))</literal>.
+        </para>
+        <para>
+            if <literal>x,y,z</literal> are matrices with the same dimensions then animated curves
+            are drawn for each triple <literal>(x(:,j), y(:,j), z(:,j))</literal>.
+        </para>
+        <para>
+            <literal>comet3d(x, y, fun,...)</literal> computes the <literal>z</literal> vector as
+            <literal>z(i)=fun(x(i),y(i))</literal>.
+        </para>
+        <para>
+            <literal>comet3d(..,"colors",c)</literal> can be used to set the colors of each
+            trajectory.
         </para>
     </refsection>
     <refsection>

@@ -680,15 +680,15 @@ grand("advnst", K)
                                     <literal>[1,2^31-226]</literal>, <varname>s4</varname> in
                                     <literal>[1,2^31-326]</literal> are required.
                                 </para>
-                                <para>
-                                    <caution>
+                                <caution>
+                                    <para>
                                         With clcg4 you set the seeds of the current virtual
                                         generator but you may lost the synchronization between this one
                                         and the others virtual generators (i.e. the sequence generated
                                         is not warranty to be non-overlapping with a sequence generated
                                         by another virtual generator) =&gt; use instead the "setall" option.
-                                    </caution>
-                                </para>
+                                    </para>
+                                </caution>
                             </listitem>
                         </varlistentry>
                         <varlistentry>

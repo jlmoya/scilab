@@ -88,10 +88,12 @@
             without each time recompiling the whole toolbox.
         </para>
         <important>
-            The technical name (id) <emphasis role="bold">tbx_name</emphasis>
-            of the toolbox is the basename of the
-            <literal>~/etc/*.start</literal> file, where ~ is the toolbox root.
-            This file is mandatory in the toolbox, even if it is empty.
+            <para>
+                The technical name (id) <emphasis role="bold">tbx_name</emphasis>
+                of the toolbox is the basename of the
+                <literal>~/etc/*.start</literal> file, where ~ is the toolbox root.
+                This file is mandatory in the toolbox, even if it is empty.
+            </para>
         </important>
         <para>
             <emphasis role="bold">tbx_make()</emphasis> is equivalent to
@@ -142,17 +144,20 @@
                                     </para>
                                 </listitem>
                             <listitem>
-                                 <para>
+                                <para>
                                     Otherwise: All macros files <literal>~/macros/*.sci</literal> are
                                     compiled and gathered into a library named
-                                    <literal><emphasis role="bold">tbx_name</emphasis>lib</literal> and
+                                    <literal>tbx_namelib</literal> and
                                     recorded in the file
-                                    <literal><emphasis role="bold">~/macros/lib</emphasis></literal>.
+                                    <literal>~/macros/lib</literal>.
                                     Please see <link linkend="tbx_builder_macros">tbx_builder_macros</link>.
                                     <warning>
-                                        No automatical recursive processing aiming to build sublibraries in
-                                        subdirectories is performed.
-                                    </warning></para>
+                                        <para>
+                                            No automatical recursive processing aiming to build sublibraries in
+                                            subdirectories is performed.
+                                        </para>
+                                    </warning>
+                                </para>
                                           </listitem>
                           </itemizedlist>
                         </para>
@@ -178,13 +183,17 @@
                                     language.
                                     </para>
                                 </listitem>
-                        </itemizedlist><warning>
-                            Help pages may contain Scilab code samples using functions defined in the
-                            toolbox, and executed when building pages (&lt;scilab:image&gt; tags,
-                            Xcos diagrams). When it is the case, the related functions must have been
-                            compiled <emphasis>before</emphasis> building the help pages.
-                        </warning></para>
-                              </listitem>
+                        </itemizedlist>
+                        <warning>
+                            <para>
+                                Help pages may contain Scilab code samples using functions defined in the
+                                toolbox, and executed when building pages (&lt;scilab:image&gt; tags,
+                                Xcos diagrams). When it is the case, the related functions must have been
+                                compiled <emphasis>before</emphasis> building the help pages.
+                            </para>
+                        </warning>
+                    </para>
+                </listitem>
                 <listitem>
                     <para>
                         <emphasis role="bold">localization</emphasis> :  Localization files are built

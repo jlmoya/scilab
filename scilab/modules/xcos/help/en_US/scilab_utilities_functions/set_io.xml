@@ -81,13 +81,13 @@
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="Description_set_io">
+    <refsection xml:id="Description_set_io">
         <title>Description</title>
         <para>
             Create or update block ports (through the model and graphics fields) with specified types, sizes. This function can be used to update all the port related properties of a block at once.
         </para>
     </refsection>
-    <refsection id="Example_set_io">
+    <refsection xml:id="Example_set_io">
         <title>Example</title>
         <programlisting role="example"><![CDATA[
  blk = scicos_block(gui="MyBlock");

@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/RELAY_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_RELAY_f">
+    <refsection xml:id="Contents_RELAY_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_RELAY_f">Description</xref>
+                <para><link linkend="Description_RELAY_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_RELAY_f">Parameters</xref>
+                <para><link linkend="Dialogbox_RELAY_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_RELAY_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_RELAY_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_RELAY_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_RELAY_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_RELAY_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_RELAY_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_RELAY_f">Example</xref>
+                <para><link linkend="Example_RELAY_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_RELAY_f">
+    <refsection xml:id="Description_RELAY_f">
         <title>Description</title>
         <para>
             This block routes one of the regular inputs to the unique regular
@@ -73,14 +73,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_RELAY_f">
+    <refsection xml:id="Dialogbox_RELAY_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/RELAY_f_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/RELAY_f_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -99,7 +98,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_RELAY_f">
+    <refsection xml:id="Defaultproperties_RELAY_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -175,7 +174,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_RELAY_f">
+    <refsection xml:id="Example_RELAY_f">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/signalrouting_pal/RELAY_f_Example.zcos">
@@ -187,7 +186,7 @@
             </link>
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_RELAY_f">
+    <refsection xml:id="Interfacingfunction_RELAY_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -195,7 +194,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_RELAY_f">
+    <refsection xml:id="Computationalfunction_RELAY_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

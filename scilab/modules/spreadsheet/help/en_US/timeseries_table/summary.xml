@@ -40,14 +40,14 @@
                     </para>
                     <itemizedlist>
                         <listitem>
-                            <literal>"default" (default value)</literal>: computes a standard set of statistics 
-                            (NumMissing, Min, Median, Max, Mean, Std)
+                            <para><literal>"default" (default value)</literal>: computes a standard set of statistics 
+                            (NumMissing, Min, Median, Max, Mean, Std)</para>
                         </listitem>
                         <listitem>
-                            <literal>"none"</literal>: no statistics are computed
+                            <para><literal>"none"</literal>: no statistics are computed</para>
                         </listitem>
                         <listitem>
-                            <literal>"allstats"</literal>: computes all available statistics
+                            <para><literal>"allstats"</literal>: computes all available statistics</para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -81,13 +81,13 @@
             For each variable, summary reports:
             <itemizedlist>
                 <listitem>
-                    Size and data type
+                    <para>Size and data type</para>
                 </listitem>
                 <listitem>
-                    Variable description and units (if available)
+                    <para>Variable description and units (if available)</para>
                 </listitem>
                 <listitem>
-                    Statistical information depending on the variable type
+                    <para>Statistical information depending on the variable type</para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -109,46 +109,46 @@
             Depending on the selected options, the following statistics may be computed:
             <itemizedlist>
                 <listitem>
-                    <literal>NumMissing</literal>: number of missing values (%nan or NaT)
+                    <para><literal>NumMissing</literal>: number of missing values (%nan or NaT)</para>
                 </listitem>
                 <listitem>
-                    <literal>Min</literal>: minimum value
+                    <para><literal>Min</literal>: minimum value</para>
                 </listitem>
                 <listitem>
-                    <literal>Max</literal>: maximum value
+                    <para><literal>Max</literal>: maximum value</para>
                 </listitem>
                 <listitem>
-                    <literal>Median</literal>: median value
+                    <para><literal>Median</literal>: median value</para>
                 </listitem>
                 <listitem>
-                    <literal>Mean</literal>: mean value
+                    <para><literal>Mean</literal>: mean value</para>
                 </listitem>
                 <listitem>
-                    <literal>Std</literal>: standard deviation
+                    <para><literal>Std</literal>: standard deviation</para>
                 </listitem>
                 <listitem>
-                    <literal>Var</literal>: variance
+                    <para><literal>Var</literal>: variance</para>
                 </listitem>
                 <listitem>
-                    <literal>Q1</literal>: first quartile (25th percentile)
+                    <para><literal>Q1</literal>: first quartile (25th percentile)</para>
                 </listitem>
                 <listitem>
-                    <literal>Q3</literal>: third quartile (75th percentile)
+                    <para><literal>Q3</literal>: third quartile (75th percentile)</para>
                 </listitem>
                 <listitem>
-                    <literal>Mode</literal>: mode
+                    <para><literal>Mode</literal>: mode</para>
                 </listitem>
                 <listitem>
-                    <literal>Range</literal>: range of values
+                    <para><literal>Range</literal>: range of values</para>
                 </listitem>
                 <listitem>
-                    <literal>Sum</literal>: sum of values
+                    <para><literal>Sum</literal>: sum of values</para>
                 </listitem>
                 <listitem>
-                    <literal>NumUnique</literal>: number of unique non-missing values
+                    <para><literal>NumUnique</literal>: number of unique non-missing values</para>
                 </listitem>
                 <listitem>
-                    <literal>Sum</literal>: number of non-zero values
+                    <para><literal>Sum</literal>: number of non-zero values</para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -162,10 +162,10 @@
             For boolean variables, the summary reports:
             <itemizedlist>
                 <listitem>
-                    <literal>True</literal>: number of true values
+                    <para><literal>True</literal>: number of true values</para>
                 </listitem>
                 <listitem>
-                    <literal>False</literal>: number of false values
+                    <para><literal>False</literal>: number of false values</para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -176,13 +176,13 @@
             For string variables, the summary reports:
             <itemizedlist>
                 <listitem>
-                    <literal>NumMissing</literal>: number of undefined values
+                    <para><literal>NumMissing</literal>: number of undefined values</para>
                 </listitem>
                 <listitem>
-                    <literal>Values</literal>: unique string values
+                    <para><literal>Values</literal>: unique string values</para>
                 </listitem>
                 <listitem>
-                    <literal>Counts</literal>: occurence count of each value
+                    <para><literal>Counts</literal>: occurence count of each value</para>
                 </listitem>
             </itemizedlist>
         </para>

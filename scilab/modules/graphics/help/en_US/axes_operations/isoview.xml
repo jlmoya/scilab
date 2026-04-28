@@ -98,16 +98,23 @@
             </itemizedlist>
         </para>
         <note>
-            The current axes graphical entity is still the same after calling <literal>isoview(..)</literal>.
-        </note>
-        <note>To plot some curves directly in isometric mode without calling
-            <function>isoview</function> afterwards, the <literal>plot2d(...,frameflag=4)</literal>
-            option may be used at call time.
-        </note>
-        <refsect3>
-            <title>Rendering according to .isoview and .cube_scaling settings</title>
             <para>
-            <table align="middle">
+                The current axes graphical entity is still the same after calling <literal>isoview(..)</literal>.
+            </para>
+        </note>
+        <note>
+            <para>
+                To plot some curves directly in isometric mode without calling
+                <function>isoview</function> afterwards, the <literal>plot2d(...,frameflag=4)</literal>
+                option may be used at call time.
+            </para>
+        </note>
+
+        <para>
+            <emphasis role="bold">Rendering according to .isoview and .cube_scaling settings</emphasis>
+        </para>
+        <para>
+            <table>
                 <tr>
                     <th>isoview(..)</th><th>gca().isoview</th>
                                        <th>gca().cube_scaling</th>
@@ -134,8 +141,7 @@
                              <td>Scales are such that the axes looks square or cubic</td>
                 </tr>
             </table>
-            </para>
-        </refsect3>
+        </para>
     </refsection>
     <refsection role="examples">
         <title>Examples</title>

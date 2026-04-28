@@ -21,14 +21,6 @@
             parses numbers in a binary file and returns them as decimals
         </refpurpose>
     </refnamediv>
-    <refsynopsisdiv>
-        <title>Syntax</title>
-        <synopsis>
-            D = mget(nNumb)
-            D = mget(nNumb, binFormat)
-            D = mget(nNumb, binFormat, fileID)
-        </synopsis>
-    </refsynopsisdiv>
     <refnamediv xml:id="mgeti">
         <refname>mgeti</refname>
         <refpurpose>
@@ -38,6 +30,10 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
+            D = mget(nNumb)
+            D = mget(nNumb, binFormat)
+            D = mget(nNumb, binFormat, fileID)
+
             I = mgeti(nNumb)
             I = mgeti(nNumb, binFormat)
             I = mgeti(nNumb, binFormat, fileID)
@@ -54,10 +50,12 @@
                         <function>mopen</function> when opening the file.
                         By default, the last opened file is considered.
                     <important>
-                        The file must be priorly opened in
-                        <emphasis role="bold">r</emphasis>ead
-                        <emphasis role="bold">b</emphasis>inary mode with
-                        <code>fileID = mopen(filename,'rb')</code>.
+                        <para>
+                            The file must be priorly opened in
+                            <emphasis role="bold">r</emphasis>ead
+                            <emphasis role="bold">b</emphasis>inary mode with
+                            <code>fileID = mopen(filename,'rb')</code>.
+                        </para>
                     </important>
                     </para>
                 </listitem>
@@ -69,8 +67,11 @@
                         Single integer &gt; 0: number of numbers to be
                         parsed and returned. Each number is encoded over one or
                         several bytes, according to the used <varname>binFormat</varname>.
-                        <note>To read all numbers remaining in the file, use a
-                        value <varname>nNumb</varname> big enough.
+                        <note>
+                            <para>
+                                To read all numbers remaining in the file, use a
+                                value <varname>nNumb</varname> big enough.
+                            </para>
                         </note>
                     </para>
                 </listitem>
@@ -236,11 +237,13 @@
             parsed according to <varname>binFormat</varname> but are finally
             converted into 8-byte decimal numbers and then returned.
             <warning>
-            If <literal>int64</literal> or <literal>uint64</literal>
-            integers &gt; 2<superscript>53</superscript> were parsed thanks
-            to the <literal>"ul*"</literal> or <literal>"l*"</literal> format,
-            their final conversion into decimal numbers
-            truncates their mantissa to their 53 highest bits.
+                <para>
+                    If <literal>int64</literal> or <literal>uint64</literal>
+                    integers &gt; 2<superscript>53</superscript> were parsed thanks
+                    to the <literal>"ul*"</literal> or <literal>"l*"</literal> format,
+                    their final conversion into decimal numbers
+                    truncates their mantissa to their 53 highest bits.
+                </para>
             </warning>
         </para>
     </refsection>

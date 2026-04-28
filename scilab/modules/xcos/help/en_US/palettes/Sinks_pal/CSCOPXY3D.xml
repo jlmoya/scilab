@@ -32,40 +32,40 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CSCOPXY3D.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CSCOPXY3D">
+    <refsection xml:id="Contents_CSCOPXY3D">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CSCOPXY3D">Description</xref>
+                <para><link linkend="Description_CSCOPXY3D">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CSCOPXY3D">Parameters</xref>
+                <para><link linkend="Dialogbox_CSCOPXY3D">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CSCOPXY3D">Default properties</xref>
+                <para><link linkend="Defaultproperties_CSCOPXY3D">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CSCOPXY3D">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CSCOPXY3D">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CSCOPXY3D">Computational function</xref>
+                <para><link linkend="Computationalfunction_CSCOPXY3D">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CSCOPXY3D">Example</xref>
+                <para><link linkend="Example_CSCOPXY3D">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CSCOPXY3D">See also</xref>
+                <para><link linkend="Seealso_CSCOPXY3D">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_CSCOPXY3D">
+    <refsection xml:id="Description_CSCOPXY3D">
         <title>Description</title>
         <para>
             This block realizes the visualization of the evolution of the three regular inputs signals
@@ -76,14 +76,13 @@
         <para/>
     </refsection>
 
-    <refsection id="Dialogbox_CSCOPXY3D">
+    <refsection xml:id="Dialogbox_CSCOPXY3D">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/CSCOPXY3D_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/CSCOPXY3D_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -171,7 +170,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Defaultproperties_CSCOPXY3D">
+    <refsection xml:id="Defaultproperties_CSCOPXY3D">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -243,8 +242,9 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_CSCOPXY3D">
+    <refsection xml:id="Example_CSCOPXY3D">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/tests/unit_tests/cscopxy3d.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -252,9 +252,10 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_CSCOPXY3D">
+    <refsection xml:id="Interfacingfunction_CSCOPXY3D">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -262,7 +263,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CSCOPXY3D">
+    <refsection xml:id="Computationalfunction_CSCOPXY3D">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

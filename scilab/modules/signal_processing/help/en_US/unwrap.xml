@@ -96,7 +96,9 @@
         <para>
             Unwrapping consists in reducing every detected jump and somewhat restoring a continuous slope (initially assumed to be so). At each point, it is performed by applying a Y-shift on a whole side of the profile, with respect to the other. The Y-shift may be the same for all breakpoints, as provided by the user. If the user specifies a null Y-shift, <function>unwrap()</function> applies a jump equal to the average neighbouring slope, depending on each breakpoint.
         </para>
-        <warning>An unwrapped profile is always defined but for a constant.</warning>
+        <warning>
+            <para>An unwrapped profile is always defined but for a constant.</para>
+        </warning>
         <para>
             Unless <varname>dir</varname> is used, <function>unwrap()</function> applied to a surface unwraps its first column. Each point of this one is then taken as reference level for unwrapping each line starting with it.
         </para>
@@ -111,7 +113,8 @@
             Folding may occur for instance when a non-monotonic periodic function and its inverse are applied to a profile X, like with <varname>Y= acos(cos(X))</varname>. Recovering X from Y is quite more difficult than if it was wrapped. Indeed, some ambiguous situations may exist, like when the profile is tangentially folded on one of its quasi-horizontal sections (if any).
         </para>
         <para>When a cusp point is detected, a) one side of the profile starting from it is opposed (upside down), and b) the continuity of the profile and of its slope are preserved and retrieved at the considered point (this may need adding a small jump by the local slope).</para>
-        <warning>The slope on the left edge of the input profile is used as starting reference. The unfolded profile may be upside down with respect to the original true one. In addition, as for unwrapping, it is defined but for a constant.
+        <warning>
+            <para>The slope on the left edge of the input profile is used as starting reference. The unfolded profile may be upside down with respect to the original true one. In addition, as for unwrapping, it is defined but for a constant.</para>
         </warning>
         <para>Known limitations: presently, folded surfaces can't be processed.</para>
     </refsection>
@@ -268,11 +271,11 @@ sda();
 drawnow()
         ]]></programlisting>
         <para/>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../images/unwrap_2D.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -288,10 +291,10 @@ drawnow()
     <refsection role="bibliography">
         <title>Bibliography</title>
         <para>
-            <ulink url="http://siptoolbox.sourceforge.net/doc/sip-0.7.0-reference/unwrapl.html">SIP toolbox: unwrap linear</ulink>
+            <link xlink:href="http://siptoolbox.sourceforge.net/doc/sip-0.7.0-reference/unwrapl.html">SIP toolbox: unwrap linear</link>
         </para>
         <para>
-            <ulink url="http://siptoolbox.sourceforge.net/doc/sip-0.7.0-reference/unwrapp.html">SIP toolbox: unwrap along path</ulink>
+            <link xlink:href="http://siptoolbox.sourceforge.net/doc/sip-0.7.0-reference/unwrapp.html">SIP toolbox: unwrap along path</link>
         </para>
     </refsection>
     <refsection role="history">

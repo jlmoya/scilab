@@ -100,16 +100,16 @@
             <emphasis role="bold">y = mean(x,'m')</emphasis> is the mean along the
             first non singleton dimension of x (for compatibility with Matlab).
         </para>
-        <para>
-            <warning>
-             <literal>mean([])</literal> and <literal>mean(sparse([]))</literal> return NaN.
-             For any <varname>orientation</varname> not "m",
-             <literal>mean([], orientation)</literal> returns <literal>[]</literal>, and
-             <literal>mean(sparse([]), orientation)</literal> returns <literal>sparse([])</literal>.
-            </warning>
-        </para>
+        <warning>
+            <para>
+                <literal>mean([])</literal> and <literal>mean(sparse([]))</literal> return NaN.
+                For any <varname>orientation</varname> not "m",
+                <literal>mean([], orientation)</literal> returns <literal>[]</literal>, and
+                <literal>mean(sparse([]), orientation)</literal> returns <literal>sparse([])</literal>.
+            </para>
+        </warning>
         <note>
-            <literal>mean()</literal> can be overloaded.
+            <para><literal>mean()</literal> can be overloaded.</para>
         </note>
     </refsection>
     <refsection>

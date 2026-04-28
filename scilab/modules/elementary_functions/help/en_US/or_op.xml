@@ -74,9 +74,11 @@
                         For any index <literal>i</literal>,
                         <literal>intMat(i) = bitor(intA(i), intB(i))</literal>
                         <warning>
-                            <literal>intA | []</literal> and <literal>[] | intA</literal> return the
-                            <emphasis role="italic">boolean</emphasis> array
-                            <literal>intA~=%nan</literal>.
+                            <para>
+                                <literal>intA | []</literal> and <literal>[] | intA</literal> return the
+                                <emphasis role="italic">boolean</emphasis> array
+                                <literal>intA~=%nan</literal>.
+                            </para>
                         </warning>
                     </para>
                 </listitem>
@@ -114,8 +116,10 @@
                         <literal>B(i)</literal> is <constant>%T</constant> or not zero. Otherwise,
                         <literal>tfMat(i)</literal> is set to <constant>%F</constant>.
                         <warning>
-                            <literal>A | []</literal> and <literal>[] | A</literal> return
-                            <literal>[]</literal>.
+                            <para>
+                                <literal>A | []</literal> and <literal>[] | A</literal> return
+                                <literal>[]</literal>.
+                            </para>
                         </warning>
                     </para>
                 </listitem>
@@ -190,9 +194,12 @@ end
                             </listitem>
                         </itemizedlist>
                     </para>
-                    <note><literal>||</literal> is useful mainly out of <literal>if ..</literal>
-                    and <literal>while ..</literal> conditions. Otherwise, it is just equivalent to
-                    the simple <literal>|</literal>.
+                    <note>
+                        <para>
+                            <literal>||</literal> is useful mainly out of <literal>if ..</literal>
+                            and <literal>while ..</literal> conditions. Otherwise, it is just equivalent to
+                            the simple <literal>|</literal>.
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -213,13 +220,16 @@ end
                                  <para>
                                     When both operands are encoded integers,
                                     <note>
-                                        Comparison with <literal>bitor()</literal> :
-                                        <literal>intA | intB</literal> accepts negative integers, while
-                                        <literal>bitor(intA, intB)</literal> does not.
-                                        <literal>bitor(A,B)</literal> works bitwise with decimal-encoded
-                                        integers.
-                                    </note></para>
-                                       </listitem>
+                                        <para>
+                                            Comparison with <literal>bitor()</literal>:
+                                            <literal>intA | intB</literal> accepts negative integers, while
+                                            <literal>bitor(intA, intB)</literal> does not.
+                                            <literal>bitor(A,B)</literal> works bitwise with decimal-encoded
+                                            integers.
+                                        </para>
+                                    </note>
+                                    </para>
+                                </listitem>
                             <listitem>
                                  <para>
                                     Otherwise,
@@ -231,8 +241,10 @@ end
             </varlistentry>
         </variablelist>
         <note>
-            The <link linkend="overloading">overloading</link> code for <literal>|</literal> and
-            <literal>||</literal> operators is <emphasis role="bold">g</emphasis>.
+            <para>
+                The <link linkend="overloading">overloading</link> code for <literal>|</literal> and
+                <literal>||</literal> operators is <emphasis role="bold">g</emphasis>.
+            </para>
         </note>
         <warning>
             <itemizedlist>

@@ -54,7 +54,9 @@
             <literal>y = log2(x)</literal> is the "element-wise" base 2 logarithm, with
             <literal>y(i,j) = log2(x(i,j))</literal>.
             <note>
-                <literal>log2(-%inf) == %inf + log2(-1)</literal>
+                <para>
+                    <literal>log2(-%inf) == %inf + log2(-1)</literal>
+                </para>
             </note>
         </para>
         <para>

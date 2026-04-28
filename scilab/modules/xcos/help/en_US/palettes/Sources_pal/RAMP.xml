@@ -32,44 +32,44 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/RAMP.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_RAMP">
+    <refsection xml:id="Contents_RAMP">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_RAMP">Description</xref>
+                <para><link linkend="Description_RAMP">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatype_RAMP">Data types</xref>
+                <para><link linkend="Datatype_RAMP">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_RAMP">Parameters</xref>
+                <para><link linkend="Dialogbox_RAMP">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_RAMP">Default properties</xref>
+                <para><link linkend="Defaultproperties_RAMP">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_RAMP">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_RAMP">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_RAMP">Computational function</xref>
+                <para><link linkend="Computationalfunction_RAMP">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_RAMP">Example</xref>
+                <para><link linkend="Example_RAMP">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_RAMP">See also</xref>
+                <para><link linkend="Seealso_RAMP">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_RAMP">
+    <refsection xml:id="Description_RAMP">
         <title>Description</title>
         <para>
             The Ramp block generates a signal that starts at a specified
@@ -92,7 +92,7 @@
             <emphasis role="bold">Slope</emphasis>.
         </para>
     </refsection>
-    <refsection id="Datatype_RAMP">
+    <refsection xml:id="Datatype_RAMP">
         <title>Data types</title>
         <itemizedlist>
             <listitem>
@@ -103,15 +103,14 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Dialogbox_RAMP">
+    <refsection xml:id="Dialogbox_RAMP">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/sources_pal/en_US/RAMP_gui.png"
-                           align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                           align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -137,7 +136,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_RAMP">
+    <refsection xml:id="Defaultproperties_RAMP">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -203,7 +202,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_RAMP">
+    <refsection xml:id="Example_RAMP">
         <title>Example</title>
         <para>
             This diagram shows the use of RAMP block to obtain the response to a ramp signal of a
@@ -224,7 +223,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_RAMP">
+    <refsection xml:id="Interfacingfunction_RAMP">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -234,7 +233,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_RAMP">
+    <refsection xml:id="Computationalfunction_RAMP">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

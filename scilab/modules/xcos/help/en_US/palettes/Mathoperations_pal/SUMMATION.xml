@@ -28,38 +28,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/SUMMATION.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_SUMMATION">
+    <refsection xml:id="Contents_SUMMATION">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SUMMATION">Description</xref>
+                <para><link linkend="Description_SUMMATION">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SUMMATION">Parameters</xref>
+                <para><link linkend="Dialogbox_SUMMATION">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SUMMATION">Default properties</xref>
+                <para><link linkend="Defaultproperties_SUMMATION">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SUMMATION">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_SUMMATION">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_SUMMATION">Computational function</xref>
+                <para><link linkend="Computationalfunction_SUMMATION">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_SUMMATION">See also</xref>
+                <para><link linkend="Seealso_SUMMATION">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_SUMMATION">
+    <refsection xml:id="Description_SUMMATION">
         <title>Description</title>
         <para>
             This block performs addition or subtraction on scalar, vector or matrix inputs. The input datatype
@@ -73,10 +73,10 @@
         <para>The behavior of the block is summarized in the following table :</para>
         <informaltable border="1" cellpadding="2">
             <tr>
-                <td align="left" width="18%">
+                <td align="left">
                     <emphasis role="bold">Number of inputs</emphasis>
                 </td>
-                <td align="left" width="20%">
+                <td align="left">
                     <emphasis role="bold">Operation</emphasis>
                 </td>
                 <td align="left">
@@ -125,14 +125,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_SUMMATION">
+    <refsection xml:id="Dialogbox_SUMMATION">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/SUMMATION_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/SUMMATION_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -167,7 +166,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_SUMMATION">
+    <refsection xml:id="Defaultproperties_SUMMATION">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -243,7 +242,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_SUMMATION">
+    <refsection xml:id="Interfacingfunction_SUMMATION">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -251,7 +250,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SUMMATION">
+    <refsection xml:id="Computationalfunction_SUMMATION">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

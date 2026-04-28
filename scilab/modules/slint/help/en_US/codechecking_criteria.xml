@@ -40,12 +40,15 @@
         </simplelist>
     </refsection>
     <refsection role="description">
-        Checking codes and default parameters are defined in the <literal>SCIHOME/slint.xml</literal> file. 
-        In the same file, each criterion may be enabled (default) or disabled.
-        Starred (*) criteria are enabled by default.
+        <title>Description</title>
+        <para>
+            Checking codes and default parameters are defined in the <literal>SCIHOME/slint.xml</literal> file. 
+            In the same file, each criterion may be enabled (default) or disabled.
+            Starred (*) criteria are enabled by default.
+        </para>
         <!-- ==============================================================-->
-        <refsect2 id="slint_codetable">
-            <title>Checking id</title>
+        <anchor xml:id="slint_codetable"/>
+        <para><emphasis role="bold">Checking id</emphasis></para>
             <table border="1">
             <tr valign="top">
                 <td>
@@ -232,10 +235,9 @@
                 </tr>
             </table>
             <para/>
-        </refsect2>
         <!-- ==============================================================-->
-        <refsect2 id="slint_function">
-            <title>function</title>
+        <anchor xml:id="slint_function"/>
+        <para><emphasis role="bold">function</emphasis></para>
             <variablelist>
                 <varlistentry>
                     <term>valid name (00004)</term>
@@ -365,10 +367,9 @@
                         </varlistentry>
                     </variablelist>
                     <para/>
-                </refsect2>
                 <!-- ============================================================== -->
-                <refsect2 id="slint_opsymbkey">
-                    <title>Operators, symbols, keywords</title>
+                <anchor xml:id="slint_opsymbkey"/>
+                <para><emphasis role="bold">Operators, symbols, keywords</emphasis></para>
                     <variablelist>
                         <varlistentry>
                             <term>Bad use of ':' operator (00024)</term>
@@ -477,10 +478,9 @@
                         </varlistentry>
                     </variablelist>
                     <para/>
-                </refsect2>
                 <!-- ============================================================== -->
-                <refsect2 id="slint_codestyle">
-                    <title>Code style</title>
+                <anchor xml:id="slint_codestyle"/>
+                <para><emphasis role="bold">Code style</emphasis></para>
                     <variablelist>
                         <varlistentry>
                             <term>Too long line (00015)</term>
@@ -554,10 +554,9 @@
                         </varlistentry>
                     </variablelist>
                     <para/>
-                </refsect2>
                 <!-- ==============================================================-->
-                <refsect2 id="slint_loops_blocks">
-                    <title>Loops and blocks</title>
+                <anchor xml:id="slint_loops_blocks"/>
+                <para><emphasis role="bold">Loops and blocks</emphasis></para>
                     <variablelist>
                         <varlistentry>
                             <term>Empty block (00010)</term>
@@ -639,10 +638,9 @@
                         </varlistentry>
                     </variablelist>
                     <para/>
-                </refsect2>
                 <!-- ==============================================================-->
-                <refsect2 id="slint_miscellaneous">
-                    <title>Miscellaneous</title>
+                <anchor xml:id="slint_miscellaneous"/>
+                <para><emphasis role="bold">Miscellaneous</emphasis></para>
                     <variablelist>
                         <varlistentry>
                             <term>Implicit list a:b without %nan nor %inf bounds (00024)</term>
@@ -774,7 +772,6 @@
                                         </listitem>
                                     </varlistentry>
                                 </variablelist>
-                            </refsect2>
                         </refsection>
                         <refsection role="see also">
                             <title>See also</title>

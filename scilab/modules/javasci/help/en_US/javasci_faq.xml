@@ -131,8 +131,9 @@
                     </para>
                 </question>
                 <answer>
-                    <para><literal>
-                            <emphasis role="italic">atomsLoad: An error occurred while loading 'module-0.0.2':	link : Library could not be loaded: /path/2.0-1/sci_gateway/c/../../src/cpp/libmy.so: undefined symbol: scirun_</emphasis>
+                    <para>
+                        <literal>
+                            atomsLoad: An error occurred while loading 'module-0.0.2':	link : Library could not be loaded: /path/2.0-1/sci_gateway/c/../../src/cpp/libmy.so: undefined symbol: scirun_
                         </literal>
                         There are two potential solutions. First is to fix the module itself to build with the library providing the symbol. The second is to define the missing declared library with <literal>LD_PRELOAD=/path/to/the/lib/providing/the/symbol/libmy.so</literal>
                     </para>

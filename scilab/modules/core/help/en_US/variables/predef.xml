@@ -53,13 +53,13 @@
             User may in particular set its own predefined variables in user's startup files
             <literal>SCIHOME/.scilab</literal> or <literal>SCIHOME/scilab.ini</literal>
         </para>
-        <para>
-            <important>
+        <important>
+            <para>
                 Note that it is not possible to protect a new defined variable by using <code>predef(1)</code>.
                 This means that to protect a variable, Scilab needs to protect all the variables that have been defined before it.
                 This limitation may disappear with Scilab 6, which will not be stack-designed.
-            </important>
-        </para>
+            </para>
+        </important>
     </refsection>
     <refsection>
         <title>Examples</title>

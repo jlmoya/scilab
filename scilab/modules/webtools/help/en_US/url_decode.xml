@@ -50,7 +50,9 @@
         <para>
             <literal>url_decode(…)</literal> reverses the <literal>url_encode(…)</literal> action.
         </para>
-        <emphasis role="bold">url_decode(Strings)</emphasis> uses the <ulink url="https://curl.se/docs/url-syntax.html">CURL parser</ulink> to performs URL conversion for each element of <literal>encodedStrings</literal>.
+        <para>
+            <emphasis role="bold">url_decode(Strings)</emphasis> uses the <link xlink:href="https://curl.se/docs/url-syntax.html">CURL parser</link> to performs URL conversion for each element of <literal>encodedStrings</literal>.
+        </para>
     </refsection>
     <refsection>
         <title>Examples</title>

@@ -31,34 +31,34 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Diode.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_Diode">
+    <refsection xml:id="Contents_Diode">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_Diode">Description</xref>
+                <para><link linkend="Description_Diode">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_Diode">Parameters</xref>
+                <para><link linkend="Dialogbox_Diode">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_Diode">Default properties</xref>
+                <para><link linkend="Defaultproperties_Diode">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Diode">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_Diode">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Diode">Modelica model</xref>
+                <para><link linkend="Diode">Modelica model</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_Diode">
+    <refsection xml:id="Description_Diode">
         <title>Description</title>
         <para>
             This component consists of a simple diode parallel with an ohmic
@@ -82,14 +82,13 @@
             continuation</emphasis>), the diode characteristic becomes linear to avoid overflow.
         </para>
     </refsection>
-    <refsection id="Dialogbox_Diode">
+    <refsection xml:id="Dialogbox_Diode">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/Diode_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/Diode_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -122,7 +121,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_Diode">
+    <refsection xml:id="Defaultproperties_Diode">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -215,7 +214,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_Diode">
+    <refsection xml:id="Interfacingfunction_Diode">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -223,7 +222,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_Diode">
+    <refsection xml:id="Modelicamodel_Diode">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

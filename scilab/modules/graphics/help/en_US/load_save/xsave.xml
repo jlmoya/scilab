@@ -66,10 +66,12 @@
             reloaded with <literal>xload</literal>.
         </para>
         <note>
-            <literal>xsave(file_name, win_num)</literal> and
-            <literal>xsave(file_name, win_handle)</literal> are just shortcuts respectively for
-            <literal>h=findobj("figure_id", win_num); save(file_name, "h")</literal> and
-            <literal>save(file_name, "win_handle")</literal>, that can be used directly.
+            <para>
+                <literal>xsave(file_name, win_num)</literal> and
+                <literal>xsave(file_name, win_handle)</literal> are just shortcuts respectively for
+                <literal>h=findobj("figure_id", win_num); save(file_name, "h")</literal> and
+                <literal>save(file_name, "win_handle")</literal>, that can be used directly.
+            </para>
         </note>
     </refsection>
     <refsection>

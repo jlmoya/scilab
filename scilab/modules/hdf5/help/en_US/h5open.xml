@@ -82,28 +82,30 @@
             </member>
         </simplelist>
         <para>Several drivers can be used:</para>
-        <simplelist type="inline">
-            <member>
-                "sec2": Unbuffered, using standard POSIX functions.
-            </member>
-            <member>
-                "stdio": Uses functions from the standard C stdio.h to perform I/O.
-            </member>
-            <member>
-                "core": Uses a file in memory (improves read/write). This driver has two options:
-                <simplelist type="inline">
-                    <member>
-                        backingStore: a boolean, if %T (default), the changes are saved in the real file.
-                    </member>
-                    <member>
-                        blockSize: a double: increment (in bytes) to use to increase buffer size (default 64K).
-                    </member>
-                </simplelist>
-            </member>
-            <member>
-                "family": Allow to split the file when its size is greater than the option memberSize (a double, by default 2^31 -1). The filename must contain a %d which will be used to generate the family filenames.
-            </member>
-        </simplelist>
+        <itemizedlist>
+            <listitem>
+                <para>"sec2": Unbuffered, using standard POSIX functions.</para>
+            </listitem>
+            <listitem>
+                <para>"stdio": Uses functions from the standard C stdio.h to perform I/O.</para>
+            </listitem>
+            <listitem>
+                <para>
+                    "core": Uses a file in memory (improves read/write). This driver has two options:
+                    <simplelist type="inline">
+                        <member>
+                            backingStore: a boolean, if %T (default), the changes are saved in the real file.
+                        </member>
+                        <member>
+                            blockSize: a double: increment (in bytes) to use to increase buffer size (default 64K).
+                        </member>
+                    </simplelist>
+                </para>
+            </listitem>
+            <listitem>
+                <para>"family": Allow to split the file when its size is greater than the option memberSize (a double, by default 2^31 -1). The filename must contain a %d which will be used to generate the family filenames.</para>
+            </listitem>
+        </itemizedlist>
     </refsection>
     <refsection>
         <title>Examples</title>

@@ -95,8 +95,10 @@
               </listitem>
             </itemizedlist>
         </warning>
-      <refsect3>
-        <title>Operating sparse matrices</title>
+
+        <para>
+            <emphasis role="bold">Operating sparse matrices</emphasis>
+        </para>
         <para>
             Operations (concatenation, addition, etc,) with sparse matrices are
             made using the same syntax as for full matrices.
@@ -123,7 +125,7 @@
               <literal>sp=sparse(ij, v, mn)</literal> call for write access.
           </para>
         </note>
-      </refsect3>
+
     </refsection>
     <refsection>
         <title>Examples</title>

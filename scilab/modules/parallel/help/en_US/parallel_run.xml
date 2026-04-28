@@ -107,8 +107,10 @@ end]]></screen>
             to pre-allocate the result variables and  <literal>p</literal> is used to fine tune the
             parallelization strategy.
         </para>
-    <refsect2>
-        <title>Limitations</title>
+
+        <para>
+            <emphasis role="bold">Limitations</emphasis>
+        </para>
         <para>
             In this current version of Scilab, <literal>parallel_run</literal> uses only one core on Windows platforms.
         </para>
@@ -123,18 +125,22 @@ end]]></screen>
         <para>
             As it is not possible to synchronize the access to Java Virtual Machine across separate memory spaces, Scilab macros called by parallel_run are not allowed to use the JVM. This unfortunately encompass all the graphics functions as the Scilab GUI is based on Java. The spawned Scilab process are run in "nwni" mode their calls to <link linkend="disp">disp()</link> are redirected to the standard output.
         </para>
-    </refsect2>
-    <refsect2>
-        <title>Advanced usage</title>
+
+        <para>
+            <emphasis role="bold">Advanced usage</emphasis>
+        </para>
         <para>
             To achieve maximum performance and void any unwarranted copy and heavy context switching, it is possible to use parallel_run on compiled foreign functions. Such and advanced usage of parallel_run is detailed bellow in <emphasis role="bold">§ Advanced Usage : Compiled Foreign Functions</emphasis>.
         </para>
-    </refsect2>
+
     </refsection>
     <refsection>
         <title>Examples </title>
-        <refsect2>
-            <title>First steps </title>
+
+        <para>
+            <emphasis role="bold">First steps </emphasis>
+        </para>
+
             <para>First we rewrite the most trivial loop with parallel_run:</para>
             <programlisting role="example"><![CDATA[
 for i = 1:10
@@ -177,13 +183,17 @@ res = parallel_run(1:6, g);
             As we can see, not only were the calls to <literal>g</literal> 'out of order', but they where also interleaved.
             </para>
             <note>
-                This example is for illustrative purposes only ! When the operations performed by the function are available in vector form, it is much more efficient to use these operators than to call parallel_run. For instance, the most efficient way to perform g() on a vector of values would be to rewrite it as <emphasis role="italic"> a= arg1 .* arg1</emphasis> an call it directly on the matrix of arguments (i.e res= g(1:10);). parallel_run is intended for more involved functions.
+                <para>
+                    This example is for illustrative purposes only ! When the operations performed by the function are available in vector form, it is much more efficient to use these operators than to call parallel_run. For instance, the most efficient way to perform g() on a vector of values would be to rewrite it as <emphasis role="italic"> a= arg1 .* arg1</emphasis> an call it directly on the matrix of arguments (i.e res= g(1:10);). parallel_run is intended for more involved functions.
+                </para>
             </note>
             <para>
             To illustrate the running time gain, we instrument the next example with calls to <link linkend="getdate">getdate()</link>. However, the next examples will focus only on the illustrative purpose irrespectively of any actual gain. Running the simplest Scilab function with a relevant signature on datasets small enough to be printed is unlikely to benefit from multicore parallel scheduling ! Each example will perform a computation with an explicit loop, and then the same computation with parallel_run.
             </para>
 
-            <title>Wallclock gain</title>
+        <para>
+            <emphasis role="bold">Wallclock gain</emphasis>
+        </para>
 
             <programlisting role="example"><![CDATA[function r=f(n)
    if(n == 0)
@@ -215,7 +225,10 @@ r = parallel_run(1:n_max,"m");
 // it should be lower that the previous on multicore architectures.
 etime(getdate(), t0)]]></programlisting>
 
-            <title>Plurality of arguments and returned values</title>
+
+        <para>
+            <emphasis role="bold">Plurality of arguments and returned values</emphasis>
+        </para>
             <para>
             It is of course possible to have more than one argument and more than one returned value :
             </para>
@@ -243,7 +256,10 @@ end;
             <para>
             As we have seen in the Note of §First steps, the best performance is achieved by making use of vector (1xn matrices) operations. With parallel_run, it is also possible to take advantage of those operations by taking vector arguments and returning vector results. When returning a vector, one must use the  <literal>dims</literal> so that  <literal>parallel_run</literal> knows beforehand the number of returned values to expect.
             </para>
-            <title>Vector arguments and results</title>
+
+        <para>
+            <emphasis role="bold">Vector arguments and results</emphasis>
+        </para>
             <programlisting role="example"><![CDATA[
 function r = quantiles(data, ranks)
     tmp = gsort(data,'g','i');
@@ -286,85 +302,91 @@ ans  =
                 <para>
                 The second call to <literal>parallel_run</literal> has a second argument of 3 columns and 1 row, so each call to <literal>quantiles</literal> only gets 1 scalar as second argument. The first call to  <literal>quantiles</literal> gets '4' and returns the 4th value of the first columns of data. This is confirmed by the fact that the returned value (0.0000426) is the same as the first returned by the previous call to  <literal>parallel_run</literal> (which returned the 4th, 6th and 7th values). For the second call to  <literal>parallel_run</literal>, the two other values of the first result column (here 0. ) are undefined because we stated that <literal>quantiles</literal> would return 3 values (the last argument to  <literal>parallel_run</literal> ) while in fact <literal>quantiles</literal> only returned one (because it only got one rank as second argument). The second call to <literal>quantiles</literal> gets '6' and returns the 6th value of the second columns of data. This is confirmed by the fact that the returned value (0.0000681) is the same as the first returned by the previous call to  <literal>parallel_run</literal> (which returned the 4th, 6th and 7th values). For the second call to  <literal>parallel_run</literal>, the two other values of the second result column (here 0. ) are undefined for the reason we have just seen. The third call to <literal>quantiles</literal> gets '7' and computes the 7th rank. For the next calls, the argument matrix with only three columns has its columns recycled so that  <literal>quantiles</literal> gets '4' and then '6' and then '7' and then '4' etc.
             </para>
-            <title>Handling other data types</title>
 
-            <refsect3>
-                <title>Handling other argument types</title>
-                <para>
-                While it is not possible to pass or return most Scilab types with functions called by  <literal>parallel_run</literal>, this does not mean that one cannot interact with any data structure. The easiest is to read from any kind of data type: as the global environment is shared amongst the parallel execution context, one can just pass column numbers instead of columns for instance, and let the macro access the data.
-                </para>
-                <refsect3>
-                    <title>Handling a sparse matrix argument</title>
-                    <para>
-                    The following code sample shows how to access to elements of a sparse matrix, to compute quantiles of those elements.
-                    </para>
-                    <programlisting role="example"><![CDATA[
+        <para>
+            <emphasis role="bold">Handling other data types</emphasis>
+        </para>
+            <para>
+                <emphasis role="italic">Handling other argument types</emphasis>
+            </para>
+            <para>
+            While it is not possible to pass or return most Scilab types with functions called by  <literal>parallel_run</literal>, this does not mean that one cannot interact with any data structure. The easiest is to read from any kind of data type: as the global environment is shared amongst the parallel execution context, one can just pass column numbers instead of columns for instance, and let the macro access the data.
+            </para>
+
+            <para>
+                <emphasis role="italic">Handling a sparse matrix argument</emphasis>
+            </para>
+            <para>
+            The following code sample shows how to access to elements of a sparse matrix, to compute quantiles of those elements.
+            </para>
+            <programlisting role="example"><![CDATA[
 N = 5; // size of a block
 L = 10; // number of blocks
 
 
 data = spzeros(N*L,N*L);
 for k = 1:L  // init diagonal blocks of sparse matrix with random numbers
-  kk = (k-1)*N+1:k*N;
-  data(kk,kk) = matrix(rand(1:N*N),N,N);
+kk = (k-1)*N+1:k*N;
+data(kk,kk) = matrix(rand(1:N*N),N,N);
 end
 // function to compute quantiles in blocks from the data sparse matrix
 function r = quantiles_sparse(indices_i, indices_j, ranks)
-    tmp = gsort(full(data(indices_i, indices_j)),'g','i');
-    r = tmp(ranks);
+tmp = gsort(full(data(indices_i, indices_j)),'g','i');
+r = tmp(ranks);
 endfunction
 
 // Compute quantiles of diagonal blocks
 // a) with explicit loop
 R3_6_9 = matrix(zeros(1:3*L),3,L);
 for k = 1:L
-  kk = (k-1)*N+1 : k*N;
-  R3_6_9(:,k) = quantiles_sparse(kk,kk, [3,6,9]);
+kk = (k-1)*N+1 : k*N;
+R3_6_9(:,k) = quantiles_sparse(kk,kk, [3,6,9]);
 end
 // b) with parallel_run
 idx = matrix(1:(L*N), N,L);
 R3_6_9 = parallel_run(idx,idx,[3;6;9],"quantiles_sparse",3);
             ]]></programlisting>
-                </refsect3>
-                <refsect3>
-                    <title>Handling a matrix of strings argument</title>
-                    <para>
-                    The following code sample shows how to access to elements of a matrix of strings, to compute the number of digits in those strings..
-                    </para>
-                    <programlisting role="example"><![CDATA[
+
+            <para>
+                <emphasis role="italic">Handling a matrix of strings argument</emphasis>
+            </para>
+            <para>
+            The following code sample shows how to access to elements of a matrix of strings, to compute the number of digits in those strings..
+            </para>
+            <programlisting role="example"><![CDATA[
 a = ["a1";"b2b";"1cc2c";"4d555"]
 
 function result = count_digits(str)
-  result = sum(isdigit(str))
+result = sum(isdigit(str))
 endfunction
 
 for i = 1:size(a,'r')
-  nb_digits(:,i) = count_digits(a(i));
+nb_digits(:,i) = count_digits(a(i));
 end
 
 // We must define another function taking an index argument
 //  and accessing the string from the variable in outer scope:
 function result = count_digits_i(index)
-    result = sum(isdigit(a(index)));
+result = sum(isdigit(a(index)));
 endfunction
 
 nb_digits = parallel_run(1:size(a,'r'),"count_digits_i");
-                ]]></programlisting>
-                </refsect3>
-            </refsect3>
+            ]]></programlisting>
 
-        </refsect2>
-        <refsect2>
-            <title>Handling other result types</title>
+        <para>
+            <emphasis role="bold">Handling other result types</emphasis>
+        </para>
             <para>
             Other result types are much harder to handle and should be avoid if at all possible. It would be useless to write to variables from outer scope because each execution environment has its own copy of the memory space. The only solution is to find a mapping to a vector of scalars and channel the result data through it.
             </para>
-            <refsect3>
-                <title>Handling a sparse matrix argument and result type</title>
-                <para>
-                The following code sample shows how to access to elements of a sparse matrix, to compute the invert of a block diagonal sparse matrix, and return the result in a sparse matrix.
-                </para>
-                <programlisting role="example"><![CDATA[
+
+            <para>
+                <emphasis role="italic">Handling a sparse matrix argument and result type</emphasis>
+            </para>
+            <para>
+            The following code sample shows how to access to elements of a sparse matrix, to compute the invert of a block diagonal sparse matrix, and return the result in a sparse matrix.
+            </para>
+            <programlisting role="example"><![CDATA[
 N = 5;  // size of a block
 L = 10; // number of blocks
 
@@ -406,14 +428,15 @@ endfunction
 // call parallel_run() to operate on blocks of the sparse matrix
 // and to_sparse() to build the sparse result
 r = to_sparse(parallel_run(N,1:L,"invert_one_block",[N,N]),N);
-        ]]></programlisting>
-            </refsect3>
-            <refsect3>
-                <title>Handling matrices of strings as argument and result type</title>
-                <para>
-                The following uses the workaround seen in <emphasis role="bold">§Handling a matrix of strings argument</emphasis> to access a string matrix argument, and shows how to return strings by using their numeric representation with ascii(), to flip odd characters in strings.
-                </para>
-                <programlisting role="example"><![CDATA[
+            ]]></programlisting>
+
+            <para>
+                <emphasis role="italic">Handling matrices of strings as argument and result type</emphasis>
+            </para>
+            <para>
+            The following uses the workaround seen in <emphasis role="bold">§Handling a matrix of strings argument</emphasis> to access a string matrix argument, and shows how to return strings by using their numeric representation with ascii(), to flip odd characters in strings.
+            </para>
+            <programlisting role="example"><![CDATA[
 a = ["one a";"b";"c and a word"];
 
 // only works for ASCII
@@ -443,9 +466,8 @@ endfunction
 
 len = max(length(a));
 res = censor_v(parallel_run(1:size(a,'r'), len, "censor_odds_i",len)');
-        ]]></programlisting>
-            </refsect3>
-        </refsect2>
+            ]]></programlisting>
+
     </refsection>
     <refsection>
         <title>Advanced Usage : Compiled Foreign Functions</title>
@@ -453,8 +475,10 @@ res = censor_v(parallel_run(1:size(a,'r'), len, "censor_odds_i",len)');
         When aiming at maximum performance, it sometimes makes sense to rewrite a few lines of Scilab code in a compiled language such as C++, C or Fortran.
         <link linkend="ilib_for_link">ilib_for_link</link> allows to do it easily from Scilab, and <literal>parallel_run</literal> allows you to run your compiled code on your multicore architecture. Moreover, as it is possible to make compiled code thread-safe, it is also possible to launch compiled foreign function in lightweight (with less scheduling overhead) shared memory workers (threads), as will be seen in REF Parameters.
         </para>
-        <refsect2>
-            <title>Compiled Foreign Functions API</title>
+
+        <para>
+            <emphasis role="bold">Compiled Foreign Functions API</emphasis>
+        </para>
             <para>
             The restrictions imposed on the data types handled by <literal>parallel_run</literal>() allows to use a simpler API :
             </para>
@@ -469,17 +493,19 @@ res = censor_v(parallel_run(1:size(a,'r'), len, "censor_odds_i",len)');
             <para>
                 <emphasis role="bold">void *const* res</emphasis> is a pointer to an array of the data of each  result Ri. If there is only one argument, then only res[0] is valid and contains the pointer to its data. Each result  i (counted from 0) can be a vector as specified by the dims argument and res[i] contains the pointer to its data. If res i is a scalar (default when no dims argument is used), only res[i][0] is valid and available to store the value.
             </para>
-        </refsect2>
 
-        <refsect2>
-            <title>Examples</title>
+        <para>
+            <emphasis role="bold">Examples</emphasis>
+        </para>
             <para>
             The following examples are the compiled foreign function rewrite of those from the previous section. However, we will not handle other data types because accessing those data structures from compiled code would be outside the scope of this document. Furthermore, when speed is of essence (as usual when one goes to the length of rewriting some Scilab code into a compiled language) one should strive to stick to dense matrices.
             </para>
-            <refsect3>
-                <title>First steps </title>
-                <para>The most simple application of parallel_run is to</para>
-                <programlisting role="example"><![CDATA[
+
+            <para>
+                <emphasis role="italic">First steps</emphasis>
+            </para>
+            <para>The most simple application of parallel_run is to</para>
+            <programlisting role="example"><![CDATA[
 function make_compiled_function(name, ext, code)
     filename = name + ext
     mputl(code, filename)
@@ -499,12 +525,15 @@ make_compiled_function(fun_name, '.c',c_prog);
 res = parallel_run(1:10, fun_name);
 // res = [1., 4., 9., 16., 25., 36., 49., 64., 81., 100.];
             ]]></programlisting>
-            <title>Wallclock gain</title>
-                <para>
-                In order to illustrate the parallelization gains, the next example includes an explicit loop calling a foreign c function with call.
-                The remaining examples will only include the parallel_run version, as their purpose was already illustrated in the previous section.
-                </para>
-                <programlisting role="example"><![CDATA[
+
+            <para>
+                <emphasis role="italic">Wallclock gain</emphasis>
+            </para>
+            <para>
+            In order to illustrate the parallelization gains, the next example includes an explicit loop calling a foreign c function with call.
+            The remaining examples will only include the parallel_run version, as their purpose was already illustrated in the previous section.
+            </para>
+            <programlisting role="example"><![CDATA[
 function make_compiled_function(name, ext, code)
     filename = name + ext;
     mputl(code, filename);
@@ -538,14 +567,15 @@ make_compiled_function(fun_name, '.c',c_prog);
 t0 = getdate();
 res = parallel_run(1:200, fun_name);
 etime(getdate(), t0) // execution time is shorter on multicore
-        ]]></programlisting>
-            </refsect3>
-            <refsect3>
-                <title>Plurality of arguments and returned values</title>
-                <para>
-                It is of course possible to have more than one argument, and more than one returned value :
-                </para>
-                <programlisting role="example"><![CDATA[N=10;
+            ]]></programlisting>
+
+            <para>
+                <emphasis role="italic">Plurality of arguments and returned values</emphasis>
+            </para>
+            <para>
+            It is of course possible to have more than one argument, and more than one returned value :
+            </para>
+            <programlisting role="example"><![CDATA[N=10;
 A = rand(1:N);
 B = rand(1:N);
 C = rand(1:N);
@@ -568,12 +598,12 @@ ilib_for_link('min_med_max_cxx','min_med_max_cxx.cxx',[],"c")
 exec loader.sce
 
 [Min, Med, Max] = parallel_run(A,B,C, "min_med_max_cxx")
-        ]]></programlisting>
-            </refsect3>
+            ]]></programlisting>
 
-            <refsect3>
-                <title>Vector arguments and results</title>
-                <programlisting role="example"><![CDATA[
+            <para>
+                <emphasis role="italic">Vector arguments and results</emphasis>
+            </para>
+            <programlisting role="example"><![CDATA[
 f1 = [
     '#include<algorithm>',
     'extern ""C""{',
@@ -597,34 +627,39 @@ data = matrix(rand(1:N*N),N,N);
 // note the last argument to inform that quantiles returns 3 scalars.
 R4_6_7 = parallel_run(data',N,[4;6;7],3,"quantiles_cxx", 3);
            ]]></programlisting>
-            </refsect3>
-        </refsect2>
+
     </refsection>
     <refsection>
         <title>Tuning the Parallelization with Configuration Parameters</title>
         <para>
         As we have seen in the syntax, it is possible to add a configuration parameter as a last argument to parallel_run. This argument is handled by the <literal>params</literal> module and created with<link linkend="init_param">init_param</link>() (further information on how to handle parameters can be found in the help pages of <link linkend="add_param">add_param</link>, <link linkend="set_param">set_param</link> and <link linkend="remove_param">remove_param</link>).
         </para>
-        <refsect2>
-            <title>Number of workers </title>
-            The number of computing resources used in parallel can be set by the parameter <literal>nb_workers</literal>. The default value (0) uses as many workers as there are cores available.
-        </refsect2>
-        <refsect2>
-            <title>Shared (threads) or separate (process) memory </title>
-            While threads are the most efficient (lightweight) parallelization model, current Scilab implementation does not allow threadsafe code, so threads can only be used for foreign function (which must be threadsafe!) and processes are used for Scilab macros. The behavior is controlled par the <literal>shared_memory</literal> parameter which is a numeric value used as a boolean : threads are used if  <literal>shared_memory</literal> is not 0 and  <literal>f</literal> is a foreign function. This default value (0) implies separate memory (processes).
-        </refsect2>
-        <refsect2>
-            <title>Dynamic scheduling </title>
-            The number of function calls assigned to each worker can either be static (each worker gets the same number of function calls to do) or dynamic. In the latter case, function calls are assigned to workers when they are available.  The behavior is controlled par the  <literal>dynamic_scheduling</literal> parameter which is a numeric value used as a boolean : dynamic scheduling is used if  <literal>dynamic_scheduling</literal> is not 0. This default value (1) implies dynamic scheduling. Static scheduling is more efficient when there are many calls to the function <literal>f</literal> and they will all take the same amount of time, while dynamic scheduling should be preferred when the amount a time for each call can varies a lot.
-        </refsect2>
-        <refsect2>
-            <title>Chunk size </title>
-            In order to reduce dynamic scheduling overhead, the n function calls are dispatched in chunks. The chunk size can be set by the parameter <literal>chunk_size</literal>. The default value (0) uses chunks of size 1. For static scheduling, there is virtually no scheduling overhead and the difference between the minimum and maximum number of function calls performed by the workers is at most 1.
-        </refsect2>
-        <refsect2>
-            <title>Prologue and Epilogue </title>
-            When using separate memory, it is not uncommon to perform process-specific initialization and finalization. For example, when making Monte Carlo simulations, one must insure that each process uses different random number generator initial state, otherwise all the processes would perform the same pseudo-random sequences in parallel ! The  <literal>prologue</literal> (resp. <literal>epilogue</literal>) parameter is a string value either empty ("" default) or containing the name of a macro taking one scalar argument to be run upon starting (resp. ending) a new process (separate memory worker, see above). Each process is given a unique scalar passed as argument to both prologue and epilogue macros.
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">Number of workers </emphasis>
+        </para>
+        <para>The number of computing resources used in parallel can be set by the parameter <literal>nb_workers</literal>. The default value (0) uses as many workers as there are cores available.</para>
+
+        <para>
+            <emphasis role="bold">Shared (threads) or separate (process) memory </emphasis>
+        </para>
+        <para>While threads are the most efficient (lightweight) parallelization model, current Scilab implementation does not allow threadsafe code, so threads can only be used for foreign function (which must be threadsafe!) and processes are used for Scilab macros. The behavior is controlled par the <literal>shared_memory</literal> parameter which is a numeric value used as a boolean : threads are used if  <literal>shared_memory</literal> is not 0 and  <literal>f</literal> is a foreign function. This default value (0) implies separate memory (processes).</para>
+
+        <para>
+            <emphasis role="bold">Dynamic scheduling </emphasis>
+        </para>
+        <para>The number of function calls assigned to each worker can either be static (each worker gets the same number of function calls to do) or dynamic. In the latter case, function calls are assigned to workers when they are available.  The behavior is controlled par the  <literal>dynamic_scheduling</literal> parameter which is a numeric value used as a boolean : dynamic scheduling is used if  <literal>dynamic_scheduling</literal> is not 0. This default value (1) implies dynamic scheduling. Static scheduling is more efficient when there are many calls to the function <literal>f</literal> and they will all take the same amount of time, while dynamic scheduling should be preferred when the amount a time for each call can varies a lot.</para>
+
+        <para>
+            <emphasis role="bold">Chunk size </emphasis>
+        </para>
+        <para>In order to reduce dynamic scheduling overhead, the n function calls are dispatched in chunks. The chunk size can be set by the parameter <literal>chunk_size</literal>. The default value (0) uses chunks of size 1. For static scheduling, there is virtually no scheduling overhead and the difference between the minimum and maximum number of function calls performed by the workers is at most 1.</para>
+
+        <para>
+            <emphasis role="bold">Prologue and Epilogue </emphasis>
+        </para>
+        <para>When using separate memory, it is not uncommon to perform process-specific initialization and finalization. For example, when making Monte Carlo simulations, one must insure that each process uses different random number generator initial state, otherwise all the processes would perform the same pseudo-random sequences in parallel ! The  <literal>prologue</literal> (resp. <literal>epilogue</literal>) parameter is a string value either empty ("" default) or containing the name of a macro taking one scalar argument to be run upon starting (resp. ending) a new process (separate memory worker, see above). Each process is given a unique scalar passed as argument to both prologue and epilogue macros.</para>
+        <programlisting role="example"><![CDATA[
 function init_rand(n)
     rand('seed',n);
 endfunction;
@@ -639,7 +674,7 @@ res = parallel_run([nb,nb], 'rand_macro', nb, init_param('nb_workers', 2));
 // when setting the seed, they should have different random numbers.
 res = parallel_run([nb,nb], 'rand_macro', nb, init_param('nb_workers', 2,'prologue','init_rand'));
         ]]></programlisting>
-        </refsect2>
+
     </refsection>
 
     <refsection role="see also">

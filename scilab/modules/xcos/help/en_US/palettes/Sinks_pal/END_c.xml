@@ -32,45 +32,45 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/END_c.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_END_c">
+    <refsection xml:id="Contents_END_c">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_END_c">Description</xref>
+                <para><link linkend="Description_END_c">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_END_c">Parameters</xref>
+                <para><link linkend="Dialogbox_END_c">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_END_c">Default properties</xref>
+                <para><link linkend="Defaultproperties_END_c">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_END_c">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_END_c">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_END_c">Computational function</xref>
+                <para><link linkend="Computationalfunction_END_c">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_END_c">Example</xref>
+                <para><link linkend="Example_END_c">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_END_c">See also</xref>
+                <para><link linkend="Seealso_END_c">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_END_c">
+    <refsection xml:id="Description_END_c">
         <title>Description</title>
         <para>That block increases the current time to the final integration time
             of the simulation when it is activated :
         </para>
-        <emphasis>T<subscript>f</subscript> = T<subscript>cur</subscript></emphasis>
+        <para><emphasis>T<subscript>f</subscript> = T<subscript>cur</subscript></emphasis></para>
         <para>
             with <emphasis role="bold">T<subscript>cur</subscript></emphasis> the activation date of
             the block and <emphasis role="bold">T<subscript>f</subscript></emphasis> the final
@@ -84,14 +84,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_END_c">
+    <refsection xml:id="Dialogbox_END_c">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/END_c_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/END_c_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -108,7 +107,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Defaultproperties_END_c">
+    <refsection xml:id="Defaultproperties_END_c">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -166,8 +165,9 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_END_c">
+    <refsection xml:id="Example_END_c">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/END_c_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -175,9 +175,10 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_END_c">
+    <refsection xml:id="Interfacingfunction_END_c">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -185,7 +186,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_END_c">
+    <refsection xml:id="Computationalfunction_END_c">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

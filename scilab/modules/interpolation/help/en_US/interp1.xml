@@ -236,39 +236,41 @@
             bound <literal>x(i+1)</literal> is considered as the nearest
             <varname>x</varname> value, and <literal>yp=y(i+1)</literal> is assigned.
         </para>
-        <refsect3>
-            <title>linear interpolations</title>
+        <para>
+            <emphasis role="bold">linear interpolations</emphasis>
+        </para>
+        <para>
             They are performed through the <literal>linear_interpn(..)</literal> function,
             with the corresponding <literal>"edgevalue"→"C0"</literal>,
             <literal>"linear"→"natural"</literal>, <literal>"periodic"→"periodic"</literal>
             extrapolation option.
-        </refsect3>
-        <refsect3>
-            <title>spline interpolations</title>
-            <para>
-                <emphasis role="bold">interp1(..,xp,"spline")</emphasis> or
-                <emphasis role="bold">interp1(..,xp,"spline","spline")</emphasis> or
-                <emphasis role="bold">interp1(..,xp,"spline","extrap")</emphasis>
-                use <literal>not_a_knot</literal> edges conditions. Extrapolation is performed
-                by using both spline polynomials computed at the <literal>(x,y)</literal> edges.
-            </para>
-            <para>
-                <emphasis role="bold">interp1(..,xp,"spline","edgevalue")</emphasis>
-                uses <literal>not_a_knot</literal> edges conditions and then calls
-                <literal>interp(..,"C0")</literal> to perform the actual interpolation
-                and extrapolation.
-            </para>
-            <para>
-                <emphasis role="bold">interp1(..,xp,"spline","periodic")</emphasis>
-                calls both <literal>splin(..)</literal> and then <literal>interp(..)</literal>
-                with their <literal>"periodic"</literal> option.
-            </para>
-            <para>
-                <emphasis role="bold">interp1(..,xp,"spline","linear")</emphasis>
-                calls <literal>splin(..,"natural")</literal> for linear edges conditions,
-                and then feeds <literal>interp(..,"linear")</literal>.
-            </para>
-        </refsect3>
+        </para>
+        <para>
+            <emphasis role="bold">spline interpolations</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">interp1(..,xp,"spline")</emphasis> or
+            <emphasis role="bold">interp1(..,xp,"spline","spline")</emphasis> or
+            <emphasis role="bold">interp1(..,xp,"spline","extrap")</emphasis>
+            use <literal>not_a_knot</literal> edges conditions. Extrapolation is performed
+            by using both spline polynomials computed at the <literal>(x,y)</literal> edges.
+        </para>
+        <para>
+            <emphasis role="bold">interp1(..,xp,"spline","edgevalue")</emphasis>
+            uses <literal>not_a_knot</literal> edges conditions and then calls
+            <literal>interp(..,"C0")</literal> to perform the actual interpolation
+            and extrapolation.
+        </para>
+        <para>
+            <emphasis role="bold">interp1(..,xp,"spline","periodic")</emphasis>
+            calls both <literal>splin(..)</literal> and then <literal>interp(..)</literal>
+            with their <literal>"periodic"</literal> option.
+        </para>
+        <para>
+            <emphasis role="bold">interp1(..,xp,"spline","linear")</emphasis>
+            calls <literal>splin(..,"natural")</literal> for linear edges conditions,
+            and then feeds <literal>interp(..,"linear")</literal>.
+        </para>
     </refsection>
     <refsection>
         <title>Examples</title>

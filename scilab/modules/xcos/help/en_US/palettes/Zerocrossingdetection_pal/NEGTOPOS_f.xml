@@ -31,40 +31,40 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/NEGTOPOS_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_NEGTOPOS_f">
+    <refsection xml:id="Contents_NEGTOPOS_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_NEGTOPOS_f">Description</xref>
+                <para><link linkend="Description_NEGTOPOS_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_NEGTOPOS_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_NEGTOPOS_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_NEGTOPOS_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_NEGTOPOS_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_NEGTOPOS_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_NEGTOPOS_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_NEGTOPOS_f">Example</xref>
+                <para><link linkend="Example_NEGTOPOS_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_NEGTOPOS_f">
+    <refsection xml:id="Description_NEGTOPOS_f">
         <title>Description</title>
         <para>
             An output event is generated when the unique input crosses zero with a positive slope.
         </para>
     </refsection>
-    <refsection id="Defaultproperties_NEGTOPOS_f">
+    <refsection xml:id="Defaultproperties_NEGTOPOS_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -130,7 +130,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_NEGTOPOS_f">
+    <refsection xml:id="Interfacingfunction_NEGTOPOS_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -138,7 +138,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_NEGTOPOS_f">
+    <refsection xml:id="Computationalfunction_NEGTOPOS_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -147,14 +147,16 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Example_NEGTOPOS_f">
+    <refsection xml:id="Example_NEGTOPOS_f">
         <title>Example</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/zerocrossingdetection_pal/NEGTOPOS_f_Example.zcos">
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/zerocrossingdetection_pal/NEGTOPOS_f_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
                     <imagedata align="center" fileref="../../../../examples/zerocrossingdetection_pal/NEGTOPOS_f_Example.zcos"/>
                 </imageobject>
             </inlinemediaobject>
-        </link>
+            </link>
+        </para>
     </refsection>
 </refentry>

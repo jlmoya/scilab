@@ -28,106 +28,109 @@
                 For a GUI version, you can install <link xlink:href="https://marketplace.visualstudio.com/items?itemName=scilab.scilab">Scilab Language Support extension</link> for Visual Studio Code (VS Code) and then debug your Scilab scripts using Visual Studio Code integrated debugger.
             </para>
         </note>
-        <refsect3>
-            <title>Commands available in debugging mode</title>
-            <para>
-                <term>h:</term>
-                Shows the debugger's help in the console.
-            </para>
-            <para>
-                <term>help:</term>
-                In Scilab standard running mode (with GUIs), displays the debugger's help page
-                in the help browser. Otherwise, displays the help in the console (as with "h").
-            </para>
-            <para>
-                <term>(q)uit:</term>
-                Leaves the debug mode and returns to the normal Scilab mode.
-            </para>
-            <para>
-                <term>(w)here or bt:</term>
-                Displays the callstack.
-            </para>
-            <para>
-                <term>(e)xec or (r)un command :</term>
-                Executes the given Scilab command.
-            </para>
-            <para>
-                <term>(d)isp var, or (p)rint var: </term>
-                Displays the value of the variable <literal>var</literal>.
-            </para>
-            <para>
-                <term>(c)ontinue:</term>
-                Continues the execution.
-            </para>
-            <para>
-                <term>(a)bort:</term>
-                Aborts the execution.
-            </para>
-            <para>
-                <term>step(n)ext or next:</term>
-                Executes the next expression.
-            </para>
-            <para>
-                <term>step(i)n or in:</term>
-                Executes the next expression in sub function.
-            </para>
-            <para>
-                <term>step(o)ut or out:</term>
-                Executes the next expression in previous function.
-            </para>
-            <para>
-                <term>(b)reakpoint or break:</term>
-                <literal>breakpoint function [line [condition]]</literal> :
-                Adds a breakpoint in a function at line <literal>line</literal>.
-                If a condition is specified, the breakpoint is enabled only if the condition
-                is <literal>%t</literal>
-            </para>
-            <para>
-                <term>(del)ete [n]:</term>
-                Removes all breakpoints. If n is specified: removes the breakpoint #n.
-            </para>
-            <para>
-                <term>enable [n]:</term>
-                Enables all breakpoints. If n is specified: enables the breakpoint #n.
-            </para>
-            <para>
-                <term>disable [n]:</term>
-                Disables all breakpoints. If n is specified: disables the breakpoint #n.
-            </para>
-            <para>
-                <term>(s)how [n]:</term>
-                Shows all breakpoints information. If n is specified: shows the breakpoint #n.
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>How to debug a script</title>
-            <para>
-                Debugging a series of Scilab instructions out of any function requires first to
-                embed them in a dummy function. Example: We want to debug the following instructions
-                <programlisting role="no-scilab-exe">
+
+        <para>
+            <emphasis role="bold">Commands available in debugging mode</emphasis>
+        </para>
+        <para>
+            <literal>h:</literal>
+            Shows the debugger's help in the console.
+        </para>
+        <para>
+            <literal>help:</literal>
+            In Scilab standard running mode (with GUIs), displays the debugger's help page
+            in the help browser. Otherwise, displays the help in the console (as with "h").
+        </para>
+        <para>
+            <literal>(q)uit:</literal>
+            Leaves the debug mode and returns to the normal Scilab mode.
+        </para>
+        <para>
+            <literal>(w)here or bt:</literal>
+            Displays the callstack.
+        </para>
+        <para>
+            <literal>(e)xec or (r)un command :</literal>
+            Executes the given Scilab command.
+        </para>
+        <para>
+            <literal>(d)isp var, or (p)rint var: </literal>
+            Displays the value of the variable <literal>var</literal>.
+        </para>
+        <para>
+            <literal>(c)ontinue:</literal>
+            Continues the execution.
+        </para>
+        <para>
+            <literal>(a)bort:</literal>
+            Aborts the execution.
+        </para>
+        <para>
+            <literal>step(n)ext or next:</literal>
+            Executes the next expression.
+        </para>
+        <para>
+            <literal>step(i)n or in:</literal>
+            Executes the next expression in sub function.
+        </para>
+        <para>
+            <literal>step(o)ut or out:</literal>
+            Executes the next expression in previous function.
+        </para>
+        <para>
+            <literal>(b)reakpoint or break:</literal>
+            <literal>breakpoint function [line [condition]]</literal> :
+            Adds a breakpoint in a function at line <literal>line</literal>.
+            If a condition is specified, the breakpoint is enabled only if the condition
+            is <literal>%t</literal>
+        </para>
+        <para>
+            <literal>(del)ete [n]:</literal>
+            Removes all breakpoints. If n is specified: removes the breakpoint #n.
+        </para>
+        <para>
+            <literal>enable [n]:</literal>
+            Enables all breakpoints. If n is specified: enables the breakpoint #n.
+        </para>
+        <para>
+            <literal>disable [n]:</literal>
+            Disables all breakpoints. If n is specified: disables the breakpoint #n.
+        </para>
+        <para>
+            <literal>(s)how [n]:</literal>
+            Shows all breakpoints information. If n is specified: shows the breakpoint #n.
+        </para>
+
+        <para>
+            <emphasis role="bold">How to debug a script</emphasis>
+        </para>
+        <para>
+            Debugging a series of Scilab instructions out of any function requires first to
+            embed them in a dummy function. Example: We want to debug the following instructions
+            <programlisting role="no-scilab-exe">
+            a = 1;
+            b = linspace(a, 3, 10);
+            c = exp(a + %i + c);
+            </programlisting>
+        </para>
+        <para>
+            Then we must first rewrite them as
+        </para>
+        <para>
+            <programlisting role="no-scilab-exe">
+            function script()
                 a = 1;
                 b = linspace(a, 3, 10);
                 c = exp(a + %i + c);
-                </programlisting>
-            </para>
-            <para>
-                Then we must first rewrite them as
-            </para>
-            <para>
-                <programlisting role="no-scilab-exe">
-                function script()
-                    a = 1;
-                    b = linspace(a, 3, 10);
-                    c = exp(a + %i + c);
-                endfunction
-                </programlisting>
-            </para>
-            <para>
-                and execute this code (in normal Scilab mode) in order to define script() in Scilab.
-                Then breakpoints can be defined and handled within the script() function as for
-                any other function.
-            </para>
-        </refsect3>
+            endfunction
+            </programlisting>
+        </para>
+        <para>
+            and execute this code (in normal Scilab mode) in order to define script() in Scilab.
+            Then breakpoints can be defined and handled within the script() function as for
+            any other function.
+        </para>
+
     </refsection>
     <refsection>
         <title>Examples</title>

@@ -31,44 +31,45 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
+        <para>
             <link linkend="GENERAL_f">
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata linkend="GENERAL_f" fileref="../../../../images/palettes/GENERAL_f.png"
-                     style="width:100px; padding:10px; border-style:solid; border-width:1px; border-color:#1e90ff;"/>
+                    <imagedata fileref="../../../../images/palettes/GENERAL_f.png"/>
                 </imageobject>
             </inlinemediaobject>
-            </link>.
-
+            </link>
+        </para>
+        <para>
             <link linkend="NEGTOPOS_f">
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata linkend="NEGTOPOS_f" fileref="../../../../images/palettes/NEGTOPOS_f.png"
-                     style="width:100px; padding:10px; border-style:solid; border-width:1px; border-color:#1e90ff;"/>
+                    <imagedata fileref="../../../../images/palettes/NEGTOPOS_f.png"/>
                 </imageobject>
             </inlinemediaobject>
-            </link>.
-
+            </link>
+        </para>
+        <para>
             <link linkend="POSTONEG_f">
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata linkend="POSTONEG_f" fileref="../../../../images/palettes/POSTONEG_f.png"
-                     style="width:100px; padding:10px; border-style:solid; border-width:1px; border-color:#1e90ff;"/>
+                    <imagedata fileref="../../../../images/palettes/POSTONEG_f.png"/>
                 </imageobject>
             </inlinemediaobject>
-            </link>.
-
+            </link>
+        </para>
+        <para>
             <link linkend="ZCROSS_f">
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata linkend="ZCROSS_f" fileref="../../../../images/palettes/ZCROSS_f.png"
-                     style="width:100px; padding:10px; border-style:solid; border-width:1px; border-color:#1e90ff;"/>
+                    <imagedata fileref="../../../../images/palettes/ZCROSS_f.png"/>
                 </imageobject>
             </inlinemediaobject>
-            </link>.
+            </link>
+        </para>
     </refsection>
 
-    <refsection id="Description_Zerocrossingdetection_pal">
+    <refsection xml:id="Description_Zerocrossingdetection_pal">
         <title>Description</title>
         <para>Zero crossing detection blocks are used to detect values crossing of state
             variables during the simulation. This blocks use the solvers (ODE or DAE)

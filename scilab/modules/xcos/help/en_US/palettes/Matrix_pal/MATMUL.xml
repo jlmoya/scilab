@@ -28,38 +28,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATMUL.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATMUL">
+    <refsection xml:id="Contents_MATMUL">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATMUL">Description</xref>
+                <para><link linkend="Description_MATMUL">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATMUL">Parameters</xref>
+                <para><link linkend="Dialogbox_MATMUL">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATMUL">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATMUL">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATMUL">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATMUL">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATMUL">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATMUL">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATMUL">See also</xref>
+                <para><link linkend="Seealso_MATMUL">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATMUL">
+    <refsection xml:id="Description_MATMUL">
         <title>Description</title>
         <para>
             The MATMUL block computes the multiplication of an the first input matrix by the second
@@ -104,14 +104,13 @@
             <emphasis role="bold">Do on Overflow</emphasis> field to 0, 1 or 2.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATMUL">
+    <refsection xml:id="Dialogbox_MATMUL">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATMUL_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATMUL_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -146,7 +145,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATMUL">
+    <refsection xml:id="Defaultproperties_MATMUL">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -222,7 +221,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_MATMUL">
+    <refsection xml:id="Example_MATMUL">
         <title>Example</title>
         <programlisting role="example"><![CDATA[
             A = [1 2 3 ; 4 5 6]
@@ -230,7 +229,7 @@
             y = [46 37 28 19 ; 115 94 73 52]
         ]]></programlisting>
     </refsection>
-    <refsection id="Interfacingfunction_MATMUL">
+    <refsection xml:id="Interfacingfunction_MATMUL">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -238,7 +237,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATMUL">
+    <refsection xml:id="Computationalfunction_MATMUL">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

@@ -137,13 +137,16 @@
                         otherwise: The same and whole <varname>val</varname> value (that may be scalar
                         or not) is assigned to every <literal>h(i)(prop)</literal> component.
                         <warning>
-                            If <varname>val</varname> is a cell array of same size as
-                            <varname>h</varname>, it is assigned as a whole as well. For instance,
-                            <literal>set([gcf() gca()], "user_data", {"Text", 1})</literal> will do
-                            <literal>gcf().user_data = {"Text", 1}, gca().user_data = {"Text", 1}</literal>,
-                            not <literal>gcf().user_data = "Text", gca().user_data = 1</literal>.
-                        </warning></para>
-                              </listitem>
+                            <para>
+                                If <varname>val</varname> is a cell array of same size as
+                                <varname>h</varname>, it is assigned as a whole as well. For instance,
+                                <literal>set([gcf() gca()], "user_data", {"Text", 1})</literal> will do
+                                <literal>gcf().user_data = {"Text", 1}, gca().user_data = {"Text", 1}</literal>,
+                                not <literal>gcf().user_data = "Text", gca().user_data = 1</literal>.
+                            </para>
+                        </warning>
+                    </para>
+                </listitem>
             </itemizedlist>
         </para>
         <para>

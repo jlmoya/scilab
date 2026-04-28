@@ -25,52 +25,51 @@
         </para>
         <para>
             The link between the Scilab engine and the application code is called <literal>gateway</literal> and have this prototype:
-            <refsection id="api_scilab_entrypoint">
-                <programlisting role="code_gateway"><![CDATA[ 
-                    int your_new_gateway(scilabEnv env,
-                    int nin, scilabVar *in,
-                    int nopt, scilabOpt opt,
-                    int nout, scilabVar *out) ]]></programlisting>
-                <itemizedlist>
-                    <listitem>
-                        <para>
-                            <varname>env</varname>: <literal><link linkend="api_types_scilabEnv"><command>scilabEnv</command></link></literal> variable provided by kernel. You must forward it to API functions.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <varname>nin</varname>: number of input arguments.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <varname>in</varname>: array of <literal><link linkend="api_types_scilabVar"><command>scilabVar</command></link></literal> containing input parameters.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <varname>nopt</varname>: number of optional parameters.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <varname>opt</varname>: <literal><link linkend="api_types_scilabOpt"><command>scilabOpt</command></link></literal> containing optional parameters. Use <link linkend="api_optional_scilab_getOptional"><varname>scilab_getOptional</varname></link> to get optional information.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <varname>nout</varname>: number of expected output parameters.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            <varname>out</varname>: preallocated array of <literal><link linkend="api_types_scilabVar"><command>scilabVar</command></link></literal> with a size of <varname>nout</varname>.
-                        </para>
-                    </listitem>
-                </itemizedlist>
-                <para>Return 0 or STATUS_OK for OK and other value or STATUS_ERROR to trigger an error.</para>
-            </refsection>
+            <anchor xml:id="api_scilab_entrypoint"/>
+            <programlisting role="code_gateway"><![CDATA[ 
+                int your_new_gateway(scilabEnv env,
+                int nin, scilabVar *in,
+                int nopt, scilabOpt opt,
+                int nout, scilabVar *out) ]]></programlisting>
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <varname>env</varname>: <literal><link linkend="api_types_scilabEnv"><command>scilabEnv</command></link></literal> variable provided by kernel. You must forward it to API functions.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <varname>nin</varname>: number of input arguments.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <varname>in</varname>: array of <literal><link linkend="api_types_scilabVar"><command>scilabVar</command></link></literal> containing input parameters.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <varname>nopt</varname>: number of optional parameters.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <varname>opt</varname>: <literal><link linkend="api_types_scilabOpt"><command>scilabOpt</command></link></literal> containing optional parameters. Use <link linkend="api_optional_scilab_getOptional"><varname>scilab_getOptional</varname></link> to get optional information.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <varname>nout</varname>: number of expected output parameters.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <varname>out</varname>: preallocated array of <literal><link linkend="api_types_scilabVar"><command>scilabVar</command></link></literal> with a size of <varname>nout</varname>.
+                    </para>
+                </listitem>
+            </itemizedlist>
         </para>
+        <para>Return 0 or STATUS_OK for OK and other value or STATUS_ERROR to trigger an error.</para>
         <para>
             Most of the time, the process is always the same:
             <orderedlist>

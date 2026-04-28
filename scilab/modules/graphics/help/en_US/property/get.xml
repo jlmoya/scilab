@@ -234,76 +234,77 @@
                     </listitem>
                 </itemizedlist>
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Objects with properties <literal>.visible="off"</literal> or/and
                 <literal>.handle_visible="off"</literal>, or/and rendered off-screen out of the
                 <code>driver("REC")</code>, are still always reachable.
-            </note>
+            </para>
+        </note>
+
+        <para>
+            <emphasis role="bold">Getting the handle of an object</emphasis>
         </para>
-        <refsect3>
-            <title>Getting the handle of an object</title>
-            <para>
-                [] is returned anyway if no matching object is found.
-            </para>
-            <para>
-                <emphasis role="bold">h = get(0)</emphasis> returns the handle of Scilab's console.
-            </para>
-            <para>
-                <emphasis role="bold">h  = get(tag)</emphasis> returns the handle of the first
-                object found with .tag==<varname>tag</varname>.
-            </para>
-            <para>
-                <emphasis role="bold">h  = get(tagsPath)</emphasis> returns the handle of the first
-                object found with a tag's path matching <varname>tagspath</varname>.
-            </para>
-            <para>
-                <emphasis role="bold">h  = get(key)</emphasis> returns the special object
-                according to the <varname>key</varname> string, as documented in the
-                <emphasis>Arguments</emphasis> section.
-            </para>
-            <para>
-                <emphasis role="bold">fids = get("figures_id")</emphasis> returns the vector
-                of indices of all existing graphical figures.
-                This is equivalent to <literal>winsid()</literal>
-            </para>
-        </refsect3>
+        <para>
+            [] is returned anyway if no matching object is found.
+        </para>
+        <para>
+            <emphasis role="bold">h = get(0)</emphasis> returns the handle of Scilab's console.
+        </para>
+        <para>
+            <emphasis role="bold">h  = get(tag)</emphasis> returns the handle of the first
+            object found with .tag==<varname>tag</varname>.
+        </para>
+        <para>
+            <emphasis role="bold">h  = get(tagsPath)</emphasis> returns the handle of the first
+            object found with a tag's path matching <varname>tagspath</varname>.
+        </para>
+        <para>
+            <emphasis role="bold">h  = get(key)</emphasis> returns the special object
+            according to the <varname>key</varname> string, as documented in the
+            <emphasis>Arguments</emphasis> section.
+        </para>
+        <para>
+            <emphasis role="bold">fids = get("figures_id")</emphasis> returns the vector
+            of indices of all existing graphical figures.
+            This is equivalent to <literal>winsid()</literal>
+        </para>
 
-
-        <refsect3>
-            <title>Value of a property</title>
-            <para>
-                <emphasis role="bold">val = get(0, prop)</emphasis> returns the value of the given
-                Root or Console property.
-            </para>
-            <para>
-                <emphasis role="bold">val = get(H, prop)</emphasis> or
-                <emphasis role="bold">val = H(prop)</emphasis> or even more simply
-                <emphasis role="bold">val = H.prop</emphasis> returns the value of the
-                <varname>prop</varname> property for the object whose handle is <varname>H</varname>.
-            </para>
-            <para>
-                If <varname>H</varname> is a vector of handles, and if the expected value of the
-                property
-                <itemizedlist>
-                    <listitem>
-                         <para>
-                            is scalar: then <varname>val</varname> returns a column of the values for
-                            all objects in <varname>H</varname>. Example:
-                    <screen><![CDATA[
+        <para>
+            <emphasis role="bold">Value of a property</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">val = get(0, prop)</emphasis> returns the value of the given
+            Root or Console property.
+        </para>
+        <para>
+            <emphasis role="bold">val = get(H, prop)</emphasis> or
+            <emphasis role="bold">val = H(prop)</emphasis> or even more simply
+            <emphasis role="bold">val = H.prop</emphasis> returns the value of the
+            <varname>prop</varname> property for the object whose handle is <varname>H</varname>.
+        </para>
+        <para>
+            If <varname>H</varname> is a vector of handles, and if the expected value of the
+            property
+            <itemizedlist>
+                <listitem>
+                        <para>
+                        is scalar: then <varname>val</varname> returns a column of the values for
+                        all objects in <varname>H</varname>. Example:
+                <screen><![CDATA[
     --> plot2d(), get([gcf() gca() gce()], "visible")
      ans  =
       "on"
       "on"
       "on"
     ]]></screen></para>
-            </listitem>
-                    <listitem>
-                         <para>
-                            is NOT scalar: then <varname>val</varname> returns the vertical concatenation
-                            of the values returned for all objects in <varname>H</varname>.
-                            Example:
-                    <screen><![CDATA[
+                </listitem>
+                <listitem>
+                    <para>
+                        is NOT scalar: then <varname>val</varname> returns the vertical concatenation
+                        of the values returned for all objects in <varname>H</varname>.
+                        Example:
+                        <screen><![CDATA[
     --> clf, plot
     --> get(gcf().children(1), "data_bounds")
      ans  =
@@ -315,30 +316,31 @@
        2.          1.
        0.         -1.
        6.2831853   1.
-    ]]></screen></para>
-            </listitem>
-                </itemizedlist>
-                <note>
+                        ]]></screen></para>
+                </listitem>
+            </itemizedlist>
+            <note>
+                <para>
                     The <literal>H.prop</literal> syntax is the most compact and powerful, and should
                     be preferred. Noticeably, when it is meaningful, it can be chained in a
                     straightforward way as in <literal>H.prop1.prop2.prop</literal>, without
                     intermediate handles or/and explicitly nested calls to get(). Example:
                     <literal>Axes.children.children.foreground</literal> is equivalent to
                     <literal>get(get(get(get(topAxes, "children"),"children"),"children"),"foreground")</literal>.
+                </para>
+            </note>
+        </para>
+        <para>
+            <emphasis role="bold">val = get(tag, prop)</emphasis> returns the value of the
+            property <varname>prop</varname> for the first object found whose
+            .tag==<varname>tag</varname>.
+        </para>
+        <para>
+            <emphasis role="bold">val = get(tagsPath, prop)</emphasis> returns the value of
+            the property <varname>prop</varname> for the first object found whose location
+            in the graphical hierarchy and whose .tag match <varname>tagsPath</varname>.
+        </para>
 
-                </note>
-            </para>
-            <para>
-                <emphasis role="bold">val = get(tag, prop)</emphasis> returns the value of the
-                property <varname>prop</varname> for the first object found whose
-                .tag==<varname>tag</varname>.
-            </para>
-            <para>
-                <emphasis role="bold">val = get(tagsPath, prop)</emphasis> returns the value of
-                the property <varname>prop</varname> for the first object found whose location
-                in the graphical hierarchy and whose .tag match <varname>tagsPath</varname>.
-            </para>
-        </refsect3>
     </refsection>
     <refsection>
         <title>Examples</title>

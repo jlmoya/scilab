@@ -25,45 +25,45 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
         xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xmln.mml="http://www.w3.org/1998/Math/MathML" xml:id="DLATCH" xml:lang="en_US" >
+        xmlns:mml="http://www.w3.org/1998/Math/MathML" xml:id="DLATCH" xml:lang="en_US" >
     <refnamediv>
         <refname>DLATCH</refname>
         <refpurpose>D latch flip-flop</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DLATCH.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_DLATCH">
+    <refsection xml:id="Contents_DLATCH">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DLATCH">Description</xref>
+                <para><link linkend="Description_DLATCH">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_DLATCH">Data types</xref>
+                <para><link linkend="Data_Type_DLATCH">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DLATCH">Default properties</xref>
+                <para><link linkend="Defaultproperties_DLATCH">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DLATCH">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DLATCH">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DLATCH">Example</xref>
+                <para><link linkend="Example_DLATCH">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_DLATCH">See also</xref>
+                <para><link linkend="Seealso_DLATCH">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_DLATCH">
+    <refsection xml:id="Description_DLATCH">
         <title>Description</title>
         <para>
             This block copies its input state (<emphasis role="bold">D</emphasis>) on the output
@@ -112,7 +112,7 @@
             <emphasis><literal>Q<subscript>n</subscript></literal></emphasis>.
         </para>
     </refsection>
-    <refsection id="Data_Type_DLATCH">
+    <refsection xml:id="Data_Type_DLATCH">
         <title>Data types</title>
         <para>
             The block supports the following types :
@@ -145,7 +145,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DLATCH">
+    <refsection xml:id="Defaultproperties_DLATCH">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -225,7 +225,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_DLATCH">
+    <refsection xml:id="Example_DLATCH">
         <title>Example</title>
         <para>
             The following figure shows a simple use case of the DLATCH block with
@@ -251,7 +251,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_DLATCH">
+    <refsection xml:id="Interfacingfunction_DLATCH">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

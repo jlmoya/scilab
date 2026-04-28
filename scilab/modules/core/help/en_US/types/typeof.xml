@@ -170,9 +170,9 @@
                     <emphasis role="bold">boolean sparse</emphasis>
                 </td>
                 <td>
-                    <varname>object</varname> is a
-                    <link linkend="sparse">boolean sparse matrix</link>.
-                    <warning>Sparse boolean hypermatrices are not supported.</warning>
+                    <para><varname>object</varname> is a
+                    <link linkend="sparse">boolean sparse matrix</link>.</para>
+                    <warning><para>Sparse boolean hypermatrices are not supported.</para></warning>
                 </td>
             </tr>
             <tr>
@@ -180,10 +180,10 @@
                     <emphasis role="bold">sparse</emphasis>
                 </td>
                 <td>
-                    <varname>object</varname> is a
+                    <para><varname>object</varname> is a
                     <link linkend="sparse">sparse matrix</link>
-                    of decimal or complex numbers.
-                    <warning>Sparse numerical hypermatrices are not supported.</warning>
+                    of decimal or complex numbers.</para>
+                    <warning><para>Sparse numerical hypermatrices are not supported.</para></warning>
                 </td>
             </tr>
             <tr>
@@ -241,9 +241,9 @@
                 </td>
                 <td>
                     is returned by
-                    <function>
-                        typeof(<literal>null()</literal>)
-                    </function>
+                    <literal>
+                        typeof(null())
+                    </literal>
                     .
                     See  <link linkend="null">null()</link>.
                 </td>

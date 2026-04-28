@@ -43,8 +43,10 @@
                 <listitem>
                     <para>name of the toolbox, use to name localization files and domain.</para>
                     <warning>
-                       <varname>tbx_name</varname> is now retrieved as the basename of the file
-                       <literal>tbx_path/etc/*.start</literal>. This file must exist, even if it is empty.
+                        <para>
+                            <varname>tbx_name</varname> is now retrieved as the basename of the file
+                            <literal>tbx_path/etc/*.start</literal>. This file must exist, even if it is empty.
+                        </para>
                     </warning>
                 </listitem>
             </varlistentry>

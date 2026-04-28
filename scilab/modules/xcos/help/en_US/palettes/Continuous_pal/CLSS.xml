@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/CLSS.png" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CLSS">
+    <refsection xml:id="Contents_CLSS">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CLSS">Description</xref>
+                <para><link linkend="Description_CLSS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CLSS">Parameters</xref>
+                <para><link linkend="Dialogbox_CLSS">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CLSS">Default properties</xref>
+                <para><link linkend="Defaultproperties_CLSS">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CLSS">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CLSS">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CLSS">Computational function</xref>
+                <para><link linkend="Computationalfunction_CLSS">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CLSS">Example</xref>
+                <para><link linkend="Example_CLSS">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_CLSS">
+    <refsection xml:id="Description_CLSS">
         <title>Description</title>
         <para>
             This block realizes a continuous-time linear state-space system.
@@ -85,14 +85,14 @@
             The dimensions must be compatible.
         </para>
     </refsection>
-    <refsection id="Dialogbox_CLSS">
+    <refsection xml:id="Dialogbox_CLSS">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/CLSS_gui.gif" style="float:right"/>
+                <imagedata align="center" fileref="../../../../images/gui/CLSS_gui.gif"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -138,7 +138,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_CLSS">
+    <refsection xml:id="Defaultproperties_CLSS">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -212,7 +212,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_CLSS">
+    <refsection xml:id="Interfacingfunction_CLSS">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -220,7 +220,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CLSS">
+    <refsection xml:id="Computationalfunction_CLSS">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -229,7 +229,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Example_CLSS">
+    <refsection xml:id="Example_CLSS">
         <title>Example</title>
         <para>This sample example illustrates how to use CLSS block to simulate
             and display the output waveform <emphasis role="bold">y(t)=Vc(t)</emphasis> of the RLC circuit shown below.

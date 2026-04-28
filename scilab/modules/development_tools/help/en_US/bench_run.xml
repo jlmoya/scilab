@@ -40,10 +40,8 @@
                 <listitem>
                     <para>
                         a vector of string. Contains the paths to directories of modules to test. If <literal>"/path/to/directory"</literal> is given as input parameter, tests are retrieved in the subdirectory
-                        <literal>
-                            /path/to/directory/<emphasis role="bold">tests/benchmarks</emphasis>
-                        </literal>
-                        .Used for homemade benchmarks.
+                        <literal>/path/to/directory/</literal><emphasis role="bold">tests/benchmarks</emphasis>
+                        . Used for homemade benchmarks.
                     </para>
                 </listitem>
             </varlistentry>
@@ -57,11 +55,13 @@
                         scans for tests in each of these modules or directory.
                     </para>
                     <note>
-                        Partial test names are allowed to run a subset
-                        of benchmarks dedicated to the same function/feature.
-                        For instance, specifying <literal>"ascii"</literal>
-                        will select all tests (in given module(s)) whose names
-                        contain <literal>"ascii"</literal> (See examples).
+                        <para>
+                            Partial test names are allowed to run a subset
+                            of benchmarks dedicated to the same function/feature.
+                            For instance, specifying <literal>"ascii"</literal>
+                            will select all tests (in given module(s)) whose names
+                            contain <literal>"ascii"</literal> (See examples).
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>

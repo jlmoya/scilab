@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/ESELECT_f.png" align="center" />
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_ESELECT_f">
+    <refsection xml:id="Contents_ESELECT_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_ESELECT_f">Description</xref>
+                <para><link linkend="Description_ESELECT_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_ESELECT_f">Parameters</xref>
+                <para><link linkend="Dialogbox_ESELECT_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_ESELECT_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_ESELECT_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_ESELECT_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_ESELECT_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_ESELECT_f">Example</xref>
+                <para><link linkend="Example_ESELECT_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_ESELECT_f">
+    <refsection xml:id="Description_ESELECT_f">
         <title>Description</title>
         <para>
             Special block similar to If-Then-Else. Input and output are synchronized.
@@ -111,15 +111,13 @@
             input is redirected to the second command output; et cætera...
         </para>
     </refsection>
-    <refsection id="Dialogbox_ESELECT_f">
+    <refsection xml:id="Dialogbox_ESELECT_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/ESELECT_f_gui.gif" align="center"
-                    style="float:right" />
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/ESELECT_f_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -146,7 +144,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_ESELECT_f">
+    <refsection xml:id="Defaultproperties_ESELECT_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -202,7 +200,7 @@
         </itemizedlist>
         <para />
     </refsection>
-    <refsection id="Interfacingfunction_ESELECT_f">
+    <refsection xml:id="Interfacingfunction_ESELECT_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -210,40 +208,41 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_ESELECT_f">
+    <refsection xml:id="Example_ESELECT_f">
         <title>Examples</title>
 
-        <refsect3 id="Example_1_ESELECT_f">
-            <title>Example 1</title>
-            <para>The first event port outputs when the input value is less than 2.</para>
-            <para>
-                <link type="scilab"
-                    linkend="scilab.xcos/xcos/examples/events_pal/ESELECT_f_Example.zcos">
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata align="center"
-                                fileref="../../../../examples/events_pal/ESELECT_f_Example.zcos" />
-                        </imageobject>
-                    </inlinemediaobject>
-                </link>
-            </para>
-        </refsect3>
+        <para>
+            <emphasis role="bold">Example 1</emphasis>
+        </para>
+        <para>The first event port outputs when the input value is less than 2.</para>
+        <para>
+            <link type="scilab"
+                linkend="scilab.xcos/xcos/examples/events_pal/ESELECT_f_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center"
+                            fileref="../../../../examples/events_pal/ESELECT_f_Example.zcos" />
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
 
-        <refsect3 id="Example_2_ESELECT_f">
-            <title>Example 2</title>
-            <para>Input values can be categorized using event outputs. This trigger independent
-                data-flow with synchronous execution.</para>
-            <para>
-                <link type="scilab"
-                    linkend="scilab.xcos/xcos/examples/events_pal/ESELECT_f_Example_4events.zcos">
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata align="center"
-                                fileref="../../../../examples/events_pal/ESELECT_f_Example_4events.zcos" />
-                        </imageobject>
-                    </inlinemediaobject>
-                </link>
-            </para>
-        </refsect3>
+        <para>
+            <emphasis role="bold">Example 2</emphasis>
+        </para>
+        <para>Input values can be categorized using event outputs. This trigger independent
+            data-flow with synchronous execution.</para>
+        <para>
+            <link type="scilab"
+                linkend="scilab.xcos/xcos/examples/events_pal/ESELECT_f_Example_4events.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center"
+                            fileref="../../../../examples/events_pal/ESELECT_f_Example_4events.zcos" />
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
+
     </refsection>
 </refentry>

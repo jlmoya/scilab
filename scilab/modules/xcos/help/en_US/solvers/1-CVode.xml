@@ -48,25 +48,25 @@
                 \sum_{i=0}^{K_1} \alpha_{n,i} y_{n-i} + h_n\sum_{i=0}^{K_2} \beta_{n,i} \dot{y}_{n-i} = 0,\hspace{10 mm} (1)
                 \end{eqnarray}
             </latex>
-            <para>
-                with
-                <emphasis>
-                    y<subscript>n</subscript>
-                </emphasis>
-                the approximation of
-                <emphasis>
-                    y(t<subscript>n</subscript>)
-                </emphasis>
-                , and
-                <emphasis>
-                    h<subscript>n</subscript>
-                </emphasis>
-                =
-                <emphasis>
-                    t<subscript>n</subscript> - t<subscript>n-1</subscript>
-                </emphasis>
-                the step size.
-            </para>
+        </para>
+        <para>
+            with
+            <emphasis>
+                y<subscript>n</subscript>
+            </emphasis>
+            the approximation of
+            <emphasis>
+                y(t<subscript>n</subscript>)
+            </emphasis>
+            , and
+            <emphasis>
+                h<subscript>n</subscript>
+            </emphasis>
+            =
+            <emphasis>
+                t<subscript>n</subscript> - t<subscript>n-1</subscript>
+            </emphasis>
+            the step size.
         </para>
         <para>
             These implicit methods are characterized by their respective order <emphasis>q</emphasis>, which indicates the number of intermediate points required to compute
@@ -78,11 +78,11 @@
         <para>
             This is where the difference between <emphasis>BDF</emphasis> and <emphasis>Adams</emphasis> intervenes (<emphasis>Backward Differentiation Formula</emphasis> and <emphasis>Adams-Moulton formula</emphasis>):
         </para>
-        <para>
-            <caution>
+        <caution>
+            <para>
                 If the problem is stiff, the user should select <emphasis>BDF</emphasis>:
-            </caution>
-        </para>
+            </para>
+        </caution>
         <itemizedlist>
             <listitem>
                  <para><emphasis>q</emphasis>, the order of the method, is set between 1 and 5 (automated),
@@ -117,7 +117,7 @@
             For either choice and at each step, injecting this integration in <emphasis>(1)</emphasis> yields the nonlinear system:
         </para>
         <para>
-            <latex scilab:localized="true">
+            <latex localized="true">
                 G(y_n)\equiv y_n-h_n\beta_{n,0}f(t_n,y_n)-a_n=0, \hspace{2 mm} where \hspace{2 mm} a_n\equiv \sum_{i&gt;0} (\alpha_{n,i} y_{n-i} + h_n\beta_{n,i}\dot{y}_{n-i})
             </latex>
         </para>
@@ -139,9 +139,8 @@
                         y<subscript>n(0)</subscript>
                     </emphasis>
                     by iterating the formula:
-                    </para>
-                </listitem>
-            <para>  </para>
+                </para>
+            </listitem>
             <listitem>
                  <para><emphasis role="bold">Newton:</emphasis> here, we use an implemented direct dense solver on the linear system:
                     </para>
@@ -292,7 +291,7 @@ Time for Adams / Functional:
     <refsection>
         <title>Bibliography</title>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Sundials Documentation</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Sundials Documentation</link>
         </para>
     </refsection>
 </refentry>

@@ -93,7 +93,7 @@
         <para>
             where <literal>y0</literal> is the
             initial guess, <literal>y</literal> is the
-            approximate solution yielded by the solver given default tolerance (which can be changed in <term>options</term>). 
+            approximate solution yielded by the solver given default tolerance (which can be changed in <literal>options</literal>). 
             The right hand side can be computed by a Scilab function with one argument, but if you need to pass extra parameters and/or want to 
             use DLL entrypoints see the <link linkend="sundials_user_functions">user functions</link> help page. 
         </para>
@@ -226,7 +226,7 @@
 <refsection role="description">
     <title>Extra output and statistics</title>
     <para>
-        The <term>extra</term> optional output argument is a MList with fields:
+        The <literal>extra</literal> optional output argument is a MList with fields:
     </para>
     <para>
         <informaltable border='1'>
@@ -317,7 +317,7 @@
 A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, D. E. Shumaker, and C. S. Woodward, "SUNDIALS: Suite of Nonlinear and Differential/Algebraic Equation Solvers," ACM Transactions on Mathematical Software, 31(3), pp. 363-396, 2005. Also available as LLNL technical report UCRL-JP-200037.
  </para>
  <para>
-     Alan C. Hindmarsh and Radu Serban and Cody J. Balos and David J. Gardner and Daniel R. Reynolds and Carol S. Woodward, "User Documentation for kinsol, 2021, v6.1.1, available online at <ulink url="https://sundials.readthedocs.io/en/latest/kinsol/index.html">https://sundials.readthedocs.io/en/latest/kinsol</ulink>
+     Alan C. Hindmarsh and Radu Serban and Cody J. Balos and David J. Gardner and Daniel R. Reynolds and Carol S. Woodward, "User Documentation for kinsol, 2021, v6.1.1, available online at <link xlink:href="https://sundials.readthedocs.io/en/latest/kinsol/index.html">https://sundials.readthedocs.io/en/latest/kinsol</link>
      </para>
     </refsection>
 </refentry>

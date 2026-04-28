@@ -88,30 +88,32 @@
                                 <th align="left">fontname</th>
                                 <th align="left">font_style</th>
                                 <td>
-                                    Ten font names are available (case and space unsensitive string),
-                                    or their related id number:
-                                    <table>
-                                        <tr>
-                                            <td>0</td><td>"courrier"</td><td/>
-                                            <td>2</td><td>"times"</td><td/>
-                                            <td>6</td><td>"helvetica"</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td><td>"symbol"</td><td/>
-                                            <td>3</td><td>"times italic"</td><td/>
-                                            <td>7</td><td>"helvetica italic"</td>
-                                        </tr>
-                                        <tr>
-                                            <td/><td/><td/>
-                                            <td>4</td><td>"times bold"</td><td/>
-                                            <td>8</td><td>"helvetica bold"</td>
-                                        </tr>
-                                        <tr>
-                                            <td/><td/><td/>
-                                            <td>5</td><td>"times bold italic"</td><td/>
-                                            <td>9</td><td>"helvetica bold italic"</td>
-                                        </tr>
-                                    </table>
+                                    <para>
+                                        Ten font names are available (case and space unsensitive string),
+                                        or their related id number:
+                                        <table>
+                                            <tr>
+                                                <td>0</td><td>"courrier"</td><td/>
+                                                <td>2</td><td>"times"</td><td/>
+                                                <td>6</td><td>"helvetica"</td>
+                                            </tr>
+                                            <tr>
+                                                <td>1</td><td>"symbol"</td><td/>
+                                                <td>3</td><td>"times italic"</td><td/>
+                                                <td>7</td><td>"helvetica italic"</td>
+                                            </tr>
+                                            <tr>
+                                                <td/><td/><td/>
+                                                <td>4</td><td>"times bold"</td><td/>
+                                                <td>8</td><td>"helvetica bold"</td>
+                                            </tr>
+                                            <tr>
+                                                <td/><td/><td/>
+                                                <td>5</td><td>"times bold italic"</td><td/>
+                                                <td>9</td><td>"helvetica bold italic"</td>
+                                            </tr>
+                                        </table>
+                                    </para>
                                     <para>
                                         For instance, 3, "3", "times italic", "timesitalic" or
                                         "TimesItalic" are equivalent.
@@ -241,8 +243,10 @@
             in console-oriented syntaxes.
         </para>
         <warning>
-            When an axes handle is specified as the target axes, it becomes the current axes
-            and remains as is after leaving title().
+            <para>
+                When an axes handle is specified as the target axes, it becomes the current axes
+                and remains as is after leaving title().
+            </para>
         </warning>
     </refsection>
     <refsection>

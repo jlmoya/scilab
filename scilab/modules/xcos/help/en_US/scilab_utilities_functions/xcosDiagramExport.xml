@@ -19,7 +19,7 @@
           xcosDiagramExport(scs_m, "%s.png")
         </synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_xcosDiagramExport">
+    <refsection xml:id="Parameters_xcosDiagramExport">
         <title>Arguments</title>
         <itemizedlist>
             <listitem>
@@ -34,7 +34,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_xcosDiagramExport">
+    <refsection xml:id="Description_xcosDiagramExport">
         <title>Description</title>
         <para>The command export the diagram to an image as if the user selected the "File - Export" menu. By default the <link linkend="scicos_diagram">scicos_diagram</link> data structure is rendered as a single layer into the file. The file format is detected by the file extension.
         </para>

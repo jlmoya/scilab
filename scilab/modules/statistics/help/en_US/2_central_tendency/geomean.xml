@@ -64,10 +64,10 @@
                         If <varname>X</varname> is a matrix, we have:
                         <itemizedlist>
                             <listitem>
-                                <literal>GM = geomean(X,1)  =&gt;  GM(1,j) = geomean(X(:,j))</literal>
+                                <para><literal>GM = geomean(X,1)  =&gt;  GM(1,j) = geomean(X(:,j))</literal></para>
                             </listitem>
                             <listitem>
-                                <literal>GM = geomean(X,2)  =&gt;  GM(i,1) = geomean(X(i,:))</literal>
+                                <para><literal>GM = geomean(X,2)  =&gt;  GM(i,1) = geomean(X(i,:))</literal></para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -84,24 +84,25 @@
             If <varname>X</varname> stores only positive or null values, <varname>gm</varname> or <varname>GM</varname> are real. Otherwise they are most often complex.
         </para>
         <note>
-            If <varname>X</varname> is sparse-encoded, then
-            <itemizedlist>
-                <listitem>
-                     <para>it is reencoded in full format before being processed.</para></listitem>
+            <para>
+                If <varname>X</varname> is sparse-encoded, then
+                <itemizedlist>
                     <listitem>
-                         <para><varname>gm</varname> is always full-encoded.
-                        </para>
+                        <para>it is reencoded in full format before being processed.</para>
                     </listitem>
                     <listitem>
-                         <para><varname>GM</varname> is sparse-encoded as well.
-                        </para>
+                        <para><varname>gm</varname> is always full-encoded.</para>
+                    </listitem>
+                    <listitem>
+                        <para><varname>GM</varname> is sparse-encoded as well.</para>
                     </listitem>
                 </itemizedlist>
-            </note>
-        </refsection>
-        <refsection>
-            <title>Examples</title>
-            <programlisting role="example"><![CDATA[
+            </para>
+        </note>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
     geomean(1:10) // Returns factorial(10)^(1/10) = 4.5287286881167648
     
     // Projected geomean:
@@ -178,23 +179,23 @@
     --> D(1)*(1+mgr/100)^(0:7)
      ans  =
        10.   13.2   17.44   23.02   30.4   40.15   53.01   70.
-    ]]></screen>
-        </refsection>
-        <refsection role="see also">
-            <title>See also</title>
-            <simplelist type="inline">
-                <member>
-                    <link linkend="prod">prod</link>
-                </member>
-                <member>
-                    <link linkend="harmean">harmean</link>
-                </member>
-            </simplelist>
-        </refsection>
-        <refsection>
-            <title>Bibliography</title>
-            <para>
-                Wonacott, T.H. &amp; Wonacott, R.J.; Introductory Statistics, fifth edition, J.Wiley &amp; Sons, 1990.
-            </para>
-        </refsection>
-    </refentry>
+        ]]></screen>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="prod">prod</link>
+            </member>
+            <member>
+                <link linkend="harmean">harmean</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection>
+        <title>Bibliography</title>
+        <para>
+            Wonacott, T.H. &amp; Wonacott, R.J.; Introductory Statistics, fifth edition, J.Wiley &amp; Sons, 1990.
+        </para>
+    </refsection>
+</refentry>

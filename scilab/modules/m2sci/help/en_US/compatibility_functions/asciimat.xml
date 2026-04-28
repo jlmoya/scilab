@@ -91,77 +91,84 @@ asciimat(['ab';'cd']) + asciimat(['ef';'gh'])
 asciimat(['ab';'cd']) - asciimat(['ef';'gh'])
         ]]></programlisting>
         </para>
+        <warning>
+            <para>
+                <literal>asciimat(…)</literal> should not be used out of the M2Sci converter.
+            </para>
+        </warning>
+
+        <para>
+            <emphasis role="bold">unicodes = asciimat(text)</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">For a scalar or row</emphasis> <varname>text</varname>,
+            <literal>asciimat(text)</literal> is equal to <literal>ascii(text)</literal>.
+            All strings are glued together before building the row vector of codes of their
+            characters.
+        </para>
         <para>
             <warning>
-                <literal>asciimat(…)</literal> should not be used out of the M2Sci converter.
+                <para>
+                    <emphasis role="bold">For any <varname>text</varname> array of any sizes,
+                    made only of empty strings ""</emphasis>, <literal>asciimat(text)</literal>
+                    returns []. Indeed, <literal>asciimat(…)</literal> considers "" as a void vector
+                    of (indexed) characters as in Octave/Matlab, not as a Scilab character string.
+                </para>
             </warning>
         </para>
-        <refsect3>
-            <title>unicodes = asciimat(text)</title>
-            <para>
-                <emphasis role="bold">For a scalar or row</emphasis> <varname>text</varname>,
-                <literal>asciimat(text)</literal> is equal to <literal>ascii(text)</literal>.
-                All strings are glued together before building the row vector of codes of their
-                characters.
-            </para>
-            <para>
-                <warning>
-                <emphasis role="bold">For any <varname>text</varname> array of any sizes,
-                made only of empty strings ""</emphasis>, <literal>asciimat(text)</literal>
-                returns []. Indeed, <literal>asciimat(…)</literal> considers "" as a void vector
-                of (indexed) characters as in Octave/Matlab, not as a Scilab character string.
-                </warning>
-            </para>
-            <para>
-                <emphasis role="bold">For a 2D matrix</emphasis> <varname>text</varname>,
-                <literal>asciimat(text)</literal> builds a unique column of text by gluing
-                <varname>text</varname> columns along rows.
-            </para>
-            <para>
-                Then, for each row/string of the column, the row vector of ASCII or
-                UTF-8 codes of all its characters is computed.
-            </para>
-            <para>
-                Finally, all resulting row vectors of codes are vertically concatenated to
-                build the <varname>unicodes</varname> matrix. Too short vectors of codes
-                are beforehand padded with the ascii(" ")==32 code.
-            </para>
-            <para>
-                <emphasis role="bold">For an hypermatrix</emphasis> of <varname>text</varname>,
-                the processing is basically the same, as if all <varname>text</varname>
-                rows over all dimensions &gt; 2 were beforehand stacked into a 2D matrix.
-                The resulting 2D <varname>unicodes</varname> matrix is finally reshaped into
-                an hypermatrix..
-            </para>
-            <para>
-                The sizes of <varname>unicodes</varname> and <varname>text</varname> arrays
-                differ only by their number of columns.
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>text = asciimat(unicodes)</title>
-            <para>
-                <emphasis role="bold">For a scalar or a row </emphasis> <varname>unicodes</varname>,
-                <literal>asciimat(unicodes)</literal> is equal to <literal>ascii(unicodes)</literal>.
-                It returns the character string whose characters have the given codes.
-                <warning>
+        <para>
+            <emphasis role="bold">For a 2D matrix</emphasis> <varname>text</varname>,
+            <literal>asciimat(text)</literal> builds a unique column of text by gluing
+            <varname>text</varname> columns along rows.
+        </para>
+        <para>
+            Then, for each row/string of the column, the row vector of ASCII or
+            UTF-8 codes of all its characters is computed.
+        </para>
+        <para>
+            Finally, all resulting row vectors of codes are vertically concatenated to
+            build the <varname>unicodes</varname> matrix. Too short vectors of codes
+            are beforehand padded with the ascii(" ")==32 code.
+        </para>
+        <para>
+            <emphasis role="bold">For an hypermatrix</emphasis> of <varname>text</varname>,
+            the processing is basically the same, as if all <varname>text</varname>
+            rows over all dimensions &gt; 2 were beforehand stacked into a 2D matrix.
+            The resulting 2D <varname>unicodes</varname> matrix is finally reshaped into
+            an hypermatrix..
+        </para>
+        <para>
+            The sizes of <varname>unicodes</varname> and <varname>text</varname> arrays
+            differ only by their number of columns.
+        </para>
+
+        <para>
+            <emphasis role="bold">text = asciimat(unicodes)</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">For a scalar or a row </emphasis> <varname>unicodes</varname>,
+            <literal>asciimat(unicodes)</literal> is equal to <literal>ascii(unicodes)</literal>.
+            It returns the character string whose characters have the given codes.
+            <warning>
+                <para>
                     Zeros stand for the code of the empty character "", as the true
                     ascii(0) character is currently not supported in Scilab 6.
-                </warning>
-            </para>
-            <para>
-                <emphasis role="bold">For a column, matrix or hypermatrix</emphasis>
-                <varname>unicodes</varname>, each <varname>unicodes</varname> row is
-                processed separately and builds a single Scilab character string.
-            </para>
-            <para>
-                All trailing ascii(32) spaces of built character strings are trimmed.
-            </para>
-            <para>
-                Finally, <varname>text</varname> has the size of <varname>unicodes</varname>,
-                except that <literal>size(text,2)==1</literal>.
-            </para>
-        </refsect3>
+                </para>
+            </warning>
+        </para>
+        <para>
+            <emphasis role="bold">For a column, matrix or hypermatrix</emphasis>
+            <varname>unicodes</varname>, each <varname>unicodes</varname> row is
+            processed separately and builds a single Scilab character string.
+        </para>
+        <para>
+            All trailing ascii(32) spaces of built character strings are trimmed.
+        </para>
+        <para>
+            Finally, <varname>text</varname> has the size of <varname>unicodes</varname>,
+            except that <literal>size(text,2)==1</literal>.
+        </para>
+
     </refsection>
     <refsection>
         <title>Examples</title>

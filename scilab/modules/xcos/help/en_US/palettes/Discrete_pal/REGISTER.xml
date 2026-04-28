@@ -28,50 +28,49 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/REGISTER.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_REGISTER">
+    <refsection xml:id="Contents_REGISTER">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_REGISTER">Description</xref>
+                <para><link linkend="Description_REGISTER">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_REGISTER">Parameters</xref>
+                <para><link linkend="Dialogbox_REGISTER">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_REGISTER">Default properties</xref>
+                <para><link linkend="Defaultproperties_REGISTER">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_REGISTER">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_REGISTER">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_REGISTER">Computational function</xref>
+                <para><link linkend="Computationalfunction_REGISTER">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_REGISTER">Example</xref>
+                <para><link linkend="Example_REGISTER">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_REGISTER">
+    <refsection xml:id="Description_REGISTER">
         <title>Description</title>
         <para>
             This block realizes a shift register. At every input event, the  register is shifted
             one step.
         </para>
     </refsection>
-    <refsection id="Dialogbox_REGISTER">
+    <refsection xml:id="Dialogbox_REGISTER">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/REGISTER_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/REGISTER_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -89,7 +88,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_REGISTER">
+    <refsection xml:id="Defaultproperties_REGISTER">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +161,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_REGISTER">
+    <refsection xml:id="Example_REGISTER">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/discrete_pal/en_US/DELAY_f_2_en_US.zcos">
@@ -180,7 +179,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_REGISTER">
+    <refsection xml:id="Interfacingfunction_REGISTER">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -188,7 +187,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_REGISTER">
+    <refsection xml:id="Computationalfunction_REGISTER">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

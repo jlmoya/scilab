@@ -31,52 +31,51 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/INVBLK.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_INVBLK">
+    <refsection xml:id="Contents_INVBLK">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_INVBLK">Description</xref>
+                <para><link linkend="Description_INVBLK">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_INVBLK">Parameters</xref>
+                <para><link linkend="Dialogbox_INVBLK">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_INVBLK">Default properties</xref>
+                <para><link linkend="Defaultproperties_INVBLK">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_INVBLK">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_INVBLK">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_INVBLK">Computational function</xref>
+                <para><link linkend="Computationalfunction_INVBLK">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_INVBLK">See also</xref>
+                <para><link linkend="Seealso_INVBLK">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_INVBLK">
+    <refsection xml:id="Description_INVBLK">
         <title>Description</title>
         <para>
             This block computes the output vector y with y[i]=1/u[i] where u is the input vector.
             The input and output sizes are determined by the context.
         </para>
     </refsection>
-    <refsection id="Dialogbox_INVBLK">
+    <refsection xml:id="Dialogbox_INVBLK">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/INVBLK_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/INVBLK_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -87,7 +86,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_INVBLK">
+    <refsection xml:id="Defaultproperties_INVBLK">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -160,7 +159,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_INVBLK">
+    <refsection xml:id="Interfacingfunction_INVBLK">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -168,7 +167,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_INVBLK">
+    <refsection xml:id="Computationalfunction_INVBLK">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

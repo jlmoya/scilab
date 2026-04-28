@@ -31,34 +31,34 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/IFTHEL_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_IFTHEL_f">
+    <refsection xml:id="Contents_IFTHEL_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_IFTHEL_f">Description</xref>
+                <para><link linkend="Description_IFTHEL_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_IFTHEL_f">Parameters</xref>
+                <para><link linkend="Dialogbox_IFTHEL_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_IFTHEL_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_IFTHEL_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_IFTHEL_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_IFTHEL_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_IFTHEL_f">Example</xref>
+                <para><link linkend="Example_IFTHEL_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_IFTHEL_f">
+    <refsection xml:id="Description_IFTHEL_f">
         <title>Description</title>
         <para>
             One event is generated on one of the output event ports when an input
@@ -67,13 +67,12 @@
             This is a Synchro block, , input and output event are synchronized.
         </para>
     </refsection>
-    <refsection id="Dialogbox_IFTHEL_f">
+    <refsection xml:id="Dialogbox_IFTHEL_f">
         <title>Parameters</title>
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../../../../images/gui/IFTHEL_f_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    <imagedata fileref="../../../../images/gui/IFTHEL_f_gui.gif" align="center"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
@@ -97,7 +96,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_IFTHEL_f">
+    <refsection xml:id="Defaultproperties_IFTHEL_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +161,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_IFTHEL_f">
+    <refsection xml:id="Interfacingfunction_IFTHEL_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -170,8 +169,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_IFTHEL_f">
+    <refsection xml:id="Example_IFTHEL_f">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/IFTHEL_f_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -179,5 +179,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

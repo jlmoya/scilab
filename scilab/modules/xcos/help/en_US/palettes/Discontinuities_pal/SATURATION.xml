@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SATURATION.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_SATURATION">
+    <refsection xml:id="Contents_SATURATION">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SATURATION">Description</xref>
+                <para><link linkend="Description_SATURATION">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SATURATION">Parameters</xref>
+                <para><link linkend="Dialogbox_SATURATION">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SATURATION">Default properties</xref>
+                <para><link linkend="Defaultproperties_SATURATION">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SATURATION">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_SATURATION">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_SATURATION">Computational function</xref>
+                <para><link linkend="Computationalfunction_SATURATION">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_SATURATION">Example</xref>
+                <para><link linkend="Example_SATURATION">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_SATURATION">
+    <refsection xml:id="Description_SATURATION">
         <title>Description</title>
         <para>
             The Saturation block imposes upper and lower bounds on a signal. When
@@ -72,14 +72,13 @@
             value.
         </para>
     </refsection>
-    <refsection id="Dialogbox_SATURATION">
+    <refsection xml:id="Dialogbox_SATURATION">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/SATURATION_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/SATURATION_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -113,7 +112,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_SATURATION">
+    <refsection xml:id="Defaultproperties_SATURATION">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -186,7 +185,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_SATURATION">
+    <refsection xml:id="Interfacingfunction_SATURATION">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -194,7 +193,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SATURATION">
+    <refsection xml:id="Computationalfunction_SATURATION">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -202,9 +201,11 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_SATURATION">
+    <refsection xml:id="Example_SATURATION">
         <title>Example</title>
-        A sine ceilled at 0.6:
+        <para>
+            A sine ceilled at 0.6:
+        </para>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/discontinuities_pal/SATURATION_Example.zcos">
                 <inlinemediaobject>

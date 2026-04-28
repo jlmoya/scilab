@@ -83,8 +83,10 @@
             uniform.
         </para>
         <note>
-            The positions of commutations can be retrieved with
-            <literal>find(u(2:$) &lt;&gt; u(1:$-1))</literal>.
+            <para>
+                The positions of commutations can be retrieved with
+                <literal>find(u(2:$) &lt;&gt; u(1:$-1))</literal>.
+            </para>
         </note>
         <para>
             <literal>prbs_a(n,,positions)</literal> does the same, but sets commutations at the

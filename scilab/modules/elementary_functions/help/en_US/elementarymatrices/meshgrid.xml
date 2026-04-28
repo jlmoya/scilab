@@ -66,15 +66,15 @@
             meshgrid(..) builds matrices or 3-D hypermatrices by replicating input vectors
             along 2 or 3 dimensions.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 To create arrays of size [<emphasis role="bold">nx</emphasis>, ny] instead of
                 [ny, nx], or with more than 3 dimensions, please use
                 <literal>ndgrid(x, y)</literal> or <literal>ndgrid(x, y, z,..)</literal>.
-            </note>
-        </para>
-        <para>
-            <warning>
+            </para>
+        </note>
+        <warning>
+            <para>
                 Most of Scilab 2D or 3D graphical functions like <literal>champ()</literal>,
                 <literal>grayplot()</literal>, <literal>Sgrayplot()</literal>,
                 <literal>plot3d()</literal>, <literal>contour()</literal>, etc.. work with grids
@@ -82,8 +82,8 @@
                 <literal>meshgrid()</literal>. Data computed on grids coming from
                 <literal>meshgrid()</literal> will require being transposed (please see the
                 example thereafter).
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>

@@ -274,14 +274,15 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-        <refsect3>
-            <title>Property Name, Value pairs</title>
-            <para>
-                A series of property &lt;Name,Value&gt; pairs can be used to specify
-                the filling color of markers body, the color and thickness of the markers edges,
-                or the points on which a datatip must be created.
-            </para>
-        </refsect3>
+
+        <para>
+            <emphasis role="bold">Property Name, Value pairs</emphasis>
+        </para>
+        <para>
+            A series of property &lt;Name,Value&gt; pairs can be used to specify
+            the filling color of markers body, the color and thickness of the markers edges,
+            or the points on which a datatip must be created.
+        </para>
         <variablelist>
             <varlistentry>
                 <term>"marker",value  or  "markerStyle",value</term>
@@ -337,6 +338,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
+
     </refsection>
     <refsection>
         <title>Description</title>
@@ -354,8 +356,10 @@
             For more details see the description of the arguments and the examples.
         </para>
         <note>
-          To skip an argument, just .. skip it, or replace it with <literal>[]</literal>, like in
-          <literal>scatter3d(x,y, , mcolors)</literal> or <literal>scatter3d(x,y,[], mcolors)</literal>.
+            <para>
+                To skip an argument, just .. skip it, or replace it with <literal>[]</literal>, like in
+                <literal>scatter3d(x,y, , mcolors)</literal> or <literal>scatter3d(x,y,[], mcolors)</literal>.
+            </para>
         </note>
     </refsection>
     <refsection>

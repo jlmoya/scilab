@@ -31,37 +31,37 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/IdealTransformer.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_IdealTransformer">
+    <refsection xml:id="Contents_IdealTransformer">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_IdealTransformer">Description</xref>
+                <para><link linkend="Description_IdealTransformer">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_IdealTransformer">Parameters</xref>
+                <para><link linkend="Dialogbox_IdealTransformer">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_IdealTransformer">Default properties</xref>
+                <para><link linkend="Defaultproperties_IdealTransformer">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_IdealTransformer">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_IdealTransformer">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="IdealTransformer">Modelica model</xref>
+                <para><link linkend="IdealTransformer">Modelica model</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_IdealTransformer">Example</xref>
+                <para><link linkend="Example_IdealTransformer">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_IdealTransformer">
+    <refsection xml:id="Description_IdealTransformer">
         <title>Description</title>
         <para>
             The ideal transformer is an ideal two-port resistive circuit element which is
@@ -71,14 +71,13 @@
         <para>
         </para>
     </refsection>
-    <refsection id="Dialogbox_IdealTransformer">
+    <refsection xml:id="Dialogbox_IdealTransformer">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/IdealTransformer_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/IdealTransformer_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -89,7 +88,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_IdealTransformer">
+    <refsection xml:id="Defaultproperties_IdealTransformer">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -157,7 +156,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_IdealTransformer">
+    <refsection xml:id="Interfacingfunction_IdealTransformer">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -165,7 +164,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_IdealTransformer">
+    <refsection xml:id="Modelicamodel_IdealTransformer">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>
@@ -173,7 +172,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_IdealTransformer">
+    <refsection xml:id="Example_IdealTransformer">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/electrical_pal/IdealTransformer_Example.zcos">

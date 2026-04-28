@@ -80,8 +80,8 @@
             All valid XPath requests are possible. For example to write the XPath request to
             set proxy settings in the main Scilab configuration file:
         </para>
-        <simplelist type="inline">
-            <member>
+        <itemizedlist>
+            <listitem>
                 <para>
                     Opens <literal>SCIHOME+'/XConfiguration.xml'</literal> and gets the
                     nodes names to access to the expected node:
@@ -106,11 +106,13 @@
                     The path will be <literal>"/interface/web/body/proxy"</literal>
                     (or to simplify <literal>"//web/body/proxy"</literal>).
                 </para>
-            </member>
-        <warning>
-            Modifying incorrectly some preferences can alter the Scilab's behaviour.
-        </warning>
-        </simplelist>
+                <warning>
+                    <para>
+                        Modifying incorrectly some preferences can alter the Scilab's behaviour.
+                    </para>
+                </warning>
+            </listitem>
+        </itemizedlist>
     </refsection>
     <refsection>
         <title>Examples</title>

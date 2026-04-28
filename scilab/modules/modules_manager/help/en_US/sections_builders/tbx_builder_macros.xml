@@ -49,9 +49,11 @@
             <literal>builder.sce</literal> scripts, when creating or updating a toolbox.
         </para>
         <warning>
-          The short name (id) <literal>tbx_name</literal> of the toolbox is retrieved as the basename
-          of the file <literal>toolbox_path/etc/*.start</literal>. This file must exists,
-          even if it is empty.
+            <para>
+                The short name (id) <literal>tbx_name</literal> of the toolbox is retrieved as the basename
+                of the file <literal>toolbox_path/etc/*.start</literal>. This file must exists,
+                even if it is empty.
+            </para>
        </warning>
         <para>
             <function>tbx_builder_macros</function> scans the <literal>toolbox_path</literal>

@@ -93,7 +93,7 @@
         <warning>
             <para>
                 If some <varname>X</varname> decimal components have a fractional part, it is
-                always trimmed to 0.<table/>
+                always trimmed to 0.
                 Example:
                 <literal>int8([-3.6, -2.5, -1.4, 1.3, 3.5, 6.7]) // = [-3, -2, -1, 1, 3, 6]</literal>.
             </para>
@@ -135,7 +135,9 @@
             </para>
         </warning>
         <warning>
-            Converting <literal>[]</literal> always keeps it as is, of type 1 (decimal type).
+            <para>
+                Converting <literal>[]</literal> always keeps it as is, of type 1 (decimal type).
+            </para>
         </warning>
         <para>
             <table>

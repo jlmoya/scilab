@@ -31,33 +31,33 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CLR.png" align="center" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CLR">
+    <refsection xml:id="Contents_CLR">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CLR">Description</xref>
+                <para><link linkend="Description_CLR">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CLR">Parameters</xref>
+                <para><link linkend="Dialogbox_CLR">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CLR">Default properties</xref>
+                <para><link linkend="Defaultproperties_CLR">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CLR">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CLR">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CLR">Computational function</xref>
+                <para><link linkend="Computationalfunction_CLR">Computational function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_CLR">
+    <refsection xml:id="Description_CLR">
         <title>Description</title>
         <para>
             This block realizes a SISO linear system represented by its rational transfer function
@@ -65,14 +65,14 @@
             proper (denominator degree must be less or equal to numerator degree).
         </para>
     </refsection>
-    <refsection id="Dialogbox_CLR">
+    <refsection xml:id="Dialogbox_CLR">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/CLR_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/CLR_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -82,17 +82,21 @@
                 <para> This must be a polynomial in s.</para>
                 <para> Properties : Type 'pol' of size 1. </para>
                 <warning>
+                    <para>
                     In the provided expression, any subexpression being an exponent given either by
                     a variable (of the context) whose name is more than 1-character long, or by an
                     expression (not a literal integer) must end with a space to be correctly
                     displayed on the block's icon.
-                    <para/>
+                    </para>
+                    <para>
                     This constrain has no consequence on the computational validity of the expression.
-                    <para/>
+                    </para>
+                    <para>
                     Examples: "s^12+1", "s^ +12+1", "s^+ 12+1" are all displayed as "s^{12}+1",
                     while "1+s^ab+s^2" will be displayed as "1+s^{ab+s^2}"
                     (but will be well computed as <literal>1 + s^ab + s^2</literal>).
                     To make it well displayed, "1+s^ab +s^2" will have to be entered (for instance).
+                    </para>
                 </warning>
             </listitem>
             <listitem>
@@ -106,7 +110,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_CLR">
+    <refsection xml:id="Defaultproperties_CLR">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -179,7 +183,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_CLR">
+    <refsection xml:id="Interfacingfunction_CLR">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -187,7 +191,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CLR">
+    <refsection xml:id="Computationalfunction_CLR">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

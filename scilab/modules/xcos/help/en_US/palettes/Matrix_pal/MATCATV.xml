@@ -31,41 +31,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATCATV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATCATV">
+    <refsection xml:id="Contents_MATCATV">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATCATV">Description</xref>
+                <para><link linkend="Description_MATCATV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATCATV">Parameters</xref>
+                <para><link linkend="Dialogbox_MATCATV">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATCATV">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATCATV">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="MATCATV">Example</xref>
+                <para><link linkend="MATCATV">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATCATV">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATCATV">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATCATV">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATCATV">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATCATV">See also</xref>
+                <para><link linkend="Seealso_MATCATV">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATCATV">
+    <refsection xml:id="Description_MATCATV">
         <title>Description</title>
         <para>
             The MATCATV Block outputs the vertical concatenation of multiple matrices. It is also called concatenation
@@ -78,14 +78,13 @@
         </para>
         <para>The equivalent of MATCATH in Scilab is y=[U1;U2;...;Un]</para>
     </refsection>
-    <refsection id="Dialogbox_MATCATV">
+    <refsection xml:id="Dialogbox_MATCATV">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATCATV_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATCATV_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -99,7 +98,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATCATV">
+    <refsection xml:id="Defaultproperties_MATCATV">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -176,7 +175,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_MATCATV">
+    <refsection xml:id="Example_MATCATV">
         <title>Example</title>
         <screen><![CDATA[
 A = [1 2; 3 4; 5 6]
@@ -185,6 +184,7 @@ The result of the vertical concatenation is:
 C = [1 2; 3 4; 5 6; 7 8; 9 10]
 ]]></screen>
         <para><emphasis role="bold">Example of Vertical Concatenation</emphasis></para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATCATV_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -192,9 +192,10 @@ C = [1 2; 3 4; 5 6; 7 8; 9 10]
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_MATCATV">
+    <refsection xml:id="Interfacingfunction_MATCATV">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -202,7 +203,7 @@ C = [1 2; 3 4; 5 6; 7 8; 9 10]
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATCATV">
+    <refsection xml:id="Computationalfunction_MATCATV">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

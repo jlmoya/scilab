@@ -91,70 +91,78 @@
 
     <refsection>
         <title>Description</title>
-        <refsect3>
-            <title>Continuous time domain</title>
+
+        <para>
+            <emphasis role="bold">Continuous time domain</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">X = riccati(A, B, C, "c")</emphasis> solves the matricial
+            Riccati equation:
+        </para>
+        <para>
+            <literal>A'*X + X*A - X*B*X + C = 0</literal>
+        </para>
+        <para>
+            <emphasis role="bold">X = riccati(H)</emphasis>
+            where <literal>H = [A, -B ; -C, -A']</literal> is the Hamiltonian matrix,
+            does the same, using the 'eigen' method, but is more stable.
+        </para>
+
+        <para>
+            <emphasis role="bold">Discrete time domain</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">X = riccati(A, B, C, "d")</emphasis> solves the Riccati equation:
+        </para>
+        <para>
+            <literal>A'*X*A - (A'*X*B<subscript>1</subscript>) / (B<subscript>2</subscript> +
+            B<subscript>1</subscript>'*X*B<subscript>1</subscript>) *
+            (B<subscript>1</subscript>'*X*A) + C - X = 0</literal>
+        </para>
+        <para>
+            with <literal>B = B<subscript>1</subscript> / B<subscript>2</subscript> *
+            B<subscript>1</subscript>'</literal>.
+        </para>
+        <para>
+            <emphasis role="bold">X = riccati(H, E)</emphasis> does the same, where
+            <literal>H = [A, zeros(n,n) ; -C, eye(n,n)]</literal> and
+            <literal>E = [eye(n,n), B ; zeros(n,n), A']</literal>
+            define the Hamiltonian pencil <literal>(E,H)</literal>.
+        </para>
+
+        <para>
+            <emphasis role="bold">Output options</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">[X1, X2] = riccati(..)</emphasis> provides
+            <literal>X1</literal> and <literal>X2</literal>, with <literal>X2</literal> invertible,
+            such that <literal>X = X1 / X2</literal>.
+        </para>
+        <para>
+            <literal>residual</literal> is the L1-norm of the actual equation's result. If
+            <literal>X</literal> is an actual solution, <literal>residual</literal> should be 0.
+            Most often its value is close to <literal>%eps*norm(X)</literal>.
+        </para>
+        <warning>
             <para>
-                <emphasis role="bold">X = riccati(A, B, C, "c")</emphasis> solves the matricial
-                Riccati equation:
-            </para>
-            <para>
-                <literal>A'*X + X*A - X*B*X + C = 0</literal>
-            </para>
-           <para>
-                <emphasis role="bold">X = riccati(H)</emphasis>
-                where <literal>H = [A, -B ; -C, -A']</literal> is the Hamiltonian matrix,
-                does the same, using the 'eigen' method, but is more stable.
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Discrete time domain</title>
-            <para>
-                <emphasis role="bold">X = riccati(A, B, C, "d")</emphasis> solves the Riccati equation:
-            </para>
-            <para>
-                <literal>A'*X*A - (A'*X*B<subscript>1</subscript>) / (B<subscript>2</subscript> +
-                B<subscript>1</subscript>'*X*B<subscript>1</subscript>) *
-                (B<subscript>1</subscript>'*X*A) + C - X = 0</literal>
-            </para>
-            <para>
-                with <literal>B = B<subscript>1</subscript> / B<subscript>2</subscript> *
-                B<subscript>1</subscript>'</literal>.
-            </para>
-            <para>
-                <emphasis role="bold">X = riccati(H, E)</emphasis> does the same, where
-                <literal>H = [A, zeros(n,n) ; -C, eye(n,n)]</literal> and
-                <literal>E = [eye(n,n), B ; zeros(n,n), A']</literal>
-                define the Hamiltonian pencil <literal>(E,H)</literal>.
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Output options</title>
-            <para>
-                <emphasis role="bold">[X1, X2] = riccati(..)</emphasis> provides
-                <literal>X1</literal> and <literal>X2</literal>, with <literal>X2</literal> invertible,
-                such that <literal>X = X1 / X2</literal>.
-            </para>
-            <para>
-                <literal>residual</literal> is the L1-norm of the actual equation's result. If
-                <literal>X</literal> is an actual solution, <literal>residual</literal> should be 0.
-                Most often its value is close to <literal>%eps*norm(X)</literal>.
-            </para>
-            <warning>
                 In the <literal>discrete</literal> case, sometimes
                 <literal>B<subscript>1</subscript></literal> and
                 <literal>B<subscript>2</subscript></literal> can't be retrieved from <literal>B</literal>.
                 Then <literal>residual</literal> can't be assessed and is set to <literal>%nan</literal>.
-            </warning>
-        </refsect3>
-        <warning>
-            When no solution is found, <literal>X=[]</literal> or <literal>X1=[]</literal> is
-            returned, and a warning is yielded.
+            </para>
         </warning>
+        <warning>
+            <para>
+                When no solution is found, <literal>X=[]</literal> or <literal>X1=[]</literal> is
+                returned, and a warning is yielded.
+            </para>
+        </warning>
+
     </refsection>
 
     <refsection>
         <title>Examples</title>
-        <emphasis role="bold">Continuous time domain</emphasis>
+        <para><emphasis role="bold">Continuous time domain</emphasis></para>
         <para>
         <programlisting role="example"><![CDATA[
 n = 3;
@@ -240,8 +248,7 @@ and(x==X)
 ]]></screen>
         </para>
 
-        <emphasis role="bold">Discrete time domain</emphasis>
-        <para/>
+        <para><emphasis role="bold">Discrete time domain</emphasis></para>
         <programlisting role="example"><![CDATA[
 // Eq: A'*X*A - (A'*X*B1) / (B2 + B1'*X*B1) * (B1'*X*A) + C - X = 0
 n = 4;

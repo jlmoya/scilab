@@ -42,11 +42,15 @@
             typeof <literal>listdelete</literal> that deletes the object to which it is assigned.
         </para>
         <note>
-            The overloading code of <literal>listdelete</literal> objects is 0.
+            <para>
+                The overloading code of <literal>listdelete</literal> objects is 0.
+            </para>
         </note>
         <warning>
-            Assigning <literal>null()</literal> to a variable deletes it. However, using
-            <code>clear</code> should be preferred to clear named objects.
+            <para>
+                Assigning <literal>null()</literal> to a variable deletes it. However, using
+                <code>clear</code> should be preferred to clear named objects.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -121,7 +125,7 @@ s.p = null()
         <emphasis role="bold">Deletion of a field of a Mlist or Tlist</emphasis>: No default
         destructor is defined:
     </para>
-    <programlisting role="example" id="null_tlist_mlist_overload"><![CDATA[
+    <programlisting role="example" xml:id="null_tlist_mlist_overload"><![CDATA[
 ML = mlist(["test" "b" "c" "rp" "t"],[%t %f], %i, 1+%s^2, ["abc" "de" "f"]);
 fieldnames(ML)'
 ML.rp

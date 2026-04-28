@@ -142,25 +142,28 @@
                             </tr>
                             <tr valign="top">
                                 <th>g</th>
-                                <td>: result: (ng × nd) matrix; or (ng × 1) column if <literal>G</literal>
-                                    accepts only one data point per call (much slower).
-                                    <itemizedlist>
-                                        <listitem>
-                                             <para>
-                                                Each column is related to a given data point and retuns its
-                                                gaps to the fitting model.
-                                            </para>
-                                        </listitem>
-                                        <listitem>
-                                             <para>
-                                                Each row is about a gap definition. <literal>G</literal> may
-                                                compute several types of gaps. For instance, the vertical
-                                                gaps may be returned in <literal>g(1,:)</literal> ; the
-                                                horizontal gaps in <literal>g(2,:)</literal> ; the nearest
-                                                distances in <literal>g(3,:)</literal> ; etc.
-                                            </para>
-                                        </listitem>
-                                    </itemizedlist>
+                                <td>
+                                    <para>
+                                        : result: (ng × nd) matrix; or (ng × 1) column if <literal>G</literal>
+                                        accepts only one data point per call (much slower).
+                                        <itemizedlist>
+                                            <listitem>
+                                                <para>
+                                                    Each column is related to a given data point and retuns its
+                                                    gaps to the fitting model.
+                                                </para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>
+                                                    Each row is about a gap definition. <literal>G</literal> may
+                                                    compute several types of gaps. For instance, the vertical
+                                                    gaps may be returned in <literal>g(1,:)</literal> ; the
+                                                    horizontal gaps in <literal>g(2,:)</literal> ; the nearest
+                                                    distances in <literal>g(3,:)</literal> ; etc.
+                                                </para>
+                                            </listitem>
+                                        </itemizedlist>
+                                    </para>
                                 </td>
                             </tr>
                         </table>
@@ -297,7 +300,9 @@
                             </tr>
                         </table>
                         <warning>
-                            Most of the reports are displayed in the Scilab console.
+                            <para>
+                                Most of the reports are displayed in the Scilab console.
+                            </para>
                         </warning>
                     </para>
                 </listitem>
@@ -465,11 +470,11 @@ xgrid(color("grey70"))
             gcf().axes_size = [520 550];
         </scilab:image>
         -->
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/datafit_A.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <para/>
         <para>
             <emphasis role="bold">Fitting a gaussian curve + sloping base (5 parameters)</emphasis>:
@@ -551,11 +556,11 @@ xgrid(color("grey70"))
             gcf().axes_size = [520 550];
         </scilab:image>
         -->
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/datafit_B.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <para/>
         <para>
             <emphasis role="bold">Extraction of 3 overlapping gaussian curves (9 parameters)</emphasis>:
@@ -768,11 +773,11 @@ xstring(-2.5, 0.9, "dmin = " + msprintf("%5.3f", dmin))
             gcf().axes_size = [520 550];
         </scilab:image>
         -->
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/datafit_C.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

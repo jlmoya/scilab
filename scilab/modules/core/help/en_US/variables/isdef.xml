@@ -62,12 +62,12 @@
             variable named <varname>name</varname> exists and <constant>%F</constant>
             otherwise.
         </para>
-        <para>
-            <caution>
+        <caution>
+            <para>
                 Caveats: a function which uses <function>isdef</function> may return a
                 result which depends on the environment!
-            </caution>
-        </para>
+            </para>
+        </caution>
         <para>
             <code>isdef(name, 'l')</code> returns <constant>%T</constant>
             if the variable named <varname>name</varname> exists in the local
@@ -81,7 +81,9 @@
             current function and <constant>%F</constant> otherwise.
         </para>
         <note>
-            Note: only the first letter of option <varname>where</varname> is taken into account.
+            <para>
+                Note: only the first letter of option <varname>where</varname> is taken into account.
+            </para>
         </note>
     </refsection>
     <refsection>

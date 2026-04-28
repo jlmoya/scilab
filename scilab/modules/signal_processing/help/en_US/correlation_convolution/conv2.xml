@@ -128,9 +128,8 @@
             </listitem>
         </itemizedlist>
         <para>
-            The separable form <literal>C=conv2(hrow,hcol,B [,shape])</literal>is equivalent to <literal>C=conv2(hrow(:)*hcol(:).',B [,shape])</literal>
+            The separable form <literal>C=conv2(hrow,hcol,B [,shape])</literal>is equivalent to <literal>C=conv2(hrow(:)*hcol(:).',B [,shape])</literal>.
         </para>
-        .
         <para>
             Note that <link linkend="convol2d">convol2d</link> can be more efficient for large arrays.
         </para>

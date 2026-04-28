@@ -30,10 +30,12 @@
         </para>
         <para>
             <caution>
-                The <literal>ode</literal> function checks if this variable
-                exists and in this case it uses it. For using default values you should
-                clear this variable. To create it you must execute the instruction
-                <literal>%ODEOPTIONS=odeoptions()</literal>.
+                <para>
+                    The <literal>ode</literal> function checks if this variable
+                    exists and in this case it uses it. For using default values you should
+                    clear this variable. To create it you must execute the instruction
+                    <literal>%ODEOPTIONS=odeoptions()</literal>.
+                </para>
             </caution>
         </para>
         <para>

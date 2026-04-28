@@ -31,34 +31,34 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Resistor.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_Resistor">
+    <refsection xml:id="Contents_Resistor">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_Resistor">Description</xref>
+                <para><link linkend="Description_Resistor">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_Resistor">Parameters</xref>
+                <para><link linkend="Dialogbox_Resistor">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_Resistor">Default properties</xref>
+                <para><link linkend="Defaultproperties_Resistor">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Resistor">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_Resistor">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Resistor">Modelica model</xref>
+                <para><link linkend="Resistor">Modelica model</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_Resistor">
+    <refsection xml:id="Description_Resistor">
         <title>Description</title>
         <para>
             A resistor is a two-port electrical component that resists an electric
@@ -69,14 +69,13 @@
             The electrical resistance (<literal>R</literal>) is equal to the voltage drop across (<literal>V</literal>) the resistor divided by the current (<literal>I</literal>) through the resistor.
         </para>
     </refsection>
-    <refsection id="Dialogbox_Resistor">
+    <refsection xml:id="Dialogbox_Resistor">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/Resistor_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/Resistor_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -87,7 +86,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_Resistor">
+    <refsection xml:id="Defaultproperties_Resistor">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -146,7 +145,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_Resistor">
+    <refsection xml:id="Interfacingfunction_Resistor">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -154,7 +153,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_Resistor">
+    <refsection xml:id="Modelicamodel_Resistor">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

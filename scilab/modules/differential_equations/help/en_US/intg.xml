@@ -174,9 +174,11 @@
             On the right, the spike is large enough to be covered by the integration points.
         </para>
         <note>
-            When we want to display the computed solution even if the solver has encountered an error,
-            we should add the third output argument <literal>ierr</literal>. Then errors become
-            simple warnings. This is mostly used in the case of rounding errors.
+            <para>
+                When we want to display the computed solution even if the solver has encountered an error,
+                we should add the third output argument <literal>ierr</literal>. Then errors become
+                simple warnings. This is mostly used in the case of rounding errors.
+            </para>
         </note>
     </refsection>
     <refsection>

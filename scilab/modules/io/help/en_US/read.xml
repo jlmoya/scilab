@@ -78,7 +78,9 @@
             vector). In this case n must be equal to 1.
         </para>
         <warning>
-          The character strings are truncated when they are longuer than 4093.
+            <para>
+                The character strings are truncated when they are longuer than 4093.
+            </para>
         </warning>
         <para>
             Examples for <literal>format</literal>:
@@ -101,7 +103,9 @@
             To read on the keyboard use <literal>read(%io(1),...)</literal>.
         </para>
         <note>
-            Last line of data files must be terminated by a newline to be taken into account.
+            <para>
+                Last line of data files must be terminated by a newline to be taken into account.
+            </para>
         </note>
     </refsection>
     <refsection>

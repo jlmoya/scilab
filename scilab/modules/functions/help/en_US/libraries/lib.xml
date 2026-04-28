@@ -129,10 +129,12 @@
             <link linkend="library">dedicated page</link>.
         </para>
         <note>
+            <para>
             <literal>load(lib_dir+"/lib")</literal> may be used instead of <literal>lib()</literal>
             to load the library. The library identifier is then the default one set when
             compiling and creating the library with <literal>genlib()</literal>. Its name is
             registered in the <literal>lib</literal> file.
+            </para>
             <para>
                 Hence, <literal>lib()</literal> (re)sets the library name, while
                 <literal>load()</literal> does not allow to set it.

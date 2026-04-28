@@ -32,41 +32,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CMSCOPE.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CMSCOPE">
+    <refsection xml:id="Contents_CMSCOPE">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CMSCOPE">Description</xref>
+                <para><link linkend="Description_CMSCOPE">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CMSCOPE">Parameters</xref>
+                <para><link linkend="Dialogbox_CMSCOPE">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CMSCOPE">Default properties</xref>
+                <para><link linkend="Defaultproperties_CMSCOPE">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CMSCOPE">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CMSCOPE">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CMSCOPE">Computational function</xref>
+                <para><link linkend="Computationalfunction_CMSCOPE">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CMSCOPE">Example</xref>
+                <para><link linkend="Example_CMSCOPE">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CMSCOPE">See also</xref>
+                <para><link linkend="Seealso_CMSCOPE">See also</link></para>
             </listitem>
         </itemizedlist>
         <para/>
     </refsection>
 
-    <refsection id="Description_CMSCOPE">
+    <refsection xml:id="Description_CMSCOPE">
         <title>Description</title>
         <para>
             When you start a simulation, Xcos open Scope windows.  The Scope
@@ -77,14 +77,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_CMSCOPE">
+    <refsection xml:id="Dialogbox_CMSCOPE">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/CMSCOPE_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/CMSCOPE_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -198,7 +197,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Defaultproperties_CMSCOPE">
+    <refsection xml:id="Defaultproperties_CMSCOPE">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -267,8 +266,9 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_CMSCOPE">
+    <refsection xml:id="Example_CMSCOPE">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/tests/unit_tests/cmscope.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -276,10 +276,10 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
-        <para/>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_CMSCOPE">
+    <refsection xml:id="Interfacingfunction_CMSCOPE">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -287,7 +287,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CMSCOPE">
+    <refsection xml:id="Computationalfunction_CMSCOPE">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

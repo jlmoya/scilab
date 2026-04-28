@@ -229,15 +229,15 @@
             <literal>x</literal> or <literal>y</literal> only), priority is given to columns
             rather than lines (see examples below).
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 When it is necessary and possible, <literal>plot</literal> transposes
                 <literal>x</literal> and <literal>y</literal>,
                 to get compatible dimensions; a warning is then issued. For instance,
                 when <literal>x</literal> has as many rows as <literal>y</literal> has columns.
                 If <literal>y</literal> is square, it is never transposed.
-            </warning>
-        </para>
+            </para>
+        </warning>
         <para>
             <literal>y</literal> can also be a function defined as a macro or a
             primitive. In this case, <literal>x</literal> data must be given (as a vector or

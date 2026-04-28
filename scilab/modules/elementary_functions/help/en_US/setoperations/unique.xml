@@ -105,11 +105,15 @@
                                     "c": <varname>ku</varname> is of size [1, size(M,2)], and <literal>U(:,ku) = M</literal>
                                                                                           </para>
                                                                                       </listitem>
-                        </itemizedlist><warning>
-                            <varname>ku</varname> is dense, even when <varname>M</varname> is sparse and the
-                            overall "*" mode is used.
-                        </warning></para>
-                              </listitem>
+                        </itemizedlist>
+                        <warning>
+                            <para>
+                                <varname>ku</varname> is dense, even when <varname>M</varname> is sparse and the
+                                overall "*" mode is used.
+                            </para>
+                        </warning>
+                    </para>
+                </listitem>
             </varlistentry>
             <varlistentry>
                 <term>nb</term>
@@ -156,8 +160,10 @@
         </para>
         <para>
             <note>
-                Complex numbers are sorted first by increasing magnitudes, then by increasing
-                phases on [-π,π].
+                <para>
+                    Complex numbers are sorted first by increasing magnitudes, then by increasing
+                    phases on [-π,π].
+                </para>
             </note>
         </para>
     </refsection>

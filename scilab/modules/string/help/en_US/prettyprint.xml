@@ -77,16 +77,16 @@
                         In HTML, the '_' delimiter value can be used to format the input matrix
                         without delimiter but with cells borders.
                     </para>
-                    <para>
-                        <warning>
+                    <warning>
+                        <para>
                             Delimiters used for the components defining a linear dynamical system
                             are always "(" and ")", even with <varname>delimiter</varname>="",
                             unless <varname>exportFormat</varname>="html4" is used: Then, "|"
                             is imposed as inner syslin delimiter. This is useful when the result
                             must be rendered in a Scilab GUI like <literal>messagebox()</literal>,
                             that supports only a restricted version of HTML.4
-                        </warning>
-                    </para>
+                        </para>
+                    </warning>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -172,8 +172,10 @@
             'html4' must be used to display linear dynamical systems in a Scilab GUI like messagebox().
         </para>
         <warning>
-            When an array of cells includes some matrices or other arrays, the same chosen delimiters
-            are used for the cells array and for its elements that are also arrays.
+            <para>
+                When an array of cells includes some matrices or other arrays, the same chosen delimiters
+                are used for the cells array and for its elements that are also arrays.
+            </para>
         </warning>
         <note>
             <para>
@@ -181,46 +183,48 @@
             <literal>format()</literal> function.
             </para>
         </note>
-        <refsect3>
-            <title>Rendering some MathML or/and LaTeX codes in a HTML page:</title>
+
+        <para>
+            <emphasis role="bold">Rendering some MathML or/and LaTeX codes in a HTML page:</emphasis>
+        </para>
+        <para>
+            Only the Firefox web browser supports natively the &lt;math&gt; MathML tag,
+            that can embed some mathML code, and renders it.
+        </para>
+        <para>
+            To render MathML code in <emphasis>any</emphasis> web browser,
+            <itemizedlist>
+                <listitem>
+                        <para>
+                        put the following HTML instruction only once before the first use of
+                        <literal>&lt;math&gt;</literal>:
+                        &lt;script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async/&gt;.
+                        This is typically done in the <literal>&lt;head&gt;..&lt;/head&gt;</literal>
+                        section of the HTML page.
+                    </para>
+                </listitem>
+                <listitem>
+                        <para>
+                        put every set of MathML instructions between <literal>&lt;math&gt;..&lt;/math&gt;</literal>.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <note>
             <para>
-                Only the Firefox web browser supports natively the &lt;math&gt; MathML tag,
-                that can embed some mathML code, and renders it.
+                The same <literal>&lt;script..&gt;</literal> instruction declaring the
+                <emphasis>MathJax</emphasis> package can be used to parse and render
+                LaTeX expressions directly written in the HTML code, embedded between
+                <literal>\[ ..\]</literal> brackets instead of
+                <literal>&lt;math&gt;..&lt;/math&gt;</literal>.
             </para>
             <para>
-                To render MathML code in <emphasis>any</emphasis> web browser,
-                <itemizedlist>
-                    <listitem>
-                         <para>
-                            put the following HTML instruction only once before the first use of
-                            <literal>&lt;math&gt;</literal>:
-                            &lt;script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async/&gt;.
-                            This is typically done in the <literal>&lt;head&gt;..&lt;/head&gt;</literal>
-                            section of the HTML page.
-                        </para>
-                    </listitem>
-                    <listitem>
-                         <para>
-                            put every set of MathML instructions between <literal>&lt;math&gt;..&lt;/math&gt;</literal>.
-                        </para>
-                    </listitem>
-                </itemizedlist>
+                Hence, the HTML code of a page can mix some LaTeX and MathML instructions
+                that will be parsed and rendered accordingly.
             </para>
-            <note>
-                <para>
-                    The same <literal>&lt;script..&gt;</literal> instruction declaring the
-                    <emphasis>MathJax</emphasis> package can be used to parse and render
-                    LaTeX expressions directly written in the HTML code, embedded between
-                    <literal>\[ ..\]</literal> brackets instead of
-                    <literal>&lt;math&gt;..&lt;/math&gt;</literal>.
-                </para>
-                <para>
-                    Hence, the HTML code of a page can mix some LaTeX and MathML instructions
-                    that will be parsed and rendered accordingly.
-                </para>
-           </note>
-            <para>Please see examples provided in the dedicated section below.</para>
-        </refsect3>
+        </note>
+        <para>Please see examples provided in the dedicated section below.</para>
+
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -483,11 +487,11 @@ winopen(File)  // Display the page in your browser
         Please note that for string input, the protection needed for some special LaTeX characters
         is displayed as is by MathJax:
     </para>
-    <inlinemediaobject>
+    <mediaobject>
         <imageobject>
             <imagedata fileref="../images/prettyprint_LaTeX_MathJax.png"/>
         </imageobject>
-    </inlinemediaobject>
+    </mediaobject>
     <para/>
     <para/>
     <para>
@@ -528,11 +532,11 @@ mputl(html, File);
 editor(File)   // See the HTML and MathML code
 winopen(File)  // Render the page in your browser
  ]]></programlisting>
-    <inlinemediaobject>
+    <mediaobject>
         <imageobject>
             <imagedata fileref="../images/prettyprint_MathML.png"/>
         </imageobject>
-    </inlinemediaobject>
+    </mediaobject>
     <para/>
     <para/>
     <para>
@@ -567,11 +571,11 @@ messagebox(html, "prettyprint() test => messagebox(HTML.4)");
  ]]></programlisting>
     <para/>
     <para>Rendering in a messagebox():</para>
-    <inlinemediaobject>
+    <mediaobject>
         <imageobject>
             <imagedata fileref="../images/prettyprint_HTML4_GUI.png"/>
         </imageobject>
-    </inlinemediaobject>
+    </mediaobject>
     <para/>
     <para>
         Still in HTML, using "_" to get table borders:
@@ -582,11 +586,11 @@ messagebox(html, "prettyprint() test => messagebox(HTML.4)");
 messagebox(["The table is:" ; "<br>" ; prettyprint(i16,"html","_")])
  ]]></programlisting>
     <para/>
-    <inlinemediaobject>
+    <mediaobject>
         <imageobject>
             <imagedata fileref="../images/prettyprint_HTML_table_borders.png"/>
         </imageobject>
-    </inlinemediaobject>
+    </mediaobject>
 
     </refsection>
     <refsection role="see also">

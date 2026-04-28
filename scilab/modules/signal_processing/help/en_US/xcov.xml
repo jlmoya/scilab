@@ -117,15 +117,15 @@ along with this program.
             <literal>c</literal>:
             <itemizedlist>
                 <listitem>
-                     <para><term>"biased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/n</literal>.
+                     <para><literal>"biased"</literal>: <literal>c=</literal><emphasis>C</emphasis><literal>/n</literal>.
                     </para>
                 </listitem>
                 <listitem>
-                     <para><term>"unbiased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>./(n-(-maxlags:maxlags))</literal>.
+                     <para><literal>"unbiased"</literal>: <literal>c=</literal><emphasis>C</emphasis><literal>./(n-(-maxlags:maxlags))</literal>.
                     </para>
                 </listitem>
                 <listitem>
-                     <para><term>"coeff"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/(norm(x)*norm(y))</literal>.
+                     <para><literal>"coeff"</literal>: <literal>c=</literal><emphasis>C</emphasis><literal>/(norm(x)*norm(y))</literal>.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -133,15 +133,17 @@ along with this program.
     </refsection>
     <refsection>
         <title>Remark</title>
-        The <link linkend="corr">corr</link> function computes the "biased" covariance of
-        <literal>x</literal>  and <literal>y</literal> and only return in <literal>c</literal>
-         the sequence of covariance lags C<subscript>k≥0</subscript>
-        .
+        <para>
+            The <link linkend="corr">corr</link> function computes the "biased" covariance of
+            <literal>x</literal>  and <literal>y</literal> and only return in <literal>c</literal>
+            the sequence of covariance lags C<subscript>k≥0</subscript>
+            .
+        </para>
       </refsection>
       <refsection>
         <title>Method</title>
-        This function computes <emphasis>C</emphasis> using
-        <literal>xcorr(x-mean(x),y-mean(y),...)</literal>.
+        <para>This function computes <emphasis>C</emphasis> using
+        <literal>xcorr(x-mean(x),y-mean(y),...)</literal>.</para>
       </refsection>
       <refsection>
         <title>Examples</title>

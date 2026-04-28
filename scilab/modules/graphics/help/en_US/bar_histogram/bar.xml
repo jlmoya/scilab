@@ -121,7 +121,9 @@
             If y is a matrix N*M, bar() draws M polylines (type 6), versus x=1:size(y,1).
             Each polyline represents a category, with a specific color.
             <warning>
-                <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> (case below) and not as <literal>bar(y, width, ...)</literal> (this case).
+                <para>
+                    <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> (case below) and not as <literal>bar(y, width, ...)</literal> (this case).
+                </para>
             </warning>
         </para>
         <para>
@@ -131,7 +133,9 @@
             have the type 6. Each polyline corresponds to a column of y versus vector
             x.
             <warning>
-                <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> (this case) and not as <literal>bar(y, width, ...)</literal> (case above).
+                <para>
+                    <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> (this case) and not as <literal>bar(y, width, ...)</literal> (case above).
+                </para>
             </warning>
         </para>
         <para>

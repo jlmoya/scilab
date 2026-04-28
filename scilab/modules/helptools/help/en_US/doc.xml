@@ -39,10 +39,10 @@
     <refsection>
         <title>Description</title>
         <para>
-            <emphasis role="bold">help</emphasis> opens the last displayed page.
+            <literal>help</literal> opens the last displayed page.
         </para>
         <para>
-            <emphasis role="bold">help key</emphasis> searches for the <varname>key</varname>
+            <literal>help key</literal> searches for the <varname>key</varname>
             in the table of known key ids.
             <itemizedlist>
                 <listitem>
@@ -69,8 +69,8 @@
                 </listitem>
             </itemizedlist>
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 A preferences option can be activated by Scilab's newcomers coming from Octave or
                 Matlab languages, in the <literal>General =&gt; Help and demos</literal> preferences
                 pannel:
@@ -81,89 +81,93 @@
                 option is checked, then help queries matching no Scilab reserved
                 keyword but matching a known Matlab/Octave item are automatically redirected
                 to the equivalent Scilab feature and page.
-            </note>
+            </para>
+        </note>
+
+        <para>
+            <emphasis role="bold">Menus</emphasis>
         </para>
-        <refsect3>
-            <title>Menus</title>
-            <para>
-                <table>
-                <tr>
-                    <th>Language :</th>
-                    <td>
-                        chooses the language of the displayed pages and left summary tree, among
-                        main supported ones.
-                        The current page is immediately updated for the chosen language.
-                        The chosen language is recorded for any forthcoming usage of the browser.
-                        The language used for the menus labels of the help browser is not changed.
-                    </td>
-                </tr>
-                <tr>
-                    <th>Online :</th>
-                    <td>
+        <para>
+            <table>
+            <tr>
+                <th>Language:</th>
+                <td>
+                    chooses the language of the displayed pages and left summary tree, among
+                    main supported ones.
+                    The current page is immediately updated for the chosen language.
+                    The chosen language is recorded for any forthcoming usage of the browser.
+                    The language used for the menus labels of the help browser is not changed.
+                </td>
+            </tr>
+            <tr>
+                <th>Online:</th>
+                <td>
+                    <para>
                         <emphasis>See this page online</emphasis>: Tries to open the web browser and
                         targets the current page on the https://help.scilab.org web site, for the
                         current Scilab version and the current help language. A working internet
                         connection is required.
-                        <para/>
+                    </para>
+                    <para>
                         If the current page is from an external module or is a summary page, the
                         action is impossible and canceled, and a warning messagebox is displayed.
-                    </td>
-                </tr>
-                <tr>
-                    <th>Issues :</th>
-                    <td>
+                    </para>
+                </td>
+            </tr>
+            <tr>
+                <th>Issues:</th>
+                <td>
+                    <para>
                         Tries to open the web browser, and searches on the
                         https://gitlab.com/scilab/scilab/-/issues web site reports of issues declared about the
                         item of the current page.
                         A working internet connection is required.
-                        <para/>
+                    </para>
+                    <para>
                         If the current page is from an external module or is a summary page, the
                         action is impossible and canceled, and a warning messagebox is displayed.
-                    </td>
-                </tr>
-                </table>
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Contextual menu</title>
-            <para>
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Other interactive features</title>
-            <para>
-                The focus is on the displayed page:
-            </para>
-            <table>
-                <tr>
-                    <th align="right">CTRL F :</th>
-                    <td>open a search field (inside the page) at the bottom of the browser.
-                    </td>
-                </tr>
-                <tr>
-                    <th>CTRL mouse wheel :</th>
-                    <td>Zoom in/out the page's content.</td>
-                </tr>
-                <tr>
-                    <th align="right">CTRL + :</th>
-                    <td>Zoom in</td>
-                </tr>
-                <tr>
-                    <th align="right">CTRL - :</th>
-                    <td>Zoom out</td>
-                </tr>
-                <tr>
-                    <th align="right">CTRL W :</th>
-                    <td>closes the browser</td>
-                </tr>
+                    </para>
+                </td>
+            </tr>
             </table>
-        </refsect3>
+        </para>
+
         <para>
-            <emphasis role="bold">close doc</emphasis> closes the help browser.
+            <emphasis role="bold">Other interactive features</emphasis>
+        </para>
+        <para>
+            The focus is on the displayed page:
+        </para>
+        <table>
+            <tr>
+                <th align="right">CTRL F :</th>
+                <td>open a search field (inside the page) at the bottom of the browser.
+                </td>
+            </tr>
+            <tr>
+                <th>CTRL mouse wheel :</th>
+                <td>Zoom in/out the page's content.</td>
+            </tr>
+            <tr>
+                <th align="right">CTRL + :</th>
+                <td>Zoom in</td>
+            </tr>
+            <tr>
+                <th align="right">CTRL - :</th>
+                <td>Zoom out</td>
+            </tr>
+            <tr>
+                <th align="right">CTRL W :</th>
+                <td>closes the browser</td>
+            </tr>
+        </table>
+        <para>
+            <literal>close doc</literal> closes the help browser.
         </para>
         <para>
             See <link linkend="man">man</link> for more explanation on how to write new help pages .
         </para>
+
     </refsection>
     <refsection>
         <title>Examples</title>

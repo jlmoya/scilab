@@ -32,41 +32,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/OUT_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_OUT_f">
+    <refsection xml:id="Contents_OUT_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_OUT_f">Description</xref>
+                <para><link linkend="Description_OUT_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatype_OUT_f">Data types</xref>
+                <para><link linkend="Datatype_OUT_f">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_OUT_f">Parameters</xref>
+                <para><link linkend="Dialogbox_OUT_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_OUT_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_OUT_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_OUT_f">Example</xref>
+                <para><link linkend="Example_OUT_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_OUT_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_OUT_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_OUT_f">See also</xref>
+                <para><link linkend="Seealso_OUT_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_OUT_f">
+    <refsection xml:id="Description_OUT_f">
         <title>Description</title>
         <para>
             This block represent a regular output port. It must only be used inside a Xcos Super Block and be connected to a regular output in the sub-system.
@@ -75,7 +75,7 @@
             This block is a signal link from outside of a system into a sub-system. In a Super Block, the regular's output ports must be numbered from 1 to the total number of regular's output ports. You can set it with the <emphasis role="bold">Port number</emphasis> parameter.
         </para>
     </refsection>
-    <refsection id="Datatype_OUT_f">
+    <refsection xml:id="Datatype_OUT_f">
         <title>Data types</title>
         <itemizedlist>
             <listitem>
@@ -85,14 +85,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_OUT_f">
+    <refsection xml:id="Dialogbox_OUT_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/portaction_pal/en_US/OUT_f_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/portaction_pal/en_US/OUT_f_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -103,7 +102,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_OUT_f">
+    <refsection xml:id="Defaultproperties_OUT_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -168,7 +167,7 @@
         </itemizedlist>
         <para/>
         </refsection>
-    <refsection id="Example_OUT_f">
+    <refsection xml:id="Example_OUT_f">
         <title>Example</title>
         <para>
             In the following example the Super block encloses two discontinuities. The OUT_f block is the non linear output signal.
@@ -195,7 +194,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/portaction_pal/en_US/OUT_f_en_US
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_OUT_f">
+    <refsection xml:id="Interfacingfunction_OUT_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

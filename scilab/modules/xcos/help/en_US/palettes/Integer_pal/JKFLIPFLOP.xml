@@ -25,7 +25,7 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
         xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"
         xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xmln.mml="http://www.w3.org/1998/Math/MathML"
+        xmlns:scilab="http://www.scilab.org" xmlns:mml="http://www.w3.org/1998/Math/MathML"
         xml:id="JKFLIPFLOP" xml:lang="en_US">
     <refnamediv>
         <refname>JKFLIPFLOP</refname>
@@ -33,39 +33,39 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/JKFLIPFLOP.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_JKFLIPFLOP">
+    <refsection xml:id="Contents_JKFLIPFLOP">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_JKFLIPFLOP">Description</xref>
+                <para><link linkend="Description_JKFLIPFLOP">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_JKFLIPFLOP">Parameters</xref>
+                <para><link linkend="Dialogbox_JKFLIPFLOP">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_JKFLIPFLOP">Default properties</xref>
+                <para><link linkend="Defaultproperties_JKFLIPFLOP">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_JKFLIPFLOP">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_JKFLIPFLOP">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Examples_JKFLIPFLOP">Examples</xref>
+                <para><link linkend="Examples_JKFLIPFLOP">Examples</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_JKFLIPFLOP">See also</xref>
+                <para><link linkend="Seealso_JKFLIPFLOP">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
 
-    <refsection id="Description_JKFLIPFLOP">
+    <refsection xml:id="Description_JKFLIPFLOP">
         <title>Description</title>
         <para>
             The JK flip flop is the most versatile of the basic flip-flops. It has two inputs traditionally labeled
@@ -156,7 +156,7 @@
             </emphasis>
             .
         </para>
-        <refsection id="Data_Type_JKFLIPFLOP">
+        <refsection xml:id="Data_Type_JKFLIPFLOP">
             <title>Data types</title>
             <para>
                 The block supports the following types :
@@ -197,14 +197,13 @@
         </refsection>
     </refsection>
 
-    <refsection id="Dialogbox_JKFLIPFLOP">
+    <refsection xml:id="Dialogbox_JKFLIPFLOP">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/integer_pal/en_US/JKFLIPFLOP_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/integer_pal/en_US/JKFLIPFLOP_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -218,7 +217,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_JKFLIPFLOP">
+    <refsection xml:id="Defaultproperties_JKFLIPFLOP">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -301,7 +300,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Examples_JKFLIPFLOP">
+    <refsection xml:id="Examples_JKFLIPFLOP">
         <title>Example</title>
         <para>
             The following example builds a 3 bits asynchronous counter with JK flipflops wired as T flipflops. You can show on the
@@ -326,7 +325,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_JKFLIPFLOP">
+    <refsection xml:id="Interfacingfunction_JKFLIPFLOP">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

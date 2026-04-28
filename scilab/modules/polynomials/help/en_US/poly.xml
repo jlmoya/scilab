@@ -103,7 +103,7 @@
                                 <note>
                                     <itemizedlist>
                                         <listitem>
-                                            <literal>degree(p)==length(vec)</literal>
+                                            <para><literal>degree(p)==length(vec)</literal></para>
                                         </listitem>
                                         <listitem>
                                              <para><literal>poly()</literal> and
@@ -130,10 +130,12 @@
                                 usual operators +, -, *, / and simple functions like
                                 <literal>sum()</literal>.
                                 <note>
-                                    Scilab provides 3 predefined elementary polynomials
-                                    <literal>%s</literal>, <literal>%z</literal>, and
-                                    <literal>$</literal>. The last one is mainly used as symbolic
-                                    value of last index (of a range).
+                                    <para>
+                                        Scilab provides 3 predefined elementary polynomials
+                                        <literal>%s</literal>, <literal>%z</literal>, and
+                                        <literal>$</literal>. The last one is mainly used as symbolic
+                                        value of last index (of a range).
+                                    </para>
                                 </note>
                             </para>
                         </listitem>
@@ -147,8 +149,10 @@
                                 <literal>vec</literal>) are ignored.
                             </para>
                             <note>
-                                Conversely, <literal>coeff(p)</literal> returns the coefficients
-                                of a given polynomial.
+                                <para>
+                                    Conversely, <literal>coeff(p)</literal> returns the coefficients
+                                    of a given polynomial.
+                                </para>
                             </note>
                         </listitem>
                     </itemizedlist>

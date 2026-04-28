@@ -42,24 +42,10 @@
                 <term>Name, Value</term>
                 <listitem>
                     <para><emphasis role="bold">'Centered'</emphasis>: boolean indicator for centering the columns. Default value: %t.</para>
-                    <para/>
-                </listitem>
-                <listitem>
-                    <para><emphasis role="bold">'Economy'</emphasis>: boolean indicator, use to allow economy size singular value decomposition. 
-                        Default value: %t.</para>
-                    <para/>
-                </listitem>
-                <listitem>
+                    <para><emphasis role="bold">'Economy'</emphasis>: boolean indicator, use to allow economy size singular value decomposition. Default value: %t.</para>
                     <para><emphasis role="bold">'NumComponents'</emphasis>: integer value, number of components returned. Default value: size(X, 2).</para>
-                    <para/>
-                </listitem>
-                <listitem>
                     <para><emphasis role="bold">'Weights'</emphasis>: row vector of doubles of length size(X, 1) containing observation weights. Default value: ones(1, size(X, 1)).</para>
-                    <para/>
-                </listitem>
-                <listitem>
                     <para><emphasis role="bold">'VariableWeights'</emphasis>: "variance" value or row vector of doubles of length size(X, 2) containing variable weights. Default value: [].</para>
-                    <para/>
                 </listitem>
             </varlistentry>
             <varlistentry>

@@ -111,18 +111,24 @@
             </itemizedlist>
         </para>
         <note>
-            If the related reflexion matrix <varname>H</varname> is computed, for any point A
-            of column coordinates <literal>a</literal>, <literal>H*a</literal> are the coordinates of
-            the symetrical image of A with respect to the <literal>(v,w)</literal> plane
-            (see the example below).
+            <para>
+                If the related reflexion matrix <varname>H</varname> is computed, for any point A
+                of column coordinates <literal>a</literal>, <literal>H*a</literal> are the coordinates of
+                the symetrical image of A with respect to the <literal>(v,w)</literal> plane
+                (see the example below).
+            </para>
         </note>
         <note>
-            If <varname>v</varname> or/and <varname>w</varname> are in row, they are priorly
-            transposed into columns.
+            <para>
+                If <varname>v</varname> or/and <varname>w</varname> are in row, they are priorly
+                transposed into columns.
+            </para>
         </note>
         <warning>
-            If <varname>v</varname> or/and <varname>w</varname> are <literal>[]</literal>,
-            <literal>[]</literal> is returned for <varname>u</varname> and <varname>H</varname>.
+            <para>
+                If <varname>v</varname> or/and <varname>w</varname> are <literal>[]</literal>,
+                <literal>[]</literal> is returned for <varname>u</varname> and <varname>H</varname>.
+            </para>
         </warning>
     </refsection>
     <refsection role="examples">

@@ -84,11 +84,11 @@
         <para>
             Opens a Matlab binary MAT-file for reading or writing data.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 If <varname>mode</varname> is set to <literal>w</literal>, the content of <varname>filename</varname> will be reseted.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -128,7 +128,7 @@ matfile_close(fd);
         <para>
             This function uses MATIO library (
             <literal>
-                <ulink url="http://sourceforge.net/projects/matio/">http://sourceforge.net/projects/matio/</ulink>
+                <link xlink:href="http://sourceforge.net/projects/matio/">http://sourceforge.net/projects/matio/</link>
             </literal>
             ).
         </para>

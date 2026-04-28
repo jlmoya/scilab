@@ -36,8 +36,9 @@
     </refsynopsisdiv>
     <refsection role="arguments">
         <title>Arguments</title>
-        <refsect2>
-            <title>Input arguments</title>
+        <para>
+            <emphasis role="bold">Input arguments</emphasis>
+        </para>
             <variablelist>
                 <varlistentry>
                     <term>Data</term>
@@ -131,9 +132,11 @@
                                         any data belongs to the bin if its value
                                         <emphasis role="italic">is equal to</emphasis> the bin's value.
                                         <important>
-                                            Any <literal>Data</literal> or bin's value being
-                                            <literal>NaN</literal> is canceled before computing the
-                                            categorial histogram.
+                                            <para>
+                                                Any <literal>Data</literal> or bin's value being
+                                                <literal>NaN</literal> is canceled before computing the
+                                                categorial histogram.
+                                            </para>
                                         </important>
                                     </para>
                                 </listitem>
@@ -171,8 +174,10 @@
                                             bins of equal widths covering the whole range of
                                             non-infinite <literal>Data</literal> values.
                                             <warning>
-                                                This binning specification can't be used for texts
-                                                <literal>Data</literal>
+                                                <para>
+                                                    This binning specification can't be used for texts
+                                                    <literal>Data</literal>
+                                                </para>
                                             </warning>
                                         </para>
                                     </listitem>
@@ -309,14 +314,14 @@
                                                         <itemizedlist>
                                                             <listitem>
                                                                  <para><literal>binsEdges(1) =
-                                                                        <emphasis role="bold">-%inf</emphasis>
+                                                                        -%inf
                                                                     </literal>
                                                                     ,
                                                                     or
                                                                 </para>
                                                             </listitem>
                                                             <listitem>
-                                                                <literal>binsEdges(1) = ""</literal>
+                                                                <para><literal>binsEdges(1) = ""</literal></para>
                                                             </listitem>
                                                         </itemizedlist>
                                                         Then,
@@ -341,7 +346,7 @@
                                                         <itemizedlist>
                                                             <listitem>
                                                                  <para><literal>binsEdges($) =
-                                                                        <emphasis role="bold">%inf</emphasis>
+                                                                        %inf
                                                                     </literal>
                                                                     ,
                                                                     or
@@ -447,12 +452,14 @@
                                             <emphasis role="italic">bins values</emphasis> instead of
                                             <emphasis role="italic">bins edges</emphasis> (by default).
                                             <note>
-                                                Presently, polynomial <varname>Data</varname> are always
-                                                processed in a categorial way. The <varname>"discrete"</varname>
-                                                flag looks then useless. However, in a future release, polynomials
-                                                could become sortable. Using the <varname>"discrete"</varname>
-                                                flag does not hurt and would avoid future back-compatibility
-                                                issues.
+                                                <para>
+                                                    Presently, polynomial <varname>Data</varname> are always
+                                                    processed in a categorial way. The <varname>"discrete"</varname>
+                                                    flag looks then useless. However, in a future release, polynomials
+                                                    could become sortable. Using the <varname>"discrete"</varname>
+                                                    flag does not hurt and would avoid future back-compatibility
+                                                    issues.
+                                                </para>
                                             </note>
                                         </para>
                                     </listitem>
@@ -514,9 +521,9 @@
                                                         <varname>Data</varname> components falling in it. Then, unless
                                                         the <literal>"normWith:.."</literal> option is used, the whole
                                                         area of the histogram is equal to 1:
-                                                        <para>
-                                                            <latex style="display"> \int_{binsEdges(1)}^{binsEdges(\$)}h(x)\,\mathrm{d}x=1 </latex>
-                                                        </para>
+                                                    </para>
+                                                    <para>
+                                                        <latex style="display"> \int_{binsEdges(1)}^{binsEdges(\$)}h(x)\,\mathrm{d}x=1 </latex>
                                                     </para>
                                                     <para>
                                                         This scaling mode is meaningless and ignored in case of
@@ -609,8 +616,10 @@
                                                     <emphasis role="bold">"Inf"</emphasis>
                                                 </td>
                                                 <td>
-                                                    <literal>Inf</literal> data are accounted, in addition to
-                                                    other ones.
+                                                    <para>
+                                                        <literal>Inf</literal> data are accounted, in addition to
+                                                        other ones.
+                                                    </para>
                                                     <para>
                                                         In discrete/categorial mode, <literal>Inf</literal>
                                                         values are not specific and are processed as other ones.
@@ -623,15 +632,19 @@
                                                     <emphasis role="bold">"zeros"</emphasis>
                                                 </td>
                                                 <td>
-                                                    If <varname>Data</varname> is sparse-encoded, by default only
-                                                    non-zero elements are considered (otherwise, zeros are not specific
-                                                    and are processed as other values). Nevertheless, it's possible
-                                                    to take them into account in the normalization by using this
-                                                    <literal>"normWith: zeros"</literal> flag.
-                                                    <important>
-                                                        Using this flag does not credit the <literal>Heights</literal>
-                                                        of the bin covering the zero value (if any).
-                                                    </important>
+                                                    <para>
+                                                        If <varname>Data</varname> is sparse-encoded, by default only
+                                                        non-zero elements are considered (otherwise, zeros are not specific
+                                                        and are processed as other values). Nevertheless, it's possible
+                                                        to take them into account in the normalization by using this
+                                                        <literal>"normWith: zeros"</literal> flag.
+                                                        <important>
+                                                            <para>
+                                                                Using this flag does not credit the <literal>Heights</literal>
+                                                                of the bin covering the zero value (if any).
+                                                            </para>
+                                                        </important>
+                                                    </para>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -651,9 +664,10 @@
                     </listitem>
                 </varlistentry>
             </variablelist>
-        </refsect2>
-        <refsect2>
-            <title>Results</title>
+
+        <para>
+            <emphasis role="bold">Results</emphasis>
+        </para>
             <variablelist>
                 <varlistentry>
                     <term>Heights</term>
@@ -775,7 +789,9 @@
                             <varname>jokers</varname> is made of the following:
                             <orderedlist>
                                 <listitem>
-                                    <emphasis role="italic">Encoded integers:</emphasis>
+                                    <para>
+                                        <emphasis role="italic">Encoded integers:</emphasis>
+                                    </para>
                                     <itemizedlist>
                                         <listitem>
                                              <para>
@@ -790,9 +806,11 @@
                                     </itemizedlist>
                                 </listitem>
                                 <listitem>
-                                    <emphasis role="italic">
-                                        Decimal or complex numbers, full or sparse:
-                                    </emphasis>
+                                    <para>
+                                        <emphasis role="italic">
+                                            Decimal or complex numbers, full or sparse:
+                                        </emphasis>
+                                    </para>
                                     <itemizedlist>
                                         <listitem>
                                              <para>
@@ -808,11 +826,15 @@
                                     </itemizedlist>
                                 </listitem>
                                 <listitem>
-                                    <emphasis role="italic">Polynomials:</emphasis>
-                                    <literal>[Nout, 0, 0, Nnan, Ninf]</literal>
+                                    <para>
+                                        <emphasis role="italic">Polynomials:</emphasis>
+                                        <literal>[Nout, 0, 0, Nnan, Ninf]</literal>
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    <emphasis role="italic">Texts:</emphasis>
+                                    <para>
+                                        <emphasis role="italic">Texts:</emphasis>
+                                    </para>
                                     <itemizedlist>
                                         <listitem>
                                              <para>
@@ -898,12 +920,14 @@
                     </listitem>
                 </varlistentry>
             </variablelist>
-        </refsect2>
-    </refsection>
+
+     </refsection>
      <refsection role="examples">
         <title>Examples</title>
-        <refsect2>
-            <title>with decimal numbers:</title>
+
+            <para>
+                <emphasis role="bold">with decimal numbers:</emphasis>
+            </para>
             <programlisting role="example"><![CDATA[
 data = [1 1 1 2 2 3 4 4 5 5 5 6 6 7 8 8 9 9 9];
 N = size(data,"*")   // ==19
@@ -976,9 +1000,10 @@ be = [2, 4.5, 7];           // Set bins edges (2 bins)
 [h, j] = histc(data, be, "densityNorm, normWith: rightout inf") // Expected: href/18/2.5, jref/18
 [h, j] = histc(data, be, "densityNorm, normWith: all")          // Expected: href/24/2.5, jref/24
      ]]></programlisting>
-        </refsect2>
-        <refsect2>
-            <title>with texts:</title>
+
+        <para>
+            <emphasis role="bold">with texts:</emphasis>
+        </para>
             <programlisting role="example"><![CDATA[
 histc(["a" "c" "a" "a" "b" "c"])    //  [3 1 2]
 
@@ -1060,10 +1085,11 @@ binsEdges = ["e" "f" "g" "h" "i" "j"];
 [h,j,b,i] = histc(t2, binsEdges, "countsNorm,normWith: all")
                                             // h = href / sum([N jref]), j = jref/sum([N jref])
      ]]></programlisting>
-        </refsect2>
-        <refsect2>
-            <title>with polynomials:</title>
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">with polynomials:</emphasis>
+        </para>
+        <programlisting role="example"><![CDATA[
 histc([%z 2+%z %z])                                     // [2 1]
 histc([%z 2+%z %z],, "countsnorm")                      // [2 1] / 3
 histc([%z 2+%z %z %nan],, "countsnorm")                 // [2 1] / 3
@@ -1071,7 +1097,6 @@ histc([%z 2+%z %z %nan],, "countsnorm, normWith: Nan")  // [2 1] / 4
 // Data order is kept:
 histc([2+%z %z %z ]) == [1 2]
 ]]></programlisting>
-        </refsect2>
 
     </refsection>
     <refsection role="see also">

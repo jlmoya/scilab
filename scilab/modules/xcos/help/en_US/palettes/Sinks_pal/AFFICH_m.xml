@@ -29,41 +29,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/AFFICH_m.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_AFFICH_m">
+    <refsection xml:id="Contents_AFFICH_m">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                    <xref linkend="Description_AFFICH_m">Description</xref>
+                    <para><link linkend="Description_AFFICH_m">Description</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Dialogbox_AFFICH_m">Parameters</xref>
+                    <para><link linkend="Dialogbox_AFFICH_m">Parameters</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Defaultproperties_AFFICH_m">Default properties</xref>
+                    <para><link linkend="Defaultproperties_AFFICH_m">Default properties</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Interfacingfunction_AFFICH_m">Interfacing function</xref>
+                    <para><link linkend="Interfacingfunction_AFFICH_m">Interfacing function</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Computationalfunction_AFFICH_m">Computational function</xref>
+                    <para><link linkend="Computationalfunction_AFFICH_m">Computational function</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Example_AFFICH_m">Example</xref>
+                    <para><link linkend="Example_AFFICH_m">Example</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Seealso_AFFICH_m">See also</xref>
+                    <para><link linkend="Seealso_AFFICH_m">See also</link></para>
             </listitem>
         </itemizedlist>
         <para/>
     </refsection>
 
-    <refsection id="Description_AFFICH_m">
+    <refsection xml:id="Description_AFFICH_m">
         <title>Description</title>
         <para>
             This block displays the value of its unique input inside the block (in
@@ -71,14 +71,13 @@
 
         </para>
     </refsection>
-    <refsection id="Dialogbox_AFFICH_m">
+    <refsection xml:id="Dialogbox_AFFICH_m">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/AFFICH_m_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/AFFICH_m_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -136,7 +135,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_AFFICH_m">
+    <refsection xml:id="Defaultproperties_AFFICH_m">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -201,8 +200,9 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_AFFICH_m">
+    <refsection xml:id="Example_AFFICH_m">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/AFFICH_m_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -210,8 +210,9 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
-    <refsection id="Interfacingfunction_AFFICH_m">
+    <refsection xml:id="Interfacingfunction_AFFICH_m">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -220,7 +221,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Computationalfunction_AFFICH_m">
+    <refsection xml:id="Computationalfunction_AFFICH_m">
         <title>Computational functions</title>
         <itemizedlist>
             <listitem>

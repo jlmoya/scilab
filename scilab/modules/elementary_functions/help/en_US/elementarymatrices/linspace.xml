@@ -112,8 +112,10 @@
             <literal>Matrix(i,:) = linspace(Col1(i), Col2(i), n)</literal>.
         </para>
         <warning>
-            When specified bounds are encoded integers, the actual step may vary by one unit
-            along the generated series.
+            <para>
+                When specified bounds are encoded integers, the actual step may vary by one unit
+                along the generated series.
+            </para>
         </warning>
     </refsection>
     <refsection>

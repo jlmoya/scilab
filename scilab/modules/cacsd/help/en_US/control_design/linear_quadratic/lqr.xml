@@ -122,15 +122,19 @@
             </para>
               <para>
                 <note>
-                    In this case the <emphasis>P.C</emphasis> and <emphasis>P.D</emphasis>
-                    components of the system are ignored.
+                    <para>
+                      In this case the <emphasis>P.C</emphasis> and <emphasis>P.D</emphasis>
+                      components of the system are ignored.
+                    </para>
                 </note>
               </para>
           </listitem>
         </varlistentry>
       </variablelist>
-      <refsect2>
-        <title>Algorithm</title>
+
+      <para>
+          <emphasis role="bold">Algorithm</emphasis>
+      </para>
         <itemizedlist>
           <listitem>
               <para>
@@ -192,18 +196,17 @@
             </listitem>
           </itemizedlist>
         </para>
-      </refsect2>
-      <warning>
-        <para>
-          It is assumed that matrix <emphasis>R</emphasis> or <emphasis>D'D</emphasis> is non singular.
-        </para>
-      </warning>
-      <note>
-        <para>
-          Remark: If the full state of the system is not available, an estimator can be built using
-          the <link linkend="lqe">lqe</link> or the <link linkend="lqg">lqg</link> function.
-        </para>
-      </note>
+        <warning>
+          <para>
+            It is assumed that matrix <emphasis>R</emphasis> or <emphasis>D'D</emphasis> is non singular.
+          </para>
+        </warning>
+        <note>
+          <para>
+            Remark: If the full state of the system is not available, an estimator can be built using
+            the <link linkend="lqe">lqe</link> or the <link linkend="lqg">lqg</link> function.
+          </para>
+        </note>
   </refsection>
 
   <refsection>
@@ -305,7 +308,7 @@
                 <refsection>
                     <title>Reference</title>
                     <para>
-                        <ulink url="http://www.springer.com/us/book/9780817640095"> Engineering and Scientific Computing with Scilab</ulink>, Claude Gomez and al.,Springer Science+Business Media, LLC,1999, ISNB:978-1-4612-7204-5
+                        <link xlink:href="http://www.springer.com/us/book/9780817640095"> Engineering and Scientific Computing with Scilab</link>, Claude Gomez and al.,Springer Science+Business Media, LLC,1999, ISNB:978-1-4612-7204-5
                     </para>
                 </refsection>
                 <refsection role="see also">

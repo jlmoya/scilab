@@ -90,10 +90,12 @@
         <title>Description</title>
         <para>
             <emphasis role="bold">tbx_package(…)</emphasis> create a single compressed file of a toolbox hierarchy. The toolbox hierarchy should contains binary artifacts produced by <link linkend="tbx_make"/>.  
-            The resulting file can be installed locally using <link linkend="atomsInstall"/> or uploaded to <ulink url="https://atoms.scilab.org">ATOMS web portal</ulink> for sharing it.
+            The resulting file can be installed locally using <link linkend="atomsInstall"/> or uploaded to <link xlink:href="https://atoms.scilab.org">ATOMS web portal</link> for sharing it.
         </para>
         <important>
-            The toolbox name (id) and version are read from the <literal>DESCRIPTION</literal> file. This file is mandatory in the toolbox.
+            <para>
+                The toolbox name (id) and version are read from the <literal>DESCRIPTION</literal> file. This file is mandatory in the toolbox.
+            </para>
         </important>
         <para>
             <emphasis role="bold">tbx_package(tbx_path)</emphasis> create the toolbox whose root's

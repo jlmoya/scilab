@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+ * Copyright (C) 2026 - Dassault Systèmes S.E - Vincent COUVERT
+ *
+ * For more information, see the COPYING file which you should have received
+ * along with this program.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="check_help" xml:lang="en">
+    <refnamediv>
+        <refname>check_help</refname>
+        <refpurpose>Validate Scilab XML help files against the Scilab Relax NG schema</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+            status = check_help()
+            status = check_help(moduleName)
+            status = check_help(moduleName, localeName)
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>moduleName</term>
+                <listitem>
+                    <para>
+                        Scalar string or <literal>[]</literal> (default value). Name of a Scilab module to inspect,
+                        the full path to a single XML help file or the path of a directory congtaining help files.
+                        With <literal>[]</literal>, all Scilab modules are checked.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>localeName</term>
+                <listitem>
+                    <para>
+                        Scalar string. Locale of the help files to validate, for example
+                        <literal>"en_US"</literal> or <literal>"fr_FR"</literal>.
+                        The default value is current Scilab language returned by <literal>getlanguage()</literal>.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>status</term>
+                <listitem>
+                    <para>
+                        Scalar boolean. <literal>%T</literal> if no error has been detected. <literal>%F</literal> if any error has been detected.
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>
+            <literal>check_help</literal> validates Scilab XML help files with the
+            Relax NG schema stored in <literal>SCI/modules/helptools/schema/scilab.rng</literal>.
+        </para>
+        <para>
+            With no input argument, all modules are scanned for the current language.
+            With one input argument, <literal>moduleName</literal> can be either a module name
+            or a single XML file path. With two input arguments, the function checks the help
+            tree of one module, or of all modules when <literal>moduleName</literal> is <literal>[]</literal>,
+            for the locale given by <literal>localeName</literal>.
+        </para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[// Validate all help files for the current locale
+check_help()
+
+// Validate all english help files of the helptools module
+check_help("helptools", "en_US")
+
+// Validate all french help files of all modules
+check_help([], "fr_FR")
+
+// Validate a single help page
+xmlFile = SCI + "/modules/helptools/help/en_US/utilities/xmltohtml.xml";
+check_help(xmlFile)
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="doc">doc</link>
+            </member>
+            <member>
+                <link linkend="help">help</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revdescription>
+                    <para>
+                        Function <literal>check_help</literal> added.
+                    </para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

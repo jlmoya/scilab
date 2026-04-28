@@ -112,41 +112,43 @@
                 </listitem>
             </orderedlist>
         </para>
-        <refsect2>
-            <title>Clearing specific parts of a figure</title>
-            <itemizedlist>
-                <listitem>
-                     <para><literal>gcf().name = ""</literal> clears the
-                        name of the window, displayed at its very top left corner.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para><literal>gcf().info_message = ""</literal>
-                        clears the message displayed in the status bar of the current figure.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para><literal>delete(gca())</literal> deletes the current axes in the current window.
-                        All other components of the window are kept: other axes (if any), menus,
-                        interactive components, figure properties, etc.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        Deleting only all axes of a figure may be done with
-                        <literal>c=gcf().children; delete(c(c.type=="Axes"))</literal>. This keeps all
-                        its other components: menus, interactive components, etc.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        Deleting only menus: <literal>c=gcf().children; delete(c(c.type=="uimenu"))</literal>.
-                        This assumes that <literal>get(0).ShowHiddenHandles</literal> is
-                        <literal>"on"</literal>.
-                    </para>
-                </listitem>
-            </itemizedlist>
-        </refsect2>
+
+        <para>
+            <emphasis role="bold">Clearing specific parts of a figure</emphasis>
+        </para>
+        <itemizedlist>
+            <listitem>
+                    <para><literal>gcf().name = ""</literal> clears the
+                    name of the window, displayed at its very top left corner.
+                </para>
+            </listitem>
+            <listitem>
+                    <para><literal>gcf().info_message = ""</literal>
+                    clears the message displayed in the status bar of the current figure.
+                </para>
+            </listitem>
+            <listitem>
+                    <para><literal>delete(gca())</literal> deletes the current axes in the current window.
+                    All other components of the window are kept: other axes (if any), menus,
+                    interactive components, figure properties, etc.
+                </para>
+            </listitem>
+            <listitem>
+                    <para>
+                    Deleting only all axes of a figure may be done with
+                    <literal>c=gcf().children; delete(c(c.type=="Axes"))</literal>. This keeps all
+                    its other components: menus, interactive components, etc.
+                </para>
+            </listitem>
+            <listitem>
+                    <para>
+                    Deleting only menus: <literal>c=gcf().children; delete(c(c.type=="uimenu"))</literal>.
+                    This assumes that <literal>get(0).ShowHiddenHandles</literal> is
+                    <literal>"on"</literal>.
+                </para>
+            </listitem>
+        </itemizedlist>
+
     </refsection>
     <refsection>
         <title>Examples</title>

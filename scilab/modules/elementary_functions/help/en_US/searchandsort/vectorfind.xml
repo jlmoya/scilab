@@ -85,8 +85,10 @@
                     By default, <literal>"r"</literal> is used.
                     </para>
                     <important>
-                        <varname>dimAlong</varname> is mandatory when a <varname>joker</varname>
-                        or <varname>indType</varname> is specified.
+                        <para>
+                            <varname>dimAlong</varname> is mandatory when a <varname>joker</varname>
+                            or <varname>indType</varname> is specified.
+                        </para>
                     </important>
                 </listitem>
             </varlistentry>
@@ -181,7 +183,9 @@
                         </listitem>
                     </itemizedlist>
                     </para>
-                    <note>Returned indices are sorted in increasing order.</note>
+                    <note>
+                        <para>Returned indices are sorted in increasing order.</para>
+                    </note>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -192,8 +196,10 @@
                     The matching range number #i is returned in the row <literal>matching(i,:)</literal>.
                     </para>
                     <note>
-                        When the <varname>haystack</varname> is sparse-encoded,
-                        the <varname>matching</varname> matrix is sparse as well.
+                        <para>
+                            When the <varname>haystack</varname> is sparse-encoded,
+                            the <varname>matching</varname> matrix is sparse as well.
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -226,9 +232,11 @@
             <literal>matching</literal> optional output. Otherwise, <literal>matching</literal>
             is empty (it is a trivial repetition of the needle vector).
         </para>
-        <refsect3>
-            <title>Search in hypermatrices</title>
-            <para>
+
+        <para>
+            <emphasis role="bold">Search in hypermatrices</emphasis>
+        </para>
+        <para>
             Using <literal>vectorfind()</literal> with an hypermatrix haystack deserves some
             special attention:
             <itemizedlist>
@@ -287,8 +295,7 @@
                     </para>
                 </listitem>
             </itemizedlist>
-            </para>
-        </refsect3>
+        </para>
     </refsection>
     <refsection>
         <title>Examples</title>

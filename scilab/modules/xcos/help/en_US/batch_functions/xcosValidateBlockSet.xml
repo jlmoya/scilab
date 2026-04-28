@@ -8,27 +8,27 @@
         <title>Syntax</title>
         <synopsis>[status, message] = xcosValidateBlockSet(interfFunctionName)</synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_xcosValidateBlockSet">
+    <refsection xml:id="Parameters_xcosValidateBlockSet">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
-                <term>interfFunctionName</term>: A Xcos block interface function name.
-                <para/>
+                <term>interfFunctionName</term><listitem><para>: A Xcos block interface function name.</para></listitem>
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="Description_xcosValidateBlockSet">
+    <refsection xml:id="Description_xcosValidateBlockSet">
         <title>Description</title>
+        <para>
         This function is used to test if a Block interface function will not
         fail while called by xcos simulation process.
-
+        </para>
         <para>
             Function will try to perform a <literal>define</literal> then a <literal>set</literal> job
             on the given interface function name like the xcos simulation do.
             Function override some configuration functions: <literal>getvalue</literal>, <literal>x_mdialog</literal>, ...
         </para>
     </refsection>
-    <refsection id="Filecontent_xcosValidateBlockSet">
+    <refsection xml:id="Filecontent_xcosValidateBlockSet">
         <title>File content</title>
         <itemizedlist>
             <listitem>
@@ -36,7 +36,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Examples_xcosValidateBlockSet">
+    <refsection xml:id="Examples_xcosValidateBlockSet">
         <title>Examples</title>
         <para>
             <programlisting role="example"><![CDATA[

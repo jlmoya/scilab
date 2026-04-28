@@ -31,33 +31,33 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/DERIV.png" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DERIV">
+    <refsection xml:id="Contents_DERIV">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DERIV">Description</xref>
+                <para><link linkend="Description_DERIV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DERIV">Default properties</xref>
+                <para><link linkend="Defaultproperties_DERIV">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DERIV">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DERIV">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DERIV">Computational function</xref>
+                <para><link linkend="Computationalfunction_DERIV">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DERIV">Example</xref>
+                <para><link linkend="Example_DERIV">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DERIV">
+    <refsection xml:id="Description_DERIV">
         <title>Description</title>
         <para>The Derivative block approximates the instantaneous derivative of
             its input with respect to time t.
@@ -71,7 +71,7 @@
             block is zero.
         </para>
     </refsection>
-    <refsection id="Defaultproperties_DERIV">
+    <refsection xml:id="Defaultproperties_DERIV">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -145,7 +145,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_DERIV">
+    <refsection xml:id="Interfacingfunction_DERIV">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -153,7 +153,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DERIV">
+    <refsection xml:id="Computationalfunction_DERIV">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +162,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Example_DERIV">
+    <refsection xml:id="Example_DERIV">
         <title>Example</title>
         <para>In this example, we compute and display the derivative waveform of a
             sinusoidal input signal, with amplitude 2 and frequency 1.25 Hz.

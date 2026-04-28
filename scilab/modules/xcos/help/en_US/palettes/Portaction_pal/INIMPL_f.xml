@@ -32,37 +32,37 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/INIMPL_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_INIMPL_f">
+    <refsection xml:id="Contents_INIMPL_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_INIMPL_f">Description</xref>
+                <para><link linkend="Description_INIMPL_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_INIMPL_f">Parameters</xref>
+                <para><link linkend="Dialogbox_INIMPL_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_INIMPL_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_INIMPL_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_INIMPL_f">Example</xref>
+                <para><link linkend="Example_INIMPL_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_INIMPL_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_INIMPL_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_INIMPL_f">See also</xref>
+                <para><link linkend="Seealso_INIMPL_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_INIMPL_f">
+    <refsection xml:id="Description_INIMPL_f">
         <title>Description</title>
         <para>
             This block represent an implicit input port. It must only be used inside a Xcos Super Block
@@ -74,14 +74,13 @@
             input ports. You can set it with the <emphasis role="bold">Port number</emphasis> parameter.
         </para>
     </refsection>
-    <refsection id="Dialogbox_INIMPL_f">
+    <refsection xml:id="Dialogbox_INIMPL_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/portaction_pal/en_US/INIMPL_f_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/portaction_pal/en_US/INIMPL_f_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -92,7 +91,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_INIMPL_f">
+    <refsection xml:id="Defaultproperties_INIMPL_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -157,7 +156,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_INIMPL_f">
+    <refsection xml:id="Example_INIMPL_f">
         <title>Example</title>
         <para>
             The following example shows the use of the INIMPL_f block. The Super block contains a simple electrical circuit with two inputs, one on the
@@ -186,7 +185,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/portaction_pal/en_US/INIMPL_f_en
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_INIMPL_f">
+    <refsection xml:id="Interfacingfunction_INIMPL_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

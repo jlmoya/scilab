@@ -67,7 +67,7 @@
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="host_description">
+    <refsection xml:id="host_description">
         <title>Description</title>
         <para>
             <literal>host(…)</literal>
@@ -83,42 +83,46 @@
             By using the optional argument echo=%t, the standard output and error will be printed in Scilab's console during the command execution.
         </para>
         <important>
-            The opened session of the OS interpreter is a fork of the session homing the current
-            Scilab session. As a consequence, it has the following properties:
-            <itemizedlist>
-                <listitem>
-                     <para>
-                        Its starting current working directory (CWD) is the current one in the Scilab
-                        session when running <literal>host(…)</literal>.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        Its starting environment variables are copied from the OS interpreter session
-                        homing the current Scilab session. They can be modified using
-                        <link linkend="setenv">setenv</link>, before calling host().
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        Changing the CWD or/and the environment variables with instructions in
-                        <varname>commands</varname> does not change them in the Scilab session or/and
-                        in the underlying OS interpreter session homing it.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        When called with 2 or 3 outputs the function will wait for the end of the command execution to return outputs.
-                    </para>
-                </listitem>
-            </itemizedlist>
+            <para>
+                The opened session of the OS interpreter is a fork of the session homing the current
+                Scilab session. As a consequence, it has the following properties:
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            Its starting current working directory (CWD) is the current one in the Scilab
+                            session when running <literal>host(…)</literal>.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Its starting environment variables are copied from the OS interpreter session
+                            homing the current Scilab session. They can be modified using
+                            <link linkend="setenv">setenv</link>, before calling host().
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Changing the CWD or/and the environment variables with instructions in
+                            <varname>commands</varname> does not change them in the Scilab session or/and
+                            in the underlying OS interpreter session homing it.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            When called with 2 or 3 outputs the function will wait for the end of the command execution to return outputs.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
         </important>
     </refsection>
     <refsection>
         <title>Examples</title>
-        <refsect3>
-            <title>Using Scilab defined environment variable</title>
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">Using Scilab defined environment variable</emphasis>
+        </para>
+        <programlisting role="example"><![CDATA[
 disp(SCI)
 if getos() == "Windows" then
     [stat, stdout] = host("echo %SCI%")
@@ -126,19 +130,21 @@ else
     [stat, stdout] = host("echo $SCI")
 end
      ]]></programlisting>
-        </refsect3>
-        <refsect3>
-            <title>Playing with outputs</title>
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">Playing with outputs</emphasis>
+        </para>
+        <programlisting role="example"><![CDATA[
 // get separated stdout and stderr
 [stat, stdout, stderr] = host("echo OK && echo KO 1>&2 && echo END")
 // get both outputs keeping chronological order
 [stat, stdout] = host("echo OK && echo KO 1>&2 && echo END")
      ]]></programlisting>
-        </refsect3>
-        <refsect3>
-            <title>Detached command</title>
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">Detached command</emphasis>
+        </para>
+        <programlisting role="example"><![CDATA[
 				
 // Detach a command to avoid waiting for its end
 if getos() == "Windows" then
@@ -154,10 +160,11 @@ else
     [stat, stdout] = host("ping -c 3 localhost &")
 end
      ]]></programlisting>
-        </refsect3>
-        <refsect3>
-            <title>Force command outputs in the Scilab's console</title>
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">Force command outputs in the Scilab's console</emphasis>
+        </para>
+        <programlisting role="example"><![CDATA[
 				
 if getos() == "Windows" then
     host("ping localhost", echo=%t)
@@ -165,7 +172,7 @@ else
     host("ping -c 3 localhost", echo=%t)
 end
      ]]></programlisting>
-        </refsect3>
+
     </refsection>
     <refsection role="see also">
         <title>See also</title>

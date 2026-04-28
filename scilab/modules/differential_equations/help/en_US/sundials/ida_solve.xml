@@ -59,7 +59,7 @@
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    <para>array of solution at time values in <term>t</term></para>
+                    <para>array of solution at time values in <literal>t</literal></para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -109,15 +109,15 @@
             array of solution <literal>[y(t(1)),y(t(2)),...]</literal> at time values in t, <literal>info.yp</literal> is the
             array of solution derivative <literal>[y'(t(1)),y'(t(2)),...]</literal>. Concatenation is done on next dimension if 
             <literal>y0</literal> is not a column vector. The time values in <literal>t</literal>
-            are those used by the solver to meet default relative and absolute estimated local error (which can be changed in <term>options</term>). 
+            are those used by the solver to meet default relative and absolute estimated local error (which can be changed in <literal>options</literal>). 
             In the simplest case the DAE residual is computed by a Scilab function with three arguments, for example for <latex>y'+y=0</latex> F is coded as
-            <para><programlisting role="no-scilab-exec"><![CDATA[
+        </para>
+        <programlisting role="no-scilab-exec"><![CDATA[
                 function res = F(t,y,yp)
                   res = yp+y
                 end]]>
-        </programlisting></para>
-            </para>       
-            <para>See the <link linkend="sundials_user_functions">User functions</link> help page to learn how to pass extra parameters and/or use DLL entrypoints. When <literal>t</literal> has more than two components:
+        </programlisting>
+        <para>See the <link linkend="sundials_user_functions">User functions</link> help page to learn how to pass extra parameters and/or use DLL entrypoints. When <literal>t</literal> has more than two components:
         </para>
         <para><programlisting role="no-scilab-exec"><![CDATA[
             [t,y] = ida(F,[t0 t1 ... tf],y0,yp0)
@@ -258,7 +258,7 @@
         <para>
 A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, D. E. Shumaker, and C. S. Woodward, "SUNDIALS: Suite of Nonlinear and Differential/Algebraic Equation Solvers," ACM Transactions on Mathematical Software, 31(3), pp. 363-396, 2005. Also available as LLNL technical report UCRL-JP-200037.
  </para>
- <para>Alan C. Hindmarsh, Radu Serban, Cody J. Balos, David J. Gardner, Daniel R. Reynolds, and Carol S. Woodward, "User Documentation for ida", 2021, v6.1.1, available online at <ulink url="https://sundials.readthedocs.io/en/latest/ida/index.html">https://sundials.readthedocs.io/en/latest/ida</ulink>.
+ <para>Alan C. Hindmarsh, Radu Serban, Cody J. Balos, David J. Gardner, Daniel R. Reynolds, and Carol S. Woodward, "User Documentation for ida", 2021, v6.1.1, available online at <link xlink:href="https://sundials.readthedocs.io/en/latest/ida/index.html">https://sundials.readthedocs.io/en/latest/ida</link>.
  </para>
     </refsection>
 </refentry>

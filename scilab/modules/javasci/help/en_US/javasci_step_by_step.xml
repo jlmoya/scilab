@@ -28,13 +28,11 @@
         <para>Classes are split in two packages: </para>
         <itemizedlist>
             <listitem>
-                 <para>org.scilab.modules.javasci.*; // Contains the main Scilab class</para></listitem>
+                <para>org.scilab.modules.javasci.*; // Contains the main Scilab class</para></listitem>
                 <listitem>
                      <para>org.scilab.modules.types.*; // Contains Scilab &lt;=&gt; Java mappings</para></listitem>
                 </itemizedlist>
-                <para>
-                    <para>Here is an example of a classical use-case:</para>
-                </para>
+                <para>Here is an example of a classical use-case:</para>
                 <programlisting role="java"><![CDATA[
         /*
          *
@@ -155,8 +153,8 @@
         javac -cp $(CLASSPATH) Example1.java
         java -cp $(CLASSPATH):. -DSCI=$(SCI) -Djava.library.path=$(LIB_PATH) Example1
                 ]]></programlisting>
+                <para>See build.bat for Windows in SCI/modules/javasci/examples/v2 directory.</para>
             </refsection>
-            <para>See build.bat for Windows in SCI/modules/javasci/examples/v2 directory.</para>
             <refsection role="see also">
                 <title>See also</title>
                 <simplelist type="inline">

@@ -77,52 +77,54 @@
                 \Gamma(u)=\int_0^\infty\! t^{u-1}e^{-t}\,dt
             </latex>
         </para>
-        <refsect3>
-            <title>Incomplete normalized integrals</title>
+
+        <para>
+            <emphasis role="bold">Incomplete normalized integrals</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">gamma(x, a)</emphasis> computes the integral
+            <latex style="display" fontsize="18" alt="P(x,a)= ∫_0→x t^{a-1}.exp(-t).dt / Γ(a)">
+                P(x,a)=\frac{1}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-t}\,dt
+            </latex>
+        </para>
+        <para>
+            <emphasis role="bold">gamma(x, a, b)</emphasis> computes the generalized integral
+            <latex style="display" fontsize="18" alt="P(x,a,b)= ∫_0→x t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
+                P(x,a,b)=\frac{b^a}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-b\,t}\,dt
+            </latex>
+        </para>
+        <para>
+            <emphasis role="bold">gamma(x, a, "upper")</emphasis> computes accurately the
+            complementary integral
+            <latex style="display" fontsize="18" alt="Q(x,a)= ∫_x→∞ t^{a-1}.exp(-t).dt / Γ(a) = 1-P(x,a)">
+                Q(x,a)=1-P(x,a)=\frac{1}{\Gamma(a)}\int_x^\infty\! t^{a-1}e^{-t}\,dt
+            </latex>
+            even for big x and P(x,a)→1. Finally,
+        </para>
+        <para>
+            <emphasis role="bold">gamma(x, a, b, "upper")</emphasis> computes the generalized
+            complementary integral
+            <latex style="display" fontsize="18" alt="Q(x,a,b)= ∫_x→∞ t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
+                Q(x,a,b)=\frac{b^a}{\Gamma(a)}\int_x^\infty\! t^{a-1}e^{-b\,t}\,dt
+            </latex>
+        </para>
+        <note>
             <para>
-                <emphasis role="bold">gamma(x, a)</emphasis> computes the integral
-                <latex style="display" fontsize="18" alt="P(x,a)= ∫_0→x t^{a-1}.exp(-t).dt / Γ(a)">
-                    P(x,a)=\frac{1}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-t}\,dt
+                The inverse incomplete normalized gamma function can be computed with
+                <emphasis role="bold">x = cdfgam("X", a, b, y, 1-y)</emphasis>,
+                that is the <varname>x</varname> bound such that
+                <latex alt="y=∫_0→x t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
+                y=\frac{b^a}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-b\,t}\,dt
                 </latex>
             </para>
             <para>
-                <emphasis role="bold">gamma(x, a, b)</emphasis> computes the generalized integral
-                <latex style="display" fontsize="18" alt="P(x,a,b)= ∫_0→x t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
-                    P(x,a,b)=\frac{b^a}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-b\,t}\,dt
-                </latex>
+                Calling <emphasis role="bold">x = cdfgam("X", a, b, z-1, z)</emphasis> with
+                <literal>z=1-y</literal> will be preferred when 0.5 &lt; y &lt; 1, to get a full
+                accuracy on <varname>x</varname>.
             </para>
-            <para>
-                <emphasis role="bold">gamma(x, a, "upper")</emphasis> computes accurately the
-                complementary integral
-                <latex style="display" fontsize="18" alt="Q(x,a)= ∫_x→∞ t^{a-1}.exp(-t).dt / Γ(a) = 1-P(x,a)">
-                    Q(x,a)=1-P(x,a)=\frac{1}{\Gamma(a)}\int_x^\infty\! t^{a-1}e^{-t}\,dt
-                </latex>
-                even for big x and P(x,a)→1. Finally,
-            </para>
-            <para>
-                <emphasis role="bold">gamma(x, a, b, "upper")</emphasis> computes the generalized
-                complementary integral
-                <latex style="display" fontsize="18" alt="Q(x,a,b)= ∫_x→∞ t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
-                    Q(x,a,b)=\frac{b^a}{\Gamma(a)}\int_x^\infty\! t^{a-1}e^{-b\,t}\,dt
-                </latex>
-            </para>
-            <note>
-                <para>
-                    The inverse incomplete normalized gamma function can be computed with
-                    <emphasis role="bold">x = cdfgam("X", a, b, y, 1-y)</emphasis>,
-                    that is the <varname>x</varname> bound such that
-                    <latex alt="y=∫_0→x t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
-                    y=\frac{b^a}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-b\,t}\,dt
-                    </latex>
-                </para>
-                <para>
-                    Calling <emphasis role="bold">x = cdfgam("X", a, b, z-1, z)</emphasis> with
-                    <literal>z=1-y</literal> will be preferred when 0.5 &lt; y &lt; 1, to get a full
-                    accuracy on <varname>x</varname>.
-                </para>
-            </note>
-        </refsect3>
-   </refsection>
+        </note>
+
+    </refsection>
     <refsection>
         <title>Examples</title>
         <para>

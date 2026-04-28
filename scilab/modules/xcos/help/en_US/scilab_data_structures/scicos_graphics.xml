@@ -26,7 +26,7 @@
         <refname>scicos_graphics</refname>
         <refpurpose>Define an Xcos block graphics structure</refpurpose>
     </refnamediv>
-    <refsect1 id="graphics_scicos_graphics">
+    <refsect1 xml:id="graphics_scicos_graphics">
         <title>graphics</title>
         <para>
             Scilab object including graphical information concerning the features of the block. These information are used on the editor to render the block and display values. These values are not propagated to the compiled <link linkend="scicos_cpr">cpr</link> representation.
@@ -52,7 +52,7 @@
             <link linkend="scicos_block_graphics_out_label">out_label</link> and
             <link linkend="scicos_block_graphics_style">style</link>.
         </para>
-        <refsect2 id="scicos_block_graphics_orig">
+        <refsect2 xml:id="scicos_block_graphics_orig">
             <title>orig</title>
             <para>
                 Vector <code>[xo,yo]</code>, where <varname>xo</varname> is the x coordinate of the block origin and <varname>yo</varname> is the y coordinate of the block origin.
@@ -68,7 +68,7 @@
                 Type : row vector of real.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_sz">
+        <refsect2 xml:id="scicos_block_graphics_sz">
             <title>sz</title>
             <para>
                 Vector <code>[w,h]</code>, where w is the block width and h the block height.
@@ -80,7 +80,7 @@
                 Type : row vector of real.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_flip">
+        <refsect2 xml:id="scicos_block_graphics_flip">
             <title>flip</title>
             <para> Set the block orientation. If true the input ports are on the left of the box and output ports are on the right.</para>
             <para> If false the input ports are on the right of the box and output ports are on the left.</para>
@@ -91,7 +91,7 @@
                 Type : boolean.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_theta">
+        <refsect2 xml:id="scicos_block_graphics_theta">
             <title>theta</title>
             <para> Set the angle of the Scicos object.</para>
             <para> This value is in degree and is included in [-360,360].</para>
@@ -102,7 +102,7 @@
                 Type : real.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_exprs">
+        <refsect2 xml:id="scicos_block_graphics_exprs">
             <title>exprs</title>
             <para>Strings including formal expressions used in the dialog box of the block.</para>
             <para>
@@ -112,7 +112,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_pin">
+        <refsect2 xml:id="scicos_block_graphics_pin">
             <title>pin</title>
             <para>
                 Vector. <code>pin(i)</code> is the number of the link connected to the <code>i</code>th regular input port (counting from one), or <code>0</code> if this port is not connected.
@@ -124,7 +124,7 @@
                 Type : column vector of integers.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_pout">
+        <refsect2 xml:id="scicos_block_graphics_pout">
             <title>pout</title>
             <para>
                 Vector. <code>pout(i)</code> is the number of the link connected to the <code>i</code>th regular output port (counting from one), or <code>0</code> if this port is not connected.
@@ -136,7 +136,7 @@
                 Type : column vector of integers.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_pein">
+        <refsect2 xml:id="scicos_block_graphics_pein">
             <title>pein</title>
             <para>
                 Vector. <code>pein(i)</code> is the number of the link connected to the <code>i</code>th event input port (counting from one), or <code>0</code> if this port is not connected.
@@ -148,7 +148,7 @@
                 Type : column vector of integers.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_peout">
+        <refsect2 xml:id="scicos_block_graphics_peout">
             <title>peout</title>
             <para>
                 Vector. <code>peout(i)</code> is the number of the link connected to the ith event output port (counting from one), or <code>0</code> if this port is not connected.
@@ -160,7 +160,7 @@
                 Type : column vector of integers.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_gr_i">
+        <refsect2 xml:id="scicos_block_graphics_gr_i">
             <title>gr_i</title>
             <para>Not used</para>
             <para>
@@ -170,7 +170,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_id">
+        <refsect2 xml:id="scicos_block_graphics_id">
             <title>id</title>
             <para> A string to ease the identification of the block.</para>
             <para>
@@ -180,7 +180,7 @@
                 Type : string.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_in_implicit">
+        <refsect2 xml:id="scicos_block_graphics_in_implicit">
             <title>in_implicit</title>
             <para>
                 A vector of strings including <code>'E'</code> or <code>'I'</code>.
@@ -195,7 +195,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_out_implicit">
+        <refsect2 xml:id="scicos_block_graphics_out_implicit">
             <title>out_implicit</title>
             <para>
                 A vector of strings including <code>'E'</code> or <code>'I'</code>.
@@ -210,7 +210,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_in_style">
+        <refsect2 xml:id="scicos_block_graphics_in_style">
             <title>in_style</title>
             <para>A vector of strings including JGraphX key values style properties.</para>
             <para>
@@ -223,7 +223,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_out_style">
+        <refsect2 xml:id="scicos_block_graphics_out_style">
             <title>out_style</title>
             <para> A vector of strings including JGraphX key values style properties.</para>
             <para>
@@ -236,7 +236,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_in_label">
+        <refsect2 xml:id="scicos_block_graphics_in_label">
             <title>in_label</title>
             <para> A vector of strings including ports labels.</para>
             <para>These labels can be used to update text or to trace information.</para>
@@ -247,7 +247,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_out_label">
+        <refsect2 xml:id="scicos_block_graphics_out_label">
             <title>out_label</title>
             <para> A vector of strings including ports labels.</para>
             <para>These labels can be used to update text or to trace information.</para>
@@ -258,7 +258,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_block_graphics_style">
+        <refsect2 xml:id="scicos_block_graphics_style">
             <title>style</title>
             <para> A string.</para>
             <para> A vector of strings including JGraphX key values style properties.</para>

@@ -41,8 +41,10 @@
                 <listitem>
                     <para>string, file name of the file to be opened</para>
                     <warning>
-                        This function can not open files whose path has non-ascii
-                        UTF characters (accented, etc). In this case, mopen() must be used.
+                        <para>
+                            This function can not open files whose path has non-ascii
+                            UTF characters (accented, etc). In this case, mopen() must be used.
+                        </para>
                     </warning>
                 </listitem>
             </varlistentry>

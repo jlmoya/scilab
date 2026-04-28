@@ -32,37 +32,37 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/OUTIMPL_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_OUTIMPL_f">
+    <refsection xml:id="Contents_OUTIMPL_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_OUTIMPL_f">Description</xref>
+                <para><link linkend="Description_OUTIMPL_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_OUTIMPL_f">Parameters</xref>
+                <para><link linkend="Dialogbox_OUTIMPL_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_OUTIMPL_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_OUTIMPL_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_OUTIMPL_f">Example</xref>
+                <para><link linkend="Example_OUTIMPL_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_OUTIMPL_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_OUTIMPL_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_OUTIMPL_f">See also</xref>
+                <para><link linkend="Seealso_OUTIMPL_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_OUTIMPL_f">
+    <refsection xml:id="Description_OUTIMPL_f">
         <title>Description</title>
         <para>
             This block represents a regular implicit port. It must only be used inside a Xcos Super Block and be connected to an implicit output of an internal implicit output in the sub-system.
@@ -72,14 +72,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_OUTIMPL_f">
+    <refsection xml:id="Dialogbox_OUTIMPL_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/portaction_pal/en_US/OUTIMPL_f_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/portaction_pal/en_US/OUTIMPL_f_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -90,7 +89,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_OUTIMPL_f">
+    <refsection xml:id="Defaultproperties_OUTIMPL_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -155,7 +154,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_OUTIMPL_f">
+    <refsection xml:id="Example_OUTIMPL_f">
         <title>Example</title>
         <para>
             In the following example the Super block is a basic transistor switch.
@@ -182,7 +181,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/portaction_pal/en_US/OUTIMPL_f_e
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_OUTIMPL_f">
+    <refsection xml:id="Interfacingfunction_OUTIMPL_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

@@ -49,7 +49,7 @@
                 
                 <refsection>
                    <title>Description</title>
-                   <para>The spCompJacobian function consructs a compressed Jacobian engine from the given sparsity pattern using column intersection graph coloring. Internally, after using a heuristic coloring algorithm, a "seed matrix" is generated, available as <code>jac.seed</code>, and later used by the engine to compute (approximate) directional derivatives of <term>f</term> in each seed column direction. Then the uncompressed Jacobian is recovered. The typical call sequence starts by calling <code>spCompJacobian</code> then continues by invoking the returned MList with the vectors at which the Jacobian is to be computed:</para>
+                   <para>The spCompJacobian function consructs a compressed Jacobian engine from the given sparsity pattern using column intersection graph coloring. Internally, after using a heuristic coloring algorithm, a "seed matrix" is generated, available as <code>jac.seed</code>, and later used by the engine to compute (approximate) directional derivatives of <literal>f</literal> in each seed column direction. Then the uncompressed Jacobian is recovered. The typical call sequence starts by calling <code>spCompJacobian</code> then continues by invoking the returned MList with the vectors at which the Jacobian is to be computed:</para>
                    <para>
                      <programlisting role="no-scilab-exec"><![CDATA[
                      jac = spCompJacobian(f,sp);
@@ -70,11 +70,11 @@
                        <para/>
                      </listitem>
                      <listitem>
-                       <para><emphasis>FiniteDifferenceType</emphasis> : this field gives the chosen approximation scheme. The possible values are "CENTERED" (the default order 2 centered scheme), "FORWARD" (the usual forward order 1 scheme) and "COMPLEXSTEP" (the order 2 complex step scheme). If you choose the complex step scheme check that <term>f</term> accepts complex input and handles it correctly (for example transposition operator has to be the dot-prefixed non-conjugate transposition <code>.'</code>).</para>
+                       <para><emphasis>FiniteDifferenceType</emphasis> : this field gives the chosen approximation scheme. The possible values are "CENTERED" (the default order 2 centered scheme), "FORWARD" (the usual forward order 1 scheme) and "COMPLEXSTEP" (the order 2 complex step scheme). If you choose the complex step scheme check that <literal>f</literal> accepts complex input and handles it correctly (for example transposition operator has to be the dot-prefixed non-conjugate transposition <code>.'</code>).</para>
                        <para/>
                      </listitem>
                      <listitem>
-                       <para><emphasis>FiniteDifferenceStepSize</emphasis> : this is the relative stepsize (see also <emphasis>"TypicalX"</emphasis> below). For a given <term>x0</term> the actual step is </para>
+                       <para><emphasis>FiniteDifferenceStepSize</emphasis> : this is the relative stepsize (see also <emphasis>"TypicalX"</emphasis> below). For a given <literal>x0</literal> the actual step is </para>
                        <para/>
                        <para>
                          <code>sign(x0).*FiniteDifferenceStepSize.*max(TypicalX,x0)</code>
@@ -88,7 +88,7 @@
                        <para/>
                      </listitem>
                      <listitem>
-                       <para><emphasis>Vectorized</emphasis> : "on" or "off" : allows to inform the engine if <term>f</term> can be called with a matrix <code>X</code> as argument, with the convention that <code>f(X)(:,i) == f(X(:,i))</code>.
+                       <para><emphasis>Vectorized</emphasis> : "on" or "off" : allows to inform the engine if <literal>f</literal> can be called with a matrix <code>X</code> as argument, with the convention that <code>f(X)(:,i) == f(X(:,i))</code>.
                        </para>
                        <para>for each column of <code>X</code>.
                      </para>
@@ -96,7 +96,7 @@
                    </itemizedlist>     
                    </para>
                    <para>
-                     The <term>jac</term> MList can be invoked with more than one arguments. In this case the remaining argument after the first are used by the engine as complimentary arguments when calling <term>f</term>.
+                     The <literal>jac</literal> MList can be invoked with more than one arguments. In this case the remaining argument after the first are used by the engine as complimentary arguments when calling <literal>f</literal>.
                    </para>
                 </refsection>
                 

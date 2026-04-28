@@ -44,17 +44,20 @@
                         A number is considered as %F (false) if it is 0 or 0+0i.
                         Otherwise (including %nan), it is equivalent to %T (true).
                     </para>
-                    <note>Special <varname>A</varname>:
-                        <itemizedlist>
-                            <listitem>
-                                 <para><literal>and([])</literal> returns <literal>%T</literal>.
-                                </para>
-                            </listitem>
-                            <listitem>
-                                 <para><literal>and(%nan)</literal> returns <literal>%T</literal>.
-                                </para>
-                            </listitem>
-                        </itemizedlist>
+                    <note>
+                        <para>
+                            Special <varname>A</varname>:
+                            <itemizedlist>
+                                <listitem>
+                                    <para><literal>and([])</literal> returns <literal>%T</literal>.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><literal>and(%nan)</literal> returns <literal>%T</literal>.
+                                    </para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>

@@ -32,38 +32,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CLKINV_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_CLKINV_f">
+    <refsection xml:id="Contents_CLKINV_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CLKINV_f">Description</xref>
+                <para><link linkend="Description_CLKINV_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CLKINV_f">Parameters</xref>
+                <para><link linkend="Dialogbox_CLKINV_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CLKINV_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_CLKINV_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CLKINV_f">Example</xref>
+                <para><link linkend="Example_CLKINV_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CLKINV_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CLKINV_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CLKINV_f">See also</xref>
+                <para><link linkend="Seealso_CLKINV_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_CLKINV_f">
+    <refsection xml:id="Description_CLKINV_f">
         <title>Description</title>
         <para>
             This block represent an activation input port. It must only be used inside a Xcos Super Block and be connected
@@ -75,14 +75,13 @@
             <emphasis role="bold">Port number</emphasis> parameter.
         </para>
     </refsection>
-    <refsection id="Dialogbox_CLKINV_f">
+    <refsection xml:id="Dialogbox_CLKINV_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/portaction_pal/en_US/CLKINV_f_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/portaction_pal/en_US/CLKINV_f_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -93,7 +92,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_CLKINV_f">
+    <refsection xml:id="Defaultproperties_CLKINV_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -150,7 +149,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_CLKINV_f">
+    <refsection xml:id="Example_CLKINV_f">
         <title>Example</title>
         <para>
             In this example, we create a square wave generator with two inverted outputs by using a SUPER_f block with the contents
@@ -174,7 +173,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/portaction_pal/en_US/CLKINV_f_en
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_CLKINV_f">
+    <refsection xml:id="Interfacingfunction_CLKINV_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

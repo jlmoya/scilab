@@ -32,38 +32,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/ENDBLK.png" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_ENDBLK">
+    <refsection xml:id="Contents_ENDBLK">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_ENDBLK">Description</xref>
+                <para><link linkend="Description_ENDBLK">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_ENDBLK">Parameters</xref>
+                <para><link linkend="Dialogbox_ENDBLK">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_ENDBLK">Default properties</xref>
+                <para><link linkend="Defaultproperties_ENDBLK">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_ENDBLK">Interfacing function
-                    </xref>
+                <para><link linkend="Interfacingfunction_ENDBLK">Interfacing function
+                    </link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_ENDBLK">Example</xref>
+                <para><link linkend="Example_ENDBLK">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_ENDBLK">See also</xref>
+                <para><link linkend="Seealso_ENDBLK">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_ENDBLK">
+    <refsection xml:id="Description_ENDBLK">
         <title>Description</title>
         <para>That block can be used to set the final time of the simulation. When
             that block is truly parametrized then the simulator will jump to the
@@ -73,19 +73,20 @@
             defined in the scicos context.
         </para>
         <note>
-            The 'Final simulation time' item (on diagram settings) always end the simulation at the
-            specified time. This block should be configured to end the simulation before this setting.
+            <para>
+                The 'Final simulation time' item (on diagram settings) always end the simulation at the
+                specified time. This block should be configured to end the simulation before this setting.
+            </para>
         </note>
 		<para/>
     </refsection>
-    <refsection id="Dialogbox_ENDBLK">
+    <refsection xml:id="Dialogbox_ENDBLK">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/ENDBLK_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/ENDBLK_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -100,7 +101,7 @@
         </itemizedlist>
 		<para/>
     </refsection>
-    <refsection id="Defaultproperties_ENDBLK">
+    <refsection xml:id="Defaultproperties_ENDBLK">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -158,8 +159,9 @@
 		<para/>
     </refsection>
 
-    <refsection id="Example_ENDBLK">
+    <refsection xml:id="Example_ENDBLK">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/ENDBLK_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -167,9 +169,10 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_ENDBLK">
+    <refsection xml:id="Interfacingfunction_ENDBLK">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

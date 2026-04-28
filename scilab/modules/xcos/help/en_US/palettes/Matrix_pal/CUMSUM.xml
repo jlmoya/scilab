@@ -28,41 +28,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/CUMSUM.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_CUMSUM">
+    <refsection xml:id="Contents_CUMSUM">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CUMSUM">Description</xref>
+                <para><link linkend="Description_CUMSUM">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CUMSUM">Parameters</xref>
+                <para><link linkend="Dialogbox_CUMSUM">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CUMSUM">Default properties</xref>
+                <para><link linkend="Defaultproperties_CUMSUM">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CUMSUM">Example</xref>
+                <para><link linkend="Example_CUMSUM">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CUMSUM">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CUMSUM">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CUMSUM">Computational function</xref>
+                <para><link linkend="Computationalfunction_CUMSUM">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CUMSUM">See also</xref>
+                <para><link linkend="Seealso_CUMSUM">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_CUMSUM">
+    <refsection xml:id="Description_CUMSUM">
         <title>Description</title>
         <para>
             The CUMSUM block cumulatively sums the element of an input MxN matrix U along either
@@ -93,14 +93,13 @@
             The equivalent function in Scilab is <link linkend="cumsum">cumsum</link>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_CUMSUM">
+    <refsection xml:id="Dialogbox_CUMSUM">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/CUMSUM_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/CUMSUM_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -124,7 +123,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_CUMSUM">
+    <refsection xml:id="Defaultproperties_CUMSUM">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -197,7 +196,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_CUMSUM">
+    <refsection xml:id="Example_CUMSUM">
         <title>Example</title>
         <programlisting role="example"><![CDATA[
             A = [1 2 3 ; 4 5 6 ; 7 8 9]
@@ -207,6 +206,7 @@
         <para>
             <emphasis role="bold">Cumulative Sum example</emphasis>
         </para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/CUMSUM_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -214,8 +214,9 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
-    <refsection id="Interfacingfunction_CUMSUM">
+    <refsection xml:id="Interfacingfunction_CUMSUM">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -223,7 +224,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CUMSUM">
+    <refsection xml:id="Computationalfunction_CUMSUM">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

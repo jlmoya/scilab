@@ -20,45 +20,48 @@
     </refsynopsisdiv>
     <refsection>
         <title>Arguments</title>
-        <refsect3>
-          <title>Input parameters</title>
-          <variablelist>
-              <varlistentry>
-                  <term>file_mask</term>
-                  <listitem>
-                      <para>
-                          Matrix of strings providing the file masks to use for file selection.
-                          <literal>file_mask</literal> is written with Unix conventions.
-                          The default value is '*'.
-                      </para>
-                      <para>
-                        A description of each mask may be provided in column#2 and displayed,
-                        for example ["*.xcos|*.zcos*","Xcos files"; "*.scg", "Scilab graphics"].
-                      </para>
-                  </listitem>
-              </varlistentry>
-              <varlistentry>
-                  <term>dir</term>
-                  <listitem>
-                      <para>
-                        a character string which gives the initial directory used for file search.
-                        By default uiputfile uses the previously selected directory.
-                      </para>
-                  </listitem>
-              </varlistentry>
-              <varlistentry>
-                  <term>boxTitle</term>
-                  <listitem>
-                      <para>
-                        a character string which gives the title of the uiputfile window.
-                        By default uiputfile's title is 'uiputfile'.
-                      </para>
-                  </listitem>
-              </varlistentry>
-          </variablelist>
-      </refsect3>
-      <refsect3>
-        <title>Output parameters</title>
+
+        <para>
+            <emphasis role="bold">Input parameters</emphasis>
+        </para>
+        <variablelist>
+            <varlistentry>
+                <term>file_mask</term>
+                <listitem>
+                    <para>
+                        Matrix of strings providing the file masks to use for file selection.
+                        <literal>file_mask</literal> is written with Unix conventions.
+                        The default value is '*'.
+                    </para>
+                    <para>
+                    A description of each mask may be provided in column#2 and displayed,
+                    for example ["*.xcos|*.zcos*","Xcos files"; "*.scg", "Scilab graphics"].
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>dir</term>
+                <listitem>
+                    <para>
+                    a character string which gives the initial directory used for file search.
+                    By default uiputfile uses the previously selected directory.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>boxTitle</term>
+                <listitem>
+                    <para>
+                    a character string which gives the title of the uiputfile window.
+                    By default uiputfile's title is 'uiputfile'.
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
+        <para>
+            <emphasis role="bold">Output parameters</emphasis>
+        </para>
         <variablelist>
             <varlistentry>
                 <term>PathFileName</term>
@@ -86,7 +89,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-      </refsect3>
+
     </refsection>
     <refsection>
         <title>Description</title>

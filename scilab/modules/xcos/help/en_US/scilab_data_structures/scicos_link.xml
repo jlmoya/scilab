@@ -26,7 +26,7 @@
         <refname>scicos_link</refname>
         <refpurpose>Define a link structure</refpurpose>
     </refnamediv>
-    <refsect1 id="link_scicos_link">
+    <refsection xml:id="link_scicos_link">
         <title>link</title>
         <para>Basic  structure that define a xcos link.</para>
         <para>
@@ -39,83 +39,98 @@
             <link linkend="scicos_link_from">from</link> and
             <link linkend="scicos_link_to">to</link>.
         </para>
-        <refsect2 id="scicos_link_xx">
-            <title>xx</title>
-            <para> Vector of x coordinates of the link path. A link is defined as a polyline line.</para>
-            <para>
-                Size : number of points of the link.
-            </para>
-            <para>
-                Type : column vector of real numbers.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_link_yy">
-            <title>yy</title>
-            <para> Vector of y coordinates of the link path. A link is defined as a polyline line.</para>
-            <para>
-                Size : number of points of the link.
-            </para>
-            <para>
-                Type : column vector of real numbers.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_link_id">
-            <title>id</title>
-            <para> Character string, the link identification.</para>
-            <para>
-                Size : 1.
-            </para>
-            <para>
-                Type : string.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_link_thick">
-            <title>thick</title>
-            <para> Vector of size two defining line thickness.</para>
-            <para>
-                Size : 2.
-            </para>
-            <para>
-                Type : row vector of integers.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_link_ct">
-            <title>ct</title>
-            <para>
-                The first entry of this vector designates the color, and the second, the nature of the link. The second entry is <code>1</code> for a regular link, <code>-1</code> for an activation link, and <code>2</code> for an implicit link.
-            </para>
-            <para>
-                Size : 2.
-            </para>
-            <para>
-                Type : row vector of integers.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_link_from">
-            <title>from</title>
-            <para>
-                Vector of size three including the block number, port number, and port type (<code>0</code> for output, <code>1</code> for input) at the origin of the link. Note that the third entry may be <code>0</code> or <code>1</code> if the link is implicit.
-            </para>
-            <para>
-                Size : 3.
-            </para>
-            <para>
-                Type : row vector of integers.
-            </para>
-        </refsect2>
-        <refsect2 id="scicos_link_to">
-            <title>to</title>
-            <para>
-                Vector of size three including the block number, port number, and port type (<code>0</code> for output, <code>1</code> for input) at the destination of the link. Note that the third entry may be <code>0</code> or <code>1</code> if the link is implicit.
-            </para>
-            <para>
-                Size : 3.
-            </para>
-            <para>
-                Type : row vector of integers.
-            </para>
-        </refsect2>
-    </refsect1>
+
+        <para>
+            <emphasis role="bold">xx</emphasis>
+            <anchor xml:id="scicos_link_xx"/>
+        </para>
+        <para> Vector of x coordinates of the link path. A link is defined as a polyline line.</para>
+        <para>
+            Size : number of points of the link.
+        </para>
+        <para>
+            Type : column vector of real numbers.
+        </para>
+
+        <para>
+            <emphasis role="bold">yy</emphasis>
+            <anchor xml:id="scicos_link_yy"/>
+        </para>
+        <para> Vector of y coordinates of the link path. A link is defined as a polyline line.</para>
+        <para>
+            Size : number of points of the link.
+        </para>
+        <para>
+            Type : column vector of real numbers.
+        </para>
+
+        <para>
+            <emphasis role="bold">id</emphasis>
+            <anchor xml:id="scicos_link_id"/>
+        </para>
+        <para> Character string, the link identification.</para>
+        <para>
+            Size : 1.
+        </para>
+        <para>
+            Type : string.
+        </para>
+
+        <para>
+            <emphasis role="bold">thick</emphasis>
+            <anchor xml:id="scicos_link_thick"/>
+        </para>
+        <para> Vector of size two defining line thickness.</para>
+        <para>
+            Size : 2.
+        </para>
+        <para>
+            Type : row vector of integers.
+        </para>
+
+        <para>
+            <emphasis role="bold">ct</emphasis>
+            <anchor xml:id="scicos_link_ct"/>
+        </para>
+        <para>
+            The first entry of this vector designates the color, and the second, the nature of the link. The second entry is <code>1</code> for a regular link, <code>-1</code> for an activation link, and <code>2</code> for an implicit link.
+        </para>
+        <para>
+            Size : 2.
+        </para>
+        <para>
+            Type : row vector of integers.
+        </para>
+
+        <para>
+            <emphasis role="bold">from</emphasis>
+            <anchor xml:id="scicos_link_from"/>
+        </para>
+        <para>
+            Vector of size three including the block number, port number, and port type (<code>0</code> for output, <code>1</code> for input) at the origin of the link. Note that the third entry may be <code>0</code> or <code>1</code> if the link is implicit.
+        </para>
+        <para>
+            Size : 3.
+        </para>
+        <para>
+            Type : row vector of integers.
+        </para>
+
+        <para>
+            <emphasis role="bold">to</emphasis>
+            <anchor xml:id="scicos_link_to"/>
+        </para>
+        <para>
+            Vector of size three including the block number, port number, and port type (<code>0</code> for output, <code>1</code> for input) at the destination of the link. Note that the third entry may be <code>0</code> or <code>1</code> if the link is implicit.
+        </para>
+        <para>
+            Size : 3.
+        </para>
+        <para>
+            Type : row vector of integers.
+        </para>
+
+    </refsection>
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[

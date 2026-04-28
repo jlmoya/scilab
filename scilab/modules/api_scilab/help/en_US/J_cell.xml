@@ -18,130 +18,136 @@
         <refname>API cell functions</refname>
         <refpurpose>This page lists all the functions to manipulate Cell objects.</refpurpose>
     </refnamediv>
-    <refsynopsisdiv>
-        <refsection id="api_cell_scilab_createCellMatrix">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createCellMatrix</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, int dim, const int* dims)
-            </literal>
-            <para>
-                Create a cell matrix with <varname>dim</varname> dimensions (<varname>dims</varname>[0], <varname>dims</varname>[1], ..., <varname>dims</varname>[<varname>dim</varname>-1]).
-            </para>
-        </refsection>
-        <refsection id="api_cell_scilab_createCellMatrix2d">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createCellMatrix2d</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, int row, int col)
-            </literal>
-            <para>
-                Create a cell matrix with 2 dimensions (<varname>row</varname>, <varname>col</varname>).
-            </para>
-        </refsection>
-        <refsection id="api_cell_scilab_getCellValue">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_getCellValue</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, int* index,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                *val)
-            </literal>
-            <para>
-                Get data at position (<varname>index</varname>[0], <varname>index</varname>[1], ..., <varname>index</varname>[dims-1]) from <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_cell_scilab_getCell2dValue">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_getCell2dValue</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, int row, int col,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                *val)
-            </literal>
-            <para>
-                Get data at position (<varname>row</varname>, <varname>col</varname>) from <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_cell_scilab_setCellValue">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setCellValue</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, int* index,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                val)
-            </literal>
-            <para>
-                Set data at position (<varname>index</varname>[0], <varname>index</varname>[1], ..., <varname>index</varname>[dims-1]) in <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_cell_scilab_setCell2dValue">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setCell2dValue</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, int row, int col,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                val)
-            </literal>
-            <para>
-                Set data at position (<varname>row</varname>, <varname>col</varname>) in <varname>var</varname>.
-            </para>
-        </refsection>
-    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>
+            <anchor xml:id="api_cell_scilab_createCellMatrix"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createCellMatrix</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, int dim, const int* dims)</literal>
+        </para>
+        <para>
+            Create a cell matrix with <varname>dim</varname> dimensions (<varname>dims</varname>[0], <varname>dims</varname>[1], ..., <varname>dims</varname>[<varname>dim</varname>-1]).
+        </para>
+
+        <para>
+            <anchor xml:id="api_cell_scilab_createCellMatrix2d"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createCellMatrix2d</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, int row, int col)</literal>
+        </para>
+        <para>
+            Create a cell matrix with 2 dimensions (<varname>row</varname>, <varname>col</varname>).
+        </para>
+
+        <para>
+            <anchor xml:id="api_cell_scilab_getCellValue"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_getCellValue</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> var, int* index, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> *val)</literal>
+        </para>
+        <para>
+            Get data at position (<varname>index</varname>[0], <varname>index</varname>[1], ..., <varname>index</varname>[dims-1]) from <varname>var</varname>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_cell_scilab_getCell2dValue"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_getCell2dValue</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> var, int row, int col, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> *val)</literal>
+        </para>
+        <para>
+            Get data at position (<varname>row</varname>, <varname>col</varname>) from <varname>var</varname>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_cell_scilab_setCellValue"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setCellValue</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> var, int* index, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> val)</literal>
+        </para>
+        <para>
+            Set data at position (<varname>index</varname>[0], <varname>index</varname>[1], ..., <varname>index</varname>[dims-1]) in <varname>var</varname>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_cell_scilab_setCell2dValue"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setCell2dValue</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> var, int row, int col, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> val)</literal>
+        </para>
+        <para>
+            Set data at position (<varname>row</varname>, <varname>col</varname>) in <varname>var</varname>.
+        </para>
+    </refsection>
     <refsection>
         <title>Examples</title>
         <programlisting role="code_gateway">

@@ -21,260 +21,258 @@
         <refname>API list-type functions</refname>
         <refpurpose>This page lists all the functions to manipulate Scilab native lists.</refpurpose>
     </refnamediv>
-    <refsynopsisdiv>
-        <refsection id="api_list_scilab_createList">
-            <literal>
+    <refsection>
+        <title>Description</title>
+        <para>
+            <anchor xml:id="api_list_scilab_createList"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createList</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env)</literal>
+        </para>
+        <para>Create a list.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_createTList"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createTList</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env)</literal>
+        </para>
+        <para>Create a tlist.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_createMList"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createMList</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env)</literal>
+        </para>
+        <para>Create a mlist.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_getListItem"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_getListItem</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, int index)</literal>
+        </para>
+        <para>Get item at position <varname>index</varname> from list-type variable <varname>var</varname>.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_setListItem"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setListItem</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env,</literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, int index, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>val)</literal>
+        </para>
+        <para>Set item <varname>val</varname> at position <varname>index</varname> in list-type variable <varname>var</varname>.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_getTListFieldNames"/>
+            <literal>int </literal>
+            <varname>scilab_getTListFieldNames</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
                 <link linkend="api_types_scilabVar">
                     <command>scilabVar</command>
                 </link>
-                <varname>scilab_createList</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env)
-            </literal>
-            <para>Create a list.</para>
-        </refsection>
-        <refsection id="api_list_scilab_createTList">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createTList</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env)
-            </literal>
-            <para>Create a tlist.</para>
-        </refsection>
-        <refsection id="api_list_scilab_createMList">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createMList</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env)
-            </literal>
-            <para>Create a mlist.</para>
-        </refsection>
-        <refsection id="api_list_scilab_getListItem">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_getListItem</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, int index)
-            </literal>
-            <para>
-                Get item at position <varname>index</varname> from list-type variable <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_setListItem">
-            <literal>
+            <literal>var, wchar_t*** fieldnames)</literal>
+        </para>
+        <para>Get fields names of tlist variable <varname>var</varname> and return size.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_getTListField"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_getTListField</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, const wchar_t* field)</literal>
+        </para>
+        <para>Get <varname>field</varname> value of tlist variable <varname>var</varname>.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_setTListField"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setTListField</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal> 
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, const wchar_t* field, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>val)</literal>
+        </para>
+        <para>Set <varname>field</varname> value of tlist variable <varname>var</varname>.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_getMListFieldNames"/>
+            <literal>int </literal>
+            <varname>scilab_getMListFieldNames</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, wchar_t*** fieldnames)</literal>
+        </para>
+        <para>
+            Get fields names of mlist variable <varname>var</varname> and return size.
+        </para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_getMListField"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_getMListField</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, const wchar_t* field)</literal>
+        </para>
+        <para>Get <varname>field</varname> value of mlist variable <varname>var</varname>.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_setMListField"/>
+            
                 <link linkend="api_types_scilabStatus">
                     <command>scilabStatus</command>
                 </link>
-                <varname>scilab_setListItem</varname>(
+                <varname>scilab_setMListField</varname>
+                <literal>(</literal>
                 <link linkend="api_types_scilabEnv">
                     <command>scilabEnv</command>
                 </link>
-                env,
+                <literal>env, </literal>
                 <link linkend="api_types_scilabVar">
                     <command>scilabVar</command>
                 </link>
-                var, int index,
+                <literal>var, const wchar_t* field, </literal>
                 <link linkend="api_types_scilabVar">
                     <command>scilabVar</command>
                 </link>
-                val)
-            </literal>
-            <para>
-                set item <varname>val</varname> at position <varname>index</varname> in list-type variable <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_getTListFieldNames">
-            <literal>
-                int <varname>scilab_getTListFieldNames</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, wchar_t*** fieldnames)
-            </literal>
-            <para>
-                Get fields names of tlist variable <varname>var</varname> and return size.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_getTListField">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_getTListField</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, const wchar_t* field)
-            </literal>
-            <para>
-                Get <varname>field</varname> value of tlist variable <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_setTListField">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setTListField</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, const wchar_t* field,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                val)
-            </literal>
-            <para>
-                Set <varname>field</varname> value of tlist variable <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_getMListFieldNames">
-            <literal>
-                int <varname>scilab_getMListFieldNames</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, wchar_t*** fieldnames)
-            </literal>
-            <para>
-                Get fields names of mlist variable <varname>var</varname> and return size.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_getMListField">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_getMListField</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, const wchar_t* field)
-            </literal>
-            <para>
-                Get <varname>field</varname> value of mlist variable <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_setMListField">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setMListField</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, const wchar_t* field,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                val)
-            </literal>
-            <para>
-                Set <varname>field</varname> value of mlist variable <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_appendToList">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_appendToList</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                val)
-            </literal>
-            <para>
-                Add <varname>val</varname> at the end of list-type <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_isDefined">
-            <literal>
-                int <varname>scilab_isDefined</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, int index)
-            </literal>
-            <para>
-                Return 1 is item at position <varname>index</varname> is defined.
-            </para>
-        </refsection>
-        <refsection id="api_list_scilab_isUndefined">
-            <literal>
-                int <varname>scilab_isUndefined</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, int index)
-            </literal>
-            <para>
-                Return 1 is item at position <varname>index</varname> is undefined.
-            </para>
-        </refsection>
-    </refsynopsisdiv>
+                <literal>val)</literal>
+        </para>
+        <para>Set <varname>field</varname> value of mlist variable <varname>var</varname>.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_appendToList"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_appendToList</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>val)</literal>
+        </para>
+        <para>Add <varname>val</varname> at the end of list-type <varname>var</varname>.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_isDefined"/>
+            <literal>int </literal>
+            <varname>scilab_isDefined</varname><literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, int index)</literal>
+        </para>
+        <para>Return 1 is item at position <varname>index</varname> is defined.</para>
+
+        <para>
+            <anchor xml:id="api_list_scilab_isUndefined"/>
+            <literal>int </literal>
+            <varname>scilab_isUndefined</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, int index)</literal>
+        </para>
+        <para>Return 1 is item at position <varname>index</varname> is undefined.</para>
+    </refsection>
     <refsection>
         <title>Examples</title>
         <programlisting role="code_gateway">

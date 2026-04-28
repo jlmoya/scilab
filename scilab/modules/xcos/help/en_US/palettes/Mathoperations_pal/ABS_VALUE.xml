@@ -31,51 +31,50 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/ABS_VALUE.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_ABS_VALUE">
+    <refsection xml:id="Contents_ABS_VALUE">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_ABS_VALUE">Description</xref>
+                <para><link linkend="Description_ABS_VALUE">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_ABS_VALUE">Parameters</xref>
+                <para><link linkend="Dialogbox_ABS_VALUE">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_ABS_VALUE">Default properties</xref>
+                <para><link linkend="Defaultproperties_ABS_VALUE">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_ABS_VALUE">Example</xref>
+                <para><link linkend="Example_ABS_VALUE">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_ABS_VALUE">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_ABS_VALUE">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_ABS_VALUE">Computational function</xref>
+                <para><link linkend="Computationalfunction_ABS_VALUE">Computational function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_ABS_VALUE">
+    <refsection xml:id="Description_ABS_VALUE">
         <title>Description</title>
         <para>
             That block computes the absolute value of the elements of the input vector.
         </para>
     </refsection>
-    <refsection id="Dialogbox_ABS_VALUE">
+    <refsection xml:id="Dialogbox_ABS_VALUE">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/ABS_VALUE_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/ABS_VALUE_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -86,7 +85,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_ABS_VALUE">
+    <refsection xml:id="Defaultproperties_ABS_VALUE">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -159,7 +158,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_ABS_VALUE">
+    <refsection xml:id="Example_ABS_VALUE">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/mathoperations_pal/ABS_VALUE_Example.zcos">
@@ -175,7 +174,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/mathoperations_pal/ABS_VALUE_Exa
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_ABS_VALUE">
+    <refsection xml:id="Interfacingfunction_ABS_VALUE">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -183,7 +182,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_ABS_VALUE">
+    <refsection xml:id="Computationalfunction_ABS_VALUE">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

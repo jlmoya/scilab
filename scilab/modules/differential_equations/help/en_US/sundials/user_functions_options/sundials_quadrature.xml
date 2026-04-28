@@ -49,19 +49,21 @@
                     y_q(t) = y_q(t_0)+\int_{t_0}^t g(u,y(u))\,du.
                 </latex>
             </para>
-            and depending also on y' when solving a DAE
+            <para>
+                and depending also on y' when solving a DAE
+            </para>
             <para>
                 <latex style="display">
                     y_q(t) =  y_q(t_0)+\int_{t_0}^t g(u,y(u),y'(u))\,du.
                 </latex>
             </para>
             <para>
-                These quantities could be added as new states and trivial equations in the original problem since <latex style="text">y_q'= g</latex>
+                These quantities could be added as new states and trivial equations in the original problem since <latex>y_q'= g</latex>
                 but giving them separately avoids computing useless Jacobians and saves the solver effort. 
-                The value of g is given by the output of <term>fun</term>, which has the same prototype as a classical ODE rhs or DAE residual. After the solver call
-                the quadrature variables are retrieved in the "q" field of either the <term>info</term> or <term>sol</term> output argument, 
+                The value of g is given by the output of <literal>fun</literal>, which has the same prototype as a classical ODE rhs or DAE residual. After the solver call
+                the quadrature variables are retrieved in the "q" field of either the <literal>info</literal> or <literal>sol</literal> output argument, 
                 as in the following examples (typically, only the final value of q will be of interest). The initial values of the quadrature variables are zero 
-                by default but can be set with the option <term>yQ0</term>. Note 
+                by default but can be set with the option <literal>yQ0</literal>. Note 
 
             </para>
     </refsection>

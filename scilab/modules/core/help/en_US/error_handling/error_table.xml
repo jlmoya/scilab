@@ -27,43 +27,49 @@
                         Messages
                         <itemizedlist>
                             <listitem>
-                                <link linkend="error_table_arg_number">Checking Arguments numbers</link>
+                                <para><link linkend="error_table_arg_number">Checking Arguments numbers</link></para>
                             </listitem>
                             <listitem>
-                                <link linkend="error_table_type_checking">
-                                    Checking container and content types and encoding
-                                </link>
+                                <para>
+                                    <link linkend="error_table_type_checking">
+                                        Checking container and content types and encoding
+                                    </link>
+                                </para>
                             </listitem>
                             <listitem>
-                                <link linkend="error_table_sizes_checking">
-                                    Checking sizes
-                                </link>
+                                <para>
+                                    <link linkend="error_table_sizes_checking">
+                                        Checking sizes
+                                    </link>
+                                </para>
                             </listitem>
                             <listitem>
-                                <link linkend="error_table_values_checking">Checking values</link>
+                                <para><link linkend="error_table_values_checking">Checking values</link></para>
                             </listitem>
                             <listitem>
-                                <link linkend="error_table_interarguments_constrains">
-                                    Inter-arguments constrains
-                                </link>
+                                <para>
+                                    <link linkend="error_table_interarguments_constrains">
+                                        Inter-arguments constrains
+                                    </link>
+                                </para>
                             </listitem>
                             <listitem>
-                                <link linkend="error_table_files_directories">Files, directories</link>
+                                <para><link linkend="error_table_files_directories">Files, directories</link></para>
                             </listitem>
                             <listitem>
-                                <link linkend="error_table_dynamical_systems">Dynamical systems</link>
+                                <para><link linkend="error_table_dynamical_systems">Dynamical systems</link></para>
                             </listitem>
                             <listitem>
-                                <link linkend="error_table_miscellaneous">Miscellaneous</link>
+                                <para><link linkend="error_table_miscellaneous">Miscellaneous</link></para>
                             </listitem>
                           </itemizedlist>
                         </para>
                     </listitem>
                 <listitem>
-                    <link linkend="error_table_examples">Examples</link>
+                    <para><link linkend="error_table_examples">Examples</link></para>
                 </listitem>
                 <listitem>
-                    <link linkend="error_table_seealso">See also</link>
+                    <para><link linkend="error_table_seealso">See also</link></para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -79,8 +85,10 @@
             as message identifier by the <link linkend="gettext">gettext</link>() translation system.
             The listed messages are used in Scilab itself.
             <note>
-                Please avoid using double-quotes " inside messages: single quotes ' must be used
-                or prefered instead.
+                <para>
+                    Please avoid using double-quotes " inside messages: single quotes ' must be used
+                    or prefered instead.
+                </para>
             </note>
         </para>
         <para>
@@ -94,10 +102,13 @@
             Standard messages must start with "%s" and end with "\n". The heading "%s" will be
             replaced with the name of the function in which the error occurs.
         </para>
-        <refsect2 id="error_table_arg_number">
-            <title>Checking arguments numbers</title>
+
+        <para>
+            <emphasis role="bold">Checking arguments numbers</emphasis>
+            <anchor xml:id="error_table_arg_number"/>
+        </para>
             <para>
-                <emphasis role="bold">Input arguments:</emphasis>
+                <emphasis role="italic">Input arguments:</emphasis>
             </para>
             <screen><![CDATA[
 "%s: Wrong number of input arguments.\n"
@@ -108,18 +119,20 @@
 "%s: Wrong number of input arguments: At most %d expected.\n"
 ]]></screen>
             <para>
-                <emphasis role="bold">Ouput arguments:</emphasis>
+                <emphasis role="italic">Ouput arguments:</emphasis>
             </para>
             <screen><![CDATA[
 "%s: Wrong number of output arguments: %d expected.\n"
 "%s: Wrong number of output arguments: %d to %d expected.\n"
 ]]></screen>
-        </refsect2>
+
         <!-- ====================================================== -->
-        <refsect2 id="error_table_type_checking">
-            <title>Checking container and content types</title>
+        <para>
+            <emphasis role="bold">Checking container and content types</emphasis>
+            <anchor xml:id="error_table_type_checking"/>
+        </para>
             <para>
-                <emphasis role="bold">Wrong content type:</emphasis>
+                <emphasis role="italic">Wrong content type:</emphasis>
             </para>
             <screen><![CDATA[
 "%s: Argument #%d: Boolean(s) expected.\n"
@@ -152,7 +165,7 @@
 "%s: Type %s is not implemented.\n"
 ]]></screen>
             <para>
-                <emphasis role="bold">Wrong container:</emphasis>
+                <emphasis role="italic">Wrong container:</emphasis>
             </para>
             <screen><![CDATA[
 "%s: Argument #%d: List expected.\n"
@@ -163,18 +176,20 @@
 "%s: Argument #%d: %s expected.\n"
 ]]></screen>
             <para>
-                <emphasis role="bold">Wrong encoding:</emphasis>
+                <emphasis role="italic">Wrong encoding:</emphasis>
             </para>
             <screen><![CDATA[
 "%s: Argument #%d: Sparse matrix expected.\n"
 "%s: Argument #%d: Dense matrix expected.\n"
 ]]></screen>
-        </refsect2>
+
         <!-- ====================================================== -->
-        <refsect2 id="error_table_sizes_checking">
-            <title>Checking container's dimension and sizes</title>
+        <para>
+            <emphasis role="bold">Checking container's dimension and sizes</emphasis>
+            <anchor xml:id="error_table_sizes_checking"/>
+        </para>
             <para>
-                <emphasis role="bold">Dimensions / sizes / shape of the container:</emphasis>
+                <emphasis role="italic">Dimensions / sizes / shape of the container:</emphasis>
                 <itemizedlist>
                     <listitem>
                          <para>
@@ -221,17 +236,19 @@
 "%s: Hypermatrix not supported.\n"
 ]]></screen>
             <para>
-                <emphasis role="bold">Strings</emphasis>
+                <emphasis role="italic">Strings</emphasis>
             </para>
             <screen><![CDATA[
 "%s: Argument #%d: string length %s %d characters expected.\n" // '='|'>'|'>='|'<' ...etc
 ]]></screen>
-        </refsect2>
+
         <!-- ====================================================== -->
-        <refsect2 id="error_table_values_checking">
-            <title>Checking values</title>
+        <para>
+            <emphasis role="bold">Checking values</emphasis>
+            <anchor xml:id="error_table_values_checking"/>
+        </para>
             <para>
-                <emphasis role="bold">Wrong values:</emphasis>
+                <emphasis role="italic">Wrong values:</emphasis>
             </para>
             <screen><![CDATA[
 "%s: Argument #%d: Must be in the interval [%s, %s].\n"
@@ -264,10 +281,12 @@
             within the same generic message. Bounds formatting and replacement must be performed
             with msprintf(..)
         </para>
-        </refsect2>
+
         <!-- ====================================================== -->
-        <refsect2 id="error_table_interarguments_constrains">
-            <title>Inter-Arguments constrains checking:</title>
+        <para>
+            <emphasis role="bold">Inter-Arguments constrains checking:</emphasis>
+            <anchor xml:id="error_table_interarguments_constrains"/>
+        </para>
             <screen><![CDATA[
 "%s: Arguments #%d and #%d: Incompatible sizes.\n"
 "%s: Arguments #%d and #%d: Same sizes expected.\n"
@@ -277,10 +296,12 @@
 "%s: Arguments #%d and #%d: Same types expected.\n"
 "%s: Arguments #%d and #%d: Same formal variable expected.\n"  // polynomials and rationals
 ]]></screen>
-        </refsect2>
+
         <!-- ====================================================== -->
-        <refsect2 id="error_table_files_directories">
-            <title>Files, directories</title>
+        <para>
+            <emphasis role="bold">Files, directories</emphasis>
+            <anchor xml:id="error_table_files_directories"/>
+        </para>
             <screen><![CDATA[
 "%s: Cannot open file ''%s''.\n"
 "%s: The file ''%s'' does not exist.\n"
@@ -296,10 +317,12 @@
 "%s: Fortran file logical unit not allowed here.\n"
 "%s: No input file associated to logical unit %d.\n"
 ]]></screen>
-        </refsect2>
+
         <!-- ====================================================== -->
-        <refsect2 id="error_table_dynamical_systems">
-            <title>Dynamical systems</title>
+        <para>
+            <emphasis role="bold">Dynamical systems</emphasis>
+            <anchor xml:id="error_table_dynamical_systems"/>
+        </para>
         <screen><![CDATA[
 "%s: Argument #%d: Transfer matrix expected.\n"
 "%s: Argument #%d: In state space form expected.\n"
@@ -310,10 +333,12 @@
 "%s: Argument #%d: Invalid state space representation.\n"
 "%s: Argument #%d: A system in state space or transfer matrix form expected.\n"
 ]]></screen>
-        </refsect2>
+
         <!-- ====================================================== -->
-        <refsect2 id="error_table_miscellaneous">
-            <title>Miscellaneous</title>
+        <para>
+            <emphasis role="bold">Miscellaneous</emphasis>
+            <anchor xml:id="error_table_miscellaneous"/>
+        </para>
             <screen><![CDATA[
 "%s: No more memory.\n"
 "%s: No more memory: %d requested, %d available.\n"
@@ -336,9 +361,9 @@
 "%s: Problem with comparison symbol...\n"
 "%s: Missing operator, comma, or semicolon.\n"
 ]]></screen>
-        </refsect2>
-    </refsection>
-    <refsection id="error_table_examples">
+
+</refsection>
+    <refsection xml:id="error_table_examples">
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 lang0 = getlanguage();

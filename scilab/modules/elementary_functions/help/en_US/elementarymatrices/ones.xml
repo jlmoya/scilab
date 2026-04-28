@@ -53,7 +53,7 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <para>Returns a matrix made of ones.  By default the returned matrix is of double precision floating point type but a given type can be precised in the <term>type</term>argument.</para>
+        <para>Returns a matrix made of ones.  By default the returned matrix is of double precision floating point type but a given type can be precised in the <literal>type</literal>argument.</para>
         <variablelist>
             <varlistentry>
                 <term>ones(m1,m2,..,mn)</term>
@@ -118,8 +118,10 @@
             </listitem>
         </itemizedlist>
         <note>
-           <literal>repmat(1, sizes)</literal> can be used to generate an array of ones with
-           <literal>sizes=[m1 m2 ..]</literal> given as a vector.
+            <para>
+                <literal>repmat(1, sizes)</literal> can be used to generate an array of ones with
+                <literal>sizes=[m1 m2 ..]</literal> given as a vector.
+            </para>
         </note>
     </refsection>
     <refsection>

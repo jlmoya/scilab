@@ -32,40 +32,40 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/TRASH_f.png" align="center" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_TRASH_f">
+    <refsection xml:id="Contents_TRASH_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TRASH_f">Description</xref>
+                <para><link linkend="Description_TRASH_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TRASH_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_TRASH_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_TRASH_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_TRASH_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_TRASH_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_TRASH_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_TRASH_f">Example</xref>
+                <para><link linkend="Example_TRASH_f">Example</link></para>
             </listitem>
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Description_TRASH_f">
+    <refsection xml:id="Description_TRASH_f">
         <title>Description</title>
         <para>
             This block is an end-block. It does nothing.
         </para>
     </refsection>
-    <refsection id="Defaultproperties_TRASH_f">
+    <refsection xml:id="Defaultproperties_TRASH_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -130,7 +130,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_TRASH_f">
+    <refsection xml:id="Interfacingfunction_TRASH_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -138,7 +138,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_TRASH_f">
+    <refsection xml:id="Computationalfunction_TRASH_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -147,8 +147,9 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_TRASH_f" role="examples">
+    <refsection xml:id="Example_TRASH_f" role="examples">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/TRASH_f_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -156,5 +157,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

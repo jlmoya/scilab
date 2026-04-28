@@ -54,9 +54,12 @@
                              <para>Matrices of encoded integers of any
                                 <link linkend="inttype">inttype</link>.
                                 <warning>
-                                    Encoded integers of different inttypes can't be concatenated together.
-                                </warning></para>
-                                      </listitem>
+                                    <para>
+                                        Encoded integers of different inttypes can't be concatenated together.
+                                    </para>
+                                </warning>
+                            </para>
+                        </listitem>
                         <listitem>
                              <para>
                                 Arrays of cells.
@@ -143,10 +146,12 @@
                         types into a homogeneous vector, matrix or hypermatrix.
                     </para>
                     <note>
-                        An horizontal or a vertical concatenation is a binary iterated operator.
-                        It is performed step-by-step from left-to-right, and from top-to-bottom.
-                        Thus, <literal>[1 3 5 7]</literal> is performed as
-                        <literal>[[[1 3] 5] 7]</literal>.
+                        <para>
+                            An horizontal or a vertical concatenation is a binary iterated operator.
+                            It is performed step-by-step from left-to-right, and from top-to-bottom.
+                            Thus, <literal>[1 3 5 7]</literal> is performed as
+                            <literal>[[[1 3] 5] 7]</literal>.
+                        </para>
                     </note>
                     <para>Inside brackets,
                         <itemizedlist>
@@ -154,134 +159,138 @@
                                  <para>
                                     spaces (blanks or tabs) or commas are used as columns separators.
                                     <note>
-                                        Using commas instead of spaces is safer. For instance,
-                                        <literal>[2 1 +%i]</literal> means <literal>[2, 1, %i]</literal>,
-                                        while <literal>[2 1 + %i]</literal> means
-                                        <literal>[2, 1+%i]</literal>
-                                    </note></para>
-                                       </listitem>
+                                        <para>
+                                            Using commas instead of spaces is safer. For instance,
+                                            <literal>[2 1 +%i]</literal> means <literal>[2, 1, %i]</literal>,
+                                            while <literal>[2 1 + %i]</literal> means
+                                            <literal>[2, 1+%i]</literal>
+                                        </para>
+                                    </note>
+                                </para>
+                            </listitem>
                             <listitem>
-                                 <para>
+                                <para>
                                     semi-colons or carriage-return are used as rows separators.
                                     Multiple rows do not need the continuation dots <literal>..</literal>
-                                                                                </para>
-                                                                            </listitem>
+                                </para>
+                            </listitem>
                         </itemizedlist>
                     </para>
-                    <refsect3 id="brackets_Types_conversions">
-                        <title>Types conversions</title>
-                        <para>
-                            In some limits, brackets may be applied on a set of data having
-                            different but compatible types. In this case, some data are converted
-                            into the dominating type available in the set. The main conversion
-                            rules are the following:
-                            <orderedlist>
-                                <listitem>
-                                     <para>
-                                        boolean &lt; encoded integers &lt; decimal number &lt; complex
-                                    </para>
-                                </listitem>
-                                <listitem>
-                                     <para>decimal number &lt; polynomial &lt; rational
-                                        <warning>booleans and polynomials are not compatible.
-                                            <itemizedlist>
-                                                <listitem>
-                                                     <para><literal>[%t 2. %z]</literal> is accepted:
-                                                        <literal>[%t 2.]</literal> is first converted into
-                                                        <literal>[1. 2.]</literal>, and then
-                                                        <literal>[[1. 2.] %z]</literal> is accepted.
-                                                    </para>
-                                                </listitem>
-                                                <listitem>
-                                                     <para><literal>[%z %t 2.]</literal> is rejected and yields
-                                                        an error. Indeed, <literal>[%z %t]</literal>
-                                                        can't be converted first.
-                                                    </para>
-                                                </listitem>
-                                            </itemizedlist>
-                                        </warning></para>
-                                              </listitem>
-                                <listitem>
-                                     <para>
-                                        Any encoded integer can be concatenated only with booleans,
-                                        decimal numbers, or other integers of the same inttype.
-                                        Thus, the expressions
-                                        <literal>[int8(2), uint8(7)]</literal>,
-                                        <literal>[int8(2), int16(7)]</literal>,
-                                        <literal>[int8(2), 7+0*%z]</literal>,
-                                        <literal>[int8(2), sparse(7)]</literal>, or
-                                        <literal>[int8(2), sparse(%t)]</literal>
-                                        will yield an error.
-                                    </para>
-                                </listitem>
-                                <listitem>
-                                     <para>
-                                        The result becomes complex-encoded as soon as a complex-encoded
-                                        component -- value, polynomial, or rational -- is met in the
-                                        list (even with a null imaginary part)
-                                        
-                                        Similarly, the result becomes sparse-encoded
-                                        as soon as a sparse-encoded component is met and processed.
-                                    </para>
-                                </listitem>
-                                <listitem>
-                                     <para>
-                                        Concatenated polynomials or/and rationals must have the same
-                                        variable name.
-                                    </para>
-                                </listitem>
-                                <listitem>
-                                     <para>
-                                        Text components can be concatenated (in the set meaning,
-                                        with brackets) only with other text components or with the
-                                        empty matrix <literal>[]</literal>.
-                                    </para>
-                                </listitem>
-                            </orderedlist>
-                        </para>
-                    </refsect3>
-                    <refsect3 id="brackets_overloading">
-                        <title>Overloading</title>
-                        <para>
-                            <itemizedlist>
-                                <listitem>
-                                     <para>[,]: horizontal concatenation:
-                                        This operator is binary and automatically
-                                        iterated from left to right. Its overloading
-                                        code is <literal>"c"</literal>.
-                                    </para>
-                                </listitem>
-                                <listitem>
-                                     <para>[;]: vertical concatenation:
-                                        This operator is binary and automatically
-                                        iterated from top to bottom. Its overloading
-                                        code is <literal>"f"</literal>.
-                                    </para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </refsect3>
-                    <para/>
-                    <refsect3>
-                        <title>Extensions</title>
-                        <para>
-                          <itemizedlist>
+                    <para>    
+                        <anchor xml:id="brackets_Types_conversions"></anchor>
+                        <emphasis role="bold">Types conversions</emphasis>
+                    </para>
+                    <para>
+                        In some limits, brackets may be applied on a set of data having
+                        different but compatible types. In this case, some data are converted
+                        into the dominating type available in the set. The main conversion
+                        rules are the following:
+                        <orderedlist>
                             <listitem>
-                                 <para>
-                                  To concatenate simple lists, please use <link linkend="lstcat">lstcat</link>.
+                                <para>
+                                    boolean &lt; encoded integers &lt; decimal number &lt; complex
                                 </para>
                             </listitem>
                             <listitem>
-                                 <para>
-                                  To stack vectors or matrices over some dimension &gt; 2 to build a
-                                  N-dimensional array, please use <link linkend="cat">cat</link>.
+                                <para>decimal number &lt; polynomial &lt; rational</para>
+                                <warning>
+                                    <para>booleans and polynomials are not compatible.</para>
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>
+                                                <literal>[%t 2. %z]</literal> is accepted:
+                                                <literal>[%t 2.]</literal> is first converted into
+                                                <literal>[1. 2.]</literal>, and then
+                                                <literal>[[1. 2.] %z]</literal> is accepted.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                <literal>[%z %t 2.]</literal> is rejected and yields
+                                                an error. Indeed, <literal>[%z %t]</literal>
+                                                can't be converted first.
+                                            </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </warning>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Any encoded integer can be concatenated only with booleans,
+                                    decimal numbers, or other integers of the same inttype.
+                                    Thus, the expressions
+                                    <literal>[int8(2), uint8(7)]</literal>,
+                                    <literal>[int8(2), int16(7)]</literal>,
+                                    <literal>[int8(2), 7+0*%z]</literal>,
+                                    <literal>[int8(2), sparse(7)]</literal>, or
+                                    <literal>[int8(2), sparse(%t)]</literal>
+                                    will yield an error.
                                 </para>
                             </listitem>
-                          </itemizedlist>
-                        </para>
-                    </refsect3>
+                            <listitem>
+                                <para>
+                                    The result becomes complex-encoded as soon as a complex-encoded
+                                    component -- value, polynomial, or rational -- is met in the
+                                    list (even with a null imaginary part)
+                                    
+                                    Similarly, the result becomes sparse-encoded
+                                    as soon as a sparse-encoded component is met and processed.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Concatenated polynomials or/and rationals must have the same
+                                    variable name.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Text components can be concatenated (in the set meaning,
+                                    with brackets) only with other text components or with the
+                                    empty matrix <literal>[]</literal>.
+                                </para>
+                            </listitem>
+                        </orderedlist>
+                    </para>
+                    <para>
+                        <anchor xml:id="brackets_overloading"></anchor>
+                        <emphasis role="bold">Overloading</emphasis>
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                [,]: horizontal concatenation:
+                                This operator is binary and automatically
+                                iterated from left to right. Its overloading
+                                code is <literal>"c"</literal>.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                [;]: vertical concatenation:
+                                This operator is binary and automatically
+                                iterated from top to bottom. Its overloading
+                                code is <literal>"f"</literal>.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>
+                        <emphasis role="bold">Extensions</emphasis>
+                    </para>
+                    <itemizedlist>
+                        <listitem>
+                                <para>
+                                To concatenate simple lists, please use <link linkend="lstcat">lstcat</link>.
+                            </para>
+                        </listitem>
+                        <listitem>
+                                <para>
+                                To stack vectors or matrices over some dimension &gt; 2 to build a
+                                N-dimensional array, please use <link linkend="cat">cat</link>.
+                            </para>
+                        </listitem>
+                    </itemizedlist>
                 </listitem>
-                <para/>
             </varlistentry>
             <varlistentry>
                 <term>[] on left-hand side of a <literal>"="</literal> assignment</term>

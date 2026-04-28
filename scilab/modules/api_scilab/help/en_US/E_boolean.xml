@@ -18,52 +18,60 @@
         <refname>API boolean functions</refname>
         <refpurpose>This page lists all the functions to manipulate Scilab native objects containing booleans</refpurpose>
     </refnamediv>
-    <refsynopsisdiv>
-        <literal>
+    <refsection>
+        <title>Description</title>
+        <para>
             <link linkend="api_types_scilabVar">
                 <command>scilabVar</command>
             </link>
-            <varname>scilab_createBooleanMatrix</varname>(
+            <varname>scilab_createBooleanMatrix</varname>
+            <literal>(</literal>
             <link linkend="api_types_scilabEnv">
                 <command>scilabEnv</command>
             </link>
-            env, int dim, const int* dims)
-        </literal>
+            <literal> env, int dim, const int* dims)</literal>
+        </para>        
         <para>
             Create a boolean matrix with <varname>dim</varname> dimensions (<varname>dims</varname>[0], <varname>dims</varname>[1], ..., <varname>dims</varname>[<varname>dim</varname>-1]).
         </para>
-        <para></para>
-        <literal>
+
+        <para>
+            
             <link linkend="api_types_scilabVar">
                 <command>scilabVar</command>
             </link>
-            <varname>scilab_createBooleanMatrix2d</varname>(
+            <varname>scilab_createBooleanMatrix2d</varname>
+            <literal>(</literal>
             <link linkend="api_types_scilabEnv">
                 <command>scilabEnv</command>
             </link>
-            env, int row, int col)
-        </literal>
+            <literal> env, int row, int col)</literal>
+        </para>
         <para>
             Create an boolean matrix with 2 dimensions (<varname>row</varname>, <varname>col</varname>).
         </para>
-        <para></para>
-        <literal>
+
+        <para>
+            
             <link linkend="api_types_scilabVar">
                 <command>scilabVar</command>
             </link>
-            <varname>scilab_createBoolean</varname>(
+            <varname>scilab_createBoolean</varname>
+            <literal>(</literal>
             <link linkend="api_types_scilabEnv">
                 <command>scilabEnv</command>
             </link>
-            env, int val)
-        </literal>
+            <literal> env, int val)</literal>
+        </para>
         <para>Create a scalar boolean.</para>
-        <para></para>
-        <literal>
+
+        <para>
+        
             <link linkend="api_types_scilabStatus">
                 <command>scilabStatus</command>
             </link>
-            <varname>scilab_getBooleanArray</varname>(
+            <varname>scilab_getBooleanArray</varname>
+            <literal>(</literal>
             <link linkend="api_types_scilabEnv">
                 <command>scilabEnv</command>
             </link>
@@ -71,65 +79,68 @@
             <link linkend="api_types_scilabVar">
                 <command>scilabVar</command>
             </link>
-            var, int** vals)
-        </literal>
+            <literal> var, int** vals)</literal>
+        </para>
         <para>
             Get pointer on internal array of boolean of <varname>var</varname>.
         </para>
-        <para></para>
-        <literal>
+
+        <para>
+        
             <link linkend="api_types_scilabStatus">
                 <command>scilabStatus</command>
             </link>
-            <varname>scilab_getBoolean</varname>(
+            <varname>scilab_getBoolean</varname>
+            <literal>(</literal>
             <link linkend="api_types_scilabEnv">
                 <command>scilabEnv</command>
             </link>
-            env,
+            <literal> env, </literal>
             <link linkend="api_types_scilabVar">
                 <command>scilabVar</command>
             </link>
-            var, int* val)
-        </literal>
+            <literal> var, int* val)</literal>
+        </para>
         <para>Get boolean value from an scalar boolean variable.</para>
-        <para></para>
-        <literal>
+
+        <para>
             <link linkend="api_types_scilabStatus">
                 <command>scilabStatus</command>
             </link>
-            <varname>scilab_setBooleanArray</varname>(
+            <varname>scilab_setBooleanArray</varname>
+            <literal>(</literal>
             <link linkend="api_types_scilabEnv">
                 <command>scilabEnv</command>
             </link>
-            env,
+            <literal> env, </literal>
             <link linkend="api_types_scilabVar">
                 <command>scilabVar</command>
             </link>
-            var, const int* vals)
-        </literal>
+            <literal> var, const int* vals)</literal>
+        </para>
         <para>
             Set values of boolean variable <literal>var</literal>.
         </para>
-        <para></para>
-        <literal>
+
+        <para>       
             <link linkend="api_types_scilabStatus">
                 <command>scilabStatus</command>
             </link>
-            <varname>scilab_setBoolean</varname>(
+            <varname>scilab_setBoolean</varname>
+            <literal>(</literal>
             <link linkend="api_types_scilabEnv">
                 <command>scilabEnv</command>
             </link>
-            env,
+            <literal> env, </literal>
             <link linkend="api_types_scilabVar">
                 <command>scilabVar</command>
             </link>
-            var, int val)
-        </literal>
+            <literal> var, int val)</literal>
+        </para>
         <para>
             Set value of a scalar boolean variable <literal>var</literal>.
         </para>
-        <para></para>
-    </refsynopsisdiv>
+    </refsection>
     <refsection>
         <title>Examples</title>
         <programlisting role="code_gateway">

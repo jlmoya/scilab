@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/LOGBLK_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_LOGBLK_f">
+    <refsection xml:id="Contents_LOGBLK_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_LOGBLK_f">Description</xref>
+                <para><link linkend="Description_LOGBLK_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_LOGBLK_f">Parameters</xref>
+                <para><link linkend="Dialogbox_LOGBLK_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_LOGBLK_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_LOGBLK_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_LOGBLK_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_LOGBLK_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_LOGBLK_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_LOGBLK_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_LOGBLK_f">See also</xref>
+                <para><link linkend="Seealso_LOGBLK_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_LOGBLK_f">
+    <refsection xml:id="Description_LOGBLK_f">
         <title>Description</title>
         <para>
             This block computes the logarithm of the elements of the input vector. The user can fix the base
@@ -70,14 +70,13 @@
             natural logarithm. The input and output port sizes are determined by the context.
         </para>
     </refsection>
-    <refsection id="Dialogbox_LOGBLK_f">
+    <refsection xml:id="Dialogbox_LOGBLK_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/LOGBLK_f_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/LOGBLK_f_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -88,7 +87,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_LOGBLK_f">
+    <refsection xml:id="Defaultproperties_LOGBLK_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -161,7 +160,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_LOGBLK_f">
+    <refsection xml:id="Interfacingfunction_LOGBLK_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -169,7 +168,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_LOGBLK_f">
+    <refsection xml:id="Computationalfunction_LOGBLK_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

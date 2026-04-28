@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/MUX.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MUX">
+    <refsection xml:id="Contents_MUX">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MUX">Description</xref>
+                <para><link linkend="Description_MUX">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MUX">Parameters</xref>
+                <para><link linkend="Dialogbox_MUX">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MUX">Default properties</xref>
+                <para><link linkend="Defaultproperties_MUX">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MUX">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MUX">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MUX">Computational function</xref>
+                <para><link linkend="Computationalfunction_MUX">Computational function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MUX">
+    <refsection xml:id="Description_MUX">
         <title>Description</title>
         <para>
             Given   vector valued inputs this block merges inputs in an single output vector.
@@ -68,14 +68,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_MUX">
+    <refsection xml:id="Dialogbox_MUX">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MUX_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MUX_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -86,7 +85,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MUX">
+    <refsection xml:id="Defaultproperties_MUX">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +161,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MUX">
+    <refsection xml:id="Interfacingfunction_MUX">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -170,7 +169,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MUX">
+    <refsection xml:id="Computationalfunction_MUX">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

@@ -134,8 +134,10 @@
              the row names for tables.
         </para>
         <warning>
-            Two NaN elements are always considered as different. So NaN or rows or columns having
-            NaN will never be in the result <literal>M</literal>.
+            <para>
+                Two NaN elements are always considered as different. So NaN or rows or columns having
+                NaN will never be in the result <literal>M</literal>.
+            </para>
         </warning>
         <para>
             <literal>[M, ka, kb] = intersect(a,b)</literal> additionally returns the vectors
@@ -146,8 +148,10 @@
         <para>
             In the case of tables and timeseries, <literal>M = a(ka,:)</literal> and <literal>M = b(kb, :)</literal>.
         </para>
-        <refsect3>
-            <title>Common rows or columns</title>
+
+        <para>
+            <emphasis role="bold">Common rows or columns</emphasis>
+        </para>
         <para>
             When the <varname>orient</varname> argument is provided, the comparison is performed
             between the rows of <literal>a</literal> and <literal>b</literal> -- each one being
@@ -171,9 +175,10 @@
             the same for columns.
         </para>
         <warning>
-            This option is not supported for table and timeseries.
+            <para>
+                This option is not supported for table and timeseries.
+            </para>
         </warning>
-        </refsect3>
     </refsection>
     <refsection>
         <title>Examples</title>

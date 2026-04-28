@@ -113,16 +113,16 @@
                         for any linear index q:
                         <literal>[M(q),K(q)] = min([A1(q) A2(q) .. An(q)])</literal>.
                     </para>
-                    <para>
-                        <warning>
+                    <warning>
+                        <para>
                             <varname>K</varname> is always in dense format, even when
                             <varname>A, A1,..,An</varname> are sparse-encoded. Hence, when the
                             <literal>[M,K]=min(A1,A2,..)</literal> syntax is used with huge but
                             sparse matrices, this may lead to a huge <emphasis>dense</emphasis>
                             <varname>K</varname> matrix. The user must check that enough memory
                             is available for it.
-                        </warning>
-                    </para>
+                        </para>
+                    </warning>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -167,9 +167,11 @@
             </itemizedlist>
         </note>
         <warning>
-          If <literal>min(A1, A2,..., An)</literal> is used with a huge input sparse matrix of
-          low density, together with a strictly negative scalar input, the sparse result will no longer
-          have any 0 value: It will be a sparse array with density=1, that may lead to a memory failure.
+            <para>
+                If <literal>min(A1, A2,..., An)</literal> is used with a huge input sparse matrix of
+                low density, together with a strictly negative scalar input, the sparse result will no longer
+                have any 0 value: It will be a sparse array with density=1, that may lead to a memory failure.
+            </para>
         </warning>
     </refsection>
     <refsection>

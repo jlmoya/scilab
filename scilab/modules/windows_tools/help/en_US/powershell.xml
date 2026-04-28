@@ -80,13 +80,17 @@
             is caught and returned in <varname>output</varname>. Nothing is directly displayed
             neither in the Scilab console nor in the <link linkend="consolebox">consolebox</link>.
             <warning>
-                The effects of valid instructions processed before the erroneous one remain actual
-                (for instance, deleted files). However, their valid output is canceled and not
-                returned in <varname>output</varname>.
+                <para>
+                    The effects of valid instructions processed before the erroneous one remain actual
+                    (for instance, deleted files). However, their valid output is canceled and not
+                    returned in <varname>output</varname>.
+                </para>
             </warning>
         </para>
         <note>
-            Any path included in the <varname>command</varname> must be single-quoted.
+            <para>
+                Any path included in the <varname>command</varname> must be single-quoted.
+            </para>
         </note>
     </refsection>
     <refsection>

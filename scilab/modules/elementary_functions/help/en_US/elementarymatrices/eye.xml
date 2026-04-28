@@ -56,9 +56,11 @@
             <literal>X(i,i,...,i) = 1</literal> for all <literal>i</literal> from 1 to <literal>min(size(A))</literal>.
         </para>
         <warning>
-            <literal>eye(10)</literal> is interpreted as
-            <literal>eye(A)</literal> with <literal>A=10</literal> i.e.
-            <literal>1</literal>. (It is NOT a ten by ten identity matrix!).
+            <para>
+                <literal>eye(10)</literal> is interpreted as
+                <literal>eye(A)</literal> with <literal>A=10</literal> i.e.
+                <literal>1</literal>. (It is NOT a ten by ten identity matrix!).
+            </para>
         </warning>
         <para>
             If <literal>A</literal> is a linear system represented by a

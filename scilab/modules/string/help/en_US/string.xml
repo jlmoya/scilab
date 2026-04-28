@@ -76,9 +76,11 @@
             contains the path of library file and the other the name of functions it defines.
         </para>
         <warning>
-            For any complex, real, integer, polynomial or rational input, the format of literal
-            numbers output from <function>string(..)</function> is managed by the
-            <link linkend="format">format</link> function (see examples).
+            <para>
+                For any complex, real, integer, polynomial or rational input, the format of literal
+                numbers output from <function>string(..)</function> is managed by the
+                <link linkend="format">format</link> function (see examples).
+            </para>
         </warning>
         <para>
             Note that string([]) returns [] (unchanged).

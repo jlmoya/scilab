@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/DEADBAND.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DEADBAND">
+    <refsection xml:id="Contents_DEADBAND">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DEADBAND">Description</xref>
+                <para><link linkend="Description_DEADBAND">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DEADBAND">Parameters</xref>
+                <para><link linkend="Dialogbox_DEADBAND">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DEADBAND">Default properties</xref>
+                <para><link linkend="Defaultproperties_DEADBAND">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DEADBAND">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DEADBAND">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DEADBAND">Computational function</xref>
+                <para><link linkend="Computationalfunction_DEADBAND">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DEADBAND">Example</xref>
+                <para><link linkend="Example_DEADBAND">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DEADBAND">
+    <refsection xml:id="Description_DEADBAND">
         <title>Description</title>
         <para>The Dead Band block provides a region of zero output.</para>
         <para>It's a range of inputs for which the output remains unchanged.
@@ -95,14 +95,13 @@
             the output is the input minus the lower limit.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DEADBAND">
+    <refsection xml:id="Dialogbox_DEADBAND">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/discontinuities_pal/en_US/DEADBAND_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/discontinuities_pal/en_US/DEADBAND_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -130,7 +129,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_DEADBAND">
+    <refsection xml:id="Defaultproperties_DEADBAND">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -203,7 +202,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DEADBAND">
+    <refsection xml:id="Interfacingfunction_DEADBAND">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -213,7 +212,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DEADBAND">
+    <refsection xml:id="Computationalfunction_DEADBAND">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -221,7 +220,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_DEADBAND">
+    <refsection xml:id="Example_DEADBAND">
         <title>Example</title>
         <para>
             The following is an example of a system with deadband.

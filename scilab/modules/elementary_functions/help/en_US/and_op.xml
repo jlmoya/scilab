@@ -75,9 +75,11 @@
                         For any index <literal>i</literal>,
                         <literal>intMat(i) = bitand(intA(i), intB(i))</literal>
                         <warning>
-                            <literal>intA &amp; []</literal> and <literal>[] &amp; intA</literal>
-                            return the <emphasis role="italic">boolean</emphasis> array
-                            <literal>intA~=0</literal>.
+                            <para>
+                                <literal>intA &amp; []</literal> and <literal>[] &amp; intA</literal>
+                                return the <emphasis role="italic">boolean</emphasis> array
+                                <literal>intA~=0</literal>.
+                            </para>
                         </warning>
                     </para>
                 </listitem>
@@ -115,8 +117,10 @@
                         <literal>B(i)</literal> are <literal>%F</literal> or zero. Otherwise,
                         <literal>tfMat(i)</literal> is set to  <constant>%F</constant>.
                         <warning>
-                            <literal>A &amp; []</literal> and <literal>[] &amp; A</literal> return
-                            <literal>[]</literal>.
+                            <para>
+                                <literal>A &amp; []</literal> and <literal>[] &amp; A</literal> return
+                                <literal>[]</literal>.
+                            </para>
                         </warning>
                     </para>
                 </listitem>
@@ -237,8 +241,10 @@
             </itemizedlist>
         </para>
         <note>
-            The <link linkend="overloading">overloading</link> code for  <literal>&amp;</literal>
-            and <literal>&amp;&amp;</literal> operators is <emphasis role="bold">h</emphasis>.
+            <para>
+                The <link linkend="overloading">overloading</link> code for  <literal>&amp;</literal>
+                and <literal>&amp;&amp;</literal> operators is <emphasis role="bold">h</emphasis>.
+            </para>
         </note>
         <warning>
             <itemizedlist>

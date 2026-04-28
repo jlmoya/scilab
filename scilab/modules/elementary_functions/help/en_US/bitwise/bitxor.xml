@@ -35,7 +35,9 @@
                         scalars, vectors, matrices or hypermatrices of null or
                         positive integers encoded as decimal or integer numbers
                         of any signed or unsigned <link linkend="inttype">inttype</link>.
-                        <warning>Sparse-encoded matrices are not accepted.</warning>
+                        <warning>
+                            <para>Sparse-encoded matrices are not accepted.</para>
+                        </warning>
                     </para>
                     <para>
                         If <literal>u</literal> and <literal>v</literal> have
@@ -105,24 +107,30 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        For each pair of components <literal>u(i)</literal> and <literal>v(i)</literal>,
-        <literal>bitxor(u, v)</literal> computes and returns in <literal>w(i)</literal>
-        the bitwise XOR eXclusive-OR conjunction of <literal>u(i)</literal> and
-        <literal>v(i)</literal>
-        bits.
+        <para>
+            For each pair of components <literal>u(i)</literal> and <literal>v(i)</literal>,
+            <literal>bitxor(u, v)</literal> computes and returns in <literal>w(i)</literal>
+            the bitwise XOR eXclusive-OR conjunction of <literal>u(i)</literal> and
+            <literal>v(i)</literal>
+            bits.
+        </para>
         <note>
-            With encoded integers, <literal>bitxor(u,v)</literal> is equivalent
-            to <literal>(u | v) &amp; ~(u &amp; v)</literal>.
-            However, both <literal>|</literal> and <literal>&amp;</literal>
-            operators demand that <literal>u</literal> and <literal>v</literal>
-            have the same inttype, while <literal>bitxor(..)</literal> accepts
-            mixed operands.
+            <para>
+                With encoded integers, <literal>bitxor(u,v)</literal> is equivalent
+                to <literal>(u | v) &amp; ~(u &amp; v)</literal>.
+                However, both <literal>|</literal> and <literal>&amp;</literal>
+                operators demand that <literal>u</literal> and <literal>v</literal>
+                have the same inttype, while <literal>bitxor(..)</literal> accepts
+                mixed operands.
+            </para>
         </note>
         <note>
-            For any decimal integer <literal>u</literal> greater than 2^52,
-            only its bits from log2(u) down to log2(u)-52 are encoded and can
-            be actually taken into account. Lower bits are not stored and are
-            then ignored.
+            <para>
+                For any decimal integer <literal>u</literal> greater than 2^52,
+                only its bits from log2(u) down to log2(u)-52 are encoded and can
+                be actually taken into account. Lower bits are not stored and are
+                then ignored.
+            </para>
         </note>
     </refsection>
     <refsection>

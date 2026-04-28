@@ -76,30 +76,34 @@
             <varname>mod</varname>.
         </para>
         <note>
-            The default initial mode is 2. This default value may be set in any of the following ways:
-            <itemizedlist>
-                <listitem>
-                     <para>
-                      Through the Preferences GUI: <code>preferences</code>, in the section
-                      <emphasis role="italic">General =&gt; Environment =&gt; ieee</emphasis>.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                      Equivalently, using <code>xmlSetValues</code> as follows
-                      (to set the mode to 1) :
-                      </para>
-                  </listitem>
-                <listitem>
-                     <para>
-                        Or by using <literal>ieee(mod)</literal> in your startup file.
-                    </para>
-                </listitem>
-            </itemizedlist>
+            <para>
+                The default initial mode is 2. This default value may be set in any of the following ways:
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                        Through the Preferences GUI: <code>preferences</code>, in the section
+                        <emphasis role="italic">General =&gt; Environment =&gt; ieee</emphasis>.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                        Equivalently, using <code>xmlSetValues</code> as follows
+                        (to set the mode to 1) :
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Or by using <literal>ieee(mod)</literal> in your startup file.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
         </note>
         <warning>
-            Floating point exception arising inside some library algorithms are not yet handled
-            by <literal>ieee</literal> modes.
+            <para>
+                Floating point exception arising inside some library algorithms are not yet handled
+                by <literal>ieee</literal> modes.
+            </para>
         </warning>
     </refsection>
     <refsection>

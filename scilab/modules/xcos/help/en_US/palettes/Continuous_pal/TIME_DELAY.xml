@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/TIME_DELAY.png" align="center" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_TIME_DELAY">
+    <refsection xml:id="Contents_TIME_DELAY">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TIME_DELAY">Description</xref>
+                <para><link linkend="Description_TIME_DELAY">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_TIME_DELAY">Parameters</xref>
+                <para><link linkend="Dialogbox_TIME_DELAY">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TIME_DELAY">Default properties</xref>
+                <para><link linkend="Defaultproperties_TIME_DELAY">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_TIME_DELAY">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_TIME_DELAY">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_TIME_DELAY">Computational function</xref>
+                <para><link linkend="Computationalfunction_TIME_DELAY">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_TIME_DELAY">Example</xref>
+                <para><link linkend="Example_TIME_DELAY">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_TIME_DELAY">
+    <refsection xml:id="Description_TIME_DELAY">
         <title>Description</title>
         <para>
             The Transport Delay block delays the input by a specified amount of
@@ -74,14 +74,14 @@
 
         </para>
     </refsection>
-    <refsection id="Dialogbox_TIME_DELAY">
+    <refsection xml:id="Dialogbox_TIME_DELAY">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/TIME_DELAY_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/TIME_DELAY_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -107,7 +107,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_TIME_DELAY">
+    <refsection xml:id="Defaultproperties_TIME_DELAY">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -180,7 +180,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_TIME_DELAY">
+    <refsection xml:id="Interfacingfunction_TIME_DELAY">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -188,7 +188,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_TIME_DELAY">
+    <refsection xml:id="Computationalfunction_TIME_DELAY">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -196,7 +196,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_TIME_DELAY">
+    <refsection xml:id="Example_TIME_DELAY">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/TIME_DELAY_Example.zcos">

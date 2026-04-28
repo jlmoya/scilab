@@ -66,7 +66,7 @@
         </para>
         <para>
             For more information about XPath, you can read the
-            <ulink url="http://www.w3.org/TR/1999/REC-xpath-19991116/">W3C recommendation</ulink>.
+            <link xlink:href="http://www.w3.org/TR/1999/REC-xpath-19991116/">W3C recommendation</link>.
         </para>
     </refsection>
     <refsection>
@@ -139,7 +139,7 @@
     <para>
         <emphasis role="bold">Getting the XML comments:</emphasis>
     </para>
-    <programlisting ole="example"><![CDATA[
+    <programlisting role="example"><![CDATA[
     xdoc = xmlRead(SCI+"/modules/ui_data/etc/newsfeed.xml");
     c = xmlXPath(xdoc, "//comment()");   // do not forget the trailing ()
     c.content'

@@ -34,16 +34,16 @@
             </latex>
         </para>
         <para>
+            Before solving the problem, <emphasis>DDaskr</emphasis> runs an implemented routine to find consistent values for
+            <emphasis>
+                y<subscript>0</subscript>
+            </emphasis>
+            and
+            <emphasis>
+                yPrime<subscript>0</subscript>
+            </emphasis>
+            .
         </para>
-        Before solving the problem, <emphasis>DDaskr</emphasis> runs an implemented routine to find consistent values for
-        <emphasis>
-            y<subscript>0</subscript>
-        </emphasis>
-        and
-        <emphasis>
-            yPrime<subscript>0</subscript>
-        </emphasis>
-        .
         <para>
             Starting then with those
             <emphasis>
@@ -65,25 +65,25 @@
                 \sum_{i=0}^{q} \alpha_{n,i} y_{n-i} = h_n\dot{y}_{n}
                 \end{eqnarray}
             </latex>
-            <para>
-                with, like in <link linkend="CVode">CVode</link>,
-                <emphasis>
-                    y<subscript>n</subscript>
-                </emphasis>
-                the approximation of
-                <emphasis>
-                    y(t<subscript>n</subscript>)
-                </emphasis>
-                ,
-                <emphasis>
-                    h<subscript>n</subscript>
-                </emphasis>
-                =
-                <emphasis>
-                    t<subscript>n</subscript> - t<subscript>n-1</subscript>
-                </emphasis>
-                the step size, and the coefficients are fixed, uniquely determined by the method type, its order <emphasis>q</emphasis> ranging from 1 to 5 and the history of the step sizes.
-            </para>
+        </para>
+        <para>
+            with, like in <link linkend="CVode">CVode</link>,
+            <emphasis>
+                y<subscript>n</subscript>
+            </emphasis>
+            the approximation of
+            <emphasis>
+                y(t<subscript>n</subscript>)
+            </emphasis>
+            ,
+            <emphasis>
+                h<subscript>n</subscript>
+            </emphasis>
+            =
+            <emphasis>
+                t<subscript>n</subscript> - t<subscript>n-1</subscript>
+            </emphasis>
+            the step size, and the coefficients are fixed, uniquely determined by the method type, its order <emphasis>q</emphasis> ranging from 1 to 5 and the history of the step sizes.
         </para>
         <para>
             Injecting this formula in <emphasis>(1)</emphasis> yields the system:
@@ -157,7 +157,7 @@
             As of now, <emphasis>DDaskr</emphasis> can only be applied on systems where the root functions are punctually 0, and not 0-flat.
         </para>
     </refsection>
-    <refsection id="Example_DDaskr">
+    <refsection xml:id="Example_DDaskr">
         <title>Example</title>
         <para>
             The 'Modelica Generic' block returns its continuous states, we can evaluate them with <emphasis>DDaskr</emphasis> by running the example:
@@ -231,10 +231,10 @@ try xcos_simulate(scs_m, 4); catch disp(lasterror()); end
     <refsection>
         <title>Bibliography</title>
         <para>
-            <ulink url="http://www.netlib.org/ode/">Netlib storage</ulink>, documentation inside of the code.
+            <link xlink:href="http://www.netlib.org/ode/">Netlib storage</link>, documentation inside of the code.
         </para>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Sundials Documentation</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Sundials Documentation</link>
         </para>
     </refsection>
     <refsection role="history">

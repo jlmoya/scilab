@@ -32,41 +32,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/IN_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_IN_f">
+    <refsection xml:id="Contents_IN_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_IN_f">Description</xref>
+                <para><link linkend="Description_IN_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatype_IN_f">Data types</xref>
+                <para><link linkend="Datatype_IN_f">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_IN_f">Parameters</xref>
+                <para><link linkend="Dialogbox_IN_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_IN_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_IN_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_IN_f">Example</xref>
+                <para><link linkend="Example_IN_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_IN_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_IN_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_IN_f">See also</xref>
+                <para><link linkend="Seealso_IN_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_IN_f">
+    <refsection xml:id="Description_IN_f">
         <title>Description</title>
         <para>
             This block represent a regular input port. It must only be used inside a Xcos Super Block and be connected to a regular input in the subsystem.
@@ -75,7 +75,7 @@
             This block is a signal link from outside of a system into a sub-system. In a Super Block, the regular's input ports must be numbered from 1 to the total number of regular's input ports. You can set it with the <emphasis role="bold">Port number</emphasis> parameter.
         </para>
     </refsection>
-    <refsection id="Datatype_IN_f">
+    <refsection xml:id="Datatype_IN_f">
         <title>Data types</title>
         <itemizedlist>
             <listitem>
@@ -85,14 +85,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_IN_f">
+    <refsection xml:id="Dialogbox_IN_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/portaction_pal/en_US/IN_f_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/portaction_pal/en_US/IN_f_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -132,7 +131,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_IN_f">
+    <refsection xml:id="Defaultproperties_IN_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -197,7 +196,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_IN_f">
+    <refsection xml:id="Example_IN_f">
         <title>Example</title>
         <para>
             In the following example the Super block is an amplitude modulator.
@@ -222,7 +221,7 @@
             xcos_simulate(scs_m, 4);]]>
         </scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_IN_f">
+    <refsection xml:id="Interfacingfunction_IN_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

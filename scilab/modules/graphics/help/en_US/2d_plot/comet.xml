@@ -111,20 +111,20 @@
                     </td>
                 </tr>
             </table>
-            <para>
-                <literal>comet(x,fun,...)</literal> is equivalent to
-                <literal>comet(x, feval(x,fun),...)</literal>.
-            </para>
-            <para>
-                If <varname>x</varname> and <varname>y</varname> are matrices with identical sizes,
-                then animated curves are drawn for each pair <literal>(x(:,j),y(:,j))</literal>.
-                In this case <literal>np</literal> is the number of rows of
-                <varname>x</varname> and <varname>y</varname>.
-            </para>
-            <para>
-                <literal>comet(...,"colors",c)</literal> can be used to set the colors of each
-                trajectory.
-            </para>
+        </para>
+        <para>
+            <literal>comet(x,fun,...)</literal> is equivalent to
+            <literal>comet(x, feval(x,fun),...)</literal>.
+        </para>
+        <para>
+            If <varname>x</varname> and <varname>y</varname> are matrices with identical sizes,
+            then animated curves are drawn for each pair <literal>(x(:,j),y(:,j))</literal>.
+            In this case <literal>np</literal> is the number of rows of
+            <varname>x</varname> and <varname>y</varname>.
+        </para>
+        <para>
+            <literal>comet(...,"colors",c)</literal> can be used to set the colors of each
+            trajectory.
         </para>
     </refsection>
     <refsection>
@@ -135,11 +135,11 @@ t = linspace(0, 10*%pi, 500);
 clf, isoview
 comet(t.*sin(t), t.*cos(t), "colors", "orange")
     ]]></programlisting>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/comet_1.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <para/>
         <programlisting role="example"><![CDATA[
 // Two simultaneous comets with default colors:
@@ -154,11 +154,11 @@ t = linspace(0, 10*%pi, 500)';
 clf
 comet(t.*sin(t), [t.*cos(t) t.*sin(2*t)], "colors", ["orange" "mag"])
     ]]></programlisting>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/comet_2.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <para/>
         <programlisting role="example"><![CDATA[
 function y = traj(x)

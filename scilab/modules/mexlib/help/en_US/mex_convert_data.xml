@@ -22,34 +22,38 @@
         <variablelist>
             <varlistentry>
                 <term>These are the different functions present in the mexlib module of Scilab</term>
+                <listitem>
                 <itemizedlist>
                     <listitem>
-                         <para>mxArrayToString</para></listitem>
-                        <listitem>
-                             <para>mxArrayToUTF8String</para></listitem>
-                            <listitem>
-                                 <para>mxGetString</para></listitem>
-                            </itemizedlist>
-                        </varlistentry>
-                    </variablelist>
-                </refsection>
+                        <para>mxArrayToString</para>
+                    </listitem>
+                    <listitem>
+                        <para>mxArrayToUTF8String</para>
+                    </listitem>
+                    <listitem>
+                            <para>mxGetString</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
             
-                <refsection role="see also">
-                    <title>See also</title>
-            
-                    <simplelist type="inline">
-                        <member>
-                            <link linkend="mex_data_types"/>
-                        </member>
-                        <member>
-                            <link linkend="mex_validate_data"/>
-                        </member>
-                        <member>
-                            <link linkend="mex_access_data"/>
-                        </member>
-                        <member>
-                            <link linkend="mex_create_or_delete"/>
-                        </member>
-                    </simplelist>
-                </refsection>
-            </refentry>
+    <refsection role="see also">
+        <title>See also</title>
+
+        <simplelist type="inline">
+            <member>
+                <link linkend="mex_data_types"/>
+            </member>
+            <member>
+                <link linkend="mex_validate_data"/>
+            </member>
+            <member>
+                <link linkend="mex_access_data"/>
+            </member>
+            <member>
+                <link linkend="mex_create_or_delete"/>
+            </member>
+        </simplelist>
+    </refsection>
+</refentry>

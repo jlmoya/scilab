@@ -26,7 +26,7 @@
         <refname>scicos_params</refname>
         <refpurpose>Define a param structure</refpurpose>
     </refnamediv>
-    <refsect1 id="params_scicos_params">
+    <refsect1 xml:id="params_scicos_params">
         <title>params</title>
         <para>Diagram configuration values. Some of the value are graphical information, others directly configure the simulator.</para>
         <para>
@@ -42,14 +42,14 @@
             <link linkend="scicos_diagram_params_void3">void3</link> and
             <link linkend="scicos_diagram_params_doc">doc</link>.
         </para>
-        <refsect2 id="scicos_diagram_params_wpar">
+        <refsect2 xml:id="scicos_diagram_params_wpar">
             <title>wpar</title>
             <para> This vector is not currently used. It may be used in the future to code window sizes of the editor.</para>
             <para>
                 Type : column vector or real.
             </para>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_title">
+        <refsect2 xml:id="scicos_diagram_params_title">
             <title>title</title>
             <para> Vector of character strings, where the first one is the diagram title and default name of save file name, and the second one is the path of the directory of the file name.</para>
             <para>
@@ -59,25 +59,25 @@
                 Type : row vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_tol">
+        <refsect2 xml:id="scicos_diagram_params_tol">
             <title>tol</title>
             <para>
                 A vector containing simulation parameters including
                 various tolerances used by the solver. This vector is composed of : <code>[ atol , rtol , ttol , deltat , scale , solver , hmax ]</code> where :
             </para>
-            <refsect3 id="scicos_diagram_params_tol_atol">
+            <refsect3 xml:id="scicos_diagram_params_tol_atol">
                 <title>(1) atol</title>
                 <para>
                     Integrator absolute tolerance for the numerical solver.
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_tol_rtol">
+            <refsect3 xml:id="scicos_diagram_params_tol_rtol">
                 <title>(2) rtol</title>
                 <para>
                     Integrator relative tolerance for the numerical solver.
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_tol_ttol">
+            <refsect3 xml:id="scicos_diagram_params_tol_ttol">
                 <title>(3) ttol</title>
                 <para>
                     Tolerance on time.
@@ -87,7 +87,7 @@
                     than <varname>ttol</varname>, the numerical solver is not called.
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_tol_deltat">
+            <refsect3 xml:id="scicos_diagram_params_tol_deltat">
                 <title>(4) deltat</title>
                 <para>
                     Maximum integration time interval.
@@ -99,7 +99,7 @@
                     period remains below deltat.
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_tol_scale">
+            <refsect3 xml:id="scicos_diagram_params_tol_scale">
                 <title>(5) scale</title>
                 <para>
                     Real-time scaling; the value <code>0</code> corresponds to no
@@ -116,30 +116,30 @@
                     corresponds to 500 milliseconds.
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_tol_solver">
+            <refsect3 xml:id="scicos_diagram_params_tol_solver">
                 <title>(6) solver</title>
                 <para>
                     Choice of numerical solver.
                 </para>
                 <variablelist>
-                    <varlistentry><term>0</term>: <link linkend="LSodar">LSodar</link></varlistentry>
-                    <varlistentry><term>1</term>: <link linkend="CVode">Sundials/CVODE - BDF - NEWTON</link></varlistentry>
-                    <varlistentry><term>2</term>: <link linkend="CVode">Sundials/CVODE - BDF - FUNCTIONAL</link></varlistentry>
-                    <varlistentry><term>3</term>: <link linkend="CVode">Sundials/CVODE - ADAMS - NEWTON</link></varlistentry>
-                    <varlistentry><term>4</term>: <link linkend="CVode">Sundials/CVODE - ADAMS - FUNCTIONAL</link></varlistentry>
-                    <varlistentry><term>5</term>: <link linkend="DoPri">DOPRI5 - Dormand-Prince 4(5)</link></varlistentry>
-                    <varlistentry><term>6</term>: <link linkend="RK">RK45 - Runge-Kutta 4(5)</link></varlistentry>
-                    <varlistentry><term>7</term>: <link linkend="ImpRK">Implicit RK45 - Implicit Runge-Kutta 4(5)</link></varlistentry>
-                    <varlistentry><term>8</term>: <link linkend="CRANI">CRANI - Crank-Nicolson 2(3)</link></varlistentry>
-                    <varlistentry><term>100</term>: <link linkend="IDA">Sundials/IDA</link></varlistentry>
-                    <varlistentry><term>101</term>: <link linkend="DDaskr">DDaskr - Newton</link></varlistentry>
-                    <varlistentry><term>102</term>: <link linkend="DDaskr">DDaskr - GMRes</link></varlistentry>
+                    <varlistentry><term>0</term><listitem><para>: <link linkend="LSodar">LSodar</link></para></listitem></varlistentry>
+                    <varlistentry><term>1</term><listitem><para>: <link linkend="CVode">Sundials/CVODE - BDF - NEWTON</link></para></listitem></varlistentry>
+                    <varlistentry><term>2</term><listitem><para>: <link linkend="CVode">Sundials/CVODE - BDF - FUNCTIONAL</link></para></listitem></varlistentry>
+                    <varlistentry><term>3</term><listitem><para>: <link linkend="CVode">Sundials/CVODE - ADAMS - NEWTON</link></para></listitem></varlistentry>
+                    <varlistentry><term>4</term><listitem><para>: <link linkend="CVode">Sundials/CVODE - ADAMS - FUNCTIONAL</link></para></listitem></varlistentry>
+                    <varlistentry><term>5</term><listitem><para>: <link linkend="DoPri">DOPRI5 - Dormand-Prince 4(5)</link></para></listitem></varlistentry>
+                    <varlistentry><term>6</term><listitem><para>: <link linkend="RK">RK45 - Runge-Kutta 4(5)</link></para></listitem></varlistentry>
+                    <varlistentry><term>7</term><listitem><para>: <link linkend="ImpRK">Implicit RK45 - Implicit Runge-Kutta 4(5)</link></para></listitem></varlistentry>
+                    <varlistentry><term>8</term><listitem><para>: <link linkend="CRANI">CRANI - Crank-Nicolson 2(3)</link></para></listitem></varlistentry>
+                    <varlistentry><term>100</term><listitem><para>: <link linkend="IDA">Sundials/IDA</link></para></listitem></varlistentry>
+                    <varlistentry><term>101</term><listitem><para>: <link linkend="DDaskr">DDaskr - Newton</link></para></listitem></varlistentry>
+                    <varlistentry><term>102</term><listitem><para>: <link linkend="DDaskr">DDaskr - GMRes</link></para></listitem></varlistentry>
                 </variablelist>
                 <para>
                     See also : <link linkend="Comparisons">Solvers comparisons</link>
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_tol_hmax">
+            <refsect3 xml:id="scicos_diagram_params_tol_hmax">
                 <title>(7) hmax</title>
                 <para>
                     Maximum step size for the numerical solver.
@@ -147,15 +147,15 @@
                 <para>
                     <code>0</code> means no limit, let the solver use its own time predicate.
                 </para>
+                <para>
+                    Size : 7.
+                </para>
+                <para>
+                    Type : column vector of real.
+                </para>
             </refsect3>
-            <para>
-                Size : 7.
-            </para>
-            <para>
-                Type : column vector of real.
-            </para>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_tf">
+        <refsect2 xml:id="scicos_diagram_params_tf">
             <title>tf</title>
             <para> Final time simulation. The simulation stops at this time.</para>
             <para>
@@ -165,7 +165,7 @@
                 Type : real.
             </para>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_context">
+        <refsect2 xml:id="scicos_diagram_params_context">
             <title>context</title>
             <para> A vector of strings containing Scilab instructions defining Scilab variables to be used inside block's dialog box as symbolic parameters.</para>
             <para> All valid Scilab instructions can be used and also comments.</para>
@@ -176,7 +176,7 @@
                 Type : column vector of strings.
             </para>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_void1">
+        <refsect2 xml:id="scicos_diagram_params_void1">
             <title>void1</title>
             <para> unused field.</para>
             <para>
@@ -186,7 +186,7 @@
                 Type : -.
             </para>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_options">
+        <refsect2 xml:id="scicos_diagram_params_options">
             <title>options</title>
             <para>
                 Scilab object of type <code>"scsopt"</code> defining graphical properties of the editor such as background color and link color.
@@ -199,11 +199,11 @@
                 <link linkend="scicos_diagram_params_options_ID">ID</link> and
                 <link linkend="scicos_diagram_params_options_Cmap">Cmap</link>
             </para>
-            <refsect3 id="scicos_diagram_params_options_3D">
+            <refsect3 xml:id="scicos_diagram_params_options_3D">
                 <title>3D</title>
                 <para>Not used.</para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_options_Background">
+            <refsect3 xml:id="scicos_diagram_params_options_Background">
                 <title>Background</title>
                 <para>
                     Vector with two entries: background and
@@ -213,26 +213,26 @@
                     The default value is <code>[8,1]</code>.
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_options_link">
+            <refsect3 xml:id="scicos_diagram_params_options_link">
                 <title>link</title>
                 <para>
                     Not used.
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_options_ID">
+            <refsect3 xml:id="scicos_diagram_params_options_ID">
                 <title>ID</title>
                 <para>
                     Not used.
                 </para>
             </refsect3>
-            <refsect3 id="scicos_diagram_params_options_Cmap">
+            <refsect3 xml:id="scicos_diagram_params_options_Cmap">
                 <title>Cmap</title>
                 <para>
                     Not used.
                 </para>
             </refsect3>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_void2">
+        <refsect2 xml:id="scicos_diagram_params_void2">
             <title>void2</title>
             <para> unused field.</para>
             <para>
@@ -242,7 +242,7 @@
                 Type : -.
             </para>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_void3">
+        <refsect2 xml:id="scicos_diagram_params_void3">
             <title>void3</title>
             <para> unused field.</para>
             <para>
@@ -252,7 +252,7 @@
                 Type : -.
             </para>
         </refsect2>
-        <refsect2 id="scicos_diagram_params_doc">
+        <refsect2 xml:id="scicos_diagram_params_doc">
             <title>doc</title>
             <para> User defined diagram documentation structure.</para>
             <para>

@@ -64,9 +64,11 @@
         <para>
             Utility function used by <literal>ilib_build</literal>
         </para>
-        <para>
-            <warning>This function should not be used directly.</warning>
-        </para>
+        <warning>
+            <para>
+                This function should not be used directly.
+            </para>
+        </warning>
         <para>
             This executes the Makefile produced by <literal>ilib_gen_Make</literal>, compiles
             the C and fortran files and generates the shared library.
@@ -79,7 +81,7 @@
             <emphasis role="bold">Note that a compiler must be available on the system to use this function.</emphasis>
         </para>
         <para>
-            On the internal technical level, under GNU/Linux and Mac OS X, the ilib_* function are based on the autotools. First, a configure is executed to detect compilers available. Then, a make is launched with the provided arguments. For more information: <ulink url="https://scilab.gitlab.io/legacy_wiki/Full(20)technical(20)description(20)of(20)the(20)incremental(20)link.html">Full technical description of the incremental link / dynamic link</ulink>
+            On the internal technical level, under GNU/Linux and Mac OS X, the ilib_* function are based on the autotools. First, a configure is executed to detect compilers available. Then, a make is launched with the provided arguments. For more information: <link xlink:href="https://scilab.gitlab.io/legacy_wiki/Full(20)technical(20)description(20)of(20)the(20)incremental(20)link.html">Full technical description of the incremental link / dynamic link</link>
         </para>
         <para>
             Since version 6.0.1, under GNU/Linux, Scilab detects where the libstdc++ is located (thanks to the command <emphasis role="italic">gcc -print-search-dirs|awk -F= '$1=="libraries: "{print $2}'</emphasis>). Previously, the dynamic link was using the libstdc++ embedded in Scilab.

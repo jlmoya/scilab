@@ -29,47 +29,33 @@
         <refname>C_struct</refname>
         <refpurpose>C Block structure of a computational function</refpurpose>
     </refnamediv>
-    <refsection id="Contents_C_struct">
+    <refsection xml:id="Contents_C_struct">
         <title>Contents</title>
         <itemizedlist>
           <listitem>
-            <para>
-              <xref linkend="Description_C_struct">Description</xref>
-            </para>
+              <para><link linkend="Description_C_struct">Description</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Inputsoutputs_C_struct">Inputs/outputs</xref>
-            </para>
+              <para><link linkend="Inputsoutputs_C_struct">Inputs/outputs</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Events_C_struct">Events</xref>
-            </para>
+              <para><link linkend="Events_C_struct">Events</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Parameters_C_struct">Parameters</xref>
-            </para>
+              <para><link linkend="Parameters_C_struct">Parameters</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Statesandwork_C_struct">States and work</xref>
-            </para>
+              <para><link linkend="Statesandwork_C_struct">States and work</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Zerocrossingsurfacesandmodes_C_struct">Zero crossing surfaces and modes</xref>
-            </para>
+              <para><link linkend="Zerocrossingsurfacesandmodes_C_struct">Zero crossing surfaces and modes</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Miscellaneous_C_struct">Miscellaneous</xref>
-            </para>
+              <para><link linkend="Miscellaneous_C_struct">Miscellaneous</link></para>
           </listitem>
       </itemizedlist>
     </refsection>
-    <refsection id="Description_C_struct">
+    <refsection xml:id="Description_C_struct">
         <title>Description</title>
         <para>
             The C structure of a Scicos block defines all the fields to handle data provided by the simulator such inputs/outputs, parameters, states, ...
@@ -81,7 +67,7 @@
             This access is a direct approach and most of users should prefer the <link linkend="C_macros">C macros</link> approach for facilities purpose.
         </para>
     </refsection>
-    <refsection id="Inputsoutputs_C_struct">
+    <refsection xml:id="Inputsoutputs_C_struct">
         <title>Inputs/outputs</title>
         <itemizedlist>
             <listitem>
@@ -523,7 +509,7 @@ void mycomputfunc(scicos_block *block,int flag)
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Events_C_struct">
+    <refsection xml:id="Events_C_struct">
         <title>Events</title>
         <itemizedlist>
             <listitem>
@@ -568,10 +554,12 @@ void mycomputfunc(scicos_block *block,int flag)
                     When setting values in that array, you must understand that you give a
                     delay relative to the current time of simulator :
                 </para>
-                <emphasis>
-                    t<subscript>event</subscript> = t<subscript>current</subscript> +
-                                                    T<subscript>delay</subscript>
-                </emphasis>
+                <para>
+                    <emphasis>
+                        t<subscript>event</subscript> = t<subscript>current</subscript> +
+                                                        T<subscript>delay</subscript>
+                    </emphasis>
+                </para>
                 <para>
                     where <emphasis>t<subscript>event</subscript></emphasis> is the date of the
                     programmed event,
@@ -609,7 +597,7 @@ void mycomputfunc(scicos_block *block,int flag)
         <para>
         </para>
     </refsection>
-    <refsection id="Parameters_C_struct">
+    <refsection xml:id="Parameters_C_struct">
         <title>Arguments</title>
         <para>
         </para>
@@ -1079,7 +1067,7 @@ void mycomputfunc(scicos_block *block,int flag)
         <para>
         </para>
     </refsection>
-    <refsection id="Statesandwork_C_struct">
+    <refsection xml:id="Statesandwork_C_struct">
         <title>States and work</title>
         <para>
         </para>
@@ -1507,7 +1495,7 @@ void mycomputfunc(scicos_block *block,int flag)
         <para>
         </para>
     </refsection>
-    <refsection id="Zerocrossingsurfacesandmodes_C_struct">
+    <refsection xml:id="Zerocrossingsurfacesandmodes_C_struct">
         <title>Zero crossing surfaces and modes</title>
         <para>
         </para>
@@ -1562,7 +1550,7 @@ void mycomputfunc(scicos_block *block,int flag)
         <para>
         </para>
     </refsection>
-    <refsection id="Miscellaneous_C_struct">
+    <refsection xml:id="Miscellaneous_C_struct">
         <title>Miscellaneous</title>
         <itemizedlist>
             <listitem>
@@ -1583,4 +1571,3 @@ void mycomputfunc(scicos_block *block,int flag)
         </itemizedlist>
     </refsection>
 </refentry>
-

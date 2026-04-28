@@ -1303,6 +1303,7 @@ public class HTMLDocbookTagConverter extends DocbookTagConverter implements Temp
             if (ulink == null) {
                 throw new SAXException("No linkend nor xlink:href attribute in tag link");
             } else {
+                ulink = ulink.replace("&", "&amp;");
                 return encloseContents("a", new String[] {"href", ulink, "class", "ulink"}, contents);
             }
         }

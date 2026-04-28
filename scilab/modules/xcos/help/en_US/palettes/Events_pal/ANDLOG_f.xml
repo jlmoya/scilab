@@ -31,32 +31,32 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/ANDLOG_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_ANDLOG_f">
+    <refsection xml:id="Contents_ANDLOG_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_ANDLOG_f">Description</xref>
+                <para><link linkend="Description_ANDLOG_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_ANDLOG_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_ANDLOG_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_ANDLOG_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_ANDLOG_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_ANDLOG_f">Example</xref>
+                <para><link linkend="Example_ANDLOG_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_ANDLOG_f">
+    <refsection xml:id="Description_ANDLOG_f">
         <title>Description</title>
         <para>
             This block, with two event inputs and a regular output, outputs <emphasis role="bold">+1</emphasis> or
@@ -75,7 +75,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_ANDLOG_f">
+    <refsection xml:id="Defaultproperties_ANDLOG_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -140,7 +140,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Interfacingfunction_ANDLOG_f">
+    <refsection xml:id="Interfacingfunction_ANDLOG_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -149,8 +149,9 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Example_ANDLOG_f">
+    <refsection xml:id="Example_ANDLOG_f">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/ANDLOG_f_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -158,5 +159,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

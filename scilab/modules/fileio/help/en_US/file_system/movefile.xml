@@ -72,8 +72,10 @@
         <para>
             If <varname>source</varname> is a directory, <varname>destination</varname> cannot be a file.
             <warning>
-                <function>movefile</function> replaces existing files without
-                warning.
+                <para>
+                    <function>movefile</function> replaces existing files without
+                    warning.
+                </para>            
             </warning>
         </para>
         <para>

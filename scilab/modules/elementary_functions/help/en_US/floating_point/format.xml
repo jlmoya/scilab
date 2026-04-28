@@ -35,20 +35,29 @@
                 <listitem>
                     <para>formatting mode:
                         <itemizedlist>
-                          <listitem>1 or "v": <emphasis role="bold">v</emphasis>ariable adaptative
-                            formatting. Scilab chooses either the direct representation
-                            (e.g. -143.8757) or
-                            the exponential/scientific notation (e.g. -1.438E+02),
-                            in order to cope with each processed value as well as with the
-                            required width, with a maximal number of output digits.
+                          <listitem>
+                            <para>
+                                1 or "v": <emphasis role="bold">v</emphasis>ariable adaptative
+                                formatting. Scilab chooses either the direct representation
+                                (e.g. -143.8757) or
+                                the exponential/scientific notation (e.g. -1.438E+02),
+                                in order to cope with each processed value as well as with the
+                                required width, with a maximal number of output digits.
+                            </para>
                           </listitem>
-                          <listitem>0 or "e": The <emphasis role="bold">e</emphasis>xponential
-                            /scientific notation is forced
-                            and used for all numbers.
+                          <listitem>
+                            <para>
+                                0 or "e": The <emphasis role="bold">e</emphasis>xponential
+                                /scientific notation is forced
+                                and used for all numbers.
+                            </para>
                           </listitem>
-                          <listitem>2 or "eng": The <emphasis role="bold">eng</emphasis>ineering
-                            notation is used. This notation is similar to the exponential/scientific notation
-                            but the exponent value is selected to be divisible by three.
+                          <listitem>
+                            <para>
+                                2 or "eng": The <emphasis role="bold">eng</emphasis>ineering
+                                notation is used. This notation is similar to the exponential/scientific notation
+                                but the exponent value is selected to be divisible by three.
+                            </para>
                           </listitem>
                       </itemizedlist>
                   </para>
@@ -77,18 +86,23 @@
                 <listitem>
                     <para>vector returning the current formatting parameters:
                         <itemizedlist>
-                          <listitem><literal>mw(1)</literal> is the formatting mode:
-                            0 for <literal>'e'</literal>, 1 for <literal>'v'</literal> and 2 for <literal>'eng'</literal>
+                          <listitem>
+                            <para>
+                              <literal>mw(1)</literal> is the formatting mode:
+                              0 for <literal>'e'</literal>, 1 for <literal>'v'</literal> and 2 for <literal>'eng'</literal>
+                            </para>
                           </listitem>
                           <listitem>
-                               <para><literal>mw(1)</literal> is the formatting mode:
-                                0 for <literal>'e'</literal> and 1 for <literal>'v'</literal>
-                                  </para>
-                              </listitem>
+                            <para>
+                              <literal>mw(1)</literal> is the formatting mode:
+                              0 for <literal>'e'</literal> and 1 for <literal>'v'</literal>
+                            </para>
+                          </listitem>
                           <listitem>
-                               <para><literal>mw(2)</literal> is the width:
-                                Number of characters used to output each number.
-                              </para>
+                            <para>
+                              <literal>mw(2)</literal> is the width:
+                              Number of characters used to output each number.
+                            </para>
                           </listitem>
                          </itemizedlist>
                      </para>
@@ -99,22 +113,33 @@
     <refsection role="description">
         <title>Description</title>
             <note>
-            For complex numbers, each real and imaginary decimal part is
-            output according to <literal>format(..)</literal>. The total width
-            of a complex number is therefore roughly twice greater (+ 1 character
-            for "i" symbol).
+                <para>
+                    For complex numbers, each real and imaginary decimal part is
+                    output according to <literal>format(..)</literal>. The total width
+                    of a complex number is therefore roughly twice greater (+ 1 character
+                    for "i" symbol).
+                </para>
             </note>
-            <note>Encoded integers are never output according to the "e"xponential mode, even when
-                this formatting is the default mode set for decimal numbers. For them, the decimal
-                separator "." is skipped. This allows to distinguish them from decimal integers
-                that have a dot.
+            <note>
+                <para>
+                    Encoded integers are never output according to the "e"xponential mode, even when
+                    this formatting is the default mode set for decimal numbers. For them, the decimal
+                    separator "." is skipped. This allows to distinguish them from decimal integers
+                    that have a dot.
+                </para>
             </note>
-            <note>For wide format(), digits that may be displayed beyond the
-                relative accuracy <literal>%eps</literal> are set to 0.
+            <note>
+                <para>
+                    For wide format(), digits that may be displayed beyond the
+                    relative accuracy <literal>%eps</literal> are set to 0.
+                </para>
             </note>
-            <warning>The default decimal format set with
-                <function>format(..)</function> is a global parameter:
-                Wherever you set it, it then applies everywhere in Scilab and Xcos.
+            <warning>
+                <para>
+                    The default decimal format set with
+                    <function>format(..)</function> is a global parameter:
+                    Wherever you set it, it then applies everywhere in Scilab and Xcos.
+                </para>
             </warning>
         <para>In the old Scilab versions, in "variable format" mode, vector
             entries which are less than <literal>%eps</literal> times the maximum absolute value of the
@@ -226,8 +251,7 @@ format("v",10) // reset
             </revision>
             <revision>
                 <revnumber>2026.1</revnumber>
-                <revdescription>Engineering notation added.
-                </revdescription>
+                <revdescription><para>Engineering notation added.</para></revdescription>
             </revision>
         </revhistory>
     </refsection>

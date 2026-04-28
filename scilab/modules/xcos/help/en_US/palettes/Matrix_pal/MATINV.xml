@@ -28,41 +28,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATINV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATINV">
+    <refsection xml:id="Contents_MATINV">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATINV">Description</xref>
+                <para><link linkend="Description_MATINV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATINV">Parameters</xref>
+                <para><link linkend="Dialogbox_MATINV">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATINV">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATINV">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_MATINV">Examples</xref>
+                <para><link linkend="Example_MATINV">Examples</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATINV">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATINV">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATINV">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATINV">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATINV">See also</xref>
+                <para><link linkend="Seealso_MATINV">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATINV">
+    <refsection xml:id="Description_MATINV">
         <title>Description</title>
         <para>
             The MATINV block outputs the inverse of a square input matrix calculated by using the LU factorization.
@@ -72,15 +72,14 @@
             The equivalent function of this block in Scilab is <link linkend="inv">inv</link>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATINV">
+    <refsection xml:id="Dialogbox_MATINV">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATINV_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATINV_gui.gif"/>
 
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -94,7 +93,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATINV">
+    <refsection xml:id="Defaultproperties_MATINV">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -167,8 +166,9 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_MATINV">
+    <refsection xml:id="Example_MATINV">
         <title>Matrix Inverse example: inv([0 1/(sin(t)+1) ; 1/(t+1) 0])</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATINV_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -176,8 +176,9 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
-    <refsection id="Interfacingfunction_MATINV">
+    <refsection xml:id="Interfacingfunction_MATINV">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -185,7 +186,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATINV">
+    <refsection xml:id="Computationalfunction_MATINV">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

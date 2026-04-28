@@ -107,17 +107,19 @@
                         (dash, dash dot, longdash dot, bigdash dot, bigdash longdash, dot, double dot, longblank dot, bigblank dot).
                         See example below.
                     </para>
-                    <scilab:image><![CDATA[
-                        plot2d([1 10], [1 1]'*(1:10), 2*ones(1,10));
-                        a = gca();
-                        a.children.children.line_style = (1:10)';
-                        a.children.children.thickness = 2;
-                        set(a, "axes_visible",["off" "on" "off"], "sub_ticks",[1 0]);
-                        a.margins(1) = 0.15;
-                        a.y_ticks=tlist(["ticks"  "locations"  "labels"],1:10,msprintf("%d\n",(10:-1:1)')')
-                        ylabel("line_style value", "fontsize", 3)
-                        gcf().axes_size = [300 185];
-                    ]]></scilab:image>
+                    <para>
+                        <scilab:image><![CDATA[
+                            plot2d([1 10], [1 1]'*(1:10), 2*ones(1,10));
+                            a = gca();
+                            a.children.children.line_style = (1:10)';
+                            a.children.children.thickness = 2;
+                            set(a, "axes_visible",["off" "on" "off"], "sub_ticks",[1 0]);
+                            a.margins(1) = 0.15;
+                            a.y_ticks=tlist(["ticks"  "locations"  "labels"],1:10,msprintf("%d\n",(10:-1:1)')')
+                            ylabel("line_style value", "fontsize", 3)
+                            gcf().axes_size = [300 185];
+                        ]]></scilab:image>
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>

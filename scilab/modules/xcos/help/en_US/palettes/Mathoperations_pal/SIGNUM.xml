@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SIGNUM.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_SIGNUM">
+    <refsection xml:id="Contents_SIGNUM">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SIGNUM">Description</xref>
+                <para><link linkend="Description_SIGNUM">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SIGNUM">Parameters</xref>
+                <para><link linkend="Dialogbox_SIGNUM">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SIGNUM">Default properties</xref>
+                <para><link linkend="Defaultproperties_SIGNUM">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SIGNUM">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_SIGNUM">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_SIGNUM">Computational function</xref>
+                <para><link linkend="Computationalfunction_SIGNUM">Computational function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_SIGNUM">
+    <refsection xml:id="Description_SIGNUM">
         <title>Description</title>
         <para>
             The block output is a vector of the signs of the elements of the input vector.
@@ -77,14 +77,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_SIGNUM">
+    <refsection xml:id="Dialogbox_SIGNUM">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/SIGNUM_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/SIGNUM_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -95,7 +94,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_SIGNUM">
+    <refsection xml:id="Defaultproperties_SIGNUM">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -168,7 +167,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_SIGNUM">
+    <refsection xml:id="Interfacingfunction_SIGNUM">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -176,7 +175,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SIGNUM">
+    <refsection xml:id="Computationalfunction_SIGNUM">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

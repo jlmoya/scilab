@@ -165,7 +165,9 @@
                                 </table>
                                 </para>
                                 <note>
-                                    Isometrical modes are rendered with <literal>gca().cube_scaling="off"</literal>.
+                                    <para>
+                                        Isometrical modes are rendered with <literal>gca().cube_scaling="off"</literal>.
+                                    </para>
                                 </note>
                             </listitem>
                         </varlistentry>
@@ -266,7 +268,9 @@
             same number of points. When it is given, the optional argument <literal>h</literal>
             returns the Compound of curves entities.
             <note>
-                The handle of curve #i is <literal>h.children($-i+1)</literal>.
+                <para>
+                    The handle of curve #i is <literal>h.children($-i+1)</literal>.
+                </para>
             </note>
         </para>
     </refsection>

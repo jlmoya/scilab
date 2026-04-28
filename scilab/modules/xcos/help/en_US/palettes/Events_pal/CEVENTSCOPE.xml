@@ -31,52 +31,52 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CEVENTSCOPE.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_CEVENTSCOPE">
+    <refsection xml:id="Contents_CEVENTSCOPE">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CEVENTSCOPE">Description</xref>
+                <para><link linkend="Description_CEVENTSCOPE">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CEVENTSCOPE">Parameters</xref>
+                <para><link linkend="Dialogbox_CEVENTSCOPE">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CEVENTSCOPE">Default properties</xref>
+                <para><link linkend="Defaultproperties_CEVENTSCOPE">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CEVENTSCOPE">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CEVENTSCOPE">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CEVENTSCOPE">Computational function</xref>
+                <para><link linkend="Computationalfunction_CEVENTSCOPE">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CEVENTSCOPE">Example</xref>
+                <para><link linkend="Example_CEVENTSCOPE">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_CEVENTSCOPE">
+    <refsection xml:id="Description_CEVENTSCOPE">
         <title>Description</title>
         <para>
             This block realizes the visualization of the input event signals.
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_CEVENTSCOPE">
+    <refsection xml:id="Dialogbox_CEVENTSCOPE">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/CEVENTSCOPE_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/CEVENTSCOPE_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -144,7 +144,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_CEVENTSCOPE">
+    <refsection xml:id="Defaultproperties_CEVENTSCOPE">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -202,7 +202,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_CEVENTSCOPE">
+    <refsection xml:id="Interfacingfunction_CEVENTSCOPE">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -210,7 +210,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CEVENTSCOPE">
+    <refsection xml:id="Computationalfunction_CEVENTSCOPE">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -218,8 +218,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_CEVENTSCOPE">
+    <refsection xml:id="Example_CEVENTSCOPE">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/CEVENTSCOPE_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -227,5 +228,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

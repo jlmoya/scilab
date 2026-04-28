@@ -32,43 +32,43 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/CONVERT.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CONVERT">
+    <refsection xml:id="Contents_CONVERT">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CONVERT">Description</xref>
+                <para><link linkend="Description_CONVERT">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_CONVERT">Data types</xref>
+                <para><link linkend="Data_Type_CONVERT">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CONVERT">Parameters</xref>
+                <para><link linkend="Dialogbox_CONVERT">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CONVERT">Default properties</xref>
+                <para><link linkend="Defaultproperties_CONVERT">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CONVERT">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CONVERT">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CONVERT">Computational function</xref>
+                <para><link linkend="Computationalfunction_CONVERT">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CONVERT">Example</xref>
+                <para><link linkend="Example_CONVERT">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CONVERT">See also</xref>
+                <para><link linkend="Seealso_CONVERT">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_CONVERT">
+    <refsection xml:id="Description_CONVERT">
         <title>Description</title>
         <para>
             This block converts an input signal of real double or integer data type to an integer
@@ -115,7 +115,7 @@
             field to 0, 1 or 2.
         </para>
     </refsection>
-    <refsection id="Data_Type_CONVERT">
+    <refsection xml:id="Data_Type_CONVERT">
         <title>Data types</title>
         <para>
             The block supports the following types :
@@ -135,14 +135,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_CONVERT">
+    <refsection xml:id="Dialogbox_CONVERT">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/integer_pal/en_US/CONVERT_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/integer_pal/en_US/CONVERT_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -190,7 +189,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_CONVERT">
+    <refsection xml:id="Defaultproperties_CONVERT">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -264,7 +263,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_CONVERT">
+    <refsection xml:id="Example_CONVERT">
         <title>Example</title>
         <para>
             This example shows the sign bit's propagation during a conversion from int8 to int16.
@@ -280,7 +279,7 @@
         </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_CONVERT">
+    <refsection xml:id="Interfacingfunction_CONVERT">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -290,7 +289,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CONVERT">
+    <refsection xml:id="Computationalfunction_CONVERT">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

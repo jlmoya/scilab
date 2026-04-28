@@ -80,17 +80,20 @@
                     </para>
                 </listitem>
                 <listitem>
-                     <para>They must have the same contents, the same values
+                    <para>They must have the same contents, the same values
                         at the same places.
                         <warning>
-                            <literal>1/%z == -1/(-%z)</literal> returns
-                            <literal>%T</literal>, while
-                            <literal>1/%z == 2/(2*%z)</literal>,
-                            <literal>isequal(1/%z, -1/(-%z))</literal> and
-                            <literal>isequal(1/%z, 2/(2*%z))</literal>
-                            are <literal>%F</literal>.
-                        </warning></para>
-                              </listitem>
+                            <para>
+                                <literal>1/%z == -1/(-%z)</literal> returns
+                                <literal>%T</literal>, while
+                                <literal>1/%z == 2/(2*%z)</literal>,
+                                <literal>isequal(1/%z, -1/(-%z))</literal> and
+                                <literal>isequal(1/%z, 2/(2*%z))</literal>
+                                are <literal>%F</literal>.
+                            </para>
+                        </warning>
+                    </para>
+                </listitem>
             </itemizedlist>
             If at least one of these conditions is not fulfilled, the objects
             are considered not equal.
@@ -100,12 +103,15 @@
             cells, etc, comparisons are performed recursively.
         </para>
         <important>
-            With <function>isequal</function>, 2 compared NaN values are always
-            considered not equal, according to the IEEE rule.
-            <para/>
-            Comparing two objects including NaN values and considering that all NaN
-            are equal can be done with
-            <literal>[ans,msg]=<link linkend="assert_checkequal">assert_checkequal(…)</link></literal>.
+            <para>
+                With <function>isequal</function>, 2 compared NaN values are always
+                considered not equal, according to the IEEE rule.
+            </para>
+            <para>
+                Comparing two objects including NaN values and considering that all NaN
+                are equal can be done with
+                <literal>[ans,msg]=<link linkend="assert_checkequal">assert_checkequal(…)</link></literal>.
+            </para>
         </important>
     </refsection>
     <refsection role="examples">

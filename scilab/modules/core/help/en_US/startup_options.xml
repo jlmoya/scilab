@@ -150,12 +150,12 @@ evstr(a(i+2))*2
                       in such a way that the "-nw" option is not returned by <literal>sciargs()</literal>
                       (see further below).
                     </para>
-                    <para>
-                        <note>
+                    <note>
+                        <para>
                            Using <literal>-args</literal> as the <emphasis role="italic">last</emphasis>
                            command line option is safer.
-                        </note>
-                    </para>
+                        </para>
+                    </note>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -192,7 +192,9 @@ evstr(a(i+2))*2
                         </itemizedlist>
                     </para>
                     <warning>
-                        <literal>-e</literal> and <literal>-f</literal> options can't be used together.
+                        <para>
+                            <literal>-e</literal> and <literal>-f</literal> options can't be used together.
+                        </para>
                     </warning>
                 </listitem>
             </varlistentry>
@@ -255,10 +257,12 @@ evstr(a(i+2))*2
                         The default language is English.
                     </para>
                     <note>
-                        On Windows, in "-nw" or "-nwni" modes, the selected font of the terminal
-                        must be a TrueType one to support UTF-8 characters, like
-                        <emphasis>Monospaced</emphasis> (best choice if available) or
-                        <emphasis>Consolas</emphasis> or <emphasis>Lucida Console</emphasis>..
+                        <para>
+                            On Windows, in "-nw" or "-nwni" modes, the selected font of the terminal
+                            must be a TrueType one to support UTF-8 characters, like
+                            <emphasis>Monospaced</emphasis> (best choice if available) or
+                            <emphasis>Consolas</emphasis> or <emphasis>Lucida Console</emphasis>.
+                        </para>
                     </note>
                     <para>
                         On some systems, locales must be compiled to render correctly
@@ -335,13 +339,17 @@ evstr(a(i+2))*2
                 <term>-nwni / -nogui</term>
                 <listitem>
                     <important>
-                        This mode prevents loading the Java Virtual Machine.
-                        It starts faster and uses less memory. But then...
+                        <para>
+                            This mode prevents loading the Java Virtual Machine.
+                            It starts faster and uses less memory. But then...
+                        </para>
                     </important>
                     <warning>
-                        Scilab is started as command line interpreter without any advanced features
-                        requiring the JVM: graphics, export, xcos, scinotes, help browser, other
-                        java interfaces, the Java module,... are not available.
+                        <para>
+                            Scilab is started as command line interpreter without any advanced features
+                            requiring the JVM: graphics, export, xcos, scinotes, help browser, other
+                            java interfaces, the Java module,... are not available.
+                        </para>
                     </warning>
                     <para>
                         Anyway, pipes are enabled for all operating systems.
@@ -390,8 +398,8 @@ evstr(a(i+2))*2
                 <listitem>
                     <para>
                         This option is used when Scilab is used as computational interface
-                        within the <ulink url="http://texmacs.org">TeXmacs</ulink> scientific editor,
-                        using the <ulink url="https://atoms.scilab.org/toolboxes/texmacs">TeXmacs</ulink>
+                        within the <link xlink:href="http://texmacs.org">TeXmacs</link> scientific editor,
+                        using the <link xlink:href="https://atoms.scilab.org/toolboxes/texmacs">TeXmacs</link>
                         ATOMS module.
                         This one can be priorly installed in Scilab with <code>atomsInstall('texmacs')</code>.
                     </para>
@@ -409,7 +417,9 @@ evstr(a(i+2))*2
         </variablelist>
         <para>
             <note>
-                On Windows, if neither <literal>"-nw"</literal> nor <literal>"-nwni"/"-nogui"</literal> options are given, then the <literal xml:id="wscilex">WScilex.exe</literal> binary is executed.
+                <para>
+                    On Windows, if neither <literal>"-nw"</literal> nor <literal>"-nwni"/"-nogui"</literal> options are given, then the <literal xml:id="wscilex">WScilex.exe</literal> binary is executed.
+                </para>
             </note>
         </para>
     </refsection>
@@ -429,7 +439,7 @@ evstr(a(i+2))*2
             <varlistentry>
                 <term>-debug-rr</term>
                 <listitem>
-                    <para>Start Scilab under <ulink url="https://rr-project.org/">rr</ulink>.</para>
+                    <para>Start Scilab under <link xlink:href="https://rr-project.org/">rr</link>.</para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -504,7 +514,9 @@ evstr(a(i+2))*2
     <refsection role="description">
         <title>Java Virtual Machine options</title>
         <warning>
-            The options described here-below are useless and are cancelled if the option <literal>-nwni</literal> is used.
+            <para>
+                The options described here-below are useless and are cancelled if the option <literal>-nwni</literal> is used.
+            </para>
         </warning>
         <para>Starting from Scilab 5.0, the graphical user interface (GUI) and the
             build documentation are based on Java features. In some cases, it can be
@@ -552,7 +564,7 @@ evstr(a(i+2))*2
             </varlistentry>
         </variablelist>
         <para>Many more options are available. They can improve the performances,
-            change look and feel, change memory managements... See: <ulink url="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</ulink>.
+            change look and feel, change memory managements... See: <link xlink:href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</link>.
         </para>
     </refsection>
     <refsection role="examples">

@@ -31,47 +31,47 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DLR.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DLR">
+    <refsection xml:id="Contents_DLR">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DLR">Description</xref>
+                <para><link linkend="Description_DLR">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DLR">Parameters</xref>
+                <para><link linkend="Dialogbox_DLR">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DLR">Default properties</xref>
+                <para><link linkend="Defaultproperties_DLR">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DLR">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DLR">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DLR">Computational function</xref>
+                <para><link linkend="Computationalfunction_DLR">Computational function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DLR">
+    <refsection xml:id="Description_DLR">
         <title>Description</title>
         <para>
             This block realizes a SISO linear system represented by its rational transfer function
             (in the symbolic variable z). The rational function must be proper.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DLR">
+    <refsection xml:id="Dialogbox_DLR">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/DLR_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/DLR_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -83,18 +83,22 @@
                 </para>
                 <para> Properties : Type 'pol' of size 1. </para>
                 <warning>
+                    <para>
                     In the provided expression, any subexpression being an exponent given either by
                     a variable (of the context) whose name is more than 1-character long, or by an
                     expression (not a literal integer) must end with a space to be correctly
                     displayed on the block's icon.
-                    <para/>
+                    </para>
+                    <para>
                     This constrain has no consequence on the computational validity of the expression.
-                    <para/>
+                    </para>
+                    <para>
                     Examples: "z^12+1", "z^ +12+1", "z^+ 12+1" are all displayed as "z^{12}+1",
                     while "1+z^ab+z^2" will be displayed as "1+z^{ab+z^2}"
                     (but will be well computed as <literal>1 + z^ab + z^2</literal>).
                     To make it well displayed, "1+z^ab +z^2" will have to be entered (for instance).
                     As well, "z^(ab+1) + 2" will have to be entered, instead of "z^(ab+1)+2".
+                    </para>
                 </warning>
             </listitem>
             <listitem>
@@ -110,7 +114,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DLR">
+    <refsection xml:id="Defaultproperties_DLR">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -183,7 +187,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DLR">
+    <refsection xml:id="Interfacingfunction_DLR">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -191,7 +195,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DLR">
+    <refsection xml:id="Computationalfunction_DLR">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

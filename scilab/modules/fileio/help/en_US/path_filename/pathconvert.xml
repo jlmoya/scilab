@@ -82,10 +82,12 @@
             format can be specified with argument <varname>type</varname>).
         </para>
         <note>
-            When some Windows-like paths starting with a drive letter like "C:" are converted
-            to a non-Windows format, the drive letter is then converted using the
-            cygwin convention,  with the <literal>/cygdrive/</literal> header.
-            For example, <literal>C:\tmp</literal> will be converted to <literal>/cygdrive/C/tmp</literal>.
+            <para>
+                When some Windows-like paths starting with a drive letter like "C:" are converted
+                to a non-Windows format, the drive letter is then converted using the
+                cygwin convention,  with the <literal>/cygdrive/</literal> header.
+                For example, <literal>C:\tmp</literal> will be converted to <literal>/cygdrive/C/tmp</literal>.
+            </para>
         </note>
         <para>
             <varname>flagtrail</varname> is used to add or remove a file
@@ -100,25 +102,26 @@
             variables are accepted:
             <itemizedlist>
                 <listitem>
-                    <constant>SCI</constant>
+                    <para><constant>SCI</constant></para>
                 </listitem>
                 <listitem>
-                    <constant>WSCI</constant>
+                    <para><constant>WSCI</constant></para>
                 </listitem>
                 <listitem>
-                    <constant>SCIHOME</constant>
+                    <para><constant>SCIHOME</constant></para>
                 </listitem>
                 <listitem>
-                    <constant>TMPDIR</constant>
+                    <para><constant>TMPDIR</constant></para>
                 </listitem>
                 <listitem>
-                     <para><literal>home</literal> (or <literal>~</literal>)
-                    </para>
+                     <para><literal>home</literal> (or <literal>~</literal>)</para>
                 </listitem>
             </itemizedlist>
             <caution>
-                <constant>WSCI</constant> is unknown on GNU/Linux and
-                <literal>~</literal> in term "path" is unknown on Windows.
+                <para>
+                    <constant>WSCI</constant> is unknown on GNU/Linux and
+                    <literal>~</literal> in term "path" is unknown on Windows.
+                </para>
             </caution>
         </para>
     </refsection>

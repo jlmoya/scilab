@@ -32,44 +32,44 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Modulo_Count.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_Modulo_Count">
+    <refsection xml:id="Contents_Modulo_Count">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_Modulo_Count">Description</xref>
+                <para><link linkend="Description_Modulo_Count">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatype_Modulo_Count">Data types</xref>
+                <para><link linkend="Datatype_Modulo_Count">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_Modulo_Count">Parameters</xref>
+                <para><link linkend="Dialogbox_Modulo_Count">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_Modulo_Count">Default properties</xref>
+                <para><link linkend="Defaultproperties_Modulo_Count">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Modulo_Count">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_Modulo_Count">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_Modulo_Count">Computational function</xref>
+                <para><link linkend="Computationalfunction_Modulo_Count">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_Modulo_Count">Example</xref>
+                <para><link linkend="Example_Modulo_Count">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_Modulo_Count">See also</xref>
+                <para><link linkend="Seealso_Modulo_Count">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_Modulo_Count">
+    <refsection xml:id="Description_Modulo_Count">
         <title>Description</title>
         <para>
             It is a discrete block. The block outputs a periodic scalar piecewise constant signal.
@@ -80,7 +80,7 @@
             quantized sawtooth signal.
         </para>
     </refsection>
-    <refsection id="Datatype_Modulo_Count">
+    <refsection xml:id="Datatype_Modulo_Count">
         <title>Data type</title>
         <itemizedlist>
             <listitem>
@@ -91,15 +91,14 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Dialogbox_Modulo_Count">
+    <refsection xml:id="Dialogbox_Modulo_Count">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/sources_pal/en_US/Modulo_Count_gui.png"
-                        align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                        align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -117,7 +116,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_Modulo_Count">
+    <refsection xml:id="Defaultproperties_Modulo_Count">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -183,7 +182,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_Modulo_Count">
+    <refsection xml:id="Example_Modulo_Count">
         <title>Example</title>
         <para>
             This diagram shows the Modulo_count usage as a quantized sawtooth generator application.
@@ -203,7 +202,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_Modulo_Count">
+    <refsection xml:id="Interfacingfunction_Modulo_Count">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -213,7 +212,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_Modulo_Count">
+    <refsection xml:id="Computationalfunction_Modulo_Count">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

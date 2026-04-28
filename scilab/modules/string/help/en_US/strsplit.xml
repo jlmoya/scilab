@@ -161,38 +161,38 @@
             Then <literal>strcat([chunks' ; [matched_separators' ""]])</literal> should be
             equal to <varname>string</varname>.
         </para>
-        <para>
-            <note>
-            <emphasis>Comparison between strsplit() and tokens()</emphasis>:
-            <table>
-                <tr><th>strsplit()</th>     <th>tokens()</th></tr>
-                <tr>
-                    <td>can work with indices</td>
-                    <td>works only with separators</td>
-                </tr>
-                <tr>
-                    <td>works with regexp</td>
-                    <td>does not accept regexp</td>
-                </tr>
-                <tr>
-                    <td>works with any separator</td>
-                    <td>is restricted to 1-character separators</td>
-                </tr>
-                <tr>
-                    <td>keeps all empty chunks</td>
-                    <td>removes them</td>
-                </tr>
-                <tr>
-                    <td>can limit the number of split</td>
-                    <td>always splits all</td>
-                </tr>
-                <tr>
-                    <td>slower</td>
-                    <td>faster</td>
-                </tr>
-            </table>
-            </note>
-        </para>
+        <note>
+            <para>
+                <emphasis>Comparison between strsplit() and tokens()</emphasis>:
+                <table>
+                    <tr><th>strsplit()</th>     <th>tokens()</th></tr>
+                    <tr>
+                        <td>can work with indices</td>
+                        <td>works only with separators</td>
+                    </tr>
+                    <tr>
+                        <td>works with regexp</td>
+                        <td>does not accept regexp</td>
+                    </tr>
+                    <tr>
+                        <td>works with any separator</td>
+                        <td>is restricted to 1-character separators</td>
+                    </tr>
+                    <tr>
+                        <td>keeps all empty chunks</td>
+                        <td>removes them</td>
+                    </tr>
+                    <tr>
+                        <td>can limit the number of split</td>
+                        <td>always splits all</td>
+                    </tr>
+                    <tr>
+                        <td>slower</td>
+                        <td>faster</td>
+                    </tr>
+                </table>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>

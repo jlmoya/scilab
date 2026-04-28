@@ -140,15 +140,15 @@
                 <para>
                     The second output argument <varname>m</varname> is the mean of the input, with respect to the <varname>orien</varname> parameter.
                 </para>
-                <para>
-                    <warning>
+                <warning>
+                    <para>
                         The <literal>variance(x, "*"|"c"|"r", 1)</literal> synopsis used only in Scilab 5.4.1 must be replaced with
                         <literal>variance(x, "*"|"c"|"r", %nan)</literal>. <literal>variance(x, "*"|"c"|"r", 1)</literal> will warn
                         the user until Scilab 6.0. Indeed, <literal>1</literal> will be now considered as <literal>m=1</literal>.
                         If <literal>1</literal> is the true value provided as <varname>m</varname>, the warning may be avoided entering <literal>1+%eps</literal> instead
                         of <literal>1</literal>.
-                    </warning>
-                </para>
+                    </para>
+                </warning>
             </refsection>
             <refsection>
                 <title>Examples</title>

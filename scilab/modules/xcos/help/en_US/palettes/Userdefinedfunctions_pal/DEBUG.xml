@@ -31,26 +31,26 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DEBUG.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_DEBUG">
+    <refsection xml:id="Contents_DEBUG">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DEBUG">Description</xref>
+                <para><link linkend="Description_DEBUG">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DEBUG">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DEBUG">Interfacing function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_DEBUG">
+    <refsection xml:id="Description_DEBUG">
         <title>Description</title>
         <para>
             The Debug block will execute arbitrary Scilab script on each simulation step.
@@ -58,7 +58,7 @@
              function will display a GUI to manage the simulation.
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_DEBUG">
+    <refsection xml:id="Interfacingfunction_DEBUG">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

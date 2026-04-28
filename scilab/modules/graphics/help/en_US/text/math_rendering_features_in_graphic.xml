@@ -11,8 +11,8 @@
         <para>Starting from Scilab 5.2, it is possible to write LaTeX or MathML
             expression. By default, the processing of strings by one of the two math interpreters (instead of the default text rendering)
             is triggered by the presence of special characters, but a given interpreter can be forced by setting the corresponding property.
-            To this purpose the <term>Text</term>, <term>Label</term> and <term>Legend</term> entities have the "interpreter" property,
-            the <term>Axis</term> entity has the "tics_interpreters" property and the <term>Axes</term> x_ticks, y_ticks and z_ticks tlists
+            To this purpose the <literal>Text</literal>, <literal>Label</literal> and <literal>Legend</literal> entities have the "interpreter" property,
+            the <literal>Axis</literal> entity has the "tics_interpreters" property and the <literal>Axes</literal> x_ticks, y_ticks and z_ticks tlists
             have the "interpreters" field, as summarized in the following table:
         </para>
         <para>
@@ -23,27 +23,27 @@
                     <td align="left">Reference</td>
                 </tr>
                 <tr>
-                    <td align="left"><term>Text</term> </td> 
+                    <td align="left"><literal>Text</literal> </td> 
                     <td align="left">"interpreter"</td>
                     <td align="left"><link linkend="text_properties">text_properties</link></td>
                 </tr>
                 <tr>
-                    <td align="left"><term>Label</term> </td> 
+                    <td align="left"><literal>Label</literal> </td> 
                     <td align="left">"interpreter"</td>
                     <td align="left"><link linkend="label_properties">label_properties</link></td>
                 </tr>
                 <tr>
-                    <td align="left"><term>Legend</term>  </td> 
+                    <td align="left"><literal>Legend</literal>  </td> 
                     <td align="left">"interpreter"</td>
                     <td align="left"><link linkend="legend_properties">legend_properties</link></td>
                 </tr>
                 <tr>
-                    <td align="left"><term>Axis</term>  </td> 
+                    <td align="left"><literal>Axis</literal>  </td> 
                     <td align="left">"tics_interpreters"</td>
                     <td align="left"><link linkend="axis_properties">axis_properties</link></td>
                 </tr>
                 <tr>
-                    <td align="left"><term>ticks</term> tlist </td> 
+                    <td align="left"><literal>ticks</literal> tlist </td> 
                     <td align="left">"interpreters"</td>
                     <td align="left"><link linkend="axes_properties">axes_properties</link></td>
                 </tr>

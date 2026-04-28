@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/DOLLAR_f.png" />
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DOLLAR_f">
+    <refsection xml:id="Contents_DOLLAR_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DOLLAR_f">Description</xref>
+                <para><link linkend="Description_DOLLAR_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DOLLAR_f">Parameters</xref>
+                <para><link linkend="Dialogbox_DOLLAR_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DOLLAR_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_DOLLAR_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DOLLAR_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DOLLAR_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DOLLAR_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_DOLLAR_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DOLLAR_f">Example</xref>
+                <para><link linkend="Example_DOLLAR_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DOLLAR_f">
+    <refsection xml:id="Description_DOLLAR_f">
         <title>Description</title>
         <para>The Unit Delay block delays its input by the specified sample
             period. This block is equivalent to the 1/z discrete-time operator. The
@@ -69,14 +69,14 @@
             vector are delayed by the same sample period.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DOLLAR_f">
+    <refsection xml:id="Dialogbox_DOLLAR_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/DOLLAR_f_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/DOLLAR_f_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -97,7 +97,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DOLLAR_f">
+    <refsection xml:id="Defaultproperties_DOLLAR_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -170,7 +170,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DOLLAR_f">
+    <refsection xml:id="Interfacingfunction_DOLLAR_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -178,7 +178,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DOLLAR_f">
+    <refsection xml:id="Computationalfunction_DOLLAR_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -186,7 +186,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_DOLLAR_f">
+    <refsection xml:id="Example_DOLLAR_f">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/discrete_pal/en_US/DELAY_f_2_en_US.zcos">

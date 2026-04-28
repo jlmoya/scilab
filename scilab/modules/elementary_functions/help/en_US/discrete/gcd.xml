@@ -82,16 +82,18 @@
             <literal>P</literal> type is returned, such that
             <itemizedlist>
                 <listitem>
-                    <literal>size(U) == [length(P) length(P)]</literal>
+                    <para><literal>size(U) == [length(P) length(P)]</literal></para>
                 </listitem>
                 <listitem>
-                     <para><literal>matrix(P,1,-1)*U = [0...0 gpcd]</literal> with
-                        <literal>length(P)-1</literal> leading zeros
+                     <para>
+                          <literal>matrix(P,1,-1)*U = [0...0 gpcd]</literal> with
+                          <literal>length(P)-1</literal> leading zeros
                     </para>
                 </listitem>
                 <listitem>
-                     <para><literal>det(U)</literal> is <literal>1</literal> or
-                        <literal>-1</literal>.
+                     <para>
+                          <literal>det(U)</literal> is <literal>1</literal> or
+                          <literal>-1</literal>.
                     </para>
                 </listitem>
             </itemizedlist>
@@ -100,12 +102,16 @@
             Its last column provides Bezout coefficients.
         </para>
         <note>
-            <literal>gcd([0 0])</literal> returns <literal>0</literal>.
+            <para>
+                <literal>gcd([0 0])</literal> returns <literal>0</literal>.
+            </para>
         </note>
         <warning>
-            For big <varname>P</varname> values (smaller but of the order of 2^63, depending also
-            on the number of input values), results may be corrupted by integer overflow and
-            wrapping (int8(127)+1 == -128).
+            <para>
+                For big <varname>P</varname> values (smaller but of the order of 2^63, depending also
+                on the number of input values), results may be corrupted by integer overflow and
+                wrapping (int8(127)+1 == -128).
+            </para>
         </warning>
     </refsection>
     <refsection>

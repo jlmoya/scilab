@@ -213,34 +213,34 @@
                 <listitem>
                     <para>
                         color index in <literal>[-size(colormap), size(colormap)]</literal>
-                        <para>
-                            If <emphasis role="italic">color_flag == 0</emphasis> :
-                            The uniform color of the whole upward surface is set to the index
-                            <literal>abs(color_mode)</literal>.
-                        </para>
-                        <para>
-                            In addition, whatever is <literal>color_flag</literal>,
-                            <itemizedlist>
-                                <listitem>
-                                     <para><literal>color_mode = 0</literal> makes facets hollow and displays
-                                        only the surface's mesh.
-                                    </para>
-                                </listitem>
-                                <listitem>
-                                     <para><literal>color_mode &gt; 0</literal> displays facets bodies and
-                                        edges.
-                                    </para>
-                                </listitem>
-                                <listitem>
-                                     <para><literal>color_mode &lt; 0</literal> hides the mesh and displays
-                                        only facets bodies.
-                                    </para>
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                        <para>
-                            When it is displayed, the mesh color is set to <varname>foreground</varname>.
-                        </para>
+                    </para>
+                    <para>
+                        If <emphasis role="italic">color_flag == 0</emphasis> :
+                        The uniform color of the whole upward surface is set to the index
+                        <literal>abs(color_mode)</literal>.
+                    </para>
+                    <para>
+                        In addition, whatever is <literal>color_flag</literal>,
+                        <itemizedlist>
+                            <listitem>
+                                    <para><literal>color_mode = 0</literal> makes facets hollow and displays
+                                    only the surface's mesh.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                    <para><literal>color_mode &gt; 0</literal> displays facets bodies and
+                                    edges.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                    <para><literal>color_mode &lt; 0</literal> hides the mesh and displays
+                                    only facets bodies.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                    <para>
+                        When it is displayed, the mesh color is set to <varname>foreground</varname>.
                     </para>
                 </listitem>
             </varlistentry>
@@ -289,7 +289,7 @@
                     <itemizedlist>
                         <listitem>
                             <para>
-                                <term>color_flag = 0</term> <emphasis role="bold">(uniform color)</emphasis> :
+                                <literal>color_flag = 0</literal> <emphasis role="bold">(uniform color)</emphasis> :
                             </para>
                             <para>All facets are painted using the same color index and method
                                 defined by <literal>color_mode</literal> (see above).
@@ -297,7 +297,7 @@
                         </listitem>
                         <listitem>
                             <para>
-                                <term>color_flag = 1</term>
+                                <literal>color_flag = 1</literal>
                                 <emphasis role="bold">(uniform color on each facet, mapping Z)</emphasis> :
                             </para>
                             <para>
@@ -319,7 +319,7 @@
                     <itemizedlist>
                         <listitem>
                             <para>
-                                <term>color_flag = 2</term> <emphasis role="bold">('flat' shading)</emphasis> :
+                                <literal>color_flag = 2</literal> <emphasis role="bold">('flat' shading)</emphasis> :
                             </para>
                             <para>All facets are painted using the color index given in the
                                 <literal>data.color</literal> property (one color per facet is
@@ -358,7 +358,7 @@
                         </listitem>
                         <listitem>
                             <para>
-                                <term>color_flag = 3</term>
+                                <literal>color_flag = 3</literal>
                                 <emphasis role="bold">(interpolated shading on each facet)</emphasis> :
                             </para>
                             <para>
@@ -384,17 +384,19 @@
                                         colors of its vertices.
                                     </para>
                                     <note>
-                                        If the Z coordinate of vertices has been assigned to
-                                        <literal>data.color</literal>, this mode allows to map local Z
-                                        with colors, down to the facet scale. See also the
-                                        <literal>.cdata_mapping</literal> property.
+                                        <para>
+                                            If the Z coordinate of vertices has been assigned to
+                                            <literal>data.color</literal>, this mode allows to map local Z
+                                            with colors, down to the facet scale. See also the
+                                            <literal>.cdata_mapping</literal> property.
+                                        </para>
                                     </note>
                                 </listitem>
                             </orderedlist>
                         </listitem>
                         <listitem>
                             <para>
-                                <term> color_flag = 4</term>
+                                <literal> color_flag = 4</literal>
                                 <emphasis role="bold">(Matlab-like 'flat' shading)</emphasis> :
                             </para>
                             <para>
@@ -427,7 +429,7 @@
                             <listitem>
                                 <para><emphasis>"scaled"</emphasis>: <literal>data.color</literal>
                                     values are mapped to indices in the current colormap depending on the
-                                    <term>cdata_bounds</term> and <term>color_range</term> properties defined below.
+                                    <literal>cdata_bounds</literal> and <literal>color_range</literal> properties defined below.
                                 </para>
                             </listitem>
                         </itemizedlist>
@@ -440,7 +442,7 @@
                     <para>
                         This vector of size 2, <literal>[cmin,cmax]</literal>, gives the <literal>data.color</literal> interval of values mapped to indices 
                         <literal>1:size(gcf().color_map,1)</literal> of the current
-                        colormap or to an eventual subset defined by the <term>color_range</term> property.
+                        colormap or to an eventual subset defined by the <literal>color_range</literal> property.
                         Values of <literal>data.color</literal> outside <literal>[cmin,cmax]</literal> are mapped respectively to the first and the last element of the colormap.
                         By default, the <literal>cdata_bounds</literal> property is <literal>[0,0]</literal> which means
                         that <literal>cmin</literal> and <literal>cmax</literal> are automatically set to the minimum and maximum of <literal>data.color</literal> property.

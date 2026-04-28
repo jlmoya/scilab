@@ -21,8 +21,8 @@
         <para>
             Classdef are used to define a set of properties and/or methods that work together.
             Properties are like variables and methods like functions.
-            <para/>
-            <programlisting role="no-scilab-exec"><![CDATA[
+        </para>
+        <programlisting role="no-scilab-exec"><![CDATA[
 
 classdef <classname> < <superclass> & <superclass>
     properties (<modifiers>)
@@ -48,65 +48,64 @@ classdef <classname> < <superclass> & <superclass>
     end
 end
 
-            ]]></programlisting>
-            <para>Classes are defined by :</para>
-            <itemizedlist>
-                <listitem>
-                     <para>
-                        Name: it will be used to use class
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        Superclass: names of superclass from which it derives
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        Properties: variables used inside or outside class to store data
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        Methods: functions to do some operations
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        Enumeration: Specific instances of class
-                    </para>
-                </listitem>
-            </itemizedlist>
-            <para>
-                <literal>Properties</literal> and <literal>Methods</literal> can have some modifiers to change their visibility or behavior:
-            </para>
-            <itemizedlist>
-                <listitem>
+        ]]></programlisting>
+        <para>Classes are defined by :</para>
+        <itemizedlist>
+            <listitem>
                     <para>
-                        <varname>Private</varname>: elements can be used only <varname>inside</varname> methods of this class.
-                        (Public/Protected/Private are exclusive)
-                    </para>
-                </listitem>
-                <listitem>
+                    Name: it will be used to use class
+                </para>
+            </listitem>
+            <listitem>
                     <para>
-                        <varname>Protected</varname>: elements can be used <varname>inside</varname> methods of this class and its children (inheritance).
-                        (Public/Protected/Pritave are exclusive)
-                    </para>
-                </listitem>
-                <listitem>
+                    Superclass: names of superclass from which it derives
+                </para>
+            </listitem>
+            <listitem>
                     <para>
-                        <varname>Public</varname> (default): elements can be used <varname>outside</varname> and <varname>inside</varname> of this class.
-                        (Public/Protected/Pritave are exclusive)
-                    </para>
-                </listitem>
-                <!--listitem>
+                    Properties: variables used inside or outside class to store data
+                </para>
+            </listitem>
+            <listitem>
                     <para>
-                        <varname>Static</varname>: elements are common for all instances of this class.
-                        In static methods only static elements can be used.
-                    </para>
-                </listitem-->
-            </itemizedlist>
+                    Methods: functions to do some operations
+                </para>
+            </listitem>
+            <listitem>
+                    <para>
+                    Enumeration: Specific instances of class
+                </para>
+            </listitem>
+        </itemizedlist>
+        <para>
+            <literal>Properties</literal> and <literal>Methods</literal> can have some modifiers to change their visibility or behavior:
         </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <varname>Private</varname>: elements can be used only <varname>inside</varname> methods of this class.
+                    (Public/Protected/Private are exclusive)
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    <varname>Protected</varname>: elements can be used <varname>inside</varname> methods of this class and its children (inheritance).
+                    (Public/Protected/Pritave are exclusive)
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    <varname>Public</varname> (default): elements can be used <varname>outside</varname> and <varname>inside</varname> of this class.
+                    (Public/Protected/Pritave are exclusive)
+                </para>
+            </listitem>
+            <!--listitem>
+                <para>
+                    <varname>Static</varname>: elements are common for all instances of this class.
+                    In static methods only static elements can be used.
+                </para>
+            </listitem-->
+        </itemizedlist>
     </refsection>
     <refsection>
         <title>inheritance</title>
@@ -145,7 +144,8 @@ end
             Define <literal>methods</literal> of class.
             Visibility modifier can be <literal>private</literal>, <literal>protected</literal> or <literal>public</literal>.
             In methods <literal>this</literal> must be used to access to properties or methods of the object
-            <programlisting role="no-scilab-exec"><![CDATA[
+        </para>
+        <programlisting role="no-scilab-exec"><![CDATA[
 
 classdef <classname>
     methods (<modifier>)
@@ -157,10 +157,9 @@ classdef <classname>
     end
 end
 
-            ]]></programlisting>
-            <para>Note: <literal>externalfunc</literal> can be a macro or a C/C++ gateway.</para>
-            <para>In C/C++ gateway, <code>use symbol::Context::getInstance()-&gt;getCurrentObject()</code> to get <literal>this</literal></para>
-        </para>
+        ]]></programlisting>
+        <para>Note: <literal>externalfunc</literal> can be a macro or a C/C++ gateway.</para>
+        <para>In C/C++ gateway, <code>use symbol::Context::getInstance()-&gt;getCurrentObject()</code> to get <literal>this</literal></para>
     </refsection>
     <refsection>
         <title>Emuneration</title>
@@ -189,200 +188,200 @@ Color.BLUE
         <title>Overloads</title>
         <para>
             Overloads will be called for undefined operations or function calls. (<link linkend="overloading">overloading</link>)
-            <para/>
+        </para>
+        <para>
             There is 2 forms:
-            <itemizedlist>
-                <listitem>
-                    <para>
-                        External: defining an overload function <literal>%type1_operator_type2</literal> for operators (standard overload way in Scilab)
-                    </para>
-                    <para>
-                        Or <literal>%type_function</literal> for functions
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        Internal: using methods declaration in classdef
-                    </para>
-                    <para>
-                        For functions, define a method with the same name (ex: <literal>disp</literal> in following example)
-                        <para>There is special functions called by internal mecanism like:</para>
-                        <itemizedlist>
-                            <listitem>
-                                <para>
-                                    <literal>saveobj</literal>: call when saving an object to serialize data.
-                                    <para>prototype: <code>function data = saveobj(), end</code></para>
-                                    <para>You have to return a native scilab variable (struct, list, ...) except objects that contains all data you want to save.</para>
-                                </para>
-                            </listitem>
-                            <listitem>
-                                <para>
-                                    <literal>loadobj</literal>: called when object is restore by <literal>load</literal> function.
-                                    <para>prototype: <code>function loadobj(data), end</code></para>
-                                    <para><literal>data</literal> is the variable returned by <literal>saveobj</literal>.</para>
-                                </para>
-                            </listitem>
-                            <listitem>
-                                <para>
-                                    <literal>delete</literal>: called when object is cleared
-                                    <para>prototype: <code>function delete(), end</code></para>
-                                </para>
-                            </listitem>
-                        </itemizedlist>
-                    </para>
-                    <para>
-                        For operators following the lookup table :
-                    </para>
-                    <informaltable border="1">
-                        <tr>
-                            <td>Operations</td>
-                            <td>Methods to define</td>
-                            <td>Operations</td>
-                            <td>Methods to define</td>
-                            <td>Operations</td>
-                            <td>Methods to define</td>
-                            <td>Operations</td>
-                            <td>Methods to define</td>
-                        </tr>
-                        <tr>
-                            <td>a <varname>+</varname> b</td>
-                            <td>plus(a, b)</td>
-                            <td>+a</td>
-                            <td>uplus(a)</td>
-                            <td>a - b</td>
-                            <td>minus(a, b)</td>
-                            <td>-a</td>
-                            <td>uminus(a)</td>
-                        </tr>
-                        <tr>
-                            <td>a * b</td>
-                            <td>mtimes(a, b)</td>
-                            <td>a / b</td>
-                            <td>mrdivide(a, b)</td>
-                            <td>a \ b</td>
-                            <td>mldivide(a, b)</td>
-                            <td>a ^ b</td>
-                            <td>mpower(a, b)</td>
-                        </tr>
-                        <tr>
-                            <td>a .* b</td>
-                            <td>times(a, b)</td>
-                            <td>a ./ b</td>
-                            <td>rdivide(a, b)</td>
-                            <td>a .\ b</td>
-                            <td>ldivide(a, b)</td>
-                            <td>a .^ b</td>
-                            <td>power(a, b)</td>
-                        </tr>
-                        <tr>
-                            <td>a .*. b</td>
-                            <td>kron(a, b)</td>
-                            <td>a ./. b</td>
-                            <td>rkron(a, b)</td>
-                            <td>a .\. b</td>
-                            <td>lkron(a, b)</td>
-                            <td/>
-                            <td/>
-                        </tr>
-                        <tr>
-                            <td>a *. b</td>
-                            <td>controltimes(a, b)</td>
-                            <td>a /. b</td>
-                            <td>controlrdivide(a, b)</td>
-                            <td>a \. b</td>
-                            <td>controlldivide(a, b)</td>
-                            <td/>
-                            <td/>
-                        </tr>
-                    </informaltable>
-                    <para/>
-                    <informaltable border="1">
-                        <tr>
-                            <td>Comparisions</td>
-                            <td>Methods to define</td>
-                            <td>Comparisions</td>
-                            <td>Methods to define</td>
-                        </tr>
-                        <tr>
-                            <td>a == b</td>
-                            <td>eq(a, b)</td>
-                            <td>a &lt;&gt; b</td>
-                            <td>ne(a, b)</td>
-                        </tr>
-                        <tr>
-                            <td>a &lt; b</td>
-                            <td>lt(a, b)</td>
-                            <td>a &lt;= b</td>
-                            <td>le(a, b)</td>
-                        </tr>
-                        <tr>
-                            <td>a &gt; b</td>
-                            <td>gt(a, b)</td>
-                            <td>a &gt;= b</td>
-                            <td>ge(a, b)</td>
-                        </tr>
-                        <tr>
-                            <td>a &amp; b</td>
-                            <td>and(a, b)</td>
-                            <td>a | b</td>
-                            <td>or(a, b)</td>
-                        </tr>
-                        <tr>
-                            <td>a &amp;&amp; b</td>
-                            <td>shortand(a, b)</td>
-                            <td>a || b</td>
-                            <td>shortor(a, b)</td>
-                        </tr>
-                    </informaltable>
-                    <para/>
-                    <informaltable border="1">
-                        <tr>
-                            <td>Operations</td>
-                            <td>Methods to define</td>
-                            <td>Operations</td>
-                            <td>Methods to define</td>
-                            <td>Operations</td>
-                            <td>Methods to define</td>
-                        </tr>
-                        <tr>
-                            <td>~a</td>
-                            <td>not(a)</td>
-                            <td>a'</td>
-                            <td>ctranspose(a)</td>
-                            <td>a.'</td>
-                            <td>transpose(a)</td>
-                        </tr>
-                    </informaltable>
-                    <para/>
-                    <informaltable border="1">
-                        <tr>
-                            <td>Matrix manipulations</td>
-                            <td>Methods to define</td>
-                            <td>Matrix manipulations</td>
-                            <td>Methods to define</td>
-                        </tr>
-                        <tr>
-                            <td>[a b]</td>
-                            <td>horzcat(a, b)</td>
-                            <td>[a;b]</td>
-                            <td>vertcat(a, b)</td>
-                        </tr>
-                        <tr>
-                            <td>a(i1, i2, ...)</td>
-                            <td>extract(i1, i2, ...)</td>
-                            <td>a(i1, i2, ...) = b</td>
-                            <td>insert(i1, i2, ..., b)</td>
-                        </tr>
-                    </informaltable>
-                    <para>
-                        for the most part of overload, you can definie a specific one for a identitified type.
-                        <para>ex: insert_s (insertion of a double in the object).</para>
-                        <para>generic one will be used if specific one does not exist.</para>
-                        <para>Search order is: specific (insert_s), generic (insert), scilab standard (%type1_i_type2)</para>
-                    </para>
-                </listitem>
-            </itemizedlist>
-            <programlisting role="example"><![CDATA[
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    External: defining an overload function <literal>%type1_operator_type2</literal> for operators (standard overload way in Scilab)
+                </para>
+                <para>
+                    Or <literal>%type_function</literal> for functions
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Internal: using methods declaration in classdef
+                </para>
+                <para>
+                    For functions, define a method with the same name (ex: <literal>disp</literal> in following example)
+                </para>
+                <para>There is special functions called by internal mecanism like:</para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            <literal>saveobj</literal>: call when saving an object to serialize data.
+                        </para>
+                        <para>prototype: <code>function data = saveobj(), end</code></para>
+                        <para>You have to return a native scilab variable (struct, list, ...) except objects that contains all data you want to save.</para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <literal>loadobj</literal>: called when object is restore by <literal>load</literal> function.
+                        </para>
+                        <para>prototype: <code>function loadobj(data), end</code></para>
+                        <para><literal>data</literal> is the variable returned by <literal>saveobj</literal>.</para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <literal>delete</literal>: called when object is cleared
+                        </para>
+                        <para>prototype: <code>function delete(), end</code></para>
+                    </listitem>
+                </itemizedlist>
+                <para>
+                    For operators following the lookup table :
+                </para>
+                <informaltable border="1">
+                    <tr>
+                        <td>Operations</td>
+                        <td>Methods to define</td>
+                        <td>Operations</td>
+                        <td>Methods to define</td>
+                        <td>Operations</td>
+                        <td>Methods to define</td>
+                        <td>Operations</td>
+                        <td>Methods to define</td>
+                    </tr>
+                    <tr>
+                        <td>a <varname>+</varname> b</td>
+                        <td>plus(a, b)</td>
+                        <td>+a</td>
+                        <td>uplus(a)</td>
+                        <td>a - b</td>
+                        <td>minus(a, b)</td>
+                        <td>-a</td>
+                        <td>uminus(a)</td>
+                    </tr>
+                    <tr>
+                        <td>a * b</td>
+                        <td>mtimes(a, b)</td>
+                        <td>a / b</td>
+                        <td>mrdivide(a, b)</td>
+                        <td>a \ b</td>
+                        <td>mldivide(a, b)</td>
+                        <td>a ^ b</td>
+                        <td>mpower(a, b)</td>
+                    </tr>
+                    <tr>
+                        <td>a .* b</td>
+                        <td>times(a, b)</td>
+                        <td>a ./ b</td>
+                        <td>rdivide(a, b)</td>
+                        <td>a .\ b</td>
+                        <td>ldivide(a, b)</td>
+                        <td>a .^ b</td>
+                        <td>power(a, b)</td>
+                    </tr>
+                    <tr>
+                        <td>a .*. b</td>
+                        <td>kron(a, b)</td>
+                        <td>a ./. b</td>
+                        <td>rkron(a, b)</td>
+                        <td>a .\. b</td>
+                        <td>lkron(a, b)</td>
+                        <td/>
+                        <td/>
+                    </tr>
+                    <tr>
+                        <td>a *. b</td>
+                        <td>controltimes(a, b)</td>
+                        <td>a /. b</td>
+                        <td>controlrdivide(a, b)</td>
+                        <td>a \. b</td>
+                        <td>controlldivide(a, b)</td>
+                        <td/>
+                        <td/>
+                    </tr>
+                </informaltable>
+                <informaltable border="1">
+                    <tr>
+                        <td>Comparisions</td>
+                        <td>Methods to define</td>
+                        <td>Comparisions</td>
+                        <td>Methods to define</td>
+                    </tr>
+                    <tr>
+                        <td>a == b</td>
+                        <td>eq(a, b)</td>
+                        <td>a &lt;&gt; b</td>
+                        <td>ne(a, b)</td>
+                    </tr>
+                    <tr>
+                        <td>a &lt; b</td>
+                        <td>lt(a, b)</td>
+                        <td>a &lt;= b</td>
+                        <td>le(a, b)</td>
+                    </tr>
+                    <tr>
+                        <td>a &gt; b</td>
+                        <td>gt(a, b)</td>
+                        <td>a &gt;= b</td>
+                        <td>ge(a, b)</td>
+                    </tr>
+                    <tr>
+                        <td>a &amp; b</td>
+                        <td>and(a, b)</td>
+                        <td>a | b</td>
+                        <td>or(a, b)</td>
+                    </tr>
+                    <tr>
+                        <td>a &amp;&amp; b</td>
+                        <td>shortand(a, b)</td>
+                        <td>a || b</td>
+                        <td>shortor(a, b)</td>
+                    </tr>
+                </informaltable>
+                <informaltable border="1">
+                    <tr>
+                        <td>Operations</td>
+                        <td>Methods to define</td>
+                        <td>Operations</td>
+                        <td>Methods to define</td>
+                        <td>Operations</td>
+                        <td>Methods to define</td>
+                    </tr>
+                    <tr>
+                        <td>~a</td>
+                        <td>not(a)</td>
+                        <td>a'</td>
+                        <td>ctranspose(a)</td>
+                        <td>a.'</td>
+                        <td>transpose(a)</td>
+                    </tr>
+                </informaltable>
+                <para/>
+                <informaltable border="1">
+                    <tr>
+                        <td>Matrix manipulations</td>
+                        <td>Methods to define</td>
+                        <td>Matrix manipulations</td>
+                        <td>Methods to define</td>
+                    </tr>
+                    <tr>
+                        <td>[a b]</td>
+                        <td>horzcat(a, b)</td>
+                        <td>[a;b]</td>
+                        <td>vertcat(a, b)</td>
+                    </tr>
+                    <tr>
+                        <td>a(i1, i2, ...)</td>
+                        <td>extract(i1, i2, ...)</td>
+                        <td>a(i1, i2, ...) = b</td>
+                        <td>insert(i1, i2, ..., b)</td>
+                    </tr>
+                </informaltable>
+                <para>
+                    for the most part of overload, you can definie a specific one for a identitified type.
+                </para>
+                <para>ex: insert_s (insertion of a double in the object).</para>
+                <para>generic one will be used if specific one does not exist.</para>
+                <para>Search order is: specific (insert_s), generic (insert), scilab standard (%type1_i_type2)</para>
+            </listitem>
+        </itemizedlist>
+        <programlisting role="example"><![CDATA[
 
 classdef Matrix
     properties
@@ -431,8 +430,7 @@ a + 10
 a + int8(10)
 int8(10) + b
 
-            ]]></programlisting>
-        </para>
+        ]]></programlisting>
     </refsection>
     <refsection>
         <title>Examples</title>

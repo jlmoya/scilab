@@ -31,37 +31,37 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/PMOS.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_PMOS">
+    <refsection xml:id="Contents_PMOS">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_PMOS">Description</xref>
+                <para><link linkend="Description_PMOS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_PMOS">Parameters</xref>
+                <para><link linkend="Dialogbox_PMOS">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_PMOS">Default properties</xref>
+                <para><link linkend="Defaultproperties_PMOS">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_PMOS">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_PMOS">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="PMOS">Modelica model</xref>
+                <para><link linkend="PMOS">Modelica model</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_PMOS">See also</xref>
+                <para><link linkend="Seealso_PMOS">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_PMOS">
+    <refsection xml:id="Description_PMOS">
         <title>Description</title>
         <para>The PMOS model is a simple model of a p-channel metal-oxide
             semiconductor FET. It differs slightly from the device used in the SPICE
@@ -155,14 +155,13 @@
             </tr>
         </informaltable>
     </refsection>
-    <refsection id="Dialogbox_PMOS">
+    <refsection xml:id="Dialogbox_PMOS">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/PMOS_gui.gif" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/PMOS_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -232,7 +231,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_PMOS">
+    <refsection xml:id="Defaultproperties_PMOS">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -395,7 +394,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_PMOS">
+    <refsection xml:id="Interfacingfunction_PMOS">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -403,7 +402,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_PMOS">
+    <refsection xml:id="Modelicamodel_PMOS">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

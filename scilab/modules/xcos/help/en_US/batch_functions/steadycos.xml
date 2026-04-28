@@ -30,7 +30,7 @@
         <title>Syntax</title>
         <synopsis>[X,U,Y,XP]=steadycos(scs_m,X,U,Y,Indx,Indu,Indy [,Indxp [,param ] ])</synopsis>
     </refsynopsisdiv>
-    <refsection id="Description_steadycos">
+    <refsection xml:id="Description_steadycos">
         <title>Description</title>
         <para>
             This function finds the steady state for a given system described by a xcos diagram or <link linkend="SUPER_f">sub-diagram</link>. The diagram should have <link linkend="IN_f">inputs</link> and <link linkend="OUT_f">outputs</link>.The steady state concern only the continuous-time dynamics.
@@ -63,7 +63,7 @@ end
 [X,U,Y,XP] = steadycos(scs_m,[],[],[],[],1,1:$);
  ]]></programlisting>
     </refsection>
-    <refsection id="Parameters_steadycos">
+    <refsection xml:id="Parameters_steadycos">
         <title>Arguments</title>
         <itemizedlist>
             <listitem>
@@ -133,7 +133,7 @@ end
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Filecontent_steadycos">
+    <refsection xml:id="Filecontent_steadycos">
         <title>File content</title>
         <itemizedlist>
             <listitem>

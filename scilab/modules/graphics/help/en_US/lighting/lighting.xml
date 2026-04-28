@@ -51,23 +51,25 @@
             f=gcf();
             f.figure_size = [750,280];
         </scilab:image>
-        <listitem>
-            <para>
-                Ambient color models the light received indirect by the surface and
-                is independent of the surface normal or light direction.
-            </para>
-        </listitem>
-        <listitem>
-            <para>
-                Diffuse color models the light received directly, and thus it's dependent
-                of the light ray direction and the surface normal.
-            </para>
-        </listitem>
-        <listitem>
-            <para>
-                Specular color defines the specular highlight color.
-            </para>
-        </listitem>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    Ambient color models the light received indirect by the surface and
+                    is independent of the surface normal or light direction.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Diffuse color models the light received directly, and thus it's dependent
+                    of the light ray direction and the surface normal.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Specular color defines the specular highlight color.
+                </para>
+            </listitem>
+        </itemizedlist>
         <para>
             Following one can compare the surface with and without lighting:
         </para>

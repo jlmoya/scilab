@@ -105,13 +105,13 @@ unix_w("dir /b /s """ + WSCI + "/contrib/toolbox_skeleton/help""")
             This function extracts the examples given in help pages and run them using
             <link linkend="test_run">test_run</link>.
         </para>
-        <para>
-           <warning>
+        <warning>
+            <para>
                When testing examples of any external module, it is mandatory to autoload the module
                at Scilab startup. This can be achieved either by setting the ATOMS module as
                autoloaded, or by loading the module through the user's startup file.
-           </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Example</title>

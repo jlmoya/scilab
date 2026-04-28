@@ -28,38 +28,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATPINV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATPINV">
+    <refsection xml:id="Contents_MATPINV">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATPINV">Description</xref>
+                <para><link linkend="Description_MATPINV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATPINV">Parameters</xref>
+                <para><link linkend="Dialogbox_MATPINV">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATPINV">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATPINV">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATPINV">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATPINV">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATPINV">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATPINV">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATPINV">See also</xref>
+                <para><link linkend="Seealso_MATPINV">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATPINV">
+    <refsection xml:id="Description_MATPINV">
         <title>Description</title>
         <para>
             The MATPINV Block outputs the inverse of a non square input matrix using the SVD theory.
@@ -81,14 +81,13 @@
             The equivalent function of this block in Scilab is <link linkend="pinv">pinv</link>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATPINV">
+    <refsection xml:id="Dialogbox_MATPINV">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATPINV_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATPINV_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -102,7 +101,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATPINV">
+    <refsection xml:id="Defaultproperties_MATPINV">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -175,7 +174,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATPINV">
+    <refsection xml:id="Interfacingfunction_MATPINV">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -183,7 +182,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATPINV">
+    <refsection xml:id="Computationalfunction_MATPINV">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

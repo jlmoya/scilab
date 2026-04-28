@@ -42,8 +42,11 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <refsect3 id="empty_general_properties">
-            <title>General [ ] properties</title>
+
+        <para>
+            <emphasis role="bold">General [ ] properties</emphasis>
+            <anchor xml:id="empty_general_properties"/>
+        </para>
             <para>
             Empty brackets <literal>[]</literal> represent the empty matrix. Its general properties
             are now described.
@@ -148,158 +151,161 @@
                     </para>
                 </listitem>
             </orderedlist>
-        </refsect3>
-        <refsect3 id="empty_operand_or_argument">
-            <title>[ ] as operand or input argument</title>
-            <orderedlist>
-                <listitem>
-                    <para>
-                    As operand of usual predefined non-boolean operators, [] sets the result to [].
-                    <emphasis>All the following operations yield</emphasis> []:
-                    <table>
-                        <tr><td colspan="2"><emphasis role="bold">Unary operators</emphasis></td></tr>
-                        <tr><td colspan="2">[]', [].', -[],  ~[]</td></tr>
-                        <tr><td/><td/></tr>
-                        <tr><td colspan="2"><emphasis role="bold">Binary numerical operators</emphasis></td></tr>
-                        <tr><td>addition:</td>      <td> [] + [1 2], [1 2] + []</td></tr>
-                        <tr><td>subtraction:</td>   <td> [] - [1 2], [1 2] - []</td></tr>
-                        <tr><td>division:</td>      <td> []/[1 2], []./[1 2], [1 2]/[], [1 2]./[]</td></tr>
-                        <tr><td>left division:</td> <td> []\[1 2], [].\[1 2], [1 2]\[], [1 2].\[]</td></tr>
-                        <tr><td>multiplication:</td><td> []*[1 2], [].*[1 2], [1 2]*[], [1 2].*[]</td></tr>
-                        <tr><td>kronecker:</td>     <td> [].*.[1 2], [1 2].*.[]</td></tr>
-                        <tr><td>power:</td>         <td> []^[1 2], [].^[1 2], [1 2]^[], [1 2].^[]</td></tr>
-                        <tr><td/><td/></tr>
-                        <tr><td colspan="2"><emphasis role="bold">Inequality comparisons</emphasis></td></tr>
-                        <tr><td>greater:</td><td> []&gt;[1 2], []&gt;=[1 2], [1 2]&gt;[], [1 2]&gt;=[]</td></tr>
-                        <tr><td>less:</td><td> []&lt;[1 2], []&lt;=[1 2], [1 2]&lt;[], [1 2]&lt;=[]</td></tr>
-                    </table>
-                    </para>
-                </listitem>
-                <listitem>
-                     <para>
-                        But, noticeably:
-                        <itemizedlist>
-                            <listitem>
-                                <para>
-                                    <literal>or([])</literal> is %F.
-                                </para>
-                            </listitem>
-                            <listitem>
-                                <para>
-                                    As the condition of any <literal>if</literal> or <literal>while</literal>
-                                    statement, [] is %F:
-                                    <screen><![CDATA[
-    --> if []
-    -->     r = "[] is %T as any if condition";
-    --> else
-    -->     r = "[] is %F as any if condition";
-    --> end
-    --> r
-     r  =
-     [] is %F as any if condition
-    ]]></screen>
-                                </para>
-                            </listitem>
-                          </itemizedlist>
-                        </para>
-                    </listitem>
-                <listitem>
-                    <para>
-                    In concatenations, [] is simply ignored:
-                    <literal>[A,[]] == [[],A] == [A ; []] == [[] ; A] == A</literal>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                    In text concatenations, +[] yields []:
-                    <literal>[]+["a" "bc"] == ["a" "bc"]+[] == []</literal>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        As special input matrix of linear algebra or common functions, the answer
-                        depends on the considered function. It is documented in the page dedicated
-                        to each function. Examples:
-                    </para>
-                    <para>
-                    <table>
-                    <tr valign="top">
-                    <td>
-                    <table>
-                        <tr><td><literal>det([])</literal></td>     <td><literal>1</literal></td></tr>
-                        <tr><td><literal>rank([])</literal></td>    <td><literal>0</literal></td></tr>
-                        <tr><td><literal>trace([])</literal></td>   <td><literal>0</literal></td></tr>
-                        <tr><td><literal>norm([])</literal></td>    <td><literal>0</literal></td></tr>
-                        <tr><td><literal>cond([])</literal></td>    <td><literal>0</literal></td></tr>
-                        <tr><td><literal>rcond([])</literal></td>   <td><literal>Inf</literal></td></tr>
-                    </table>
-                    </td>
-                    <td/>
-                    <td>
-                    <table>
-                        <tr><td><literal>diag([])</literal></td>    <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>tril([])</literal></td>    <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>triu([])</literal></td>    <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>min([])</literal></td>     <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>max([])</literal></td>     <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>sign([])</literal></td>    <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>clean([])</literal></td>   <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>svd([])</literal></td>     <td><literal>[]</literal></td></tr>
-                    </table>
-                    </td>
-                    <td/>
-                    <td>
-                    <table>
-                        <tr><td><literal>cumprod([])</literal></td> <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>cumsum([])</literal></td>  <td><literal>[]</literal></td></tr>
-                        <tr><td><literal>sum([])</literal></td>     <td><literal>0</literal></td></tr>
-                        <tr><td><literal>prod([])</literal></td>    <td><literal>1</literal></td></tr>
-                        <tr><td><literal>mean([])</literal></td>    <td><literal>Nan</literal></td></tr>
-                        <tr><td><literal>median([])</literal></td>  <td><literal>Nan</literal></td></tr>
-                        <tr><td><literal>stdev([])</literal></td>   <td><literal>Nan</literal></td></tr>
-                        <tr><td><literal>mad([])</literal></td>     <td><literal>Nan</literal></td></tr>
-                        <tr><td><literal>variance([])</literal></td><td><literal>Nan</literal></td></tr>
-                    </table>
-                    </td>
-                    </tr>
-                    </table>
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        As general input argument of functions, [] is often used to choose the default
-                        value of an input argument (to somewhat skip it, to avoid providing an actual
-                        explicit value). However, this is not a strict rule.
-                    </para>
-                </listitem>
-                <!--
-                <listitem>
-                    <para>
-                        Empty linear systems (<literal> syslin</literal> lists) may have several
-                        rows or columns.
-                        w=ssrand(2,2,2);
-                        wr=[]*w;
-                        size(wr), w1=ss2tf(wr), size(w1)
-                    </para>
-                </listitem>
-                -->
-            </orderedlist>
-        </refsect3>
-        <refsect3 id="empty_assigned_as_destructor">
-            <title>Assigning [ ] to delete ranges in arrays</title>
-        </refsect3>
+
         <para>
-            Considering an array of any number of dimensions and of any size, that can be a matrix
-            or hypermatrix of any datatype, an array of structures, or an array of cells, []
-            can be assigned to delete the addressed ranges (rows, columns, etc). These ones must
-            cover the full size of the array at least along one of its dimensions.
+            <emphasis role="bold">[ ] as operand or input argument</emphasis>
+            <anchor xml:id="empty_operand_or_argument"/>
         </para>
-        <para>Examples:</para>
-        <para>With a matrix of decimal numbers:</para>
-        <programlisting role="example"><![CDATA[
+        <orderedlist>
+            <listitem>
+                <para>
+                As operand of usual predefined non-boolean operators, [] sets the result to [].
+                <emphasis>All the following operations yield</emphasis> []:
+                <table>
+                    <tr><td colspan="2"><emphasis role="bold">Unary operators</emphasis></td></tr>
+                    <tr><td colspan="2">[]', [].', -[],  ~[]</td></tr>
+                    <tr><td/><td/></tr>
+                    <tr><td colspan="2"><emphasis role="bold">Binary numerical operators</emphasis></td></tr>
+                    <tr><td>addition:</td>      <td> [] + [1 2], [1 2] + []</td></tr>
+                    <tr><td>subtraction:</td>   <td> [] - [1 2], [1 2] - []</td></tr>
+                    <tr><td>division:</td>      <td> []/[1 2], []./[1 2], [1 2]/[], [1 2]./[]</td></tr>
+                    <tr><td>left division:</td> <td> []\[1 2], [].\[1 2], [1 2]\[], [1 2].\[]</td></tr>
+                    <tr><td>multiplication:</td><td> []*[1 2], [].*[1 2], [1 2]*[], [1 2].*[]</td></tr>
+                    <tr><td>kronecker:</td>     <td> [].*.[1 2], [1 2].*.[]</td></tr>
+                    <tr><td>power:</td>         <td> []^[1 2], [].^[1 2], [1 2]^[], [1 2].^[]</td></tr>
+                    <tr><td/><td/></tr>
+                    <tr><td colspan="2"><emphasis role="bold">Inequality comparisons</emphasis></td></tr>
+                    <tr><td>greater:</td><td> []&gt;[1 2], []&gt;=[1 2], [1 2]&gt;[], [1 2]&gt;=[]</td></tr>
+                    <tr><td>less:</td><td> []&lt;[1 2], []&lt;=[1 2], [1 2]&lt;[], [1 2]&lt;=[]</td></tr>
+                </table>
+                </para>
+            </listitem>
+            <listitem>
+                    <para>
+                    But, noticeably:
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                <literal>or([])</literal> is %F.
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                As the condition of any <literal>if</literal> or <literal>while</literal>
+                                statement, [] is %F:
+                                <screen><![CDATA[
+--> if []
+-->     r = "[] is %T as any if condition";
+--> else
+-->     r = "[] is %F as any if condition";
+--> end
+--> r
+    r  =
+    [] is %F as any if condition
+]]></screen>
+                            </para>
+                        </listitem>
+                        </itemizedlist>
+                    </para>
+                </listitem>
+            <listitem>
+                <para>
+                In concatenations, [] is simply ignored:
+                <literal>[A,[]] == [[],A] == [A ; []] == [[] ; A] == A</literal>
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                In text concatenations, +[] yields []:
+                <literal>[]+["a" "bc"] == ["a" "bc"]+[] == []</literal>
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    As special input matrix of linear algebra or common functions, the answer
+                    depends on the considered function. It is documented in the page dedicated
+                    to each function. Examples:
+                </para>
+                <para>
+                <table>
+                <tr valign="top">
+                <td>
+                <table>
+                    <tr><td><literal>det([])</literal></td>     <td><literal>1</literal></td></tr>
+                    <tr><td><literal>rank([])</literal></td>    <td><literal>0</literal></td></tr>
+                    <tr><td><literal>trace([])</literal></td>   <td><literal>0</literal></td></tr>
+                    <tr><td><literal>norm([])</literal></td>    <td><literal>0</literal></td></tr>
+                    <tr><td><literal>cond([])</literal></td>    <td><literal>0</literal></td></tr>
+                    <tr><td><literal>rcond([])</literal></td>   <td><literal>Inf</literal></td></tr>
+                </table>
+                </td>
+                <td/>
+                <td>
+                <table>
+                    <tr><td><literal>diag([])</literal></td>    <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>tril([])</literal></td>    <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>triu([])</literal></td>    <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>min([])</literal></td>     <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>max([])</literal></td>     <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>sign([])</literal></td>    <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>clean([])</literal></td>   <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>svd([])</literal></td>     <td><literal>[]</literal></td></tr>
+                </table>
+                </td>
+                <td/>
+                <td>
+                <table>
+                    <tr><td><literal>cumprod([])</literal></td> <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>cumsum([])</literal></td>  <td><literal>[]</literal></td></tr>
+                    <tr><td><literal>sum([])</literal></td>     <td><literal>0</literal></td></tr>
+                    <tr><td><literal>prod([])</literal></td>    <td><literal>1</literal></td></tr>
+                    <tr><td><literal>mean([])</literal></td>    <td><literal>Nan</literal></td></tr>
+                    <tr><td><literal>median([])</literal></td>  <td><literal>Nan</literal></td></tr>
+                    <tr><td><literal>stdev([])</literal></td>   <td><literal>Nan</literal></td></tr>
+                    <tr><td><literal>mad([])</literal></td>     <td><literal>Nan</literal></td></tr>
+                    <tr><td><literal>variance([])</literal></td><td><literal>Nan</literal></td></tr>
+                </table>
+                </td>
+                </tr>
+                </table>
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    As general input argument of functions, [] is often used to choose the default
+                    value of an input argument (to somewhat skip it, to avoid providing an actual
+                    explicit value). However, this is not a strict rule.
+                </para>
+            </listitem>
+            <!--
+            <listitem>
+                <para>
+                    Empty linear systems (<literal> syslin</literal> lists) may have several
+                    rows or columns.
+                    w=ssrand(2,2,2);
+                    wr=[]*w;
+                    size(wr), w1=ss2tf(wr), size(w1)
+                </para>
+            </listitem>
+            -->
+        </orderedlist>
+
+        <para>
+            <emphasis role="bold">Assigning [ ] to delete ranges in arrays</emphasis>
+            <anchor xml:id="empty_assigned_as_destructor"/>
+        </para>
+        <para>
+                Considering an array of any number of dimensions and of any size, that can be a matrix
+                or hypermatrix of any datatype, an array of structures, or an array of cells, []
+                can be assigned to delete the addressed ranges (rows, columns, etc). These ones must
+                cover the full size of the array at least along one of its dimensions.
+            </para>
+            <para>Examples:</para>
+            <para>With a matrix of decimal numbers:</para>
+            <programlisting role="example"><![CDATA[
 a = grand(3,5,"uin",0,9)
      ]]></programlisting>
-        <screen><![CDATA[
+            <screen><![CDATA[
 --> a = grand(3,5,"uin",0,9)
  a  =
    2.   4.   8.   0.   9.
@@ -317,14 +323,14 @@ a = grand(3,5,"uin",0,9)
    2.   4.   0.
    4.   9.   9.
 ]]></screen>
-        <para>
-            With an hypermatrix of texts:
-        </para>
-        <programlisting role="example"><![CDATA[
+            <para>
+                With an hypermatrix of texts:
+            </para>
+            <programlisting role="example"><![CDATA[
 cs = cumsum(grand(2,4,3,"uin",1,3));
 t = matrix(strsplit(ascii(grand(1,cs($),"uin",ascii("a"),ascii("c"))),cs(1:$-1)),2,4,3)
      ]]></programlisting>
-        <screen><![CDATA[
+            <screen><![CDATA[
 --> cs = cumsum(grand(2,4,3,"uin",1,3));
 --> t = matrix(strsplit(ascii(grand(1,cs($),"uin",ascii("a"),ascii("c"))),cs(1:$-1)),2,4,3)
  t  =
@@ -364,14 +370,14 @@ t = matrix(strsplit(ascii(grand(1,cs($),"uin",ascii("a"),ascii("c"))),cs(1:$-1))
 !c   aba  abb  !
 !bc  cc   c    !
 ]]></screen>
-        <para>
-            With an array of cells:
-        </para>
-        <programlisting role="example"><![CDATA[
+            <para>
+                With an array of cells:
+            </para>
+            <programlisting role="example"><![CDATA[
 c = cat(3, {"start", -1.23, %f  ; (1-%s)^2, gda(), list(2,,%z)}, ..
            {%t     , "abc", 5.2 ; int8(21), []   , %z})
      ]]></programlisting>
-        <screen><![CDATA[
+            <screen><![CDATA[
 --> c = cat(3, {"start", -1.23, %f  ; (1-%s)^2, gda(), list(2,,%z)}, ..
                {%t     , "abc", 5.2 ; int8(21), []   , %z})
  c  =
@@ -401,10 +407,10 @@ c = cat(3, {"start", -1.23, %f  ; (1-%s)^2, gda(), list(2,,%z)}, ..
 (:,:,2)
   [1x1 int8]  [1x1 polynomial]
 ]]></screen>
-        <para>
-            With an array of structures:
-        </para>
-        <screen><![CDATA[
+            <para>
+                With an array of structures:
+            </para>
+            <screen><![CDATA[
 --> s(4,5).r = %pi;
 --> s.b = %t
  s  =
@@ -424,8 +430,9 @@ c = cat(3, {"start", -1.23, %f  ; (1-%s)^2, gda(), list(2,,%z)}, ..
    r
    b
 ]]></screen>
+
     </refsection>
-    <refsection id="empty_examples">
+    <refsection xml:id="empty_examples">
         <title>Other examples</title>
         <programlisting role="example"><![CDATA[
 type(string([]))

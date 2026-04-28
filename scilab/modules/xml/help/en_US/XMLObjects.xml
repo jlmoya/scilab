@@ -62,7 +62,7 @@
         <title>Description</title>
         <para>The nodes and their properties can be accessed and modified.</para>
     </refsection>
-    <refsection id="XMLDocument">
+    <refsection xml:id="XMLDocument">
         <title>XML Document</title>
         <para>A XML Document has two properties: root and url
             <itemizedlist>
@@ -88,7 +88,7 @@
     xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLElement">
+    <refsection xml:id="XMLElement">
         <title>XML Element</title>
         <para>A XML Element has seven properties:
             <itemizedlist>
@@ -167,7 +167,7 @@
     ]]></programlisting>
         </para>
     </refsection>
-    <refsection id="XMLAttributes">
+    <refsection xml:id="XMLAttributes">
         <title>XML Attributes</title>
         <para>A XML Attributes is a kind of hashtable which maps attributes name to attributes value. An attribute value can be accessed or modified in using the attribute name as field of this object or in using an index between 1 and attributes size.</para>
         <programlisting role="example"><![CDATA[
@@ -194,7 +194,7 @@
     xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLNamespace">
+    <refsection xml:id="XMLNamespace">
         <title>XML Namespace</title>
         <para>A XML Namespace has two properties: href and prefix
             <itemizedlist>
@@ -222,7 +222,7 @@
     xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLNodeList">
+    <refsection xml:id="XMLNodeList">
         <title>XML Node List</title>
         <para>A XML Node List is a type used to enumerate the children of an element. Each element can be accessed with an integer index. Since this is a list, it is possible to make insertion of new element in it, in using double index.</para>
         <para>The size of the list can be retrieved in using 'size' field.</para>
@@ -258,7 +258,7 @@
     xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLNodeSet">
+    <refsection xml:id="XMLNodeSet">
         <title>XML XPath result set</title>
         <para>A XML Node Set is an object returned by a XPath query. It is not possible to insert new elements or to replace existing ones. It is just possible to get them in using an integer index.</para>
         <para>The size of the set can be retrieved with field 'size'.</para>
@@ -276,7 +276,7 @@
     xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLValid">
+    <refsection xml:id="XMLValid">
         <title>XML Validation file</title>
         <para>A XML Validation file is an object used to validate a document. It is possible to validate in using DTD, Relax NG or schema.</para>
         <programlisting role="example"><![CDATA[

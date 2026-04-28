@@ -32,37 +32,37 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/WRITEAU_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_WRITEAU_f">
+    <refsection xml:id="Contents_WRITEAU_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_WRITEAU_f">Description</xref>
+                <para><link linkend="Description_WRITEAU_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_WRITEAU_f">Parameters</xref>
+                <para><link linkend="Dialogbox_WRITEAU_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_WRITEAU_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_WRITEAU_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_WRITEAU_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_WRITEAU_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_WRITEAU_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_WRITEAU_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_WRITEAU_f">Example</xref>
+                <para><link linkend="Example_WRITEAU_f">Example</link></para>
             </listitem>
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Description_WRITEAU_f">
+    <refsection xml:id="Description_WRITEAU_f">
         <title>Description</title>
         <para>
             This block  writes a sound file specified by the string *.au file. The
@@ -72,14 +72,14 @@
             and 16-bit linear formats.
         </para>
     </refsection>
-    <refsection id="Dialogbox_WRITEAU_f">
+    <refsection xml:id="Dialogbox_WRITEAU_f">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/WRITEAU_f_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/WRITEAU_f_gui.gif" align="center"/>
                 <!-- align => Javahelp, style=float => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -103,7 +103,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_WRITEAU_f">
+    <refsection xml:id="Defaultproperties_WRITEAU_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -168,7 +168,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_WRITEAU_f">
+    <refsection xml:id="Interfacingfunction_WRITEAU_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -176,7 +176,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_WRITEAU_f">
+    <refsection xml:id="Computationalfunction_WRITEAU_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -185,8 +185,9 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_WRITEAU_f" role="examples">
+    <refsection xml:id="Example_WRITEAU_f" role="examples">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/WRITEAU_f_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -194,5 +195,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

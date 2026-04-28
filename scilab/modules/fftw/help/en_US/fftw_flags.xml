@@ -63,13 +63,13 @@
             determine the fftw planner algorithm. The planner is used to
             determine an efficient way to compute the fft.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Warning: the default value "FFTW_ESTIMATE" gives generally
                 quite efficient plans. Try to change it only if the fft efficiency is
                 really important and you have a lot of similar calls to do.
-            </warning>
-        </para>
+            </para>
+        </warning>
 
         <para>Accepted entries are :</para>
         <itemizedlist>

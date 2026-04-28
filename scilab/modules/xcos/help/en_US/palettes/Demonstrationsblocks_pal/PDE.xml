@@ -28,30 +28,30 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/PDE.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_PDE">
+    <refsection xml:id="Contents_PDE">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_PDE">Description</xref>
+                <para><link linkend="Description_PDE">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_PDE">Parameters</xref>
+                <para><link linkend="Dialogbox_PDE">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_PDE">Default properties</xref>
+                <para><link linkend="Defaultproperties_PDE">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_PDE">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_PDE">Interfacing function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_PDE">
+    <refsection xml:id="Description_PDE">
         <title>Description</title>
         <para>
             This block is an implementation of several numerical schemes (Finite Elements (1st and 2nd order),
@@ -63,14 +63,13 @@
             depending on the type of the PDE and runs the solver.
         </para>
     </refsection>
-    <refsection id="Dialogbox_PDE">
+    <refsection xml:id="Dialogbox_PDE">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/PDE_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/PDE_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -164,7 +163,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_PDE">
+    <refsection xml:id="Defaultproperties_PDE">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -252,7 +251,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_PDE">
+    <refsection xml:id="Interfacingfunction_PDE">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -260,7 +259,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_PDE">
+    <refsection xml:id="Computationalfunction_PDE">
         <title>Computational functions</title>
         <itemizedlist>
             <listitem>

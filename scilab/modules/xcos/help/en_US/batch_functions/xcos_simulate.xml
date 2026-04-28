@@ -11,25 +11,25 @@
         <title>Syntax</title>
         <synopsis>[Info, status]=xcos_simulate(scs_m, needcompile)</synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_xcos_simulate">
+    <refsection xml:id="Parameters_xcos_simulate">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
-                <term>scs_m</term>: A diagram data structure (see <link linkend="scicos_diagram">scs_m structure</link>).
-                <para/>
+                <term>scs_m</term><listitem><para>: A diagram data structure (see <link linkend="scicos_diagram">scs_m structure</link>).</para></listitem>
             </varlistentry>
             <varlistentry>
-                <term>needcompile</term>: An integer. If it equals 4,
+                <term>needcompile</term><listitem><para>: An integer. If it equals 4,
                 then the simulator will perform a complete compilation of the diagram.
-                If not, it will use cached value of %cpr. DEPRECATED
+                If not, it will use cached value of %cpr. DEPRECATED</para></listitem>
             </varlistentry>
             <varlistentry>
-              <term>status</term>: A boolean. %T if simulation is successful, %f if simulation fails.
+              <term>status</term><listitem><para>: A boolean. %T if simulation is successful, %f if simulation fails.</para></listitem>
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="Description_xcos_simulate">
+    <refsection xml:id="Description_xcos_simulate">
         <title>Description</title>
+        <para>
         This function is used to simulate xcos diagrams in batch
         mode. It requires the <link linkend="scicos_diagram">scs_m
             structure
@@ -39,7 +39,7 @@
             importXcosDiagram
         </link>
         ).
-
+        </para>
         <para>
             User can also define <literal>pre_xcos_simulate</literal>
             function that will run before simulation.
@@ -63,7 +63,7 @@
             If this function fails the error will be trapped.
         </para>
     </refsection>
-    <refsection id="Filecontent_xcos_simulate">
+    <refsection xml:id="Filecontent_xcos_simulate">
         <title>File content</title>
         <itemizedlist>
             <listitem>
@@ -71,7 +71,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Examples_xcos_simulate">
+    <refsection xml:id="Examples_xcos_simulate">
         <title>Examples</title>
         <para>
             The xcos diagram in <link type="scilab" linkend="scilab.xcos/xcos/demos/batch_simulation.zcos">SCI/modules/xcos/demos/batch_simulation.zcos</link>.

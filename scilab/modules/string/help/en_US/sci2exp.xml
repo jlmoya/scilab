@@ -104,10 +104,12 @@
                                                         rows.
                                                     </para>
                                                     <warning>
-                                                       Since continuation marks <literal>..</literal> prevent using
-                                                       <literal>evstr()</literal> and <literal>execstr()</literal>, using this
-                                                       <varname>lmax</varname> option mostly cancels the main <literal>sci2exp()</literal>
-                                                       purpose.
+                                                        <para>
+                                                            Since continuation marks <literal>..</literal> prevent using
+                                                            <literal>evstr()</literal> and <literal>execstr()</literal>, using this
+                                                            <varname>lmax</varname> option mostly cancels the main <literal>sci2exp()</literal>
+                                                            purpose.
+                                                        </para>
                                                     </warning>
                                                 </listitem>
                                             </varlistentry>

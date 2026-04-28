@@ -55,8 +55,7 @@
             the derivative of the solution of the Van Der Pol equation with respect to mu. Note that the real part of the complex
             solution gives the solution of the equation itself:
         </para>
-    </refsection>
-    <para>
+        <para>
     <programlisting role="example"><![CDATA[
     function dydt = vdp(t,y,mu)
         dydt = [y(2,:)
@@ -95,36 +94,37 @@
         gcf().axes_size(2)=300  
         gcf().axes_size(1)=800
     ]]></scilab:image>
-</para>
+        </para>
+    </refsection>
 
-<refsection role="see also">
-    <title>See also</title>
-    <simplelist type="inline">
-        <member>
-            <link linkend="arkode">arkode</link>
-        </member>
-        <member>
-            <link linkend="cvode">cvode</link>
-        </member>
-        <member>
-            <link linkend="ida">ida</link>
-        </member>
-        <member>
-            <link linkend="kinsol">kinsol</link>
-        </member>
-        <member>
-            <link linkend="cvodes">ODE Sensitivity</link>
-        </member>
-        <member>
-            <link linkend="idas">DAE Sensitivity</link>
-        </member>
-    </simplelist>
-</refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="arkode">arkode</link>
+            </member>
+            <member>
+                <link linkend="cvode">cvode</link>
+            </member>
+            <member>
+                <link linkend="ida">ida</link>
+            </member>
+            <member>
+                <link linkend="kinsol">kinsol</link>
+            </member>
+            <member>
+                <link linkend="cvodes">ODE Sensitivity</link>
+            </member>
+            <member>
+                <link linkend="idas">DAE Sensitivity</link>
+            </member>
+        </simplelist>
+    </refsection>
 
     <refsection role="bibliography">
         <title>Bibliography</title>
         <para>
-Al-Mohy, A.H., Higham, N.J. The complex step approximation to the Fréchet derivative of a matrix function. Numer Algor 53, 133 (2010). <ulink url="https://doi.org/10.1007/s11075-009-9323-y">https://doi.org/10.1007/s11075-009-9323-y</ulink>
+Al-Mohy, A.H., Higham, N.J. The complex step approximation to the Fréchet derivative of a matrix function. Numer Algor 53, 133 (2010). <link xlink:href="https://doi.org/10.1007/s11075-009-9323-y">https://doi.org/10.1007/s11075-009-9323-y</link>
 </para>
     </refsection>
 </refentry>

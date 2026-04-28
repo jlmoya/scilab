@@ -28,41 +28,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATBKSL.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATBKSL">
+    <refsection xml:id="Contents_MATBKSL">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATBKSL">Description</xref>
+                <para><link linkend="Description_MATBKSL">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATBKSL">Parameters</xref>
+                <para><link linkend="Dialogbox_MATBKSL">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATBKSL">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATBKSL">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="MATBKSL">Example</xref>
+                <para><link linkend="MATBKSL">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATBKSL">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATBKSL">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATBKSL">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATBKSL">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATBKSL">See also</xref>
+                <para><link linkend="Seealso_MATBKSL">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATBKSL">
+    <refsection xml:id="Description_MATBKSL">
         <title>Description</title>
         <para>
             The MATBKSL block outputs the left matrix division. It is a solution to A*x=B.
@@ -74,14 +74,13 @@
             The equivalent of MATBKSL is <link linkend="backslash">backslash (\)</link> in Scilab.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATBKSL">
+    <refsection xml:id="Dialogbox_MATBKSL">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATBKSL_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATBKSL_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -95,7 +94,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATBKSL">
+    <refsection xml:id="Defaultproperties_MATBKSL">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -171,7 +170,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_MATBKSL">
+    <refsection xml:id="Example_MATBKSL">
         <title>Example</title>
         <screen><![CDATA[
 A = [1 7 3;23 32 29]
@@ -180,6 +179,7 @@ then the result of the A*x=B equation is (A\B):
 x = [-4.504 -3.922;3.643 3.132;0.000 0.000]
 ]]></screen>
         <para><emphasis role="bold">Example of left division: tan(x) = sin(x)/cos(x)</emphasis></para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATBKSL_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -187,9 +187,10 @@ x = [-4.504 -3.922;3.643 3.132;0.000 0.000]
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_MATBKSL">
+    <refsection xml:id="Interfacingfunction_MATBKSL">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -198,7 +199,7 @@ x = [-4.504 -3.922;3.643 3.132;0.000 0.000]
         </itemizedlist>
     </refsection>
 
-    <refsection id="Computationalfunction_MATBKSL">
+    <refsection xml:id="Computationalfunction_MATBKSL">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

@@ -37,36 +37,33 @@
           Info=scicos_simulate(scs_m ,Info [, context] [,flag])
         </synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_scicos_simulate">
+    <refsection xml:id="Parameters_scicos_simulate">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
-                <term>scs_m</term>: A diagram data structure (see <link linkend="scicos_diagram">scs_m structure</link>).
-                <para/>
+                <term>scs_m</term><listitem><para>: A diagram data structure (see <link linkend="scicos_diagram">scs_m structure</link>).</para></listitem>
             </varlistentry>
             <varlistentry>
-                <term>Info</term>: A list. It must be set to <literal>list()</literal> at
+                <term>Info</term><listitem><para>: A list. It must be set to <literal>list()</literal> at
                 the first call, then use output <literal>Info</literal> as
                 input <literal>Info</literal> for the next
                 calls. <literal>Info</literal> contains compilation and
                 simulation information and is used to avoid recompilation when
-                not needed.
-                <para/>
+                not needed.</para></listitem>
             </varlistentry>
             <varlistentry>
-                <term>ContextValues</term>: A Scilab struct containing values of symbolic variables
-                used in the context and xcos blocks.
-                <para/>
+                <term>ContextValues</term><listitem><para>: A Scilab struct containing values of symbolic variables
+                used in the context and xcos blocks.</para></listitem>
             </varlistentry>
             <varlistentry>
-                <term>flag</term>: A string. If it equals 'nw' (no window),
+                <term>flag</term><listitem><para>: A string. If it equals 'nw' (no window),
                 then blocks using graphical windows are not executed. Note
                 that the list of such blocks must be updated as new blocks are
-                added.
+                added.</para></listitem>
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="Description_scicos_simulate">
+    <refsection xml:id="Description_scicos_simulate">
         <title>Description</title>
         <para>
             This function is used to simulate xcos diagrams in batch
@@ -105,7 +102,7 @@
             <literal>A</literal> in Scilab.
         </para>
     </refsection>
-    <refsection id="Filecontent_scicos_simulate">
+    <refsection xml:id="Filecontent_scicos_simulate">
         <title>File content</title>
         <itemizedlist>
             <listitem>
@@ -113,7 +110,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Examples_scicos_simulate">
+    <refsection xml:id="Examples_scicos_simulate">
         <title>Examples</title>
         <para>
             The xcos diagram in <link type="scilab" linkend="scilab.xcos/xcos/demos/batch_simulation.zcos">SCI/modules/xcos/demos/batch_simulation.zcos</link>.

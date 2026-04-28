@@ -43,7 +43,7 @@
     <refsection role="description">
         <title>Callback function given as a Scilab function</title>    
         <para>
-            In that case <term>cbFn</term> is a Scilab function with prototype
+            In that case <literal>cbFn</literal> is a Scilab function with prototype
         </para>
         <para><programlisting role="no-scilab-exec"><![CDATA[
             term = cbFn(y,flag,stats, ...)
@@ -80,7 +80,7 @@
     </refsection>
     <refsection role="description">
         <title>Callback function given as a  SUNDIALS DLL entrypoint</title>    
-                <para>In that case <term>cbFn</term> must have the C prototype</para> 
+                <para>In that case <literal>cbFn</literal> must have the C prototype</para> 
             <para><programlisting role="no-scilab-exec"><![CDATA[
                 int cbFn(int flag, N_Vector Y, void *user_data)
                 int cbFn(sunrealtype t, int flag, N_Vector Y, void *user_data)

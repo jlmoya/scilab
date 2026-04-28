@@ -28,41 +28,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATDIV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATDIV">
+    <refsection xml:id="Contents_MATDIV">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATDIV">Description</xref>
+                <para><link linkend="Description_MATDIV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATDIV">Parameters</xref>
+                <para><link linkend="Dialogbox_MATDIV">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATDIV">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATDIV">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATDIV">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATDIV">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATDIV">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATDIV">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_MATDIV">Examples</xref>
+                <para><link linkend="Example_MATDIV">Examples</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATDIV">See also</xref>
+                <para><link linkend="Seealso_MATDIV">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATDIV">
+    <refsection xml:id="Description_MATDIV">
         <title>Description</title>
         <para>
             The MATDIV block outputs the right matrix division. It is a solution to x*B=A. The higher
@@ -76,14 +76,13 @@
             The equivalent of MATDIV is <link linkend="slash">slash (/)</link> in Scilab.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATDIV">
+    <refsection xml:id="Dialogbox_MATDIV">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATDIV_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATDIV_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -97,7 +96,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATDIV">
+    <refsection xml:id="Defaultproperties_MATDIV">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -173,7 +172,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_MATDIV">
+    <refsection xml:id="Example_MATDIV">
         <title>Example</title>
         <programlisting role="example"><![CDATA[
             A = [1 7 3 ; 23 32 29]
@@ -184,6 +183,7 @@
         <para>
             <emphasis role="bold">Division example: [t sin(t)]/[0 1; 1 0] = [sin(t) t]</emphasis>
         </para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDIV_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -191,8 +191,9 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
-    <refsection id="Interfacingfunction_MATDIV">
+    <refsection xml:id="Interfacingfunction_MATDIV">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -200,7 +201,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATDIV">
+    <refsection xml:id="Computationalfunction_MATDIV">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

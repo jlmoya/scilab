@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/RATELIMITER.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_RATELIMITER">
+    <refsection xml:id="Contents_RATELIMITER">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_RATELIMITER">Description</xref>
+                <para><link linkend="Description_RATELIMITER">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_RATELIMITER">Parameters</xref>
+                <para><link linkend="Dialogbox_RATELIMITER">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_RATELIMITER">Default properties</xref>
+                <para><link linkend="Defaultproperties_RATELIMITER">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_RATELIMITER">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_RATELIMITER">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_RATELIMITER">Computational function</xref>
+                <para><link linkend="Computationalfunction_RATELIMITER">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_RATELIMITER">Example</xref>
+                <para><link linkend="Example_RATELIMITER">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_RATELIMITER">
+    <refsection xml:id="Description_RATELIMITER">
         <title>Description</title>
         <para>
             The Rate Limiter block limits the first derivative of the signal
@@ -68,14 +68,13 @@
             limit.
         </para>
     </refsection>
-    <refsection id="Dialogbox_RATELIMITER">
+    <refsection xml:id="Dialogbox_RATELIMITER">
         <title>Parameters</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/RATELIMITER_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/RATELIMITER_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -94,7 +93,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_RATELIMITER">
+    <refsection xml:id="Defaultproperties_RATELIMITER">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -167,7 +166,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_RATELIMITER">
+    <refsection xml:id="Interfacingfunction_RATELIMITER">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -175,7 +174,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_RATELIMITER">
+    <refsection xml:id="Computationalfunction_RATELIMITER">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -183,9 +182,11 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_RATELIMITER">
+    <refsection xml:id="Example_RATELIMITER">
         <title>Example</title>
-        Let's limit the output slope to 1/3:
+        <para>
+            Let's limit the output slope to 1/3:
+        </para>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/discontinuities_pal/RATELIMITER_Example.zcos">
                 <inlinemediaobject>

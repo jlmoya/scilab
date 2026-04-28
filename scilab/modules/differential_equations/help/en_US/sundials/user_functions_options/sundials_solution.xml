@@ -53,14 +53,14 @@
             <varlistentry>
                 <term>y,yd</term>
                 <listitem>
-                    <para>The arrays of interpolated solution and its derivative at times values given in <term>t</term></para>
+                    <para>The arrays of interpolated solution and its derivative at times values given in <literal>t</literal></para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>i</term>
                 <listitem>
                     <para>the component of the solution to interpolate. If the state of the equation is not a 
-                        vector then <term>i</term> indexes the state as a flatened vector.</para>
+                        vector then <literal>i</literal> indexes the state as a flatened vector.</para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -215,7 +215,7 @@
          ]]></programlisting>
      </para>
      <para>
-        yields by costless interpolation in <term>y</term> and  <term>yd</term>  the same approximation as if components of <term>t</term> where used in the
+        yields by costless interpolation in <literal>y</literal> and  <literal>yd</literal>  the same approximation as if components of <literal>t</literal> where used in the
         <literal>tspan</literal> argument in the solver call.
          The derivative of solution can also be obtained with <literal>[y,yd]=sol(t)</literal> and a particular component
          <literal>i</literal> of the solution is obtained with <literal>y=sol(t,i)</literal>. For example, the solution of the Van Der Pol 
@@ -251,8 +251,8 @@
             avoiding very small time steps.
         </para> 
         <para>
-            In the <term>options</term> sequence you can change almost all (but not the solver method) previously used options used in the call
-             of the solver which yielded <term>sol</term>. The right hand side or the residual function and the initial conditions can be overriden
+            In the <literal>options</literal> sequence you can change almost all (but not the solver method) previously used options used in the call
+             of the solver which yielded <literal>sol</literal>. The right hand side or the residual function and the initial conditions can be overriden
              by using the specific <literal>rhs</literal>, <literal>res</literal>, <literal>y0</literal> or  <literal>yp0</literal> options, respectively. 
              Here is an example where we extend the solution of the Van Der Pol equation:
         </para>

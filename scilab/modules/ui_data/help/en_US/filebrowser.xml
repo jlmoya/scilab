@@ -32,87 +32,67 @@
             <literal>filebrowser</literal> has several features:
             <itemizedlist>
                 <listitem>
-                     <para>
-                            A nice and easy file browser
-                            <para/>
-                            <para>
-                                <inlinemediaobject>
-                                    <imageobject>
-                                        <imagedata fileref="../images/filebrowser_list.png"/>
-                                    </imageobject>
-                                </inlinemediaobject>
-                            </para>
-                            <para/>
-                        </para>
-                    </listitem>
-                    <listitem>
-                         <para>
-                                Quick actions on the file items (open in SciNotes, Execute or load in Scilab, Open with Xcos, etc)
-                                <para/>
-                                <para>
-                                    <inlinemediaobject>
-                                        <imageobject>
-                                            <imagedata fileref="../images/filebrowser_action.png"/>
-                                        </imageobject>
-                                    </inlinemediaobject>
-                                </para>
-                                <para/>
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                    Open with the system default application
-                                    <para/>
-                                </para>
-                            </listitem>
-                            <listitem>
-                                 <para>
-                                        Multiple selection on file items<para/>
-                                        <para>
-                                            <inlinemediaobject>
-                                                <imageobject>
-                                                    <imagedata fileref="../images/filebrowser_multiple.png"/>
-                                                </imageobject>
-                                            </inlinemediaobject>
-                                        </para>
-                                        <para/>
-                                    </para>
-                                </listitem>
-                                <listitem>
-                                     <para>
-                                            Quick and easy filters
-                                            <para/>
-                                            <para>
-                                                <inlinemediaobject>
-                                                    <imageobject>
-                                                        <imagedata fileref="../images/filebrowser_filter.png"/>
-                                                    </imageobject>
-                                                </inlinemediaobject>
-                                            </para>
-                                            <para/>
-                                        </para>
-                                    </listitem>
-                                    <listitem>
-                                         <para>
-                                                Advanced filters with <ulink url="http://en.wikipedia.org/wiki/Regular_expression">regular expressions</ulink>
-                                                <para/>
-                                                <para>
-                                                    <inlinemediaobject>
-                                                        <imageobject>
-                                                            <imagedata fileref="../images/filebrowser_filter_regexp.png"/>
-                                                        </imageobject>
-                                                    </inlinemediaobject>
-                                                </para>
-                                                <para/>
-                                            </para>
-                                        </listitem>
-                                    </itemizedlist>
-                                </para>
-                            </refsection>
-                            <refsection>
-                                <title>Example</title>
-                                <programlisting role="example"><![CDATA[
-                        filebrowser();
-                         ]]></programlisting>
-                            </refsection>
-                        </refentry>
+                    <para>
+                        A nice and easy file browser
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/filebrowser_list.png"/>
+                            </imageobject>
+                        </inlinemediaobject>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Quick actions on the file items (open in SciNotes, Execute or load in Scilab, Open with Xcos, etc)
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/filebrowser_action.png"/>
+                            </imageobject>
+                        </inlinemediaobject>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Open with the system default application
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Multiple selection on file items
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/filebrowser_multiple.png"/>
+                            </imageobject>
+                        </inlinemediaobject>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Quick and easy filters
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/filebrowser_filter.png"/>
+                            </imageobject>
+                        </inlinemediaobject>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        Advanced filters with <link xlink:href="http://en.wikipedia.org/wiki/Regular_expression">regular expressions</link>
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/filebrowser_filter_regexp.png"/>
+                            </imageobject>
+                        </inlinemediaobject>
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </refsection>
+    <refsection>
+        <title>Example</title>
+        <programlisting role="example"><![CDATA[
+filebrowser();
+    ]]></programlisting>
+    </refsection>
+</refentry>
