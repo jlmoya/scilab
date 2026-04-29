@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 *  Copyright (C) 2008-2008 - DIGITEO - Antoine ELIAS
 *
@@ -44,6 +44,7 @@ public :
     Polynom(const std::wstring& _szVarName, int _iRows, int _iCols, const int *_piRank);
     Polynom(const std::wstring& _szVarName, int _iDims, const int* _piDims);
     Polynom(const std::wstring& _szVarName, int _iDims, const int* _piDims, const int *_piRank);
+    Polynom(int _iDims, const int* _piDims);
 
     virtual                 ~Polynom();
 

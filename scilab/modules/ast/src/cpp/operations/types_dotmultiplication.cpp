@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  *  Copyright (C) 2014 - Scilab Enterprises - Antoine ELIAS
  *
@@ -805,23 +805,23 @@ InternalType *GenericDotTimes(InternalType *_pLeftOperand, InternalType *_pRight
 template<class T, class U, class O>
 InternalType* dotmul_M_M(T *_pL, U *_pR)
 {
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto o = pOut->get();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            dotmul(l[iL], r[iR], o + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray());
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray());
 
     int iSize = pOut->getSize();
 
@@ -832,23 +832,25 @@ InternalType* dotmul_M_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* dotmul_M_MC(T *_pL, U *_pR)
 {
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto ri = _pR->getImg();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            dotmul(l[iL], 0, r[iR], ri[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
 
     int iSize = pOut->getSize();
 
@@ -894,23 +896,25 @@ InternalType* dotmul_M_E(T * /*_pL*/, U *_pR)
 template<class T, class U, class O>
 InternalType* dotmul_MC_M(T *_pL, U *_pR)
 {
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto li = _pL->getImg();
+        auto r = _pR->get();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            dotmul(l[iL], li[iL], 0, r[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
 
     int iSize = pOut->getSize();
 
@@ -921,23 +925,26 @@ InternalType* dotmul_MC_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* dotmul_MC_MC(T *_pL, U *_pR)
 {
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto li = _pL->getImg();
+        auto r = _pR->get();
+        auto ri = _pR->getImg();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            dotmul(l[iL], li[iL], 0, r[iR], ri[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
 
     int iSize = pOut->getSize();
 
@@ -1192,10 +1199,9 @@ InternalType* dotmul_M_M<Sparse, Sparse, Sparse>(Sparse* _pL, Sparse* _pR)
     }
 
     //check dimensions
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     return _pL->dotMultiply(*_pR);
@@ -1397,17 +1403,21 @@ InternalType* dotmul_M_M<Polynom, Polynom, Polynom>(Polynom* _pL, Polynom* _pR)
         return pOut;
     }
 
-    //check dims
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
-    }
+        Polynom* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+        pOut->setVariableName(_pL->getVariableName());
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
+        auto l = _pL->get();
+        auto r = _pR->get();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            pOut->set(iO, *l[iL] **r[iR]);
+        });
+
+        pOut->updateRank();
+        return pOut;
     }
 
     Polynom* pOut = new Polynom(_pL->getVariableName(), iDimsL, piDimsR);
@@ -1578,20 +1588,53 @@ InternalType* dotmul_M_M<Double, Polynom, Polynom>(Double* _pL, Polynom* _pR)
 
     }
 
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
-    }
+        Polynom* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+        pOut->setVariableName(_pR->getVariableName());
+        pOut->setComplex(isComplexOut);
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
+        auto pSPR = _pR->get();
+        auto pdblR = _pL->get();
+        double* pdblIL = isComplexL ? _pL->getImg() : NULL;
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            SinglePoly* pPoly = (SinglePoly*)pSPR[iR]->clone();
+            int iSPSize = pPoly->getSize();
+            pPoly->setComplex(isComplexOut);
+
+            double* pdblOutR = pPoly->get();
+            double* pdblOutI = pPoly->getImg();
+
+            if (isComplexL)
+            {
+                if (isComplexR)
+                {
+                    dotmul(pSPR[iR]->get(), pSPR[iR]->getImg(), (size_t)iSPSize, pdblR[iL], pdblIL[iL], pdblOutR, pdblOutI);
+                }
+                else
+                {
+                    dotmul(pSPR[iR]->get(), (size_t)iSPSize, pdblR[iL], pdblIL[iL], pdblOutR, pdblOutI);
+                }
+            }
+            else
+            {
+                if (isComplexR)
+                {
+                    dotmul(pSPR[iR]->get(), pSPR[iR]->getImg(), (size_t)iSPSize, pdblR[iL], pdblOutR, pdblOutI);
+                }
+                else
+                {
+                    dotmul(pSPR[iR]->get(), (size_t)iSPSize, pdblR[iL], pdblOutR);
+                }
+            }
+
+            pOut->set(iO, pPoly);
+        });
+
+        pOut->updateRank();
+        return pOut;
     }
 
     pOut = (Polynom*)_pR->clone();

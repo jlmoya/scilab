@@ -27,14 +27,6 @@ a2 = rand(2, 2);
 
 
 //addition
-//double + double
-assert_checkerror("a3 + a2", msprintf(msg1 + "%s", msprintf(msg2, "%s_a_s")));
-assert_checkerror("a2 + a3", msprintf(msg1 + "%s", msprintf(msg2, "%s_a_s")));
-
-//poly + double
-assert_checkerror("a3 * %s + a2", msprintf(msg1 + "%s", msprintf(msg2, "%p_a_s")));
-assert_checkerror("a2 + a3 * %s", msprintf(msg1 + "%s", msprintf(msg2, "%s_a_p")));
-
 //sparse + double
 assert_checkerror("sparse(a2) + a3", msprintf(msg1 + "%s", msprintf(msg2, "%sp_a_s")));
 assert_checkerror("a3 + sparse(a2)", msprintf(msg1 + "%s", msprintf(msg2, "%s_a_sp")));
@@ -59,41 +51,20 @@ assert_checkerror("sparse(a2) / a3", msprintf(msg1 + "%s", msprintf(msg2, "%s_r_
 assert_checkerror("a3 / sparse(a2)", msprintf(msg1 + "%s", msprintf(msg2, "%s_r_s")));
 
 // dotdivide
-//double ./ double
-assert_checkerror("a3 ./ a2", msprintf(msg1 + "%s", msprintf(msg2, "%s_d_s")));
-assert_checkerror("a2 ./ a3", msprintf(msg1 + "%s", msprintf(msg2, "%s_d_s")));
-
 //double ./ sparse
 assert_checkerror("a3 ./ sparse(a2)", msprintf(msg1 + "%s", msprintf(msg2, "%s_d_sp")));
 
 //sparse ./ double
 assert_checkerror("sparse(a2) ./ a3", msprintf(msg1 + "%s", msprintf(msg2, "%sp_d_s")));
 
-//poly ./ double
-assert_checkerror("(a2 * %s) ./ a3", msprintf(msg1 + "%s", msprintf(msg2, "%p_d_s")));
-assert_checkerror("(a3 * %s) ./ a2", msprintf(msg1 + "%s", msprintf(msg2, "%p_d_s")));
-
 //dotmult
-//double .* double
-assert_checkerror("a3 .* a2", msprintf(msg1 + "%s", msprintf(msg2, "%s_x_s")));
-assert_checkerror("a2 .* a3", msprintf(msg1 + "%s", msprintf(msg2, "%s_x_s")));
-
 // sparse .* double
 assert_checkerror("sparse(a2) .* a3", msprintf(msg1 + "%s", msprintf(msg2, "%sp_x_s")));
 
 //double .* sparse
 assert_checkerror("a3 .* sparse(a2)", msprintf(msg1 + "%s", msprintf(msg2, "%s_x_sp")));
 
-// poly .* double
-assert_checkerror("(a2 * %s) .* a3", msprintf(msg1 + "%s", msprintf(msg2, "%p_x_s")));
-assert_checkerror("(a3 * %s) .* a2", msprintf(msg1 + "%s", msprintf(msg2, "%p_x_s")));
-
-//double .* poly
-assert_checkerror("a2 .* (a3 * %s)", msprintf(msg1 + "%s", msprintf(msg2, "%s_x_p")));
-assert_checkerror("a3 .* (a2 * %s)", msprintf(msg1 + "%s", msprintf(msg2, "%s_x_p")));
-
 // ldivide
-
 //double \ double
 assert_checkerror("a3 \ a3", msprintf(msg1 + "%s", msprintf(msg2, "%s_l_s")));
 assert_checkerror("a2 \ a3", msprintf(msg1 + "%s", msprintf(msg2, "%s_l_s")));
@@ -122,24 +93,7 @@ assert_checkerror("a2 | a3", msprintf(msg1 + "%s", msprintf(msg2, "%b_g_b")));
 assert_checkerror("int8(a3) | int8(a2)", msprintf(msg1 + "%s", msprintf(msg2, "%i_g_i")));
 assert_checkerror("int8(a2) | int8(a3)", msprintf(msg1 + "%s", msprintf(msg2, "%i_g_i")));
 
-//subtraction
-//double - double
-assert_checkerror("a3 - a2", msprintf(msg1 + "%s", msprintf(msg2, "%s_s_s")));
-assert_checkerror("a2 - a3", msprintf(msg1 + "%s", msprintf(msg2, "%s_s_s")));
-
-//poly - poly
-assert_checkerror("(a3 * %s) - (a2 * %s)", msprintf(msg1 + "%s", msprintf(msg2, "%p_s_p")));
-assert_checkerror("(a2 * %s) - (a3 * %s)", msprintf(msg1 + "%s", msprintf(msg2, "%p_s_p")));
-
-
-//poly - double
-assert_checkerror("(a3 * %s) - a2", msprintf(msg1 + "%s", msprintf(msg2, "%p_s_s")));
-assert_checkerror("(a2 * %s) - a3", msprintf(msg1 + "%s", msprintf(msg2, "%p_s_s")));
-
-//double - poly
-assert_checkerror("a3 - (a2 * %s)", msprintf(msg1 + "%s", msprintf(msg2, "%s_s_p")));
-assert_checkerror("a2 - (a3 * %s)", msprintf(msg1 + "%s", msprintf(msg2, "%s_s_p")));
-
+// substraction
 //double - sparse
 assert_checkerror("a3 - sparse(a2)", msprintf(msg1 + "%s", msprintf(msg2, "%s_s_sp")));
 

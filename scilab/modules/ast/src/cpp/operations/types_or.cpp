@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  *  Copyright (C) 2012 - Scilab Enterprises - Antoine ELIAS
  *  Copyright (C) 2012 - Scilab Enterprises - Cedric Delamarre
@@ -551,10 +551,9 @@ InternalType* or_M_M(T *_pL, U *_pR)
         return nullptr;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     O* pOut = new O(iDimsL, _pL->getDimsArray());
@@ -640,10 +639,9 @@ InternalType* or_int_M_M(T *_pL, U *_pR)
         return nullptr;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     O* pOut = new O(iDimsL, _pL->getDimsArray());
@@ -731,10 +729,9 @@ InternalType* or_M_M<SparseBool, SparseBool, SparseBool>(SparseBool* _pL, Sparse
         return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     return _pL->newLogicalOr(*_pR);

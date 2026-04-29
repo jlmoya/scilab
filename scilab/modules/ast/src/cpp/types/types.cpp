@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  *  Copyright (C) 2008-2008 - DIGITEO - Antoine ELIAS
  *
@@ -45,7 +45,12 @@ static bool isCoordIndex(int _iIndex, int* _piCoord, int _iCoordCount)
 std::wstring GenericType::DimToString()
 {
     std::wostringstream ostr;
-    ostr << getRows() << L"x" << getCols();
+    ostr << m_piDims[0];
+    for (int i = 1; i < m_iDims; ++i)
+    {
+        ostr << L"x" << m_piDims[i];
+    }
+
     return ostr.str();
 }
 

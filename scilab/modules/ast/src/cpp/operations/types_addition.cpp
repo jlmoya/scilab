@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  *  Copyright (C) 2008-2008 - DIGITEO - Antoine ELIAS
  *  Copyright (C) 2010-2010 - DIGITEO - Bruno JOFRET
@@ -15,12 +15,15 @@
  */
 
 #include <algorithm>
+
 #include "types_addition.hxx"
+#include "types_tools.hxx"
 #include "operations.hxx"
 #include "double.hxx"
 #include "int.hxx"
 #include "configvariable.hxx"
-#include "operations.hxx"
+#include "opexp.hxx"
+#include "overload.hxx"
 
 extern "C"
 {
@@ -801,14 +804,14 @@ void fillAddFunction()
 types::InternalType* GenericUnaryPlus(types::InternalType* _pL)
 {
     /*
-    ** Convention: unary plus has a sense and returns operanf unchanged 
+    ** Convention: unary plus has a sense and returns operanf unchanged
     ** if operand is not a string and if binary plus with same operand is defined
     */
     add_function add = pAddfunction[_pL->getId()][_pL->getId()];
-    
+
     if (!_pL->isString() && add != NULL)
     {
-        return _pL;        
+        return _pL;
     }
     else
     {
@@ -937,7 +940,7 @@ int AddSparseToDouble(Sparse* sp, Double* d, GenericType** pDRes)
     {
         //sp + d
         Double* pRes = (Double*)d->clone();
-        pRes->setComplex(bComplex1 | bComplex2);
+        pRes->setComplex(bComplex1 || bComplex2);
 
         if (bComplex1)
         {
@@ -1010,7 +1013,7 @@ int AddSparseToDouble(Sparse* sp, Double* d, GenericType** pDRes)
     {
         //sp + D
         Double* pRes = (Double*)d->clone();
-        pRes->setComplex(bComplex1 | bComplex2);
+        pRes->setComplex(bComplex1 || bComplex2);
 
         if (bComplex1)
         {
@@ -1041,7 +1044,7 @@ int AddSparseToDouble(Sparse* sp, Double* d, GenericType** pDRes)
     {
         //SP + D
         Double* pRes = (Double*)d->clone();
-        pRes->setComplex(bComplex1 | bComplex2);
+        pRes->setComplex(bComplex1 || bComplex2);
 
         int nonZeros = static_cast<int>(sp->nonZeros());
         int* pRows = new int[nonZeros * 2];
@@ -1083,26 +1086,27 @@ int AddDoubleToSparse(Double* d, Sparse* sp, GenericType** pDRes)
     return AddSparseToDouble(sp, d, pDRes);
 }
 
+
 template<class T, class U, class O>
 InternalType* add_M_M(T *_pL, U *_pR)
 {
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto o = pOut->get();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            add(l[iL], r[iR], o + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray());
-
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray());
     add(_pL->get(), (size_t)_pL->getSize(), _pR->get(), pOut->get());
     return pOut;
 }
@@ -1110,22 +1114,26 @@ InternalType* add_M_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* add_M_MC(T *_pL, U *_pR)
 {
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto ri = _pR->getImg();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        double li = 0;
+        expandApply(plan, [&](int iL, int iR, int iO) { 
+            add(l[iL], li, r[iR], ri[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
 
     add(_pL->get(), (size_t)_pL->getSize(), _pR->get(), _pR->getImg(), pOut->get(), pOut->getImg());
     return pOut;
@@ -1171,22 +1179,26 @@ InternalType* add_MC_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* add_MC_MC(T *_pL, U *_pR)
 {
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto li = _pL->getImg();
+        auto r = _pR->get();
+        auto ri = _pR->getImg();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            add(l[iL], li[iL], r[iR], ri[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
 
     add(_pL->get(), _pL->getImg(), (size_t)_pL->getSize(), _pR->get(), _pR->getImg(), pOut->get(), pOut->getImg());
     return pOut;
@@ -1645,20 +1657,24 @@ template<class T, class U, class O> types::InternalType* add_E_IC(T * /*_pL*/, U
 template<>
 InternalType* add_M_M<String, String, String>(String* _pL, String* _pR)
 {
+    if (checkSameSize(_pL, _pR) == false)
+    {
+        String* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto o = pOut->get();
+         
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            std::wstring res = std::wstring(l[iL]) + std::wstring(r[iR]);
+            o[iO] = os_wcsdup(res.data());
+        });
+
+        return pOut;
+    }
+
     int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
-    {
-        // call overload
-        return nullptr;
-    }
-
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
 
     String* pOut = new String(iDimsL, _pL->getDimsArray());
     int size = _pL->getSize();
@@ -2042,39 +2058,69 @@ template<> InternalType* add_M_M<Polynom, Polynom, Polynom>(Polynom* _pL, Polyno
         return pOut;
     }
 
-    int iDims1 = _pL->getDims();
-    int iDims2 = _pR->getDims();
-
-    if (iDims1 != iDims2)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        if (pLSave != _pL)
-        {
-            _pL->killMe();
-        }
+        Polynom* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+        pOut->setVariableName(_pL->getVariableName());
 
-        if (pRSave != _pR)
-        {
-            _pR->killMe();
-        }
-        
-        // call overload
-        return nullptr;
-    }
+        auto l = _pL->get();
+        auto r = _pR->get();
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        if (pLSave != _pL)
-        {
-            _pL->killMe();
-        }
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            SinglePoly* valL = l[iL];
+            SinglePoly* valR = r[iR];
+            int iRank = std::max(valL->getRank(), valR->getRank());
+            SinglePoly* valO = nullptr;
+            double* pValOutR = nullptr;
+            double* pValOutI = nullptr;
 
-        if (pRSave != _pR)
-        {
-            _pR->killMe();
-        }
+            bool complexL = valL->isComplex();
+            bool complexR = valR->isComplex();
+            if (complexL || complexR)
+            {
+                valO = new SinglePoly(&pValOutR, &pValOutI, iRank);
+            }
+            else
+            {
+                valO = new SinglePoly(&pValOutR, iRank);
+            }
 
-        throw ast::InternalError(error);
+            if (complexL == false && complexR == false)
+            {
+                iAddScilabPolynomToScilabPolynom(
+                    valL->get(), valL->getRank() + 1,
+                    valR->get(), valR->getRank() + 1,
+                    valO->get(), valO->getRank() + 1);
+            }
+            else if (complexL == false && complexR == true)
+            {
+                iAddScilabPolynomToComplexPoly(
+                    valL->get(), valL->getRank() + 1,
+                    valR->get(), valR->getImg(), valR->getRank() + 1,
+                    valO->get(), valO->getImg(), valO->getRank() + 1);
+            }
+            else if (complexL == true && complexR == false)
+            {
+                iAddScilabPolynomToComplexPoly(
+                    valR->get(), valR->getRank() + 1,
+                    valL->get(), valL->getImg(), valL->getRank() + 1,
+                    valO->get(), valO->getImg(), valO->getRank() + 1);
+            }
+            else if (complexL == true && complexR == true)
+            {
+                iAddComplexPolyToComplexPoly(
+                    valL->get(), valL->getImg(), valL->getRank() + 1,
+                    valR->get(), valR->getImg(), valR->getRank() + 1,
+                    valO->get(), valO->getImg(), valO->getRank() + 1);
+            }
+
+            valO->updateRank();
+            pOut->set(iO, valO);
+            valO->killMe();
+        });
+
+        return pOut;
     }
 
     int *pRank = new int[_pL->getSize()];
@@ -2272,19 +2318,56 @@ template<> InternalType* add_M_M<Double, Polynom, Polynom>(Double* _pL, Polynom*
         return pOut;
     }
 
-    int iDims1 = _pR->getDims();
-    int iDims2 = _pL->getDims();
-
-    if (iDims1 != iDims2)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
-    }
+        Polynom* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
+        pOut->setVariableName(_pR->getVariableName());
+
+        auto pRData = _pR->get();
+        bool complexL = _pL->isComplex();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            SinglePoly* valR = pRData[iR];
+            double* pValRR = valR->get();
+            double* pValRI = valR->getImg();
+            double* pValOutR = nullptr;
+            double* pValOutI = nullptr;
+            SinglePoly* valOut = nullptr;
+            bool complexR = valR->isComplex();
+            if (complexL || complexR)
+            {
+                valOut = new SinglePoly(&pValOutR, &pValOutI, valR->getRank());
+            }
+            else
+            {
+                valOut = new SinglePoly(&pValOutR, valR->getRank());
+            }
+
+            // real part
+            pValOutR[0] = pInDblR[iL] + pValRR[0];
+            for (int j = 1 ; j < valR->getSize() ; j++)
+            {
+                pValOutR[j] = pValRR[j];
+            }
+
+            // imag part
+            if (pValOutI)
+            {
+                pValOutI[0] = (complexL ? pInDblI[iL] : 0) + (complexR ? pValRI[0] : 0);
+                for (int j = 1 ; j < valR->getSize() ; j++)
+                {
+                    pValOutI[j] = (complexR ? pValRI[j] : 0);
+                }
+            }
+
+            valOut->updateRank();
+            pOut->set(iO, valOut);
+            valOut->killMe();
+        });
+
+        return pOut;
     }
 
     pOut = (Polynom*)_pR->clone();
@@ -2409,10 +2492,9 @@ template<> InternalType* add_M_M<Sparse, Sparse, Sparse>(Sparse* _pL, Sparse* _p
         return NULL;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     types::Sparse* pOut = _pL->add(*_pR);
@@ -2438,7 +2520,7 @@ template<> InternalType* add_M_M<Sparse, Double, Double>(Sparse* _pL, Double* _p
     {
         //sp + d
         pOut = (Double*)_pR->clone();
-        pOut->setComplex(bComplex1 | bComplex2);
+        pOut->setComplex(bComplex1 || bComplex2);
         if (bComplex1)
         {
             std::complex<double> dbl = _pL->getImg(0, 0);
@@ -2508,7 +2590,7 @@ template<> InternalType* add_M_M<Sparse, Double, Double>(Sparse* _pL, Double* _p
     {
         //sp + D
         pOut = (Double*)_pR->clone();
-        pOut->setComplex(bComplex1 | bComplex2);
+        pOut->setComplex(bComplex1 || bComplex2);
 
         if (bComplex1)
         {
@@ -2540,7 +2622,7 @@ template<> InternalType* add_M_M<Sparse, Double, Double>(Sparse* _pL, Double* _p
     {
         //SP + D
         pOut = (Double*)_pR->clone();
-        pOut->setComplex(bComplex1 | bComplex2);
+        pOut->setComplex(bComplex1 || bComplex2);
 
         int nonZeros = static_cast<int>(_pL->nonZeros());
         int* pRows = new int[nonZeros * 2];

@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 *  Copyright (C) 2008-2008 - DIGITEO - Antoine ELIAS
 *
@@ -753,16 +753,76 @@ int DotPowerDoubleByDouble(Double* _pDouble1, Double* _pDouble2, Double** _pDoub
     else
     {
         //A .^ B
-        //check dimension compatibilities ( same number of dimension and same size for each dimension
-        int iDims2      = _pDouble2->getDims();
-        int* piDims2    = _pDouble2->getDimsArray();
-
-        std::wstring error = checkSameSize(_pDouble1, _pDouble2, op);
-        if (error.empty() == false)
+        if (checkSameSize(_pDouble1, _pDouble2) == false)
         {
-            throw ast::InternalError(error);
+            Double* pOut = nullptr;
+            auto plan = makeExpandPlan(_pDouble1, _pDouble2, pOut, op);
+            // force complex allocation to handle possible complex outputs
+            pOut->setComplex(true);
+
+            auto l = _pDouble1->get();
+            auto li = _pDouble1->getImg();
+            auto r = _pDouble2->get();
+            auto ri = _pDouble2->getImg();
+            auto o = pOut->get();
+            auto oi = pOut->getImg();
+
+            bool complexL = _pDouble1->isComplex();
+            bool complexR = _pDouble2->isComplex();
+
+            expandApply(plan, [&](int iL, int iR, int iO) {
+                if (complexL)
+                {
+                    if (complexR)
+                    {
+                        iResultComplex = 1;
+                        iPowerComplexScalarByComplexScalar(
+                            l[iL], li[iL],
+                            r[iR], ri[iR],
+                            o + iO, oi + iO);
+                    }
+                    else
+                    {
+                        iResultComplex = 1;
+                        iPowerComplexScalarByRealScalar(
+                            l[iL], li[iL],
+                            r[iR],
+                            o + iO, oi + iO);
+                    }
+                }
+                else
+                {
+                    if (complexR)
+                    {
+                        iResultComplex = 1;
+                        iPowerRealScalarByComplexScalar(
+                            l[iL],
+                            r[iR], ri[iR],
+                            o + iO, oi + iO);
+                    }
+                    else
+                    {
+                        int iComplex = 1;
+                        iPowerRealScalarByRealScalar(
+                            l[iL],
+                            r[iR],
+                            o + iO, oi + iO, &iComplex);
+                        iResultComplex |= iComplex;
+                    }
+                }
+            });
+
+            if (iResultComplex == 0)
+            {
+                pOut->setComplex(false);
+            }
+
+            *_pDoubleOut = pOut;
+            return 0;
         }
 
+        int iDims2 = _pDouble2->getDims();
+        int* piDims2 = _pDouble2->getDimsArray();
         (*_pDoubleOut) = new Double(iDims2, piDims2, true);
 
         if (_pDouble1->isComplex())

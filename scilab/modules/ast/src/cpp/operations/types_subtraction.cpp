@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 *  Copyright (C) 2008-2008 - DIGITEO - Antoine ELIAS
 *  Copyright (C) 2010-2010 - DIGITEO - Bruno JOFRET
@@ -829,19 +829,21 @@ InternalType* GenericMinus(InternalType* _pLeftOperand, InternalType* _pRightOpe
 template<class T, class U, class O>
 InternalType* sub_M_M(T *_pL, U *_pR)
 {
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
-    }
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto o = pOut->get();
+
+        expandApply(plan, [&](int iL, int iR, int iO)
+        {
+            sub(l[iL], r[iR], o + iO);
+        });
+
+        return pOut;
     }
 
     O* pOut = new O(_pL->getDims(), _pR->getDimsArray());
@@ -853,21 +855,27 @@ InternalType* sub_M_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* sub_M_MC(T *_pL, U *_pR)
 {
+    if (checkSameSize(_pL, _pR) == false)
+    {
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto ri = _pR->getImg();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        double li = 0;
+        expandApply(plan, [&](int iL, int iR, int iO)
+        {
+            sub(l[iL], li, r[iR], ri[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
+    }
+
     int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
-    {
-        // call overload
-        return nullptr;
-    }
-
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
     O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
 
     sub(_pL->get(), (size_t)_pL->getSize(), _pR->get(), _pR->getImg(), pOut->get(), pOut->getImg());
@@ -909,21 +917,27 @@ InternalType* sub_M_E(T *_pL, U * /*_pR*/)
 template<class T, class U, class O>
 InternalType* sub_MC_M(T *_pL, U *_pR)
 {
+    if (checkSameSize(_pL, _pR) == false)
+    {
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto li = _pL->getImg();
+        auto r = _pR->get();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        double ri = 0;
+        expandApply(plan, [&](int iL, int iR, int iO)
+        {
+            sub(l[iL], li[iL], r[iR], ri, o + iO, oi + iO);
+        });
+
+        return pOut;
+    }
+
     int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
-    {
-        //call overload
-        return nullptr;
-    }
-
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
     O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
 
     sub(_pL->get(), _pL->getImg(), (size_t)_pL->getSize(), _pR->get(), pOut->get(), pOut->getImg());
@@ -933,22 +947,27 @@ InternalType* sub_MC_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* sub_MC_MC(T *_pL, U *_pR)
 {
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto li = _pL->getImg();
+        auto r = _pR->get();
+        auto ri = _pR->getImg();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        expandApply(plan, [&](int iL, int iR, int iO)
+        {
+            sub(l[iL], li[iL], r[iR], ri[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
-
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
     sub(_pL->get(), _pL->getImg(), (size_t)_pL->getSize(), _pR->get(), _pR->getImg(), pOut->get(), pOut->getImg());
     return pOut;
 }
@@ -1737,20 +1756,96 @@ template<> InternalType* sub_M_M<Polynom, Polynom, Polynom>(Polynom* _pL, Polyno
         return pOut;
     }
 
-    //check dimension compatibilities
-    int iDims1  = _pL->getDims();
-    int iDims2  = _pR->getDims();
-
-    if (iDims1 != iDims2)
+    // P - P
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
-    }
+        Polynom* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+        pOut->setVariableName(_pL->getVariableName());
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
+        auto l = _pL->get();
+        auto r = _pR->get();
+
+        expandApply(plan, [&](int iL, int iR, int iO)
+        {
+            SinglePoly* valL = l[iL];
+            SinglePoly* valR = r[iR];
+            double* realL = valL->get();
+            double* imagL = valL->getImg();
+            double* realR = valR->get();
+            double* imagR = valR->getImg();
+
+            int rankL = valL->getRank();
+            int rankR = valR->getRank();
+            int iMin = std::min(rankL, rankR);
+            int iMax = std::max(rankL, rankR);
+            SinglePoly* valO = nullptr;
+            double* pValOutR = nullptr;
+            double* pValOutI = nullptr;
+
+            bool complexL = valL->isComplex();
+            bool complexR = valR->isComplex();
+            if (complexL || complexR)
+            {
+                valO = new SinglePoly(&pValOutR, &pValOutI, iMax);
+            }
+            else
+            {
+                valO = new SinglePoly(&pValOutR, iMax);
+            }
+
+            double* pR = nullptr;
+            double* pI = nullptr;
+            int iCoef = 1;
+            if (rankL > rankR)
+            {
+                pR = realL;
+                pI = imagL;
+                iCoef = 1;
+            }
+            else
+            {
+                pR = realR;
+                pI = imagR;
+                iCoef = -1;
+            }
+
+            //common real part
+            for (int j = 0; j < iMin + 1; j++)
+            {
+                pValOutR[j] = realL[j] - realR[j];
+            }
+
+            //excedant real part
+            for (int j = iMin + 1; j < iMax + 1; j++)
+            {
+                pValOutR[j] = pR[j] * iCoef;
+            }
+
+            if (complexL || complexR)
+            {
+                //common imag part
+                for (int j = 0; j < iMin + 1; j++)
+                {
+                    pValOutI[j] = (imagL == NULL ? 0 : imagL[j]) - (imagR == NULL ? 0 : imagR[j]);
+                }
+
+                if (pI != NULL)
+                {
+                    //excedant imag part
+                    for (int j = iMin + 1; j < iMax + 1; j++)
+                    {
+                        pValOutI[j] = pI[j] * iCoef;
+                    }
+                }
+            }
+
+            valO->updateRank();
+            pOut->set(iO, valO);
+            valO->killMe();
+        });
+
+        return pOut;
     }
 
     int *pRankOut   = new int[_pL->getSize()];
@@ -1764,7 +1859,7 @@ template<> InternalType* sub_M_M<Polynom, Polynom, Polynom>(Polynom* _pL, Polyno
         pRankOut[i] = std::max(pRank1[i], pRank2[i]);
     }
 
-    pOut = new Polynom(_pR->getVariableName(), iDims1, _pL->getDimsArray(), pRankOut);
+    pOut = new Polynom(_pR->getVariableName(), _pL->getDims(), _pL->getDimsArray(), pRankOut);
     bool isOutComplex =  _pL->isComplex() || _pR->isComplex();
 
     //Result P1(i) - P2(i)
@@ -1838,7 +1933,6 @@ template<> InternalType* sub_M_M<Polynom, Polynom, Polynom>(Polynom* _pL, Polyno
     return pOut;
 }
 
-// P - D
 template<> InternalType* sub_M_M<Polynom, Double, Polynom>(Polynom* _pL, Double* _pR)
 {
     Polynom* pOut = NULL;
@@ -1989,22 +2083,59 @@ template<> InternalType* sub_M_M<Polynom, Double, Polynom>(Polynom* _pL, Double*
         return pOut;
     }
 
-    //P - D
-
-    //check dimensions
-    int iDims1 = _pR->getDims();
-    int iDims2 = _pL->getDims();
-
-    if (iDims1 != iDims2)
+    // P - D
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
-    }
+        Polynom* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
+        pOut->setVariableName(_pL->getVariableName());
+
+        auto pLRData = _pL->get();
+        auto pRRData = _pR->get();
+        bool complexL = _pR->isComplex();
+
+        expandApply(plan, [&](int iL, int iR, int iO)
+        {
+            SinglePoly* valL = pLRData[iL];
+            auto valR = pRRData[iR];
+            double* pValLR = valL->get();
+            double* pValLI = valL->getImg();
+            double* pValOutR = nullptr;
+            double* pValOutI = nullptr;
+            SinglePoly* valOut = nullptr;
+            bool complexR = valL->isComplex();
+            if (complexL || complexR)
+            {
+                valOut = new SinglePoly(&pValOutR, &pValOutI, valL->getRank());
+            }
+            else
+            {
+                valOut = new SinglePoly(&pValOutR, valL->getRank());
+            }
+
+            // real part
+            pValOutR[0] = pValLR[0] - valR;
+            for (int j = 1 ; j < valL->getSize() ; j++)
+            {
+                pValOutR[j] = pValLR[j];
+            }
+
+            // imag part
+            if (pValOutI)
+            {
+                pValOutI[0] = (complexL ? pValLI[0] : 0) + (complexR ? pValLI[iR] : 0);
+                for (int j = 1 ; j < valL->getSize() ; j++)
+                {
+                    pValOutI[j] = (complexL ? pValLI[j] : 0);
+                }
+            }
+
+            valOut->updateRank();
+            pOut->set(iO, valOut);
+            valOut->killMe(); });
+
+        return pOut;
     }
 
     double* pInDblR = _pR->get();
@@ -2327,19 +2458,57 @@ template<> InternalType* sub_M_M<Double, Polynom, Polynom>(Double* _pL, Polynom*
         return pOut;
     }
 
-    int iDims1 = _pR->getDims();
-    int iDims2 = _pL->getDims();
-
-    if (iDims1 != iDims2)
+    //D - P
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
-    }
+        Polynom* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
+        pOut->setVariableName(_pR->getVariableName());
+
+        auto pRData = _pR->get();
+        bool complexL = _pL->isComplex();
+
+        expandApply(plan, [&](int iL, int iR, int iO)
+                    {
+            SinglePoly* valR = pRData[iR];
+            double* pValRR = valR->get();
+            double* pValRI = valR->getImg();
+            double* pValOutR = nullptr;
+            double* pValOutI = nullptr;
+            SinglePoly* valOut = nullptr;
+            bool complexR = valR->isComplex();
+            if (complexL || complexR)
+            {
+                valOut = new SinglePoly(&pValOutR, &pValOutI, valR->getRank());
+            }
+            else
+            {
+                valOut = new SinglePoly(&pValOutR, valR->getRank());
+            }
+
+            // real part
+            pValOutR[0] = pInDblR[iL] - pValRR[0];
+            for (int j = 1 ; j < valR->getSize() ; j++)
+            {
+                pValOutR[j] = -pValRR[j];
+            }
+
+            // imag part
+            if (pValOutI)
+            {
+                pValOutI[0] = (complexL ? pInDblI[iL] : 0) - (complexR ? pValRI[0] : 0);
+                for (int j = 1 ; j < valR->getSize() ; j++)
+                {
+                    pValOutI[j] = (complexR ? -pValRI[j] : 0);
+                }
+            }
+
+            valOut->updateRank();
+            pOut->set(iO, valOut);
+            valOut->killMe(); });
+
+        return pOut;
     }
 
     if (bComplex2)
@@ -2401,10 +2570,9 @@ template<> InternalType* sub_M_M<Sparse, Sparse, Sparse>(Sparse* _pL, Sparse* _p
         return NULL;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     types::Sparse* pSPOut = _pL->substract(*_pR);
@@ -2528,10 +2696,9 @@ template<> InternalType* sub_M_M<Double, Sparse, Double>(Double* _pL, Sparse* _p
         // call overload
         return nullptr;
     }
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     //D - SP
@@ -2691,10 +2858,9 @@ template<> InternalType* sub_M_M<Sparse, Double, Double>(Sparse* _pL, Double* _p
         return nullptr;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     //SP - D
