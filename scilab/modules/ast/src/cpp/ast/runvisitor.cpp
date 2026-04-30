@@ -1433,13 +1433,12 @@ void RunVisitorT<T>::visitprivate(const ClassDec & e)
             {
                 std::wstring attr(a->getAs<SimpleVar>()->getSymbol().getName());
                 std::transform(attr.begin(), attr.end(), attr.begin(), std::towlower);
-                /*
                 if (attr == L"static")
                 {
                     staticFlag = true;
                     continue;
                 }
-                */
+
                 if (attr == L"private")
                 {
                     accessFlag = types::AccessModifier::PRIVATE;
@@ -1508,12 +1507,11 @@ void RunVisitorT<T>::visitprivate(const ClassDec & e)
             {
                 std::wstring attr(a->getAs<SimpleVar>()->getSymbol().getName());
                 std::transform(attr.begin(), attr.end(), attr.begin(), std::towlower);
-                /*
                 if (attr == L"static")
                 {
                     staticFlag = true;
+                    continue;
                 }
-                */
 
                 if (attr == L"private")
                 {

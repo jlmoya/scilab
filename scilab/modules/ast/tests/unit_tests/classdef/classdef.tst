@@ -105,3 +105,20 @@ classdef BasicClass
         end
     end
 end
+
+// =============================================================
+// Inheritance cycle detection
+// =============================================================
+function expect_err(exprstr)
+    err = execstr(exprstr, 'errcatch');
+    assert_checkfalse(err == 0);
+endfunction
+
+classdef CycleA < CycleB
+end
+
+classdef CycleB < CycleA
+end
+
+expect_err("CycleA()");
+expect_err("CycleB()");

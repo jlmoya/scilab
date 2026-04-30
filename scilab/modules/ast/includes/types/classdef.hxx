@@ -106,14 +106,12 @@ public:
 
     bool isAncestorOf(const Classdef* maybeDerived);
 
-    //static
-    /*
     void addStaticProperty(const std::wstring& name, const OBJ_ATTR& attr);
     void addStaticMethod(const std::wstring& name, const OBJ_ATTR& attr);
     InternalType* getStatic(const std::wstring& name);
     bool hasStatic(const std::wstring& name);
     bool setStatic(const std::wstring& name, InternalType* pIT);
-    */
+    bool isStaticMethod(const std::wstring& name);
 
     InternalType* instantiateProperty(const std::wstring& name, const OBJ_ATTR& attr);
     Object* createEmptyInstance();
@@ -127,6 +125,7 @@ private:
     std::map<std::wstring, InternalType*> instances;
     std::vector<std::tuple<std::wstring, Classdef*>> supers;
     bool initialized;
+    bool initializing;
 
     void LoadClassdef();
     void internalCall(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e);
@@ -145,15 +144,15 @@ private:
     void addHelpers();
     void addHelper(const std::wstring& name, Function::ReturnValue (Classdef::*_pFunc)(typed_list&, int, typed_list&));
     
-    std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>> getMethods() { return methods; }
-    std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>> getConstructors() { return constructors; }
+    const std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>>& getMethods() const { return methods; }
+    const std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>>& getConstructors() const { return constructors; }
 
     Callable* getMethod(const std::wstring& name);
 
     OBJ_ATTR getConstructor() { return std::get<0>(constructors[getName()]); }
     void showMethodTable();
 
-    std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>> getProperties() { return properties; }
+    const std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>>& getProperties() const { return properties; }
 
     void addObject(Object* obj)
     {

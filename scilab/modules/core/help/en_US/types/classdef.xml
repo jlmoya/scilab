@@ -52,59 +52,62 @@ end
         <para>Classes are defined by :</para>
         <itemizedlist>
             <listitem>
-                    <para>
+                <para>
                     Name: it will be used to use class
                 </para>
             </listitem>
             <listitem>
-                    <para>
+                <para>
                     Superclass: names of superclass from which it derives
                 </para>
             </listitem>
             <listitem>
-                    <para>
+                <para>
                     Properties: variables used inside or outside class to store data
                 </para>
             </listitem>
             <listitem>
-                    <para>
+                <para>
                     Methods: functions to do some operations
                 </para>
             </listitem>
             <listitem>
-                    <para>
+                <para>
                     Enumeration: Specific instances of class
                 </para>
             </listitem>
-        </itemizedlist>
-        <para>
-            <literal>Properties</literal> and <literal>Methods</literal> can have some modifiers to change their visibility or behavior:
-        </para>
-        <itemizedlist>
             <listitem>
                 <para>
-                    <varname>Private</varname>: elements can be used only <varname>inside</varname> methods of this class.
-                    (Public/Protected/Private are exclusive)
+                    <literal>Properties</literal> and <literal>Methods</literal> can have some modifiers to change their visibility or behavior:
                 </para>
+                <itemizedlist>
+                    <listitem>
+                        <para>
+                            <varname>Private</varname>: elements can be used only <varname>inside</varname> methods of this class.
+                            (Public/Protected/Private are exclusive)
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <varname>Protected</varname>: elements can be used <varname>inside</varname> methods of this class and its children (inheritance).
+                            (Public/Protected/Private are exclusive)
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <varname>Public</varname> (default): elements can be used <varname>outside</varname> and <varname>inside</varname> of this class.
+                            (Public/Protected/Private are exclusive)
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <varname>Static</varname>: elements are shared across all instances of this class and can be accessed
+                            via the class name (<literal>MyClass.prop</literal>) or via an instance (<literal>obj.prop</literal>).
+                            Static methods do not receive <literal>this</literal>.
+                        </para>
+                    </listitem>
+                </itemizedlist>
             </listitem>
-            <listitem>
-                <para>
-                    <varname>Protected</varname>: elements can be used <varname>inside</varname> methods of this class and its children (inheritance).
-                    (Public/Protected/Pritave are exclusive)
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <varname>Public</varname> (default): elements can be used <varname>outside</varname> and <varname>inside</varname> of this class.
-                    (Public/Protected/Pritave are exclusive)
-                </para>
-            </listitem>
-            <!--listitem>
-                <para>
-                    <varname>Static</varname>: elements are common for all instances of this class.
-                    In static methods only static elements can be used.
-                </para>
-            </listitem-->
         </itemizedlist>
     </refsection>
     <refsection>
@@ -126,27 +129,38 @@ end
         <para>
             Define <literal>properties</literal> of class.
             Visibility modifier can be <literal>private</literal>, <literal>protected</literal> or <literal>public</literal>.
-            A default value can be added to initialize variable during instantiation (default <literal>[]</literal>)
-            <programlisting role="no-scilab-exec"><![CDATA[
+            A default value can be added to initialize variable during instantiation (default <literal>[]</literal>).
+        </para>
+        <para>
+            Properties can also be declared <literal>Static</literal>. Static properties are shared across all instances
+            and can be accessed via the class name or via any instance.
+        </para>
+        <programlisting role='no-scilab-exec'><![CDATA[
 
 classdef <classname>
     properties (<modifier>)
         var1 = []
     end
+
+    properties (Static)
+        sharedVar = 0
+    end
 end
 
-            ]]></programlisting>
-        </para>
+        ]]></programlisting>
     </refsection>
     <refsection>
         <title>Methods</title>
         <para>
             Define <literal>methods</literal> of class.
             Visibility modifier can be <literal>private</literal>, <literal>protected</literal> or <literal>public</literal>.
-            In methods <literal>this</literal> must be used to access to properties or methods of the object
+            In methods <literal>this</literal> must be used to access to properties or methods of the object.
+        </para>
+        <para>
+            Methods can also be declared <literal>Static</literal>. Static methods do not receive <literal>this</literal>
+            and can be called via the class name (<literal>MyClass.method()</literal>) or via an instance (<literal>obj.method()</literal>).
         </para>
         <programlisting role="no-scilab-exec"><![CDATA[
-
 classdef <classname>
     methods (<modifier>)
         function rets = func(args...)
@@ -155,6 +169,12 @@ classdef <classname>
 
         func2 = externalfunc
     end
+
+    methods (Static)
+        function r = helper(x)
+            r = x * 2;
+        end
+    end
 end
 
         ]]></programlisting>
@@ -162,7 +182,7 @@ end
         <para>In C/C++ gateway, <code>use symbol::Context::getInstance()-&gt;getCurrentObject()</code> to get <literal>this</literal></para>
     </refsection>
     <refsection>
-        <title>Emuneration</title>
+        <title>Enumeration</title>
         <para>
             Define <literal>enumeration</literal> of class.
             They are specific instances of the class associated to a name.
@@ -488,42 +508,66 @@ gray2 = Color("#808080")
 
             ]]></programlisting>
         </para>
-        <!--para>
-            Usage of static:
+        <para>
+            Usage of static properties and methods:
             <programlisting role='example'>
 <![CDATA[
-classdef static
-    properties (static)
-        value = 0
+classdef Counter
+    properties (Static)
+        count = 0
     end
 
     methods
-        function static()
-            this.value = this.value + 1;
+        function Counter()
+            Counter.count = Counter.count + 1;
         end
 
         function delete()
-            this.value = this.value - 1;
+            Counter.count = Counter.count - 1;
         end
 
         function disp()
-            printf("Value: %d\n", this.value);
+            printf("Instance of Counter (total: %d)\n", Counter.count);
+        end
+    end
+
+    methods (Static)
+        function r = getCount()
+            r = Counter.count;
+        end
+
+        function reset()
+            Counter.count = 0;
         end
     end
 end
 
-s1 = static()
-s2 = static()
-s3 = static()
+// access static property via class name
+Counter.count
 
-clear s1;
-s2
+// create instances, count increases
+c1 = Counter()
+c2 = Counter()
 
-clear s2;
-s3
+// access static property via instance
+c1.count
+
+// call static method via class name
+Counter.getCount()
+
+// call static method via instance
+c2.getCount()
+
+// clear instances, count decreases
+clear c1;
+Counter.count
+
+// reset via static method
+Counter.reset()
+Counter.count
 ]]>
             </programlisting>
-        </para-->
+        </para>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -550,6 +594,14 @@ s3
                 <revdescription>
                     <para>
                         <literal>classdef</literal> introduction.
+                    </para>
+                </revdescription>
+            </revision>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revdescription>
+                    <para>
+                        <literal>Static</literal> modifier added for properties and methods.
                     </para>
                 </revdescription>
             </revision>

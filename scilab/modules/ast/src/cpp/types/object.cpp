@@ -51,12 +51,24 @@ Object::Object(const Object& obj)
 Object::~Object()
 {
     //sciprint("delete %ls\n", def->getName().data());
-    typed_list in;
-    optional_list opt;
-    typed_list out;
-    IncreaseRef();
-    callMethod(L"delete", in, opt, 0, out, ast::CommentExp(Location(), new std::wstring(L"")));
-    DecreaseRef();
+    try
+    {
+        typed_list in;
+        optional_list opt;
+        typed_list out;
+        IncreaseRef();
+        callMethod(L"delete", in, opt, 0, out, ast::CommentExp(Location(), new std::wstring(L"")));
+        DecreaseRef();
+    }
+    catch (ast::InternalError& ie)
+    {
+        sciprint(_("Warning: 'delete' method of class '%ls' failed: %ls"), def->getName().data(), ie.GetErrorMessage().data());
+    }
+    catch (...)
+    {
+        sciprint(_("Warning: 'delete' method of class '%ls' failed.\n"), def->getName().data());
+    }
+
     for (auto&& prop : properties)
     {
         prop.second->DecreaseRef();
@@ -77,7 +89,7 @@ void Object::loadClassdef(Classdef* def, int level)
     {
         if (props.find(prop.first) == props.end())
         {
-            properties[prop.first]->IncreaseRef();
+            properties[prop.first]->DecreaseRef();
             properties[prop.first]->killMe();
             toRemove.push_back(prop.first);
         }
@@ -154,10 +166,11 @@ bool Object::extract(const std::wstring& name, InternalType*& out)
 
     if (scope.size() > 0)
     {
-        auto methods = def->getMethods();
-        if (methods.find(scope.top()) != methods.end())
+        const auto& methods = def->getMethods();
+        auto it = methods.find(scope.top());
+        if (it != methods.end())
         {
-            ref = std::get<1>(methods[scope.top()]);
+            ref = std::get<1>(it->second);
         }
     }
 
@@ -166,13 +179,10 @@ bool Object::extract(const std::wstring& name, InternalType*& out)
         if (access == AccessModifier::PUBLIC || (scope.size() > 0 && access != AccessModifier::NONE))
         {
             out = getProperty(name);
-            //static
-            /*
             if (out == nullptr)
             {
                 out = def->getStatic(name);
             }
-            */
             return true;
         }
         else
@@ -187,7 +197,14 @@ bool Object::extract(const std::wstring& name, InternalType*& out)
     {
         if (access == AccessModifier::PUBLIC || (scope.size() > 0 && access != AccessModifier::NONE))
         {
-            out = new ObjectMethod(this, name, def->getMethod(name));
+            if (def->isStaticMethod(name))
+            {
+                out = def->getStatic(name);
+            }
+            else
+            {
+                out = new ObjectMethod(this, name, def->getMethod(name));
+            }
             return true;
         }
         else
@@ -264,9 +281,8 @@ bool Object::setProperty(const std::wstring& prop, InternalType* value)
     AccessModifier access;
     if (def->getAccessProperty(prop, access))
     {
-
         if (access == AccessModifier::PUBLIC ||
-            (symbol::Context::getInstance()->getCurrentObject() == this && access != AccessModifier::NONE))
+            (scope.size() > 0 && access != AccessModifier::NONE))
         {
             if (properties.find(prop) != properties.end())
             {
@@ -278,20 +294,16 @@ bool Object::setProperty(const std::wstring& prop, InternalType* value)
                 value->IncreaseRef();
                 return true;
             }
+            else if (def->setStatic(prop, value))
+            {
+                return true;
+            }
             else
             {
-                // static
-                /*
-                if (def->setStatic(field, _pSource))
-                {
-                    return this;
-                }
-                */
+                wchar_t szError[128];
+                os_swprintf(szError, 128, _W("Wrong insertion: property '%ls' does not exist.\n").c_str(), prop.data());
+                throw ast::InternalError(szError);
             }
-
-            wchar_t szError[128];
-            os_swprintf(szError, 128, _W("Wrong insertion: property '%ls' does not exist.\n").c_str(), prop.data());
-            throw ast::InternalError(szError);
         }
         else
         {

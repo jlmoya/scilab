@@ -23,7 +23,7 @@ Classdef::Classdef(const std::wstring& name,
     const std::map<std::wstring, OBJ_ATTR>& methods,
     const std::map<std::wstring, std::vector<types::InternalType*>>& enums,
     const std::vector<std::wstring>& super)
-    : name(name), props(properties), meths(methods), enumerations(enums), superclass(super), initialized(false)
+    : name(name), props(properties), meths(methods), enumerations(enums), superclass(super), initialized(false), initializing(false)
 {
     std::reverse(superclass.begin(), superclass.end());
 }
@@ -35,6 +35,15 @@ void Classdef::LoadClassdef()
         return;
     }
 
+    if (initializing)
+    {
+        char msg[128];
+        os_sprintf(msg, _("Inheritance cycle detected for class '%s'.\n"), scilab::UTF8::toUTF8(name).data());
+        throw ast::InternalError(scilab::UTF8::toWide(msg));
+    }
+
+    initializing = true;
+
     for (auto&& s : superclass)
     {
         Classdef* def = symbol::Context::getInstance()->getClassdef(s);
@@ -44,6 +53,7 @@ void Classdef::LoadClassdef()
         }
         else
         {
+            initializing = false;
             char msg[128];
             os_sprintf(msg, _("'%s' does not exist\n"), scilab::UTF8::toUTF8(s).data());
             throw ast::InternalError(scilab::UTF8::toWide(msg));
@@ -115,29 +125,27 @@ void Classdef::LoadClassdef()
         constructors[getName()] = {attr, this};
     }
 
-    // static
-    /*
     for (auto&& p : properties)
     {
-        if (p.second.isStatic)
+        if (std::get<0>(p.second).isStatic && std::get<1>(p.second) == this)
         {
-            addStaticProperty(p.first, p.second);
+            addStaticProperty(p.first, std::get<0>(p.second));
         }
     }
 
     for (auto&& m : methods)
     {
-        if (m.second.isStatic)
+        if (std::get<0>(m.second).isStatic && std::get<1>(m.second) == this)
         {
-            addStaticMethod(m.first, m.second);
+            addStaticMethod(m.first, std::get<0>(m.second));
         }
     }
-    */
 
     //clean constructor information
     props.clear();
     meths.clear();
     superclass.clear();
+    initializing = false;
     initialized = true;
 }
 
@@ -364,6 +372,8 @@ Object* Classdef::createEmptyInstance()
 
 Classdef* Classdef::insert(typed_list* _pArgs, InternalType* _pSource)
 {
+    LoadClassdef();
+
     if (_pArgs->size() == 1 && (*_pArgs)[0]->isString())
     {
         std::wstring field((*_pArgs)[0]->getAs<types::String>()->get(0));
@@ -371,10 +381,17 @@ Classdef* Classdef::insert(typed_list* _pArgs, InternalType* _pSource)
         AccessModifier access;
         if (getAccessProperty(field, access))
         {
-            if (access == AccessModifier::PUBLIC || 
-                (symbol::Context::getInstance()->getCurrentObject() == this && access != AccessModifier::NONE))
+            if (access == AccessModifier::PUBLIC ||
+                (symbol::Context::getInstance()->getCurrentObject() != nullptr && access != AccessModifier::NONE))
             {
-                //setStatic(field, _pSource);
+                if (setStatic(field, _pSource))
+                {
+                    return this;
+                }
+
+                wchar_t szError[128];
+                os_swprintf(szError, 128, _W("Wrong insertion: property '%ls' is not a static property.\n").c_str(), field.data());
+                throw ast::InternalError(szError);
             }
             else
             {
@@ -433,10 +450,27 @@ bool Classdef::getAccessMethod(const std::wstring& name, AccessModifier& access)
 
 bool Classdef::extract(const std::wstring& name, InternalType*& out)
 {
-    auto p = instances.find(name);
-    if (p != instances.end())
+    LoadClassdef();
+
+    // static properties and methods: local then parents
+    InternalType* staticVal = getStatic(name);
+    if (staticVal)
     {
-        out = p->second;
+        AccessModifier access = AccessModifier::PUBLIC;
+        if (!getAccessProperty(name, access))
+        {
+            getAccessMethod(name, access);
+        }
+
+        if (access != AccessModifier::PUBLIC &&
+            symbol::Context::getInstance()->getCurrentObject() == nullptr)
+        {
+            wchar_t szError[128];
+            os_swprintf(szError, 128, _W("Wrong extraction: '%ls' is not accessible.\n").c_str(), name.data());
+            throw ast::InternalError(szError);
+        }
+
+        out = staticVal;
         return true;
     }
 
@@ -478,7 +512,7 @@ std::wstring Classdef::getMethodClassdef(const std::wstring& name)
     auto p = methods.find(name);
     if (p != methods.end())
     {
-        return this->name;
+        return std::get<1>(p->second)->getName();
     }
 
     return L"";
@@ -530,7 +564,6 @@ std::vector<std::wstring> Classdef::getEnumeration()
     return m;
 }
 
-/*
 void Classdef::addStaticProperty(const std::wstring& name, const OBJ_ATTR& attr)
 {
     instances[name] = instantiateProperty(name, attr);
@@ -539,20 +572,53 @@ void Classdef::addStaticProperty(const std::wstring& name, const OBJ_ATTR& attr)
 
 void Classdef::addStaticMethod(const std::wstring& name, const OBJ_ATTR& attr)
 {
-    instances[name] = instantiateMethod(name, attr, true);
-    instances[name]->IncreaseRef();
+    if (attr.callable)
+    {
+        attr.callable->IncreaseRef();
+        instances[name] = attr.callable;
+    }
+}
+
+bool Classdef::isStaticMethod(const std::wstring& name)
+{
+    auto it = methods.find(name);
+    if (it != methods.end())
+    {
+        return std::get<0>(it->second).isStatic;
+    }
+
+    // look in parent classes
+    for (auto&& s : supers)
+    {
+        if (std::get<1>(s)->isStaticMethod(name))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool Classdef::hasStatic(const std::wstring& name)
 {
     return instances.find(name) != instances.end();
 }
-    
+
 InternalType* Classdef::getStatic(const std::wstring& name)
 {
     if (hasStatic(name))
     {
         return instances[name];
+    }
+
+    // look in parent classes
+    for (auto&& s : supers)
+    {
+        InternalType* val = std::get<1>(s)->getStatic(name);
+        if (val)
+        {
+            return val;
+        }
     }
 
     return nullptr;
@@ -570,9 +636,17 @@ bool Classdef::setStatic(const std::wstring& name, InternalType* pIT)
         return true;
     }
 
+    // look in parent classes
+    for (auto&& s : supers)
+    {
+        if (std::get<1>(s)->setStatic(name, pIT))
+        {
+            return true;
+        }
+    }
+
     return false;
 }
-*/
 InternalType* Classdef::instantiateProperty(const std::wstring& name, const OBJ_ATTR& attr)
 {
     if (attr.arg.default_value == nullptr)
