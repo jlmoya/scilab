@@ -28,8 +28,13 @@ std::unordered_map<std::wstring, std::wstring> getDeprecated()
         {L"unix_g", L"host"},
         {L"unix_s", L"host"},
         {L"unix_w", L"host"},
-        {L"unix_x", L"host"},
+        {L"unix_x", L"host"}
+    };
+}
 
+std::unordered_map<std::wstring, std::wstring> getDeleted()
+{
+    return {
         // Scilab 2026.0.0 => 2026.1.0
         {L"demo_begin", L"exec"},
         {L"demo_run", L"exec"},
@@ -37,13 +42,8 @@ std::unordered_map<std::wstring, std::wstring> getDeprecated()
         {L"demo_compiler", L"haveacompiler"},
         {L"demo_file_choice", L"x_choose"},
         {L"demo_function_choice", L"x_choose"},
-        {L"demo_choose", L"x_choose"}
-    };
-}
+        {L"demo_choose", L"x_choose"},
 
-std::unordered_map<std::wstring, std::wstring> getDeleted()
-{
-    return {
         // Scilab 2025.0.0 => 2026.0.0
         {L"captions", L"legend"},
         {L"impl", L"dae"},
