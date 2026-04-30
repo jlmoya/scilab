@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is released under the 3-clause BSD license. See COPYING-BSD.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="xlsxRead" xml:lang="en">
+    <refnamediv>
+        <refname>xlsxRead</refname>
+        <refpurpose>
+            Read data from an Excel file and return a matrix or cell.
+        </refpurpose>
+    </refnamediv>
+     <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+            result = xlsxRead(filename, option1, value1, option2, value2, ...)
+        </synopsis>
+        <variablelist>
+            <varlistentry>
+                <term>filename</term>
+                <listitem>
+                    <para>A string specifying the path to the Excel (.xlsx) file to read.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"sheet", sheet_value</term>
+                <listitem>
+                    <para>A string (sheet name) or positive integer (sheet index) specifying which sheet to read. Default: first sheet. Optional.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"range", range_value</term>
+                <listitem>
+                    <para>A string or 2x2 matrix specifying the range of cells to read.</para>
+                    <para>String formats: "A1:C10" (cell range), "A:C" (column range), "1:3" (row range), "B5" (first cell), "B" (first column), "3" (first row).</para>
+                    <para>Matrix format: [row1 col1; row2 col2] where all values are positive integers >= 1. Optional.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"conversion", conversion_type</term>
+                <listitem>
+                    <para>A string specifying the output data type:</para>
+                    <itemizedlist>
+                        <listitem><para>"double" (default): Returns a numeric matrix. Datetime values are converted to datenum, non-numeric values become NaN.</para></listitem>
+                        <listitem><para>"string": Returns a string matrix. All values (including datetimes) are converted to strings.</para></listitem>
+                        <listitem><para>"cell": Returns a cell.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>Read data from an Excel (.xlsx) file and return it in the requested format (double matrix, string matrix, or cell).</para>
+        <para>The function uses key-value pairs to specify options. All parameters except filename are optional and can be combined in any order.</para>
+        <para><emphasis role="bold">Conversion modes:</emphasis></para>
+        <itemizedlist>
+            <listitem><para><emphasis role="bold">"double"</emphasis> (default): Returns a numeric matrix. Numeric values are preserved, and non-numeric values become NaN.</para></listitem>
+            <listitem><para><emphasis role="bold">"string"</emphasis>: Returns a string matrix. All values are converted to strings.</para></listitem>
+            <listitem><para><emphasis role="bold">"cell"</emphasis>: Returns a cell.</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">Range specification:</emphasis></para>
+        <para>Ranges can be specified as strings (Excel notation) or as a 2x2 matrix [start_row start_col; end_row end_col] with 1-based indexing.</para>
+        <para>String formats: "A1:C10" (cell range), "A:C" (columns A to C), "1:3" (rows 1 to 3), "B5" (First cell B5), "B" (First column B), "3" (First row 3).</para>
+        <para><emphasis role="bold">Datetime handling:</emphasis></para>
+        <para>Datetime values in Excel cells are converted.</para>
+        <itemizedlist>
+            <listitem><para>In "double" mode: converted to datenum</para></listitem>
+            <listitem><para>In "string" mode: converted to string</para></listitem>
+            <listitem><para>In "cell" mode: converted to datetime</para></listitem>
+        </itemizedlist>
+        <para>To read a table or timeseries, use <link linkend="readtable">readtable</link> and <link linkend="readtimeseries">readtimeseries</link> functions.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+        // Create example data file
+        data = [1, 2, 3; 4, 5, 6; 7, 8, 9];
+		test_file = TMPDIR + "/test_read.xlsx";
+        xlsxWrite(data, test_file);
+        
+        // Read entire first sheet as double matrix
+        data = xlsxRead(test_file)
+        // [1 2 3
+        // 4 5 6
+        // 7 8 9]
+        
+        // Read specific sheet by name
+        data = xlsxRead(test_file, "sheet", "Sheet1")
+        // [1 2 3
+        // 4 5 6
+        // 7 8 9]
+        
+        // Read specific sheet by index (1-based)
+        data = xlsxRead(test_file, "sheet", 1);
+        
+        // Read specific range from first sheet
+        data = xlsxRead(test_file, "range", "A1:C10")
+        // [1 2 3
+        // 4 5 6
+        // 7 8 9]
+        
+        // Read rows 7 to 8 from first sheet
+        data = xlsxRead(test_file, "range", "1:8")
+        // [1 2 3
+        // 4 5 6
+        // 7 8 9]
+
+        // Read columns A to C
+        data = xlsxRead(test_file, "range", "A:C")
+        // [1 2 3
+        // 4 5 6
+        // 7 8 9]
+        
+        // Read specific range using matrix notation [row col]
+        data = xlsxRead(test_file, "range", [1 1; 10 3])  // A1:C10
+        
+        // Read specific range from specific sheet
+        data = xlsxRead(test_file, "sheet", "Sheet1", "range", "B2:D5")
+        // [5 6
+        // 8 9]
+        
+        // Read as string matrix instead of double
+        data = xlsxRead(test_file, "range", "A1:B5", "conversion", "string")
+        // ["1" "2"
+        // "4" "5"
+        // "7" "8"]
+        
+        // Read as cell
+        data = xlsxRead(test_file, "conversion", "cell")
+        // {1 2 3
+        // 4 5 6
+        // 7 8 9}
+        ]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="xlsxWrite">xlsxWrite</link>
+            </member>
+            <member>
+                <link linkend="xlsxSheet">xlsxSheet</link>
+            </member>
+            <member>
+                <link linkend="xlsxInfo">xlsxInfo</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>
+                    Introduction in Scilab.
+                </revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

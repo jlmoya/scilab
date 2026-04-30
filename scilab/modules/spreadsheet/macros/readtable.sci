@@ -15,38 +15,87 @@ function tt = readtable(varargin)
     rhs = nargin;
     names = "";
     readrownames = %f;
+    sheet = 1;
+    rangevalue = "";
+
+    nargs = argn(2);
+    if nargs < 1 then
+        error(msprintf(_("%s: Wrong number of input argument(s): At least %d expected.\n"), fname, 1));
+    end
+
+    filename = varargin(1);
 
     if rhs > 2 then
         for i = nargin-1:-2:2
-            if type(varargin(i)) <> 10 then
+            key = varargin(i);
+            value = varargin(i+1);
+            if type(key) <> 10 then
                 break;
             end
-            select convstr(varargin(i), "l")
+            select convstr(key, "l")
             case "variablenames"
-                names = varargin(i + 1);
-                if type(names) <> 10 then
-                    error(msprintf(_("%s: Wrong type for %s argument: string expected.\n"), fname, varargin(i)));
+                if type(value) <> 10 then
+                    error(msprintf(_("%s: Wrong type for %s argument: string expected.\n"), fname, key));
                 end
+                names = value;
             case "readrownames"
-                readrownames = varargin(i + 1);
-                if type(readrownames) <> 4 then
-                    error(msprintf(_("%s: Wrong type for %s argument: boolean expected.\n"), fname, varargin(i)));
+                if type(value) <> 4 then
+                    error(msprintf(_("%s: Wrong type for %s argument: boolean expected.\n"), fname, key));
+                end
+                readrownames = value;
+            case "sheet"
+                if type(value) == 10 then
+                    sheet = value;
+                elseif type(value) == 1 then
+                    if value <> int(value) | value < 1 then
+                        error(msprintf(_("%s: Wrong value for ""%s"" argument: Must be a positive integer >=1.\n"), fname, key));
+                    end
+                    sheet = value;
+                else
+                    error(msprintf(_("%s: Wrong type for ""%s"" argument: A double or string expected.\n"), fname, key));
+                end
+
+            case "range"
+                if type(value) == 10 then
+                    rangevalue = value;
+                elseif type(value) == 1 then
+                    if and(size(value) == [2 2]) then
+                        rangevalue = %matrix_to_range(value);
+                    else
+                        error(msprintf(_("%s: Wrong value for ""%s"" argument: Range matrix must be 2x2 [row1 col1; row2 col2].\n"), fname, key));
+                    end
+                else
+                    error(msprintf(_("%s: Wrong type for ""%s"" argument: Must be a string or a 2x2 matrix.\n"), fname, key));
                 end
             else
-                error(msprintf(_("%s: Wrong value for input argument #%d: ''%s'' not allowed.\n"), fname, i, varargin(i)));
+                error(msprintf(_("%s: Wrong value for input argument #%d: ''%s'' not allowed.\n"), fname, i, key));
             end
-
+            
             rhs = rhs - 2;
         end
     end
 
-    filename = varargin(1);
-    f = mgetl(filename);
+    isxlsx = isXlsx(filename);
+    if isxlsx then
+        f = %xlsxRead(filename, sheet, rangevalue, "string");
+    else
+        f = mgetl(filename);
+    end
 
     if nargin == 2 || rhs >= 2 then
         opts = varargin(2);
     else
-        opts = detectImportOptions(f);
+        if ~isxlsx then
+            opts = detectImportOptionsCSV(f);
+        else
+            opts = detectImportOptionsXlsx(f);
+        end
+    end
+
+    if ~isxlsx then
+        mat = csvTextScan(f(opts.datalines, :), opts.delimiter, opts.decimal, "string");//(:,_kk);
+    else
+        mat = f(opts.datalines, :);
     end
 
     variableNames = opts.variableNames;
@@ -75,7 +124,6 @@ function tt = readtable(varargin)
         variableNames(idx) = "Var" + string(idx);
     end
 
-    mat = csvTextScan(f(opts.datalines, :), opts.delimiter, opts.decimal, "string");//(:,_kk);
     mat = mat(:, _kk);
 
     l = list();
@@ -98,6 +146,8 @@ function tt = readtable(varargin)
             if idx <> [] then
                 m(idx) = "%nan";
             end
+            m(members(m, ["F", "false"]) ==1) = "%f";
+            m(members(m,["T", "true"]) ==1) = "%t";
             execstr("d = [" +strcat(m, ",") +"]")
             l($+1) = d'
         else
@@ -109,7 +159,7 @@ function tt = readtable(varargin)
     tt.props.variableDescriptions = variableNames;
 
     if readrownames then
-        tt.Row = tt.vars(1).data;
+        tt.Row = string(tt.vars(1).data);
         tt(:,1) = [];
     end
 endfunction

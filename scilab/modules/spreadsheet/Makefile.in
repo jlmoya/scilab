@@ -182,7 +182,10 @@ am__objects_1 = src/c/libscispreadsheet_algo_la-xls.lo \
 	src/c/libscispreadsheet_algo_la-getRange.lo \
 	src/c/libscispreadsheet_algo_la-splitLine.lo \
 	src/c/libscispreadsheet_algo_la-utftolatin.lo
-am__objects_2 =  \
+am__objects_2 = src/cpp/libscispreadsheet_algo_la-xlsx_read.lo \
+	src/cpp/libscispreadsheet_algo_la-xlsx_write.lo \
+	src/cpp/libscispreadsheet_algo_la-xlsx_metadata.lo
+am__objects_3 =  \
 	src/c/ripole/libscispreadsheet_algo_la-olestream-unwrap.lo \
 	src/c/ripole/libscispreadsheet_algo_la-pldstr.lo \
 	src/c/ripole/libscispreadsheet_algo_la-ole.lo \
@@ -191,23 +194,30 @@ am__objects_2 =  \
 	src/c/ripole/libscispreadsheet_algo_la-ripole.lo \
 	src/c/ripole/libscispreadsheet_algo_la-bt-int.lo
 am_libscispreadsheet_algo_la_OBJECTS = $(am__objects_1) \
-	$(am__objects_2)
+	$(am__objects_2) $(am__objects_3)
 libscispreadsheet_algo_la_OBJECTS =  \
 	$(am_libscispreadsheet_algo_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libscispreadsheet_la_DEPENDENCIES = libscispreadsheet-algo.la
-am__objects_3 = sci_gateway/cpp/libscispreadsheet_la-sci_xls_read.lo \
-	sci_gateway/cpp/libscispreadsheet_la-sci_xls_open.lo
-am__objects_4 = sci_gateway/c/libscispreadsheet_la-gw_csv_helpers.lo \
+am__DEPENDENCIES_1 =
+libscispreadsheet_la_DEPENDENCIES = libscispreadsheet-algo.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am__objects_4 = sci_gateway/cpp/libscispreadsheet_la-sci_xls_read.lo \
+	sci_gateway/cpp/libscispreadsheet_la-sci_xls_open.lo \
+	sci_gateway/cpp/libscispreadsheet_la-sci_isXlsx.lo \
+	sci_gateway/cpp/libscispreadsheet_la-sci_xlsxInfo.lo \
+	sci_gateway/cpp/libscispreadsheet_la-sci_xlsxRead.lo \
+	sci_gateway/cpp/libscispreadsheet_la-sci_xlsxSheet.lo \
+	sci_gateway/cpp/libscispreadsheet_la-sci_xlsxWrite.lo
+am__objects_5 = sci_gateway/c/libscispreadsheet_la-gw_csv_helpers.lo \
 	sci_gateway/c/libscispreadsheet_la-sci_csvDefault.lo \
 	sci_gateway/c/libscispreadsheet_la-sci_csvRead.lo \
 	sci_gateway/c/libscispreadsheet_la-sci_csvStringToDouble.lo \
 	sci_gateway/c/libscispreadsheet_la-sci_csvTextScan.lo \
 	sci_gateway/c/libscispreadsheet_la-sci_csvWrite.lo
-am_libscispreadsheet_la_OBJECTS = $(am__objects_3) $(am__objects_4)
+am_libscispreadsheet_la_OBJECTS = $(am__objects_4) $(am__objects_5)
 libscispreadsheet_la_OBJECTS = $(am_libscispreadsheet_la_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -230,8 +240,13 @@ am__depfiles_remade = sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-gw_csv_helper
 	sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvStringToDouble.Plo \
 	sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvTextScan.Plo \
 	sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvWrite.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_isXlsx.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_open.Plo \
 	sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_read.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxInfo.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxRead.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxSheet.Plo \
+	sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxWrite.Plo \
 	src/c/$(DEPDIR)/libscispreadsheet_algo_la-checkCsvWriteFormat.Plo \
 	src/c/$(DEPDIR)/libscispreadsheet_algo_la-csvDefault.Plo \
 	src/c/$(DEPDIR)/libscispreadsheet_algo_la-csvRead.Plo \
@@ -246,7 +261,10 @@ am__depfiles_remade = sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-gw_csv_helper
 	src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-ole.Plo \
 	src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-olestream-unwrap.Plo \
 	src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-pldstr.Plo \
-	src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-ripole.Plo
+	src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-ripole.Plo \
+	src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_metadata.Plo \
+	src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_read.Plo \
+	src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_write.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -576,6 +594,9 @@ XCOS_ENABLE = @XCOS_ENABLE@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
+XLNT_CFLAGS = @XLNT_CFLAGS@
+XLNT_LDFLAGS = @XLNT_LDFLAGS@
+XLNT_LIBS = @XLNT_LIBS@
 XMKMF = @XMKMF@
 XMLGRAPHICS_COMMONS = @XMLGRAPHICS_COMMONS@
 XMLRESOLVER = @XMLRESOLVER@
@@ -657,6 +678,11 @@ SPREADSHEET_C_SOURCES = \
     src/c/splitLine.c \
     src/c/utftolatin.c
 
+SPREADSHEET_CPP_SOURCES = \
+    src/cpp/xlsx_read.cpp \
+    src/cpp/xlsx_write.cpp \
+    src/cpp/xlsx_metadata.cpp
+
 RIPOLE_SOURCES = \
     src/c/ripole/olestream-unwrap.c \
     src/c/ripole/pldstr.c \
@@ -668,12 +694,18 @@ RIPOLE_SOURCES = \
 
 GATEWAY_CXX_SOURCES = \
     sci_gateway/cpp/sci_xls_read.cpp \
-    sci_gateway/cpp/sci_xls_open.cpp
+    sci_gateway/cpp/sci_xls_open.cpp \
+    sci_gateway/cpp/sci_isXlsx.cpp \
+    sci_gateway/cpp/sci_xlsxInfo.cpp \
+    sci_gateway/cpp/sci_xlsxRead.cpp \
+    sci_gateway/cpp/sci_xlsxSheet.cpp \
+    sci_gateway/cpp/sci_xlsxWrite.cpp
 
 libscispreadsheet_la_CPPFLAGS = \
     -I$(srcdir)/includes/ \
     -I$(srcdir)/src/c/ \
     -I$(srcdir)/src/c/ripole \
+    -I$(srcdir)/sci_gateway/cpp \
     -I$(top_srcdir)/modules/ast/includes/ast/ \
     -I$(top_srcdir)/modules/ast/includes/exps/ \
     -I$(top_srcdir)/modules/ast/includes/operations/ \
@@ -691,6 +723,7 @@ libscispreadsheet_la_CPPFLAGS = \
     -I$(top_srcdir)/modules/string/src/c/ \
     -I$(top_srcdir)/modules/io/includes/ \
     -I$(top_srcdir)/modules/dynamic_link/includes \
+    $(XLNT_CFLAGS) \
     $(AM_CPPFLAGS)
 
 GATEWAY_C_SOURCES = \
@@ -703,14 +736,15 @@ GATEWAY_C_SOURCES = \
 
 pkglib_LTLIBRARIES = libscispreadsheet.la
 noinst_LTLIBRARIES = libscispreadsheet-algo.la
-libscispreadsheet_algo_la_SOURCES = $(SPREADSHEET_C_SOURCES) $(RIPOLE_SOURCES)
+libscispreadsheet_algo_la_SOURCES = $(SPREADSHEET_C_SOURCES) $(SPREADSHEET_CPP_SOURCES) $(RIPOLE_SOURCES)
 libscispreadsheet_la_SOURCES = $(GATEWAY_CXX_SOURCES) $(GATEWAY_C_SOURCES)
 libscispreadsheet_algo_la_CPPFLAGS = $(libscispreadsheet_la_CPPFLAGS)
 
 # For the code check (splint)
 CHECK_SRC = $(SPREADSHEET_C_SOURCES) $(GATEWAY_CXX_SOURCES) $(RIPOLE_SOURCES)
 INCLUDE_FLAGS = $(libscispreadsheet_la_CPPFLAGS)
-libscispreadsheet_la_LIBADD = libscispreadsheet-algo.la
+libscispreadsheet_la_LIBADD = libscispreadsheet-algo.la \
+	$(XLNT_LDFLAGS) $(XLNT_LIBS)
 
 #### Target ######
 modulename = spreadsheet
@@ -899,6 +933,18 @@ src/c/libscispreadsheet_algo_la-splitLine.lo: src/c/$(am__dirstamp) \
 	src/c/$(DEPDIR)/$(am__dirstamp)
 src/c/libscispreadsheet_algo_la-utftolatin.lo: src/c/$(am__dirstamp) \
 	src/c/$(DEPDIR)/$(am__dirstamp)
+src/cpp/$(am__dirstamp):
+	@$(MKDIR_P) src/cpp
+	@: > src/cpp/$(am__dirstamp)
+src/cpp/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) src/cpp/$(DEPDIR)
+	@: > src/cpp/$(DEPDIR)/$(am__dirstamp)
+src/cpp/libscispreadsheet_algo_la-xlsx_read.lo:  \
+	src/cpp/$(am__dirstamp) src/cpp/$(DEPDIR)/$(am__dirstamp)
+src/cpp/libscispreadsheet_algo_la-xlsx_write.lo:  \
+	src/cpp/$(am__dirstamp) src/cpp/$(DEPDIR)/$(am__dirstamp)
+src/cpp/libscispreadsheet_algo_la-xlsx_metadata.lo:  \
+	src/cpp/$(am__dirstamp) src/cpp/$(DEPDIR)/$(am__dirstamp)
 src/c/ripole/$(am__dirstamp):
 	@$(MKDIR_P) src/c/ripole
 	@: > src/c/ripole/$(am__dirstamp)
@@ -928,7 +974,7 @@ src/c/ripole/libscispreadsheet_algo_la-bt-int.lo:  \
 	src/c/ripole/$(DEPDIR)/$(am__dirstamp)
 
 libscispreadsheet-algo.la: $(libscispreadsheet_algo_la_OBJECTS) $(libscispreadsheet_algo_la_DEPENDENCIES) $(EXTRA_libscispreadsheet_algo_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libscispreadsheet_algo_la_OBJECTS) $(libscispreadsheet_algo_la_LIBADD) $(LIBS)
+	$(AM_V_CXXLD)$(CXXLINK)  $(libscispreadsheet_algo_la_OBJECTS) $(libscispreadsheet_algo_la_LIBADD) $(LIBS)
 sci_gateway/cpp/$(am__dirstamp):
 	@$(MKDIR_P) sci_gateway/cpp
 	@: > sci_gateway/cpp/$(am__dirstamp)
@@ -939,6 +985,21 @@ sci_gateway/cpp/libscispreadsheet_la-sci_xls_read.lo:  \
 	sci_gateway/cpp/$(am__dirstamp) \
 	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
 sci_gateway/cpp/libscispreadsheet_la-sci_xls_open.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscispreadsheet_la-sci_isXlsx.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscispreadsheet_la-sci_xlsxInfo.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscispreadsheet_la-sci_xlsxRead.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscispreadsheet_la-sci_xlsxSheet.lo:  \
+	sci_gateway/cpp/$(am__dirstamp) \
+	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
+sci_gateway/cpp/libscispreadsheet_la-sci_xlsxWrite.lo:  \
 	sci_gateway/cpp/$(am__dirstamp) \
 	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
 sci_gateway/c/$(am__dirstamp):
@@ -979,6 +1040,8 @@ mostlyclean-compile:
 	-rm -f src/c/*.lo
 	-rm -f src/c/ripole/*.$(OBJEXT)
 	-rm -f src/c/ripole/*.lo
+	-rm -f src/cpp/*.$(OBJEXT)
+	-rm -f src/cpp/*.lo
 
 distclean-compile:
 	-rm -f *.tab.c
@@ -989,8 +1052,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvStringToDouble.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvTextScan.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvWrite.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_isXlsx.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_open.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_read.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxInfo.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxRead.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxSheet.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxWrite.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscispreadsheet_algo_la-checkCsvWriteFormat.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscispreadsheet_algo_la-csvDefault.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscispreadsheet_algo_la-csvRead.Plo@am__quote@ # am--include-marker
@@ -1006,6 +1074,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-olestream-unwrap.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-pldstr.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-ripole.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_metadata.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_read.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_write.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -1208,6 +1279,27 @@ sci_gateway/c/libscispreadsheet_la-sci_csvWrite.lo: sci_gateway/c/sci_csvWrite.c
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
+src/cpp/libscispreadsheet_algo_la-xlsx_read.lo: src/cpp/xlsx_read.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT src/cpp/libscispreadsheet_algo_la-xlsx_read.lo -MD -MP -MF src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_read.Tpo -c -o src/cpp/libscispreadsheet_algo_la-xlsx_read.lo `test -f 'src/cpp/xlsx_read.cpp' || echo '$(srcdir)/'`src/cpp/xlsx_read.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_read.Tpo src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_read.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/cpp/xlsx_read.cpp' object='src/cpp/libscispreadsheet_algo_la-xlsx_read.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/cpp/libscispreadsheet_algo_la-xlsx_read.lo `test -f 'src/cpp/xlsx_read.cpp' || echo '$(srcdir)/'`src/cpp/xlsx_read.cpp
+
+src/cpp/libscispreadsheet_algo_la-xlsx_write.lo: src/cpp/xlsx_write.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT src/cpp/libscispreadsheet_algo_la-xlsx_write.lo -MD -MP -MF src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_write.Tpo -c -o src/cpp/libscispreadsheet_algo_la-xlsx_write.lo `test -f 'src/cpp/xlsx_write.cpp' || echo '$(srcdir)/'`src/cpp/xlsx_write.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_write.Tpo src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_write.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/cpp/xlsx_write.cpp' object='src/cpp/libscispreadsheet_algo_la-xlsx_write.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/cpp/libscispreadsheet_algo_la-xlsx_write.lo `test -f 'src/cpp/xlsx_write.cpp' || echo '$(srcdir)/'`src/cpp/xlsx_write.cpp
+
+src/cpp/libscispreadsheet_algo_la-xlsx_metadata.lo: src/cpp/xlsx_metadata.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT src/cpp/libscispreadsheet_algo_la-xlsx_metadata.lo -MD -MP -MF src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_metadata.Tpo -c -o src/cpp/libscispreadsheet_algo_la-xlsx_metadata.lo `test -f 'src/cpp/xlsx_metadata.cpp' || echo '$(srcdir)/'`src/cpp/xlsx_metadata.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_metadata.Tpo src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_metadata.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/cpp/xlsx_metadata.cpp' object='src/cpp/libscispreadsheet_algo_la-xlsx_metadata.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/cpp/libscispreadsheet_algo_la-xlsx_metadata.lo `test -f 'src/cpp/xlsx_metadata.cpp' || echo '$(srcdir)/'`src/cpp/xlsx_metadata.cpp
+
 sci_gateway/cpp/libscispreadsheet_la-sci_xls_read.lo: sci_gateway/cpp/sci_xls_read.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscispreadsheet_la-sci_xls_read.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_read.Tpo -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xls_read.lo `test -f 'sci_gateway/cpp/sci_xls_read.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xls_read.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_read.Tpo sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_read.Plo
@@ -1222,6 +1314,41 @@ sci_gateway/cpp/libscispreadsheet_la-sci_xls_open.lo: sci_gateway/cpp/sci_xls_op
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xls_open.lo `test -f 'sci_gateway/cpp/sci_xls_open.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xls_open.cpp
 
+sci_gateway/cpp/libscispreadsheet_la-sci_isXlsx.lo: sci_gateway/cpp/sci_isXlsx.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscispreadsheet_la-sci_isXlsx.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_isXlsx.Tpo -c -o sci_gateway/cpp/libscispreadsheet_la-sci_isXlsx.lo `test -f 'sci_gateway/cpp/sci_isXlsx.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_isXlsx.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_isXlsx.Tpo sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_isXlsx.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_isXlsx.cpp' object='sci_gateway/cpp/libscispreadsheet_la-sci_isXlsx.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscispreadsheet_la-sci_isXlsx.lo `test -f 'sci_gateway/cpp/sci_isXlsx.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_isXlsx.cpp
+
+sci_gateway/cpp/libscispreadsheet_la-sci_xlsxInfo.lo: sci_gateway/cpp/sci_xlsxInfo.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscispreadsheet_la-sci_xlsxInfo.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxInfo.Tpo -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xlsxInfo.lo `test -f 'sci_gateway/cpp/sci_xlsxInfo.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xlsxInfo.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxInfo.Tpo sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxInfo.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_xlsxInfo.cpp' object='sci_gateway/cpp/libscispreadsheet_la-sci_xlsxInfo.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xlsxInfo.lo `test -f 'sci_gateway/cpp/sci_xlsxInfo.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xlsxInfo.cpp
+
+sci_gateway/cpp/libscispreadsheet_la-sci_xlsxRead.lo: sci_gateway/cpp/sci_xlsxRead.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscispreadsheet_la-sci_xlsxRead.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxRead.Tpo -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xlsxRead.lo `test -f 'sci_gateway/cpp/sci_xlsxRead.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xlsxRead.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxRead.Tpo sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxRead.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_xlsxRead.cpp' object='sci_gateway/cpp/libscispreadsheet_la-sci_xlsxRead.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xlsxRead.lo `test -f 'sci_gateway/cpp/sci_xlsxRead.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xlsxRead.cpp
+
+sci_gateway/cpp/libscispreadsheet_la-sci_xlsxSheet.lo: sci_gateway/cpp/sci_xlsxSheet.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscispreadsheet_la-sci_xlsxSheet.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxSheet.Tpo -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xlsxSheet.lo `test -f 'sci_gateway/cpp/sci_xlsxSheet.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xlsxSheet.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxSheet.Tpo sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxSheet.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_xlsxSheet.cpp' object='sci_gateway/cpp/libscispreadsheet_la-sci_xlsxSheet.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xlsxSheet.lo `test -f 'sci_gateway/cpp/sci_xlsxSheet.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xlsxSheet.cpp
+
+sci_gateway/cpp/libscispreadsheet_la-sci_xlsxWrite.lo: sci_gateway/cpp/sci_xlsxWrite.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sci_gateway/cpp/libscispreadsheet_la-sci_xlsxWrite.lo -MD -MP -MF sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxWrite.Tpo -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xlsxWrite.lo `test -f 'sci_gateway/cpp/sci_xlsxWrite.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xlsxWrite.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxWrite.Tpo sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxWrite.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='sci_gateway/cpp/sci_xlsxWrite.cpp' object='sci_gateway/cpp/libscispreadsheet_la-sci_xlsxWrite.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscispreadsheet_la_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sci_gateway/cpp/libscispreadsheet_la-sci_xlsxWrite.lo `test -f 'sci_gateway/cpp/sci_xlsxWrite.cpp' || echo '$(srcdir)/'`sci_gateway/cpp/sci_xlsxWrite.cpp
+
 mostlyclean-libtool:
 	-rm -f *.lo
 
@@ -1231,6 +1358,7 @@ clean-libtool:
 	-rm -rf sci_gateway/cpp/.libs sci_gateway/cpp/_libs
 	-rm -rf src/c/.libs src/c/_libs
 	-rm -rf src/c/ripole/.libs src/c/ripole/_libs
+	-rm -rf src/cpp/.libs src/cpp/_libs
 install-libscispreadsheet_la_etcDATA: $(libscispreadsheet_la_etc_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(libscispreadsheet_la_etc_DATA)'; test -n "$(libscispreadsheet_la_etcdir)" || list=; \
@@ -1421,6 +1549,8 @@ distclean-generic:
 	-rm -f src/c/$(am__dirstamp)
 	-rm -f src/c/ripole/$(DEPDIR)/$(am__dirstamp)
 	-rm -f src/c/ripole/$(am__dirstamp)
+	-rm -f src/cpp/$(DEPDIR)/$(am__dirstamp)
+	-rm -f src/cpp/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -1437,8 +1567,13 @@ distclean: distclean-am
 	-rm -f sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvStringToDouble.Plo
 	-rm -f sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvTextScan.Plo
 	-rm -f sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvWrite.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_isXlsx.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_open.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_read.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxInfo.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxRead.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxSheet.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxWrite.Plo
 	-rm -f src/c/$(DEPDIR)/libscispreadsheet_algo_la-checkCsvWriteFormat.Plo
 	-rm -f src/c/$(DEPDIR)/libscispreadsheet_algo_la-csvDefault.Plo
 	-rm -f src/c/$(DEPDIR)/libscispreadsheet_algo_la-csvRead.Plo
@@ -1454,6 +1589,9 @@ distclean: distclean-am
 	-rm -f src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-olestream-unwrap.Plo
 	-rm -f src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-pldstr.Plo
 	-rm -f src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-ripole.Plo
+	-rm -f src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_metadata.Plo
+	-rm -f src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_read.Plo
+	-rm -f src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_write.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-local distclean-tags
@@ -1508,8 +1646,13 @@ maintainer-clean: maintainer-clean-am
 	-rm -f sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvStringToDouble.Plo
 	-rm -f sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvTextScan.Plo
 	-rm -f sci_gateway/c/$(DEPDIR)/libscispreadsheet_la-sci_csvWrite.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_isXlsx.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_open.Plo
 	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xls_read.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxInfo.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxRead.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxSheet.Plo
+	-rm -f sci_gateway/cpp/$(DEPDIR)/libscispreadsheet_la-sci_xlsxWrite.Plo
 	-rm -f src/c/$(DEPDIR)/libscispreadsheet_algo_la-checkCsvWriteFormat.Plo
 	-rm -f src/c/$(DEPDIR)/libscispreadsheet_algo_la-csvDefault.Plo
 	-rm -f src/c/$(DEPDIR)/libscispreadsheet_algo_la-csvRead.Plo
@@ -1525,6 +1668,9 @@ maintainer-clean: maintainer-clean-am
 	-rm -f src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-olestream-unwrap.Plo
 	-rm -f src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-pldstr.Plo
 	-rm -f src/c/ripole/$(DEPDIR)/libscispreadsheet_algo_la-ripole.Plo
+	-rm -f src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_metadata.Plo
+	-rm -f src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_read.Plo
+	-rm -f src/cpp/$(DEPDIR)/libscispreadsheet_algo_la-xlsx_write.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

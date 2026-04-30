@@ -128,6 +128,9 @@ Source: bin\jcef\*.*; DestDir: {app}\bin\jcef; Flags: recursesubdirs; Components
 ; xslt
 Source: bin\libxslt.dll; DestDir: {app}\bin; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;
+; XLNT
+Source: bin\xlnt.dll; DestDir: {app}\bin; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
+;
 ; batch files
 Source: bin\scinotes.bat; DestDir: {app}\bin; Components: {#COMPN_SCILAB}
 Source: bin\xcos.bat; DestDir: {app}\bin; Components: {#COMPN_SCILAB}

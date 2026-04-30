@@ -394,7 +394,8 @@ static int replaceDoubleQuotes(wchar_t** lines, int* nbLines)
     }
 
    *nbLines = realLines;
-    return 0;
+   FREE(data);
+   return 0;
 }
 // =============================================================================
 char* csvTextScanSize(wchar_t** lines, int* nbLines, const wchar_t* separator, int* rows, int* cols, int haveRange, int* iRange)

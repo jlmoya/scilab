@@ -139,7 +139,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>includes;src/c/ripole;src/c;sci_gateway/cpp;src/cpp;../../libs/intl;../core/includes;../fileio/includes;../io/includes;../windows_tools/includes;../output_stream/includes;../localization/includes;../api_scilab/includes;../string/includes;../dynamic_link/includes;../ast/includes/types;../ast/includes/ast;../ast/includes/exps;../ast/includes/operations;../ast/includes/symbol;../ast/includes/system_env;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>includes;src/c/ripole;src/c;sci_gateway/cpp;src/cpp;../../libs/xlnt/include;../../libs/intl;../core/includes;../fileio/includes;../io/includes;../windows_tools/includes;../output_stream/includes;../localization/includes;../api_scilab/includes;../string/includes;../dynamic_link/includes;../ast/includes/types;../ast/includes/ast;../ast/includes/exps;../ast/includes/operations;../ast/includes/symbol;../ast/includes/system_env;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FORDLL;_DEBUG;_WINDOWS;_USRDLL;SPREADSHEET_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -224,7 +224,7 @@
     <ClCompile>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>includes;src/c/ripole;src/c;sci_gateway/cpp;src/cpp;../../libs/intl;../core/includes;../fileio/includes;../io/includes;../windows_tools/includes;../output_stream/includes;../localization/includes;../api_scilab/includes;../string/includes;../dynamic_link/includes;../ast/includes/types;../ast/includes/ast;../ast/includes/exps;../ast/includes/operations;../ast/includes/symbol;../ast/includes/system_env;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>includes;src/c/ripole;src/c;sci_gateway/cpp;src/cpp;../../libs/xlnt/include;../../libs/intl;../core/includes;../fileio/includes;../io/includes;../windows_tools/includes;../output_stream/includes;../localization/includes;../api_scilab/includes;../string/includes;../dynamic_link/includes;../ast/includes/types;../ast/includes/ast;../ast/includes/exps;../ast/includes/operations;../ast/includes/symbol;../ast/includes/system_env;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FORDLL;NDEBUG;_WINDOWS;_USRDLL;SPREADSHEET_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -325,6 +325,7 @@
   <ItemGroup>
     <ClInclude Include="includes\dynlib_spreadsheet.h" />
     <ClInclude Include="includes\gw_spreadsheet.h" />
+    <ClInclude Include="sci_gateway\cpp\xlsx_lib.hxx" />
     <ClInclude Include="sci_gateway\c\gw_csv_helpers.h" />
     <ClInclude Include="src\c\checkCsvWriteFormat.h" />
     <ClInclude Include="src\c\csvDefault.h" />
@@ -343,6 +344,11 @@
     <ClInclude Include="src\c\xls.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sci_gateway\cpp\sci_isXlsx.cpp" />
+    <ClCompile Include="sci_gateway\cpp\sci_xlsxInfo.cpp" />
+    <ClCompile Include="sci_gateway\cpp\sci_xlsxRead.cpp" />
+    <ClCompile Include="sci_gateway\cpp\sci_xlsxSheet.cpp" />
+    <ClCompile Include="sci_gateway\cpp\sci_xlsxWrite.cpp" />
     <ClCompile Include="sci_gateway\c\gw_csv_helpers.c" />
     <ClCompile Include="sci_gateway\c\sci_csvDefault.c" />
     <ClCompile Include="sci_gateway\c\sci_csvRead.c" />
@@ -351,6 +357,9 @@
     <ClCompile Include="sci_gateway\c\sci_csvWrite.c" />
     <ClCompile Include="sci_gateway\cpp\sci_xls_open.cpp" />
     <ClCompile Include="sci_gateway\cpp\sci_xls_read.cpp" />
+    <ClCompile Include="src\cpp\xlsx_metadata.cpp" />
+    <ClCompile Include="src\cpp\xlsx_read.cpp" />
+    <ClCompile Include="src\cpp\xlsx_write.cpp" />
     <ClCompile Include="src\c\checkCsvWriteFormat.c" />
     <ClCompile Include="src\c\csvDefault.c" />
     <ClCompile Include="src\c\csvRead.c" />

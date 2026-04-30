@@ -872,6 +872,25 @@ AC_HDF5()
 # The Java detection is done after in this file.
 
 
+#######################
+## XLNT LIBRARY (reading and writing xlsx files)
+#######################
+if $WITH_DEVTOOLS; then # Scilab thirdparties
+    XLNT_CFLAGS="-I$DEVTOOLS_INCDIR"
+    XLNT_LDFLAGS="-L$DEVTOOLS_LIBDIR"
+    XLNT_LIBS="-lxlnt"
+else
+    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors xlnt]) || {
+        AC_MSG_ERROR([cannot find pkg-config package for xlnt])
+    }
+    XLNT_CFLAGS=`$PKG_CONFIG --cflags xlnt`
+    XLNT_LDFLAGS=`$PKG_CONFIG --libs-only-L xlnt`
+    XLNT_LIBS=`$PKG_CONFIG --libs-only-l xlnt`
+fi
+AC_SUBST(XLNT_CFLAGS)
+AC_SUBST(XLNT_LDFLAGS)
+AC_SUBST(XLNT_LIBS)
+
 #################
 ## scirenderer
 #################
@@ -2629,6 +2648,12 @@ echo "XML configuration:"
 echo "  XML_FLAGS .......... = $XML_FLAGS"
 echo "  XML_LIBS ........... = $XML_LIBS"
 echo "  XML_VERSION ........ = $XML_VERSION"
+
+echo ""
+echo "XLNT configuration:"
+echo "  XLNT_CFLAGS ........ = $XLNT_CFLAGS"
+echo "  XLNT_LDFLAGS ....... = $XLNT_LDFLAGS"
+echo "  XLNT_LIBS .......... = $XLNT_LIBS"
 
 echo ""
 echo "HDF5 configuration:"

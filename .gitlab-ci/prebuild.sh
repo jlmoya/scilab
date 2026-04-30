@@ -108,6 +108,7 @@ OPENXLSX_VERSION=0.3.2
 LIBARCHIVE_VERSION=3.7.1
 RAPIDJSON_VERSION=24b5e7a
 LIBXSLT_VERSION=1.1.35
+XLNT_VERSION=1.6.1
 
 # # CppServer and its deps
 # CPPSERVER_VERSION=1.0.4.1
@@ -151,6 +152,7 @@ make_versions() {
     echo "LIBARCHIVE_VERSION    = $LIBARCHIVE_VERSION"
     echo "RAPIDJSON_VERSION     = $RAPIDJSON_VERSION"
     echo "LIBXSLT_VERSION       = $LIBXSLT_VERSION"
+    echo "XLNT_VERSION          = $XLNT_VERSION"
     # echo "CPPSERVER_VERSION     = $CPPSERVER_VERSION"
     # echo "ASIO_VERSION          = $ASIO_VERSION"
     # echo "CPPCOMMON_VERSION     = $CPPCOMMON_VERSION"
@@ -217,6 +219,9 @@ download_dependencies() {
     [ ! -f rapidjson-$RAPIDJSON_VERSION.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/rapidjson-$RAPIDJSON_VERSION.tar.gz
 
     [ ! -f libxslt-$LIBXSLT_VERSION.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/libxslt-$LIBXSLT_VERSION.tar.xz
+
+    [ ! -f xlnt-${XLNT_VERSION}_with_submodules.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/xlnt-${XLNT_VERSION}_with_submodules.tar.gz
+
     # # CppServer and its deps
     # [ ! -f cppserver-$CPPSERVER_VERSION.zip ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/cppserver-$CPPSERVER_VERSION.zip
     # [ ! -f asio-$ASIO_VERSION.zip ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/asio-$ASIO_VERSION.zip
@@ -253,6 +258,7 @@ make_all() {
     build_libarchive
     build_rapidjson
     build_libxslt
+    build_xlnt
     # build_cppserver
 }
 
@@ -282,6 +288,7 @@ make_binary_directory() {
     cp -R "$INSTALLUSRDIR/include/rapidjson/" "$INSTALLROOTDIR/include/"
     cp -R "$INSTALLUSRDIR/include/libxml2/" "$INSTALLROOTDIR/include/"
     cp -R "$INSTALLUSRDIR/include/pcre2.h" "$INSTALLROOTDIR/include/"
+    cp -R "$INSTALLUSRDIR/include/xlnt/" "$INSTALLROOTDIR/include/"
 
     #####################################
     ##### lib/thirdparty/ directory #####
@@ -331,6 +338,9 @@ make_binary_directory() {
 
     rm -f "$LIBTHIRDPARTYDIR"/libpcre*.*
     cp -d "$INSTALLUSRDIR"/lib/libpcre2*.* "$LIBTHIRDPARTYDIR/"
+
+    rm -f "$LIBTHIRDPARTYDIR"/libxlnt*.*
+    cp -d "$INSTALLUSRDIR"/lib/libxlnt*.* "$LIBTHIRDPARTYDIR/"
 
     rm -f "$LIBTHIRDPARTYDIR"/libssl.*
     cp -d "$INSTALLUSRDIR"/lib/libssl.* "$LIBTHIRDPARTYDIR/"
@@ -940,6 +950,29 @@ build_libarchive() {
 build_rapidjson() {
     rm -rf "$INSTALLUSRDIR/include/rapidjson/"
     tar -xzf "$DOWNLOADDIR"/rapidjson-$RAPIDJSON_VERSION.tar.gz -C "$INSTALLUSRDIR/include/" --strip-components=2 --wildcards rapidjson-$RAPIDJSON_VERSION*/include
+}
+
+build_xlnt() {
+    cd "$BUILDDIR" || exit 1
+
+    INSTALL_DIR=$BUILDDIR/xlnt-$XLNT_VERSION/install_dir
+    
+    tar -xzf "$DOWNLOADDIR/xlnt-${XLNT_VERSION}_with_submodules.tar.gz"
+    cd xlnt-$XLNT_VERSION || exit 1
+
+    cmake -B build . --install-prefix="$INSTALL_DIR" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=ON \
+        -G "Unix Makefiles"
+    cmake --build build/
+    cmake --build build/ --target install
+
+    cp -a "$INSTALL_DIR"/lib/*.so* "$INSTALLUSRDIR/lib/"
+    cp -a "$INSTALL_DIR"/include/* "$INSTALLUSRDIR/include/"
+
+    XLNT_MAJOR_VERSION=$(echo "$XLNT_VERSION" | awk -F \. '{ print $1}')
+    cd "$INSTALLUSRDIR/lib/" || exit 1
+    ln -fs "libxlnt.so.${XLNT_VERSION}" libxlnt.so.${XLNT_MAJOR_VERSION}
 }
 
 build_suitesparse() {

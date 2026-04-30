@@ -23,6 +23,7 @@
 #endif
 /*--------------------------------------------------------------------------*/
 #pragma comment(lib,"../../bin/libintl.lib")
+#pragma comment(lib, "../../libs/xlnt/lib/xlnt.lib")
 /*--------------------------------------------------------------------------*/
 int WINAPI DllMain (HINSTANCE hInstance , DWORD reason, PVOID pvReserved)
 {

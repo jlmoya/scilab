@@ -10,50 +10,5 @@
 // along with this program.
 
 function writetimeseries(ts, filename, varargin)
-    rhs = nargin;
-    delim = ",";
-    fname = "writetimeseries";
-
-    if rhs > 2 then
-        nboptvars = rhs - 2;
-        if modulo(nboptvars, 2) == 1 then
-            error(msprintf(_("%s: Wrong number of input arguments: %d expected.\n"), fname, nboptvars + 1));
-        end
-        for i = 1:2:nboptvars
-            if type(varargin(i)) <> 10 then
-                break;
-            end
-
-            select convstr(varargin(i), "l")
-            case "delimiter"
-                delim = varargin(i + 1);
-                if type(delim) <> 10 then
-                    error(msprintf(_("%s: Wrong type for %s argument: string expected.\n"), fname, varargin(i)));
-                end
-                if ~isscalar(delim) then
-                    error(msprintf(_("%s: Wrong size for %s argument: scalar expected.\n"), fname, varargin(i)));
-                end
-            else
-                error(msprintf(_("%s: Wrong value for input argument #%d: ''%s'' not allowed.\n"), fname, i, varargin(i)));
-            end
-
-            rhs = rhs - 2;
-        end
-    end
-
-    // arg #1
-    if ~istimeseries(ts) then
-        error(msprintf(_("%s: Wrong type for input argument #%d: timeseries expected.\n"), fname, 1));
-    end
-
-    // arg #2
-    if type(filename) <> 10 then
-        error(msprintf(_("%s: Wrong type for input argument #%d: file name expected.\n"), fname, 1));
-    end
-
-    tss = string(ts);
-    tss = [ts.props.variableNames; tss];
-
-    csvWrite(tss, filename, delim)
-
+    writetable(timeseries2table(ts), filename, varargin(:));
 endfunction
