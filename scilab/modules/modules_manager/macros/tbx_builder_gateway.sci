@@ -55,8 +55,6 @@ function tbx_builder_gateway(module)
             languages = d.name(d.isdir);
             tbx_builder_gateway_lang(languages, builder_gateway_dir); // executes the builder_gateway
             tbx_build_gateway_loader(languages, builder_gateway_dir);
-            // TODO: not sure the cleaner is necessary here because it must be manually created for each language...
-            // A user defined cleaner seems more appropriate
             tbx_build_gateway_clean(languages, builder_gateway_dir);
         end
     end

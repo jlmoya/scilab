@@ -63,10 +63,14 @@ function tbx_build_src_clean(languages,path)
     ""];
 
     for i = 1:size(languages,"*") do
+        user_cleaner = "cleaner_" + languages(i) + ".sce";
         cleanertxt = [cleanertxt,
         "chdir(src_dir);",
-        "if ( isdir("""+languages(i)+""") ) then",
+        "if isdir("""+languages(i)+""") then",
         "    chdir("""+languages(i)+""");",
+        "    if isfile("""+user_cleaner+""") then",
+        "        exec("""+user_cleaner+""");",
+        "    end",
         "    exec(""cleaner.sce"");",
         "    mdelete(""cleaner.sce"");",
         "end",
