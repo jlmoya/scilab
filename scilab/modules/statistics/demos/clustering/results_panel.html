@@ -1,0 +1,35 @@
+<!--
+ * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+ * Copyright (C) 2026 - Dassault Systèmes S.E. - Adeline CARNIS
+ *
+ * This file is released under the 3-clause BSD license. See COPYING-BSD.
+ *
+ -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link href="results_panel.css" rel="stylesheet">
+    </head>
+    <body>
+        <h2>Results</h2>
+        <div class="scroll">
+            <div id="wait">Waiting for data&#8230;</div>
+            <div id="results-dbscan"    class="algo-block" style="display:none">
+                <div class="algo-title">DBSCAN</div>
+                <div id="content-dbscan"></div>
+            </div>
+            <div id="results-meanshift" class="algo-block" style="display:none">
+                <div class="algo-title">Mean Shift</div>
+                <div id="content-meanshift"></div>
+            </div>
+            <div id="results-kmeans"    class="algo-block" style="display:none">
+                <div class="algo-title">K-Means</div>
+                <div id="content-kmeans"></div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="results_panel.js"></script>
+    </body>
+</html>
