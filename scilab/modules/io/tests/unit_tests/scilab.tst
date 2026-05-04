@@ -23,6 +23,7 @@ assert_checkequal(status, 0);
 stdout(find(stdout == "")) = [];
 assert_checkequal(stdout(($-1):$), [" ans = ";"   2."]);
 stderr(find(stderr == "")) = [];
+stderr(grep(stderr, "vm3dgl: ")) = []; // Ignore some warnings (when run in VMware environment)
 assert_checkequal(stderr, []);
 
 // Test file execution
@@ -31,7 +32,7 @@ mputl("1+1", tmp);
 [status, stdout, stderr] = scilab(file=tmp);
 assert_checkequal(status, 0);
 stdout(find(stdout == "")) = [];
-stdout(grep(stdout, "vm3dgl: ")) = []; // Ignore some warnings (when run in VMware environment)
 assert_checkequal(stdout, []);
 stderr(find(stderr == "")) = [];
+stderr(grep(stderr, "vm3dgl: ")) = []; // Ignore some warnings (when run in VMware environment)
 assert_checkequal(stderr, []);

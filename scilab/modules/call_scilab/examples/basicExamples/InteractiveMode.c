@@ -17,7 +17,6 @@
 /*------------------------------------------------------------*/
 int main(void)
 {
-    DisableInteractiveMode();
 #ifdef _MSC_VER
     if ( StartScilab(NULL, NULL, 0) == FALSE )
 #else
@@ -28,8 +27,7 @@ int main(void)
         return -1;
     }
 
-
-    int code = SendScilabJob("failedMyCurrentJob=%pi*3/0");
+    int code = SendScilabJob("plot3d()");
     if (code != 0)
     {
         char lastjob[4096];
@@ -44,6 +42,7 @@ int main(void)
         fprintf(stderr, "Error while calling TerminateScilab\n");
         return -2;
     }
-    return 0;
+
+    return code;
 }
 /*------------------------------------------------------------*/

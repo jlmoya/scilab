@@ -25,6 +25,7 @@
 
 int main(void)
 {
+    DisableInteractiveMode();
 #ifdef _MSC_VER
     StartScilab(NULL, NULL, 0);
 #else
