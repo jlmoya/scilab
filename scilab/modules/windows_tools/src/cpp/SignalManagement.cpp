@@ -75,6 +75,11 @@ static VOID CALLBACK kill_process_callback(PTP_CALLBACK_INSTANCE Instance, PVOID
         frame.AddrPC.Offset = ctx.Rip;
         frame.AddrFrame.Offset = ctx.Rbp;
         frame.AddrStack.Offset = ctx.Rsp;
+#elif defined(_M_ARM64)
+        DWORD machine = IMAGE_FILE_MACHINE_ARM64;
+        frame.AddrPC.Offset    = ctx.Pc;
+        frame.AddrFrame.Offset = ctx.Fp;
+        frame.AddrStack.Offset = ctx.Sp;
 #else
         DWORD machine = IMAGE_FILE_MACHINE_I386;
         frame.AddrPC.Offset = ctx.Eip;
