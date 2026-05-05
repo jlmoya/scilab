@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>ilib_build(lib_name,table,files,libs [,makename,ldflags,cflags,fflags,ismex, cc])</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -387,7 +387,7 @@ if abs(m-3.)>%eps then pause,end
  ]]></programlisting>
     </refsection>
     <refsection>
-        <title>Example: How to use cflags arguments</title>
+        <title>Example: How to use cflags argument</title>
         <programlisting role="example"><![CDATA[
 cd TMPDIR;
 mkdir('example_ilib_build_cflag');
