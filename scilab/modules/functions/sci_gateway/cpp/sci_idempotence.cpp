@@ -65,8 +65,9 @@ types::Function::ReturnValue sci_idempotence(types::typed_list& in, int _iRetCou
             continue;
         }
 
-        std::wostringstream ostr1;
         //--pretty-print 1
+        std::wostringstream ostr1;
+        ostr1.precision(17); // Needed to ensure same precision for both runs (See std::numeric_limits<double>::max_digits10)
         ast::PrintVisitor print1(ostr1);
         parser.getTree()->accept(print1);
         delete parser.getTree();
@@ -86,6 +87,7 @@ types::Function::ReturnValue sci_idempotence(types::typed_list& in, int _iRetCou
 
         //--pretty-print 2
         std::wostringstream ostr2;
+        ostr1.precision(17); // Needed to ensure same precision for both runs (See std::numeric_limits<double>::max_digits10)
         ast::PrintVisitor print2(ostr2);
         parser.getTree()->accept(print2);
         delete parser.getTree();
