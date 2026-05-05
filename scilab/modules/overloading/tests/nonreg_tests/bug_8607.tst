@@ -19,9 +19,9 @@ assert_checkequal(size(b,3), 1);
 
 A(:,:,2)=[1;1;1];
 B(:,:,2)=[1,1,1];
-errmsg = msprintf(_("Operator %ls: Wrong dimensions for operation [%ls] %ls [%ls], same dimensions expected.\n"), "<", "3x1", "<", "1x3");
+errmsg = msprintf(_("Operator %ls: Wrong dimensions for operation [%ls] %ls [%ls], same dimensions expected.\n"), "<", "3x1x2", "<", "1x3x2");
 assert_checkerror("A<B", errmsg);
-errmsg = msprintf(_("Operator %ls: Wrong dimensions for operation [%ls] %ls [%ls], same dimensions expected.\n"), "<", "1x2", "<", "3x1");
+errmsg = msprintf(_("Operator %ls: Wrong dimensions for operation [%ls] %ls [%ls], same dimensions expected.\n"), "<", "1x2", "<", "3x1x2");
 assert_checkerror("[1 1]<A", errmsg);
 
 s=poly(0,"s");
