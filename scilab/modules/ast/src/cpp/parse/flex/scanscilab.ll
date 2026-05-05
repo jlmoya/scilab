@@ -1201,10 +1201,10 @@ sharp             "#"
       //std::wcerr << L"pwstBuffer = W{" << pwstBuffer << L"}" << std::endl;
       if (pstBuffer.c_str() != NULL && pwstBuffer == NULL)
       {
-        pstBuffer.clear();
         std::string str = "Can\'t convert \'";
         str += pstBuffer.c_str();
         str += "\' to UTF-8";
+        pstBuffer.clear();
         BEGIN(INITIAL);
         yyerror(str);
         return scan_throw(FLEX_ERROR);
@@ -1226,10 +1226,10 @@ sharp             "#"
     wchar_t *pwstBuffer = to_wide_string(pstBuffer.c_str());
     if (pstBuffer.c_str() != NULL && pwstBuffer == NULL)
     {
-      pstBuffer.clear();
       std::string str = "Can\'t convert \'";
       str += pstBuffer.c_str();
       str += "\' to UTF-8";
+      pstBuffer.clear();
       BEGIN(INITIAL);
       yyerror(str);
       return scan_throw(FLEX_ERROR);
@@ -1300,10 +1300,10 @@ sharp             "#"
     wchar_t *pwstBuffer = to_wide_string(pstBuffer.c_str());
     if (pstBuffer.c_str() != NULL && pwstBuffer == NULL)
     {
-      pstBuffer.clear();
       std::string str = "Can\'t convert \'";
       str += pstBuffer.c_str();
       str += "\' to UTF-8";
+      pstBuffer.clear();
       BEGIN(INITIAL);
       yyerror(str);
       return scan_throw(FLEX_ERROR);
@@ -1359,10 +1359,10 @@ sharp             "#"
     wchar_t *pwstBuffer = to_wide_string(pstBuffer.c_str());
     if (pstBuffer.c_str() != NULL && pwstBuffer == NULL)
     {
-      pstBuffer.clear();
       std::string str = "Can\'t convert \'";
       str += pstBuffer.c_str();
       str += "\' to UTF-8";
+      pstBuffer.clear();
       BEGIN(INITIAL);
       yyerror(str);
       return scan_throw(FLEX_ERROR);
@@ -1544,6 +1544,12 @@ void scan_reset() {
   classdef_inner_level = 0;
   paren_levels = {};
   lambda_levels = {};
+  comment_level = 0;
+  last_token = 0;
+  linebreak_stored_token = 0;
+  linebreak_stored_space = FALSE;
+  str_opener_column = 0;
+  pstBuffer.clear();
 }
 
 
