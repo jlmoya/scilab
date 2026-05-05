@@ -60,7 +60,7 @@ function demo_single_pendulum()
     realtimeinit(1)
     realtime(0)
 
-    compute(list(single_pend,9.81),[0 60],x0,u0,mass,rtol=1e-6,atol=1e-9,callback=cbFn)
+    compute(list(single_pend,9.81),[0 60],x0,u0,mass,rtol=1e-6,atol=1e-9,callback=cbFn,maxSteps=8500)
 
 endfunction
 demo_single_pendulum()

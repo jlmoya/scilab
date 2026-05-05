@@ -64,6 +64,9 @@ function varargout = compute(sim,tspan,x0,u0,mass,p1,p2,p3,p4,p5,p6,p7,p8)
     if ~exists("atol","local")
         atol=1e-6;
     end
+    if ~exists("maxSteps", "local")
+        maxSteps = 500;
+    end
 
     // get number of bodies:
     nb = length(mass);
@@ -118,15 +121,16 @@ function varargout = compute(sim,tspan,x0,u0,mass,p1,p2,p3,p4,p5,p6,p7,p8)
         [t,y,info] = ida(list(res,n,sim,mass,Mass,par),tspan,y0,yd0,...
             rtol=rtol,atol=atol,...
             yIsAlgebraic = λ_ind,suppressAlg = %t,...
-            jacobian=list(jac,n,sim,mass,Mass,par), callback=callback)
+            jacobian=list(jac,n,sim,mass,Mass,par), callback=callback,maxSteps=maxSteps);
         // yield x,u,ud,lambda,info
         varargout=list(t,y(1:n,:),y(n+1:2*n,:),info.yp(n+1:2*n,:),y(2*n+1:$,:),info);
     else
+        disp("ici")
         λ_ind = 2*n+1:length(y0);
         ida(list(res,n,sim,mass,Mass,par),tspan,y0,yd0,...
             rtol=rtol,atol=atol,...
             yIsAlgebraic = λ_ind,suppressAlg = %t,...
-            jacobian=list(jac,n,sim,mass,Mass,par));
+            jacobian=list(jac,n,sim,mass,Mass,par),maxSteps=maxSteps);
         varargout=list();
     end
  endfunction
