@@ -79,10 +79,14 @@ function y = %i_linspace(d1, d2, n)
         else
             if type(d1)==8
                 span = double(d2) - double(d1)
+                d1d  = double(d1)
+                raw  = (span * (0:n-1)) / (n-1) + d1d * ones(1,n)
+                desc = (span < 0) * ones(1, n)
+                y    = iconvert(desc.*ceil(raw) + (1-desc).*floor(raw), inttype(d1))
             else
                 span = d2 - d1
+                y    = (span * (0:n-1)) / (n-1) + d1 * ones(1,n)
             end
-            y = (span * (0:n-1)) / (n-1) + d1 * ones(1,n);
         end
         // Forces the last value to be exactly the given d2:
         // https://gitlab.com/scilab/scilab/-/issues/10966

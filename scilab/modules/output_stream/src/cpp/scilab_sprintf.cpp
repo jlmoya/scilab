@@ -568,7 +568,21 @@ wchar_t** scilab_sprintf(const std::string& funcname, const wchar_t* _pwstInput,
                 {
                     wchar_t pwstTemp[bsiz];
                     double dblVal = in[tok->pos]->getAs<types::Double>()->get(j, tok->col);
-                    unsigned long long iVal = (unsigned long long)dblVal;
+                    unsigned long long iVal;
+
+#ifdef _M_ARM64
+                    if (dblVal < 0)
+                    {
+                        int64_t temp = static_cast<int64_t>(dblVal);
+                        iVal = static_cast<unsigned long long>(temp);
+                    }
+                    else
+                    {
+                        iVal = (unsigned long long)dblVal;
+                    }
+#else
+                    iVal = (unsigned long long)dblVal;
+#endif
 
                     if (std::isfinite(dblVal))
                     {
