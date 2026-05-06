@@ -17,7 +17,11 @@ SPREADSHEET_C_SOURCES = \
 SPREADSHEET_CPP_SOURCES = \
     src/cpp/xlsx_read.cpp \
     src/cpp/xlsx_write.cpp \
-    src/cpp/xlsx_metadata.cpp
+    src/cpp/xlsx_metadata.cpp \
+    src/cpp/arrow_read.cpp \
+    src/cpp/arrow_write.cpp \
+    src/cpp/arrow_write_utils.cpp \
+    src/cpp/parquet_write.cpp
 
 RIPOLE_SOURCES = \
     src/c/ripole/olestream-unwrap.c \
@@ -35,7 +39,9 @@ GATEWAY_CXX_SOURCES = \
     sci_gateway/cpp/sci_xlsxInfo.cpp \
     sci_gateway/cpp/sci_xlsxRead.cpp \
     sci_gateway/cpp/sci_xlsxSheet.cpp \
-    sci_gateway/cpp/sci_xlsxWrite.cpp
+    sci_gateway/cpp/sci_xlsxWrite.cpp \
+    sci_gateway/cpp/sci_parquetRead.cpp \
+    sci_gateway/cpp/sci_parquetWrite.cpp
 
 libscispreadsheet_la_CPPFLAGS= \
     -I$(srcdir)/includes/ \
@@ -60,6 +66,8 @@ libscispreadsheet_la_CPPFLAGS= \
     -I$(top_srcdir)/modules/io/includes/ \
     -I$(top_srcdir)/modules/dynamic_link/includes \
     $(XLNT_CFLAGS) \
+    $(ARROW_CFLAGS) \
+    $(PARQUET_CFLAGS) \
     $(AM_CPPFLAGS)
 
 GATEWAY_C_SOURCES = \
@@ -79,12 +87,12 @@ libscispreadsheet_la_SOURCES = $(GATEWAY_CXX_SOURCES) $(GATEWAY_C_SOURCES)
 libscispreadsheet_algo_la_CPPFLAGS = $(libscispreadsheet_la_CPPFLAGS)
 
 # For the code check (splint)
-CHECK_SRC= $(SPREADSHEET_C_SOURCES) $(GATEWAY_CXX_SOURCES) $(RIPOLE_SOURCES)
+CHECK_SRC= $(SPREADSHEET_C_SOURCES) $(GATEWAY_CXX_SOURCES) $(SPREADSHEET_CPP_SOURCES) $(RIPOLE_SOURCES)
 INCLUDE_FLAGS = $(libscispreadsheet_la_CPPFLAGS)
 
 libscispreadsheet_la_LIBADD = libscispreadsheet-algo.la
 
-libscispreadsheet_la_LIBADD += $(XLNT_LDFLAGS) $(XLNT_LIBS)
+libscispreadsheet_la_LIBADD += $(XLNT_LDFLAGS) $(XLNT_LIBS) $(ARROW_LDFLAGS) $(ARROW_LIBS) $(PARQUET_LDFLAGS) $(PARQUET_LIBS)
 
 #### Target ######
 modulename=spreadsheet

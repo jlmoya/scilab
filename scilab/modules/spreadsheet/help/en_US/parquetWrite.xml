@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+ * Copyright (C) 2025 - Dassault Systèmes S.E. - Valentin MULLER
+ * Copyright (C) 2026 - Dassault Systèmes S.E. - Adeline CARNIS
+ *
+ * For more information, see the COPYING file which you should have received
+ * along with this program.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="parquetWrite" xml:lang="en">
+    <refnamediv>
+        <refname>parquetWrite</refname>
+        <refpurpose>
+            Write an Parquet file from a table.
+        </refpurpose>
+    </refnamediv>
+     <refsection>
+        <title>Syntax</title>
+        <synopsis>
+            parquetWrite(filename, data)
+        </synopsis>
+        <variablelist>
+            <varlistentry>
+                <term>filename</term>
+                <listitem>
+                    <para>A string specifying the path to the file to write to.</para>
+                </listitem>
+			</varlistentry>
+            <varlistentry>
+                <term>data</term>
+                <listitem>
+                    <para>A table containing the data to write to the Parquet file.</para>
+                </listitem>
+            </varlistentry>    
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>Write a .parquet or .arrow file from a table.</para>
+        <para>Each column of the file corresponds to a column of the table.</para>
+        <para>The name of the column are the same as in the table.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+            a = ["A"; "B"; "C"];
+            b = hours([1;3;5]);
+            c = rand(3,1);
+            t = table(a, b, c, "VariableNames", ["string", "hours", "double"]);
+            parquetWrite(fullfile(TMPDIR, "data.parquet"), t)
+            parquetRead(fullfile(TMPDIR, "data.parquet"))
+
+            // t = [3x3 table]
+            // 
+            //    string    hours      double  
+            //    ______   ________   _________
+            //                                 
+            //    A        01:00:00   0.2113249
+            //    B        03:00:00   0.7560439
+            //    C        05:00:00   0.0002211
+        ]]>
+        </programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+			<member><link linkend="parquetRead">parquetRead</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>Function added.</revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

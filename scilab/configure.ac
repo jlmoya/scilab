@@ -891,6 +891,44 @@ AC_SUBST(XLNT_CFLAGS)
 AC_SUBST(XLNT_LDFLAGS)
 AC_SUBST(XLNT_LIBS)
 
+#######################
+## ARROW LIBRARY (reading and writing ARROW files)
+#######################
+if $WITH_DEVTOOLS; then # Scilab thirdparties
+    ARROW_CFLAGS="-I$DEVTOOLS_INCDIR"
+    ARROW_LDFLAGS="-L$DEVTOOLS_LIBDIR"
+    ARROW_LIBS="-larrow"
+else
+    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors arrow]) || {
+        AC_MSG_ERROR([cannot find pkg-config package for arrow])
+    }
+    ARROW_CFLAGS=`$PKG_CONFIG --cflags arrow`
+    ARROW_LDFLAGS=`$PKG_CONFIG --libs-only-L arrow`
+    ARROW_LIBS=`$PKG_CONFIG --libs-only-l arrow`
+fi
+AC_SUBST(ARROW_CFLAGS)
+AC_SUBST(ARROW_LDFLAGS)
+AC_SUBST(ARROW_LIBS)
+
+#######################
+## PARQUET LIBRARY (reading and writing PARQUET files)
+#######################
+if $WITH_DEVTOOLS; then # Scilab thirdparties
+    PARQUET_CFLAGS="-I$DEVTOOLS_INCDIR"
+    PARQUET_LDFLAGS="-L$DEVTOOLS_LIBDIR"
+    PARQUET_LIBS="-lparquet"
+else
+    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors parquet]) || {
+        AC_MSG_ERROR([cannot find pkg-config package for parquet])
+    }
+    PARQUET_CFLAGS=`$PKG_CONFIG --cflags parquet`
+    PARQUET_LDFLAGS=`$PKG_CONFIG --libs-only-L parquet`
+    PARQUET_LIBS=`$PKG_CONFIG --libs-only-l parquet`
+fi
+AC_SUBST(PARQUET_CFLAGS)
+AC_SUBST(PARQUET_LDFLAGS)
+AC_SUBST(PARQUET_LIBS)
+
 #################
 ## scirenderer
 #################
@@ -2654,6 +2692,18 @@ echo "XLNT configuration:"
 echo "  XLNT_CFLAGS ........ = $XLNT_CFLAGS"
 echo "  XLNT_LDFLAGS ....... = $XLNT_LDFLAGS"
 echo "  XLNT_LIBS .......... = $XLNT_LIBS"
+
+echo ""
+echo "ARROW configuration:"
+echo "  ARROW_CFLAGS ........ = $ARROW_CFLAGS"
+echo "  ARROW_LDFLAGS ....... = $ARROW_LDFLAGS"
+echo "  ARROW_LIBS .......... = $ARROW_LIBS"
+
+echo ""
+echo "PARQUET configuration:"
+echo "  PARQUET_CFLAGS ...... = $PARQUET_CFLAGS"
+echo "  PARQUET_LDFLAGS ..... = $PARQUET_LDFLAGS"
+echo "  PARQUET_LIBS ........ = $PARQUET_LIBS"
 
 echo ""
 echo "HDF5 configuration:"

@@ -24,6 +24,8 @@
 /*--------------------------------------------------------------------------*/
 #pragma comment(lib,"../../bin/libintl.lib")
 #pragma comment(lib, "../../libs/xlnt/lib/xlnt.lib")
+#pragma comment(lib, "../../libs/arrow/lib/arrow.lib")
+#pragma comment(lib, "../../libs/arrow/lib/parquet.lib")
 /*--------------------------------------------------------------------------*/
 int WINAPI DllMain (HINSTANCE hInstance , DWORD reason, PVOID pvReserved)
 {

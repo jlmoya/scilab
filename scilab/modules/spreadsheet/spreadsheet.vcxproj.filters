@@ -100,6 +100,12 @@
     <ClInclude Include="sci_gateway\cpp\xlsx_lib.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\arrow_lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\arrow_write_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sci_gateway\c\sci_csvDefault.c">
@@ -199,6 +205,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sci_gateway\cpp\sci_xlsxInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sci_gateway\cpp\sci_parquetRead.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sci_gateway\cpp\sci_parquetWrite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cpp\arrow_read.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cpp\arrow_write.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cpp\arrow_write_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cpp\parquet_write.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

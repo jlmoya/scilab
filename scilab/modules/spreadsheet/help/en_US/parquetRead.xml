@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is released under the 3-clause BSD license. See COPYING-BSD.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="parquetRead" xml:lang="en">
+    <refnamediv>
+        <refname>parquetRead</refname>
+        <refpurpose>
+            Read an Parquet or Arrow file and return a table.
+        </refpurpose>
+    </refnamediv>
+     <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+            result = parquetRead(filename)
+        </synopsis>
+        <variablelist>
+            <varlistentry>
+                <term>filename</term>
+                <listitem>
+                    <para>A string specifying the path to the file to read.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>Read a .parquet or .arrow file and return a table containing the data.</para>
+        <para>Each column of the table correspond to a column of the file.</para>
+        <para>The name of the column are the same as in the file.</para>
+    </refsection>
+
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example">
+        rand("seed", 0)
+        x = ["a"; "b"; "b"; "c"; "a"];
+        x1 = floor(rand(5,1)*5)-1.5;
+        x2 = -floor(rand(5,1)*5)+0.5;
+        t = table(x, x1, x2, "VariableNames", ["x", "x1", "x2"]);
+        parquetWrite(fullfile(TMPDIR, "table.parquet"), t);
+        t2 = parquetRead(fullfile(TMPDIR, "table.parquet"))
+        // t2 = [5x3 table]
+        //
+        //    x     x1     x2 
+        //   ___   ____   ____
+        //                    
+        //   a     -0.5   -2.5
+        //   b     1.5    -3.5
+        //   b     -1.5   -2.5
+        //   c     -0.5   -3.5
+        //   a     1.5    0.5 
+        </programlisting>
+    </refsection>
+    <refsection role="caution">
+        <title>Caution</title>
+        <warning>
+            <para>This function converts data:</para>
+            <simplelist>
+            <member>float32 are converted to doubles</member>
+            <member>date32/64 and ts are converted to datetime</member>
+            <member>null booleans are converted to false booleans</member>
+            </simplelist>
+        </warning>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="parquetWrite">parquetWrite</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>Function added.</revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>
