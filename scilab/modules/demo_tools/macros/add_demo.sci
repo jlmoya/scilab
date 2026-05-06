@@ -11,7 +11,13 @@
 // For more information, see the COPYING file which you should have received
 // along with this program.
 
-function add_demo(demotitle, path)
+function add_demo(demotitle, path, description, icon)
+    arguments
+        demotitle {mustBeA(demotitle, "string")}
+        path  {mustBeA(demotitle, "string")}
+        description  {mustBeA(demotitle, "string")} = ""
+        icon  {mustBeA(demotitle, "string")} = ""
+    end
 
     if and(getscilabmode() <> ["NW";"STD"]) then
         return;
@@ -45,14 +51,20 @@ function add_demo(demotitle, path)
         error(msprintf(gettext("%s: Wrong input argument #%d: Path to a scilab script file expected.\n"), "add_demo", 2));
     end
 
+    // Ensure demolist has 4 columns: [name, path, description, icon]
+    if demolist <> [] && size(demolist, 2) < 4 then
+        [nr, nc] = size(demolist);
+        demolist = [demolist, emptystr(nr, 4 - nc)];
+    end
+
     k = find(demolist(:,1) == demotitle);
 
     if k == [] then
-        demolist = [demolist; demotitle,path];
+        demolist = [demolist; demotitle, path, description, icon];
     else
         k1 = find(demolist(k,2) == path)
         if k1 == [] then
-            demolist = [demolist; demotitle + " (" + string(size(k,"*")) + ")", path];
+            demolist = [demolist; demotitle + " (" + string(size(k,"*")) + ")", path, description, icon];
         end
     end
 
