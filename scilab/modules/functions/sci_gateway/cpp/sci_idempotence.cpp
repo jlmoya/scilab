@@ -40,7 +40,7 @@ types::Function::ReturnValue sci_idempotence(types::typed_list& in, int _iRetCou
 
     if (in[0]->isString() == false)
     {
-        Scierror(999, _("%s: Wrong type for input argument #%d: A String expected.\n"), "whereis", 1);
+        Scierror(999, _("%s: Wrong type for input argument #%d: A String expected.\n"), "idempotence", 1);
         return types::Function::Error;
     }
 
@@ -67,7 +67,9 @@ types::Function::ReturnValue sci_idempotence(types::typed_list& in, int _iRetCou
 
         //--pretty-print 1
         std::wostringstream ostr1;
-        ostr1.precision(17); // Needed to ensure same precision for both runs (See std::numeric_limits<double>::max_digits10)
+#ifdef __APPLE__
+        ostr1.precision(std::numeric_limits<double>::max_digits10); // Needed to ensure same precision for both runs
+#endif
         ast::PrintVisitor print1(ostr1);
         parser.getTree()->accept(print1);
         delete parser.getTree();
@@ -87,7 +89,9 @@ types::Function::ReturnValue sci_idempotence(types::typed_list& in, int _iRetCou
 
         //--pretty-print 2
         std::wostringstream ostr2;
-        ostr1.precision(17); // Needed to ensure same precision for both runs (See std::numeric_limits<double>::max_digits10)
+#ifdef __APPLE__
+        ostr1.precision(std::numeric_limits<double>::max_digits10); // Needed to ensure same precision for both runs
+#endif
         ast::PrintVisitor print2(ostr2);
         parser.getTree()->accept(print2);
         delete parser.getTree();
