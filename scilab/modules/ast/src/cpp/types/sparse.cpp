@@ -482,7 +482,7 @@ Sparse::Sparse(RealSparse_t* realSp, CplxSparse_t* cplxSp) : matrixReal(realSp),
 
 Sparse::Sparse(Double SPARSE_CONST& xadj, Double SPARSE_CONST& adjncy, Double SPARSE_CONST& src, std::size_t r, std::size_t c)
 {
-    Adjacency a(xadj.get(), adjncy.get());
+    Adjacency a(xadj.get(), adjncy.get(), xadj.get() + xadj.getSize());
     create(static_cast<int>(r), static_cast<int>(c), src, makeIteratorFromVar(a), src.getSize());
 #ifndef NDEBUG
     Inspector::addItem(this);
