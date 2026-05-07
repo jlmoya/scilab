@@ -10,11 +10,14 @@
             Read an Parquet or Arrow file and return a table.
         </refpurpose>
     </refnamediv>
-     <refsynopsisdiv>
+    <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
             result = parquetRead(filename)
         </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>filename</term>
@@ -23,7 +26,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-    </refsynopsisdiv>
+    </refsection>
     <refsection>
         <title>Description</title>
         <para>Read a .parquet or .arrow file and return a table containing the data.</para>

@@ -10,11 +10,14 @@
             Read data from an Excel file and return a matrix or cell.
         </refpurpose>
     </refnamediv>
-     <refsynopsisdiv>
+    <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
             result = xlsxRead(filename, option1, value1, option2, value2, ...)
         </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>filename</term>
@@ -48,7 +51,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-    </refsynopsisdiv>
+    </refsection>
     <refsection>
         <title>Description</title>
         <para>Read data from an Excel (.xlsx) file and return it in the requested format (double matrix, string matrix, or cell).</para>

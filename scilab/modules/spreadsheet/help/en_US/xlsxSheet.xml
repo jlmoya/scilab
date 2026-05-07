@@ -10,11 +10,14 @@
             Manage sheets in an Excel file.
         </refpurpose>
     </refnamediv>
-     <refsynopsisdiv>
+    <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
             result = xlsxSheet(filename, operation, ...)
         </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>filename</term>
@@ -68,7 +71,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-    </refsynopsisdiv>
+    </refsection>
     <refsection>
         <title>Description</title>
         <para>Manage Excel workbook operations: create new sheets, delete existing sheets, rename sheets, or retrieve sheet information.</para>

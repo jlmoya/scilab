@@ -10,11 +10,14 @@
             Get information about an Excel file.
         </refpurpose>
     </refnamediv>
-     <refsynopsisdiv>
+    <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
             info = xlsxInfo(filename [, sheet_identifier])
         </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>filename</term>
@@ -33,7 +36,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-    </refsynopsisdiv>
+    </refsection>
     <refsection>
         <title>Description</title>
         <para>Read metadata and information from an Excel (.xlsx) file without loading the actual data.</para>

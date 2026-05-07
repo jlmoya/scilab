@@ -10,11 +10,14 @@
             Write data (matrix or cell) to an Excel file.
         </refpurpose>
     </refnamediv>
-     <refsynopsisdiv>
+    <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
             xlsxWrite(data, filename, option1, value1, option2, value2, ...)
         </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>data</term>
@@ -78,7 +81,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-    </refsynopsisdiv>
+    </refsection>
     <refsection>
         <title>Description</title>
         <para>Write data to an Excel (.xlsx) file. Accepts matrices or cells. 
