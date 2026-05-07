@@ -52,7 +52,7 @@
     <xsl:apply-templates select="d:refsection[d:title]/d:variablelist/d:varlistentry"/>
     <xsl:apply-templates select="d:refsection[@role='see also']"/>
     <xsl:text>&#10;Type "doc </xsl:text>
-    <xsl:value-of select="normalize-space(d:refnamediv/d:refname)"/>
+    <xsl:value-of select="normalize-space(@xml:id)"/>
     <xsl:text>" to open the </xsl:text>
     <xsl:value-of select="normalize-space(d:refnamediv/d:refname)"/>
     <xsl:text> reference page&#10;</xsl:text>
@@ -213,12 +213,12 @@
   <xsl:template match="d:refsection[@role='see also']">
     <xsl:variable name="items">
       <xsl:choose>
-        <xsl:when test=".//d:member">
+        <xsl:when test=".//d:member[not(d:link)]">
           <xsl:for-each select=".//d:member">
             <xsl:variable name="label" select="normalize-space(string(.))"/>
             <xsl:if test="$label != ''">
               <xsl:if test="position() &gt; 1">
-                <xsl:text> </xsl:text>
+                <xsl:text>, </xsl:text>
               </xsl:if>
               <xsl:value-of select="$label"/>
             </xsl:if>
@@ -226,10 +226,10 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:for-each select=".//d:link">
-            <xsl:variable name="label" select="normalize-space(.)"/>
+            <xsl:variable name="label" select="normalize-space(@linkend)"/>
             <xsl:if test="$label != ''">
               <xsl:if test="position() &gt; 1">
-                <xsl:text> </xsl:text>
+                <xsl:text>, </xsl:text>
               </xsl:if>
               <xsl:value-of select="$label"/>
             </xsl:if>
