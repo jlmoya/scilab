@@ -7,6 +7,7 @@
 //
 // <-- CLI SHELL MODE -->
 // <-- NO CHECK REF -->
+// <-- NOT FIXED -->
 //
 // <-- Non-regression test for bug 11394 -->
 //
@@ -22,6 +23,6 @@ exec("SCI/modules/call_scilab/tests/unit_tests/compileHelpers.sce");
 // make bug_11394
 // ./bug_11394
 
-[status, stdout, stderr] = run_executable(compile_executable("SCI/modules/call_scilab/tests/nonreg_tests/bug_11394.c"))
+[status, stdout, stderr] = run_executable(compile_executable("SCI/modules/call_scilab/tests/nonreg_tests/bug_11394.c"));
 assert_checkequal(stderr, "");
 assert_checkequal(status, 0);

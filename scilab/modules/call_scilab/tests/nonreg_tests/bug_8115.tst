@@ -24,6 +24,6 @@ exec("SCI/modules/call_scilab/tests/unit_tests/compileHelpers.sce");
 
 cflags = struct(getos(), "-I" + SCI + "/modules/ast/includes/system_env", "Windows", "");
 ldflags = struct(getos(), "-lsciast", "Windows", "");
-[status, stdout, stderr] = run_executable(compile_executable("SCI/modules/call_scilab/tests/nonreg_tests/bug_8115.c", cflags, ldflags))
+[status, stdout, stderr] = run_executable(compile_executable("SCI/modules/call_scilab/tests/nonreg_tests/bug_8115.c", cflags, ldflags));
 assert_checkequal(stderr, "");
 assert_checkequal(status, 0);

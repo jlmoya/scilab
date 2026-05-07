@@ -10,6 +10,6 @@
 
 exec("SCI/modules/call_scilab/tests/unit_tests/compileHelpers.sce");
 
-[status, stdout, stderr] = run_executable(compile_executable("SCI/modules/call_scilab/examples/basicExamples/readwritecomplexmatrix.c"))
+[status, stdout, stderr] = run_executable(compile_executable("SCI/modules/call_scilab/examples/basicExamples/readwritecomplexmatrix.c"));
 assert_checkequal(stderr, "");
 assert_checkequal(status, 0);

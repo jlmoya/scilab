@@ -30,7 +30,6 @@
 static JavaVM *jvm_SCILAB = NULL;
 /*--------------------------------------------------------------------------*/
 static BOOL HadAlreadyJavaVm = FALSE;
-static BOOL CreateJavaVM_Existed = FALSE;
 /*--------------------------------------------------------------------------*/
 static JavaVMOption *jvm_options = NULL;
 static int nOptions = 0;
@@ -236,8 +235,7 @@ BOOL startJVM(char *SCI_PATH)
                 vm_args.nOptions = nOptions;
                 vm_args.ignoreUnrecognized = FALSE;
                 status = SciJNI_CreateJavaVM(&jvm_SCILAB, (JNIEnv **) & env, &vm_args);
-                CreateJavaVM_Existed = (status == JNI_EEXIST);
-                if (CreateJavaVM_Existed)
+                if (status == JNI_EEXIST)
                 {
                     status = SciJNI_GetCreatedJavaVMs(&jvm_SCILAB, 1, NULL);
                 }
@@ -290,17 +288,19 @@ BOOL finishJVM(void)
     if (jvm_SCILAB)
     {
 #ifndef __APPLE__
-        // destroy the JVM when it was created by startJVM
-        if (!CreateJavaVM_Existed && !IsFromJava())
+        // force destroy the JVM if not on the javasci case
+        if (!IsFromJava())
         {
             (*jvm_SCILAB)->DestroyJavaVM(jvm_SCILAB);
         }
         else
-#endif
         {
-            // Detach the shared thread, to let the JVM finish itself later
+#endif
+        // Detach the shared thread, to let the JVM finish itself later
             (*jvm_SCILAB)->DetachCurrentThread(jvm_SCILAB);
+#ifndef __APPLE__
         }
+#endif
     }
     if (FreeDynLibJVM())
     {
