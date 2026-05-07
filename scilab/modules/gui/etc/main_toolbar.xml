@@ -32,7 +32,7 @@
     </button>
     <separator/>
     <!-- Atoms -->
-    <button icon="package-x-generic" tooltiptext="Module manager - ATOMS">
+    <button icon="atoms-green" tooltiptext="Module manager - ATOMS">
         <callback instruction="if with_module(&quot;atoms&quot;) then atomsGui(); else disp(gettext(&quot;Please install atoms module.&quot;)); end" type="0"/>
     </button>
     <separator/>

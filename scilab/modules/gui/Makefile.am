@@ -372,6 +372,7 @@ images/icons/16x16/actions/zoom-out.png \
 images/icons/16x16/actions/data_modify.png \
 images/icons/16x16/animations/process-working.png \
 images/icons/16x16/apps/accessories-text-editor.png \
+images/icons/16x16/apps/atoms-green.png \
 images/icons/16x16/apps/datatips.png \
 images/icons/16x16/apps/help-browser.png \
 images/icons/16x16/apps/rrze_table.png \
