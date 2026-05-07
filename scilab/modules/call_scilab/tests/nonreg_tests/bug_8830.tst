@@ -22,7 +22,7 @@ exec("SCI/modules/call_scilab/tests/unit_tests/compileHelpers.sce");
 // make bug_8830
 // ./bug_8830
 
-[status, stdout, stderr] = run_executable(compile_executable("SCI/modules/call_scilab/tests/nonreg_tests/bug_8830.c"));
+[status, stdout, stderr] = run_executable(compile_executable("SCI/modules/call_scilab/tests/nonreg_tests/bug_8830.c"))
 assert_checkequal(stderr, "");
 assert_checkequal(status, 0);
 assert_checkequal(stdout(2), "my own error");
