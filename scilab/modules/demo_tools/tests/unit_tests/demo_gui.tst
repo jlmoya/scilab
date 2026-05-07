@@ -6,7 +6,7 @@
 // =============================================================================
 
 // <-- TEST WITH GRAPHIC -->
-// <-- NOT FIXED -->
+// <-- NO CHECK REF -->
 
 // used to create java exceptions
 for i=1:100,
