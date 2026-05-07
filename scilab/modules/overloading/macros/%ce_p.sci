@@ -26,6 +26,14 @@ function %ce_p(ce)
     function printMatrix(str)
         s = max(length(str), "r");
 
+        // pad each column to its max width for alignment
+        for j = 1:size(str, 2)
+            f = sprintf("%%%ds", -s(j));
+            for i = 1:size(str, 1)
+                str(i, j) = sprintf(f, str(i, j));
+            end
+        end
+
         //disp following lines limit
         maxL = lines()(1);
 
@@ -63,6 +71,13 @@ function %ce_p(ce)
     endfunction
 
     str = %ce_string(ce);
+
+    // Add quotes around scalar string elements for display
+    for i = 1:size(ce, "*")
+        if type(ce{i}) == 10 && size(ce{i}, "*") == 1 then
+            str(i) = """" + str(i) + """";
+        end
+    end
 
     if ndims(str) > 2 then
         tuples = computeIndex(size(str));

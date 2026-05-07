@@ -18,8 +18,22 @@ function str = %ce_string(ce)
             val = ce{i};
             t = type(ce{i})
             select t
-            case {1,2,4,5,6,8,10}
-                //native arrayOf types wich can be displayed by sci2exp()
+            case 10
+                if isempty(val) then
+                    str(i) = "";
+                elseif size(val, "*") == 1 then
+                    str(i) = val;
+                else
+                    x = sci2exp(val);
+                    if length(x) <= 15 then
+                        str(i) = x;
+                    else
+                        [otype, onames] = typename();
+                        str(i) = evstr("%"+onames(otype==t)+"_outline(val,0)");
+                    end
+                end
+            case {1,2,4,5,6,8}
+                //native arrayOf types which can be displayed by sci2exp()
                 if isempty(val)
                     str(i) = "[]";
                 else
@@ -45,14 +59,6 @@ function str = %ce_string(ce)
                     str(i) = typeof(ce{i});
                 end
             end
-        end
-    end
-    s = max(length(str), "r");
-
-    for j = 1:size(str, 2)
-        f = sprintf("%%%ds\n", -s(j));
-        for i = 1:size(str, 1)
-            str(i, j) = sprintf(f, str(i, j))
         end
     end
 endfunction
