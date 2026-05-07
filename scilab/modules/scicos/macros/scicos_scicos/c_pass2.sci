@@ -121,7 +121,12 @@ function cpr=c_pass2(bllst,connectmat,clkconnect,cor,corinv,flag)
 
 
     if ~ok then
-        messagebox(_("Problem in port size or type."),"modal","error");
+        msg = gettext("Problem in port size or type.");
+        if or(getscilabmode()==["NW" "NWNI"]) then
+            disp(msg);
+        else
+            messagebox(msg,"modal","error");
+        end
         cpr=list()
         return,
     end
@@ -1717,7 +1722,7 @@ function [ok,bllst]=adjust_inout(bllst,connectmat)
                                     end
                                     //else call bad_connection, set flag ok to false and exit
                                 else
-                                    bad_connection(corinv(connectmat(jj,1)),0,0,1,-1,0,0,1)
+                                    bad_connection(corinv(connectmat(jj,1)), connectmat(jj,2), nout, outtyp, corinv(connectmat(jj,3)), connectmat(jj,4), nin, intyp)
                                     ok=%f;return
                                 end
 
@@ -1766,7 +1771,7 @@ function [ok,bllst]=adjust_inout(bllst,connectmat)
                                     end
                                     //else call bad_connection, set flag ok to false and exit
                                 else
-                                    bad_connection(corinv(connectmat(jj,1)),0,0,1,-1,0,0,1)
+                                    bad_connection(corinv(connectmat(jj,1)), connectmat(jj,2), nout, outtyp, corinv(connectmat(jj,3)), connectmat(jj,4), nin, intyp)
                                     ok=%f;return
                                 end
 
@@ -1807,7 +1812,7 @@ function [ok,bllst]=adjust_inout(bllst,connectmat)
                                     end
                                     //else call bad_connection, set flag ok to false and exit
                                 else
-                                    bad_connection(corinv(connectmat(jj,3)),0,0,1,-1,0,0,1)
+                                    bad_connection(corinv(connectmat(jj,3)), connectmat(jj,4), nin, intyp, corinv(connectmat(jj,1)), connectmat(jj,2), nout, outtyp)
                                     ok=%f;return
                                 end
 
@@ -1856,7 +1861,7 @@ function [ok,bllst]=adjust_inout(bllst,connectmat)
                                     end
                                     //else call bad_connection, set flag ok to false and exit
                                 else
-                                    bad_connection(corinv(connectmat(jj,3)),0,0,1,-1,0,0,1)
+                                    bad_connection(corinv(connectmat(jj,3)), connectmat(jj,4), nin, intyp, corinv(connectmat(jj,1)), connectmat(jj,2), nout, outtyp)
                                     ok=%f;return
                                 end
 
