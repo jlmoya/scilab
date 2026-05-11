@@ -76,6 +76,9 @@ assert_checkequal(prices.content,["30.00","29.99","49.99","39.95","0.0"]);
 
 titlesEmpty=xmlXPath(xmlFile, "/bookstore/book/prices");
 assert_checkequal(length(titlesEmpty),0);
+assert_checkequal(titlesEmpty.content, []);
+assert_checkequal(titlesEmpty.name, []);
+assert_checkfalse(titlesEmpty.content == "Everyday Italian");
 
 xmlDelete(xmlFile);
 
