@@ -64,11 +64,29 @@
                 <term>{validators}</term>
                 <listitem>
                     <para>
-                        List of predefined functions used to check input validity.
+                        Comma-separated list of predefined functions used to check input validity. Each validator must succeed for the input to be accepted.
                     </para>
                     <para>
-                        Each validator must be validate to accept the input.
+                        Two equivalent syntaxes are accepted inside the braces:
                     </para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>
+                                <emphasis role="bold">Short form</emphasis> — only the validator name, the checked argument is implicit. Available for validators that take only the checked value as parameter (e.g. <literal>mustBeReal</literal>, <literal>mustBePositive</literal>, <literal>mustBeFinite</literal>, ...).
+                            </para>
+                            <para>
+                                <code>x double {mustBeReal, mustBePositive}</code>
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <emphasis role="bold">Function-call form</emphasis> — the checked argument is passed explicitly. Required for validators that take additional parameters (e.g. <literal>mustBeGreaterThan</literal>, <literal>mustBeInRange</literal>, <literal>mustBeMember</literal>, <literal>mustBeA</literal>, ...). Also valid for single-argument validators.
+                            </para>
+                            <para>
+                                <code>x double {mustBeGreaterThan(x, 0), mustBeLessThan(x, 10)}</code>
+                            </para>
+                        </listitem>
+                    </itemizedlist>
                     <para>
                         <link linkend="arguments_validators">List of validators</link>
                     </para>

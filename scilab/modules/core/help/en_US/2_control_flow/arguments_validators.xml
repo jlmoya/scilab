@@ -10,6 +10,20 @@
     </refnamediv>
     <refsection>
         <title>Description</title>
+        <para>
+            The table below lists each validator with its full signature. In an <link linkend="arguments">arguments</link> block, validators that only take the checked value (signature <literal>mustBeXxx(value)</literal>) can be written using either form:
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>short form, e.g. <literal>x {mustBeReal, mustBePositive}</literal> — the argument is implicit;</para>
+            </listitem>
+            <listitem>
+                <para>function-call form, e.g. <literal>x {mustBeReal(x), mustBePositive(x)}</literal> — the argument is passed explicitly.</para>
+            </listitem>
+        </itemizedlist>
+        <para>
+            Validators that take additional parameters (e.g. <literal>mustBeGreaterThan</literal>, <literal>mustBeInRange</literal>, <literal>mustBeMember</literal>, <literal>mustBeA</literal>) must always use the function-call form.
+        </para>
         <informaltable border="1">
             <tr>
                 <td><emphasis role="bold">Name</emphasis></td>
