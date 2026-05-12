@@ -442,10 +442,15 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
         if (callback != null && callback.equals("") == false) {
             String data = msg.replace("\"", "\"\"");
             data = data.replace("\'", "\'\'");
+            // The browser fires events asynchronously. If the uicontrol was
+            // destroyed before the queued command runs, the callback target
+            // is no longer valid — skip invoking the user callback.
             String str = "if exists(\"gcbo\") then %oldgcbo = gcbo; end;"
                     + "gcbo = getcallbackobject(" + uid + ");"
+                    + "if ~isempty(gcbo) && is_handle_valid(gcbo) then "
                     + "clear %cb;%cb = #(data) -> (u = gcbo;u.data = struct(\"scilabcallbackID\", " + queryId + ", \"data\", data););"
                     + callback + "(fromJSON(\"" + data + "\"), %cb);"
+                    + "end;"
                     + "if exists(\"%oldgcbo\") then gcbo = %oldgcbo; else clear gcbo; end;"
                     + "clear %cb;";
 

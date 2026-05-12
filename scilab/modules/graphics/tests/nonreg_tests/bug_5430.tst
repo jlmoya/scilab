@@ -5,7 +5,7 @@
 //  This file is distributed under the same license as the Scilab package.
 // =============================================================================
 
-// <-- INTERACTIVE TEST -->
+// <-- NO CHECK REF -->
 
 // <-- Non-regression test for bug 5430 -->
 //

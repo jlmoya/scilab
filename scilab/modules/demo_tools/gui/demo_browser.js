@@ -350,7 +350,5 @@ document.addEventListener("keydown", function(e) {
     }
 });
 
-// Fallback: request data when the page is ready.
-if (typeof toScilab === "function") {
-    toScilab("loaded");
-}
+// Demo tree is requested by Scilab when the browser uicontrol
+// reports "loaded" via its Java-side onLoadEnd callback.

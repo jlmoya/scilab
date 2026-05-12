@@ -820,7 +820,5 @@ document.addEventListener("keydown", function(e) {
     }
 });
 
-// -- Init: request data from Scilab --
-if (typeof toScilab === "function") {
-    toScilab("loaded");
-}
+// Module list is requested by Scilab when the browser uicontrol
+// reports "loaded" via its Java-side onLoadEnd callback.

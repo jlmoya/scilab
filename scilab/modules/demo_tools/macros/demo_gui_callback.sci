@@ -10,6 +10,14 @@ function demo_gui_callback(msg, cb)
     // Callback for the demo browser uicontrol.
     // Receives messages from JavaScript and responds accordingly.
 
+    // The browser uicontrol may have been destroyed between the moment the
+    // event was queued and the moment Scilab executes this callback. The
+    // generic Java-side guard skips most stale events, but the figure can
+    // still be closed while we are running here.
+    if isempty(get("scilab_demo_fig")) then
+        return;
+    end
+
     if type(msg) == 10 then
         if msg == "loaded" then
             demo_gui_send_tree();

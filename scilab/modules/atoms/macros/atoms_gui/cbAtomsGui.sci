@@ -17,6 +17,14 @@ function cbAtomsGui(msg, cb)
     // Callback for the ATOMS browser uicontrol.
     // Receives messages from JavaScript and responds accordingly.
 
+    // The browser uicontrol may have been destroyed between the moment the
+    // event was queued and the moment Scilab executes this callback. The
+    // generic Java-side guard skips most stale events, but the figure can
+    // still be closed while we are running here.
+    if isempty(get("atomsFigure")) then
+        return;
+    end
+
     if ~exists("atomsinternalslib") then
         load("SCI/modules/atoms/macros/atoms_internals/lib");
     end
