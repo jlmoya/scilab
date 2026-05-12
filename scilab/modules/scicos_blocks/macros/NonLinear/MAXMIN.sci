@@ -92,6 +92,7 @@ function [x,y,typ]=MAXMIN(job,arg1,arg2)
         gr_i=[]
 
         x=standard_define([2 2],model,exprs,gr_i)
-        x.graphics.style = "MAXMIN;displayedLabel=MAX"
+        label="MAX"
+        x.graphics.style = "MAXMIN;displayedLabel=$\mathsf{\tiny MIN|MAX\\\small{"+label+"}}$";
     end
 endfunction

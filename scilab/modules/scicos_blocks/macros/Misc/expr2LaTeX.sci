@@ -49,13 +49,13 @@ function label = expr2LaTeX(exprs)
             end
         end
         // Improving * display:
-        rep = ["/((\d|\.)\s*\*\s*\d|\*\s*\-)/", "/\s*\*\s*/", "\!\times\! "
-               "/(\)\s*\*\s*\d|[^\d\.\)]\s*\*\s*[^\(])/", "/\s*\*\s*/", "\!\cdot\! "
-               "/\s*\*\s*/", "/\s*\*\s*/", "\,"];
+        rep = ["/((\d|\.)\s*\*\s*\d|\*\s*\-)/", "/\s*\*\s*/", "\\!\\times\\! "
+               "/(\)\s*\*\s*\d|[^\d\.\)]\s*\*\s*[^\(])/", "/\s*\*\s*/", "\\!\\cdot\\! "
+               "/\s*\*\s*/", "/\s*\*\s*/", "\\,"];
         for r = rep'
-            [b,e,m] = regexp(label, r(1));
+            [b,e,m] = regexp(label, r(1))
             for i = 1:length(b)
-                label = strsubst(label, m(i), strsubst(m(i), r(2), r(3), "r"));
+                label = strsubst(label, m(i), strsubst(m(i), r(2), r(3), "r"))
             end
         end
         // Improving operators display
