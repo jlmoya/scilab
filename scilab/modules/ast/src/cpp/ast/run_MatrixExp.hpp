@@ -129,6 +129,54 @@ void RunVisitorT<T>::visitprivate(const MatrixExp &e)
                     }
                 }
 
+                // classdef horzcat dispatch: bidirectional, fires whenever either
+                // operand is an Object exposing a horzcat method, regardless of
+                // whether the other operand is a GenericType or not.
+                if (poRow != NULL &&
+                    ((poRow->isObject() && poRow->getAs<types::Object>()->hasMethod(L"horzcat")) ||
+                     (pIT->isObject() && pIT->getAs<types::Object>()->hasMethod(L"horzcat"))))
+                {
+                    try
+                    {
+                        types::Object* obj = poRow->isObject()
+                            ? poRow->getAs<types::Object>()
+                            : pIT->getAs<types::Object>();
+
+                        types::typed_list in;
+                        types::optional_list opt;
+                        types::typed_list out;
+
+                        in.push_back(poRow);
+                        in.push_back(pIT);
+
+                        poRow->IncreaseRef();
+                        pIT->IncreaseRef();
+
+                        if (obj->callMethod(L"horzcat", in, opt, 1, out, e) == types::Function::OK && out.size() == 1)
+                        {
+                            poRow = out[0];
+                        }
+                        else
+                        {
+                            poRow = callOverloadMatrixExp(L"c", poRow, pIT, e.getLocation());
+                        }
+
+                        cleanIn(in, out);
+                    }
+                    catch (const InternalError& error)
+                    {
+                        if (poResult)
+                        {
+                            poResult->killMe();
+                        }
+
+                        pIT->killMe();
+                        throw error;
+                    }
+
+                    continue;
+                }
+
                 if (pIT->isGenericType() == false)
                 {
                     if (poRow == NULL)
@@ -140,44 +188,7 @@ void RunVisitorT<T>::visitprivate(const MatrixExp &e)
                     {
                         try
                         {
-                            if ((poRow->isObject() && poRow->getAs<types::Object>()->hasMethod(L"horzcat")) ||
-                                (pIT->isObject() && pIT->getAs<types::Object>()->hasMethod(L"horzcat")))
-                            {
-                                types::Object* obj = nullptr;
-                                if (poRow->isObject())
-                                {
-                                    obj = poRow->getAs<types::Object>();
-                                }
-                                else
-                                {
-                                    obj = pIT->getAs<types::Object>();
-                                }
-
-                                types::typed_list in;
-                                types::optional_list opt;
-                                types::typed_list out;
-
-                                in.push_back(poRow);
-                                in.push_back(pIT);
-
-                                poRow->IncreaseRef();
-                                pIT->IncreaseRef();
-
-                                if (obj->callMethod(L"horzcat", in, opt, 1, out, e) == types::Function::OK && out.size() == 1)
-                                {
-                                    poRow = out[0];
-                                }
-                                else
-                                {
-                                    poRow = callOverloadMatrixExp(L"c", poRow, pIT, e.getLocation());
-                                }
-
-                                cleanIn(in, out);
-                            }
-                            else
-                            {
-                                poRow = callOverloadMatrixExp(L"c", poRow, pIT, e.getLocation());
-                            }
+                            poRow = callOverloadMatrixExp(L"c", poRow, pIT, e.getLocation());
                         }
                         catch (const InternalError& error)
                         {
@@ -381,6 +392,47 @@ void RunVisitorT<T>::visitprivate(const MatrixExp &e)
                 continue;
             }
 
+            // classdef vertcat dispatch: bidirectional, fires whenever either
+            // operand is an Object exposing a vertcat method. Must run before
+            // the GenericType path which would crash in AddElementToVariable
+            // when one side is an Object with no array storage.
+            if ((poResult->isObject() && poResult->getAs<types::Object>()->hasMethod(L"vertcat")) ||
+                (poRow->isObject() && poRow->getAs<types::Object>()->hasMethod(L"vertcat")))
+            {
+                try
+                {
+                    types::Object* obj = poResult->isObject()
+                        ? poResult->getAs<types::Object>()
+                        : poRow->getAs<types::Object>();
+
+                    types::typed_list in;
+                    types::optional_list opt;
+                    types::typed_list out;
+
+                    in.push_back(poResult);
+                    in.push_back(poRow);
+
+                    poResult->IncreaseRef();
+                    poRow->IncreaseRef();
+
+                    if (obj->callMethod(L"vertcat", in, opt, 1, out, e) == types::Function::OK && out.size() == 1)
+                    {
+                        poResult = out[0];
+                    }
+                    else
+                    {
+                        poResult = callOverloadMatrixExp(L"f", poResult, poRow, e.getLocation());
+                    }
+
+                    cleanIn(in, out);
+                }
+                catch (const InternalError& error)
+                {
+                    throw error;
+                }
+                continue;
+            }
+
             types::GenericType* pGT = poRow->getAs<types::GenericType>();
 
             //check dimension
@@ -447,39 +499,12 @@ void RunVisitorT<T>::visitprivate(const MatrixExp &e)
                 }
             }
 
-            // call overload
+            // call overload (Object cases were already handled before AddElementToVariable)
             if (p == NULL)
             {
                 try
                 {
-                    if (poRow->isObject() && poRow->getAs<types::Object>()->hasMethod(L"vertcat"))
-                    {
-                        types::Object* obj = poRow->getAs<types::Object>();
-                        types::typed_list in;
-                        types::optional_list opt;
-                        types::typed_list out;
-
-                        in.push_back(pGTResult);
-                        in.push_back(pGT);
-
-                        pGTResult->IncreaseRef();
-                        pGT->IncreaseRef();
-
-                        if (obj->callMethod(L"vertcat", in, opt, 1, out, e) == types::Function::OK && out.size() == 1)
-                        {
-                            poResult = out[0];
-                        }
-                        else
-                        {
-                            poResult = callOverloadMatrixExp(L"f", pGTResult, pGT, e.getLocation());
-                        }
-
-                        cleanIn(in, out);
-                    }
-                    else
-                    {
-                        poResult = callOverloadMatrixExp(L"f", pGTResult, pGT, e.getLocation());
-                    }
+                    poResult = callOverloadMatrixExp(L"f", pGTResult, pGT, e.getLocation());
                 }
                 catch (const InternalError& error)
                 {
