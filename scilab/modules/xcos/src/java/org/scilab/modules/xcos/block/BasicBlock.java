@@ -385,20 +385,20 @@ public class BasicBlock extends XcosCell implements Serializable {
     }
 
     /**
-     * Update the JGraphX style property accordingly to the block new style
+     * Update the JGraphX style property accordingly to the block new style, ensure undo/redo and previous state invalidation
      *
      * @param controller shared controller
      * @param parent the diagram
      * @param modifiedBlock a block copy containing the new style
      */
     protected void updateStyle(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
-        StyleMap previousStyle = new StyleMap(getStyle());
-        previousStyle.putAll(modifiedBlock.getStyle());
-        parent.getModel().setStyle(this, style.toString());
+        StyleMap update = new StyleMap(getStyle());
+        update.putAll(modifiedBlock.getStyle());
+        parent.getModel().setStyle(this, update.toString());
     }
 
     /**
-     * Update the JGraphX style property accordingly to the block new value
+     * Update the JGraphX value property accordingly to the block new value
      *
      * @param controller shared controller
      * @param parent the diagram

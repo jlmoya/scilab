@@ -324,7 +324,10 @@ public final class XcosCellFactory {
         } else {
             block = createBlock(BlockInterFunction.BASIC_BLOCK, interfaceFunction);
         }
-        block.setStyle(interfaceFunction);
+        // Set the block style if the user did not specify one
+        if (block.getStyle() == "") {
+            block.setStyle(interfaceFunction);
+        }
 
         return block;
     }
