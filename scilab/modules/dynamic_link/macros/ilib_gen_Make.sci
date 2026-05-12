@@ -42,7 +42,7 @@ function Makename = ilib_gen_Make(name, ..
     end
 
     // remove duplicate files
-    files = unique(files);
+    files = unique(files, "keepOrder");
 
     if getos() <> "Windows" then
 

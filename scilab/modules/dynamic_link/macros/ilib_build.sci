@@ -126,7 +126,7 @@ function ilib_build(ilib_name, ..
     end
 
     files = files(:)';
-    files = unique([files, file_gw_name]);
+    files = unique([files, file_gw_name], "keepOrder");
 
     makename = ilib_gen_Make(ilib_name, table, files, libs, makename, %t, ldflags, cflags, fflags, cc);
 

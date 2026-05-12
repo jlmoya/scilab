@@ -41,7 +41,7 @@ function tbx_build_src(names,       ..
     if ~exists("loadername", "local") then loadername = "loader.sce"; end
     if ~exists("makename", "local")   then makename   = ""; end
 
-    files = unique(files);
+    files = unique(files, "keepOrder");
 
     ilib_for_link(names,      ..
     files,      ..

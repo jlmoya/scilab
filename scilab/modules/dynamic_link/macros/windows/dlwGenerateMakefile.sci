@@ -204,7 +204,7 @@ function ilib_gen_Make_win32(name, ..
     end
 
     // remove duplicated files
-    FILES_SRC_MATRIX = unique(FILES_SRC_MATRIX);
+    FILES_SRC_MATRIX = unique(FILES_SRC_MATRIX, "keepOrder");
 
     FILES_SRC = strcat(FILES_SRC_MATRIX," ");
 
