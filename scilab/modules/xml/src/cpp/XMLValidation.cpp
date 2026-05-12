@@ -55,9 +55,14 @@ void XMLValidation::errorReaderFunction(void * arg, const char * msg, xmlParserS
 {
     std::ostringstream oss;
 
-    oss << xmlTextReaderLocatorBaseURI(locator) << gettext(" at line ")
-        << xmlTextReaderLocatorLineNumber(locator) << std::endl
-        << msg << std::endl;
+    xmlChar* baseURI = xmlTextReaderLocatorBaseURI(locator);
+    if (baseURI != nullptr)
+    {
+        oss << baseURI << gettext(" at line ")
+            << xmlTextReaderLocatorLineNumber(locator) << std::endl;
+        xmlFree(baseURI);
+    }
+    oss << msg << std::endl;
 
     errorBuffer.append(oss.str());
 }

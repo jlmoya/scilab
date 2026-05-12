@@ -18,6 +18,7 @@
             status = check_help()
             status = check_help(moduleName)
             status = check_help(moduleName, localeName)
+            status = check_help(moduleName, localeName, xUnitFile)
         </synopsis>
     </refsynopsisdiv>
     <refsection role="arguments">
@@ -40,6 +41,16 @@
                         Scalar string. Locale of the help files to validate, for example
                         <literal>"en_US"</literal> or <literal>"fr_FR"</literal>.
                         The default value is current Scilab language returned by <literal>getlanguage()</literal>.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>xUnitFile</term>
+                <listitem>
+                    <para>
+                        Scalar string or <literal>[]</literal> (default value). Full path of the XML file where
+                        to export the validation results in xUnit (JUnit XML) format.
+                        If not provided or empty, no xUnit report is generated.
                     </para>
                 </listitem>
             </varlistentry>

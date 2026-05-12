@@ -4,11 +4,12 @@
 // For more information, see the COPYING file which you should have received
 // along with this program.
 
-function status = check_help(moduleName, localeName)
+function status = check_help(moduleName, localeName, xUnitFile)
 
     arguments
         moduleName string {mustBeScalarOrEmpty} = []
         localeName (1, 1) string = getlanguage()
+        xUnitFile string {mustBeScalarOrEmpty} = []
     end
 
     fname = "check_help";
@@ -17,10 +18,14 @@ function status = check_help(moduleName, localeName)
     relaxngFile = "SCI/modules/helptools/schema/scilab.rng";
     relaxngObject = xmlRelaxNG(relaxngFile);
 
-    rhs = argn(2)
+    rhs = argn(2);
 
-    xmlfileNames = []
+    xmlfileNames = [];
     dirsToBeListed = [];
+    
+    // For xUnit export
+    generateXUnit = (xUnitFile <> []) && (xUnitFile <> "");
+    testCases = list(); // List of structs: {name, module, passed, errorMessages}
 
     allEntries  = listfiles(fullfile(SCI, "modules"));
     for i=1:size(allEntries, "*")
@@ -43,8 +48,10 @@ function status = check_help(moduleName, localeName)
                 end
             end
         end
-
-    elseif rhs == 1 then
+    end
+    if moduleName == [] then
+        moduleName = allModules;
+    elseif size(moduleName, "*") == 1 then
 
         // Module (single) provided by user & current language / Single file name / Directory
 
@@ -57,16 +64,9 @@ function status = check_help(moduleName, localeName)
                 error(msprintf(_("%s: Module ''%s'' does not exist.\n"), fname, moduleName));
             end
         end
-
-    elseif rhs == 2 then
-
-        // Module (single) & language provided by user
-
-        if isempty(moduleName) then
-            moduleName = allModules;
-        end
-
+    
     end
+
 
     // List file to be checked
     if xmlfileNames == [] then // File list has to be generated
@@ -76,12 +76,12 @@ function status = check_help(moduleName, localeName)
             end
         end
         while dirsToBeListed <> []
-            curDir = dirsToBeListed(1)
+            curDir = dirsToBeListed(1);
             contents = gsort(listfiles(curDir), "lr", "i");
             for i=1:size(contents, "*")
                 item = fullfile(curDir, contents(i));
                 if isfile(item) && fileparts(item, "extension") == ".xml" then
-                    xmlfileNames = [xmlfileNames;item]
+                    xmlfileNames = [xmlfileNames;item];
                 elseif isdir(item) then
                     dirsToBeListed = [item; dirsToBeListed];
                 end
@@ -100,12 +100,20 @@ function status = check_help(moduleName, localeName)
             error(msprintf(_("%s: File ''%s'' does not exist.\n"), fname, xmlfileName));
         end
 
+        // Extract module name from path for grouping in xUnit
+        moduleOfFile = "unknown";
+        if getos() == "Windows" then
+            xmlfileName = strsubst(xmlfileName, "\", "/");
+        end
+        [_, _, match] = regexp(xmlfileName, "#(?<=modules/)[^/]+(?=/help)#");
+        if match <> "" then
+            moduleOfFile = match;
+        end
+
         filename = xmlfileName;
         if getos() == "Windows" then
             filename = strsubst(filename, strsubst(TMPDIR, "\","/"), "TMPDIR");
-            filename = strsubst(filename, strsubst(TMPDIR, "/","\"), "TMPDIR");
             filename = strsubst(filename, strsubst(SCI, "\","/"), "SCI");
-            filename = strsubst(filename, strsubst(SCI, "/","\"), "SCI");
         else
             filename = strsubst(filename, TMPDIR, "TMPDIR");
             filename = strsubst(filename, SCI, "SCI");
@@ -116,10 +124,8 @@ function status = check_help(moduleName, localeName)
             printf(".");
         end
     
-        xmlDoc = xmlRead(xmlfileName);
-        errmsg = xmlValidate(xmlDoc, relaxngObject);
-        xmlDelete(xmlDoc);
-
+        errmsg = xmlValidate(xmlfileName, relaxngObject);
+    
         if errmsg <> [] then
             printf(": FAILED\r\n")
             for iline=1:size(errmsg, "*")
@@ -129,6 +135,16 @@ function status = check_help(moduleName, localeName)
         else
             printf(": PASSED\r\n")
             passed = passed + 1;
+        end
+            
+        // Store result for xUnit
+        if generateXUnit then
+            tc = struct("name", "", "module", "", "passed", %f, "errorMessages", []);
+            tc.name = filename;
+            tc.module = moduleOfFile;
+            tc.passed = (errmsg == []);
+            tc.errorMessages = errmsg;
+            testCases($+1) = tc;
         end
             
     end
@@ -149,6 +165,106 @@ function status = check_help(moduleName, localeName)
     printf("   passed          %4d - %3d %%\n", passed, passedPercent);
     printf("   failed          %4d - %3d %%\n", failed, failedPercent);
     printf("   -----------------------------------------------------------------------------\n");
+
+    // Generate xUnit report if requested
+    if generateXUnit then
+        // Group test cases by module
+        modulesMap = list();
+        for i = 1:size(testCases)
+            tc = testCases(i);
+            moduleNameKey = tc.module;
+            if moduleNameKey == "" then
+                moduleNameKey = "unknown";
+            end
+            
+            found = %f;
+            for j = 1:size(modulesMap)
+                if modulesMap(j).name == moduleNameKey then
+                    modulesMap(j).testcases($+1) = tc;
+                    found = %t;
+                    break;
+                end
+            end
+            if ~found then
+                newModule.name = moduleNameKey;
+                newModule.testcases = list(tc);
+                modulesMap($+1) = newModule;
+            end
+        end
+        
+        // Create XML document
+        doc = xmlDocument(xUnitFile);
+        root = xmlElement(doc, "testsuites");
+        root.attributes.name = "check_help";
+        root.attributes.tests = string(size(testCases));
+        root.attributes.failures = string(failed);
+        
+        // Create properties
+        properties = xmlElement(doc, "properties");
+        [branch, info] = getversion();
+        branchProperty = xmlElement(doc, "property");
+        branchProperty.attributes.name = "branch";
+        branchProperty.attributes.value = branch;
+        properties.children(1) = branchProperty;
+        
+        // Add testsuites (one per module)
+        for i = 1:size(modulesMap)
+            module = modulesMap(i);
+            testsuite = xmlElement(doc, "testsuite");
+            testsuite.attributes.name = module.name;
+            
+            // Count tests and failures for this module
+            modTests = size(module.testcases);
+            modFailures = 0;
+            for j = 1:modTests
+                if ~module.testcases(j).passed then
+                    modFailures = modFailures + 1;
+                end
+            end
+            testsuite.attributes.tests = string(modTests);
+            testsuite.attributes.failures = string(modFailures);
+            
+            // Add testcases for this module
+            propertiesCopy = xmlElement(doc, "properties");
+            branchPropertyCopy = xmlElement(doc, "property");
+            branchPropertyCopy.attributes.name = "branch";
+            branchPropertyCopy.attributes.value = branch;
+            propertiesCopy.children(1) = branchPropertyCopy;
+            
+            for j = 1:modTests
+                tc = module.testcases(j);
+                testcase = xmlElement(doc, "testcase");
+                testcase.attributes.name = tc.name;
+                testcase.attributes.classname = basename(tc.name);
+                
+                if ~tc.passed then
+                    failure = xmlElement(doc, "failure");
+                    failure.attributes.message = "XML validation failed";
+                    // Combine error messages
+                    errorText = "";
+                    for k = 1:size(tc.errorMessages, "*")
+                        if k > 1 then
+                            errorText = errorText + ascii(10) + tc.errorMessages(k);
+                        else
+                            errorText = tc.errorMessages(k);
+                        end
+                    end
+                    // Escape CDATA end marker
+                    errorText = strsubst(errorText, "]]>", "]] >");
+                    failure.content = ["<![CDATA["; errorText; "]]>"];
+                    testcase.children(1) = failure;
+                end
+                testsuite.children(j) = testcase;
+            end
+            testsuite.children(length(testsuite.children)+1) = propertiesCopy;
+            root.children(i) = testsuite;
+        end
+        
+        doc.root = root;
+        xmlWrite(doc);
+        printf("   Export to          %s\n", xUnitFile);
+        printf("   -----------------------------------------------------------------------------\n");
+    end
 
     status = failed == 0;
         

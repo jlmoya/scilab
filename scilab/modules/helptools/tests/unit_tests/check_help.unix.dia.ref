@@ -4,11 +4,12 @@
 //
 //  This file is distributed under the same license as the Scilab package.
 // =============================================================================
+//
 // <-- CLI SHELL MODE -->
 // <-- ENGLISH IMPOSED -->
-// English is imposed for tests using current Scilab language
+//
 // Single file
-assert_checktrue(check_help(fullfile(SCI, "modules", "elementary_functions", "help", "en_US", "matrixoperations", "abs.xml")));
+assert_checktrue(check_help("SCI/modules/elementary_functions/help/en_US/matrixoperations/abs.xml"));
 0001/0001 - SCI/modules/elementary_functions/help/en_US/matrixoperations/abs.xml ...........................................: PASSED
    -----------------------------------------------------------------------------
    Summary
@@ -16,7 +17,7 @@ assert_checktrue(check_help(fullfile(SCI, "modules", "elementary_functions", "he
    failed             0 -   0 %
    -----------------------------------------------------------------------------
 // Directory
-assert_checktrue(check_help(fullfile(SCI, "modules", "elementary_functions", "help", "en_US", "matrixoperations")));
+assert_checktrue(check_help("SCI/modules/elementary_functions/help/en_US/matrixoperations"));
 0001/0014 - SCI/modules/elementary_functions/help/en_US/matrixoperations/abs.xml ...........................................: PASSED
 0002/0014 - SCI/modules/elementary_functions/help/en_US/matrixoperations/and.xml ...........................................: PASSED
 0003/0014 - SCI/modules/elementary_functions/help/en_US/matrixoperations/cross.xml .........................................: PASSED
@@ -443,13 +444,14 @@ assert_checktrue(check_help("elementary_functions", "en_US"));
    failed             0 -   0 %
    -----------------------------------------------------------------------------
 // Test with invalid file
-absHelp = fullfile(SCI, "modules", "elementary_functions", "help", "en_US", "matrixoperations", "abs.xml");
+absHelp = "SCI/modules/elementary_functions/help/en_US/matrixoperations/abs.xml";
 txt = mgetl(absHelp);
 txt(31) = strsubst(txt(31), "<para>", "");
 txt(31) = strsubst(txt(31), "</para>", "");
-mputl(txt, fullfile(TMPDIR, "abs_invalid.xml"));
-assert_checkfalse(check_help(fullfile(TMPDIR, "abs_invalid.xml")));
+mputl(txt, "TMPDIR/abs_invalid.xml");
+assert_checkfalse(check_help("TMPDIR/abs_invalid.xml"));
 0001/0001 - TMPDIR/abs_invalid.xml .........................................................................................: FAILED
+		The file TMPDIR/abs_invalid.xml is not valid:
 		Did not expect element varlistentry there
 		Expecting element example, got varlistentry
 		Expecting element bridgehead, got varlistentry
@@ -463,3 +465,217 @@ assert_checkfalse(check_help(fullfile(TMPDIR, "abs_invalid.xml")));
    -----------------------------------------------------------------------------
 // Error messages
 assert_checkerror("check_help(""module_does_not_exist"")", msprintf(_("%s: Module ''%s'' does not exist.\n"), "check_help", "module_does_not_exist"));
+// Generate an xUnit test file
+check_help("SCI/modules/elementary_functions/help/en_US/matrixoperations/abs.xml", "en_US", "TMPDIR/check_help_xunit1.xml");
+0001/0001 - SCI/modules/elementary_functions/help/en_US/matrixoperations/abs.xml ...........................................: PASSED
+   -----------------------------------------------------------------------------
+   Summary
+   passed             1 - 100 %
+   failed             0 -   0 %
+   -----------------------------------------------------------------------------
+   Export to          TMPDIR/check_help_xunit1.xml
+   -----------------------------------------------------------------------------
+check_help("elementary_functions", "en_US", "TMPDIR/check_help_xunit2.xml");
+0001/0196 - SCI/modules/elementary_functions/help/en_US/and_op.xml .........................................................: PASSED
+0002/0196 - SCI/modules/elementary_functions/help/en_US/bernstein.xml ......................................................: PASSED
+0003/0196 - SCI/modules/elementary_functions/help/en_US/extraction.xml .....................................................: PASSED
+0004/0196 - SCI/modules/elementary_functions/help/en_US/ind2sub.xml ........................................................: PASSED
+0005/0196 - SCI/modules/elementary_functions/help/en_US/insertion.xml ......................................................: PASSED
+0006/0196 - SCI/modules/elementary_functions/help/en_US/isempty.xml ........................................................: PASSED
+0007/0196 - SCI/modules/elementary_functions/help/en_US/isequal.xml ........................................................: PASSED
+0008/0196 - SCI/modules/elementary_functions/help/en_US/ishermitian.xml ....................................................: PASSED
+0009/0196 - SCI/modules/elementary_functions/help/en_US/issymmetric.xml ....................................................: PASSED
+0010/0196 - SCI/modules/elementary_functions/help/en_US/modulo.xml .........................................................: PASSED
+0011/0196 - SCI/modules/elementary_functions/help/en_US/ndims.xml ..........................................................: PASSED
+0012/0196 - SCI/modules/elementary_functions/help/en_US/or_op.xml ..........................................................: PASSED
+0013/0196 - SCI/modules/elementary_functions/help/en_US/size.xml ...........................................................: PASSED
+0014/0196 - SCI/modules/elementary_functions/help/en_US/sub2ind.xml ........................................................: PASSED
+0015/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acos.xml ..............................................: PASSED
+0016/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acosd.xml .............................................: PASSED
+0017/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acosh.xml .............................................: PASSED
+0018/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acot.xml ..............................................: PASSED
+0019/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acotd.xml .............................................: PASSED
+0020/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acoth.xml .............................................: PASSED
+0021/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acsc.xml ..............................................: PASSED
+0022/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acscd.xml .............................................: PASSED
+0023/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/acsch.xml .............................................: PASSED
+0024/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/asec.xml ..............................................: PASSED
+0025/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/asecd.xml .............................................: PASSED
+0026/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/asech.xml .............................................: PASSED
+0027/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/asin.xml ..............................................: PASSED
+0028/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/asind.xml .............................................: PASSED
+0029/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/asinh.xml .............................................: PASSED
+0030/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/atan.xml ..............................................: PASSED
+0031/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/atand.xml .............................................: PASSED
+0032/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/atanh.xml .............................................: PASSED
+0033/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/cos.xml ...............................................: PASSED
+0034/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/cosd.xml ..............................................: PASSED
+0035/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/cosh.xml ..............................................: PASSED
+0036/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/cotd.xml ..............................................: PASSED
+0037/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/cotg.xml ..............................................: PASSED
+0038/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/coth.xml ..............................................: PASSED
+0039/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/csc.xml ...............................................: PASSED
+0040/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/cscd.xml ..............................................: PASSED
+0041/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/csch.xml ..............................................: PASSED
+0042/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/sec.xml ...............................................: PASSED
+0043/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/secd.xml ..............................................: PASSED
+0044/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/sech.xml ..............................................: PASSED
+0045/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/sin.xml ...............................................: PASSED
+0046/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/sind.xml ..............................................: PASSED
+0047/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/sinh.xml ..............................................: PASSED
+0048/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/tan.xml ...............................................: PASSED
+0049/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/tand.xml ..............................................: PASSED
+0050/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/tanh.xml ..............................................: PASSED
+0051/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/acoshm.xml ................................: PASSED
+0052/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/acosm.xml .................................: PASSED
+0053/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/asinhm.xml ................................: PASSED
+0054/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/asinm.xml .................................: PASSED
+0055/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/atanhm.xml ................................: PASSED
+0056/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/atanm.xml .................................: PASSED
+0057/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/coshm.xml .................................: PASSED
+0058/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/cosm.xml ..................................: PASSED
+0059/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/cothm.xml .................................: PASSED
+0060/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/sinhm.xml .................................: PASSED
+0061/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/sinm.xml ..................................: PASSED
+0062/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/tanhm.xml .................................: PASSED
+0063/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/matrix_wise/tanm.xml ..................................: PASSED
+0064/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/conversions/cart2pol.xml ..............................: PASSED
+0065/0196 - SCI/modules/elementary_functions/help/en_US/trigonometry/conversions/pol2cart.xml ..............................: PASSED
+0066/0196 - SCI/modules/elementary_functions/help/en_US/setoperations/intersect.xml ........................................: PASSED
+0067/0196 - SCI/modules/elementary_functions/help/en_US/setoperations/setdiff.xml ..........................................: PASSED
+0068/0196 - SCI/modules/elementary_functions/help/en_US/setoperations/union.xml ............................................: PASSED
+0069/0196 - SCI/modules/elementary_functions/help/en_US/setoperations/unique.xml ...........................................: PASSED
+0070/0196 - SCI/modules/elementary_functions/help/en_US/searchandsort/dsearch.xml ..........................................: PASSED
+0071/0196 - SCI/modules/elementary_functions/help/en_US/searchandsort/find.xml .............................................: PASSED
+0072/0196 - SCI/modules/elementary_functions/help/en_US/searchandsort/gsort.xml ............................................: PASSED
+0073/0196 - SCI/modules/elementary_functions/help/en_US/searchandsort/members.xml ..........................................: PASSED
+0074/0196 - SCI/modules/elementary_functions/help/en_US/searchandsort/sortrows.xml .........................................: PASSED
+0075/0196 - SCI/modules/elementary_functions/help/en_US/searchandsort/vectorfind.xml .......................................: PASSED
+0076/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/abs.xml ...........................................: PASSED
+0077/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/and.xml ...........................................: PASSED
+0078/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/cross.xml .........................................: PASSED
+0079/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/cumprod.xml .......................................: PASSED
+0080/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/cumsum.xml ........................................: PASSED
+0081/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/kron.xml ..........................................: PASSED
+0082/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/krondivide.xml ....................................: PASSED
+0083/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/max.xml ...........................................: PASSED
+0084/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/min.xml ...........................................: PASSED
+0085/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/norm.xml ..........................................: PASSED
+0086/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/or.xml ............................................: PASSED
+0087/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/prod.xml ..........................................: PASSED
+0088/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/sign.xml ..........................................: PASSED
+0089/0196 - SCI/modules/elementary_functions/help/en_US/matrixoperations/sum.xml ...........................................: PASSED
+0090/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/cat.xml .........................................: PASSED
+0091/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/circshift.xml ...................................: PASSED
+0092/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/flipdim.xml .....................................: PASSED
+0093/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/matrix.xml ......................................: PASSED
+0094/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/permute.xml .....................................: PASSED
+0095/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/pertrans.xml ....................................: PASSED
+0096/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/resize_matrix.xml ...............................: PASSED
+0097/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/squeeze.xml .....................................: PASSED
+0098/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/tril.xml ........................................: PASSED
+0099/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/triu.xml ........................................: PASSED
+0100/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/shape_tests/iscolumn.xml ........................: PASSED
+0101/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/shape_tests/ismatrix.xml ........................: PASSED
+0102/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/shape_tests/isrow.xml ...........................: PASSED
+0103/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/shape_tests/isscalar.xml ........................: PASSED
+0104/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/shape_tests/issquare.xml ........................: PASSED
+0105/0196 - SCI/modules/elementary_functions/help/en_US/matrixmanipulation/shape_tests/isvector.xml ........................: PASSED
+0106/0196 - SCI/modules/elementary_functions/help/en_US/integers/iconvert.xml ..............................................: PASSED
+0107/0196 - SCI/modules/elementary_functions/help/en_US/integers/int8.xml ..................................................: PASSED
+0108/0196 - SCI/modules/elementary_functions/help/en_US/integers/inttype.xml ...............................................: PASSED
+0109/0196 - SCI/modules/elementary_functions/help/en_US/integer_representation/base2dec.xml ................................: PASSED
+0110/0196 - SCI/modules/elementary_functions/help/en_US/integer_representation/bin2dec.xml .................................: PASSED
+0111/0196 - SCI/modules/elementary_functions/help/en_US/integer_representation/dec2base.xml ................................: PASSED
+0112/0196 - SCI/modules/elementary_functions/help/en_US/integer_representation/dec2bin.xml .................................: PASSED
+0113/0196 - SCI/modules/elementary_functions/help/en_US/integer_representation/dec2hex.xml .................................: PASSED
+0114/0196 - SCI/modules/elementary_functions/help/en_US/integer_representation/dec2oct.xml .................................: PASSED
+0115/0196 - SCI/modules/elementary_functions/help/en_US/integer_representation/hex2dec.xml .................................: PASSED
+0116/0196 - SCI/modules/elementary_functions/help/en_US/integer_representation/oct2dec.xml .................................: PASSED
+0117/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/ceil.xml ............................................: PASSED
+0118/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/clean.xml ...........................................: PASSED
+0119/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/double.xml ..........................................: PASSED
+0120/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/fix.xml .............................................: PASSED
+0121/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/floor.xml ...........................................: PASSED
+0122/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/format.xml ..........................................: PASSED
+0123/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/ieee.xml ............................................: PASSED
+0124/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/int.xml .............................................: PASSED
+0125/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/isinf.xml ...........................................: PASSED
+0126/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/isnan.xml ...........................................: PASSED
+0127/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/nearfloat.xml .......................................: PASSED
+0128/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/nextpow2.xml ........................................: PASSED
+0129/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/number_properties.xml ...............................: PASSED
+0130/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/round.xml ...........................................: PASSED
+0131/0196 - SCI/modules/elementary_functions/help/en_US/floating_point/signed_zero.xml .....................................: PASSED
+0132/0196 - SCI/modules/elementary_functions/help/en_US/exponential/exp.xml ................................................: PASSED
+0133/0196 - SCI/modules/elementary_functions/help/en_US/exponential/expm.xml ...............................................: PASSED
+0134/0196 - SCI/modules/elementary_functions/help/en_US/exponential/log.xml ................................................: PASSED
+0135/0196 - SCI/modules/elementary_functions/help/en_US/exponential/log10.xml ..............................................: PASSED
+0136/0196 - SCI/modules/elementary_functions/help/en_US/exponential/log1p.xml ..............................................: PASSED
+0137/0196 - SCI/modules/elementary_functions/help/en_US/exponential/log2.xml ...............................................: PASSED
+0138/0196 - SCI/modules/elementary_functions/help/en_US/exponential/logm.xml ...............................................: PASSED
+0139/0196 - SCI/modules/elementary_functions/help/en_US/exponential/nthroot.xml ............................................: PASSED
+0140/0196 - SCI/modules/elementary_functions/help/en_US/exponential/power.xml ..............................................: PASSED
+0141/0196 - SCI/modules/elementary_functions/help/en_US/exponential/sqrt.xml ...............................................: PASSED
+0142/0196 - SCI/modules/elementary_functions/help/en_US/exponential/sqrtm.xml ..............................................: PASSED
+0143/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/blockdiag.xml ...................................: PASSED
+0144/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/companion.xml ...................................: PASSED
+0145/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/diag.xml ........................................: PASSED
+0146/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/empty.xml .......................................: PASSED
+0147/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/eye.xml .........................................: PASSED
+0148/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/frank.xml .......................................: PASSED
+0149/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/gallery.xml .....................................: PASSED
+0150/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/hadamard.xml ....................................: PASSED
+0151/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/hankel.xml ......................................: PASSED
+0152/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/hilbm.xml .......................................: PASSED
+0153/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/invhilb.xml .....................................: PASSED
+0154/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/linspace.xml ....................................: PASSED
+0155/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/logspace.xml ....................................: PASSED
+0156/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/magic.xml .......................................: PASSED
+0157/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/meshgrid.xml ....................................: PASSED
+0158/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/ndgrid.xml ......................................: PASSED
+0159/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/ones.xml ........................................: PASSED
+0160/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/pascal.xml ......................................: PASSED
+0161/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/perms.xml .......................................: PASSED
+0162/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/repmat.xml ......................................: PASSED
+0163/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/rosser.xml ......................................: PASSED
+0164/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/squarewave.xml ..................................: PASSED
+0165/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/toeplitz.xml ....................................: PASSED
+0166/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/vander.xml ......................................: PASSED
+0167/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/wilkinson.xml ...................................: PASSED
+0168/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/zeros.xml .......................................: PASSED
+0169/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/random/grand.xml ................................: PASSED
+0170/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/random/prbs_a.xml ...............................: PASSED
+0171/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/random/rand.xml .................................: PASSED
+0172/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/random/sample.xml ...............................: PASSED
+0173/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/random/samplef.xml ..............................: PASSED
+0174/0196 - SCI/modules/elementary_functions/help/en_US/elementarymatrices/random/samwr.xml ................................: PASSED
+0175/0196 - SCI/modules/elementary_functions/help/en_US/discrete/factor.xml ................................................: PASSED
+0176/0196 - SCI/modules/elementary_functions/help/en_US/discrete/factorial.xml .............................................: PASSED
+0177/0196 - SCI/modules/elementary_functions/help/en_US/discrete/gcd.xml ...................................................: PASSED
+0178/0196 - SCI/modules/elementary_functions/help/en_US/discrete/lcm.xml ...................................................: PASSED
+0179/0196 - SCI/modules/elementary_functions/help/en_US/discrete/nchoosek.xml ..............................................: PASSED
+0180/0196 - SCI/modules/elementary_functions/help/en_US/discrete/primes.xml ................................................: PASSED
+0181/0196 - SCI/modules/elementary_functions/help/en_US/discrete/rat.xml ...................................................: PASSED
+0182/0196 - SCI/modules/elementary_functions/help/en_US/complex/angle.xml ..................................................: PASSED
+0183/0196 - SCI/modules/elementary_functions/help/en_US/complex/complex.xml ................................................: PASSED
+0184/0196 - SCI/modules/elementary_functions/help/en_US/complex/conj.xml ...................................................: PASSED
+0185/0196 - SCI/modules/elementary_functions/help/en_US/complex/csgn.xml ...................................................: PASSED
+0186/0196 - SCI/modules/elementary_functions/help/en_US/complex/imag.xml ...................................................: PASSED
+0187/0196 - SCI/modules/elementary_functions/help/en_US/complex/imult.xml ..................................................: PASSED
+0188/0196 - SCI/modules/elementary_functions/help/en_US/complex/isreal.xml .................................................: PASSED
+0189/0196 - SCI/modules/elementary_functions/help/en_US/complex/real.xml ...................................................: PASSED
+0190/0196 - SCI/modules/elementary_functions/help/en_US/bitwise/bitand.xml .................................................: PASSED
+0191/0196 - SCI/modules/elementary_functions/help/en_US/bitwise/bitcmp.xml .................................................: PASSED
+0192/0196 - SCI/modules/elementary_functions/help/en_US/bitwise/bitget.xml .................................................: PASSED
+0193/0196 - SCI/modules/elementary_functions/help/en_US/bitwise/bitor.xml ..................................................: PASSED
+0194/0196 - SCI/modules/elementary_functions/help/en_US/bitwise/bitset.xml .................................................: PASSED
+0195/0196 - SCI/modules/elementary_functions/help/en_US/bitwise/bitstring.xml ..............................................: PASSED
+0196/0196 - SCI/modules/elementary_functions/help/en_US/bitwise/bitxor.xml .................................................: PASSED
+   -----------------------------------------------------------------------------
+   Summary
+   passed           196 - 100 %
+   failed             0 -   0 %
+   -----------------------------------------------------------------------------
+   Export to          TMPDIR/check_help_xunit2.xml
+   -----------------------------------------------------------------------------
