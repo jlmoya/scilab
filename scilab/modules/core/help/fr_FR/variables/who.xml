@@ -13,8 +13,8 @@
             [names, mem] = who(scope, sorted)
        </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>scope</term>
@@ -71,7 +71,7 @@ foo(1,2);
  ]]></programlisting>
     </refsection>
     <refsection role="see also">
-        <title>See also</title>
+        <title>Voir aussi</title>
         <simplelist type="inline">
             <member>
                 <link linkend="whos">whos</link>
@@ -85,13 +85,13 @@ foo(1,2);
         </simplelist>
     </refsection>
     <refsection role="history">
-        <title>History</title>
+        <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revdescription>
+                <revremark>
                     Ajout de l'option scope/current.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

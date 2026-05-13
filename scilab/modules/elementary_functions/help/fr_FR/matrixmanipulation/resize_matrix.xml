@@ -35,7 +35,7 @@
             resMat = resize_matrix(mat, newSizes,    ""  , padding)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -245,37 +245,41 @@ resize_matrix(P, [3 3 2], "", %z)
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Les polynômes et les hypermatrices sont désormais acceptés.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                La valeur affectée aux éléments d'extension peut être spécifiée.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Les nouvelles tailles peuvent être spécifiées dans un vecteur.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                resize_matrix() appelée sans paramètres affiche des exemples de démonstration.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Les polynômes et les hypermatrices sont désormais acceptés.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    La valeur affectée aux éléments d'extension peut être spécifiée.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Les nouvelles tailles peuvent être spécifiées dans un vecteur.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    resize_matrix() appelée sans paramètres affiche des exemples de démonstration.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revremark>
-                    L'option <literal>resType</literal> est étendue aux nouveaux types entiers
-                    <literal>int64</literal> et <literal>uint64</literal>.
-                </revremark>
+                <revdescription>
+                    <para>
+                        L'option <literal>resType</literal> est étendue aux nouveaux types entiers
+                        <literal>int64</literal> et <literal>uint64</literal>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

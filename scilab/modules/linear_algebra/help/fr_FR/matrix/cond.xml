@@ -27,8 +27,8 @@
             c = cond(X, p)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>X  </term>
@@ -132,7 +132,7 @@ cond(A, 'fro')
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
@@ -154,9 +154,9 @@ cond(A, 'fro')
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     cond([]) produit désormais 0 (comme cond([],p)) au lieu de 1.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

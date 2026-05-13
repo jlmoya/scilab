@@ -24,7 +24,7 @@
             [i]=rank(X,tol)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -58,12 +58,12 @@
             <literal>X</literal> supérieures à <literal>tol</literal>.
         </para>
         <para><literal>rank([])</literal> vaut 0.</para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Notez que la valeur par défaut de <literal>tol</literal> est
                 proportionnelle à <literal>norm(X)</literal>. Par exemple
-            </note>
-        </para>
+            </para>
+        </note>
         <para>
             <literal>rank([1.d-80,0;0,1.d-80])</literal> vaut 2 !.
         </para>

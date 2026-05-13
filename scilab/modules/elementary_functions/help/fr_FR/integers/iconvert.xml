@@ -24,8 +24,8 @@
         <title>Séquence d'appel</title>
         <synopsis>y = iconvert(X, itype)</synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>X</term>
@@ -68,8 +68,10 @@
             </table>
         </para>
         <warning>
-            La conversion de <literal>[]</literal> ne change rien : son type 1 == inttype 0
-            est toujours conservé (type numérique décimal).
+            <para>
+                La conversion de <literal>[]</literal> ne change rien : son type 1 == inttype 0
+                est toujours conservé (type numérique décimal).
+            </para>
         </warning>
     </refsection>
     <refsection>

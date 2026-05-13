@@ -26,7 +26,7 @@
         </synopsis>
     </refsynopsisdiv>
     <refsection role="arguments">
-        <title>Arguments</title>
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>str</term>
@@ -211,11 +211,13 @@ num, "/"+trail+"/"
             </revision>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revremark>
-                    Si <varname>str(i)</varname> ne représente aucune valeur numérique,
-                    <varname>d(i)</varname> vaut désormais <literal>Nan</literal>
-                    au lieu de <literal>0</literal>.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Si <varname>str(i)</varname> ne représente aucune valeur numérique,
+                        <varname>d(i)</varname> vaut désormais <literal>Nan</literal>
+                        au lieu de <literal>0</literal>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

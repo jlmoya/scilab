@@ -39,10 +39,10 @@
             les données ne pourront pas être extraites comme dans Matlab. Par exemple, l'équivalent Scilab pour l'instruction Matlab
             <literal>L=dir;file_name=L(1).name;</literal> est <literal>L=dir();file_name=L.name(1);</literal>.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Attention : <literal>mtlb_dir</literal> ne doit pas être utilisée pour une programmation manuelle.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
 </refentry>

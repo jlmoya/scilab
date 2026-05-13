@@ -23,7 +23,7 @@
         <title>Séquence d'appel</title>
         <synopsis>bool = isfield(s, fieldname)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -51,7 +51,7 @@
     <refsection>
         <title>Description</title>
         <para>
-            bool(i,j) vaut <constant>%t</constant> si le champ nommé <varname>fieldname(i,j)</varname> existe pour le tableau de structure ou tlist ou mlist <varname>s</varname>(indépendamment de la valeur éventuellement affectée à ce champ). Si <varname>s</varname> est une structure, son champ caché <code class="literal">dims</code> est ignoré.
+            bool(i,j) vaut <constant>%t</constant> si le champ nommé <varname>fieldname(i,j)</varname> existe pour le tableau de structure ou tlist ou mlist <varname>s</varname>(indépendamment de la valeur éventuellement affectée à ce champ). Si <varname>s</varname> est une structure, son champ caché <literal>dims</literal> est ignoré.
         </para>
     </refsection>
     <refsection>
@@ -92,7 +92,7 @@ isfield( s, ["b" "t" ""])
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

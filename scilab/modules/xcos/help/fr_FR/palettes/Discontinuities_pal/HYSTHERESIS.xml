@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/HYSTHERESIS.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_HYSTHERESIS">
+    <refsection xml:id="Contents_HYSTHERESIS">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_HYSTHERESIS">Description</xref>
+                <para><link linkend="Description_HYSTHERESIS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_HYSTHERESIS">Paramètres</xref>
+                <para><link linkend="Dialogbox_HYSTHERESIS">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_HYSTHERESIS">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_HYSTHERESIS">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_HYSTHERESIS">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_HYSTHERESIS">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_HYSTHERESIS">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_HYSTHERESIS">Fonction de calcul</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_HYSTHERESIS">
+    <refsection xml:id="Description_HYSTHERESIS">
         <title>Description</title>
         <para>
             Commute la sortie entre deux constantes. Le bloc Hysthérésis permet à ses sorties
@@ -60,15 +60,14 @@
             entrée et génére une sortie.
         </para>
     </refsection>
-    <refsection id="Dialogbox_HYSTHERESIS">
+    <refsection xml:id="Dialogbox_HYSTHERESIS">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/HYSTHERESIS_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -115,7 +114,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_HYSTHERESIS">
+    <refsection xml:id="Defaultproperties_HYSTHERESIS">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -188,7 +187,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_HYSTHERESIS">
+    <refsection xml:id="Interfacingfunction_HYSTHERESIS">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -196,7 +195,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_HYSTHERESIS">
+    <refsection xml:id="Computationalfunction_HYSTHERESIS">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -204,14 +203,16 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_HYSTERESIS">
+    <refsection xml:id="Example_HYSTERESIS">
         <title>Exemple d'utilisation du relais Hystérèsis</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/discontinuities_pal/HYSTERESIS_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/discontinuities_pal/HYSTERESIS_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/discontinuities_pal/HYSTERESIS_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/discontinuities_pal/HYSTERESIS_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
 </refentry>

@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/PNP.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_PNP">
+    <refsection xml:id="Contents_PNP">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_PNP">Description</xref>
+                <para><link linkend="Description_PNP">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_PNP">Paramètres</xref>
+                <para><link linkend="Dialogbox_PNP">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_PNP">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_PNP">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_PNP">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_PNP">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <link linkend="PNP">Modèle Modelica</link>
+                <para><link linkend="PNP">Modèle Modelica</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_PNP">Voir aussi</xref>
+                <para><link linkend="Seealso_PNP">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_PNP">
+    <refsection xml:id="Description_PNP">
         <title>Description</title>
         <para>
             Ce modèle est celui d'un simple transistor à jonction bipolaire PNP conforme au modèle d'Ebers-Moll.
@@ -60,15 +60,14 @@
         <para>
         </para>
     </refsection>
-    <refsection id="Dialogbox_PNP">
+    <refsection xml:id="Dialogbox_PNP">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/PNP_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <para>
         </para>
         <informaltable border="1" cellpadding="3">
@@ -169,7 +168,7 @@
             </tr>
         </informaltable>
     </refsection>
-    <refsection id="Defaultproperties_PNP">
+    <refsection xml:id="Defaultproperties_PNP">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -412,7 +411,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_PNP">
+    <refsection xml:id="Interfacingfunction_PNP">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -420,7 +419,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_PNP">
+    <refsection xml:id="Modelicamodel_PNP">
         <title>Modèle Modelica</title>
         <itemizedlist>
             <listitem>
@@ -428,9 +427,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_PNP" role="see also">
+    <refsection xml:id="Seealso_PNP" role="see also">
         <title>Voir aussi</title>
-        <simplelist>
+        <simplelist type="inline">
             <member>
                 <link linkend="NPN">NPN</link>
             </member>

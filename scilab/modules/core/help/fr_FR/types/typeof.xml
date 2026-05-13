@@ -26,7 +26,7 @@
             oc = typeof(object, "overload")
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -174,8 +174,12 @@
                     <emphasis role="bold">boolean sparse</emphasis>
                 </td>
                 <td>
-                    <varname>object</varname> est une matrice booléenne creuse.
-                    <warning>Hypermatrices booléennes creuses non supportées.</warning>
+                    <para>
+                        <varname>object</varname> est une matrice booléenne creuse.
+                    </para>
+                    <warning>
+                        <para>Hypermatrices booléennes creuses non supportées.</para>
+                    </warning>
                 </td>
             </tr>
             <tr>
@@ -183,10 +187,12 @@
                     <emphasis role="bold">sparse</emphasis>
                 </td>
                 <td>
-                    <varname>object</varname> est une
-                    <link linkend="sparse">matrice creuse</link>
-                    de nombres décimaux réels ou complexes.
-                    <warning>Hypermatrices numériques creuses non supportées.</warning>
+                    <para>
+                        <varname>object</varname> est une
+                        <link linkend="sparse">matrice creuse</link>
+                        de nombres décimaux réels ou complexes.
+                    </para>
+                    <warning><para>Hypermatrices numériques creuses non supportées.</para></warning>
                 </td>
             </tr>
             <tr>
@@ -247,7 +253,7 @@
                 <td>
                     est retourné par
                     <function>
-                        typeof(<literal>null()</literal>)
+                        typeof(null())
                     </function>
                     .
                     Voir  <link linkend="null">null()</link>.

@@ -25,8 +25,8 @@
             y = perms(x, "unique")
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
@@ -77,6 +77,7 @@
             Sinon, les permutations sont calculées et retournées en résultat.
         </para>
         <note>
+            <para>
             Lorsque "unique" est utilisé,
             <itemizedlist>
                 <listitem>
@@ -96,12 +97,15 @@
             des permutations dans <varname>y</varname> en tient compte. Ainsi <varname>x</varname>
             pourra si besoin être trié selon l'ordre <emphasis>choisi par l'utilisateur,
             avant</emphasis> d'appeler <literal>perms()</literal>.
+            </para>
         </note>
         <warning>
+            <para>
             Pour mémoire, le poids <varname>n*n!*8</varname> de <varname>y</varname> en octets
             est listé ci-dessous en fonction du nombre <literal>n</literal> d'éléments de
             <varname>x</varname>, pour <varname>x</varname> nombres décimaux, et sans
             l'option "unique" :
+            </para>
         </warning>
         <para>
             <table border="1">
@@ -228,9 +232,9 @@ size(p)
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Option "unique" ajoutée.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

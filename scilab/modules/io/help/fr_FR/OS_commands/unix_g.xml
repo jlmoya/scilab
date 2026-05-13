@@ -30,8 +30,8 @@
             [rep, status, msgerr] = unix_g(commands)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>commands</term>
@@ -101,15 +101,17 @@
                         Les instructions suivant celle erronée sont ignorées.
                     </para>
                 </listitem>
-                <warning>
+            </itemizedlist>
+            <warning>
+                <para>
                     Les opérations effectuées par les instructions valides figurant dans
                     <varname>commands</varname> avant l'instruction
                     erronée demeurent réelles (par exemple, fichiers supprimés). Leurs
                     compte-rendus ou résultats d'exécution affichables sont cependant ignorés
                     et perdus. Les instructions multiples sont déconseillées. Elles sont souvent
                     plus difficiles à déboguer.
-                </warning>
-            </itemizedlist>
+                </para>
+            </warning>
         </para>
     </refsection>
     <refsection>
@@ -152,7 +154,7 @@ DIR('SCI/etc')
                 <link linkend="powershell">powershell</link>
             </member>
             <member>
-                <ulink url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681382.aspx">Liste de codes de sortie MS Windows</ulink>
+                <link xlink:href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681382.aspx">Liste de codes de sortie MS Windows</link>
             </member>
         </simplelist>
     </refsection>

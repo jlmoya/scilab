@@ -30,7 +30,7 @@
             xcos(scs_m_list)
         </synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_xcos">
+    <refsection role="arguments" xml:id="Parameters_xcos">
         <title>Paramètres</title>
         <itemizedlist>
             <listitem>
@@ -48,7 +48,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_xcos">
+    <refsection xml:id="Description_xcos">
         <title>Description</title>
         <para>
             <emphasis>Xcos</emphasis> est un éditeur visuel de construction de modèles de systèmes dynamiques hybrides.
@@ -165,20 +165,20 @@ xcos(scs_m);]]></programlisting>
         <para>Xcos nécessite un compilateur C pour une accélération des simulations.</para>
         <para>Il est recommandé d'installer un compilateur C sur votre machine.</para>
     </refsection>
-    <refsection role="see also" id="SeeAlso_xcos">
+    <refsection role="see also" xml:id="SeeAlso_xcos">
         <title>Voir Aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="scicosim">xcossim</link>
+                <para><link linkend="scicosim">xcossim</link></para>
             </listitem>
             <listitem>
-                <link linkend="scicos_simulate">scicos_simulate</link>
+                <para><link linkend="scicos_simulate">scicos_simulate</link></para>
             </listitem>
             <listitem>
-                <link linkend="xcos_menu_entries">Entrées de menu</link>
+                <para><link linkend="xcos_menu_entries">Entrées de menu</link></para>
             </listitem>
             <listitem>
-                <link linkend="supported_compilers">Compilateurs supportés</link>
+                <para><link linkend="supported_compilers">Compilateurs supportés</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

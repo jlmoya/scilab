@@ -41,12 +41,16 @@
             de typeof <literal>listdelete</literal> qui supprime l'objet auquel il est affecté.
         </para>
         <note>
-            Le code de surcharge est objets de typeof <literal>listdelete</literal> est 0.
+            <para>
+                Le code de surcharge est objets de typeof <literal>listdelete</literal> est 0.
+            </para>
         </note>
         <warning>
-            L'affectation du résultat de <literal>null()</literal> à une variable supprime celle-ci.
-            L'utilisation de <code>clear</code> doit cependant être préférée pour supprimer les
-            objets nommés (tels que les variables).
+            <para>
+                L'affectation du résultat de <literal>null()</literal> à une variable supprime celle-ci.
+                L'utilisation de <code>clear</code> doit cependant être préférée pour supprimer les
+                objets nommés (tels que les variables).
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -117,7 +121,7 @@ s.p = null()
     r
     b
 ]]></screen>
-    <para><emphasis role="bold" id="null_tlist_mlist_overload">
+    <para><emphasis role="bold" xml:id="null_tlist_mlist_overload">
         Suppression d'un champ d'une M-liste ou d'une T-liste</emphasis> :
         aucun destructeur n'est défini par défaut :
      </para>

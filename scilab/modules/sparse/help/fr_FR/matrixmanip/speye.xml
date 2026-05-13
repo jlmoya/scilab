@@ -28,7 +28,7 @@
             Isp = speye(nrows, ncols)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -70,8 +70,10 @@
             <literal>[m,n]=size(A)</literal>, <literal>speye(A)</literal> et
             <literal>speye(m,n)</literal> sont équivalentes.
             <warning>
-                En particulier, <literal>speye(3)</literal> est équivalent à
-                <literal>speye(1,1)</literal>, NON à <literal>speye(3,3)</literal>.
+                <para>
+                    En particulier, <literal>speye(3)</literal> est équivalent à
+                    <literal>speye(1,1)</literal>, NON à <literal>speye(3,3)</literal>.
+                </para>
             </warning>
         </para>
     </refsection>

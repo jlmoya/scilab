@@ -25,7 +25,7 @@
             [x1,..,xn] = return(a1,..,an)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -86,8 +86,10 @@
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                  <literal>return</literal> est maintenant protégé. Les affectations telles que
-                  <literal>return=1</literal> ne sont plus possibles.
+                    <para>
+                        <literal>return</literal> est maintenant protégé. Les affectations telles que
+                        <literal>return=1</literal> ne sont plus possibles.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

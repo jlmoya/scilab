@@ -20,39 +20,39 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATCATV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATCATV">
+    <refsection xml:id="Contents_MATCATV">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATCATV">Description</xref>
+                <para><link linkend="Description_MATCATV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATCATV">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATCATV">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATCATV">Exemple</link>
+                <para><link linkend="MATCATV">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATCATV">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATCATV">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATCATV">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATCATV">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATCATV">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATCATV">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATCATV">Voir aussi</xref>
+                <para><link linkend="Seealso_MATCATV">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATCATV">
+    <refsection xml:id="Description_MATCATV">
         <title>Description</title>
         <para>
             Le bloc MATCATV sort la concaténation verticale de plusieurs matrices. Cette opération est aussi
@@ -67,14 +67,13 @@
         <para>L'équivalent de MATCATV dans Scilab est y=[U1;U2;...;Un]</para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATCATV">
+    <refsection xml:id="Dialogbox_MATCATV">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATCATV_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATCATV_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -87,7 +86,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATCATV">
+    <refsection xml:id="Example_MATCATV">
         <title>Exemple</title>
         <programlisting role="example"><![CDATA[
             A = [1 2; 3 4; 5 6]
@@ -96,7 +95,7 @@
             C = [1 2; 3 4; 5 6; 7 8; 9 10]
         ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATCATV">
+    <refsection xml:id="Defaultproperties_MATCATV">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -172,7 +171,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATCATV">
+    <refsection xml:id="Interfacingfunction_MATCATV">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -180,7 +179,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATCATV">
+    <refsection xml:id="Computationalfunction_MATCATV">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -195,21 +194,23 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATCATV2">
+    <refsection xml:id="Example_MATCATV2">
         <title>Example de Concaténation verticale</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATCATV_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATCATV_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATCATV_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATCATV_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATCATV" role="see also">
+    <refsection xml:id="Seealso_MATCATV" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATCATH">MATCATH</link>
+                <para><link linkend="MATCATH">MATCATH</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

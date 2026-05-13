@@ -28,7 +28,7 @@
             [v, err, ierr] = intg(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -181,9 +181,11 @@
             À droite, le pic est suffisamment large pour être échantillonné par intg().
         </para>
         <note>
-            Si l'utilisateur veut afficher la solution même si le solveur a rencontré une erreur,
-            il doit ajouter le troisième argument de sortie <literal>ierr</literal>, ce qui transformera
-            les erreurs en warnings. Ceci est surtout utilisé dans les cas d'erreurs d'arrondi.
+            <para>
+                Si l'utilisateur veut afficher la solution même si le solveur a rencontré une erreur,
+                il doit ajouter le troisième argument de sortie <literal>ierr</literal>, ce qui transformera
+                les erreurs en warnings. Ceci est surtout utilisé dans les cas d'erreurs d'arrondi.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -269,8 +271,10 @@ abs(exact - I)
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    La valeur par défaut atol de l'erreur absolue passe de
-                    10<superscript>-14</superscript> à 10<superscript>-13</superscript>.
+                    <para>
+                        La valeur par défaut atol de l'erreur absolue passe de
+                        10<superscript>-14</superscript> à 10<superscript>-13</superscript>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

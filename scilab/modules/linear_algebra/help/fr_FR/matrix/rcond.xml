@@ -25,8 +25,8 @@
         <title>Séquence d'appel</title>
         <synopsis>r = rcond(X)</synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>X</term>
@@ -54,13 +54,13 @@
             Si <literal>X</literal> est bien conditionnée, <literal>rcond(X)</literal> est proche 1.
             Sinon, <literal>rcond(X)</literal> est proche de 0.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
               L'estimation de l'inverse du conditionnement L-1 avec <literal>rcond</literal> est
               beaucoup (plus de 200x) plus rapide que <literal>cond(X)</literal>. En contrepartie,
               <literal>rcond</literal> peut être moins fiable.
-            </note>
-        </para>
+            </para>
+        </note>
         <para>
             Algorithme : la norme L-1 de X est calculée avec Lapack/DLANGE. La décomposition LU
             de X est effectuée avec Lapack/DGETRF. Finalement, le conditionnement est estimé
@@ -104,9 +104,9 @@ rcond(A)
         <revhistory>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     rcond([]) produit désormais %inf = 1/cond([]) au lieu de [].
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

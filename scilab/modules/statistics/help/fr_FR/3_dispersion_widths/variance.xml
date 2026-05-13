@@ -35,7 +35,7 @@
             s = variance(x, "c", m)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -150,15 +150,15 @@
             <literal>s = variance(x,"r")</literal> (ou indifféremment <literal>s = variance(x,1)</literal>) calcule la variance de chaque colonne.
             Le vecteur ligne <varname>s</varname> est retourné, avec <literal>s(i) = variance(x(:,i),..)</literal>.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 La syntaxe <literal>variance(x, "*"|"c"|"r", 1)</literal> utilisable uniquement en Scilab 5.4.1 doit être remplacée par
                 <literal>variance(x,"*"|"c"|"r", %nan)</literal>. <literal>variance(x, "*"|"c"|"r", 1)</literal> émettra une alerte
                 jusqu'en Scilab 6.0. En effet, <literal>1</literal> est désormais compris comme <literal>m=1</literal>.
                 Si <literal>1</literal> est la valeur de l'espérance <varname>m</varname>à fournir, l'alerte peut être évitée
                 en indiquant<literal>1+%eps</literal> au lieu de <literal>1</literal>.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Exemples</title>
@@ -217,7 +217,7 @@ s = variance(x, "*", %nan)
             Wonacott, T.H. &amp; Wonacott, R.J.; Introductory Statistics, fifth edition, J.Wiley &amp; Sons, 1990.
         </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

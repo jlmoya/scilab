@@ -87,7 +87,9 @@ endfunction
             doit apparaître sur une seule ligne. Cette suite peut être suivie d'instructions Scilab si une virgule ou un point-virgule est ajouté à la fin.
         </para>
         <note>
-            Certaines règles ont été établies quant à la syntaxe des noms de fonctions dans Scilab (voir <link linkend="names">names</link>).
+            <para>
+                Certaines règles ont été établies quant à la syntaxe des noms de fonctions dans Scilab (voir <link linkend="names">names</link>).
+            </para>
         </note>
 
         <para>Les définitions de fonctions peuvent être imbriquées.</para>
@@ -141,9 +143,11 @@ exec SCI/modules/elementary_functions/macros/asinh.sci;
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                  <literal>function</literal> et <literal>endfunction</literal> sont désormais protégés.
-                  Les affectations telles que <literal>function=1</literal> ou
-                  <literal>endfunction=2</literal> ne sont plus possibles.
+                    <para>
+                        <literal>function</literal> et <literal>endfunction</literal> sont désormais protégés.
+                        Les affectations telles que <literal>function=1</literal> ou
+                        <literal>endfunction=2</literal> ne sont plus possibles.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

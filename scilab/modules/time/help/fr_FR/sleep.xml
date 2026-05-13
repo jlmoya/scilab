@@ -55,11 +55,15 @@
                     <term>Console :</term>
                     <listitem>
                          <para> les entrées et affichages sont suspendus.
-                            <warning>L'interruption avec CTRL-C est prise en compte mais
-                                est exécutée uniquement au terme de la période de sommeil
-                                programmée.
-                            </warning></para>
-                                  </listitem>
+                            <warning>
+                                <para>
+                                    L'interruption avec CTRL-C est prise en compte mais
+                                    est exécutée uniquement au terme de la période de sommeil
+                                    programmée.
+                                </para>
+                            </warning>
+                        </para>
+                    </listitem>
                 </varlistentry>
                 <varlistentry>
                     <term>Scripts et functions :</term>
@@ -102,16 +106,22 @@
                     </listitem>
                 </varlistentry>
             </variablelist>
-            <note>Résolution temporelle :
-                <simplelist>
-                    <member>Sous Windows : 0.5 ms</member>
-                    <member>Sous Linux : 1 µs</member>
-                </simplelist>
+            <note>
+                <para>
+                    Résolution temporelle :
+                    <simplelist>
+                        <member>Sous Windows : 0.5 ms</member>
+                        <member>Sous Linux : 1 µs</member>
+                    </simplelist>
+                </para>
             </note>
-            <warning>Résolution... n'est pas justesse : la durée réelle du sommeil
-                peut s'avérer différente de la durée spécifiée, en particulier en
-                fonction de la charge d'activité du processeur ou du temps mis par Scilab pour
-                déclencher <literal>sleep()</literal>. Voir le test en exemple.
+            <warning>
+                <para>
+                    Résolution... n'est pas justesse : la durée réelle du sommeil
+                    peut s'avérer différente de la durée spécifiée, en particulier en
+                    fonction de la charge d'activité du processeur ou du temps mis par Scilab pour
+                    déclencher <literal>sleep()</literal>. Voir le test en exemple.
+                </para>
             </warning>
         </para>
     </refsection>

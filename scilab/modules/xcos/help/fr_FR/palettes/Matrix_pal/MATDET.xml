@@ -20,24 +20,20 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATDET.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATDET">
+    <refsection xml:id="Contents_MATDET">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <para>
-                    <xref linkend="Description_MATDET">Description</xref>
-                </para>
+                <para><link linkend="Description_MATDET">Description</link></para>
             </listitem>
             <listitem>
-                <para>
-                    <xref linkend="Dialogbox_MATDET">Paramètres</xref>
-                </para>
+                <para><link linkend="Dialogbox_MATDET">Paramètres</link></para>
             </listitem>
             <listitem>
                 <para>
@@ -45,28 +41,20 @@
                 </para>
             </listitem>
             <listitem>
-                <para>
-                    <xref linkend="Defaultproperties_MATDET">Propriétés par défaut</xref>
-                </para>
+                <para><link linkend="Defaultproperties_MATDET">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <para>
-                    <xref linkend="Interfacingfunction_MATDET">Fonction d'interfaçage</xref>
-                </para>
+                <para><link linkend="Interfacingfunction_MATDET">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <para>
-                    <xref linkend="Computationalfunction_MATDET">Fonction de calcul</xref>
-                </para>
+                <para><link linkend="Computationalfunction_MATDET">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <para>
-                    <xref linkend="Seealso_MATDET">Voir aussi</xref>
-                </para>
+                <para><link linkend="Seealso_MATDET">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATDET">
+    <refsection xml:id="Description_MATDET">
         <title>Description</title>
         <para>
             Le bloc MATDET sort le déterminant d'une matrice d'entrée carrée. Si l'entrée est :
@@ -85,14 +73,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATDET">
+    <refsection xml:id="Dialogbox_MATDET">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATDET_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATDET_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -106,14 +93,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATDET">
+    <refsection xml:id="Example_MATDET">
         <title>Exemple</title>
         <programlisting role="example"><![CDATA[
             U=[1 0 63;2 -2 5;9 9 4]
             y=2215
         ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATDET">
+    <refsection xml:id="Defaultproperties_MATDET">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -186,7 +173,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATDET">
+    <refsection xml:id="Interfacingfunction_MATDET">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -194,7 +181,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATDET">
+    <refsection xml:id="Computationalfunction_MATDET">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -209,24 +196,26 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATDET2">
+    <refsection xml:id="Example_MATDET2">
         <title>Exemple de déterminant : det([tan(x) 0 ; 0 cos(x)]) = sin(x)</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDET_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATDET_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDET_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATDET_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATDET" role="see also">
+    <refsection xml:id="Seealso_MATDET" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATINV">MATINV</link>
+                <para><link linkend="MATINV">MATINV</link></para>
             </listitem>
             <listitem>
-                <link linkend="det">det (Fonction Scilab)</link>
+                <para><link linkend="det">det (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

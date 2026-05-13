@@ -24,7 +24,7 @@
             [v, ka, kb] = union(a, b, orient)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -53,17 +53,18 @@
             </varlistentry>
             <varlistentry>
                 <term>orient</term>
-                Orientation du traitement :
                 <listitem>
-                     <para><itemizedlist>
+                    <para>
+                        Orientation du traitement :
+                        <itemizedlist>
                             <listitem>
-                                 <para>
+                                <para>
                                     1 or "r": union des lignes de <varname>a</varname> et de
                                     <varname>b</varname>.
                                 </para>
                             </listitem>
                             <listitem>
-                                 <para>
+                                <para>
                                     2 or "c": union des colonnes de <varname>a</varname> et de
                                     <varname>b</varname>.
                                 </para>
@@ -288,21 +289,21 @@ full(U), ka, kb
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Extension aux matrices booléennes.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     Extension aux matrices creuses booléennes, réelles, ou complexes.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Gestion des types duration, datetime, table et timeseries ajoutée.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

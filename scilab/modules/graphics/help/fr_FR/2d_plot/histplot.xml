@@ -30,8 +30,8 @@
             cf = histplot(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>n</term>
@@ -227,7 +227,9 @@ legend(["Histogramme normalisé" "Courbe des fréquences"],"lower_caption");
             <revision>
                 <revnumber>5.5.0</revnumber>
                 <revdescription>
-                    Ajout de l'option <literal>polygon</literal> et de la sortie <literal>cf</literal>.
+                    <para>
+                        Ajout de l'option <literal>polygon</literal> et de la sortie <literal>cf</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

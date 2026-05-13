@@ -30,7 +30,7 @@
           replot(.., tight_limits)
       </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -147,7 +147,9 @@
             de chaque repère graphique considéré, axe par axe.
         </para>
         <important>
-            gca() désigne toujours le même repère graphique avant et après avoir appelé replot(..).
+            <para>
+                gca() désigne toujours le même repère graphique avant et après avoir appelé replot(..).
+            </para>
         </important>
     </refsection>
     <refsection role="examples">

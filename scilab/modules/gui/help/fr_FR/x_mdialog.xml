@@ -12,7 +12,7 @@
             result=x_mdialog(title,labelsv,labelsh,default_input_matrix)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -43,7 +43,11 @@
                 <term>ispassword</term>
                 <listitem>
                     <para>vecteur colonne de n booléens: si la valeur de <literal>ispassword(i)</literal> est <literal>%T</literal>, l'i-ème entrée servira à saisir un mot de passe, les caractères saisis par l'utilisateur seront cachés. La valeur par défaut est <literal>%F</literal>.</para>
-                    <note>Ce paramètre n'est pas géré pour le cas matrice.</note>
+                    <note>
+                        <para>
+                            Ce paramètre n'est pas géré pour le cas matrice.
+                        </para>
+                    </note>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -129,12 +133,16 @@ cred = x_mdialog("Entrez vos identifiants", ["Nom d''utilisateur :"; "Mot de pas
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revremark>Ajout du paramètre <literal>ispassword</literal>.</revremark>
+                <revdescription>
+                    <para>
+                        Ajout du paramètre <literal>ispassword</literal>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

@@ -29,7 +29,7 @@
             bode_asymp(sl, wmin, wmax)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -57,16 +57,16 @@
         <para>
             Les arguments optionnels <literal>wmin</literal> et <literal>wmax</literal> (en rad/s) peuvent être utilisés pour tracer des asymptotes dans un périmètre précis.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 A noter que les fonctions <code>bode()</code> ou <code>gainplot()</code> doivent être appelées avant <code>bode_asymp()</code>.
-            </note>
-        </para>
-        <para>
-            <warning>
+            </para>
+        </note>
+        <warning>
+            <para>
                 Attention: cette fonction n'est pas applicable quand le premier argument est une matrice de réels.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Exemples</title>
@@ -175,7 +175,7 @@ bode_asymp(h)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

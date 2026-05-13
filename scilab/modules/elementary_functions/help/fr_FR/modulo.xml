@@ -32,7 +32,7 @@
         <para></para>
         <synopsis>i = pmodulo(n,m)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -57,13 +57,13 @@
                         <varname>i</varname> a les tailles de la plus large de
                         <varname>m</varname> ou <varname>n</varname>.
                     </para>
-                    <para>
-                        <warning>
+                    <warning>
+                        <para>
                             Pour des polynômes en entrée, lorsque tous les restes dans <varname>i</varname>
                             sont des polynômes constants (degré==0), <varname>i</varname> est de
                             de type 1 (nombres) au lieu de 2 (polynômes constants).
-                        </warning>
-                    </para>
+                        </para>
+                    </warning>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -93,15 +93,15 @@
                 </listitem>
             </itemizedlist>
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Si <literal>m</literal> contient au moins une valeur nulle,
                 <literal>modulo(x,m)</literal> et <literal>pmodulo(x,m)</literal> effectueront une
                 division par zéro. Si <varname>m</varname> est de type réel, l'exception sera
                 traitée selon le mode <literal>ieee()</literal> actif. Si <literal>m</literal>
                 est de type entier, une erreur sera toujours émise.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Exemples</title>
@@ -154,7 +154,7 @@ pmodulo(%z^2+1, %z)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

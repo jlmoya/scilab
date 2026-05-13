@@ -11,7 +11,7 @@
         <title>Séquence d'appel</title>
         <synopsis>y = erfcx(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -51,7 +51,7 @@ exp (x.^2) .* erfc(x)
     <refsection>
         <title>Algorithmes</title>
         <para>
-            Cette fonction est basée sur la bibliothèque <ulink url="http://ab-initio.mit.edu/Faddeeva">Faddeeva</ulink>.
+            Cette fonction est basée sur la bibliothèque <link xlink:href="http://ab-initio.mit.edu/Faddeeva">Faddeeva</link>.
         </para>
     </refsection>
     <refsection role="see also">
@@ -69,7 +69,7 @@ exp (x.^2) .* erfc(x)
         </simplelist>
     </refsection>
 
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

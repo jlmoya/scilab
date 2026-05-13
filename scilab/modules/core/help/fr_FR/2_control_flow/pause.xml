@@ -48,8 +48,10 @@
             Pour sortir du mode pause et mettre fin à l'exécution, taper <literal>abort</literal>.
         </para>
         <note>
-            L'instruction <function>pause</function> est très utile en phase de mise au point ou
-            de débogage.
+            <para>
+                L'instruction <function>pause</function> est très utile en phase de mise au point ou
+                de débogage.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -117,9 +119,11 @@ Type 'resume' or 'abort' to return to standard level prompt.
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    Les nouvelles valeurs des variables locales modifiées durant une pause sont
-                    désormais prises en compte lorsque l'exécution du code restant est relancée
-                    avec <literal>resume</literal>.
+                    <para>
+                        Les nouvelles valeurs des variables locales modifiées durant une pause sont
+                        désormais prises en compte lorsque l'exécution du code restant est relancée
+                        avec <literal>resume</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

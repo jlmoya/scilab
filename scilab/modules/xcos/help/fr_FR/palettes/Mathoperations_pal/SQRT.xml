@@ -23,51 +23,50 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SQRT.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_SQRT">
+    <refsection xml:id="Contents_SQRT">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SQRT">Description</xref>
+                <para><link linkend="Description_SQRT">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SQRT">Paramètres</xref>
+                <para><link linkend="Dialogbox_SQRT">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SQRT">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_SQRT">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SQRT">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_SQRT">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_SQRT">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_SQRT">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_SQRT">Voir aussi</xref>
+                <para><link linkend="Seealso_SQRT">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_SQRT">
+    <refsection xml:id="Description_SQRT">
         <title>Description</title>
         <para>
             Ce bloc calcule la racine carrée de chaque élément de la matrice d'entrée. Il supporte les types de données
             double et complexe (paramètre <emphasis role="bold">Datatype</emphasis>).
         </para>
     </refsection>
-    <refsection id="Dialogbox_SQRT">
+    <refsection xml:id="Dialogbox_SQRT">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/SQRT_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -82,7 +81,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_SQRT">
+    <refsection xml:id="Defaultproperties_SQRT">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -155,7 +154,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_SQRT">
+    <refsection xml:id="Interfacingfunction_SQRT">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -163,7 +162,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SQRT">
+    <refsection xml:id="Computationalfunction_SQRT">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -174,7 +173,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_SQRT" role="see also">
+    <refsection xml:id="Seealso_SQRT" role="see also">
         <title>Voir aussi</title>
         <simplelist type="inline">
             <member>

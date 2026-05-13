@@ -28,7 +28,7 @@
             [U, km, ku, nb] = unique(.., "uniqueNan")
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -111,11 +111,15 @@
                                     "c": <varname>ku</varname> est de taille [1, size(M,2)], avec <literal>U(:,ku) = M</literal>
                                                                                               </para>
                                                                                           </listitem>
-                        </itemizedlist><warning>
-                            <varname>ku</varname> est dense, y compris lorsque <varname>M</varname> est
-                            creuse et que le mode simple "*" est utilisé.
-                        </warning></para>
-                              </listitem>
+                        </itemizedlist>
+                        <warning>
+                            <para>
+                                <varname>ku</varname> est dense, y compris lorsque <varname>M</varname> est
+                                creuse et que le mode simple "*" est utilisé.
+                            </para>
+                        </warning>
+                    </para>
+                </listitem>
             </varlistentry>
             <varlistentry>
                 <term>nb</term>
@@ -164,12 +168,12 @@
             Pour un tableau de booléens, <literal>unique(…)</literal> sera utile principalement
             avec les options "r" ou "c".
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Les nombres complexes sont triés par modules croissants, puis par phases croissantes
                 sur [-π, π].
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection role="examples">
         <title>Exemples</title>
@@ -374,37 +378,39 @@ unique(M, "c")
         <revhistory>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     unique() peut maintenant être utilisée pour dédoublonner des nombres complexes.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Extension aux booléens.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Options "keepOrder" et "uniqueNan" ajoutées.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                4ème résultat <literal>nb</literal> ajouté.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Extension aux booléens.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Options "keepOrder" et "uniqueNan" ajoutées.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    4ème résultat <literal>nb</literal> ajouté.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     3ème résultat ku implémenté. Les matrices creuses 2D sont désormais acceptées.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

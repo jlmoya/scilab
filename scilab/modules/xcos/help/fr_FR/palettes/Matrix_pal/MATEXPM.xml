@@ -20,39 +20,39 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATEXPM.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATEXPM">
+    <refsection xml:id="Contents_MATEXPM">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATEXPM">Description</xref>
+                <para><link linkend="Description_MATEXPM">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATEXPM">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATEXPM">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATEXPM">Exemple</link>
+                <para><link linkend="MATEXPM">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATEXPM">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATEXPM">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATEXPM">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATEXPM">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATEXPM">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATEXPM">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATEXPM">Voir aussi</xref>
+                <para><link linkend="Seealso_MATEXPM">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATEXPM">
+    <refsection xml:id="Description_MATEXPM">
         <title>Description</title>
         <para>
             Le bloc MATEXPM sort l'exponentielle matricielle d'une matrice d'entrée carrée calculée par l'approximation
@@ -63,14 +63,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATEXPM">
+    <refsection xml:id="Dialogbox_MATEXPM">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATEXPM_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATEXPM_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -84,14 +83,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATEXPM">
+    <refsection xml:id="Example_MATEXPM">
         <title>Exemple</title>
         <programlisting role="example"><![CDATA[
             u = [1 2 3 ; 2 3 1 ; 4 2 1]
             y = [182.612 196.518 141.735 ; 172.973 190.770 133.577 ; 204.677 220.063 159.067]
         ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATEXPM">
+    <refsection xml:id="Defaultproperties_MATEXPM">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -164,7 +163,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATEXPM">
+    <refsection xml:id="Interfacingfunction_MATEXPM">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -172,7 +171,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATEXPM">
+    <refsection xml:id="Computationalfunction_MATEXPM">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -187,24 +186,26 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATEXPM2">
+    <refsection xml:id="Example_MATEXPM2">
         <title>Exemple d'Exponentielle matricielle : expm([0 sin(t) ; sqrt(t) 0])</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATEXPM_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATEXPM_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATEXPM_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATEXPM_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATEXPM" role="see also">
+    <refsection xml:id="Seealso_MATEXPM" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATMUL">MATMUL</link>
+                <para><link linkend="MATMUL">MATMUL</link></para>
             </listitem>
             <listitem>
-                <link linkend="expm">expm (Fonction Scilab)</link>
+                <para><link linkend="expm">expm (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -20,36 +20,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATINV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATINV">
+    <refsection xml:id="Contents_MATINV">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATINV">Description</xref>
+                <para><link linkend="Description_MATINV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATINV">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATINV">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATINV">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATINV">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATINV">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATINV">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATINV">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATINV">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATINV">Voir aussi</xref>
+                <para><link linkend="Seealso_MATINV">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATINV">
+    <refsection xml:id="Description_MATINV">
         <title>Description</title>
         <para>
             Le bloc MATINV sort l'inverse d'une matrice d'entrée carrée calculée en utilisant la factorisation LU.
@@ -60,14 +60,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATINV">
+    <refsection xml:id="Dialogbox_MATINV">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATINV_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATINV_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -81,7 +80,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATINV">
+    <refsection xml:id="Defaultproperties_MATINV">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -154,7 +153,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATINV">
+    <refsection xml:id="Interfacingfunction_MATINV">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +161,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATINV">
+    <refsection xml:id="Computationalfunction_MATINV">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -177,27 +176,29 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATINV">
+    <refsection xml:id="Example_MATINV">
         <title>Exemple de Matrice inverse : inv([0 1/(sin(t)+1) ; 1/(t+1) 0])</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATINV_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATINV_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATINV_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATINV_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATINV" role="see also">
+    <refsection xml:id="Seealso_MATINV" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATLU">MATLU</link>
+                <para><link linkend="MATLU">MATLU</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATPINV">MATPINV</link>
+                <para><link linkend="MATPINV">MATPINV</link></para>
             </listitem>
             <listitem>
-                <link linkend="inv">inv (Fonction Scilab)</link>
+                <para><link linkend="inv">inv (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

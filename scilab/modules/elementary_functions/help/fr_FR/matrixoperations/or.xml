@@ -27,7 +27,7 @@
             b = or(A, n)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -45,17 +45,20 @@
                         s'il vaut 0 ou 0+0i. Sinon (%nan inclus), il est identifé
                         à <literal>%T</literal> (vrai).
                     </para>
-                    <note>Valeurs particulières de <varname>A</varname> :
-                        <itemizedlist>
-                            <listitem>
-                                 <para><literal>or([])</literal> vaut <literal>%F</literal>.
-                                </para>
-                            </listitem>
-                            <listitem>
-                                 <para><literal>or(%nan)</literal> vaut <literal>%T</literal>.
-                                </para>
-                            </listitem>
-                        </itemizedlist>
+                    <note>
+                        <para>
+                            Valeurs particulières de <varname>A</varname> :
+                            <itemizedlist>
+                                <listitem>
+                                    <para><literal>or([])</literal> vaut <literal>%F</literal>.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><literal>or(%nan)</literal> vaut <literal>%T</literal>.
+                                    </para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -319,9 +322,9 @@ or(A, "c")
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Les nombres complexes sont désormais acceptés.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

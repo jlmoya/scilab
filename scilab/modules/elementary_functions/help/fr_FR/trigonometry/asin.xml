@@ -25,7 +25,7 @@
         <title>Séquence d'appel</title>
         <synopsis>t = asin(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -123,7 +123,9 @@ sin(a)
             <revision>
                 <revnumber>5.5.2</revnumber>
                 <revdescription>
-                    Pour <literal>x&gt;1</literal>, <literal>imag(asin(x))</literal> devient négatif.
+                    <para>
+                        Pour <literal>x&gt;1</literal>, <literal>imag(asin(x))</literal> devient négatif.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

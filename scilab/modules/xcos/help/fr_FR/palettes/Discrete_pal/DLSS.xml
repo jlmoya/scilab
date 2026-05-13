@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DLSS.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DLSS">
+    <refsection xml:id="Contents_DLSS">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DLSS">Description</xref>
+                <para><link linkend="Description_DLSS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DLSS">Paramètres</xref>
+                <para><link linkend="Dialogbox_DLSS">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DLSS">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_DLSS">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DLSS">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_DLSS">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DLSS">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_DLSS">Fonction de calcul</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DLSS">
+    <refsection xml:id="Description_DLSS">
         <title>Description</title>
         <para>
             Ce bloc réalise une représentation d'état en temps discret d'un système. Le système est défini
@@ -57,15 +57,14 @@
             jour lorsque un événement se produit sur l'unique port d'activation unique.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DLSS">
+    <refsection xml:id="Dialogbox_DLSS">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/DLSS_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -115,7 +114,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DLSS">
+    <refsection xml:id="Defaultproperties_DLSS">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -188,7 +187,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DLSS">
+    <refsection xml:id="Interfacingfunction_DLSS">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -196,7 +195,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DLSS">
+    <refsection xml:id="Computationalfunction_DLSS">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>

@@ -31,8 +31,8 @@
             status = test_run(module, test_name, options, exportToFile)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>module</term>
@@ -177,7 +177,7 @@
                             <term>"skip_tests"</term>
                             <listitem>
                                 <para>
-                                    ignore les tests spécifiés dans <term>test_name</term>
+                                    ignore les tests spécifiés dans <literal>test_name</literal>
                                 </para>
                             </listitem>
                         </varlistentry>
@@ -566,29 +566,33 @@ test_run string *ascii*
                 <link linkend="slint">slint</link>
             </member>
             <member>
-                <ulink url="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681382.aspx">
+                <link xlink:href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681382.aspx">
                   Liste des codes de résultat d'exécution de MS Windows
-                </ulink>
+                </link>
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>test_run renvoie un statut:
-                    <itemizedlist><listitem>
-                                       <para>
-                                Renvoie %t si aucune erreur n'est détectée
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                Renvoie %f si une erreur est détectée
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                <revdescription>
+                    <para>
+                        test_run renvoie un statut:
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Renvoie %t si aucune erreur n'est détectée
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Renvoie %f si une erreur est détectée
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                     <para>
                         <literal>show_diff</literal> et <literal>show_error</literal> ajoutés comme nouvelles options
                     </para>
@@ -605,7 +609,7 @@ test_run string *ascii*
             </revision>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>séparation 32/64bits disponible</revdescription>
+                <revremark>séparation 32/64bits disponible</revremark>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>

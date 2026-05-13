@@ -26,7 +26,7 @@
             P=mtlb_legendre(n,X[,normflag])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -101,10 +101,10 @@
                 </para>
             </listitem>
         </itemizedlist>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Attention : <literal>mtlb_legendre</literal> ne doit pas être utilisée pour une programmation manuelle.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
 </refentry>

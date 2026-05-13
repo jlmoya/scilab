@@ -16,7 +16,7 @@
           xgrid(color, thickness, style)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -81,14 +81,16 @@ xgrid(5, 1, 7)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    Arguments <literal>thickness</literal> et <literal>style</literal> ajoutés.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Arguments <literal>thickness</literal> et <literal>style</literal> ajoutés.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

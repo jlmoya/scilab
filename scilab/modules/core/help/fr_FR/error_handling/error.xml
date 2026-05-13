@@ -26,7 +26,7 @@
             error(n, message)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -174,14 +174,16 @@ test : Nombre erroné d'arguments d'entrée : 1 attendus.
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.0.0</revnumber>
-                <revremark>
-                    Syntaxe <literal>error(n, message)</literal> introduite.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Syntaxe <literal>error(n, message)</literal> introduite.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>5.4.0</revnumber>
@@ -191,11 +193,13 @@ test : Nombre erroné d'arguments d'entrée : 1 attendus.
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    Syntaxes <literal>error(n)</literal> et <literal>error(n, pos)</literal>
-                    supprimées : un message d'erreur explicite doit désormais être obligatoirement
-                    indiqué. Il n'y a désormais plus d'identifiant d'erreur absolu.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Syntaxes <literal>error(n)</literal> et <literal>error(n, pos)</literal>
+                        supprimées : un message d'erreur explicite doit désormais être obligatoirement
+                        indiqué. Il n'y a désormais plus d'identifiant d'erreur absolu.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

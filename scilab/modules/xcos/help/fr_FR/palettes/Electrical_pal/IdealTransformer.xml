@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/IdealTransformer.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_IdealTransformer">
+    <refsection xml:id="Contents_IdealTransformer">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_IdealTransformer">Description</xref>
+                <para><link linkend="Description_IdealTransformer">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_IdealTransformer">Paramètres</xref>
+                <para><link linkend="Dialogbox_IdealTransformer">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_IdealTransformer">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_IdealTransformer">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_IdealTransformer">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_IdealTransformer">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <link linkend="IdealTransformer">Modèle Modelica</link>
+                <para><link linkend="IdealTransformer">Modèle Modelica</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_IdealTransformer">
+    <refsection xml:id="Description_IdealTransformer">
         <title>Description</title>
         <para>
             Le transformateur idéal est un élément de circuit électrique résistif à deux ports
@@ -58,15 +58,14 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_IdealTransformer">
+    <refsection xml:id="Dialogbox_IdealTransformer">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/IdealTransformer_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -77,7 +76,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_IdealTransformer">
+    <refsection xml:id="Defaultproperties_IdealTransformer">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -145,7 +144,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_IdealTransformer">
+    <refsection xml:id="Interfacingfunction_IdealTransformer">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -153,7 +152,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_IdealTransformer">
+    <refsection xml:id="Modelicamodel_IdealTransformer">
         <title>Modèle Modelica</title>
         <itemizedlist>
             <listitem>
@@ -161,7 +160,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_IdealTransformer">
+    <refsection xml:id="Example_IdealTransformer">
         <title>Exemple d'utilisation du Transformateur idéal</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/electrical_pal/IdealTransformer_Example.zcos">

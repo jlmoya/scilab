@@ -29,7 +29,7 @@
         <title>Séquence d'appel</title>
         <synopsis>[a,[S]]=fftw_flags(flag)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -66,14 +66,14 @@
             planificateur est utilisé pour déterminer un moyen efficace pour
             calculer la fft.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Attention: la valeur par défaut "FFTW_ESTIMATE" donne le plus
                 souvent de bonnes performances. N'essayez d'autres choix que si
                 la performance est cruciale et que vous avez beaucoup d'appels
                 du même type à effectuer.
-            </warning>
-        </para>
+            </para>
+        </warning>
         <para>
             Les entrées possibles sont :
         </para>

@@ -26,7 +26,7 @@
           y = integrate(expr, v, x0, x1, atol, rtol)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -107,12 +107,12 @@
         <para>
             où <literal>I</literal> représente la valeur exacte de l'intégrale.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Restriction : l'expression fournie ne doit pas contenir de noms de variables
                 commençant par <literal>%</literal>.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Exemples</title>
@@ -149,8 +149,10 @@ Y = integrate(['if x==0 then 1,';
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    Valeur par défaut de atol : 10<superscript>-13</superscript> (au lieu de
-                    10<superscript>-14</superscript>).
+                    <para>
+                        Valeur par défaut de atol : 10<superscript>-13</superscript> (au lieu de
+                        10<superscript>-14</superscript>).
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

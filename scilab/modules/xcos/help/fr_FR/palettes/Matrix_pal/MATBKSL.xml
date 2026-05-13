@@ -20,39 +20,39 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATBKSL.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATBKSL">
+    <refsection xml:id="Contents_MATBKSL">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATBKSL">Description</xref>
+                <para><link linkend="Description_MATBKSL">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATBKSL">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATBKSL">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATBKSL">Exemple</link>
+                <para><link linkend="MATBKSL">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATBKSL">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATBKSL">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATBKSL">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATBKSL">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATBKSL">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATBKSL">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATBKSL">Voir aussi</xref>
+                <para><link linkend="Seealso_MATBKSL">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATBKSL">
+    <refsection xml:id="Description_MATBKSL">
         <title>Description</title>
         <para>
             Le bloc MATBKSL sort la division matricielle à gauche. C'est une solution de A*x=B. L'entrée du haut
@@ -65,14 +65,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATBKSL">
+    <refsection xml:id="Dialogbox_MATBKSL">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATBKSL_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATBKSL_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -86,7 +85,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATBKSL">
+    <refsection xml:id="Example_MATBKSL">
         <title>Exemple</title>
         <programlisting role="example"><![CDATA[
             A=[1 7 3;23 32 29]
@@ -95,7 +94,7 @@
             x=[-4.504 -3.922;3.643 3.132;0.000 0.000]
         ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATBKSL">
+    <refsection xml:id="Defaultproperties_MATBKSL">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -171,7 +170,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATBKSL">
+    <refsection xml:id="Interfacingfunction_MATBKSL">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -179,7 +178,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATBKSL">
+    <refsection xml:id="Computationalfunction_MATBKSL">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -194,24 +193,26 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATBKSL2">
+    <refsection xml:id="Example_MATBKSL2">
         <title>Exemple de division à gauche : tan(x) = sin(x)/cos(x)</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATBKSL_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATBKSL_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATBKSL_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATBKSL_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATBKSL" role="see also">
+    <refsection xml:id="Seealso_MATBKSL" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATDIV">MATDIV</link>
+                <para><link linkend="MATDIV">MATDIV</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATMUL">MATMUL</link>
+                <para><link linkend="MATMUL">MATMUL</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -98,18 +98,24 @@
             </itemizedlist>
         </para>
         <note>
-            Après l'appel à <literal>isoview(..)</literal>, le repère actif reste le même, y compris
-            lorsque plusieurs repères ont été traités.
+            <para>
+                Après l'appel à <literal>isoview(..)</literal>, le repère actif reste le même, y compris
+                lorsque plusieurs repères ont été traités.
+            </para>
         </note>
         <note>
-            Il est possible de tracer directement des courbes en échelles isométriques en utilisant
-            l'option <literal>plot2d(...,frameflag=4)</literal> lors de l'appel, sans devoir
-            utiliser <function>isoview</function> après coup.
-        </note>
-        <refsect3>
-            <title>Affichage selon .isoview et .cube_scaling</title>
             <para>
-            <table align="middle">
+                Il est possible de tracer directement des courbes en échelles isométriques en utilisant
+                l'option <literal>plot2d(...,frameflag=4)</literal> lors de l'appel, sans devoir
+                utiliser <function>isoview</function> après coup.
+            </para>
+        </note>
+
+        <para>
+            <emphasis role="bold">Affichage selon .isoview et .cube_scaling</emphasis>
+        </para>
+        <para>
+            <table>
                 <tr>
                     <th>isoview(..)</th><th>gca().isoview</th>
                                        <th>gca().cube_scaling</th>
@@ -140,8 +146,7 @@
                              </td>
                 </tr>
             </table>
-            </para>
-        </refsect3>
+        </para>
     </refsection>
     <refsection role="examples">
         <title>Exemples</title>
@@ -290,15 +295,17 @@ xtitle("with frameflag=4")
                     </revision>
                     <revision>
                         <revnumber>6.0.2</revnumber>
-                        <revdescription>
+                        <revremark>
                             "isoview on" désormais fixe .cube_scaling="off", et
                             "isoview off" fixe .cube_scaling="on".
-                        </revdescription>
+                        </revremark>
                     </revision>
                     <revision>
                         <revnumber>6.1</revnumber>
                         <revdescription>
-                            La syntaxe <literal>isoview(xmin, xmax, ymin, ymax)</literal> n'est plus acceptée.
+                            <para>
+                                La syntaxe <literal>isoview(xmin, xmax, ymin, ymax)</literal> n'est plus acceptée.
+                            </para>
                         </revdescription>
                     </revision>
                 </revhistory>

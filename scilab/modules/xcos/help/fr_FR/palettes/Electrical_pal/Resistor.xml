@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Resistor.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_Resistor">
+    <refsection xml:id="Contents_Resistor">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_Resistor">Description</xref>
+                <para><link linkend="Description_Resistor">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_Resistor">Paramètres</xref>
+                <para><link linkend="Dialogbox_Resistor">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_Resistor">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_Resistor">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Resistor">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_Resistor">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <link linkend="Resistor">Modèle Modelica</link>
+                <para><link linkend="Resistor">Modèle Modelica</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_Resistor">
+    <refsection xml:id="Description_Resistor">
         <title>Description</title>
         <para>
             Une résistance est un composant électrique à deux ports qui s'oppose au passage du courant
@@ -72,15 +72,14 @@
             (<literal>I</literal>) traversant la résistance.
         </para>
     </refsection>
-    <refsection id="Dialogbox_Resistor">
+    <refsection xml:id="Dialogbox_Resistor">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/Resistor_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -91,7 +90,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_Resistor">
+    <refsection xml:id="Defaultproperties_Resistor">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -150,7 +149,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_Resistor">
+    <refsection xml:id="Interfacingfunction_Resistor">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -158,7 +157,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_Resistor">
+    <refsection xml:id="Modelicamodel_Resistor">
         <title>Modèle Modelica</title>
         <itemizedlist>
             <listitem>

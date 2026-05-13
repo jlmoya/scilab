@@ -26,8 +26,8 @@
         <title>Syntaxe</title>
         <synopsis>y = permute(x, dims)</synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
@@ -70,15 +70,19 @@
             données dans le vecteur <varname>dims</varname>.
         </para>
         <important>
-             Dans le tableau résultant <literal>y</literal>, toute dimension d'ordre majeur réduite
-             à une taille de 1 (singleton) est automatiquement ignorée (réduction).
+            <para>
+                Dans le tableau résultant <literal>y</literal>, toute dimension d'ordre majeur réduite
+                à une taille de 1 (singleton) est automatiquement ignorée (réduction).
+            </para>
          </important>
          <note>
-             <literal>permute()</literal> est une généralisation à un nombre de dimensions N
-             quelconque des opérateurs de transposition <literal>.'</literal> ou <literal>'</literal>.
-             Elle est principalement utile pour manipuler les dimensions des hypermatrices.
-             Pour simplement transposer une matrice (permuter ses lignes en colonnes et vice-versa),
-             on utilisera de préférence <literal>.'</literal> ou <literal>'</literal>
+            <para>
+                <literal>permute()</literal> est une généralisation à un nombre de dimensions N
+                quelconque des opérateurs de transposition <literal>.'</literal> ou <literal>'</literal>.
+                Elle est principalement utile pour manipuler les dimensions des hypermatrices.
+                Pour simplement transposer une matrice (permuter ses lignes en colonnes et vice-versa),
+                on utilisera de préférence <literal>.'</literal> ou <literal>'</literal>
+            </para>
          </note>
     </refsection>
     <refsection>
@@ -169,9 +173,9 @@ y
         <revhistory>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revdescription>
+                <revremark>
                     Extension aux tableaux de fractions rationnelles
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

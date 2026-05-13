@@ -22,7 +22,7 @@
         <title>Séquence d'appel</title>
         <synopsis>var = Variable(name, infer)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -56,9 +56,11 @@
             les "tlists M2SCI".
         </para>
         <note>
-            <emphasis role="bold">Colon</emphasis> est une variable prédéfinie contenant le
-            code interne Scilab représentant l'indice ":" (tout). Elle peut être utilisée
-            notamment dans les codes représentant des opérations d'insertion ou d'extraction.
+            <para>
+                <emphasis role="bold">Colon</emphasis> est une variable prédéfinie contenant le
+                code interne Scilab représentant l'indice ":" (tout). Elle peut être utilisée
+                notamment dans les codes représentant des opérations d'insertion ou d'extraction.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -121,7 +123,7 @@
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    Ajout de la variable prédéfinie <literal>Colon</literal>.
+                    <para>Ajout de la variable prédéfinie <literal>Colon</literal>.</para>
                 </revdescription>
             </revision>
         </revhistory>

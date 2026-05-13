@@ -23,50 +23,50 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/OUTIMPL_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_OUTIMPL_f">
+    <refsection xml:id="Contents_OUTIMPL_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Palette_OUTIMPL_f">Palettes</xref>
+                <para><link linkend="Palette_OUTIMPL_f">Palettes</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Description_OUTIMPL_f">Description</xref>
+                <para><link linkend="Description_OUTIMPL_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_OUTIMPL_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_OUTIMPL_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_OUTIMPL_f">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_OUTIMPL_f">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_OUTIMPL_f">Exemple</xref>
+                <para><link linkend="Example_OUTIMPL_f">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_OUTIMPL_f">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_OUTIMPL_f">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_OUTIMPL_f">Voir aussi</xref>
+                <para><link linkend="Seealso_OUTIMPL_f">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Palette_OUTIMPL_f">
+    <refsection xml:id="Palette_OUTIMPL_f">
         <title>Palettes</title>
         <itemizedlist>
             <listitem>
-                <link linkend="Portaction_pal">Palette Port &amp; Sous-systèmes</link>
+                <para><link linkend="Portaction_pal">Palette Port &amp; Sous-systèmes</link></para>
             </listitem>
             <listitem>
-                <link linkend="Sinks_pal">Palette Sinks</link>
+                <para><link linkend="Sinks_pal">Palette Sinks</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_OUTIMPL_f">
+    <refsection xml:id="Description_OUTIMPL_f">
         <title>Description</title>
         <para>
             Ce bloc représente un port de sortie implicite. Il doit seulement être utilisé à l'intérieur
@@ -78,15 +78,14 @@
             réguliers. Vous pouvez l'initialiser avec le paramètre <emphasis role="bold">Port number</emphasis>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_OUTIMPL_f">
+    <refsection xml:id="Dialogbox_OUTIMPL_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/portaction_pal/fr_FR/OUTIMPL_f_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -97,7 +96,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_OUTIMPL_f">
+    <refsection xml:id="Defaultproperties_OUTIMPL_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +161,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_OUTIMPL_f">
+    <refsection xml:id="Example_OUTIMPL_f">
         <title>Exemple</title>
         <para>
             Dans l'exemple suivant le Super bloc est un simple commutateur à transistor.
@@ -191,7 +190,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/portaction_pal/en_US/OUTIMPL_f_e
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_OUTIMPL_f">
+    <refsection xml:id="Interfacingfunction_OUTIMPL_f">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -201,14 +200,14 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection role="see also" id="Seealso_OUTIMPL_f">
-        <title>See also</title>
+    <refsection role="see also" xml:id="Seealso_OUTIMPL_f">
+        <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="INIMPL_f">INIMPL_f</link>
+                <para><link linkend="INIMPL_f">INIMPL_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="SUPER_f">SUPER_f</link>
+                <para><link linkend="SUPER_f">SUPER_f</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

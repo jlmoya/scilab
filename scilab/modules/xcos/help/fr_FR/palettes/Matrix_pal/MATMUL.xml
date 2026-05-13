@@ -20,39 +20,39 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATMUL.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATMUL">
+    <refsection xml:id="Contents_MATMUL">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATMUL">Description</xref>
+                <para><link linkend="Description_MATMUL">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATMUL">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATMUL">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATMUL">Exemple</link>
+                <para><link linkend="MATMUL">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATMUL">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATMUL">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATMUL">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATMUL">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATMUL">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATMUL">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATMUL">Voir aussi</xref>
+                <para><link linkend="Seealso_MATMUL">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATMUL">
+    <refsection xml:id="Description_MATMUL">
         <title>Description</title>
         <para>
             Le bloc MATMUL calcule le produt d'une matrice d'entrée par une matrice ou un scalaire.
@@ -99,14 +99,13 @@
             <emphasis role="bold">Do on Overflow</emphasis> à 0,1 ou 2.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATMUL">
+    <refsection xml:id="Dialogbox_MATMUL">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATMUL_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATMUL_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -142,7 +141,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATMUL">
+    <refsection xml:id="Example_MATMUL">
         <title>Exemple</title>
         <programlisting role="example"><![CDATA[
             A=[1 2 3;4 5 6]
@@ -150,7 +149,7 @@
             y=[46 37 28 19;115 94 73 52]
         ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATMUL">
+    <refsection xml:id="Defaultproperties_MATMUL">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -226,7 +225,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATMUL">
+    <refsection xml:id="Interfacingfunction_MATMUL">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -234,7 +233,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATMUL">
+    <refsection xml:id="Computationalfunction_MATMUL">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -259,23 +258,23 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_MATMUL" role="see also">
+    <refsection xml:id="Seealso_MATMUL" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="INTMUL">INTMUL</link>
+                <para><link linkend="INTMUL">INTMUL</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATDIV">MATDIV</link>
+                <para><link linkend="MATDIV">MATDIV</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATBKSL">MATBKSL</link>
+                <para><link linkend="MATBKSL">MATBKSL</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATEXPM">MATEXPM</link>
+                <para><link linkend="MATEXPM">MATEXPM</link></para>
             </listitem>
             <listitem>
-                <link linkend="SUMMATION">SUMMATION</link>
+                <para><link linkend="SUMMATION">SUMMATION</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

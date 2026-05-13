@@ -25,7 +25,7 @@
             [m, e] = log2(u)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -52,7 +52,9 @@
             <literal>log2(x)</literal> calcule le logarithme en base 2 élément
             par élément : <literal>y(i,j)=log2(x(i,j))</literal>.
             <note>
-                <literal>log2(-%inf) == %inf + log2(-1)</literal>
+                <para>
+                    <literal>log2(-%inf) == %inf + log2(-1)</literal>
+                </para>
             </note>
         </para>
         <para>

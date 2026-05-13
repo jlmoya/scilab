@@ -25,8 +25,8 @@
             pm = varn(p, varname)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>p  </term>
@@ -153,7 +153,7 @@ fx == f
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
@@ -164,23 +164,23 @@ fx == f
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                             <para>
-                                Le nom de la variable symbolique n'est plus limité à 4 caractères.
-                                Il peut désormais inclure des caractères UTF-8 étendus.
-                            </para>
-                        </listitem>
-                        <listitem>
-                             <para>
-                                varn([]) produit désormais [] au lieu de diriger vers %s_varn().
-                            </para>
-                        </listitem>
-                    </itemizedlist>
+                <revdescription>
                     <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Le nom de la variable symbolique n'est plus limité à 4 caractères.
+                                    Il peut désormais inclure des caractères UTF-8 étendus.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    varn([]) produit désormais [] au lieu de diriger vers %s_varn().
+                                </para>
+                            </listitem>
+                        </itemizedlist>
                     </para>
-                </revremark>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

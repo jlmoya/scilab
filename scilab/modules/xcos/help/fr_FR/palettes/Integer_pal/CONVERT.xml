@@ -16,49 +16,49 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
         xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:id="CONVERT" xml:lang="fr_FR" xml.mml="http://www.w3.org/1998/Math/MathML">
+        xml:id="CONVERT" xml:lang="fr_FR" xmlns:mml="http://www.w3.org/1998/Math/MathML">
     <refnamediv>
         <refname>CONVERT</refname>
         <refpurpose>Conversion de type de données</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/CONVERT.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CONVERT">
+    <refsection xml:id="Contents_CONVERT">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CONVERT">Description</xref>
+                <para><link linkend="Description_CONVERT">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_CONVERT">Types de données</xref>
+                <para><link linkend="Data_Type_CONVERT">Types de données</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CONVERT">Paramètres</xref>
+                <para><link linkend="Dialogbox_CONVERT">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CONVERT">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_CONVERT">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CONVERT">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_CONVERT">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CONVERT">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_CONVERT">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CONVERT">Exemple</xref>
+                <para><link linkend="Example_CONVERT">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CONVERT">Voir aussi</xref>
+                <para><link linkend="Seealso_CONVERT">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_CONVERT">
+    <refsection xml:id="Description_CONVERT">
         <title>Description</title>
         <para>
             Ce bloc convertit une entrée de type entier ou réel double vers un autre type réel
@@ -104,7 +104,7 @@
             <emphasis role="bold">Do on Overflow</emphasis> à 0,1 ou 2.
         </para>
     </refsection>
-    <refsection id="Data_Type_CONVERT">
+    <refsection xml:id="Data_Type_CONVERT">
         <title>Types de données</title>
         <para>
             Le bloc supporte les types de données suivants  :
@@ -124,14 +124,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_CONVERT">
+    <refsection xml:id="Dialogbox_CONVERT">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/integer_pal/fr_FR/CONVERT_gui.png" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/integer_pal/fr_FR/CONVERT_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -184,7 +183,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_CONVERT">
+    <refsection xml:id="Defaultproperties_CONVERT">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -257,7 +256,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_CONVERT">
+    <refsection xml:id="Interfacingfunction_CONVERT">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -267,7 +266,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CONVERT">
+    <refsection xml:id="Computationalfunction_CONVERT">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -275,7 +274,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_CONVERT">
+    <refsection xml:id="Example_CONVERT">
         <title>Exemple</title>
         <para>
             Cet exemple montre la propagation du bit de signe pendant une conversion d'int8 à int16.
@@ -290,9 +289,9 @@
             </link>
         </para>
     </refsection>
-    <refsection role="see also" id="Seealso_CONVERT">
+    <refsection role="see also" xml:id="Seealso_CONVERT">
         <title>Voir aussi</title>
-        <simplelist>
+        <simplelist type="inline">
             <member>
                 <link linkend="EXTRACTBITS">EXTRACTBITS</link>
             </member>

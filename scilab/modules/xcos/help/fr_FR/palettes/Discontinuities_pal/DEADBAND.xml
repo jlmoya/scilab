@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/DEADBAND.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DEADBAND">
+    <refsection xml:id="Contents_DEADBAND">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DEADBAND">Description</xref>
+                <para><link linkend="Description_DEADBAND">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DEADBAND">Paramètres</xref>
+                <para><link linkend="Dialogbox_DEADBAND">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DEADBAND">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_DEADBAND">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DEADBAND">Exemple</xref>
+                <para><link linkend="Example_DEADBAND">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DEADBAND">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_DEADBAND">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DEADBAND">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_DEADBAND">Fonction de calcul</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DEADBAND">
+    <refsection xml:id="Description_DEADBAND">
         <title>Description</title>
         <para>Le bloc Zone morte fournit une zone avec une sortie égale à zéro.</para>
         <para>
@@ -91,15 +91,14 @@
             la sortie est égale à l'entrée moins la limite inférieure.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DEADBAND">
+    <refsection xml:id="Dialogbox_DEADBAND">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/discontinuities_pal/fr_FR/DEADBAND_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -124,7 +123,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DEADBAND">
+    <refsection xml:id="Defaultproperties_DEADBAND">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -197,7 +196,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_DEADBAND">
+    <refsection xml:id="Example_DEADBAND">
         <title>Exemple</title>
         <para>Ce qui suit est un exemple de système avec zone morte.
         </para>
@@ -224,7 +223,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_DEADBAND">
+    <refsection xml:id="Interfacingfunction_DEADBAND">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -234,7 +233,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DEADBAND">
+    <refsection xml:id="Computationalfunction_DEADBAND">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>

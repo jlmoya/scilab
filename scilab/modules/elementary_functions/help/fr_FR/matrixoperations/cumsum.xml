@@ -31,8 +31,8 @@
         </synopsis>
     </refsynopsisdiv>
 
-    <refsection role="parameters">
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
@@ -98,13 +98,13 @@
         </para>
         <para>
             <emphasis role="bold">y = cumsum(x, orientation)</emphasis> calcule et fournit dans
-            <term>y</term> les sommes partielles cumulatives des éléments de
-            <term>x</term> selon la direction spécifiée par <term>orientation</term> :
+            <literal>y</literal> les sommes partielles cumulatives des éléments de
+            <literal>x</literal> selon la direction spécifiée par <literal>orientation</literal> :
         </para>
         <itemizedlist>
             <listitem>
                 <para>
-                    Si <term>orientation</term> est égal à 1 ou "r" alors :
+                    Si <literal>orientation</literal> est égal à 1 ou "r" alors :
                 </para>
                 <para>
                     <latex alt="y(i,j) = ∑u=1→i x(u,j)"><![CDATA[
@@ -119,7 +119,7 @@
             </listitem>
             <listitem>
                 <para>
-                    Si <term>orientation</term> est égal à 2 ou "c" alors :
+                    Si <literal>orientation</literal> est égal à 2 ou "c" alors :
                 </para>
                 <para>
                     <latex alt="y(i,j) = ∑u=1→j x(i,u)"><![CDATA[
@@ -134,7 +134,7 @@
             </listitem>
             <listitem>
                 <para>
-                    Si <term>orientation</term> est égal à n alors :
+                    Si <literal>orientation</literal> est égal à n alors :
                 </para>
                 <para>
                     <latex alt="y(i₁,…,iₙ₋₁, iₙ,iₙ₊₁,…) = ∑u=1…iₙ  x(i₁,…,iₙ₋₁, u,iₙ₊₁,…)"><![CDATA[
@@ -153,13 +153,13 @@
                 <para>
                     <emphasis role="bold">y = cumsum(x, "m")</emphasis> est équivalent à
                     <literal>y = cumsum(x, orientation)</literal>, où
-                    <term>orientation</term> est le n° de la première dimension de <term>x</term>
+                    <literal>orientation</literal> est le n° de la première dimension de <literal>x</literal>
                     plus grande que 1. Cette option est utilisé pour compatibilité avec Matlab.
                 </para>
             </listitem>
         </itemizedlist>
         <para>
-            L'argument <term>outtype</term> gère la façon dont le produit est réalisé :
+            L'argument <literal>outtype</literal> gère la façon dont le produit est réalisé :
         </para>
         <itemizedlist>
             <listitem>
@@ -198,8 +198,10 @@
             </listitem>
         </itemizedlist>
         <warning>
-            Lorsque <varname>x</varname> est une matrice creuse, garder à l'esprit que la densité
-            de la matrice <varname>y</varname> résultante sera presque toujours proche de 100%.
+            <para>
+                Lorsque <varname>x</varname> est une matrice creuse, garder à l'esprit que la densité
+                de la matrice <varname>y</varname> résultante sera presque toujours proche de 100%.
+            </para>
         </warning>
     </refsection>
     <refsection>

@@ -33,8 +33,8 @@
             X = fft(.., symmetry)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>A, X</term>
@@ -101,7 +101,6 @@
                           </itemizedlist>
                         </para>
                     </listitem>
-                <para/>
             </varlistentry>
             <varlistentry>
                 <term>dims</term>
@@ -127,148 +126,151 @@
     </refsection>
     <refsection>
         <title>Description</title>
+        <para>
         Cette fonction calcule la transformée de Fourier discrète directe ou inverse d'un tableau
         ou d'un hypertableau de nombres, selon une ou plusieurs directions au sein de celui-ci.
-        <para/>
-        <refsect3>
-            <title>Syntaxe courte</title>
-            <para>
-                <emphasis role="bold">Transformée directe</emphasis> :
-            </para>
-            <para>
-                <literal>X = fft(A,-1 [, symmetry])</literal> ou
-                <literal>X = fft(A [, symmetry])</literal> calcule la transformée de Fourier discrète
-                directe de <varname>A</varname>.
-                <variablelist>
-                    <varlistentry>
-                        <term>monovariable</term>
-                        <listitem>
-                             <para><varname>a=A</varname> est un vecteur : <literal>x=fft(a,-1)</literal> ou
-                                <literal>x = fft(a)</literal> calcule une transformée monovariable,
-                                c'est à dire:
-                                <latex alt="x(k)=∑_m=1…n a(m).exp(-2iπ.(k-1)(m-1)/n)">
-                                    x(k) = \sum_{m=1}^n
-                                    {a(m) \exp\left(-2 i\pi\frac{(m-1)}{n} (k-1)\right)}
-                                </latex></para>
-                                    </listitem>
-                    </varlistentry>
-                    <varlistentry>
-                        <term>multivariable</term>
-                        <listitem>
-                             <para><varname>A</varname> est une matrice, ou un hypertableau N-dimensionnel :
-                                <literal>X = fft(A,-1)</literal> ou <literal>X = fft(A)</literal>
-                                calcule la transformée de Fourier discrète multivariable directe
-                                de <varname>A</varname>.
-                                </para>
-                            </listitem>
-                    </varlistentry>
-                </variablelist>
-            </para>
-            <para>
-                <emphasis role="bold">Transformée inverse normalisée</emphasis> :
-            </para>
-            <para>
-                <literal>X = fft(A, 1)</literal> ou <literal>X = ifft(A)</literal> calcule la
-                transformée inverse normalisée, telle que <literal>A==ifft(fft(A))</literal>.
-                <variablelist>
-                    <varlistentry>
-                        <term>monovariable</term>
-                        <listitem>
-                             <para><varname>a=A</varname> est un vecteur : <literal>X = fft(a, +1)</literal>
-                                ou <literal>X = ifft(A)</literal> calcule la transformée monovariable
-                                inverse, c'est à dire :
-                                <latex alt="x(k)=(1/n).∑_m=1…n a(m).exp(+2iπ.(k-1)(m-1)/n)">
-                                    $x(k) = \frac{1}{n}\sum_{m=1}^n
-                                    {a(m) \exp\left(+2 i\pi\frac{(m-1)}{n} (k-1)\right)}$
-                                </latex></para>
-                                    </listitem>
-                    </varlistentry>
-                    <varlistentry>
-                        <term>multivariable</term>
-                        <listitem>
-                             <para><varname>A</varname> est une matrice ou un hypertableau N-dimensionnel :
-                                <literal>X = fft(A, +1)</literal> ou <literal>X = ifft(A)</literal>
-                                calcule la transformée de Fourier multivariable discrète inverse
-                                de <varname>A</varname>.
-                                </para>
-                            </listitem>
-                    </varlistentry>
-                </variablelist>
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Syntaxe longue : FFT directionnelle mutidimensionnelle</title>
-            <para>
-                <emphasis role="bold">X = fft(A, sign, directions [, symmetry])</emphasis>
-                calcule efficacement les transformées directes ou inverses de toutes les
-                "rangées" de <varname>A</varname>, selon les <varname>directions</varname>
-                spécifiées.
-            </para>
-            <para>
-                Par exemple, si <varname>A</varname> est un tableau 3D,
-                <literal>X = fft(A,-1, 2)</literal> est équivalent à
-                <programlisting role="no-scilab-exec"><![CDATA[
+        </para>
+
+        <para>
+            <emphasis role="bold">Syntaxe courte : Transformée directe</emphasis>
+        </para>
+        <para>
+            <literal>X = fft(A,-1 [, symmetry])</literal> ou
+            <literal>X = fft(A [, symmetry])</literal> calcule la transformée de Fourier discrète
+            directe de <varname>A</varname>.
+            <variablelist>
+                <varlistentry>
+                    <term>monovariable</term>
+                    <listitem>
+                            <para><varname>a=A</varname> est un vecteur : <literal>x=fft(a,-1)</literal> ou
+                            <literal>x = fft(a)</literal> calcule une transformée monovariable,
+                            c'est à dire:
+                            <latex alt="x(k)=∑_m=1…n a(m).exp(-2iπ.(k-1)(m-1)/n)">
+                                x(k) = \sum_{m=1}^n
+                                {a(m) \exp\left(-2 i\pi\frac{(m-1)}{n} (k-1)\right)}
+                            </latex></para>
+                                </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>multivariable</term>
+                    <listitem>
+                            <para><varname>A</varname> est une matrice, ou un hypertableau N-dimensionnel :
+                            <literal>X = fft(A,-1)</literal> ou <literal>X = fft(A)</literal>
+                            calcule la transformée de Fourier discrète multivariable directe
+                            de <varname>A</varname>.
+                            </para>
+                        </listitem>
+                </varlistentry>
+            </variablelist>
+        </para>
+
+        <para>
+            <emphasis role="bold">Syntaxe courte : Transformée inverse normalisée</emphasis>
+        </para>
+        <para>
+            <literal>X = fft(A, 1)</literal> ou <literal>X = ifft(A)</literal> calcule la
+            transformée inverse normalisée, telle que <literal>A==ifft(fft(A))</literal>.
+            <variablelist>
+                <varlistentry>
+                    <term>monovariable</term>
+                    <listitem>
+                            <para><varname>a=A</varname> est un vecteur : <literal>X = fft(a, +1)</literal>
+                            ou <literal>X = ifft(A)</literal> calcule la transformée monovariable
+                            inverse, c'est à dire :
+                            <latex alt="x(k)=(1/n).∑_m=1…n a(m).exp(+2iπ.(k-1)(m-1)/n)">
+                                $x(k) = \frac{1}{n}\sum_{m=1}^n
+                                {a(m) \exp\left(+2 i\pi\frac{(m-1)}{n} (k-1)\right)}$
+                            </latex></para>
+                                </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>multivariable</term>
+                    <listitem>
+                            <para><varname>A</varname> est une matrice ou un hypertableau N-dimensionnel :
+                            <literal>X = fft(A, +1)</literal> ou <literal>X = ifft(A)</literal>
+                            calcule la transformée de Fourier multivariable discrète inverse
+                            de <varname>A</varname>.
+                            </para>
+                        </listitem>
+                </varlistentry>
+            </variablelist>
+        </para>
+        
+        <para>
+            <emphasis role="bold">Syntaxe longue : FFT directionnelle mutidimensionnelle</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">X = fft(A, sign, directions [, symmetry])</emphasis>
+            calcule efficacement les transformées directes ou inverses de toutes les
+            "rangées" de <varname>A</varname>, selon les <varname>directions</varname>
+            spécifiées.
+        </para>
+        <para>
+            Par exemple, si <varname>A</varname> est un tableau 3D,
+            <literal>X = fft(A,-1, 2)</literal> est équivalent à
+            <programlisting role="no-scilab-exec"><![CDATA[
 for i1 = 1:size(A,1)
-    for i3 = 1:size(A,3)
-        X(i1,:,i3) = fft(A(i1,:,i3), -1);
-    end
+for i3 = 1:size(A,3)
+    X(i1,:,i3) = fft(A(i1,:,i3), -1);
 end
-            ]]></programlisting>
-            </para>
-            <para>
-                et <literal>X = fft(A, -1, [1 3])</literal> est équivalent à
-                <programlisting role="no-scilab-exec"><![CDATA[
+end
+        ]]></programlisting>
+        </para>
+        <para>
+            et <literal>X = fft(A, -1, [1 3])</literal> est équivalent à
+            <programlisting role="no-scilab-exec"><![CDATA[
 for i2 = 1:size(A,2)
-    X(:,i2,:) = fft(A(:,i2,:), -1);
+X(:,i2,:) = fft(A(:,i2,:), -1);
 end
-            ]]></programlisting>
-            </para>
-            <para>
-                <emphasis role="bold">X = fft(A, sign, dims, incr [, symmetry])</emphasis>
-                est une syntaxe ancienne qui permet aussi de
-                calculer efficacement les transformées directes ou inverses de "rangées" choisies
-                de <varname>A</varname>.
-                Avec cette syntaxe, <varname>A</varname> est vue comme sérialisée en un vecteur,
-                et ses tailles effectives ne sont pas prises en compte.
-                La sélection des "rangées" se fait par la donnée des tailles et des incréments
-                de l'indice sérialisé associés à chacune des dimensions.
-            </para>
-            <para>
-                Par exemple, si <varname>A</varname> est un hypertableau ayant
-                <literal>n1*n2*n3</literal> éléments,
-                <literal>X = fft(A,-1, n1, 1)</literal> est équivalent à
-                <literal>X = fft(matrix(A,[n1,n2,n3]), -1, 1)</literal> ;
-                et <literal>X = fft(A, -1, [n1 n3], [1 n1*n2])</literal>
-                est équivalent à
-                <literal>X = fft(matrix(A,[n1,n2,n3]), -1, [1,3])</literal>.
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Optimisation algorithmique de fft()</title>
-            <para>
-                <emphasis role="bold">Remarque</emphasis> :
-                la fonction <literal>fft</literal> enregistre automatiquement des
-                paramêtres de calcul internes en mémoire (<literal>wisdom</literal>),
-                pour accélérer les calculs de FFT suivants correspondant aux mêmes directions
-                avec les mêmes options.
-            </para>
-            <para>
-                Les fonctions <link linkend="get_fftw_wisdom">get_fftw_wisdom</link> et
-                <link linkend="set_fftw_wisdom">set_fftw_wisdom</link>
-                permettent de récupérer et de recharger ces paramètres, afin d'améliorer
-                l'efficacité de calcul de FFT lorsqu'on alterne plusieurs types de FFT.
-            </para>
-            <para>
-                <emphasis role="bold">Algorithmes</emphasis> :
-                fft() est basée sur la bibliothèque externe
-                <ulink url="http://www.fftw.org/">fftw3</ulink>.
-            </para>
-            <para>
-                <emphasis role="bold">Bibliographie</emphasis> :
-                Matteo Frigo and Steven G. Johnson, "FFTW Documentation"
-                <ulink url="http://www.fftw.org/#documentation">http://www.fftw.org/#documentation</ulink>
-            </para>
-        </refsect3>
+        ]]></programlisting>
+        </para>
+        <para>
+            <emphasis role="bold">X = fft(A, sign, dims, incr [, symmetry])</emphasis>
+            est une syntaxe ancienne qui permet aussi de
+            calculer efficacement les transformées directes ou inverses de "rangées" choisies
+            de <varname>A</varname>.
+            Avec cette syntaxe, <varname>A</varname> est vue comme sérialisée en un vecteur,
+            et ses tailles effectives ne sont pas prises en compte.
+            La sélection des "rangées" se fait par la donnée des tailles et des incréments
+            de l'indice sérialisé associés à chacune des dimensions.
+        </para>
+        <para>
+            Par exemple, si <varname>A</varname> est un hypertableau ayant
+            <literal>n1*n2*n3</literal> éléments,
+            <literal>X = fft(A,-1, n1, 1)</literal> est équivalent à
+            <literal>X = fft(matrix(A,[n1,n2,n3]), -1, 1)</literal> ;
+            et <literal>X = fft(A, -1, [n1 n3], [1 n1*n2])</literal>
+            est équivalent à
+            <literal>X = fft(matrix(A,[n1,n2,n3]), -1, [1,3])</literal>.
+        </para>
+
+        <para>
+            <emphasis role="bold">Optimisation algorithmique de fft()</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">Remarque</emphasis> :
+            la fonction <literal>fft</literal> enregistre automatiquement des
+            paramêtres de calcul internes en mémoire (<literal>wisdom</literal>),
+            pour accélérer les calculs de FFT suivants correspondant aux mêmes directions
+            avec les mêmes options.
+        </para>
+        <para>
+            Les fonctions <link linkend="get_fftw_wisdom">get_fftw_wisdom</link> et
+            <link linkend="set_fftw_wisdom">set_fftw_wisdom</link>
+            permettent de récupérer et de recharger ces paramètres, afin d'améliorer
+            l'efficacité de calcul de FFT lorsqu'on alterne plusieurs types de FFT.
+        </para>
+        <para>
+            <emphasis role="bold">Algorithmes</emphasis> :
+            fft() est basée sur la bibliothèque externe
+            <link xlink:href="http://www.fftw.org/">fftw3</link>.
+        </para>
+        <para>
+            <emphasis role="bold">Bibliographie</emphasis> :
+            Matteo Frigo and Steven G. Johnson, "FFTW Documentation"
+            <link xlink:href="http://www.fftw.org/#documentation">http://www.fftw.org/#documentation</link>
+        </para>
+
     </refsection>
     <refsection>
         <title>Exemples</title>

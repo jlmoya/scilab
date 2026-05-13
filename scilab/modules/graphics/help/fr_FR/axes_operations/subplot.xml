@@ -28,7 +28,7 @@
             ax = subplot(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -208,11 +208,11 @@ sca(a2);
 subplot(2,2,4)
 plot(x, cosh(x)), title("cosh")
      ]]></programlisting>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/subplot_frame.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
     <refsection role="see also">
         <title>Voir aussi</title>
@@ -228,20 +228,24 @@ plot(x, cosh(x)), title("cosh")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>2024.0</revnumber>
                 <revdescription>
-                    <literal>subplot(…)</literal> peut être utilisé sur des composants uicontrol
-                    de style frame.
+                    <para>
+                        <literal>subplot(…)</literal> peut être utilisé sur des composants uicontrol
+                        de style frame.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0</revnumber>
                 <revdescription>
-                    <literal>subplot(…)</literal> retourne maintenant le handle de l'axe créé/sélectionné.
+                    <para>
+                        <literal>subplot(…)</literal> retourne maintenant le handle de l'axe créé/sélectionné.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -23,50 +23,50 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/INIMPL_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_INIMPL_f">
+    <refsection xml:id="Contents_INIMPL_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Palette_INIMPL_f">Palettes</xref>
+                <para><link linkend="Palette_INIMPL_f">Palettes</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Description_INIMPL_f">Description</xref>
+                <para><link linkend="Description_INIMPL_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_INIMPL_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_INIMPL_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_INIMPL_f">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_INIMPL_f">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_INIMPL_f">Exemple</xref>
+                <para><link linkend="Example_INIMPL_f">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_INIMPL_f">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_INIMPL_f">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_INIMPL_f">Voir aussi</xref>
+                <para><link linkend="Seealso_INIMPL_f">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Palette_INIMPL_f">
+    <refsection xml:id="Palette_INIMPL_f">
         <title>Palettes</title>
         <itemizedlist>
             <listitem>
-                <link linkend="Portaction_pal">Port &amp; Sous-systèmes</link>
+                <para><link linkend="Portaction_pal">Port &amp; Sous-systèmes</link></para>
             </listitem>
             <listitem>
-                <link linkend="Sources_pal">Sources</link>
+                <para><link linkend="Sources_pal">Sources</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_INIMPL_f">
+    <refsection xml:id="Description_INIMPL_f">
         <title>Description</title>
         <para>
             Ce bloc représente une port d'entrée implicite. Il doit être utilisé uniquement à
@@ -79,15 +79,14 @@
             unique et défini avec le paramètre <emphasis role="bold">Port number</emphasis>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_INIMPL_f">
+    <refsection xml:id="Dialogbox_INIMPL_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/portaction_pal/fr_FR/INIMPL_f_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -98,7 +97,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_INIMPL_f">
+    <refsection xml:id="Defaultproperties_INIMPL_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -163,7 +162,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_INIMPL_f">
+    <refsection xml:id="Example_INIMPL_f">
         <title>Exemple</title>
         <para>
             L'exemple suivant montre l'utilisation du bloc INIMPL_f. Le Super-bloc contient un
@@ -191,7 +190,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/portaction_pal/fr_FR/INIMPL_f_fr
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_INIMPL_f">
+    <refsection xml:id="Interfacingfunction_INIMPL_f">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -201,14 +200,14 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_INIMPL_f" role="see also">
+    <refsection xml:id="Seealso_INIMPL_f" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="OUTIMPL_f">OUTIMPL_f</link>
+                <para><link linkend="OUTIMPL_f">OUTIMPL_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="SUPER_f">SUPER_f</link>
+                <para><link linkend="SUPER_f">SUPER_f</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

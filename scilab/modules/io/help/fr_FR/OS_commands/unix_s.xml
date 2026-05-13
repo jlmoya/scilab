@@ -26,8 +26,8 @@
         <title>Séquence d'appel</title>
         <synopsis>unix_s(commands)</synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>commands</term>
@@ -72,14 +72,16 @@
                         ignorées.
                     </para>
                 </listitem>
-                <warning>
-                  Les opérations effectuées par les instructions valides figurant dans
-                  <varname>commands</varname> avant l'instruction  erronée demeurent réelles
-                  (par exemple, fichiers supprimés).
-                  Dans <varname>commands</varname>, les instructions multiples sont déconseillées.
-                  Elles sont plus difficiles à déboguer.
-                </warning>
             </itemizedlist>
+            <warning>
+                <para>
+                    Les opérations effectuées par les instructions valides figurant dans
+                    <varname>commands</varname> avant l'instruction  erronée demeurent réelles
+                    (par exemple, fichiers supprimés).
+                    Dans <varname>commands</varname>, les instructions multiples sont déconseillées.
+                    Elles sont plus difficiles à déboguer.
+                </para>
+            </warning>
         </para>
     </refsection>
     <refsection>

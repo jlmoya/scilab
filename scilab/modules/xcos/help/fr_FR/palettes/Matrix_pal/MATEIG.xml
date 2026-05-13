@@ -20,39 +20,39 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATEIG.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATEIG">
+    <refsection xml:id="Contents_MATEIG">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATEIG">Description</xref>
+                <para><link linkend="Description_MATEIG">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATEIG">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATEIG">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_MATEIG">Exemple</xref>
+                <para><link linkend="Example_MATEIG">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATEIG">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATEIG">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATEIG">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATEIG">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATEIG">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATEIG">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATEIG">Voir aussi</xref>
+                <para><link linkend="Seealso_MATEIG">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATEIG">
+    <refsection xml:id="Description_MATEIG">
         <title>Description</title>
         <para>
             Le bloc MATEIG calcule les valeurs et les vecteurs propres d'une matrice carrée d'entrée
@@ -79,14 +79,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATEIG">
+    <refsection xml:id="Dialogbox_MATEIG">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATEIG_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATEIG_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -107,7 +106,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATEIG">
+    <refsection xml:id="Example_MATEIG">
         <title>Exemple</title>
         <programlisting role="example"><![CDATA[
             A = [1 12 32 ; 21 35 46 ; 70 8 19]
@@ -117,7 +116,7 @@
             y2 = [0.557 0.080 0.349 ; 0.330 -0.922 0.770 ; -0.762 0.379 0.533]
         ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATEIG">
+    <refsection xml:id="Defaultproperties_MATEIG">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -190,7 +189,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATEIG">
+    <refsection xml:id="Interfacingfunction_MATEIG">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -198,7 +197,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATEIG">
+    <refsection xml:id="Computationalfunction_MATEIG">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -223,24 +222,26 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATEIG2">
+    <refsection xml:id="Example_MATEIG2">
         <title>Exemple de calcul de valeurs propres : spec([sin(t) 0; 0 t]) = [sin(t); t]</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATEIG_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATEIG_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATEIG_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATEIG_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATEIG" role="see also">
+    <refsection xml:id="Seealso_MATEIG" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATSING">MATSING - Décomposition en valeurs singulières (SVD) (Bloc Xcos)</link>
+                <para><link linkend="MATSING">MATSING - Décomposition en valeurs singulières (SVD) (Bloc Xcos)</link></para>
             </listitem>
             <listitem>
-                <link linkend="spec">spec (Fonction Scilab)</link>
+                <para><link linkend="spec">spec (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

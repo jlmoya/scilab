@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/CCS.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CCS">
+    <refsection xml:id="Contents_CCS">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CCS">Description</xref>
+                <para><link linkend="Description_CCS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CCS">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_CCS">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CCS">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_CCS">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <link linkend="CCS">Modèle Modelica</link>
+                <para><link linkend="CCS">Modèle Modelica</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CCS">Voir aussi</xref>
+                <para><link linkend="Seealso_CCS">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_CCS">
+    <refsection xml:id="Description_CCS">
         <title>Description</title>
         <para>Ce bloc est une source de courant idéale. La valeur du courant est contrôlée
             à l'aide de l'entrée explicite du bloc (connectée aux blocs standard Xcos).
@@ -57,7 +57,7 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_CCS">
+    <refsection xml:id="Defaultproperties_CCS">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -106,7 +106,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_CCS">
+    <refsection xml:id="Interfacingfunction_CCS">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -114,7 +114,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_CCS">
+    <refsection xml:id="Modelicamodel_CCS">
         <title>Modèle Modelica</title>
         <itemizedlist>
             <listitem>
@@ -122,12 +122,12 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_CCS" role="see also">
+    <refsection xml:id="Seealso_CCS" role="see also">
         <title>Voir aussi</title>
-        <simplelist>
-            <listitem>
+        <simplelist type="inline">
+            <member>
                 <link linkend="CVS">CVS</link>
-            </listitem>
+            </member>
         </simplelist>
     </refsection>
 </refentry>

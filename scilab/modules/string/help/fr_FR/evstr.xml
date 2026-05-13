@@ -27,8 +27,8 @@
             [H, ierr] = evstr(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>M</term>
@@ -110,19 +110,22 @@
                 </listitem>
             </itemizedlist>
         </warning>
-        <note>Alias autorisés :
-            <itemizedlist>
-                <listitem>
-                     <para><literal>"Nan"</literal> et <literal>"NaN"</literal> sont compris comme
-                            <constant>%nan</constant>.
-                    </para>
-                </listitem>
-                <listitem>
-                     <para><literal>"Inf"</literal> et <literal>"INF"</literal> sont compris comme
-                            <constant>%inf</constant>.
-                    </para>
-                </listitem>
-            </itemizedlist>
+        <note>
+            <para>
+                Alias autorisés :
+                <itemizedlist>
+                    <listitem>
+                        <para><literal>"Nan"</literal> et <literal>"NaN"</literal> sont compris comme
+                                <constant>%nan</constant>.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para><literal>"Inf"</literal> et <literal>"INF"</literal> sont compris comme
+                                <constant>%inf</constant>.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -168,15 +171,19 @@ H = evstr(Z)          // exécution avec erreur et interruption
             <revision>
                 <revnumber>5.3.0</revnumber>
                 <revdescription>
-                <literal>"Nan"</literal> et <literal>"NaN"</literal> sont désormais compris comme <literal>%nan</literal>.
-                <literal>"Inf"</literal> et <literal>"INF"</literal> sont désormais compris comme <literal>%inf</literal>.
+                    <para>
+                        <literal>"Nan"</literal> et <literal>"NaN"</literal> sont désormais compris comme <literal>%nan</literal>.
+                        <literal>"Inf"</literal> et <literal>"INF"</literal> sont désormais compris comme <literal>%inf</literal>.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
                 <revdescription>
-                  Les expressions d'entrée peuvent désormais inclure des commentaires simples
-                  <literal>// ..</literal>, quel que soit le format de <literal>M</literal>.
+                    <para>
+                        Les expressions d'entrée peuvent désormais inclure des commentaires simples
+                        <literal>// ..</literal>, quel que soit le format de <literal>M</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

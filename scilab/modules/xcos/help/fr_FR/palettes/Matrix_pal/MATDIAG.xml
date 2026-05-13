@@ -20,39 +20,39 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATDIAG.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATDIAG">
+    <refsection xml:id="Contents_MATDIAG">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATDIAG">Description</xref>
+                <para><link linkend="Description_MATDIAG">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATDIAG">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATDIAG">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATDIAG">Exemple</link>
+                <para><link linkend="MATDIAG">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATDIAG">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATDIAG">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATDIAG">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATDIAG">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATDIAG">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATDIAG">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATDIAG">Voir aussi</xref>
+                <para><link linkend="Seealso_MATDIAG">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATDIAG">
+    <refsection xml:id="Description_MATDIAG">
         <title>Description</title>
         <para>
             Le bloc MATDIAG crée une matrice diagonale à partir d'un vecteur. Si l'entrée est un vecteur
@@ -63,14 +63,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATDIAG">
+    <refsection xml:id="Dialogbox_MATDIAG">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATDIAG_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATDIAG_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -84,14 +83,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATDIAG">
+    <refsection xml:id="Example_MATDIAG">
         <title>Exemple</title>
         <programlisting role="example"><![CDATA[
             Si l'entrée du bloc est U = ones(5, 1) alors la sortie est :
             y = [1 0 0 0 0 ; 0 1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 1 0 ; 0 0 0 0 1]
         ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATDIAG">
+    <refsection xml:id="Defaultproperties_MATDIAG">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -164,7 +163,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATDIAG">
+    <refsection xml:id="Interfacingfunction_MATDIAG">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -172,7 +171,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATDIAG">
+    <refsection xml:id="Computationalfunction_MATDIAG">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -187,24 +186,26 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATDIAG2">
+    <refsection xml:id="Example_MATDIAG2">
         <title>Exemple de diagonale :</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDIAG_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATDIAG_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDIAG_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATDIAG_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATDIAG" role="see also">
+    <refsection xml:id="Seealso_MATDIAG" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="EXTTRI">EXTTRI</link>
+                <para><link linkend="EXTTRI">EXTTRI</link></para>
             </listitem>
             <listitem>
-                <link linkend="diag">diag (Fonction Scilab)</link>
+                <para><link linkend="diag">diag (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

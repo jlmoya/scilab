@@ -24,6 +24,8 @@
         <para>
             Suivant le type de problème, trouver la meilleure méthode n'est pas toujours évident, on ne peut que tirer des règles générales. C'est de celles-ci que l'on parle dans cette page.
         </para>
+    </refsection>
+    <refsection>
         <title>Pas Fixe et pas Variable</title>
         <para>
             Les solveurs sont divisés en deux familles principales : celles à <emphasis>pas variable</emphasis> et celles à <emphasis>pas fixes</emphasis>.
@@ -77,6 +79,8 @@
         <para>
             Les solveurs d'EDO à pas variable ne sont pas appropriés pour des applications temps réel déterministes car le surplus de calcul au passage d'un pas de temps varie au cours de l'application.
         </para>
+    </refsection>
+    <refsection>
         <title>Explicite et Implicite - Raideur</title>
         <para>
             A l'intérieur de ces deux familles, on peut distinguer les solveurs <emphasis>Explicites</emphasis> des <emphasis>Implicites</emphasis>.
@@ -105,24 +109,26 @@
         <para>
             En un mot, les <emphasis>Explicites</emphasis> calculent directement la solution, alors que les <emphasis>Implicites</emphasis> se concentrent sur la stabilité, impliquant plus d'opérations, suivant les tolérances.
         </para>
+    </refsection>
+    <refsection>
         <title>Alors comment choisir ?</title>
         <para>
             Puisqu'il n'est pas possible de savoir avec certitude si tel solveur sera efficace sur un système donné, le meilleur moyen est de lancer le plus probable et de comparer les résultats avec les autres.
         </para>
         <para>
             L'utilisateur doit d'abord établir la compexité de son problème (stabilité / raideur) et s'il désire une grande précision, une simulation rapide, un temps prévisible ou un programme automatisé.
-            <para>
-                <emphasis role="bold">Précision :</emphasis> <emphasis>CVode</emphasis>,
-            </para>
-            <para>
-                <emphasis role="bold">Temps prévisible :</emphasis> Pas Fixe.
-            </para>
-            <para>
-                <emphasis role="bold">Temps de simulation :</emphasis> <emphasis>LSodar</emphasis>,
-            </para>
-            <para>
-                <emphasis role="bold">Automatisé :</emphasis> <emphasis>LSodar</emphasis>,
-            </para>
+        </para>
+        <para>
+            <emphasis role="bold">Précision :</emphasis> <emphasis>CVode</emphasis>,
+        </para>
+        <para>
+            <emphasis role="bold">Temps prévisible :</emphasis> Pas Fixe.
+        </para>
+        <para>
+            <emphasis role="bold">Temps de simulation :</emphasis> <emphasis>LSodar</emphasis>,
+        </para>
+        <para>
+            <emphasis role="bold">Automatisé :</emphasis> <emphasis>LSodar</emphasis>,
         </para>
     </refsection>
     <refsection>

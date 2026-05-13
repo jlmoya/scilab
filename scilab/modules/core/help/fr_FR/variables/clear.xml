@@ -29,7 +29,7 @@
             clear(['a' 'b' 'c'])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -59,10 +59,12 @@
             <literal>clear Var</literal> sera simplement ignoré.
         </para>
     <note>
-       <literal>clear</literal> peut être surchargée pour toute <literal>mlist("foo")</literal>,
-       en définissant la fonction <literal>%foo_clear()</literal>. Celle-ci sera appelée autant
-       lors des appels explicites à <literal>clear</literal>, qu'en quittant l'environnement
-       où la mlist a été définie.
+        <para>
+            <literal>clear</literal> peut être surchargée pour toute <literal>mlist("foo")</literal>,
+            en définissant la fonction <literal>%foo_clear()</literal>. Celle-ci sera appelée autant
+            lors des appels explicites à <literal>clear</literal>, qu'en quittant l'environnement
+            où la mlist a été définie.
+        </para>
     </note>
     </refsection>
     <refsection>
@@ -112,25 +114,29 @@ clear value // will print "deleted"
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>Peut prendre une matrice de chaînes de caractères en argument</revdescription>
+                <revremark>Peut prendre une matrice de chaînes de caractères en argument</revremark>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                  <literal>clear</literal> est désormais protégé. Les affectations telles que
-                  <literal>clear=1</literal> ne sont plus possibles.
+                    <para>
+                        <literal>clear</literal> est désormais protégé. Les affectations telles que
+                        <literal>clear=1</literal> ne sont plus possibles.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <literal>clear</literal> devient surchargeable pour toute
-                    <literal>mlist("foo")</literal>, avec <literal>%foo_clear</literal>.
+                    <para>
+                        <literal>clear</literal> devient surchargeable pour toute
+                        <literal>mlist("foo")</literal>, avec <literal>%foo_clear</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

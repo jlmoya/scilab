@@ -27,7 +27,7 @@
             mw = format()
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -35,23 +35,31 @@
                 <listitem>
                     <para>Type d'affichage :
                         <itemizedlist>
-                          <listitem>1 ou "v": format
-                            <emphasis role="bold">v</emphasis>ariable auto-adaptatif
-                            (automatique) : pour chaque nombre décimal ou complexe
-                            à afficher, Scilab choisit soit la représentation
-                            directe (ex: -143.8757), soit le format scientifique
-                            avec <emphasis role="bold">e</emphasis>xposant
-                            (ex: -1.438E+02) le plus adapté, permettant d'afficher
-                            un maximum de digits de la mantisse.
+                          <listitem>
+                            <para>
+                                1 ou "v": format
+                                <emphasis role="bold">v</emphasis>ariable auto-adaptatif
+                                (automatique) : pour chaque nombre décimal ou complexe
+                                à afficher, Scilab choisit soit la représentation
+                                directe (ex: -143.8757), soit le format scientifique
+                                avec <emphasis role="bold">e</emphasis>xposant
+                                (ex: -1.438E+02) le plus adapté, permettant d'afficher
+                                un maximum de digits de la mantisse.
+                            </para>
                           </listitem>
                           <listitem>
-                              0 ou "e": force l'utilisation du format scientifique
-                              avec <emphasis role="bold">e</emphasis>xposant, pour
-                              tous les nombres décimaux.
+                            <para>
+                                0 ou "e": force l'utilisation du format scientifique
+                                avec <emphasis role="bold">e</emphasis>xposant, pour
+                                tous les nombres décimaux.
+                            </para>
                           </listitem>
-                          <listitem>2 ou "eng": La notation ingénieur
-                            est utilisée. Cette notation est similaire au format exponentiel/scientifique 
-                            mais l'exposant est toujours divisible par 3.
+                          <listitem>
+                            <para>
+                                2 ou "eng": La notation ingénieur
+                                est utilisée. Cette notation est similaire au format exponentiel/scientifique 
+                                mais l'exposant est toujours divisible par 3.
+                            </para>
                           </listitem>
                       </itemizedlist>
                   </para>
@@ -85,11 +93,17 @@
                 <listitem>
                     <para>vecteur à 2 nombres retournés comme paramètres du format actif :
                         <itemizedlist>
-                          <listitem><literal>mw(1)</literal> représente le type du format :
-                          0 pour <literal>'e'</literal>, 1 pour <literal>'v'</literal> et 2 pour <literal>'eng'</literal>
+                          <listitem>
+                            <para>
+                                <literal>mw(1)</literal> représente le type du format :
+                                0 pour <literal>'e'</literal>, 1 pour <literal>'v'</literal> et 2 pour <literal>'eng'</literal>
+                            </para>
                           </listitem>
-                          <listitem><literal>mw(2)</literal> est le nombre de
-                            caractères utilisés pour formater chaque nombre.
+                          <listitem>
+                            <para>
+                                <literal>mw(2)</literal> est le nombre de
+                                caractères utilisés pour formater chaque nombre.
+                            </para>
                           </listitem>
                          </itemizedlist>
                      </para>
@@ -100,28 +114,37 @@
     <refsection role="description">
         <title>Description</title>
         <note>
-            Pour les nombres complexes, chaque partie réelle et imaginaire
-          décimale est formatée selon <literal>format(..)</literal>.
-          La largeur totale d'un nombre complexe est par conséquent deux fois
-          celle spécifiée par <literal>format(..)</literal> + 1 caractère
-          (symbole "i").
+            <para>
+                Pour les nombres complexes, chaque partie réelle et imaginaire
+                décimale est formatée selon <literal>format(..)</literal>.
+                La largeur totale d'un nombre complexe est par conséquent deux fois
+                celle spécifiée par <literal>format(..)</literal> + 1 caractère
+                (symbole "i").
+            </para>
         </note>
         <note>
-            Les entiers encodés ne sont jamais formatables/formatés selon
-            la notation "e"xponentielle, même si ce format est forcé pour
-            les nombres décimaux. Pour eux, le séparateur décimal "." est
-            inutile et n'apparait pas. Cette absence permet de les distinguer
-            des entiers décimaux, qui eux présentent un ".".
+            <para>
+                Les entiers encodés ne sont jamais formatables/formatés selon
+                la notation "e"xponentielle, même si ce format est forcé pour
+                les nombres décimaux. Pour eux, le séparateur décimal "." est
+                inutile et n'apparait pas. Cette absence permet de les distinguer
+                des entiers décimaux, qui eux présentent un ".".
+            </para>
         </note>
         <note>
-            Le choix d'un format() large permet de faire apparaitre des
-            digits au delà de la précision relative <literal>%eps</literal>.
-            Ceux-ci sont alors mis à zéro.
+            <para>
+                Le choix d'un format() large permet de faire apparaitre des
+                digits au delà de la précision relative <literal>%eps</literal>.
+                Ceux-ci sont alors mis à zéro.
+            </para>
         </note>
-        <warning>Le format décimal fixé avec
-            <function>format(..)</function> est un paramètre global :
-            quel que soit le lieu où il est utilisé, il est ensuite appliqué
-            partout dans Scilab et Xcos.
+        <warning>
+            <para>
+                Le format décimal fixé avec
+                <function>format(..)</function> est un paramètre global :
+                quel que soit le lieu où il est utilisé, il est ensuite appliqué
+                partout dans Scilab et Xcos.
+            </para>
         </warning>
         <para>Dans les versions anciennes de Scilab, en format automatique "v",
             les éléments d'une matrice inférieurs à <literal>%eps</literal> fois
@@ -229,10 +252,10 @@ format("v",10) // reset
         <revhistory>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revdescription>Pour les format() (excessivement) longs, les
+                <revremark>Pour les format() (excessivement) longs, les
                 digits affichés au delà de la précision numérique relative %eps
                 apparaissent maintenant comme des zéros.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

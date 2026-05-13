@@ -27,8 +27,8 @@
             Pc = poly(matNN, vname)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>vname </term>
@@ -99,26 +99,28 @@
                                 les racines sont les éléments de <varname>vec</varname>, et
                                 <literal>"x"</literal> est le nom de la variable indéterminée.
                                 <note>
-                                    <itemizedlist>
-                                        <listitem>
-                                            <literal>degree(p)==length(vec)</literal>
-                                        </listitem>
-                                        <listitem>
-                                             <para><literal>poly()</literal> et <literal>roots()</literal>
-                                              sont réciproques.
-                                            </para>
-                                        </listitem>
-                                        <listitem>
-                                             <para>
-                                              Toute racine infinie produit un coefficient de haut degré
-                                              nul. Dans ce cas, le degré effectif de <varname>p</varname>
-                                                est inférieur à <literal>length(vec)</literal>.
-                                                Par exemple,
-                                                <literal>poly([-%inf -1 2 %inf ], "x")</literal>
-                                                produit <literal>(x-2)(x+1)</literal> de degré 2.
-                                            </para>
-                                        </listitem>
-                                    </itemizedlist>
+                                    <para>
+                                        <itemizedlist>
+                                            <listitem>
+                                                <para><literal>degree(p)==length(vec)</literal></para>
+                                            </listitem>
+                                            <listitem>
+                                                <para><literal>poly()</literal> et <literal>roots()</literal>
+                                                sont réciproques.
+                                                </para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>
+                                                Toute racine infinie produit un coefficient de haut degré
+                                                nul. Dans ce cas, le degré effectif de <varname>p</varname>
+                                                    est inférieur à <literal>length(vec)</literal>.
+                                                    Par exemple,
+                                                    <literal>poly([-%inf -1 2 %inf ], "x")</literal>
+                                                    produit <literal>(x-2)(x+1)</literal> de degré 2.
+                                                </para>
+                                            </listitem>
+                                        </itemizedlist>
+                                    </para>
                                 </note>
                             </para>
                             <para>
@@ -127,11 +129,13 @@
                                 les opérateurs usuels +, -, *, /  et les fonctions communes telles
                                 que <literal>sum()</literal>.
                                 <note>
-                                    3 monômes sont disponibles dans les variables prédéfinies
-                                    <literal>%s</literal>, <literal>%z</literal>, et
-                                    <literal>$</literal>. Ce dernier est principalement connu
-                                    et utilisé pour représenter le nombre d'éléments d'une ligne /
-                                    colonne... dans un tableau.
+                                    <para>
+                                        3 monômes sont disponibles dans les variables prédéfinies
+                                        <literal>%s</literal>, <literal>%z</literal>, et
+                                        <literal>$</literal>. Ce dernier est principalement connu
+                                        et utilisé pour représenter le nombre d'éléments d'une ligne /
+                                        colonne... dans un tableau.
+                                    </para>
                                 </note>
                             </para>
                         </listitem>
@@ -145,8 +149,10 @@
                                 <literal>vec</literal>) sont ignorés.
                             </para>
                             <note>
-                                Réciproquement, <literal>coeff(p)</literal> fournit les coefficients
-                                de polynômes donnés.
+                                <para>
+                                    Réciproquement, <literal>coeff(p)</literal> fournit les coefficients
+                                    de polynômes donnés.
+                                </para>
                             </note>
                         </listitem>
                     </itemizedlist>
@@ -275,7 +281,7 @@ poly(A, "x")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

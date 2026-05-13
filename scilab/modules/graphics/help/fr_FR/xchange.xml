@@ -8,7 +8,7 @@
         <title>Séquence d'appel</title>
         <synopsis>[x1,y1,rect]=xchange(x,y,dir)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -50,14 +50,14 @@
             <literal>rect</literal> sont les coordonnées en pixels
             du rectangle du cadre courant : [point en haut à gauche, largeur, hauteur].
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Les coordonnées en pixels sont relatives au point en haut à gauche de la zone graphique de la figure
                 (voir <literal>axes_size</literal> dans les <link linkend="figure_properties">propriétés des figures</link>)
                 contrairement aux positions des <link linkend="uicontrol">uicontrols</link> qui sont relatives au point en bas à gauche
                 de la zone graphique de la figure (voir les exemples ci-dessous).
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Exemples</title>

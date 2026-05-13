@@ -11,7 +11,7 @@
             result = x_dialog(labels, valueini, ispassword)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -77,12 +77,16 @@ motdepasse = x_dialog("Entez votre mot de passe :","scilab", %t)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revremark>Ajout du paramètre <literal>ispassword</literal>.</revremark>
+                <revdescription>
+                    <para>
+                        Ajout du paramètre <literal>ispassword</literal>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

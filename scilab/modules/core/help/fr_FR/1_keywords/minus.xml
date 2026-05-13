@@ -28,7 +28,7 @@
             -Y
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -153,15 +153,17 @@ c = %t - int8(7), inttype(c)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <literal>A - []</literal> et <literal>[] - A</literal> produisent désormais
-                    <literal>[]</literal> au lieu de <literal>A</literal> ou <literal>-A</literal>.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>A - []</literal> et <literal>[] - A</literal> produisent désormais
+                        <literal>[]</literal> au lieu de <literal>A</literal> ou <literal>-A</literal>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

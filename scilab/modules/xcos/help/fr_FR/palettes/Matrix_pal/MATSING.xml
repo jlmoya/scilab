@@ -20,36 +20,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATSING.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATSING">
+    <refsection xml:id="Contents_MATSING">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATSING">Description</xref>
+                <para><link linkend="Description_MATSING">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATSING">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATSING">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATSING">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATSING">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATSING">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATSING">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATSING">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATSING">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATSING">Voir aussi</xref>
+                <para><link linkend="Seealso_MATSING">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATSING">
+    <refsection xml:id="Description_MATSING">
         <title>Description</title>
         <para>
             Le bloc MATSING calcule la décomposition SVD réduite de la matrice d'entrée A de dimensions MxN en
@@ -78,14 +78,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATSING">
+    <refsection xml:id="Dialogbox_MATSING">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATSING_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATSING_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -109,7 +108,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATSING">
+    <refsection xml:id="Defaultproperties_MATSING">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -182,7 +181,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATSING">
+    <refsection xml:id="Interfacingfunction_MATSING">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -190,7 +189,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATSING">
+    <refsection xml:id="Computationalfunction_MATSING">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -215,17 +214,17 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_MATSING" role="see also">
+    <refsection xml:id="Seealso_MATSING" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATEIG">MATEIG</link>
+                <para><link linkend="MATEIG">MATEIG</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATLU">MATLU</link>
+                <para><link linkend="MATLU">MATLU</link></para>
             </listitem>
             <listitem>
-                <link linkend="svd">svd (Fonction Scilab)</link>
+                <para><link linkend="svd">svd (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

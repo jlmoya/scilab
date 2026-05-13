@@ -220,8 +220,10 @@ for j = 1:n, v = a(:,j), write(%io(2),v), end
             <revision>
                 <revnumber>2023.0.0</revnumber>
                 <revdescription>
-                    <literal>expression</literal> peut être une hypermatrice. Il est alors traité
-                    par colonne comme <literal>matrix(expression, size(expression,1), -1)</literal>.
+                    <para>
+                        <literal>expression</literal> peut être une hypermatrice. Il est alors traité
+                        par colonne comme <literal>matrix(expression, size(expression,1), -1)</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

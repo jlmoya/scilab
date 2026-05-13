@@ -26,8 +26,8 @@
             [M, ka, kb] = intersect(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>a, b</term>
@@ -135,8 +135,10 @@
             les "rowTimes" sont prises en compte contrairement aux "rowNames" pour les tables.
         </para>
         <warning>
-            Deux éléments NaN étant toujours considérés comme différents, NaN ou les lignes ou
-            colonnes en contenant ne seront jamais présents dans le résultat <literal>M</literal>.
+            <para>
+                Deux éléments NaN étant toujours considérés comme différents, NaN ou les lignes ou
+                colonnes en contenant ne seront jamais présents dans le résultat <literal>M</literal>.
+            </para>
         </warning>
         <para>
             <literal>[M, ka, kb] = intersect(a,b)</literal> fournit en outre les vecteurs lignes
@@ -147,8 +149,10 @@
         <para>
             Dans le cas des tables ou timeseries, <literal>M = a(ka,:)</literal> et <literal>M = b(kb, :)</literal>.
         </para>
-        <refsect3>
-            <title>Lignes ou colonnes en commun</title>
+
+        <para>
+            <emphasis role="bold">Lignes ou colonnes en commun</emphasis>
+        </para>
         <para>
             Lorsque l'option <varname>orient</varname> est utilisée, la comparaison entre
             <literal>a</literal> et <literal>b</literal> est réalisée en considérant leurs lignes
@@ -172,9 +176,11 @@
             la même chose sur les colonnes.
         </para>
         <warning>
-            L'option <literal>orient</literal> n'est pas supportée pour les tables et timeseries.
+            <para>
+                L'option <literal>orient</literal> n'est pas supportée pour les tables et timeseries.
+            </para>
         </warning>
-        </refsect3>
+        
     </refsection>
     <refsection>
         <title>Exemples</title>
@@ -392,21 +398,21 @@ issparse(M), full(M), ka, kb
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Nombres complexes désormais acceptés.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     Matrices creuses numériques ou booléennes désormais acceptées.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Gestion des types duration, datetime, table et timeseries ajoutée
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

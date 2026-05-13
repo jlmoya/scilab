@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CLR.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CLR">
+    <refsection xml:id="Contents_CLR">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CLR">Description</xref>
+                <para><link linkend="Description_CLR">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CLR">Paramètres</xref>
+                <para><link linkend="Dialogbox_CLR">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CLR">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_CLR">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CLR">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_CLR">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CLR">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_CLR">Fonction de calcul</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_CLR">
+    <refsection xml:id="Description_CLR">
         <title>Description</title>
         <para>
             Ce bloc réalise une système linaire représenté par sa fonction de transfert rationnelle
@@ -57,14 +57,13 @@
             être propre (degré du dénominateur inférieur ou égal à degré du numérateur).
         </para>
     </refsection>
-    <refsection id="Dialogbox_CLR">
+    <refsection xml:id="Dialogbox_CLR">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/CLR_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/CLR_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -74,18 +73,21 @@
                 <para> Ce doit un être un polynôme en s.</para>
                 <para> Propriétés Type 'pol' de taille 1. </para>
                 <warning>
-                    Dans l'expression fournie, toute sous-expression représentant un exposant
-                    libélé soit par une variable (du contexte) dont le nom fait au moins 2
-                    caractères, soit par une expression (autre qu'un entier literal), doit se
-                    terminer par un espace (utilisé comme terminateur d'exposant). Dans le cas
-                    contraire, l'expression sera incorrectement affichée sur l'icône du bloc.
-                    Cette contrainte n'a aucun effet sur la validité computationnelle de l'expression.
-                    <para/>
-                    Exemples: "s^12+1", "s^ +12+1", "s^+ 12+1" sont toutes affichées pour "s^{12}+1",
-                    alors que "1+s^ab+s^2" sera affichée comme "1+s^{ab+s^2}"
-                    (mais sera calculée comme <literal>1 + s^ab + s^2</literal>).
-                    Pour un affichage correct, "1+s^ab + s^2" devra être saisie.
-                    De même, "s^(ab+1) + 2" devra être saisie, au lieu de "s^(ab+1)+2".
+                    <para>
+                        Dans l'expression fournie, toute sous-expression représentant un exposant
+                        libélé soit par une variable (du contexte) dont le nom fait au moins 2
+                        caractères, soit par une expression (autre qu'un entier literal), doit se
+                        terminer par un espace (utilisé comme terminateur d'exposant). Dans le cas
+                        contraire, l'expression sera incorrectement affichée sur l'icône du bloc.
+                        Cette contrainte n'a aucun effet sur la validité computationnelle de l'expression.
+                    </para>
+                    <para>
+                        Exemples: "s^12+1", "s^ +12+1", "s^+ 12+1" sont toutes affichées pour "s^{12}+1",
+                        alors que "1+s^ab+s^2" sera affichée comme "1+s^{ab+s^2}"
+                        (mais sera calculée comme <literal>1 + s^ab + s^2</literal>).
+                        Pour un affichage correct, "1+s^ab + s^2" devra être saisie.
+                        De même, "s^(ab+1) + 2" devra être saisie, au lieu de "s^(ab+1)+2".
+                    </para>
                 </warning>
             </listitem>
             <listitem>
@@ -99,7 +101,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_CLR">
+    <refsection xml:id="Defaultproperties_CLR">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -172,7 +174,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_CLR">
+    <refsection xml:id="Interfacingfunction_CLR">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -180,7 +182,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CLR">
+    <refsection xml:id="Computationalfunction_CLR">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>

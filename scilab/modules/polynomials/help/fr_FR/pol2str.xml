@@ -23,7 +23,7 @@
         <title>Séquence d'appel</title>
         <synopsis>strP = pol2str(P)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -47,11 +47,11 @@
         <para>
             convertit les polynômes P en textes les représentant (fonction utilitaire).
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Le format de sortie des coefficients est fixé par <link linkend="format">format(..)</link>.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
 
     <refsection>
@@ -81,15 +81,15 @@ pol2str(p)
             </member>
         </simplelist>
     </refsection>
-    <refsection role="history tag">
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>
+                <revremark>
                     Extension aux polynômes à coefficients complexes et aux hypermatrices.
                     Vectorisation du traitement du tableau de polynômes.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

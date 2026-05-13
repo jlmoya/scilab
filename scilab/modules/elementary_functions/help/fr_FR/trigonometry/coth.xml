@@ -25,7 +25,7 @@
         <title>Séquence d'appel</title>
         <synopsis>t = coth(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -53,8 +53,10 @@
             hyperboliques des éléments de <literal>x</literal>.
         </para>
         <note>
-          <literal>coth(0)</literal> n'étant pas nul, le résultat pour toute matrice d'entrée
-          encodée creuse est encodé en format dense (comme avec <literal>cos()</literal>).
+            <para>
+                <literal>coth(0)</literal> n'étant pas nul, le résultat pour toute matrice d'entrée
+                encodée creuse est encodé en format dense (comme avec <literal>cos()</literal>).
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -113,9 +115,9 @@ coth(s)   // => format dense
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Extension aux matrices creuses.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

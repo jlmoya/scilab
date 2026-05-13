@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/DERIV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DERIV">
+    <refsection xml:id="Contents_DERIV">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DERIV">Description</xref>
+                <para><link linkend="Description_DERIV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DERIV">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_DERIV">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DERIV">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_DERIV">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DERIV">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_DERIV">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DERIV">Exemple</xref>
+                <para><link linkend="Example_DERIV">Exemple</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DERIV">
+    <refsection xml:id="Description_DERIV">
         <title>Description</title>
         <para>Le bloc dérivée approxime la dérivée instantanée de son entrée par rapport au temps t.</para>
         <para>Il mesure la variation de la sortie en fonction de la variation de l'entée Δu. La dérivée est donnée par :</para>
@@ -60,7 +60,7 @@
         </latex>
         <para>Le bloc dérivée n'a pas de paramètres et la valeur initiale de la sortie pour le bloc est zéro.</para>
     </refsection>
-    <refsection id="Defaultproperties_DERIV">
+    <refsection xml:id="Defaultproperties_DERIV">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -133,7 +133,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_DERIV">
+    <refsection xml:id="Example_DERIV">
         <title>Exemple</title>
         <para>Dans cet exemple, nous calculons et affichons la forme d'onde dérivée d'un signal d'entrée
             sinusoïdal, d'amplitude 2 et de frequence 1,25 Hz.
@@ -154,7 +154,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/continuous_pal/DERIV_Example.zco
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_DERIV">
+    <refsection xml:id="Interfacingfunction_DERIV">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +162,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DERIV">
+    <refsection xml:id="Computationalfunction_DERIV">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>

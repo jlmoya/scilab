@@ -25,7 +25,7 @@
             ieee(mod)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -77,7 +77,9 @@
             virgule flottante.
         </para>
         <note>
-            Le mode initial par défaut est 2. Ce réglage peut être modifié indifféremment comme suit:
+            <para>
+                Le mode initial par défaut est 2. Ce réglage peut être modifié indifféremment comme suit:
+            </para>
             <itemizedlist>
                 <listitem>
                      <para>
@@ -99,9 +101,11 @@
             </itemizedlist>
         </note>
         <warning>
-            Certaines exceptions IEEE générées dans certains algorithmes provenant de
-            bibliothèques ne sont pas prises en compte par les modes <literal>ieee</literal>
-            pour l'instant.
+            <para>
+                Certaines exceptions IEEE générées dans certains algorithmes provenant de
+                bibliothèques ne sont pas prises en compte par les modes <literal>ieee</literal>
+                pour l'instant.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -131,7 +135,7 @@ ieee(2); 1/0, log(0)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

@@ -23,29 +23,23 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/CVS.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CVS">
+    <refsection xml:id="Contents_CVS">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <para>
-                    <xref linkend="Description_CVS">Description</xref>
-                </para>
+                <para><link linkend="Description_CVS">Description</link></para>
             </listitem>
             <listitem>
-                <para>
-                    <xref linkend="Defaultproperties_CVS">Propriétés par défaut</xref>
-                </para>
+                <para><link linkend="Defaultproperties_CVS">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <para>
-                    <xref linkend="Interfacingfunction_CVS">Fonction d'interfaçage</xref>
-                </para>
+                <para><link linkend="Interfacingfunction_CVS">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
                 <para>
@@ -53,13 +47,11 @@
                 </para>
             </listitem>
             <listitem>
-                <para>
-                    <xref linkend="Seealso_CVS">Voir aussi</xref>
-                </para>
+                <para><link linkend="Seealso_CVS">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_CVS">
+    <refsection xml:id="Description_CVS">
         <title>Description</title>
         <para>
             Ce bloc est une source de tension idéale. La valeur de la tension est contrôlée à
@@ -68,7 +60,7 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_CVS">
+    <refsection xml:id="Defaultproperties_CVS">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -117,7 +109,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_CVS">
+    <refsection xml:id="Interfacingfunction_CVS">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -125,7 +117,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_CVS">
+    <refsection xml:id="Modelicamodel_CVS">
         <title>Modèle Modelica</title>
         <itemizedlist>
             <listitem>
@@ -133,9 +125,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_CVS" role="see also">
+    <refsection xml:id="Seealso_CVS" role="see also">
         <title>Voir aussi</title>
-        <simplelist>
+        <simplelist type="inline">
             <member>
                 <link linkend="CCS">CCS</link>
             </member>

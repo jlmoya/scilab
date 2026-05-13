@@ -32,7 +32,7 @@
             [alpha, beta, Q, Z] = spec(A, B)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -133,44 +133,45 @@
         <para>
             Une matrice complexe hermitienne est égale à sa transposée conjuguée.
         </para>
-        <refsect3>
-            <title>Faisceau matriciel A - s.B</title>
-            <para>
-                <emphasis role="bold">evals = spec(A, B)</emphasis> retourne le  spectre du faisceau
-                <literal>A - s.B</literal>, c'est à dire les racines du déterminant de la matrice de
-                polynômes <literal>A - s.B</literal>.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta] = spec(A, B)</emphasis>
-                retourne les valeurs propres généralisées <varname>alpha</varname> et
-                <varname>beta</varname> du faisceau, telles que <literal>alpha./beta</literal>
-                sont les valeurs propres usuelles, c'est à dire les racines du déterminant de
-                la matrice de polynômes <literal>s E - A</literal>.
-                La matrice <literal>A - alpha./beta × B</literal> est alors singulière.
-                Si <literal>beta(i) = 0</literal>, la i<superscript>ème</superscript>
-                valeur propre est infinie.
-            </para>
-            <para>
-                Pour <literal>B = eye(A)</literal>, <literal>alpha./beta</literal> est
-                égal à <literal>spec(A)</literal>.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta, Z] = spec(A, B)</emphasis>
-                produit en outre la matrice <literal>Z</literal> des vecteurs propres
-                généralisés à droite.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta, Q, Z] = spec(A, B)</emphasis>
-                permet finalement d'obtenir la matrice <literal>Q</literal> des vecteurs
-                propres généralisés à gauche.
-            </para>
-        </refsect3>
+
         <para>
-            <note>
+            <emphasis role="bold">Faisceau matriciel A - s.B</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">evals = spec(A, B)</emphasis> retourne le  spectre du faisceau
+            <literal>A - s.B</literal>, c'est à dire les racines du déterminant de la matrice de
+            polynômes <literal>A - s.B</literal>.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta] = spec(A, B)</emphasis>
+            retourne les valeurs propres généralisées <varname>alpha</varname> et
+            <varname>beta</varname> du faisceau, telles que <literal>alpha./beta</literal>
+            sont les valeurs propres usuelles, c'est à dire les racines du déterminant de
+            la matrice de polynômes <literal>s E - A</literal>.
+            La matrice <literal>A - alpha./beta × B</literal> est alors singulière.
+            Si <literal>beta(i) = 0</literal>, la i<superscript>ème</superscript>
+            valeur propre est infinie.
+        </para>
+        <para>
+            Pour <literal>B = eye(A)</literal>, <literal>alpha./beta</literal> est
+            égal à <literal>spec(A)</literal>.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta, Z] = spec(A, B)</emphasis>
+            produit en outre la matrice <literal>Z</literal> des vecteurs propres
+            généralisés à droite.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta, Q, Z] = spec(A, B)</emphasis>
+            permet finalement d'obtenir la matrice <literal>Q</literal> des vecteurs
+            propres généralisés à gauche.
+        </para>
+        <note>
+            <para>
                 Pour les matrices denses ou creuses de grande taille, la fonction
                 <link linkend="eigs">eigs</link> peut être utilisée.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Fonctions utilisées</title>

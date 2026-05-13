@@ -23,7 +23,7 @@
         <title>Séquence d'appel</title>
         <synopsis>i = type(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -115,7 +115,7 @@
             <varlistentry>
                 <term>10</term>
                 <listitem>
-                    <link linkend="strings">textes</link>
+                    <para><link linkend="strings">textes</link></para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -194,8 +194,10 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-        <refsect2>
-        <title>Remarques</title>
+
+        <para>
+            <emphasis role="bold">Remarques</emphasis>
+        </para>
             <para>
                 Certaines données structurées sont stockées dans des listes typées de types 16 (tlist)
                 ou 17 (mlist). C'est le cas pour les fractions rationnelles
@@ -214,31 +216,33 @@
                 binaire itéré -- telle que la concaténation -- agit sur deux opérandes de types
                 différents mais compatibles, en général le type de l'un d'eux est implicitement
                 converti, et l'autre opérande donne son type au résultat.
-                <para>
-                    Exemples pour la  <link linkend="brackets">concaténation</link> :
-                    <literal>[%t, 3.124]</literal>, <literal>[int8(5), 3.124]</literal>, etc.
-                </para>
-                <para>
+            </para>
+            <para>
+                Exemples pour la  <link linkend="brackets">concaténation</link> :
+                <literal>[%t, 3.124]</literal>, <literal>[int8(5), 3.124]</literal>, etc.
+            </para>
+            <para>
                 Pour la concaténation, l'addition, la soustraction, la multiplication, la division,
                 et la puissance, la hiérarchie des types est la suivante (lire "A &lt; B" :
                 B impose son type à A) :
-                <simplelist>
-                    <member>
-                        booléen &lt; (nombre décimal, nombre encodé complexe)
-                    </member>
-                    <member>
+                <itemizedlist>
+                    <listitem>
+                        <para>booléen &lt; (nombre décimal, nombre encodé complexe)</para>
+                    </listitem>
+                    <listitem>
                         <warning>
-                            (nombre décimal, nombre encodé complexe) &lt; entier encodé.
+                            <para>
+                                (nombre décimal, nombre encodé complexe) &lt; entier encodé.
+                            </para>
                         </warning>
-                    </member>
-                    <member>
-                        polynôme (réel | complexe) &lt; fraction rationnelle (réelle | complexe)
-                    </member>
-                </simplelist>
-                </para>
+                    </listitem>
+                    <listitem>
+                        <para>polynôme (réel | complexe) &lt; fraction rationnelle (réelle | complexe)</para>
+                    </listitem>
+                </itemizedlist>
             </para>
-        </refsect2>
-    </refsection>
+
+        </refsection>
     <refsection>
         <title>Exemples</title>
         <programlisting role="example"><![CDATA[
@@ -333,9 +337,9 @@ type(r)                     // Fractions polynomiales (rationnelles)
         <revhistory>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revdescription>
+                <revremark>
                   Le type 11 est supprimé. Il était utilisé pour les fonctions Scilab non compilées.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

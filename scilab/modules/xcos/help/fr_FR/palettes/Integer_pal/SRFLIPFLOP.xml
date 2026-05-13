@@ -16,46 +16,46 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
           xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
           xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="SRFLIPFLOP" xml:lang="fr_FR" xml.mml="http://www.w3.org/1998/Math/MathML">
+          xml:id="SRFLIPFLOP" xml:lang="fr_FR" xmlns:mml="http://www.w3.org/1998/Math/MathML">
     <refnamediv>
         <refname>SRFLIPFLOP</refname>
         <refpurpose>Bascule SR</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SRFLIPFLOP.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_SRFLIPFLOP">
+    <refsection xml:id="Contents_SRFLIPFLOP">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SRFLIPFLOP">Description</xref>
+                <para><link linkend="Description_SRFLIPFLOP">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_SRFLIPFLOP">Types de données</xref>
+                <para><link linkend="Data_Type_SRFLIPFLOP">Types de données</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SRFLIPFLOP">Paramètres</xref>
+                <para><link linkend="Dialogbox_SRFLIPFLOP">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SRFLIPFLOP">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_SRFLIPFLOP">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_SRFLIPFLOP">Exemple</xref>
+                <para><link linkend="Example_SRFLIPFLOP">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SRFLIPFLOP">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_SRFLIPFLOP">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_SRFLIPFLOP">Voir aussi</xref>
+                <para><link linkend="Seealso_SRFLIPFLOP">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_SRFLIPFLOP">
+    <refsection xml:id="Description_SRFLIPFLOP">
         <title>Description</title>
         <para>
             Ce bloc définit la mémoire la plus simple et la plus fondamentale, la bascule SR.
@@ -150,7 +150,7 @@
             où <emphasis><literal>I</literal></emphasis> signifie "Inconnu".
         </para>
     </refsection>
-    <refsection id="Data_Type_SRFLIPFLOP">
+    <refsection xml:id="Data_Type_SRFLIPFLOP">
         <title>Types de données</title>
         <para>
             Le bloc supporte les types suivants :
@@ -185,15 +185,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_SRFLIPFLOP">
+    <refsection xml:id="Dialogbox_SRFLIPFLOP">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/integer_pal/fr_FR/SRFLIPFLOP_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -204,7 +203,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_SRFLIPFLOP">
+    <refsection xml:id="Defaultproperties_SRFLIPFLOP">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -283,7 +282,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_SRFLIPFLOP">
+    <refsection xml:id="Example_SRFLIPFLOP">
         <title>Exemple</title>
         <para>
             L'exemple suivant présente une application typique d'anti-rebond de la bascule SR. Le graphe de
@@ -304,7 +303,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/integer_pal/fr_FR/SRFLIPFLOP_fr_
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_SRFLIPFLOP">
+    <refsection xml:id="Interfacingfunction_SRFLIPFLOP">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -314,17 +313,17 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection role="see also" id="Seealso_SRFLIPFLOP">
+    <refsection role="see also" xml:id="Seealso_SRFLIPFLOP">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="DLATCH">DLATCH</link>
+                <para><link linkend="DLATCH">DLATCH</link></para>
             </listitem>
             <listitem>
-                <link linkend="DFLIPFLOP">DFLIPFLOP</link>
+                <para><link linkend="DFLIPFLOP">DFLIPFLOP</link></para>
             </listitem>
             <listitem>
-                <link linkend="JKFLIPFLOP">JKFLIPFLOP</link>
+                <para><link linkend="JKFLIPFLOP">JKFLIPFLOP</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

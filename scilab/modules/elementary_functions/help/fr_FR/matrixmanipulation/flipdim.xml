@@ -28,7 +28,7 @@
             y = flipdim(x, dim, blockSize)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -221,26 +221,28 @@ flipdim(X, 2, 6) // => [6 7 8 9 10 11   0 1 2 3 4 5]
         </simplelist>
     </refsection>
     <refsection role="history">
-        <title>History</title>
+        <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                  <itemizedlist>
-                    <listitem>
-                         <para>
-                            Extension aux matrices et hypermatrices de booléens, entiers encodés, textes,
-                            polynômes, fractions rationnelles, identifiants graphiques, etc.
-                        </para>
-                    </listitem>
-                    <listitem>
-                         <para>
-                            Nouveau paramètre optionnel <literal>blockSize</literal> pour réordonner
-                            <literal>x</literal> par blocs.
-                        </para>
-                    </listitem>
-                  </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Extension aux matrices et hypermatrices de booléens, entiers encodés, textes,
+                                    polynômes, fractions rationnelles, identifiants graphiques, etc.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Nouveau paramètre optionnel <literal>blockSize</literal> pour réordonner
+                                    <literal>x</literal> par blocs.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>
