@@ -420,7 +420,7 @@ clean-recursive: clean-help clean-localization clean-macros clean-generated
 clean-macros:
 # Find is necessary because of subdirs...
 	-@echo "-- Cleaning macros (*.bin) --"; \
-	find $(top_builddir) -name "*.bin" | xargs --no-run-if-empty rm 2> /dev/null; \
+	find $(top_builddir)/modules -path "*/macros/*" -name "*.bin" -exec rm -f {} + 2> /dev/null; \
 	echo "-- Cleaning lib files (lib) --"; \
 	find $(top_builddir)/modules/*/macros -name "lib" | xargs --no-run-if-empty rm 2> /dev/null
 
