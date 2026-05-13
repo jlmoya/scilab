@@ -90,7 +90,7 @@ types::Function::ReturnValue sci_idempotence(types::typed_list& in, int _iRetCou
         //--pretty-print 2
         std::wostringstream ostr2;
 #ifdef __APPLE__
-        ostr1.precision(std::numeric_limits<double>::max_digits10); // Needed to ensure same precision for both runs
+        ostr2.precision(std::numeric_limits<double>::max_digits10); // Needed to ensure same precision for both runs
 #endif
         ast::PrintVisitor print2(ostr2);
         parser.getTree()->accept(print2);
