@@ -895,7 +895,7 @@ public class XcosDiagram extends ScilabGraph {
         // Switch source and target !
         if (target instanceof CommandPort && source instanceof ControlPort && cell instanceof CommandControlLink) {
             BasicLink current = (BasicLink) cell;
-            current.invertDirection();
+            invertDirection(current);
 
             return super.addCell(cell, parent, index, target, source);
         }
@@ -908,7 +908,7 @@ public class XcosDiagram extends ScilabGraph {
         // Switch source and target !
         if (target instanceof ExplicitOutputPort && source instanceof ExplicitInputPort && cell instanceof ExplicitLink) {
             BasicLink current = (BasicLink) cell;
-            current.invertDirection();
+            invertDirection(current);
 
             return super.addCell(cell, parent, index, target, source);
         }
@@ -921,7 +921,7 @@ public class XcosDiagram extends ScilabGraph {
         // Switch source and target !
         if (target instanceof ImplicitOutputPort && source instanceof ImplicitInputPort && cell instanceof ImplicitLink) {
             BasicLink current = (BasicLink) cell;
-            current.invertDirection();
+            invertDirection(current);
 
             return super.addCell(cell, parent, index, target, source);
         }
@@ -934,7 +934,7 @@ public class XcosDiagram extends ScilabGraph {
         // Switch source and target !
         if (target instanceof ImplicitOutputPort && source instanceof ImplicitOutputPort && cell instanceof ImplicitLink) {
             BasicLink current = (BasicLink) cell;
-            current.invertDirection();
+            invertDirection(current);
 
             return super.addCell(cell, parent, index, target, source);
         }
@@ -953,7 +953,7 @@ public class XcosDiagram extends ScilabGraph {
             final BasicLink current = (BasicLink) cell;
             final SplitBlock split = addSplitEdge(current.getGeometry().getTargetPoint(), (BasicLink) target);
 
-            current.invertDirection();
+            invertDirection(current);
 
             return addCell(cell, parent, index, split.getOut2(), source);
         }
@@ -969,7 +969,7 @@ public class XcosDiagram extends ScilabGraph {
             final BasicLink current = (BasicLink) cell;
             final SplitBlock split = addSplitEdge(current.getGeometry().getTargetPoint(), (BasicLink) target);
 
-            current.invertDirection();
+            invertDirection(current);
 
             return addCell(cell, parent, index, split.getOut2(), source);
         }
@@ -999,7 +999,7 @@ public class XcosDiagram extends ScilabGraph {
             final BasicLink current = (BasicLink) cell;
             final SplitBlock split = addSplitEdge(current.getGeometry().getTargetPoint(), (BasicLink) target);
 
-            current.invertDirection();
+            invertDirection(current);
 
             return addCell(cell, parent, index, split.getOut2(), source);
         }
@@ -1011,6 +1011,22 @@ public class XcosDiagram extends ScilabGraph {
             LOG.severe("Adding an untyped edge");
             return super.addCell(cell, parent, index, source, target);
         }
+    }
+
+    /** Invert the source and target of the link (and all geometry points) */
+    void invertDirection(BasicLink link) {
+        mxICell linkSource = link.getSource();
+        mxICell linkTarget = link.getTarget();
+        
+        mxGeometry geometry = (mxGeometry) link.getGeometry().clone();
+        List<mxPoint> points = geometry.getPoints();
+
+        if (points != null) {
+            Collections.reverse(points);
+        }
+        getModel().setGeometry(link, geometry);
+        // reverse the source and target
+        mxGraphModel.setTerminals(getModel(),link, linkTarget, linkSource);
     }
 
     /**
