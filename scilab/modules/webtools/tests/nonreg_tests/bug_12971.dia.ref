@@ -13,7 +13,7 @@
 //
 // <-- Short Description -->
 // getURL() downloaded file name is wrong
-filePath = http_get("www.scilab.org", fullfile(TMPDIR, "index.html"));
+filePath = http_get("https://www.scilab.org", fullfile(TMPDIR, "index.html"));
 expectedFilePath = fullfile(TMPDIR, "index.html");
 assert_checkequal(filePath, expectedFilePath);
 assert_checktrue(isfile(filePath));
