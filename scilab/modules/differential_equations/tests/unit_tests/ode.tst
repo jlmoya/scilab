@@ -30,7 +30,7 @@ clear t;
 function ydot=f(t,y),ydot=z,endfunction
 y0=0;t0=0;t=0:0.1:%pi;
 message = [msprintf(_("Undefined variable: %s\n"),"z");
-           msprintf(_("%s: An error occurred in ''%s'' subroutine.\n"), "ode", "lsoda")];
+           msprintf(_("%s: An error occurred in ''%ls'' subroutine.\n"), "ode", "lsoda")];
 assert_checkerror("y=ode(y0,t0,t,f)",message);
 
 
