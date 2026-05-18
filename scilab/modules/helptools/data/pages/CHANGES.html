@@ -23,8 +23,8 @@
     <br/>
     <div class="refsection">
 <!-- Copy the html rendered CHANGES.md file below -->
-<h1>Welcome to Scilab 2026.0.0</h1>
-<p>This file details the changes between Scilab 2026.0.0 (this version) and the previous 2025.1.0 stable release.</p>
+<h1>Welcome to Scilab 2026.1.0</h1>
+<p>This file details the changes between Scilab 2026.1.0 (this version) and the previous 2025.1.0 stable release.</p>
 <p>For changelogs of earlier releases, please see <a href="https://help.scilab.org/docs/2025.1.0/en_US/CHANGES.html">Scilab 2025.1.0</a>.</p>
 <p>Summary:</p>
 <ul>
@@ -38,7 +38,42 @@
 <p>Please report anything we may have missed on <a href="https://scilab.discourse.group/">Discourse</a> or <a href="https://gitlab.com/scilab/scilab/-/issues">GitLab</a>.</p>
 <h2>New features</h2>
 <p>For a high-level description of the main new features in this release, please consult the homepage of the embedded documentation, available by simply typing <code>doc</code> in the Scilab console.</p>
-<h3>New functions</h3>
+<h3>Scilab 2026.1.0</h3>
+<h4>New functions</h4>
+<ul>
+<li><code>check_help()</code>: Validate Scilab XML help files against the Scilab Relax NG schema.</li>
+<li><code>help()</code>: Display an inline summary of a documentation page in Scilab console.</li>
+<li><code>ishermitian()</code>: Check whether a matrix is hermitian.</li>
+<li><code>issymmetric()</code>: Check whether a matrix is symmetric.</li>
+<li><code>parquetRead()</code>: Read a Parquet or Arrow file and return a table.</li>
+<li><code>parquetWrite()</code>: Write a table in a Parquet or Arrow file.</li>
+<li><code>pdist()</code>: Pairwise distances between observations.</li>
+<li><code>pdist2()</code>: Pairwise distances between two sets of observations.</li>
+<li><code>squareform()</code>: Conversion between a distance vector and a symmetric distance matrix.</li>
+<li><code>summary()</code>: Summary of <code>table</code> or <code>timeseries</code> variables (properties, statistics...).</li>
+<li><code>xcosDiagramExport()</code>: Export an Xcos diagram to an image.</li>
+<li><code>xlsxInfo()</code>: Get information about an Excel file.</li>
+<li><code>xlsxRead()</code>: Read data from an Excel file and return a matrix or cell.</li>
+<li><code>xlsxSheet()</code>: Manage sheets in an Excel file.</li>
+<li><code>xlsxWrite()</code>: Write data (matrix or cell) to an Excel file.</li>
+</ul>
+<h4>Features improvements</h4>
+<ul>
+<li>New web-based GUIs for ATOMS &amp; Scilab Demonstration using &quot;browser&quot; uicontrols.</li>
+<li>Objects defined using <code>classdef</code> now support static properties and methods.</li>
+<li><code>csvTextScan()</code> now manages a &quot;substitute&quot; option as <code>csvRead()</code> to enable replacement of particular strings in the read file.</li>
+<li><code>dbscan()</code> now accepts two more input arguments to specify metric distances and parameters.</li>
+<li><code>dbscan()</code>, <code>kmeans()</code> and <code>meanshift()</code> now use <code>pdist2()</code> for better performances.</li>
+<li><code>format()</code> now supports engineering notation (similar to exponential notation but with an exponent value divisible by three).</li>
+<li><code>gallery()</code> can now generate &quot;minij&quot; (Symmetric positive definite matrix) and &quot;moler&quot; (Moler symmetric positive definite matrix) test matrices.</li>
+<li>&quot;use_vectorized&quot; parameter is now available for <code>optim_ga()</code>, <code>optim_moga()</code>, <code>optim_nsga()</code>, <code>optim_nsga2()</code> to indicate that the cost function is vectorized (called with the whole population at once).</li>
+</ul>
+<h4>Performances</h4>
+<ul>
+<li>Arithmetic operators now perform <strong>automatic expansion</strong> without any memory footprint: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using <code>.*.</code> or <code>repmat()</code>) unnecessary for most case. See <code>doc operator_expand</code>.</li>
+</ul>
+<h3>Scilab 2026.0.0</h3>
+<h4>New functions</h4>
 <ul>
 <li><code>cdftnc()</code>: Cumulative distribution function of the non-central student's T distribution.</li>
 <li><code>dbscan()</code>: Density-based clustering.</li>
@@ -53,9 +88,9 @@
 <li><code>sortrows()</code> : Sort rows of a vector, matrix, table, or timeseries.</li>
 <li><code>spset()</code>: Set non-zero entries of a sparse matrix.</li>
 </ul>
-<h3>Features improvements</h3>
+<h4>Features improvements</h4>
 <ul>
-<li><code>host()</code> has been rewritten and is now used as backend for all other functions that perform system calls (<code>dos()</code>, <code>unix()</code>, <code>unix_g()</code>, <code>unix_s()</code>, <code>unix_w()</code>, and <code>unix_x()</code>) which are now obsolete.</li>
+<li><code>host()</code> has been rewritten and is now used as a backend for all other functions that perform system calls (<code>dos()</code>, <code>unix()</code>, <code>unix_g()</code>, <code>unix_s()</code>, <code>unix_w()</code>, and <code>unix_x()</code>) which are now obsolete.</li>
 <li><code>intersect()</code> now manages <code>duration</code>, <code>datetime</code>, <code>table</code>, and <code>timeseries</code> types.</li>
 <li><code>lib()</code> can now load a library without exposing its symbols (default behavior remains unchanged).</li>
 <li><code>setdiff()</code> now manages <code>duration</code>, <code>datetime</code>, <code>table</code>, and <code>timeseries</code> types.</li>
@@ -63,16 +98,16 @@
 <li><code>union()</code> now manages <code>duration</code>, <code>datetime</code>, <code>table</code>, and <code>timeseries</code> types.</li>
 <li>Options names are now case-insensitive for <code>duration()</code>, <code>calendarDuration()</code>, <code>datetime()</code>, <code>timeseries()</code>, and <code>table()</code> functions.</li>
 </ul>
-<h3>Language</h3>
+<h4>Language</h4>
 <ul>
 <li>Classes/Objects can now be defined and used in Scilab based on the new <code>classdef</code>, <code>enumeration</code>, <code>properties</code> &amp; <code>methods</code> keywords.</li>
-<li><code>end</code> keyword can now be used to specify the last row/column index of an array, similarly to <code>$</code>.</li>
+<li>The <code>end</code> keyword can now be used to specify the last row/column index of an array, similarly to <code>$</code>.</li>
 </ul>
-<h3>Graphics</h3>
+<h4>Graphics</h4>
 <ul>
 <li>Axes handles can now have their own colormap. If not provided, then the parent figure colormap is used (as in previous versions).</li>
 </ul>
-<h3>Xcos</h3>
+<h4>Xcos</h4>
 <ul>
 <li>Diagrams are saved as <a href="https://ssp-standard.org/">SSP</a> (System Structure and Parametrization) files by default. This setting can be edited in user preferences.</li>
 <li>Users are now enabled to save their diagrams as COSF files.</li>
@@ -80,6 +115,12 @@
 <li>SSP files are associated with Scilab during installation under Windows.</li>
 </ul>
 <h2>Obsolete functions or features</h2>
+<h3>Scilab 2026.1.0</h3>
+<p>All these functions and features will be removed in Scilab 2027.0.0 (October 2026):</p>
+<ul>
+<li><code>readmps()</code>: Please use <code>quapro</code> toolbox instead.</li>
+</ul>
+<h3>Scilab 2026.0.0</h3>
 <p>All these functions and features will be removed in Scilab 2026.1.0 (May 2026):</p>
 <ul>
 <li><code>demo_begin()</code>: Please use <code>exec()</code> instead.</li>
@@ -100,6 +141,19 @@
 <li><code>unix_x()</code>: Please use <code>host()</code> instead.</li>
 </ul>
 <h2>Removed Functions</h2>
+<h3>Scilab 2026.1.0</h3>
+<p>The following functions have been removed:</p>
+<ul>
+<li><code>check_modules_xml()</code>: not used and undocumented.</li>
+<li><code>demo_begin()</code>: obsolete since 2026.0.0, please use <code>exec()</code> instead.</li>
+<li><code>demo_choose()</code>: obsolete since 2026.0.0, please use <code>x_choose()</code> instead.</li>
+<li><code>demo_compiler()</code>: obsolete since 2026.0.0, please use <code>haveacompiler()</code> instead.</li>
+<li><code>demo_end()</code>: obsolete since 2026.0.0, please use <code>exec()</code> instead.</li>
+<li><code>demo_file_choice()</code>: obsolete since 2026.0.0, please use <code>x_choose()</code> instead.</li>
+<li><code>demo_function_choice()</code>: obsolete since 2026.0.0, please use <code>x_choose()</code> instead.</li>
+<li><code>demo_run()</code>: obsolete since 2026.0.0, please use <code>exec()</code> instead.</li>
+</ul>
+<h3>Scilab 2026.0.0</h3>
 <p>The following functions have been removed:</p>
 <ul>
 <li><code>demo_folder_choice()</code>: undocumented and not used, replaced by <code>x_choose()</code>.</li>
@@ -120,11 +174,29 @@
 <li><code>princomp()</code>: obsolete since 2025.0.0, please use <code>pca()</code> instead.</li>
 </ul>
 <h2>Known incompatibilities</h2>
+<h3>Scilab 2026.1.0</h3>
+<ul>
+<li><code>readtable()</code> &amp; <code>readtimeseries()</code> now also return empty columns (columns with missing or undefined names).</li>
+<li>In toolboxes, when using custom &quot;builder_<!-- raw HTML omitted -->.sce&quot; files in &quot;src&quot; folder, <code>tbx_build_src_clean()</code> must be called to be sure &quot;cleaner<!-- raw HTML omitted -->.sce&quot; files are generated.</li>
+</ul>
+<h3>Scilab 2026.0.0</h3>
 <ul>
 <li><code>genlib()</code> no more loads generated library (see <a href="https://gitlab.com/scilab/scilab/-/issues/15918">#15918</a>). <code>lib()</code> function must be called to load the generated library.</li>
 <li><code>host()</code> function now returns <code>0</code> (success) instead of <code>1</code> (error) when called with an empty character string as input.</li>
 </ul>
 <h2>Compilation</h2>
+<h3>Scilab 2026.1.0</h3>
+<ul>
+<li>Windows ARM64 support added (no official binaries available).</li>
+<li>Under Linux/macOS, installation of documentation (.xml files) was optional before this version (using a dedicated configure option). This option has been removed as .xml files are now mandatory for the <code>help()</code> function.</li>
+</ul>
+<p>If you are familiar with building Scilab from sources, these dependencies have been updated:</p>
+<ul>
+<li>New dependency: libxslt &gt;= 1.1.35 (used by <code>help()</code>).</li>
+<li>New dependency: XLNT &gt;= 1.6.1 (used by <code>xlsxInfo()</code>, <code>xlsxRead()</code>, <code>xlsxSheet()</code> &amp; <code>xlsxWrite()</code>).</li>
+<li>New dependency: Apache Arrow 19.0.0 with Parquet format &amp; ZLIB support (used by <code>parquetRead()</code> &amp; <code>parquetWrite()</code>).</li>
+</ul>
+<h3>Scilab 2026.0.0</h3>
 <ul>
 <li>Windows: Migration to Intel® oneAPI HPC Toolkit 2025.2.</li>
 <li>Linux: GCC 15 is now supported.</li>
@@ -163,6 +235,53 @@
 </li>
 </ul>
 <h2>Issue Fixes</h2>
+<h3>Scilab 2026.1.0</h3>
+<ul>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/9985">#9985</a>: <code>lsqrsolve()</code> produced weird messages when the objective function was complex.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/14387">#14387</a>: <code>string(cell_array)</code> returned wrong results (wrong sizes, wrong type, wrong contents).</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/14776">#14776</a>: Scilab crashed when an <code>AFFICH_m</code> block had a wrong input size.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/15101">#15101</a>: <code>ascii()</code> returned inconsistent results for <code>0</code> value.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/15773">#15773</a>: <code>eigs()</code> could not compute all eigenvalues of singular matrices.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/16501">#16501</a>: UID of a Xcos block did not update after pasting a block into another super block.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/16739">#16739</a>: Xcos labels boxes were corrupted in Xcos diagram coming from Scilab 5.5.2.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/16744">#16744</a>: <code>SUPER_f</code> destroyed port names in a duplicated diagram.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17334">#17334</a>: <code>loadToolboxInlineHelp()</code> (new in Scilab 2025.0.0) was not documented and broke compatibility with Scilab 2024.1.0 (<code>loader.sce</code>, ...).</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17359">#17359</a>: A copy-paste of the <code>SELF_SWITCH</code> component generated an empty square in Xcos diagram.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17394">#17394</a>: <code>loadToolboxInlineHelp()</code> could not find file containing links.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17451">#17451</a>: Accessing <code>.content</code> field of <code>xmlXPath()</code> output (and the <code>XMLSet</code> datatype) could lead to 0-sized datatypes.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17483">#17483</a>: Xcos diagram saved to SSP format did not keep <code>IN_f</code>/<code>OUT_f</code> labels.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17485">#17485</a>: Compiling against <code>mex.h</code> generated an error when using C++23.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17486">#17486</a>: All example is <code>xml</code> module documentation overwrote the <code>doc</code> command.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17487">#17487</a>: macOS arm64 version needed Rosetta at runtime.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17489">#17489</a>: Display of structs with objects generated warnings.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17494">#17494</a>: The first step of <code>arkode</code> was incorrect for Euler method.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17495">#17495</a>: <code>getVsWhereInformation()</code> failed when <code>vswhere</code> command returned <code>[]</code>.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17499">#17499</a>: Line value of XML elements was wrong for bug XML files.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17501">#17501</a>: <code>strsplit()</code> was broken in some cases in Scilab 2026.0.0.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17504">#17504</a>: Hypermatrix display was wrong when the number of lines was 100 or more.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17505">#17505</a>: It was not possible to modify data Xcos boxes since Scilab 2025.0.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17506">#17506</a>: <code>scatterplot()</code> always displayed black marks when using <code>0</code> as marker type.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17509">#17509</a>: An error in the methods of <code>classdef</code> object returned an empty function name.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17510">#17510</a>: <code>classdef</code> properties were not shown correctly.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17512">#17512</a>: <code>NaT</code> was not always consistent with comparison operators.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17514">#17514</a>: Xcos electrical block parameter values did not update the icon.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17522">#17522</a>: <code>csvRead()</code>, <code>csvTextscan()</code> were not able to handle a mix of whitespaces and semi-column separators.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17525">#17525</a>: There was a mistake on <code>TEXT_f</code> block help page.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17526">#17526</a>: Scilab failed when reading &quot;DATASPACE SCALAR&quot; attribute or dataset in HDF5 file.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17528">#17528</a>: <code>csim()</code> could give incorrect results when called with initial conditions.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17530">#17530</a>: <code>ESELECT_f</code> documentation did not explain which output value was selected according to the input value.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17532">#17532</a>: <code>LOGICAL_OP</code> block symbol did not change according to settings.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17533">#17533</a>: Vertices of connections may exchange their position when reloading an Xcos diagram.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17535">#17535</a>: <code>cvode()</code> did not honor <code>maxSteps</code> in some cases.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17538">#17538</a>: Error was signalled on original superblock (instead of copy) when doing a copy in Xcos.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17539">#17539</a>: <code>readtable()</code> did not return columns whose names were empty.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17540">#17540</a>: <code>cvode()</code> froze Scilab when the time span was specified as a two-element vector.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17541">#17541</a>: Documentation of <code>arguments</code> was confusing in some cases.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17542">#17542</a>: Depending on operations, <code>classdef</code> objects behaved differently with other types.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17543">#17543</a>: <code>slint()</code> shew copyright/advertising notice.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17548">#17548</a>: There was a mispelling in the figure menus when translated into French.</li>
+<li><a href="https://gitlab.com/scilab/scilab/-/issues/17550">#17550</a>: <code>tbx_build_src()</code> changed the order of files at compile time, which could lead to compilation errors when dealing with Fortran 90 files.</li>
+</ul>
 <h3>Scilab 2026.0.0</h3>
 <ul>
 <li><a href="https://gitlab.com/scilab/scilab/-/issues/7113">#7113</a>: <code>demo_compiler()</code> was a useless wrapper for <code>haveacompiler()</code> and has been removed.</li>
