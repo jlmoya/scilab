@@ -391,7 +391,7 @@ public class BasicBlock extends XcosCell implements Serializable {
      * @param parent the diagram
      * @param modifiedBlock a block copy containing the new style
      */
-    protected void updateStyle(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
+    public void updateStyle(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
         StyleMap update = new StyleMap(getStyle());
         update.putAll(modifiedBlock.getStyle());
         parent.getModel().setStyle(this, update.toString());
@@ -404,7 +404,7 @@ public class BasicBlock extends XcosCell implements Serializable {
      * @param parent the diagram
      * @param modifiedBlock a block copy containing the new value
      */
-    protected void updateValue(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
+    public void updateValue(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
         parent.getModel().setValue(this, modifiedBlock.getValue());
     }
 

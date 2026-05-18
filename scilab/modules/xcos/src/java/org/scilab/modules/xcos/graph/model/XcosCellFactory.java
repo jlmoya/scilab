@@ -232,6 +232,9 @@ public final class XcosCellFactory {
                     .filter(c -> c instanceof BasicPort)
                     .map(c -> (BasicPort) c)
                     .forEach(c -> ports.put(c.getUID(), c));
+
+                    b.updateStyle(controller, diagram, b);
+                    b.updateValue(controller, diagram, b);
                     break;
                 case LINK:
                     BasicLink l = createLink(controller, uid, kind);
