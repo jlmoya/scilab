@@ -79,10 +79,10 @@
         <para>
             If <varname>x</varname> is real, <literal>sn = ellipj(x, m)</literal>
             computes <varname>sn</varname> such that
-            <latex alt="x = integral_0^{sn} du/sqrt{(1-u^2)(1-m.u^2)}">
-                \int_0^{sn}\frac{du}{\sqrt{(1-u^2)(1-m\,u^2)}}=x
-            </latex>
         </para>
+        <latex alt="x = integral_0^{sn} du/sqrt{(1-u^2)(1-m.u^2)}">
+            \int_0^{sn}\frac{du}{\sqrt{(1-u^2)(1-m\,u^2)}}=x
+        </latex>
         <para>
             Then, if <literal>0 ≤ x ≤ x<subscript>M</subscript></literal> where
             <literal>x<subscript>M</subscript></literal> is the position of the first

@@ -142,14 +142,16 @@
                 <varlistentry>
                     <term>monovariable</term>
                     <listitem>
-                            <para><varname>a=A</varname> est un vecteur : <literal>x=fft(a,-1)</literal> ou
+                        <para>
+                            <varname>a=A</varname> est un vecteur : <literal>x=fft(a,-1)</literal> ou
                             <literal>x = fft(a)</literal> calcule une transformée monovariable,
-                            c'est à dire:
-                            <latex alt="x(k)=∑_m=1…n a(m).exp(-2iπ.(k-1)(m-1)/n)">
-                                x(k) = \sum_{m=1}^n
-                                {a(m) \exp\left(-2 i\pi\frac{(m-1)}{n} (k-1)\right)}
-                            </latex></para>
-                                </listitem>
+                            c'est à dire :
+                        </para>
+                        <latex alt="x(k)=∑_m=1…n a(m).exp(-2iπ.(k-1)(m-1)/n)">
+                            x(k) = \sum_{m=1}^n
+                            {a(m) \exp\left(-2 i\pi\frac{(m-1)}{n} (k-1)\right)}
+                        </latex>
+                    </listitem>
                 </varlistentry>
                 <varlistentry>
                     <term>multivariable</term>
@@ -174,14 +176,16 @@
                 <varlistentry>
                     <term>monovariable</term>
                     <listitem>
-                            <para><varname>a=A</varname> est un vecteur : <literal>X = fft(a, +1)</literal>
+                        <para>
+                            <varname>a=A</varname> est un vecteur : <literal>X = fft(a, +1)</literal>
                             ou <literal>X = ifft(A)</literal> calcule la transformée monovariable
                             inverse, c'est à dire :
-                            <latex alt="x(k)=(1/n).∑_m=1…n a(m).exp(+2iπ.(k-1)(m-1)/n)">
-                                $x(k) = \frac{1}{n}\sum_{m=1}^n
-                                {a(m) \exp\left(+2 i\pi\frac{(m-1)}{n} (k-1)\right)}$
-                            </latex></para>
-                                </listitem>
+                        </para>
+                        <latex alt="x(k)=(1/n).∑_m=1…n a(m).exp(+2iπ.(k-1)(m-1)/n)">
+                            $x(k) = \frac{1}{n}\sum_{m=1}^n
+                            {a(m) \exp\left(+2 i\pi\frac{(m-1)}{n} (k-1)\right)}$
+                        </latex>
+                    </listitem>
                 </varlistentry>
                 <varlistentry>
                     <term>multivariable</term>
