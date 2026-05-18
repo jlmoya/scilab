@@ -31,6 +31,9 @@ expected = parquetRead(path);
 assert_checkequal(expected, t);
 
 // errors
-assert_checkerror("parquetRead()", "parquetRead: Wrong number of input argument(s): 1 expected.");
-assert_checkerror("parquetRead(123)", "parquetRead: Wrong type for input argument #1: Must be in ""string"".");
-assert_checkerror("parquetRead(""nonexistent.parquet"")", "parquetRead: Wrong value for input argument #1: File ""nonexistent.parquet"" does not exist.");
+msg = msprintf(_("%s: Wrong number of input argument(s): %d expected.\n"), "parquetRead", 1);
+assert_checkerror("parquetRead()", msg);
+msg = msprintf(_("%s: Wrong type for input argument #%d: Must be in %s.\n"), "parquetRead", 1, sci2exp("string"));
+assert_checkerror("parquetRead(123)", msg);
+msg = msprintf(_("%s: Wrong value for input argument #%d: File ""%s"" does not exist.\n"), "parquetRead", 1, "nonexistent.parquet")
+assert_checkerror("parquetRead(""nonexistent.parquet"")", msg);

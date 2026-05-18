@@ -28,7 +28,7 @@ types::Function::ReturnValue sci_xlsxInfo(types::typed_list &in, int _iRetCount,
 {
     if (in.size() < 1 || in.size() > 2) 
     {
-        Scierror(77, _("%s: Wrong number of input arguments: 1 to 2 expected.\n"), FUNCTION_NAME);
+        Scierror(77, _("%s: Wrong number of input arguments: %d to %d expected.\n"), FUNCTION_NAME, 1, 2);
         return types::Function::Error;
     }
 

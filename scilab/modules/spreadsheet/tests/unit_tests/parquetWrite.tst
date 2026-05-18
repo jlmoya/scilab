@@ -70,7 +70,11 @@ for extension = [".parquet", ".arrow"]
 end
 
 // errors
-assert_checkerror("parquetWrite()", "parquetWrite: Wrong number of input argument(s): 2 expected.");
-assert_checkerror("parquetWrite(1,1)", "parquetWrite: Wrong type for input argument #1: Must be in ""string"".");
-assert_checkerror("parquetWrite(""1"",1)", "parquetWrite: Wrong type for input argument #2: Must be in ""table"".");
-assert_checkerror("parquetWrite(fullfile(TMPDIR, ""test.csv""), t)", "parquetWrite: Wrong extension for input argument #1: Supported extensions are [""parquet"",""arrow""].");
+msg = msprintf(_("%s: Wrong number of input argument(s): %d expected.\n"), "parquetWrite", 2);
+assert_checkerror("parquetWrite()", msg);
+msg = msprintf(_("%s: Wrong type for input argument #%d: Must be in %s.\n"), "parquetWrite", 1, sci2exp("string"));
+assert_checkerror("parquetWrite(1,1)", msg);
+msg = msprintf(_("%s: Wrong type for input argument #%d: Must be in %s.\n"), "parquetWrite", 2, sci2exp("table"));
+assert_checkerror("parquetWrite(""1"",1)", msg);
+msg = msprintf(_("%s: Wrong extension for input argument #%d: Supported extensions are %s.\n"), "parquetWrite", 1, sci2exp(["parquet", "arrow"]))
+assert_checkerror("parquetWrite(fullfile(TMPDIR, ""test.csv""), t)", msg);

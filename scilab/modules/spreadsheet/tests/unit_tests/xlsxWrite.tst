@@ -122,7 +122,7 @@ assert_checkequal(result, cell_data);
 // test 4 : Errors
 // mandatory errors
 assert_checkerror("xlsxWrite()", msprintf(_("%s: Wrong number of input argument(s): at least %d expected.\n"), "xlsxWrite", 2));
-assert_checkerror("xlsxWrite(output_file)", msprintf(_("%s: Wrong number of input argument(s): at least 2 expected.\n"), "xlsxWrite", 2));
+assert_checkerror("xlsxWrite(output_file)", msprintf(_("%s: Wrong number of input argument(s): at least %d expected.\n"), "xlsxWrite", 2));
 assert_checkerror("xlsxWrite([], 123)", msprintf(_("%s: Wrong type for input argument #%d: Must be in ""%s"".\n"), "xlsxWrite", 2, "string"));
 assert_checkerror("xlsxWrite(''[]'', 123)", msprintf(_("%s: Wrong type for input argument #%d: Must be in ""string"".\n"), "xlsxWrite", 2, "string"));
 assert_checkerror("xlsxWrite(%t, output_file)", msprintf(_("%s: Wrong type for input argument #%d: Must be in %s.\n"), "xlsxWrite", 1, sci2exp(["double","string","cell"])));
