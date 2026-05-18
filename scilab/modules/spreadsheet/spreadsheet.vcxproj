@@ -167,10 +167,11 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>includes;src/c/ripole;src/c;sci_gateway/cpp;src/cpp;../../libs/xlnt/include;../../libs/intl;../core/includes;../fileio/includes;../io/includes;../windows_tools/includes;../output_stream/includes;../localization/includes;../api_scilab/includes;../string/includes;../dynamic_link/includes;../ast/includes/types;../ast/includes/ast;../ast/includes/exps;../ast/includes/operations;../ast/includes/symbol;../ast/includes/system_env;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>includes;src/c/ripole;src/c;sci_gateway/cpp;src/cpp;../../libs/xlnt/include;../../libs/arrow/include;../../libs/intl;../core/includes;../fileio/includes;../io/includes;../windows_tools/includes;../output_stream/includes;../localization/includes;../api_scilab/includes;../string/includes;../dynamic_link/includes;../ast/includes/types;../ast/includes/ast;../ast/includes/exps;../ast/includes/operations;../ast/includes/symbol;../ast/includes/system_env;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FORDLL;_DEBUG;_WINDOWS;_USRDLL;SPREADSHEET_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <PreLinkEvent>
       <Message>Make dependencies</Message>
@@ -259,13 +260,14 @@
     <ClCompile>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>includes;src/c/ripole;src/c;sci_gateway/cpp;src/cpp;../../libs/xlnt/include;../../libs/intl;../core/includes;../fileio/includes;../io/includes;../windows_tools/includes;../output_stream/includes;../localization/includes;../api_scilab/includes;../string/includes;../dynamic_link/includes;../ast/includes/types;../ast/includes/ast;../ast/includes/exps;../ast/includes/operations;../ast/includes/symbol;../ast/includes/system_env;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>includes;src/c/ripole;src/c;sci_gateway/cpp;src/cpp;../../libs/xlnt/include;../../libs/arrow/include;../../libs/intl;../core/includes;../fileio/includes;../io/includes;../windows_tools/includes;../output_stream/includes;../localization/includes;../api_scilab/includes;../string/includes;../dynamic_link/includes;../ast/includes/types;../ast/includes/ast;../ast/includes/exps;../ast/includes/operations;../ast/includes/symbol;../ast/includes/system_env;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FORDLL;NDEBUG;_WINDOWS;_USRDLL;SPREADSHEET_EXPORTS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <PreLinkEvent>
       <Message>Make dependencies</Message>
