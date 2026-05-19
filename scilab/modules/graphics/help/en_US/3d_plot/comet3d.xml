@@ -12,10 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en_US" xml:id="comet3d">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="comet3d">
     <refnamediv>
         <refname>comet3d</refname>
         <refpurpose>3D comet animated plot</refpurpose>
@@ -31,64 +28,69 @@
             comet3d(...,"colors", c)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    a real vector or matrix. Default = <literal>1:np</literal>,
-                    <literal>np</literal> being the number of points of the trajectory.
-                    As a matrix, each column defines the x coordinates of the trace of an
-                    individual comet.
-                    <para/>
-                </listitem>
+                     <para>
+                        a real vector or matrix. Default = <literal>1:np</literal>,
+                        <literal>np</literal> being the number of points of the trajectory.
+                        As a matrix, each column defines the x coordinates of the trace of an
+                        individual comet.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    a real vector (default value = <literal>1:np</literal>) or matrix.
-                    As a matrix, each column defines the y coordinates of the trace of an
-                    individual comet.
-                    <para/>
-                </listitem>
+                     <para>
+                        a real vector (default value = <literal>1:np</literal>) or matrix.
+                        As a matrix, each column defines the y coordinates of the trace of an
+                        individual comet.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>z</term>
                 <listitem>
-                    a real vector of length <literal>np</literal>, or a matrix with
-                    <literal>np</literal> rows. As a matrix, each column defines the z
-                    coordinates of the trace of an individual comet.
-                    <literal>nc=size(z,"c")</literal> is the number of comets simultaneously drawn.
-                    <para/>
-                </listitem>
+                     <para>
+                        a real vector of length <literal>np</literal>, or a matrix with
+                        <literal>np</literal> rows. As a matrix, each column defines the z
+                        coordinates of the trace of an individual comet.
+                        <literal>nc=size(z,"c")</literal> is the number of comets simultaneously drawn.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Lf</term>
                 <listitem>
-                    a real scalar in the interval<literal>[0,1[</literal>. Default value is 0.1:
-                    It defines the Leading fraction of the comet's trace.
-                    The <literal>k=Lf*np</literal> most recent points are plotted in thicker line.
-                    <para/>
-                </listitem>
+                     <para>
+                        a real scalar in the interval<literal>[0,1[</literal>. Default value is 0.1:
+                        It defines the Leading fraction of the comet's trace.
+                        The <literal>k=Lf*np</literal> most recent points are plotted in thicker line.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>fun</term>
                 <listitem>
-                    a scilab function with syntax <literal>z=fun(x,y)</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        a scilab function with syntax <literal>z=fun(x,y)</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>c</term>
                 <listitem>
-                    <literal>nc</literal> colors of the <literal>nc</literal> comets traces.
-                    They may be specified as a vector of <literal>nc</literal> color indices or
-                    <link linkend="color_list">color names</link> or "#RRGGBB" hexadecimal
-                    color codes. Or by a matrix (ncx3) of <literal>[r,g,b]</literal> vectors of
-                    Red-Green-Blue intensities in the [0,1] interval.
-                    <para/>
-                </listitem>
+                     <para><literal>nc</literal> colors of the <literal>nc</literal> comets traces.
+                        They may be specified as a vector of <literal>nc</literal> color indices or
+                        <link linkend="color_list">color names</link> or "#RRGGBB" hexadecimal
+                        color codes. Or by a matrix (ncx3) of <literal>[r,g,b]</literal> vectors of
+                        Red-Green-Blue intensities in the [0,1] interval.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -114,23 +116,23 @@
                     </td>
                 </tr>
             </table>
-            <para>
-                if <literal>z</literal> is a matrix and <literal>x</literal> and <literal>y</literal>
-                are vectors, then animated curves are drawn for each triple
-                <literal>(x, y, z(:,j))</literal>.
-            </para>
-            <para>
-                if <literal>x,y,z</literal> are matrices with the same dimensions then animated curves
-                are drawn for each triple <literal>(x(:,j), y(:,j), z(:,j))</literal>.
-            </para>
-            <para>
-                <literal>comet3d(x, y, fun,...)</literal> computes the <literal>z</literal> vector as
-                <literal>z(i)=fun(x(i),y(i))</literal>.
-            </para>
-            <para>
-                <literal>comet3d(..,"colors",c)</literal> can be used to set the colors of each
-                trajectory.
-            </para>
+        </para>
+        <para>
+            if <literal>z</literal> is a matrix and <literal>x</literal> and <literal>y</literal>
+            are vectors, then animated curves are drawn for each triple
+            <literal>(x, y, z(:,j))</literal>.
+        </para>
+        <para>
+            if <literal>x,y,z</literal> are matrices with the same dimensions then animated curves
+            are drawn for each triple <literal>(x(:,j), y(:,j), z(:,j))</literal>.
+        </para>
+        <para>
+            <literal>comet3d(x, y, fun,...)</literal> computes the <literal>z</literal> vector as
+            <literal>z(i)=fun(x(i),y(i))</literal>.
+        </para>
+        <para>
+            <literal>comet3d(..,"colors",c)</literal> can be used to set the colors of each
+            trajectory.
         </para>
     </refsection>
     <refsection>
@@ -175,7 +177,7 @@ comet3d(cos(t),sin(t),traj)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

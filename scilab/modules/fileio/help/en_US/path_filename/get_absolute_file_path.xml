@@ -26,7 +26,7 @@
         <synopsis>[filepath, filename] = get_absolute_file_path()</synopsis>
         <synopsis>filepath = get_absolute_file_path(filename)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -50,17 +50,17 @@
             internal list of currently opened files the file with name <varname>filename</varname>
             and returns its path <varname>pathname</varname>.
         </para>
-       <para>If file is not opened, it will return an error.</para>
-      <para>Without input arguments and called from a script, <function>get_absolute_file_path()</function>
-        returns the absolute path of the script and optionally its name. When called without input arguments
-        from the command line <function>get_absolute_file_path()</function> returns an error.
-      </para>
-        <para>
-            <warning>
+        <para>If file is not opened, it will return an error.</para>
+        <para>Without input arguments and called from a script, <function>get_absolute_file_path()</function>
+            returns the absolute path of the script and optionally its name. When called without input arguments
+            from the command line <function>get_absolute_file_path()</function> returns an error.
+        </para>
+        <warning>
+            <para>
                 In previous version (Scilab 5.0.x) current directory was
                 returned if file was not found.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>

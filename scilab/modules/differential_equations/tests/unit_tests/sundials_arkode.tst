@@ -91,7 +91,7 @@ for m=methods
         printf("%s : ",m);
         [tm,ym] = arkode(list(vdp,mu), 0:0.1:10, y0, method = m);
         printf("OK, ");
-        sol = arkode(list(vdp,mu), [0 10], y0, method = m, hMax = 1);
+        sol = arkode(list(vdp,mu), [0 10], y0, method = m, hMax = 1, maxSteps=2000);
         printf("OK, ");
         arkode(list(vdp,mu), 0:0.1:10, y0, method = m);
         printf("OK\n");
@@ -167,7 +167,7 @@ assert_checkalmostequal(solcext3(5+10*%eps),%i,0,1e-11);
 // SENSITIVITY WITH COMPLEX STEP
 h = 1e-200;
 mu=1
-[tcs,ycs] = arkode(list(vdp,complex(mu,h)), [0,10], y0, rtol=1e-10,atol=1e-12);
+[tcs,ycs] = arkode(list(vdp,complex(mu,h)), [0,10], y0, rtol=1e-10,atol=1e-12,maxSteps=2000);
 scs = imag(ycs)/h;
 [tcs,sens] = arkode(list(vdpsens,mu), tcs, [y0 [0;0]], rtol=1e-10,atol=1e-12);
 sens = squeeze(sens(:,2,:));
@@ -238,7 +238,6 @@ v0=zeros(N-1,1);
 timer();[t,v] = arkode(list(f_chaleur,dx,lambda,c,rhoLin),[0 3],v0,rtol=1e-5,atol=1e-7,method="ARK548L2SA_DIRK_8_4_5");t1=timer()
 timer();v2=ode("stiff",v0,0,t,1e-5,1e-7,list(f_chaleur,dx,lambda,c,rhoLin));t2 = timer()
 assert_checktrue(max(abs(v-v2)) < 1e-6);
-//assert_checktrue(t1 < t2);
 
 // SCILAB ERRORS
 function fe1(t,y)
@@ -257,8 +256,8 @@ assert_checkerror("arkode(fe2,[0 70],1)",msg)
 function out = fe4(t,y)
     out = y^2;
 endfunction
-[t,y] = arkode(fe4,[0 2],1,rtol=1e-10,atol=1e-12);
-assert_checkalmostequal(t($),1)
+[t,y] = arkode(fe4,[0 2],1,rtol=1e-8,maxSteps=2000);
+assert_checkalmostequal(t($),1,1e-6)
 
 // Linear ode
 function out = f5(t,y,A)

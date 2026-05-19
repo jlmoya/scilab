@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook"  xmlns:scilab="http://www.scilab.org"
-        version="5.0-subset Scilab" xml:lang="en" xml:id="plot_multiscaled">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" version="5.0-subset Scilab" xml:lang="en" xml:id="plot_multiscaled">
     <refnamediv>
         <refname>multiscaled plots</refname>
         <refpurpose>How to set several axes for one curve or for curves with distinct scales</refpurpose>
@@ -26,27 +23,29 @@
             cartesian Y axes, as for instance:
             <orderedlist>
                 <listitem>
-                    We want to read the same curve according to distinct scales along
-                    multiple X or Y axes:
-                    <itemizedlist>
-                        <listitem>
-                            <para>
-                            If the relationship between both scales is affine (such as y'=a.y+b)
-                            and linear axes must be rendered,
-                            <link linkend="drawaxis">drawaxis</link>() can be used.
-                            </para>
-                        </listitem>
-                        <listitem>
-                            <para>
-                            If the relationship between both scales is a power law (such as y'=a.y^b),
-                            using logarithmic axes and <link linkend="newaxes">newaxes</link>()
-                            will be required.
-                            </para>
-                        </listitem>
-                    </itemizedlist>
-                    Anyway, both scales are here tightly related. In order to insure that
-                    it's also the case for their drawing, the <literal>gca().tight_limits</literal>
-                    property will have to be set to "on" in the considered direction
+                     <para>
+                        We want to read the same curve according to distinct scales along
+                        multiple X or Y axes:
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                If the relationship between both scales is affine (such as y'=a.y+b)
+                                and linear axes must be rendered,
+                                <link linkend="drawaxis">drawaxis</link>() can be used.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                If the relationship between both scales is a power law (such as y'=a.y^b),
+                                using logarithmic axes and <link linkend="newaxes">newaxes</link>()
+                                will be required.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        Anyway, both scales are here tightly related. In order to insure that
+                        it's also the case for their drawing, the <literal>gca().tight_limits</literal>
+                        property will have to be set to "on" in the considered direction
+                    </para>
                 </listitem>
                 <listitem>
                     <para>
@@ -90,7 +89,7 @@ e = xstring(5,999.99,"Temperature [°F]")
 set(e, "clip_state", "off", "text_box_mode", "centered","font_foreground",c);
 gcf().axes_size = [610 510];
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             t = linspace(0,10,100);
             tf = t*1.8+32;
             d = -6.863e-3*t.^2 + 0.05463*t + 999.84;
@@ -115,7 +114,7 @@ gcf().axes_size = [610 510];
             set(e, "clip_state", "off", "text_box_mode", "centered","font_foreground",c);
             title("Water density","fontsize",3)
             gcf().axes_size = [610 510];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             Light spectrum, versus both wavelengths and frequencies: two correlated logarithmic X scales.
@@ -150,7 +149,7 @@ a2.margins(3) = 0.20;
 xlabel("Wave frequency [Hz]", "fontsize",2)
 title("Black Body spectrum : Planck law (T = 5700 K)", "fontsize",3)
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             function r = Planck(T, lambda)
                 h = 6.626e-34;        // Planck constant    [J.s]
                 c = 298792458;        // light speed [m/s]
@@ -179,7 +178,7 @@ title("Black Body spectrum : Planck law (T = 5700 K)", "fontsize",3)
             a2.margins(3) = 0.20;
             xlabel("Wave frequency [Hz]", "fontsize",2)
             title("Black Body spectrum : Planck law (T = 5700 K)", "fontsize",3)
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             pH: A single curve, with two correlated Y scales: one linear, one logarithmic.
@@ -211,7 +210,7 @@ ax2.axes_reverse(2) = "on";
 ylabel("$[H^+]\text{ concentration }(mol.L^{-1})$","fontsize",3)
 ax2.y_label.font_angle = 90;
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             pH1= 1.5;       // v1 = 10 mL of acid solution
             pH2 = 12.5;     // v2 mL of basic solution
             v2 = logspace(0,4,200);
@@ -237,7 +236,7 @@ ax2.y_label.font_angle = 90;
             ax2.axes_reverse(2) = "on";
             ylabel("$[H^+]\text{ concentration }(mol.L^{-1})$","fontsize",3)
             ax2.y_label.font_angle = 90;
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             Three overplotted curves sharing the same X axis, with 3 independent Y scales:
@@ -277,7 +276,7 @@ e.thickness = 2;
 ax3.axes_visible(1) = "off";
 ax3.y_location = "right";
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             // Preparing data
             x  = linspace(1,30,200);
             y2 = exp(x/6).*(sin(x)+1.5);
@@ -311,7 +310,7 @@ ax3.y_location = "right";
             e.thickness = 2;
             ax3.axes_visible(1) = "off";
             ax3.y_location = "right";
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

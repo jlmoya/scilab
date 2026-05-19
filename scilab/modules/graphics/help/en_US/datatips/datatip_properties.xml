@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="datatip_properties">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="datatip_properties">
     <refnamediv>
         <refname>datatip properties</refname>
         <refpurpose>description of the Datatip
@@ -299,30 +296,33 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.2</revnumber>
                 <revremark>
-                    <para>
-                        New "orientation" values available: "left", "right", "upper", "lower".
-                    </para>
+                    New "orientation" values available: "left", "right", "upper", "lower".
                 </revremark>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                   <itemizedlist>
-                     <listitem>
-                       <literal>.z_component</literal> is removed.
-                     </listitem>
-                     <listitem>
-                       New <literal>.display_components</literal> and
-                       <literal>.detached_position</literal> properties.
-                     </listitem>
-                   </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para><literal>.z_component</literal> is removed.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                New <literal>.display_components</literal> and
+                                <literal>.detached_position</literal> properties.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

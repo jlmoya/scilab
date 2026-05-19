@@ -26,7 +26,7 @@
             [U,c]=givens(x,y)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -64,11 +64,11 @@
         <para>
             <literal>U*xy=[r;0]=c</literal>.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note that <literal>givens(x,y)</literal> and <literal>givens([x;y])</literal> are equivalent.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="ja">
     <refnamediv>
         <refname>spec</refname>
         <refpurpose>行列とペンシルの固有値</refpurpose>
@@ -39,55 +36,62 @@
             <varlistentry>
                 <term>A, B</term>
                 <listitem>
-                    AとBは、同じサイズの実数または複素数の正方行列です.
-                    <para/>
-                </listitem>
+                     <para>
+                        AとBは、同じサイズの実数または複素数の正方行列です.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>evals</term>
                 <listitem>
-                    実数または複素ベクトル, 固有値.
-                    <para/>
-                </listitem>
+                     <para>
+                        実数または複素ベクトル, 固有値.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>diagevals</term>
                 <listitem>
-                    実数または(対角項に固有値を有する)複素対角行列.
-                    <para/>
-                </listitem>
+                     <para>
+                        実数または(対角項に固有値を有する)複素対角行列.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>R</term>
                 <listitem>
-                    可逆な実数または複素正方行列, 行列右固有ベクトル.
-                    <para/>
-                </listitem>
+                     <para>
+                        可逆な実数または複素正方行列, 行列右固有ベクトル.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>alpha, beta</term>
                 <listitem>
-                    同じサイズのベクトル：行列束の一般化された固有値
-                     <literal>A - s.B</literal>（sは変数です）.
-                     alpha./betaは通常の固有値を与えます.
-                     <varname>alpha</varname>は実数値または複素数値です.
-                     <varname>beta</varname>は実数値です.
-                    <para/>
-                </listitem>
+                     <para>
+                        同じサイズのベクトル：行列束の一般化された固有値
+                         <literal>A - s.B</literal>（sは変数です）.
+                         alpha./betaは通常の固有値を与えます.
+                         <varname>alpha</varname>は実数値または複素数値です.
+                         <varname>beta</varname>は実数値です.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Q</term>
                 <listitem>
-                    可逆な実数または複素正方行列 :　ペンシル左固有ベクトル.
-                    <para/>
-                </listitem>
+                     <para>
+                        可逆な実数または複素正方行列 :　ペンシル左固有ベクトル.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Z</term>
                 <listitem>
-                    可逆な実数または複素正方行列 :　ペンシル右固有ベクトル.
-                    <para/>
-                </listitem>
+                     <para>
+                        可逆な実数または複素正方行列 :　ペンシル右固有ベクトル.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

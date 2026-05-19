@@ -19,13 +19,13 @@
         <para>
             <literal>[free, total] = getmemory()</literal> returns free and total system memory  (kilo-bytes).
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Do not rely too much on this function. Due to various level of caching,
                 free memory detection is a tricky thing under most modern operating
                 systems.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>

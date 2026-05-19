@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/TKSCALE.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_TKSCALE">
+    <refsection xml:id="Contents_TKSCALE">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TKSCALE">Description</xref>
+                <para><link linkend="Description_TKSCALE">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_TKSCALE">Parameters</xref>
+                <para><link linkend="Dialogbox_TKSCALE">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TKSCALE">Default properties</xref>
+                <para><link linkend="Defaultproperties_TKSCALE">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_TKSCALE">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_TKSCALE">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_TKSCALE">Example</xref>
+                <para><link linkend="Example_TKSCALE">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_TKSCALE">
+    <refsection xml:id="Description_TKSCALE">
         <title>Description</title>
         <para>
             This source block generates a piecewise constant signal the value of which can be set
@@ -71,15 +71,14 @@
         <para>
         </para>
     </refsection>
-    <refsection id="Dialogbox_TKSCALE">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_TKSCALE">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/sources_pal/en_US/TKSCALE_gui.png"
-                        align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                        align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -108,7 +107,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_TKSCALE">
+    <refsection xml:id="Defaultproperties_TKSCALE">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -174,7 +173,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_TKSCALE">
+    <refsection xml:id="Interfacingfunction_TKSCALE">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -185,7 +184,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Example_TKSCALE">
+    <refsection xml:id="Example_TKSCALE">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/sources_pal/en_US/TKSCALE_en_US.zcos">

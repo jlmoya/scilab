@@ -31,39 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/BPLATFORM.png" align="center" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_BPLATFORM">
+    <refsection xml:id="Contents_BPLATFORM">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Dialogbox_BPLATFORM">Parameters</xref>
+                <para><link linkend="Dialogbox_BPLATFORM">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_BPLATFORM">Default properties</xref>
+                <para><link linkend="Defaultproperties_BPLATFORM">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_BPLATFORM">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_BPLATFORM">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_BPLATFORM">Example</xref>
+                <para><link linkend="Example_BPLATFORM">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_BPLATFORM">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_BPLATFORM">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/BPLATFORM_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/BPLATFORM_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Defaultproperties_BPLATFORM">
+    <refsection xml:id="Defaultproperties_BPLATFORM">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -131,7 +130,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_BPLATFORM">
+    <refsection xml:id="Interfacingfunction_BPLATFORM">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -139,8 +138,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_BPLATFORM">
+    <refsection xml:id="Example_BPLATFORM">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/demos/ModelicaBlocks/Ball_Platform.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -148,5 +148,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

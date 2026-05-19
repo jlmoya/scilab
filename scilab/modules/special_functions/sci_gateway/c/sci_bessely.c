@@ -30,12 +30,10 @@ int sci_bessely(char *fname, void* pvApiCtx)
 {
     int m1 = 0, n1 = 0, m2 = 0, n2 = 0;
     int mr = 0, nr = 0, itr = 0, nw = 0;
-    int r1 = 0, r2 = 0, na = 0, nx = 0, kode = 0;
-    int isint = 0, ispos = 0, i = 0, t = 0;
-    int un = 1, nl2 = 0, ierr = 0;
+    int na = 0, nx = 0, kode = 0;
+    int ispos = 0, i = 0;
+    int un = 1, ierr = 0;
     int nbInputArg = 0;
-
-    double zero = 0.0;
 
     double* pdblXR = NULL;
     double* pdblXI = NULL;
@@ -160,9 +158,6 @@ int sci_bessely(char *fname, void* pvApiCtx)
     if (itr == 1 && pdblXI == NULL)
     {
         /* transform to complex */
-        double* l2r = NULL;
-        double* l2i = NULL;
-
         int iSize = m2 * n2 * sizeof(double);
         pdblXI = (double*)MALLOC(iSize);
         memset(pdblXI, 0x00, iSize);

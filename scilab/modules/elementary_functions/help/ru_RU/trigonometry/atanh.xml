@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="atanh" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="atanh" xml:lang="ru">
     <refnamediv>
         <refname>atanh</refname>
         <refpurpose>гиперболический арктангенс</refpurpose>
@@ -115,11 +112,14 @@ atanh(x.')
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>atanh(-1)</literal> теперь всегда <literal>-Inf</literal>, а
-                            <literal>atanh(1)</literal> всегда <literal>Inf</literal>.
+                             <para><literal>atanh(-1)</literal> теперь всегда <literal>-Inf</literal>, а
+                                <literal>atanh(1)</literal> всегда <literal>Inf</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            Теперь для любого вещественного x>1 imag(atanh(x)) > 0.
+                             <para>
+                                Теперь для любого вещественного x&gt;1 imag(atanh(x)) &gt; 0.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

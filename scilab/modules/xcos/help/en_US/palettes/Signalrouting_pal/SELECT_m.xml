@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SELECT_m.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_SELECT_m">
+    <refsection xml:id="Contents_SELECT_m">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SELECT_m">Description</xref>
+                <para><link linkend="Description_SELECT_m">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SELECT_m">Parameters</xref>
+                <para><link linkend="Dialogbox_SELECT_m">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SELECT_m">Default properties</xref>
+                <para><link linkend="Defaultproperties_SELECT_m">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SELECT_m">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_SELECT_m">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_SELECT_m">Computational function</xref>
+                <para><link linkend="Computationalfunction_SELECT_m">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_SELECT_m">Example</xref>
+                <para><link linkend="Example_SELECT_m">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_SELECT_m">
+    <refsection xml:id="Description_SELECT_m">
         <title>Description</title>
         <para>
             A Selector block accepts either vector or matrix signals as input. Set
@@ -74,14 +74,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_SELECT_m">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_SELECT_m">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/SELECT_m_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/SELECT_m_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -111,7 +110,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_SELECT_m">
+    <refsection xml:id="Defaultproperties_SELECT_m">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -187,8 +186,9 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_SELECT_m">
+    <refsection xml:id="Example_SELECT_m">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/signalrouting_pal/SELECT_m_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -196,8 +196,9 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
-    <refsection id="Interfacingfunction_SELECT_m">
+    <refsection xml:id="Interfacingfunction_SELECT_m">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -205,7 +206,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SELECT_m">
+    <refsection xml:id="Computationalfunction_SELECT_m">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

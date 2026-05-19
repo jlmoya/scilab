@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="names">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="names">
     <refnamediv>
         <refname>names</refname>
         <refpurpose>Naming rules for variables and functions</refpurpose>
@@ -37,7 +34,9 @@
             Multilingual UTF-8 characters are accepted. Names may be as long as you want.
         </para>
         <warning>
-            <literal>_</literal> is reserved to ignore an output argument assignment.
+            <para>
+                <literal>_</literal> is reserved to ignore an output argument assignment.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -66,21 +65,27 @@ b
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     The underscore `_` variable is reserved, it is used to ignore a function output argument.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            Scilab's parser no longer truncates names longer than 24 characters.
-                        </listitem>
-                        <listitem>
-                            UTF-8 characters are now accepted in names of variables and fields.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Scilab's parser no longer truncates names longer than 24 characters.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    UTF-8 characters are now accepted in names of variables and fields.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -45,4 +45,5 @@ Source: modules\{#TIME}\macros\lib; DestDir: {app}\modules\{#TIME}\macros; Compo
 ;
 Source: modules\{#TIME}\tests\*.*; DestDir: {app}\modules\{#TIME}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#TIME}\help\*.*; DestDir: {app}\modules\{#TIME}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

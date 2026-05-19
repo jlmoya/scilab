@@ -23,7 +23,7 @@
         <title>Syntax</title>
         <synopsis>show_pca(lambda, facpr, N)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
 
@@ -199,14 +199,17 @@ show_pca(lambda, comprinc)
         </para>
 
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revremark>Following the <literal>pca</literal> function improvements, lambda is now a p-by-1 vector. The ratio of the corresponding 
-                    eigenvalue over the sum of eigenvalues now is computed in the <literal>show_pca</literal> function.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Following the <literal>pca</literal> function improvements, lambda is now a p-by-1 vector. The ratio of the corresponding 
+                        eigenvalue over the sum of eigenvalues now is computed in the <literal>show_pca</literal> function.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

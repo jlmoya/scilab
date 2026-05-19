@@ -43,7 +43,6 @@ import org.scilab.modules.xcos.preferences.XcosOptions;
 import org.scilab.modules.xcos.utils.XcosMessages;
 
 import com.mxgraph.model.mxGeometry;
-import com.mxgraph.model.mxICell;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.util.mxRectangle;
 
@@ -80,24 +79,6 @@ public abstract class BasicLink extends XcosCell {
      */
     public int getOrdering() {
         return ordering;
-    }
-
-    /**
-     * @param index
-     *            the point index to be removed
-     */
-    public void removePoint(int index) {
-        if (getGeometry() == null || getGeometry().getPoints() == null) {
-            return;
-        }
-        if (index < getGeometry().getPoints().size()) {
-            getGeometry().getPoints().remove(index);
-        }
-    }
-
-    /** Remove all the points */
-    private void removePoints() {
-        getGeometry().setPoints(new ArrayList<mxPoint>());
     }
 
     /**
@@ -296,24 +277,6 @@ public abstract class BasicLink extends XcosCell {
                 .getLocation().y);
 
         menu.setVisible(true);
-    }
-
-    /** Invert the source and target of the link */
-    public void invertDirection() {
-        // invert source and destination and all points.
-        mxICell linkSource = getSource();
-        mxICell linkTarget = getTarget();
-        List<mxPoint> points = getGeometry().getPoints();
-
-        setSource(linkTarget);
-        setTarget(linkSource);
-
-        if (points != null) {
-            removePoints();
-            for (int i = points.size() - 1; i >= 0; i--) {
-                addPoint(points.get(i).getX(), points.get(i).getY());
-            }
-        }
     }
 
     /*

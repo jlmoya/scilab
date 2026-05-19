@@ -91,7 +91,7 @@ int isEmptyDirectory(char *dirName)
         return 0;
     }
 
-    while(ptr = readdir(dir))
+    while((ptr = readdir(dir)) != NULL)
     {
         if (!strcmp(ptr->d_name, ".") || !strcmp(ptr->d_name, ".."))
         {

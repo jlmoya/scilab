@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="min" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="min" xml:lang="en">
     <refnamediv>
         <refname>min</refname>
         <refpurpose>minimum</refpurpose>
@@ -32,7 +29,7 @@
             [.., K] = min(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -96,10 +93,14 @@
                         When <literal>[m,K]=min(A)</literal> is used,
                         <itemizedlist>
                             <listitem>
-                                If <literal>A</literal> is a vector, K is a scalar.
+                                 <para>
+                                    If <literal>A</literal> is a vector, K is a scalar.
+                                </para>
                             </listitem>
                             <listitem>
-                                Otherwise, <varname>K</varname> is a row vector [i,j,..] of subscripts.
+                                 <para>
+                                    Otherwise, <varname>K</varname> is a row vector [i,j,..] of subscripts.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -112,16 +113,16 @@
                         for any linear index q:
                         <literal>[M(q),K(q)] = min([A1(q) A2(q) .. An(q)])</literal>.
                     </para>
-                    <para>
-                        <warning>
+                    <warning>
+                        <para>
                             <varname>K</varname> is always in dense format, even when
                             <varname>A, A1,..,An</varname> are sparse-encoded. Hence, when the
                             <literal>[M,K]=min(A1,A2,..)</literal> syntax is used with huge but
                             sparse matrices, this may lead to a huge <emphasis>dense</emphasis>
                             <varname>K</varname> matrix. The user must check that enough memory
                             is available for it.
-                        </warning>
-                    </para>
+                        </para>
+                    </warning>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -154,18 +155,23 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    min() ignores NaN values (unless there are only NaN values).
+                     <para>
+                        min() ignores NaN values (unless there are only NaN values).
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>min([])</literal> returns
-                    <literal>[]</literal> for values and <varname>K</varname>.
+                     <para><literal>min([])</literal> returns
+                        <literal>[]</literal> for values and <varname>K</varname>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
         <warning>
-          If <literal>min(A1, A2,..., An)</literal> is used with a huge input sparse matrix of
-          low density, together with a strictly negative scalar input, the sparse result will no longer
-          have any 0 value: It will be a sparse array with density=1, that may lead to a memory failure.
+            <para>
+                If <literal>min(A1, A2,..., An)</literal> is used with a huge input sparse matrix of
+                low density, together with a strictly negative scalar input, the sparse result will no longer
+                have any 0 value: It will be a sparse array with density=1, that may lead to a memory failure.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -352,9 +358,9 @@ K
         <revhistory>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     min() now actually works with sparse matrices
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

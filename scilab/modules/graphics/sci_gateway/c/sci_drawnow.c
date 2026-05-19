@@ -32,7 +32,6 @@ int sci_drawnow(char *fname, void* pvApiCtx)
 {
     int iTrue = (int)TRUE;
     int iParentFigureUID = 0;
-    int* piParentFigureUID = &iParentFigureUID;
     int iSubwinUID = 0;
     int iCurChildUID = 0;
     int iType = -1;

@@ -20,7 +20,7 @@
           counters = covStart(...)
        </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -129,14 +129,16 @@ covStop();
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revremark>
-                    <literal>covStart("all")</literal> is no more supported. Use <literal>covStart(librarylist())</literal> instead.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>covStart("all")</literal> is no more supported. Use <literal>covStart(librarylist())</literal> instead.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

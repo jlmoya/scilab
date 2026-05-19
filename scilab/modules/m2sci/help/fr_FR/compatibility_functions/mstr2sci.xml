@@ -22,7 +22,7 @@
         <title>Séquence d'appel</title>
         <synopsis>a=mstr2sci(txt)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -45,11 +45,11 @@
             Cette fonction convertit une chaîne de caractères Scilab en vecteur de caractères.
             Le résultat est l'équivalent pour Scilab d'une chaîne de caractères Matlab.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Attention : <literal>mstr2sci</literal> ne doit pas être utilisée pour une programmation manuelle.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection role="see also">
         <title>Voir aussi</title>

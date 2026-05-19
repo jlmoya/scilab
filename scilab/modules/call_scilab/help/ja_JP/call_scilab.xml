@@ -94,17 +94,24 @@ int main(void)
                 <revdescription>新規メソッドを追加:
                     <itemizedlist>
                         <listitem>
-                            <literal>CallScilab.h</literal> が削除されました (Scilab 5.2.0以降で廃止). <literal>call_scilab.h</literal>で置換されました.
+                             <para><literal>CallScilab.h</literal> が削除されました (Scilab 5.2.0以降で廃止). <literal>call_scilab.h</literal>で置換されました.
+                            </para>
                         </listitem>
                         <listitem>
-                            関数 <literal>int getLastErrorValue(void);</literal> が追加されました. Scilabで生成された直近のエラーコードを返します.
+                             <para>
+                                関数 <literal>int getLastErrorValue(void);</literal> が追加されました. Scilabで生成された直近のエラーコードを返します.
+                            </para>
                         </listitem>
                         <listitem>
-                            関数 <literal>const char* getLastErrorMessageSingle();</literal> が追加されました. Scilabで生成された直近のエラーメッセージを返します.
+                             <para>
+                                関数 <literal>const char* getLastErrorMessageSingle();</literal> が追加されました. Scilabで生成された直近のエラーメッセージを返します.
+                            </para>
                         </listitem>
                         <listitem>
-                            call_scilab.hの廃止された関数を削除:
-                            <literal>C2F(readmat), C2F(creadmat), C2F(creadbmat), C2F(creadcmat), C2F(readchain), C2F(creadchain),  C2F(creadchains), GetLengthStringMatrixByName, C2F(matptr), C2F(cmatptr), C2F(cmatcptr),  C2F(cmatsptr), C2F(cmatbptr), getlengthchain</literal>
+                             <para>
+                                call_scilab.hの廃止された関数を削除:
+                                <literal>C2F(readmat), C2F(creadmat), C2F(creadbmat), C2F(creadcmat), C2F(readchain), C2F(creadchain),  C2F(creadchains), GetLengthStringMatrixByName, C2F(matptr), C2F(cmatptr), C2F(cmatcptr),  C2F(cmatsptr), C2F(cmatbptr), getlengthchain</literal>
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

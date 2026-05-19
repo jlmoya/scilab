@@ -176,7 +176,6 @@ am__dirstamp = $(am__leading_dot)dirstamp
 am__objects_1 = src/fortran/DGELSY1.lo src/fortran/ZGELSY1.lo \
 	src/fortran/find.lo
 am__objects_2 = src/c/libscilinear_algebra_algo_la-schurtable.lo \
-	src/c/libscilinear_algebra_algo_la-issymmetric.lo \
 	src/c/libscilinear_algebra_algo_la-lu.lo \
 	src/c/libscilinear_algebra_algo_la-qr.lo \
 	src/c/libscilinear_algebra_algo_la-hess.lo \
@@ -265,7 +264,6 @@ am__depfiles_remade = sci_gateway/c/$(DEPDIR)/libscilinear_algebra_la-assembleEi
 	src/c/$(DEPDIR)/libscilinear_algebra_algo_la-det.Plo \
 	src/c/$(DEPDIR)/libscilinear_algebra_algo_la-eigen.Plo \
 	src/c/$(DEPDIR)/libscilinear_algebra_algo_la-hess.Plo \
-	src/c/$(DEPDIR)/libscilinear_algebra_algo_la-issymmetric.Plo \
 	src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lsq.Plo \
 	src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lu.Plo \
 	src/c/$(DEPDIR)/libscilinear_algebra_algo_la-norm.Plo \
@@ -369,6 +367,9 @@ ANT = @ANT@
 ANTLR = @ANTLR@
 AR = @AR@
 ARPACK_LIBS = @ARPACK_LIBS@
+ARROW_CFLAGS = @ARROW_CFLAGS@
+ARROW_LDFLAGS = @ARROW_LDFLAGS@
+ARROW_LIBS = @ARROW_LIBS@
 ASM3 = @ASM3@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -511,6 +512,9 @@ LIBM = @LIBM@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBXSLT_CFLAGS = @LIBXSLT_CFLAGS@
+LIBXSLT_LDFLAGS = @LIBXSLT_LDFLAGS@
+LIBXSLT_LIBS = @LIBXSLT_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LOGGING_LEVEL = @LOGGING_LEVEL@
@@ -566,6 +570,9 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
+PARQUET_CFLAGS = @PARQUET_CFLAGS@
+PARQUET_LDFLAGS = @PARQUET_LDFLAGS@
+PARQUET_LIBS = @PARQUET_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PCRE2_CFLAGS = @PCRE2_CFLAGS@
 PCRE2_LDFLAGS = @PCRE2_LDFLAGS@
@@ -615,6 +622,9 @@ XCOS_ENABLE = @XCOS_ENABLE@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
+XLNT_CFLAGS = @XLNT_CFLAGS@
+XLNT_LDFLAGS = @XLNT_LDFLAGS@
+XLNT_LIBS = @XLNT_LIBS@
 XMKMF = @XMKMF@
 XMLGRAPHICS_COMMONS = @XMLGRAPHICS_COMMONS@
 XMLRESOLVER = @XMLRESOLVER@
@@ -692,7 +702,6 @@ LINEAR_ALGEBRA_CPP_SOURCES = \
 
 LINEAR_ALGEBRA_C_SOURCES = \
     src/c/schurtable.c \
-    src/c/issymmetric.c \
     src/c/lu.c \
     src/c/qr.c \
     src/c/hess.c \
@@ -847,8 +856,6 @@ JARDIR = jar/
 JARMASK = *.jar
 # Chapter file 
 HELP_CHAPTERDIR = help/
-HELP_CHAPTERFILE = addchapter.sce
-HELP_CHAPTERLANG = en_US fr_FR pt_BR
 all: all-am
 
 .SUFFIXES:
@@ -948,8 +955,6 @@ src/c/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) src/c/$(DEPDIR)
 	@: > src/c/$(DEPDIR)/$(am__dirstamp)
 src/c/libscilinear_algebra_algo_la-schurtable.lo:  \
-	src/c/$(am__dirstamp) src/c/$(DEPDIR)/$(am__dirstamp)
-src/c/libscilinear_algebra_algo_la-issymmetric.lo:  \
 	src/c/$(am__dirstamp) src/c/$(DEPDIR)/$(am__dirstamp)
 src/c/libscilinear_algebra_algo_la-lu.lo: src/c/$(am__dirstamp) \
 	src/c/$(DEPDIR)/$(am__dirstamp)
@@ -1091,7 +1096,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscilinear_algebra_algo_la-det.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscilinear_algebra_algo_la-eigen.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscilinear_algebra_algo_la-hess.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscilinear_algebra_algo_la-issymmetric.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lsq.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lu.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@src/c/$(DEPDIR)/libscilinear_algebra_algo_la-norm.Plo@am__quote@ # am--include-marker
@@ -1138,13 +1142,6 @@ src/c/libscilinear_algebra_algo_la-schurtable.lo: src/c/schurtable.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/c/schurtable.c' object='src/c/libscilinear_algebra_algo_la-schurtable.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscilinear_algebra_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/c/libscilinear_algebra_algo_la-schurtable.lo `test -f 'src/c/schurtable.c' || echo '$(srcdir)/'`src/c/schurtable.c
-
-src/c/libscilinear_algebra_algo_la-issymmetric.lo: src/c/issymmetric.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscilinear_algebra_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT src/c/libscilinear_algebra_algo_la-issymmetric.lo -MD -MP -MF src/c/$(DEPDIR)/libscilinear_algebra_algo_la-issymmetric.Tpo -c -o src/c/libscilinear_algebra_algo_la-issymmetric.lo `test -f 'src/c/issymmetric.c' || echo '$(srcdir)/'`src/c/issymmetric.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/c/$(DEPDIR)/libscilinear_algebra_algo_la-issymmetric.Tpo src/c/$(DEPDIR)/libscilinear_algebra_algo_la-issymmetric.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/c/issymmetric.c' object='src/c/libscilinear_algebra_algo_la-issymmetric.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscilinear_algebra_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/c/libscilinear_algebra_algo_la-issymmetric.lo `test -f 'src/c/issymmetric.c' || echo '$(srcdir)/'`src/c/issymmetric.c
 
 src/c/libscilinear_algebra_algo_la-lu.lo: src/c/lu.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libscilinear_algebra_algo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT src/c/libscilinear_algebra_algo_la-lu.lo -MD -MP -MF src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lu.Tpo -c -o src/c/libscilinear_algebra_algo_la-lu.lo `test -f 'src/c/lu.c' || echo '$(srcdir)/'`src/c/lu.c
@@ -1602,7 +1599,6 @@ distclean: distclean-am
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-det.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-eigen.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-hess.Plo
-	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-issymmetric.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lsq.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lu.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-norm.Plo
@@ -1681,7 +1677,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-det.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-eigen.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-hess.Plo
-	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-issymmetric.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lsq.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-lu.Plo
 	-rm -f src/c/$(DEPDIR)/libscilinear_algebra_algo_la-norm.Plo
@@ -1844,35 +1839,6 @@ all-local: $(TARGETS_ALL)
 	fi )
 
 install-html-local:
-
-install-data-local-local:
-# Mainly for javasci
-	@if test -d $(srcdir)/javadoc; then \
-		cp -R $(srcdir)/javadoc $(DESTDIR)/$(mydatadir)/; \
-	fi
-# If the user wants the help sources to be installed
-@INSTALL_HELP_XML_TRUE@	@echo "-------- Install of XML sources of help files --------"; \
-@INSTALL_HELP_XML_TRUE@	for lang in $(ALL_LINGUAS); do \
-@INSTALL_HELP_XML_TRUE@	 if test -d $(srcdir)/help/$$lang; then \
-@INSTALL_HELP_XML_TRUE@	  $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/help/$$lang && \
-@INSTALL_HELP_XML_TRUE@		if ls -lLd $(srcdir)/help/$$lang/$(DOCMASKXML) >/dev/null 2>&1; then \
-@INSTALL_HELP_XML_TRUE@		  for file in $(srcdir)/help/$$lang/$(DOCMASKXML) ; do \
-@INSTALL_HELP_XML_TRUE@		    echo "$(INSTALL_DATA) $$file $(DESTDIR)$(pkgdocdir)/help/$$lang" ; \
-@INSTALL_HELP_XML_TRUE@	    	$(INSTALL_DATA) "$$file" $(DESTDIR)$(pkgdocdir)/help/$$lang ; \
-@INSTALL_HELP_XML_TRUE@		  done ; \
-@INSTALL_HELP_XML_TRUE@		fi; \
-@INSTALL_HELP_XML_TRUE@	 fi; \
-@INSTALL_HELP_XML_TRUE@	done; \
-@INSTALL_HELP_XML_TRUE@	@echo "-------- Install of MathML sources --------"; \
-@INSTALL_HELP_XML_TRUE@	 if test -d $(srcdir)/help/mml/; then \
-@INSTALL_HELP_XML_TRUE@	  $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/help/mml/ && \
-@INSTALL_HELP_XML_TRUE@		if ls -lLd $(srcdir)/help/mml/$(DOCMASKMML) >/dev/null 2>&1; then \
-@INSTALL_HELP_XML_TRUE@		  for file in $(srcdir)/help/mml/$(DOCMASKMML) ; do \
-@INSTALL_HELP_XML_TRUE@		    echo "$(INSTALL_DATA) $$file $(DESTDIR)$(pkgdocdir)/help/mml" ; \
-@INSTALL_HELP_XML_TRUE@	    	$(INSTALL_DATA) "$$file" $(DESTDIR)$(pkgdocdir)/help/mml ; \
-@INSTALL_HELP_XML_TRUE@		  done ; \
-@INSTALL_HELP_XML_TRUE@		fi; \
-@INSTALL_HELP_XML_TRUE@	fi
 install-data-local:
 # Install the tests
 	@echo "-------- Install tests (if any) --------"; \
@@ -1891,17 +1857,15 @@ install-data-local:
 		  done; \
 	  fi; \
 	done
-# Install the help chapter
-	@echo "-------- Install the help chapter (if any) --------"; \
-	for lang in $(HELP_CHAPTERLANG); do \
-		HELPFILE=$(srcdir)/$(HELP_CHAPTERDIR)$$lang/$(HELP_CHAPTERFILE); \
-		if test -f $$HELPFILE; then \
-			echo $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)/$$lang/; \
-			$(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)/$$lang/; \
-			echo $(INSTALL_DATA) $$HELPFILE $(DESTDIR)$(pkgdocdir)/$$HELPFILE; \
-			$(INSTALL_DATA) $$HELPFILE $(DESTDIR)$(pkgdocdir)/$$HELPFILE; \
-		fi; \
-	done
+# Install help files (addchapter.sce, *.xml, subdirectories, ...)
+	@echo "-------- Install help source files (if any) --------"; \
+	$(mkinstalldirs) $(DESTDIR)$(pkgdocdir) && \
+	  if test -d $(srcdir)/$(HELP_CHAPTERDIR); then \
+		if test ! -d $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); then \
+		  echo "cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)"; \
+		  cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); \
+		fi \
+	  fi
 # Install the demos & examples
 	@echo "-------- Install demos & examples (if any) --------"; \
 	for dir in $(DEMOS_DIR) $(DEMOS_DIREXT) $(EXAMPLES_DIR) $(EXAMPLES_DIREXT) ; do \

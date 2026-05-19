@@ -40,7 +40,7 @@
             [J, H] = numderivative(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -507,13 +507,15 @@ xtitle("Relative error of numderivative (x = 1.0)", ..
         <para>
         </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
                 <revdescription>
-                    Function <literal>numderivative</literal> introduced.
+                    <para>
+                        Function <literal>numderivative</literal> introduced.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

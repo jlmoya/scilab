@@ -4,13 +4,7 @@
 * Copyright (C) 2011 - INRIA - Michael Baudin
 * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 -->
-<refentry version="5.0-subset Scilab" xml:id="csvTextScan" xml:lang="en"
-          xmlns="http://docbook.org/ns/docbook"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg"
-          xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="csvTextScan" xml:lang="en">
     <refnamediv>
         <refname>csvTextScan</refname>
 
@@ -25,12 +19,14 @@
             A = csvTextScan(M, separator)
             A = csvTextScan(M, separator, decimal)
             A = csvTextScan(M, separator, decimal, conversion)
+            A = csvTextScan(M, separator, decimal, conversion, substitute)
             A = csvTextScan(M, separator, decimal, conversion, range)
+            A = csvTextScan(M, separator, decimal, conversion, range, substitute)
         </synopsis>
     </refsynopsisdiv>
 
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
 
         <variablelist>
             <varlistentry>
@@ -71,11 +67,15 @@
                          With "double",
                         <itemizedlist>
                             <listitem>
-                                any input that can't be parsed as a literal number is converted to
-                                <literal>%nan</literal>.
+                                 <para>
+                                    any input that can't be parsed as a literal number is converted to
+                                    <literal>%nan</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                literal complex numbers are supported.
+                                 <para>
+                                    literal complex numbers are supported.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -91,6 +91,19 @@
                         format <literal>[R1 C1 R2 C2]</literal> where (R1,C1) is the upper
                         left corner of the data to be read and (R2,C2) is the lower right
                         corner.
+                    </para>
+                </listitem>
+            </varlistentry>
+
+            <varlistentry>
+                <term>substitute</term>
+                <listitem>
+                    <para>a m-by-2 matrix of strings, a replacing map (default = [],
+                        meaning no replacements). The first column
+                        <literal>substitute(:,1)</literal> contains the searched strings and
+                        the second column <literal>substitute(:,2)</literal> contains the
+                        replace strings. Every occurrence of a searched string in the file is
+                        replaced.
                     </para>
                 </listitem>
             </varlistentry>
@@ -122,9 +135,11 @@
             <literal>csvDefault</literal> function.
         </para>
         <note>
-            The <literal>csvTextScan</literal> and <literal>csvRead</literal> functions have the
-            same purpose. <literal>csvTextScan</literal> input are strings,
-            while <literal>csvRead</literal> reads from a file.
+            <para>
+                The <literal>csvTextScan</literal> and <literal>csvRead</literal> functions have the
+                same purpose. <literal>csvTextScan</literal> input are strings,
+                while <literal>csvRead</literal> reads from a file.
+            </para>
         </note>
     </refsection>
 
@@ -146,8 +161,8 @@ Atext = [
 " 1,000000000D+00; Inf;-Inf; Nan; 0,000000000D+00"
 ];
 csvTextScan( Atext , ";" , "," )
-    ]]>
-        </programlisting>
+    
+        ]]></programlisting>
     </refsection>
 
     <refsection role="see also">
@@ -158,7 +173,7 @@ csvTextScan( Atext , ";" , "," )
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -167,13 +182,22 @@ csvTextScan( Atext , ";" , "," )
             </revision>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revremark>
-                    If <literal>decimal</literal> is not <literal>[]</literal> and
-                    <literal>conversion</literal> is set to <literal>string</literal>,
-                    the decimal conversion will be done.
-                </revremark>
+                <revdescription>
+                    <para>
+                        If <literal>decimal</literal> is not <literal>[]</literal> and
+                        <literal>conversion</literal> is set to <literal>string</literal>,
+                        the decimal conversion will be done.
+                    </para>
+                </revdescription>
+            </revision>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revdescription>
+                    <para>
+                        <literal>substitute</literal> option is managed.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>
 </refentry>
-

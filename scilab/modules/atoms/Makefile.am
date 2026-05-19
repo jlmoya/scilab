@@ -1,3 +1,4 @@
+#
 # Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 # Copyright (C) 2009 - DIGITEO
 #
@@ -20,23 +21,11 @@ libsciatoms_la_root_DATA =  license.txt
 libsciatoms_la_etcdir = $(mydatadir)/etc
 libsciatoms_la_etc_DATA = etc/atoms.quit etc/atoms.start etc/repositories
 
-#### atoms : XML gui ####
+#### atoms : browser gui ####
 libsciatoms_la_guidir = $(mydatadir)/gui
-libsciatoms_la_gui_DATA = gui/atomsGui.xml
+libsciatoms_la_gui_DATA = gui/atoms_browser.css gui/atoms_browser.html gui/atoms_browser.js
 
 #### atoms : internal functions ####
 MACROSDIRSEXT = macros/atoms_internals macros/atoms_gui
-
-#### atoms : icons files ####
-#
-# Generated with:
-#    $ find images/ -type f -printf "%p \\\\\n" -name *.svg -or -name *.gif -or -name *.jpg -or -name *.png |sort -u
-libsciatoms_la_iconsdir=$(mydatadir)/
-nobase_libsciatoms_la_icons_DATA = images/icons/16x16/emblems/emblem-default.png \
-images/icons/16x16/status/dialog-information.png \
-images/icons/16x16/status/software-update-available.png \
-images/icons/16x16/status/software-update-installed.png \
-images/icons/16x16/status/software-update-notinstalled.png \
-images/icons/16x16/status/software-update-notuptodate.png
 
 include $(top_srcdir)/Makefile.incl.am

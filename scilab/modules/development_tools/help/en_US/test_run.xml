@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="test_run" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="test_run" xml:lang="en">
     <refnamediv>
         <refname>test_run</refname>
         <refpurpose>
@@ -34,7 +31,7 @@
             status = test_run(module, test_name, options, exportToFile)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -97,7 +94,8 @@
                         The options for the tests during this run, default options if
                         <literal>[]</literal> or <literal>"[]"</literal>.
                     </para>
-                    <variablelist> or
+                    <para>or</para>
+                    <variablelist>
                         <varlistentry>
                             <term>"no_check_ref"</term>
                             <listitem>
@@ -117,7 +115,7 @@
                             <term>"create_ref"</term>
                             <listitem>
                                 <para>creates the .dia.ref file (for tests not having the
-                                  <literal>&lt;-- NO CHECK REF --></literal> flag)
+                                  <literal>&lt;-- NO CHECK REF --&gt;</literal> flag)
                                   and does not check if the .dia and .dia.ref are equal.
                                   </para>
                             </listitem>
@@ -188,7 +186,7 @@
                             <term>"skip_tests"</term>
                             <listitem>
                                 <para>
-                                    Skip the tests specified in <term>test_name</term>.
+                                    Skip the tests specified in <literal>test_name</literal>.
                                 </para>
                             </listitem>
                         </varlistentry>
@@ -613,19 +611,29 @@ test_run string *ascii*
         </simplelist>
     </refsection>
 
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>test_run returns a status:
-                    <itemizedlist><listitem>
-                            Returns %t if no error has been detected
-                        </listitem>
-                        <listitem>
-                            Returns %f if any error has been detected
-                        </listitem>
-                    </itemizedlist>
+                <revdescription>
+                    <para>
+                        test_run returns a status:
+                    </para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Returns %t if no error has been detected
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Returns %f if any error has been detected
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                     <para>
                         <literal>show_diff</literal> and <literal>show_error</literal> added as new options
                     </para>
@@ -642,7 +650,9 @@ test_run string *ascii*
             </revision>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>32/64bits separation available</revdescription>
+                <revdescription>
+                    <para>32/64bits separation available</para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>

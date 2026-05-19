@@ -32,44 +32,44 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Counter.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_Counter">
+    <refsection xml:id="Contents_Counter">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_Counter">Description</xref>
+                <para><link linkend="Description_Counter">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatypes_Counter">Data types</xref>
+                <para><link linkend="Datatypes_Counter">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_Counter">Parameters</xref>
+                <para><link linkend="Dialogbox_Counter">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_Counter">Default properties</xref>
+                <para><link linkend="Defaultproperties_Counter">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Counter">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_Counter">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_Counter">Computational function</xref>
+                <para><link linkend="Computationalfunction_Counter">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_Counter">Example</xref>
+                <para><link linkend="Example_Counter">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_Counter">See also</xref>
+                <para><link linkend="Seealso_Counter">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_Counter">
+    <refsection xml:id="Description_Counter">
         <title>Description</title>
         <para>
             This block counts with an increment/decrement value equal to one from
@@ -80,7 +80,7 @@
         </para>
     </refsection>
 
-    <refsection id="Datatypes_Counter">
+    <refsection xml:id="Datatypes_Counter">
         <title>Data types</title>
         <itemizedlist>
             <listitem>
@@ -91,15 +91,14 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Dialogbox_Counter">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_Counter">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/sources_pal/en_US/Counter_gui.png"
-                    align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -138,7 +137,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_Counter">
+    <refsection xml:id="Defaultproperties_Counter">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -204,7 +203,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_Counter">
+    <refsection xml:id="Example_Counter">
         <title>Example</title>
         <para>
             This diagram shows the Counter block output versus time.
@@ -224,7 +223,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_Counter">
+    <refsection xml:id="Interfacingfunction_Counter">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -234,7 +233,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_Counter">
+    <refsection xml:id="Computationalfunction_Counter">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

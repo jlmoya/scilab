@@ -28,7 +28,7 @@
         <title>Syntax</title>
         <synopsis>r = blockdiag(a1,a2,...,an)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -70,7 +70,9 @@
             block-diagonal system made with subsystems put in the main diagonal.
             This can be used in particular for system interconnections.
         </para>
-        <note><literal>blockdiag()</literal> can be overloaded.</note>
+        <note>
+            <para><literal>blockdiag()</literal> can be overloaded.</para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -235,9 +237,9 @@ blockdiag(tf2ss(1/s), 1/(s+1), [1/(s-1);1/((s-2)*(s-3))])
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     blockdiag() introduced.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

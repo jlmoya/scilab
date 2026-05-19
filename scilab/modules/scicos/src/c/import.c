@@ -327,7 +327,7 @@ int getscicosvarsfromimport(const char *what, void **v, int *nv, int *mv)
 /*int *mv; size 1 of the imported data */
 {
     /*variable declaration*/
-    int nx, nz, noz, nmod, nblk, nlnk, nsubs, nevts, ng;
+    int nblk, nlnk, nsubs, nevts, ng;
     int niord, noord, ncord, nordptr, nzord, nelem;
 
     /*test if scicosim is running*/
@@ -337,14 +337,6 @@ int getscicosvarsfromimport(const char *what, void **v, int *nv, int *mv)
         return 0; /* undefined import table scicos is not running */
     }
 
-    /* retrieve length of x register */
-    nx = (int) scicos_imp.nx[0];
-    /* retrieve length of z register */
-    nz = (int) scicos_imp.nz[0];
-    /* retrieve length of oz register */
-    noz = (int) scicos_imp.noz[0];
-    /* retrieve number of block */
-    nmod = (int) scicos_imp.nmod[0];
     /* retrieve number of block */
     nblk = (int) scicos_imp.nblk[0];
     /* retrieve number of link */
@@ -880,7 +872,6 @@ void C2F(getlabel)(int *kfun, char *label, int *n)
 /*int *n, *kfun;  length of the label as input n gives the max length expected*/
 {
     int k;
-    int job = 1;
 
     k = *kfun;
     if (*n > (int)(scicos_imp.izptr[k] - scicos_imp.izptr[k - 1]))
@@ -897,7 +888,6 @@ void C2F(getlabel)(int *kfun, char *label, int *n)
 void C2F(getblockbylabel)(int *kfun, char **label, int *n)
 {
     int k, i, i0, nblk, n1;
-    int job = 0;
 
     nblk = scicos_imp.nblk[0];
 
@@ -964,18 +954,15 @@ void C2F(getouttb)(int *nsize, int *nvec, double *outtc)
     SCSUINT32_COP *outtbulptr;  /*to store unsigned int32 of outtb */
     int *outtb_nelem;           /*to store maximum number of element*/
     int outtbtyp;               /*to store type of data*/
-    int *outtbsz;               /*to store size of data*/
     outtb_el *outtb_elem;       /*to store ptr of outtb_elem structure */
 
     /*auxiliary variable*/
-    int j, sz, lnk, pos;
+    int j, lnk, pos;
 
     /*get outtbptr from import struct.*/
     outtbptr = scicos_imp.outtbptr;
     /*get outtb_elem from import struct.*/
     outtb_elem = scicos_imp.outtb_elem;
-    /*get outtbsz from import struct.*/
-    outtbsz = scicos_imp.outtbsz;
     /*get max number of elem in outtb*/
     outtb_nelem = scicos_imp.nelem;
 
@@ -1005,11 +992,8 @@ void C2F(getouttb)(int *nsize, int *nvec, double *outtc)
         /*complex data type*/
         else if (outtbtyp == SCSCOMPLEX_N)
         {
-            sz = outtbsz[2 * lnk] + outtbsz[(2 * lnk) + 1];
             outtbdptr = (SCSCOMPLEX_COP *)outtbptr[lnk];
             outtc[j] =  (double)outtbdptr[pos];
-            /*outtc[j+1] =  (double)outtbdptr[pos+sz];*/
-            /*j=j+2;*/
             j++;
         }
         /*int data type*/

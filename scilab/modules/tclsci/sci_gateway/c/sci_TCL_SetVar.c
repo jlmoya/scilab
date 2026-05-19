@@ -34,8 +34,7 @@ int sci_TCL_SetVar(char *fname, void* pvApiCtx)
     int* piAddrStr = NULL;
     char *VarName = NULL;
 
-    static int n1, m1;
-    static int n2, m2;
+    int n1, m1;
 
     int paramoutINT = 0;
     Tcl_Interp *TCLinterpreter = NULL;
@@ -144,8 +143,6 @@ int sci_TCL_SetVar(char *fname, void* pvApiCtx)
     else if (checkInputArgumentType(pvApiCtx, 1, sci_strings) && checkInputArgumentType(pvApiCtx, 2, sci_matrix))
     {
 #define COMPLEX 1
-        int *header = NULL;
-        int Cmplx;
         double* l1 = NULL;
 
         sciErr = getVarAddressFromPosition(pvApiCtx, 1, &piAddrl1);

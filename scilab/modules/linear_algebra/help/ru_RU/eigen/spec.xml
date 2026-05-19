@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="ru">
     <refnamediv>
         <refname>spec</refname>
         <refpurpose>собственные значения и собственные вектора матрицы или пучка</refpurpose>
@@ -39,60 +36,67 @@
             <varlistentry>
                 <term>A, B</term>
                 <listitem>
-                    Квадратные матрицы вещественных или комплексных чисел одинаковых размеров.
-                    <para/>
-                </listitem>
+                     <para>
+                        Квадратные матрицы вещественных или комплексных чисел одинаковых размеров.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>evals</term>
                 <listitem>
-                    Вещественный или комплексный вектор: собственные значения.
-                    <para/>
-                </listitem>
+                     <para>
+                        Вещественный или комплексный вектор: собственные значения.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>diagevals</term>
                 <listitem>
-                    Вещественная или комплексная диагональная матрица: собственные
-                    значения расположены по диагонали.
-                    <para/>
-                </listitem>
+                     <para>
+                        Вещественная или комплексная диагональная матрица: собственные
+                        значения расположены по диагонали.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>R</term>
                 <listitem>
-                    Вещественная или комплексная обратимая квадратная матрица:
-                    матрица правых собственных векторов.
-                    <para/>
-                </listitem>
+                     <para>
+                        Вещественная или комплексная обратимая квадратная матрица:
+                        матрица правых собственных векторов.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>alpha, beta</term>
                 <listitem>
-                    Векторы одинаковых размеров: обобщённые собственные значения
-                    пучка матрицы <literal>A - s.B</literal> (где <literal>s</literal> -
-                    это переменная).
-                    <literal>alpha./beta</literal> даёт обычные собственные значения.
-                    <varname>alpha</varname> - это вещественные или комплексные значения.
-                    <varname>beta</varname> - это вещественные значения.
-                    <para/>
-                </listitem>
+                     <para>
+                        Векторы одинаковых размеров: обобщённые собственные значения
+                        пучка матрицы <literal>A - s.B</literal> (где <literal>s</literal> -
+                        это переменная).
+                        <literal>alpha./beta</literal> даёт обычные собственные значения.
+                        <varname>alpha</varname> - это вещественные или комплексные значения.
+                        <varname>beta</varname> - это вещественные значения.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Q</term>
                 <listitem>
-                    Вещественная или комплексная обратимая квадратная матрица:
-                    обобщённые левые собственные векторы пучка.
-                    <para/>
-                </listitem>
+                     <para>
+                        Вещественная или комплексная обратимая квадратная матрица:
+                        обобщённые левые собственные векторы пучка.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Z</term>
                 <listitem>
-                    Вещественная или комплексная обратимая квадратная матрица:
-                    обобщённые правые собственные векторы пучка.
-                    <para/>
-                </listitem>
+                     <para>
+                        Вещественная или комплексная обратимая квадратная матрица:
+                        обобщённые правые собственные векторы пучка.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

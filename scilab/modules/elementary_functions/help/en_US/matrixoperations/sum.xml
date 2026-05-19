@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="sum" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="sum" xml:lang="en">
     <refnamediv>
         <refname>sum</refname>
         <refpurpose>sum of array elements</refpurpose>
@@ -30,46 +27,54 @@
             y = sum(x, orientation, outtype)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    Array of booleans (full or sparse), encoded integers,
-                    real or complex numbers (full or sparse), polynomials, or rationals.
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of booleans (full or sparse), encoded integers,
+                        real or complex numbers (full or sparse), polynomials, or rationals.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>orientation</term>
                 <listitem>
-                    it can be either
-                    <itemizedlist>
-                        <listitem>
-                            a character <literal>"*"</literal> (default), <literal>"r"</literal>,
-                          <literal>"c"</literal> or  <literal>"m"</literal>
-                        </listitem>
-                        <listitem>
-                            a positive integer: Index of the dimension along which the sums must be computed.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        it can be either
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    a character <literal>"*"</literal> (default), <literal>"r"</literal>,
+                                  <literal>"c"</literal> or  <literal>"m"</literal>
+                              </para>
+                          </listitem>
+                            <listitem>
+                                 <para>
+                                    a positive integer: Index of the dimension along which the sums must be computed.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>outtype</term>
                 <listitem>
-                    string <literal>"native"</literal> or <literal>"double"</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        string <literal>"native"</literal> or <literal>"double"</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    scalar or array
-                    <para/>
-                </listitem>
+                     <para>
+                        scalar or array
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -91,11 +96,11 @@
                     if <literal>orientation</literal> is equal to 1 or "r" then
                 </para>
                 <para>
-                    <latex><![CDATA[{ y(\mathbf{1},j) = \sum_{\mathbf{i}} x(\mathbf{i},j)}]]></latex>
+                    <latex>{ y(\mathbf{1},j) = \sum_{\mathbf{i}} x(\mathbf{i},j)}</latex>
                 </para>
                 <para>or </para>
                 <para>
-                    <latex><![CDATA[ y(\mathbf{1},j,k,\ldots) = \sum_{\mathbf{i}} x(\mathbf{i},j,k,\ldots)]]></latex>
+                    <latex> y(\mathbf{1},j,k,\ldots) = \sum_{\mathbf{i}} x(\mathbf{i},j,k,\ldots)</latex>
                 </para>
             </listitem>
             <listitem>
@@ -103,11 +108,11 @@
                     if <literal>orientation</literal> is equal to 2 or "c" then:
                 </para>
                 <para>
-                    <latex><![CDATA[ y(i,\mathbf{1}) = \sum_{\mathbf{j}} x(i,\mathbf{j})]]></latex>
+                    <latex> y(i,\mathbf{1}) = \sum_{\mathbf{j}} x(i,\mathbf{j})</latex>
                 </para>
                 <para>or </para>
                 <para>
-                    <latex><![CDATA[ y(i,\mathbf{1},k,\ldots) = \sum_{j} x(i,\mathbf{j},k,\ldots)]]></latex>
+                    <latex> y(i,\mathbf{1},k,\ldots) = \sum_{j} x(i,\mathbf{j},k,\ldots)</latex>
                 </para>
             </listitem>
             <listitem>
@@ -115,7 +120,7 @@
                     if <literal>orientation</literal> is equal to n  then
                 </para>
                 <para>
-                    <latex><![CDATA[ y(i_1,\ldots,i_{n-1},\mathbf{1},i_{n+1},\ldots) = \sum_{\mathbf{i_n}} x(i_1,\ldots,i_{n-1},\mathbf{i_n},i_{n+1},\ldots)]]></latex>
+                    <latex> y(i_1,\ldots,i_{n-1},\mathbf{1},i_{n+1},\ldots) = \sum_{\mathbf{i_n}} x(i_1,\ldots,i_{n-1},\mathbf{i_n},i_{n+1},\ldots)</latex>
                 </para>
             </listitem>
             <listitem>
@@ -172,7 +177,8 @@
                 </para>
             </listitem>
         </itemizedlist>
-        <note>This function applies with identical rules to <link linkend="sparse">sparse matrices</link>
+        <note>
+            <para>This function applies with identical rules to <link linkend="sparse">sparse matrices</link></para>
         </note>
     </refsection>
     <refsection>

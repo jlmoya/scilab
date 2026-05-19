@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="figure">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="figure">
     <refnamediv>
         <refname>figure</refname>
         <refpurpose>図を作成する</refpurpose>
@@ -45,14 +42,16 @@
                     <warning>
                         <itemizedlist>
                             <listitem>
-                                <literal>'dockable'</literal>, <literal>'toolbar'</literal> and
-                                <literal>'menubar'</literal> properties can be set only at figure's
-                                creation.
+                                 <para><literal>'dockable'</literal>, <literal>'toolbar'</literal> and
+                                    <literal>'menubar'</literal> properties can be set only at figure's
+                                    creation.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>'resizefcn'</literal>: when it is set at figure's creation,
-                                the callback is first executed while building the initial figure.
-                                Hence it must already be defined and callable.
+                                 <para><literal>'resizefcn'</literal>: when it is set at figure's creation,
+                                    the callback is first executed while building the initial figure.
+                                    Hence it must already be defined and callable.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </warning>

@@ -37,7 +37,7 @@ function demo_ourworldindata()
         // load the data
         my_handle.info_message = "Downloading data";
         if ~isfile("TMPDIR/owid-covid-data.csv") then
-            http_get("https://covid.ourworldindata.org/data/owid-covid-data.csv", "TMPDIR/owid-covid-data.csv", follow=%t);
+            http_get("https://raw.githubusercontent.com/owid/covid-19-data/refs/heads/master/public/data/owid-covid-data.csv", "TMPDIR/owid-covid-data.csv", follow=%t);
         end
         
         // reformat data as vectors stored in a single struct

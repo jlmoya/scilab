@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATDIAG.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATDIAG">
+    <refsection xml:id="Contents_MATDIAG">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATDIAG">Description</xref>
+                <para><link linkend="Description_MATDIAG">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATDIAG">Parameters</xref>
+                <para><link linkend="Dialogbox_MATDIAG">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATDIAG">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATDIAG">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATDIAG">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATDIAG">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATDIAG">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATDIAG">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATDIAG">See also</xref>
+                <para><link linkend="Seealso_MATDIAG">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATDIAG">
+    <refsection xml:id="Description_MATDIAG">
         <title>Description</title>
         <para>
             The MATDIAG block create a diagonal matrix from a 1D vector. If the input is a Mx1 vector than the output
@@ -72,14 +72,13 @@
             The equivalent function of MATDIAG in Scilab is <link linkend="diag">diag(vm)</link> with vm a column vector.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATDIAG">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_MATDIAG">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATDIAG_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATDIAG_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -93,7 +92,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATDIAG">
+    <refsection xml:id="Defaultproperties_MATDIAG">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -166,13 +165,14 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_MATDIAG">
+    <refsection xml:id="Example_MATDIAG">
         <title>Examples</title>
         <screen><![CDATA[
 If the input of the block is U = ones(5, 1) then the output is:
 y = [1 0 0 0 0 ; 0 1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 1 0 ; 0 0 0 0 1]
 ]]></screen>
         <para><emphasis role="bold">Diagonal example:</emphasis></para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDIAG_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -180,9 +180,10 @@ y = [1 0 0 0 0 ; 0 1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 1 0 ; 0 0 0 0 1]
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_MATDIAG">
+    <refsection xml:id="Interfacingfunction_MATDIAG">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -191,7 +192,7 @@ y = [1 0 0 0 0 ; 0 1 0 0 0 ; 0 0 1 0 0 ; 0 0 0 1 0 ; 0 0 0 0 1]
         </itemizedlist>
     </refsection>
 
-    <refsection id="Computationalfunction_MATDIAG">
+    <refsection xml:id="Computationalfunction_MATDIAG">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

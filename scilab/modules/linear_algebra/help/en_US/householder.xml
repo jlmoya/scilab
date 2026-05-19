@@ -13,10 +13,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="householder">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="householder">
     <refnamediv>
         <refname>householder</refname>
         <refpurpose>Householder orthogonal reflexion matrix. Symetrical wrt a plane</refpurpose>
@@ -89,37 +86,49 @@
                     </para>
                 </listitem>
                 <listitem>
-                    If they are real and have the same direction, <varname>u</varname> is set
-                    in the (xOy) plane with a priori <literal>u(1)>0</literal>, and orthogonal to
-                    <varname>v</varname> (<literal>u'*v==0</literal>). However,
-                    <itemizedlist>
-                        <listitem>
-                            If they are along (Ox), <literal>u = (Oy+)</literal> is returned instead.
-                        </listitem>
-                        <listitem>
-                            If <varname>v</varname> and <varname>w</varname> are scalars with same
-                            signs, the orthogonal sub-space is restricted to <literal>{0}</literal>
-                            that can't be normalized:
-                            <varname>u</varname> and <varname>H</varname> are then set to
-                            <literal>%nan</literal>.
-                        </listitem>
-                    </itemizedlist>
-                </listitem>
+                     <para>
+                        If they are real and have the same direction, <varname>u</varname> is set
+                        in the (xOy) plane with a priori <literal>u(1)&gt;0</literal>, and orthogonal to
+                        <varname>v</varname> (<literal>u'*v==0</literal>). However,
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    If they are along (Ox), <literal>u = (Oy+)</literal> is returned instead.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    If <varname>v</varname> and <varname>w</varname> are scalars with same
+                                    signs, the orthogonal sub-space is restricted to <literal>{0}</literal>
+                                    that can't be normalized:
+                                    <varname>u</varname> and <varname>H</varname> are then set to
+                                    <literal>%nan</literal>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </itemizedlist>
         </para>
         <note>
-            If the related reflexion matrix <varname>H</varname> is computed, for any point A
-            of column coordinates <literal>a</literal>, <literal>H*a</literal> are the coordinates of
-            the symetrical image of A with respect to the <literal>(v,w)</literal> plane
-            (see the example below).
+            <para>
+                If the related reflexion matrix <varname>H</varname> is computed, for any point A
+                of column coordinates <literal>a</literal>, <literal>H*a</literal> are the coordinates of
+                the symetrical image of A with respect to the <literal>(v,w)</literal> plane
+                (see the example below).
+            </para>
         </note>
         <note>
-            If <varname>v</varname> or/and <varname>w</varname> are in row, they are priorly
-            transposed into columns.
+            <para>
+                If <varname>v</varname> or/and <varname>w</varname> are in row, they are priorly
+                transposed into columns.
+            </para>
         </note>
         <warning>
-            If <varname>v</varname> or/and <varname>w</varname> are <literal>[]</literal>,
-            <literal>[]</literal> is returned for <varname>u</varname> and <varname>H</varname>.
+            <para>
+                If <varname>v</varname> or/and <varname>w</varname> are <literal>[]</literal>,
+                <literal>[]</literal> is returned for <varname>u</varname> and <varname>H</varname>.
+            </para>
         </warning>
     </refsection>
     <refsection role="examples">
@@ -201,7 +210,7 @@ a.children(2).foreground = 1;
 a.children(3).foreground = color("green");
 drawnow()
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             // (OA) = [0 0 1] is reflected in O into (OB) = [ 1 1 0.3 ]:
             [n, H] = householder([0 0 1]', [ 1 1 0.3 ]');
             // "n" is the unit vector orthogonal to the reflecting plane
@@ -246,7 +255,7 @@ drawnow()
             a.children(2).foreground = 1;
             a.children(3).foreground = color("green");
             drawnow
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

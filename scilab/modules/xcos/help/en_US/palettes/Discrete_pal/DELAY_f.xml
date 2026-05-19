@@ -31,33 +31,33 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DELAY_f.png" align="center" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DELAY_f">
+    <refsection xml:id="Contents_DELAY_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DELAY_f">Description</xref>
+                <para><link linkend="Description_DELAY_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DELAY_f">Parameters</xref>
+                <para><link linkend="Dialogbox_DELAY_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DELAY_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_DELAY_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DELAY_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DELAY_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DELAY_f">Example</xref>
+                <para><link linkend="Example_DELAY_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DELAY_f">
+    <refsection xml:id="Description_DELAY_f">
         <title>Description</title>
         <para>
             This compiled super-block implements a discretized delay. It is built with a shift
@@ -75,14 +75,14 @@
 ]]></latex>
 		<para>.</para>
     </refsection>
-    <refsection id="Dialogbox_DELAY_f">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_DELAY_f">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/discrete_pal/en_US/DELAY_f_gui.png" align="center" style="float:right"/>
+                <imagedata fileref="../../../gui/discrete_pal/en_US/DELAY_f_gui.png" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -100,7 +100,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DELAY_f">
+    <refsection xml:id="Defaultproperties_DELAY_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -173,7 +173,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DELAY_f">
+    <refsection xml:id="Interfacingfunction_DELAY_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -183,7 +183,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_DELAY_f">
+    <refsection xml:id="Example_DELAY_f">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/discrete_pal/en_US/DELAY_f_1_en_US.zcos">

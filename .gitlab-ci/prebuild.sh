@@ -107,6 +107,13 @@ CEF_VERSION=135.0.20+ge7de5c3+chromium-135.0.7049.85
 OPENXLSX_VERSION=0.3.2
 LIBARCHIVE_VERSION=3.7.1
 RAPIDJSON_VERSION=24b5e7a
+LIBXSLT_VERSION=1.1.35
+XLNT_VERSION=1.6.1
+ARROW_VERSION=19.0.0
+ARROW_BOOST_VERSION=1_81_0
+ARROW_THRIFT_VERSION=0.20.0
+ARROW_MIMALLOC_VERSION=2.0.6
+ARROW_XSIMD_VERSION=13.0.0
 
 # # CppServer and its deps
 # CPPSERVER_VERSION=1.0.4.1
@@ -123,32 +130,39 @@ export TARGET_LEVEL=1.8
 export TARGET_RT_JAR="$INSTALLROOTDIR/java/jre/lib/rt.jar"
 
 make_versions() {
-    echo "JDK_VERSION           = $JDK_VERSION"
-    echo "JRE_VERSION           = $JRE_VERSION"
-    echo "ANT_VERSION           = $ANT_VERSION"
-    echo "OPENBLAS_VERSION      = $OPENBLAS_VERSION"
-    echo "ARPACK_VERSION        = $ARPACK_VERSION"
-    echo "CURL_VERSION          = $CURL_VERSION"
-    echo "EIGEN_VERSION         = $EIGEN_VERSION"
-    echo "FFTW_VERSION          = $FFTW_VERSION"
-    echo "HDF5_VERSION          = $HDF5_VERSION"
-    echo "NCURSES_VERSION       = $NCURSES_VERSION"
-    echo "LIBXML2_VERSION       = $LIBXML2_VERSION"
-    echo "MATIO_VERSION         = $MATIO_VERSION"
-    echo "OPENSSL_VERSION       = $OPENSSL_VERSION"
-    echo "PCRE2_VERSION         = $PCRE2_VERSION"
-    echo "SUITESPARSE_VERSION   = $SUITESPARSE_VERSION"
-    echo "TCL_VERSION           = $TCL_VERSION"
-    echo "TK_VERSION            = $TK_VERSION"
-    echo "BWIDGET_VERSION       = $BWIDGET_VERSION"
-    echo "ZLIB_VERSION          = $ZLIB_VERSION"
-    echo "XZ_VERSION            = $XZ_VERSION"
-    echo "JOGL_VERSION          = $JOGL_VERSION"
-    echo "JCEF_VERSION          = $JCEF_VERSION"
-    echo "CEF_VERSION           = $CEF_VERSION"
-    echo "OPENXLSX_VERSION      = $OPENXLSX_VERSION"
-    echo "LIBARCHIVE_VERSION    = $LIBARCHIVE_VERSION"
-    echo "RAPIDJSON_VERSION     = $RAPIDJSON_VERSION"
+    echo "JDK_VERSION            = $JDK_VERSION"
+    echo "JRE_VERSION            = $JRE_VERSION"
+    echo "ANT_VERSION            = $ANT_VERSION"
+    echo "OPENBLAS_VERSION       = $OPENBLAS_VERSION"
+    echo "ARPACK_VERSION         = $ARPACK_VERSION"
+    echo "CURL_VERSION           = $CURL_VERSION"
+    echo "EIGEN_VERSION          = $EIGEN_VERSION"
+    echo "FFTW_VERSION           = $FFTW_VERSION"
+    echo "HDF5_VERSION           = $HDF5_VERSION"
+    echo "NCURSES_VERSION        = $NCURSES_VERSION"
+    echo "LIBXML2_VERSION        = $LIBXML2_VERSION"
+    echo "MATIO_VERSION          = $MATIO_VERSION"
+    echo "OPENSSL_VERSION        = $OPENSSL_VERSION"
+    echo "PCRE2_VERSION          = $PCRE2_VERSION"
+    echo "SUITESPARSE_VERSION    = $SUITESPARSE_VERSION"
+    echo "TCL_VERSION            = $TCL_VERSION"
+    echo "TK_VERSION             = $TK_VERSION"
+    echo "BWIDGET_VERSION        = $BWIDGET_VERSION"
+    echo "ZLIB_VERSION           = $ZLIB_VERSION"
+    echo "XZ_VERSION             = $XZ_VERSION"
+    echo "JOGL_VERSION           = $JOGL_VERSION"
+    echo "JCEF_VERSION           = $JCEF_VERSION"
+    echo "CEF_VERSION            = $CEF_VERSION"
+    echo "OPENXLSX_VERSION       = $OPENXLSX_VERSION"
+    echo "LIBARCHIVE_VERSION     = $LIBARCHIVE_VERSION"
+    echo "RAPIDJSON_VERSION      = $RAPIDJSON_VERSION"
+    echo "LIBXSLT_VERSION        = $LIBXSLT_VERSION"
+    echo "XLNT_VERSION           = $XLNT_VERSION"
+    echo "ARROW_VERSION          = $ARROW_VERSION"
+    echo "ARROW_BOOST_VERSION    = $ARROW_BOOST_VERSION"
+    echo "ARROW_THRIFT_VERSION   = $ARROW_THRIFT_VERSION"
+    echo "ARROW_MIMALLOC_VERSION = $ARROW_MIMALLOC_VERSION"
+    echo "ARROW_XSIMD_VERSION    = $ARROW_XSIMD_VERSION"
     # echo "CPPSERVER_VERSION     = $CPPSERVER_VERSION"
     # echo "ASIO_VERSION          = $ASIO_VERSION"
     # echo "CPPCOMMON_VERSION     = $CPPCOMMON_VERSION"
@@ -214,6 +228,16 @@ download_dependencies() {
     # curl -o rapidjson-$RAPIDJSON_VERSION.tar.gz https://github.com/Tencent/rapidjson/archive/$RAPIDJSON_VERSION.tar.gz
     [ ! -f rapidjson-$RAPIDJSON_VERSION.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/rapidjson-$RAPIDJSON_VERSION.tar.gz
 
+    [ ! -f libxslt-$LIBXSLT_VERSION.tar.xz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/libxslt-$LIBXSLT_VERSION.tar.xz
+
+    [ ! -f xlnt-${XLNT_VERSION}_with_submodules.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/xlnt-${XLNT_VERSION}_with_submodules.tar.gz
+
+    [ ! -f apache-arrow-${ARROW_VERSION}.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/apache-arrow-${ARROW_VERSION}.tar.gz
+    [ ! -f boost_${ARROW_BOOST_VERSION}.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/boost_${ARROW_BOOST_VERSION}.tar.gz
+    [ ! -f thrift-${ARROW_THRIFT_VERSION}.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/thrift-${ARROW_THRIFT_VERSION}.tar.gz
+    [ ! -f mimalloc-${ARROW_MIMALLOC_VERSION}.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/mimalloc-${ARROW_MIMALLOC_VERSION}.tar.gz
+    [ ! -f xsimd-${ARROW_XSIMD_VERSION}.tar.gz ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/xsimd-${ARROW_XSIMD_VERSION}.tar.gz
+
     # # CppServer and its deps
     # [ ! -f cppserver-$CPPSERVER_VERSION.zip ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/cppserver-$CPPSERVER_VERSION.zip
     # [ ! -f asio-$ASIO_VERSION.zip ] && curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/asio-$ASIO_VERSION.zip
@@ -249,6 +273,9 @@ make_all() {
     build_openxlsx
     build_libarchive
     build_rapidjson
+    build_libxslt
+    build_xlnt
+    build_arrow
     # build_cppserver
 }
 
@@ -278,6 +305,9 @@ make_binary_directory() {
     cp -R "$INSTALLUSRDIR/include/rapidjson/" "$INSTALLROOTDIR/include/"
     cp -R "$INSTALLUSRDIR/include/libxml2/" "$INSTALLROOTDIR/include/"
     cp -R "$INSTALLUSRDIR/include/pcre2.h" "$INSTALLROOTDIR/include/"
+    cp -R "$INSTALLUSRDIR/include/xlnt/" "$INSTALLROOTDIR/include/"
+    cp -R "$INSTALLUSRDIR/include/arrow/" "$INSTALLROOTDIR/include/"
+    cp -R "$INSTALLUSRDIR/include/parquet/" "$INSTALLROOTDIR/include/"
 
     #####################################
     ##### lib/thirdparty/ directory #####
@@ -328,6 +358,14 @@ make_binary_directory() {
     rm -f "$LIBTHIRDPARTYDIR"/libpcre*.*
     cp -d "$INSTALLUSRDIR"/lib/libpcre2*.* "$LIBTHIRDPARTYDIR/"
 
+    rm -f "$LIBTHIRDPARTYDIR"/libxlnt*.*
+    cp -d "$INSTALLUSRDIR"/lib/libxlnt*.* "$LIBTHIRDPARTYDIR/"
+
+    rm -f "$LIBTHIRDPARTYDIR"/libarrow*.*
+    cp -d "$INSTALLUSRDIR"/lib/libarrow*.* "$LIBTHIRDPARTYDIR/"
+    rm -f "$LIBTHIRDPARTYDIR"/libparquet*.*
+    cp -d "$INSTALLUSRDIR"/lib/libparquet*.* "$LIBTHIRDPARTYDIR/"
+
     rm -f "$LIBTHIRDPARTYDIR"/libssl.*
     cp -d "$INSTALLUSRDIR"/lib/libssl.* "$LIBTHIRDPARTYDIR/"
 
@@ -356,6 +394,9 @@ make_binary_directory() {
 
     rm -f "$LIBTHIRDPARTYDIR"/libOpenXLSX.*
     cp -d "$INSTALLUSRDIR"/lib/libOpenXLSX.* "$LIBTHIRDPARTYDIR/"
+
+    rm -f "$LIBTHIRDPARTYDIR"/libxslt*.*
+    cp -d "$INSTALLUSRDIR"/lib/libxslt*.* "$LIBTHIRDPARTYDIR/"
 
     # Scilab dependencies where the system ones are not recent enough to be used.
     #
@@ -935,6 +976,61 @@ build_rapidjson() {
     tar -xzf "$DOWNLOADDIR"/rapidjson-$RAPIDJSON_VERSION.tar.gz -C "$INSTALLUSRDIR/include/" --strip-components=2 --wildcards rapidjson-$RAPIDJSON_VERSION*/include
 }
 
+build_xlnt() {
+    cd "$BUILDDIR" || exit 1
+
+    INSTALL_DIR=$BUILDDIR/xlnt-$XLNT_VERSION/install_dir
+    
+    tar -xzf "$DOWNLOADDIR/xlnt-${XLNT_VERSION}_with_submodules.tar.gz"
+    cd xlnt-$XLNT_VERSION || exit 1
+
+    cmake -B build . --install-prefix="$INSTALL_DIR" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=ON \
+        -G "Unix Makefiles"
+    cmake --build build/
+    cmake --build build/ --target install
+
+    cp -a "$INSTALL_DIR"/lib/*.so* "$INSTALLUSRDIR/lib/"
+    cp -a "$INSTALL_DIR"/include/* "$INSTALLUSRDIR/include/"
+
+    XLNT_MAJOR_VERSION=$(echo "$XLNT_VERSION" | awk -F \. '{ print $1}')
+    cd "$INSTALLUSRDIR/lib/" || exit 1
+    ln -fs "libxlnt.so.${XLNT_VERSION}" libxlnt.so.${XLNT_MAJOR_VERSION}
+}
+
+build_arrow() {
+    cd "$BUILDDIR" || exit 1
+
+    INSTALL_DIR=$BUILDDIR/apache-arrow-$ARROW_VERSION/install_dir
+    
+    tar -xzf "$DOWNLOADDIR/apache-arrow-${ARROW_VERSION}.tar.gz"
+    cd apache-arrow-$ARROW_VERSION/cpp/ || exit 1
+
+    # Use local files as curl embedded with current cmake version does not support https protocol
+    export ARROW_BOOST_URL=file://$DOWNLOADDIR/boost_$ARROW_BOOST_VERSION.tar.gz
+    export ARROW_THRIFT_URL=file://$DOWNLOADDIR/thrift-$ARROW_THRIFT_VERSION.tar.gz
+    sed -i 's/b5d8311a779470e1502c027f428a1db542f5c051c8e1280ccd2163fa935ff2d6/cd7b829d3d9d87f9f7d708e004eef7629789591ee1d416f4741913bc33e5c27d/' thirdparty/versions.txt
+    export ARROW_MIMALLOC_URL=file://$DOWNLOADDIR/mimalloc-$ARROW_MIMALLOC_VERSION.tar.gz
+    export ARROW_XSIMD_URL=file://$DOWNLOADDIR/xsimd-$ARROW_XSIMD_VERSION.tar.gz
+    export ARROW_ZLIB_URL=file://$DOWNLOADDIR/zlib-$ZLIB_VERSION.tar.gz
+    sed -i 's/9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23/c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1/' thirdparty/versions.txt
+    # Selected options similar to https://github.com/microsoft/vcpkg/blob/5825c5878e2ccab9b3c3128e4529a3b4a86776b4/ports/arrow/portfile.cmake
+    cmake -B build . --install-prefix="$INSTALL_DIR" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DARROW_BUILD_SHARED=ON \
+        -DARROW_BUILD_STATIC=OFF \
+        -DARROW_BUILD_TESTS=OFF \
+        -DARROW_PARQUET=ON \
+        -DARROW_WITH_ZLIB=ON \
+        -G "Unix Makefiles"
+    cmake --build build/
+    cmake --build build/ --target install
+
+    cp -a "$INSTALL_DIR"/lib/*.so* "$INSTALLUSRDIR/lib/"
+    cp -a "$INSTALL_DIR"/include/* "$INSTALLUSRDIR/include/"
+}
+
 build_suitesparse() {
     cd "$BUILDDIR" || exit 1
 
@@ -1183,6 +1279,22 @@ build_openxlsx() {
         -Wl,--no-whole-archive
 
     cp -a libOpenXLSX.so "$INSTALLUSRDIR/lib/"
+}
+
+build_libxslt() {
+    cd "$BUILDDIR" || exit 1
+
+    INSTALL_DIR=$BUILDDIR/libxslt-$LIBXSLT_VERSION/install_dir
+
+    tar -xJf "$DOWNLOADDIR/libxslt-$LIBXSLT_VERSION.tar.xz"
+    cd "libxslt-$LIBXSLT_VERSION" || exit 1
+
+    ./configure --prefix= --without-python CFLAGS="-I$INSTALLUSRDIR/include/libxml2" LDFLAGS="-L$INSTALLUSRDIR/lib"
+    make "-j$(nproc)"
+    make install DESTDIR="$INSTALL_DIR"
+
+    cp -a "$INSTALL_DIR"/lib/*.so* "$INSTALLUSRDIR/lib/"
+    cp -a "$INSTALL_DIR"/include/* "$INSTALLUSRDIR/include/"
 }
 
 # build_cppserver() {

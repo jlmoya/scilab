@@ -26,7 +26,7 @@
             datatipSetDisplay(handle, fun)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -86,7 +86,7 @@
             endfunction
             datatipSetDisplay(d21,"mydisplay")
         </scilab:image>
-        The display function can also be used to place tip text in different locations:
+        <para>The display function can also be used to place tip text in different locations:</para>
         <programlisting role="example"><![CDATA[
     x=linspace(-1,1,1000);
     clf()

@@ -275,6 +275,9 @@ ANT = @ANT@
 ANTLR = @ANTLR@
 AR = @AR@
 ARPACK_LIBS = @ARPACK_LIBS@
+ARROW_CFLAGS = @ARROW_CFLAGS@
+ARROW_LDFLAGS = @ARROW_LDFLAGS@
+ARROW_LIBS = @ARROW_LIBS@
 ASM3 = @ASM3@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -417,6 +420,9 @@ LIBM = @LIBM@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBXSLT_CFLAGS = @LIBXSLT_CFLAGS@
+LIBXSLT_LDFLAGS = @LIBXSLT_LDFLAGS@
+LIBXSLT_LIBS = @LIBXSLT_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LOGGING_LEVEL = @LOGGING_LEVEL@
@@ -472,6 +478,9 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
+PARQUET_CFLAGS = @PARQUET_CFLAGS@
+PARQUET_LDFLAGS = @PARQUET_LDFLAGS@
+PARQUET_LIBS = @PARQUET_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PCRE2_CFLAGS = @PCRE2_CFLAGS@
 PCRE2_LDFLAGS = @PCRE2_LDFLAGS@
@@ -521,6 +530,9 @@ XCOS_ENABLE = @XCOS_ENABLE@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
+XLNT_CFLAGS = @XLNT_CFLAGS@
+XLNT_LDFLAGS = @XLNT_LDFLAGS@
+XLNT_LIBS = @XLNT_LIBS@
 XMKMF = @XMKMF@
 XMLGRAPHICS_COMMONS = @XMLGRAPHICS_COMMONS@
 XMLRESOLVER = @XMLRESOLVER@
@@ -725,8 +737,6 @@ libjavasci2_la_etc_DATA = \
 @JAVASCI_TRUE@JARMASK = *.jar
 # Chapter file 
 @JAVASCI_TRUE@HELP_CHAPTERDIR = help/
-@JAVASCI_TRUE@HELP_CHAPTERFILE = addchapter.sce
-@JAVASCI_TRUE@HELP_CHAPTERLANG = en_US fr_FR pt_BR
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -1278,35 +1288,6 @@ uninstall-am: uninstall-libjavasci2_la_etcDATA \
 @JAVASCI_TRUE@	fi )
 
 @JAVASCI_TRUE@install-html-local:
-
-@JAVASCI_TRUE@install-data-local-local:
-# Mainly for javasci
-@JAVASCI_TRUE@	@if test -d $(srcdir)/javadoc; then \
-@JAVASCI_TRUE@		cp -R $(srcdir)/javadoc $(DESTDIR)/$(mydatadir)/; \
-@JAVASCI_TRUE@	fi
-# If the user wants the help sources to be installed
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	@echo "-------- Install of XML sources of help files --------"; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	for lang in $(ALL_LINGUAS); do \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	 if test -d $(srcdir)/help/$$lang; then \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	  $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/help/$$lang && \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		if ls -lLd $(srcdir)/help/$$lang/$(DOCMASKXML) >/dev/null 2>&1; then \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		  for file in $(srcdir)/help/$$lang/$(DOCMASKXML) ; do \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		    echo "$(INSTALL_DATA) $$file $(DESTDIR)$(pkgdocdir)/help/$$lang" ; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	    	$(INSTALL_DATA) "$$file" $(DESTDIR)$(pkgdocdir)/help/$$lang ; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		  done ; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		fi; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	 fi; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	done; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	@echo "-------- Install of MathML sources --------"; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	 if test -d $(srcdir)/help/mml/; then \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	  $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/help/mml/ && \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		if ls -lLd $(srcdir)/help/mml/$(DOCMASKMML) >/dev/null 2>&1; then \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		  for file in $(srcdir)/help/mml/$(DOCMASKMML) ; do \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		    echo "$(INSTALL_DATA) $$file $(DESTDIR)$(pkgdocdir)/help/mml" ; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	    	$(INSTALL_DATA) "$$file" $(DESTDIR)$(pkgdocdir)/help/mml ; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		  done ; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@		fi; \
-@INSTALL_HELP_XML_TRUE@@JAVASCI_TRUE@	fi
 @JAVASCI_TRUE@install-data-local:
 # Install the tests
 @JAVASCI_TRUE@	@echo "-------- Install tests (if any) --------"; \
@@ -1325,17 +1306,15 @@ uninstall-am: uninstall-libjavasci2_la_etcDATA \
 @JAVASCI_TRUE@		  done; \
 @JAVASCI_TRUE@	  fi; \
 @JAVASCI_TRUE@	done
-# Install the help chapter
-@JAVASCI_TRUE@	@echo "-------- Install the help chapter (if any) --------"; \
-@JAVASCI_TRUE@	for lang in $(HELP_CHAPTERLANG); do \
-@JAVASCI_TRUE@		HELPFILE=$(srcdir)/$(HELP_CHAPTERDIR)$$lang/$(HELP_CHAPTERFILE); \
-@JAVASCI_TRUE@		if test -f $$HELPFILE; then \
-@JAVASCI_TRUE@			echo $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)/$$lang/; \
-@JAVASCI_TRUE@			$(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)/$$lang/; \
-@JAVASCI_TRUE@			echo $(INSTALL_DATA) $$HELPFILE $(DESTDIR)$(pkgdocdir)/$$HELPFILE; \
-@JAVASCI_TRUE@			$(INSTALL_DATA) $$HELPFILE $(DESTDIR)$(pkgdocdir)/$$HELPFILE; \
-@JAVASCI_TRUE@		fi; \
-@JAVASCI_TRUE@	done
+# Install help files (addchapter.sce, *.xml, subdirectories, ...)
+@JAVASCI_TRUE@	@echo "-------- Install help source files (if any) --------"; \
+@JAVASCI_TRUE@	$(mkinstalldirs) $(DESTDIR)$(pkgdocdir) && \
+@JAVASCI_TRUE@	  if test -d $(srcdir)/$(HELP_CHAPTERDIR); then \
+@JAVASCI_TRUE@		if test ! -d $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); then \
+@JAVASCI_TRUE@		  echo "cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)"; \
+@JAVASCI_TRUE@		  cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); \
+@JAVASCI_TRUE@		fi \
+@JAVASCI_TRUE@	  fi
 # Install the demos & examples
 @JAVASCI_TRUE@	@echo "-------- Install demos & examples (if any) --------"; \
 @JAVASCI_TRUE@	for dir in $(DEMOS_DIR) $(DEMOS_DIREXT) $(EXAMPLES_DIR) $(EXAMPLES_DIREXT) ; do \

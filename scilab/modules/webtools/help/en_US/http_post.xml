@@ -30,7 +30,7 @@
             [result, status, headers] = http_post(url, data, &lt;opt_args>)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -89,12 +89,14 @@
                                     of the peer's certificate.
                                     If <literal>none</literal> is given, no verification is performed.
                                     <warning>
-                                        Disabling verification of the certificate allows bad guys
-                                        to man-in-the-middle the communication without you knowing it.
-                                        Disabling verification makes the communication insecure.
-                                        Just having encryption on a transfer is not enough as you
-                                        cannot be sure that you are communicating with the correct
-                                        end-point.
+                                        <para>
+                                            Disabling verification of the certificate allows bad guys
+                                            to man-in-the-middle the communication without you knowing it.
+                                            Disabling verification makes the communication insecure.
+                                            Just having encryption on a transfer is not enough as you
+                                            cannot be sure that you are communicating with the correct
+                                            end-point.
+                                        </para>
                                     </warning>
                                 </para>
                             </listitem>
@@ -175,8 +177,12 @@
                 <listitem>
                     <para>
                         struct: HTTP headers of the request result.
-                        <warning>When the optional argument <literal>follow</literal> is set to <literal>%t</literal>,
-                        all headers are returned in a list that contains one struct per request made to follow redirections.</warning>
+                        <warning>
+                            <para>
+                                When the optional argument <literal>follow</literal> is set to <literal>%t</literal>,
+                                all headers are returned in a list that contains one struct per request made to follow redirections.
+                            </para>
+                        </warning>
                     </para>
                 </listitem>
             </varlistentry>
@@ -260,7 +266,7 @@ result = http_post("https://jsonplaceholder.typicode.com/posts", data, headers=[
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -271,9 +277,11 @@ result = http_post("https://jsonplaceholder.typicode.com/posts", data, headers=[
             </revision>
             <revision>
                 <revnumber>2024.1</revnumber>
-                <revremark>
-                    <literal>headers</literal> output argument added.
-                </revremark>
+                    <revdescription>
+                        <para>
+                            <literal>headers</literal> output argument added.
+                        </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

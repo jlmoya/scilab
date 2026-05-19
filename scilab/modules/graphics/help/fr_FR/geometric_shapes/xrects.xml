@@ -9,7 +9,7 @@
         <synopsis>xrects(rects,[fill])
             hdl = xrects(...)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -58,8 +58,16 @@
         <para>
             si <literal>fill(i)=0</literal>, le rectangle <literal>i</literal> est dessiné avec le style de ligne courant.
         </para>
-        <warning>Notez que la valeur de la hauteur est positive en allant vers la bas.</warning>
-        <warning>Les rectangles créés héritent de la propriété de clip de l'axe courant.</warning>
+        <warning>
+            <para>
+                Notez que la valeur de la hauteur est positive en allant vers la bas.
+            </para>
+        </warning>
+        <warning>
+            <para>
+                Les rectangles créés héritent de la propriété de clip de l'axe courant.
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Exemples</title>
@@ -97,9 +105,9 @@ xnumb(x,15*ones(x),cols)
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     La fonction renvoie le(s) handle(s) créé(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

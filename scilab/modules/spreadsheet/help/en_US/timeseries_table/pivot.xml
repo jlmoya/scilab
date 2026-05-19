@@ -25,7 +25,7 @@
             p = pivot(..., OptionName=Value, ...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -60,10 +60,11 @@
                     <para/>
                 </listitem>
             </varlistentry>
-            <para>
-                Optional pairs <emphasis role="bold">OptionName=Value</emphasis> are:
-            </para>
-            <para/>
+        </variablelist>
+        <para>
+            Optional pairs <emphasis role="bold">OptionName=Value</emphasis> are:
+        </para>
+        <variablelist>
             <varlistentry>
                 <term><emphasis role="bold">"Method"</emphasis>=function</term>
                 <listitem>
@@ -243,9 +244,9 @@
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Introduction in Scilab.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

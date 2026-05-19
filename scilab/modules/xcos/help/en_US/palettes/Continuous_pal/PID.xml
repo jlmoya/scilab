@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/PID.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_PID">
+    <refsection xml:id="Contents_PID">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_PID">Description</xref>
+                <para><link linkend="Description_PID">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_PID">Parameters</xref>
+                <para><link linkend="Dialogbox_PID">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_PID">Default properties</xref>
+                <para><link linkend="Defaultproperties_PID">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_PID">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_PID">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="CompiledSuperBlockcontent_PID">Compiled Super Block content</xref>
+                <para><link linkend="CompiledSuperBlockcontent_PID">Compiled Super Block content</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Examples_PID">Examples</xref>
+                <para><link linkend="Examples_PID">Examples</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_PID">
+    <refsection xml:id="Description_PID">
         <title>Description</title>
         <para>This block implements a PID (Proportional-Integral-Differential)
             controller. It calculates an "error" value <emphasis>U<subscript>e</subscript></emphasis>
@@ -112,14 +112,14 @@
             </inlinemediaobject>
         </para>
     </refsection>
-    <refsection id="Dialogbox_PID">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_PID">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/PID_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/PID_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -144,7 +144,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_PID">
+    <refsection xml:id="Defaultproperties_PID">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -217,7 +217,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_PID">
+    <refsection xml:id="Interfacingfunction_PID">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -225,7 +225,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="CompiledSuperBlockcontent_PID">
+    <refsection xml:id="CompiledSuperBlockcontent_PID">
         <title>Compiled Super Block content</title>
         <para>
             <inlinemediaobject>
@@ -235,94 +235,96 @@
             </inlinemediaobject>
         </para>
     </refsection>
-    <refsection id="Examples_PID">
+    <refsection xml:id="Examples_PID">
         <title>Examples</title>
-        <refsect3 id="Example_1_PID">
-            <title>Example 1</title>
-            <para>This example illustrates the usage of PID regulator. It enables you
-                to fit the output signal <emphasis>U<subscript>pr</subscript>(t)</emphasis>
-                to the required signal <emphasis>U<subscript>r</subscript>(t)</emphasis> easily.
-            </para>
-            <para>In this example the control system is a second-order unity-gain
-                low-pass filter with damping ratio ξ=0.5 and cutoff frequency fc= 100 Hz.
-                Its transfer function H(s) is:
-            </para>
-            <para>
+        <para>
+            <emphasis role="bold">Example 1</emphasis>
+        </para>
+        <para>This example illustrates the usage of PID regulator. It enables you
+            to fit the output signal <emphasis>U<subscript>pr</subscript>(t)</emphasis>
+            to the required signal <emphasis>U<subscript>r</subscript>(t)</emphasis> easily.
+        </para>
+        <para>In this example the control system is a second-order unity-gain
+            low-pass filter with damping ratio ξ=0.5 and cutoff frequency fc= 100 Hz.
+            Its transfer function H(s) is:
+        </para>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../examples/pid_filter.gif" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+        <para>To model this filter we use Continuous transfer function block (CLR)
+            from Continuous time systems Palette.
+        </para>
+        <para>The PID parameters Kp, Ki and Kd are set to 100, 0.1 and 0.</para>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../examples/pid_filter_parameters.png" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+        <para>The scope displays the waveforms of system error
+            <emphasis>U<subscript>e</subscript></emphasis> (black),
+            reference signal <emphasis>U<subscript>r</subscript></emphasis> (blue) and process
+            signal <emphasis>U<subscript>pr</subscript></emphasis> (red). It shows how
+            initially the process signal <emphasis>U<subscript>pr</subscript>(t)</emphasis>
+            does not follow the reference signal <emphasis>U<subscript>r</subscript>(t)</emphasis>.
+        </para>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/PID_1_Example.zcos">
                 <inlinemediaobject>
                     <imageobject>
-                        <imagedata align="center" fileref="../../../examples/pid_filter.gif" valign="middle"/>
+                        <imagedata align="center" fileref="../../../../examples/continuous_pal/PID_1_Example.zcos" valign="middle"/>
                     </imageobject>
                 </inlinemediaobject>
-            </para>
-            <para>To model this filter we use Continuous transfer function block (CLR)
-                from Continuous time systems Palette.
-            </para>
-            <para>The PID parameters Kp, Ki and Kd are set to 100, 0.1 and 0.</para>
-            <para>
-                <inlinemediaobject>
-                    <imageobject>
-                        <imagedata align="center" fileref="../../../examples/pid_filter_parameters.png" valign="middle"/>
-                    </imageobject>
-                </inlinemediaobject>
-            </para>
-            <para>The scope displays the waveforms of system error
-                <emphasis>U<subscript>e</subscript></emphasis> (black),
-                reference signal <emphasis>U<subscript>r</subscript></emphasis> (blue) and process
-                signal <emphasis>U<subscript>pr</subscript></emphasis> (red). It shows how
-                initially the process signal <emphasis>U<subscript>pr</subscript>(t)</emphasis>
-                does not follow the reference signal <emphasis>U<subscript>r</subscript>(t)</emphasis>.
-            </para>
-            <para>
-                <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/PID_1_Example.zcos">
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata align="center" fileref="../../../../examples/continuous_pal/PID_1_Example.zcos" valign="middle"/>
-                        </imageobject>
-                    </inlinemediaobject>
-                </link>
-            </para>
-            <para>
-                <scilab:image><![CDATA[
+            </link>
+        </para>
+        <para>
+            <scilab:image><![CDATA[
 importXcosDiagram(SCI + "/modules/xcos/examples/continuous_pal/PID_1_Example.zcos");
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
-            </para>
-        </refsect3>
-        <refsect3 id="Example_2_PID">
-            <title>Example 2</title>
-            <para>
-                <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/PID_2_Example.zcos">
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata align="center" fileref="../../../../examples/continuous_pal/PID_2_Example.zcos" valign="middle"/>
-                        </imageobject>
-                    </inlinemediaobject>
-                </link>
-            </para>
-            <para>
-                <scilab:image><![CDATA[
+        </para>
+
+        <para>
+            <emphasis role="bold">Example 2</emphasis>
+        </para>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/PID_2_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/continuous_pal/PID_2_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
+        <para>
+            <scilab:image><![CDATA[
 importXcosDiagram(SCI + "/modules/xcos/examples/continuous_pal/PID_2_Example.zcos");
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
-            </para>
-        </refsect3>
-        <refsect3 id="Example_3_PID">
-            <title>Example 3</title>
-            <para>
-                <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/PID_3_Example.zcos">
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata align="center" fileref="../../../../examples/continuous_pal/PID_3_Example.zcos" valign="middle"/>
-                        </imageobject>
-                    </inlinemediaobject>
-                </link>
-            </para>
-            <para>
-                <scilab:image><![CDATA[
+        </para>
+
+        <para>
+            <emphasis role="bold">Example 3</emphasis>
+        </para>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/PID_3_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/continuous_pal/PID_3_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
+        <para>
+            <scilab:image><![CDATA[
 importXcosDiagram(SCI + "/modules/xcos/examples/continuous_pal/PID_3_Example.zcos");
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
-            </para>
-        </refsect3>
+        </para>
     </refsection>
 </refentry>

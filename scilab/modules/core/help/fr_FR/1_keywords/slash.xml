@@ -56,12 +56,15 @@
             Cet opérateur évite des problèmes de simplification.
         </para>
         <note>
-            Noter que <literal>123./b</literal> est interprété comme <literal>(123)./b</literal>.
-            Dans de tels cas, le point fait partie de l'opérateur, non du nombre décimal.
-          <para/>
-            Mais attention : <literal>G/.5</literal> est interprété comme <literal>G/(.5)</literal> :
-            Le point fait ici partie du nombre décimal, non de l'opérateur, contrairement
-            à <literal>G/. 5</literal>
+            <para>
+                Noter que <literal>123./b</literal> est interprété comme <literal>(123)./b</literal>.
+                Dans de tels cas, le point fait partie de l'opérateur, non du nombre décimal.
+            </para>
+            <para>
+                Mais attention : <literal>G/.5</literal> est interprété comme <literal>G/(.5)</literal> :
+                Le point fait ici partie du nombre décimal, non de l'opérateur, contrairement
+                à <literal>G/. 5</literal>
+            </para>
         </note>
         <para>
         </para>
@@ -144,7 +147,7 @@ les commentaires sont utiles. */
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

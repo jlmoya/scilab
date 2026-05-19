@@ -32,41 +32,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CANIMXY3D.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CANIMXY3D">
+    <refsection xml:id="Contents_CANIMXY3D">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CANIMXY3D">Description</xref>
+                <para><link linkend="Description_CANIMXY3D">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CANIMXY3D">Parameters</xref>
+                <para><link linkend="Dialogbox_CANIMXY3D">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CANIMXY3D">Default properties</xref>
+                <para><link linkend="Defaultproperties_CANIMXY3D">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CANIMXY3D">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CANIMXY3D">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CANIMXY3D">Computational function</xref>
+                <para><link linkend="Computationalfunction_CANIMXY3D">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CANIMXY3D">Example</xref>
+                <para><link linkend="Example_CANIMXY3D">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CANIMXY3D">See also</xref>
+                <para><link linkend="Seealso_CANIMXY3D">See also</link></para>
             </listitem>
         </itemizedlist>
 		<para/>
     </refsection>
 
-    <refsection id="Description_CANIMXY3D">
+    <refsection xml:id="Description_CANIMXY3D">
         <title>Description</title>
         <para>
             This block realizes the visualization of the evolution of the three regular input signals
@@ -77,14 +77,13 @@
 		<para/>
     </refsection>
 
-    <refsection id="Dialogbox_CANIMXY3D">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_CANIMXY3D">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/CANIMXY3D_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/CANIMXY3D_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -172,7 +171,7 @@
 		<para/>
     </refsection>
 
-    <refsection id="Defaultproperties_CANIMXY3D">
+    <refsection xml:id="Defaultproperties_CANIMXY3D">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -244,7 +243,7 @@
 		<para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_CANIMXY3D">
+    <refsection xml:id="Interfacingfunction_CANIMXY3D">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -252,7 +251,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CANIMXY3D">
+    <refsection xml:id="Computationalfunction_CANIMXY3D">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -262,8 +261,9 @@
 		<para/>
     </refsection>
 
-    <refsection id="Example_CANIMXY3D">
+    <refsection xml:id="Example_CANIMXY3D">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/CANIMXY3D_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -271,6 +271,7 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
     <refsection xml:id="Seealso_CANIMXY3D" role="see also">
         <title>See also</title>

@@ -26,8 +26,8 @@
             [var_1, var_2, ...] = junwrap(obj_1 [, obj_2 [, ...]])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>obj_i</term>
@@ -88,16 +88,17 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    Function introduced. Based on the 'JIMS' module. The main difference in the behavior compared to the JIMS module is that <link linkend="jautoUnwrap">jautoUnwrap</link> is enabled by default.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function introduced. Based on the 'JIMS' module. The main difference in the behavior compared to the JIMS module is that <link linkend="jautoUnwrap">jautoUnwrap</link> is enabled by default.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>
 </refentry>
-

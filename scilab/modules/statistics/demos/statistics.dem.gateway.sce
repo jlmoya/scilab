@@ -9,7 +9,8 @@ function subdemolist = demo_gateway()
     add_demo("Statistics", demopath+"statistics.dem.gateway.sce");
 
     subdemolist = [
-    "K-means clustering", "demo_kmeans.dem.sce"
+    "K-means clustering", "demo_kmeans.dem.sce",
+    "Clustering", "clustering/demo_clustering.dem.sce"
     ];
     subdemolist(:,2) = demopath + subdemolist(:,2);
 endfunction

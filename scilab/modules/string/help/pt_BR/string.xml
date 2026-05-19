@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="string" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="string" xml:lang="pt">
     <refnamediv>
         <refname>string</refname>
         <refpurpose>conversão para string (cadeia de caracteres)</refpurpose>
@@ -55,13 +52,16 @@
             retorna três vetores de strings :
             <itemizedlist>
                 <listitem>
-                    <varname>out</varname> é o vetor de variáveis de saída,
+                     <para><varname>out</varname> é o vetor de variáveis de saída,
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>in</varname> é o vetor de variáveis de entrada, e
+                     <para><varname>in</varname> é o vetor de variáveis de entrada, e
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>text</varname>  é o vetor (coluna) do código fonte da função.
+                     <para><varname>text</varname>  é o vetor (coluna) do código fonte da função.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -82,7 +82,7 @@
     </refsection>
     <refsection>
         <title>Exemplos</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             string(rand(2, 2))
 
             deff("y = mymacro(x)", "y = x + 1")
@@ -104,7 +104,7 @@
             format(v(2))
 
             string(1:4:$)
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>Ver Também</title>

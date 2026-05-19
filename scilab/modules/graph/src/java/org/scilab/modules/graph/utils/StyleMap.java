@@ -21,9 +21,11 @@ import java.util.Map.Entry;
 
 /**
  * Perform useful conversions between a style string and key/value based map.
+ * Only the first "inherited" style is supported, eg. a key without value ; this makes flip and rotation preserved across block updates.
  */
 @SuppressWarnings(value = { "serial" })
 public final class StyleMap extends LinkedHashMap<String, String> {
+    private String inheritedStyle = null;
 
     /**
      * Create a Map from a style string
@@ -49,7 +51,7 @@ public final class StyleMap extends LinkedHashMap<String, String> {
                 if (sep >= 0) {
                     put(keyValue.substring(0, sep), keyValue.substring(sep + 1));
                 } else {
-                    put(keyValue, null);
+                    inheritedStyle = keyValue;
                 }
             }
         }
@@ -64,6 +66,14 @@ public final class StyleMap extends LinkedHashMap<String, String> {
     public String toString() {
         StringBuilder str = new StringBuilder();
         String valueRef = null;
+
+        // always apply inherited style first
+        if (inheritedStyle != null) {
+            str.append(inheritedStyle);
+            if (!isEmpty()) {
+                str.append(";");
+            }
+        }
 
         for (Iterator<Entry<String, String>> iterator = entrySet().iterator();
                 iterator.hasNext();) {

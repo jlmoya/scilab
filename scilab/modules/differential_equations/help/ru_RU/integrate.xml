@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="integrate" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="integrate" xml:lang="ru">
     <refnamediv>
         <refname>integrate</refname>
         <refpurpose>интегрирование выражения квадратурами</refpurpose>
@@ -35,51 +32,58 @@
             <varlistentry>
                 <term>expr</term>
                 <listitem>
-                    символьная строка, определяющая Scilab-выражение.
-                    <para/>
-                </listitem>
+                     <para>
+                        символьная строка, определяющая Scilab-выражение.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    символьная строка, имя переменной по которой производится интегрирование.
-                    <para/>
-                </listitem>
+                     <para>
+                        символьная строка, имя переменной по которой производится интегрирование.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x0</term>
                 <listitem>
-                    вещественное число, нижний предел интегрирования.
-                    <para/>
-                </listitem>
+                     <para>
+                        вещественное число, нижний предел интегрирования.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x1</term>
                 <listitem>
-                    вектор вещественных чисел, верхние пределы интегрирования.
-                    <para/>
-                </listitem>
+                     <para>
+                        вектор вещественных чисел, верхние пределы интегрирования.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>atol</term>
                 <listitem>
-                    вещественное число (предел абсолютной ошибки). Значение по умолчанию: 1e-13.
-                    <para/>
-                </listitem>
+                     <para>
+                        вещественное число (предел абсолютной ошибки). Значение по умолчанию: 1e-13.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rtol</term>
                 <listitem>
-                    вещественное число (предел относительной ошибки). Значение по умолчанию: 1e-8.
-                    <para/>
-                </listitem>
+                     <para>
+                        вещественное число (предел относительной ошибки). Значение по умолчанию: 1e-8.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    вектор вещественных чисел, значение интеграла для каждого <literal>x1(i)</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        вектор вещественных чисел, значение интеграла для каждого <literal>x1(i)</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

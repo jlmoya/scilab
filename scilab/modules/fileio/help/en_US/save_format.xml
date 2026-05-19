@@ -47,30 +47,36 @@
                     <td>
                         <emphasis role="bold">double</emphasis>
                     </td>
-                    <programlisting>
-                        A=32;
-                        b=[32,2];
-                        c=[2,2;3,4];
-                        d=rand(10,10);
-                    </programlisting>
+                    <td>
+                        <programlisting>
+                            A=32;
+                            b=[32,2];
+                            c=[2,2;3,4];
+                            d=rand(10,10);
+                        </programlisting>
+                    </td>
                 </tr>
                 <tr>
                     <td>
                         <emphasis role="bold">string</emphasis>
                     </td>
-                    <programlisting>
-                        a="my string";
-                        b=["string 1";"my string 2"];
-                    </programlisting>
+                    <td>
+                        <programlisting>
+                            a="my string";
+                            b=["string 1";"my string 2"];
+                        </programlisting>
+                    </td>
                 </tr>
                 <tr>
                     <td>
                         <emphasis role="bold">boolean</emphasis>
                     </td>
-                    <programlisting>
-                        a=%t;
-                        b=[%t, %f];
-                    </programlisting>
+                    <td>
+                        <programlisting>
+                            a=%t;
+                            b=[%t, %f];
+                        </programlisting>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -162,7 +168,7 @@
     <refsection>
         <title>HDF5 File Structure</title>
         <para>Scilab HDF5 architecture is pretty straightforward. </para>
-        <emphasis role="bold">General</emphasis>
+        <para><emphasis role="bold">General</emphasis></para>
         <para>For each Scilab variable, a dataset at the root position is declared. The name of the dataset is the name of Scilab variable. </para>
         <para>Example, the following code:</para>
         <programlisting>
@@ -239,7 +245,7 @@
                     <td align="left">
                         <para>boolean</para>
                     </td>
-                    <td namest="c2" nameend="c3" align="left">
+                    <td align="left">
                         <para>SCILAB_Class = boolean</para>
                     </td>
                     <td align="left">
@@ -253,13 +259,13 @@
                     <td align="left">
                         <para>integer</para>
                     </td>
-                    <td namest="c2" nameend="c3" align="left">
+                    <td align="left">
                         <para>SCILAB_Class = integer</para>
                     </td>
                     <td align="left">
                         <para>SCILAB_precision = {8, 16, 32, u8, u16, u32}</para>
                     </td>
-                    <td namest="c1" nameend="c2" align="left">
+                    <td align="left">
                         <para>8 = 8-bit character</para>
                         <para>16 = 16-bit integer</para>
                         <para>32 = 32-bit integer</para>
@@ -288,18 +294,16 @@
         </mediaobject>
         <para>in hdfview.</para>
         <para>And the metadata will be:</para>
-        <emphasis role="italic">
-            <para>int32matrix (800, 2)</para>
-            <para>32-bit integer, 3 x 2 =&gt; the size of the variable</para>
-            <para>Number of attributes = 2</para>
-            <para>SCILAB_Class = integer</para>
-            <para>SCILAB_precision = 32</para>
-        </emphasis>
-        <para>
-            <note>
+        <para><emphasis role="italic">int32matrix (800, 2)</emphasis></para>
+        <para><emphasis role="italic">32-bit integer, 3 x 2 =&gt; the size of the variable</emphasis></para>
+        <para><emphasis role="italic">Number of attributes = 2</emphasis></para>
+        <para><emphasis role="italic">SCILAB_Class = integer</emphasis></para>
+        <para><emphasis role="italic">SCILAB_precision = 32</emphasis></para>
+        <note>
+            <para>
                 Scalar value are stored as a matrix of size 1 by 1.
-            </note>
-        </para>
+            </para>
+        </note>
         <para>
             An empty variable (<literal>[]</literal>) will have the attribute <literal>SCILAB_empty</literal> set to true.
         </para>
@@ -564,65 +568,90 @@
             Sample files of all these variables are provided into the Scilab distribution. They are available in the directory: <emphasis>SCI/modules/hdf5/tests/sample_scilab_data/</emphasis>
         </para>
         <para>At the date of redaction of this document, the following files are provided with the Scilab distribution:</para>
-        <emphasis role="italic">
-            <para>
-                booleanmatrix.sod
-            </para>
-            <para>booleanscalar.sod
-            </para>
-            <para>booleansparse.sod
-            </para>
-            <para>emptymatrix.sod
-            </para>
-            <para>emptysparse.sod
-            </para>
-            <para>hypermatrixcomplex.sod
-            </para>
-            <para>hypermatrix.sod
-            </para>
-            <para>int16.sod
-            </para>
-            <para>int32.sod
-            </para>
-            <para>int8.sod
-            </para>
-            <para>listnested.sod
-            </para>
-            <para>list.sod
-            </para>
-            <para>matricedoublecomplexscalar.sod
-            </para>
-            <para>matricedoublecomplex.sod
-            </para>
-            <para>matricedoublescalar.sod
-            </para>
-            <para>matricedouble.sod
-            </para>
-            <para>matricestringscalar.sod
-            </para>
-            <para>matricestring.sod
-            </para>
-            <para>mlist.sod
-            </para>
-            <para>polynomialscoef.sod
-            </para>
-            <para>polynomials.sod
-            </para>
-            <para>sparsematrix.sod
-            </para>
-            <para>tlist.sod
-            </para>
-            <para>uint16.sod
-            </para>
-            <para>uint32.sod
-            </para>
-            <para>uint8.sod
-            </para>
-            <para>undefinedelement.sod
-            </para>
-            <para>voidelement.sod
-            </para>
-        </emphasis>
+        <para>
+            <emphasis role="italic">booleanmatrix.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">booleanscalar.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">booleansparse.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">emptymatrix.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">emptysparse.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">hypermatrixcomplex.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">hypermatrix.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">int16.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">int32.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">int8.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">listnested.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">list.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">matricedoublecomplexscalar.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">matricedoublecomplex.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">matricedoublescalar.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">matricedouble.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">matricestringscalar.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">matricestring.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">mlist.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">polynomialscoef.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">polynomials.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">sparsematrix.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">tlist.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">uint16.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">uint32.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">uint8.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">undefinedelement.sod</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">voidelement.sod</emphasis>
+        </para>
     </refsection>
     <refsection>
         <title>Format evolutions</title>
@@ -710,4 +739,3 @@
         </simplelist>
     </refsection>
 </refentry>
-

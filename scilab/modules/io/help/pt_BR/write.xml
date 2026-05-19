@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="write" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="write" xml:lang="pt">
     <refnamediv>
         <refname>write</refname>
         <refpurpose>escreve números reais ou strings no console ou em um arquivo formatado</refpurpose>
@@ -41,13 +38,17 @@
                     <para>Quer
                         <itemizedlist>
                             <listitem>
-                                o string especificando o nome do arquivo. Tentar sobrescrever um
-                                arquivo existente produzirá um erro.
+                                 <para>
+                                    o string especificando o nome do arquivo. Tentar sobrescrever um
+                                    arquivo existente produzirá um erro.
+                                </para>
                             </listitem>
                             <listitem>
-                                ou o ID inteiro de um arquivo aberto com  <literal>file(…)</literal>
-                                (veja <link linkend="file">file</link>).
-                                Usando <literal>%io(2)</literal> irá escrever no console.
+                                 <para>
+                                    ou o ID inteiro de um arquivo aberto com  <literal>file(…)</literal>
+                                    (veja <link linkend="file">file</link>).
+                                    Usando <literal>%io(2)</literal> irá escrever no console.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>

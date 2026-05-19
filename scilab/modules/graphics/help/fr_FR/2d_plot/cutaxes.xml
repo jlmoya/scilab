@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="cutaxes" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="cutaxes" xml:lang="fr">
     <refnamediv>
         <refname>cutaxes</refname>
         <refpurpose>
@@ -38,47 +35,51 @@
         <title>Sommaire</title>
         <itemizedlist>
             <listitem>
-                <link linkend="cutaxes_arguments">Arguments</link>
+                <para><link linkend="cutaxes_arguments">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="cutaxes_description">Description</link>
+                <para>
+                    <link linkend="cutaxes_description">Description</link>
                     <itemizedlist>
                         <listitem>
-                            <link linkend="cutaxes_description">Introduction</link>
+                            <para><link linkend="cutaxes_description">Introduction</link></para>
                         </listitem>
                         <listitem>
-                            <link linkend="cutaxes_titles">Titres, légendes, Données étiquetées</link>
+                            <para><link linkend="cutaxes_titles">Titres, légendes, Données étiquetées</link></para>
                         </listitem>
                     </itemizedlist>
+                </para>
             </listitem>
             <listitem>
-                <link linkend="cutaxes_examples">Exemples</link>
-                <itemizedlist>
-                    <listitem>
-                        <link linkend="cutaxes_curves">Options "ticksmode" et "widths". Adressage et restylage des courbes</link>
-                    </listitem>
-                    <listitem>
-                        <link linkend="cutaxes_xmultiscale">Intervalle répliqué et inversé</link>
-                    </listitem>
-                    <listitem>
-                        <link linkend="cutaxes_ymultiscale">Axe Y multi-échelle</link>
-                    </listitem>
-                    <listitem>
-                        <link linkend="cutaxes_patch2D">Exemple avec Matplot1()</link>
-                    </listitem>
-                </itemizedlist>
+                <para>
+                    <link linkend="cutaxes_examples">Exemples</link>
+                    <itemizedlist>
+                        <listitem>
+                            <para><link linkend="cutaxes_curves">Options "ticksmode" et "widths". Adressage et restylage des courbes</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link linkend="cutaxes_xmultiscale">Intervalle répliqué et inversé</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link linkend="cutaxes_ymultiscale">Axe Y multi-échelle</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link linkend="cutaxes_patch2D">Exemple avec Matplot1()</link></para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
             </listitem>
             <listitem>
-                <link linkend="cutaxes_seealso">Voir aussi</link>
+                <para><link linkend="cutaxes_seealso">Voir aussi</link></para>
             </listitem>
             <listitem>
-                <link linkend="cutaxes_history">Historique</link>
+                <para><link linkend="cutaxes_history">Historique</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection role="arguments" id="cutaxes_arguments">
-        <title>Arguments</title>
+    <refsection role="arguments" xml:id="cutaxes_arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
@@ -87,19 +88,25 @@
                         vecteur ou matrice d'abscisses réelles.
                         <itemizedlist>
                             <listitem>
-                                Si <varname>x</varname> et <varname>y</varname> sont des vecteurs,
-                                il faut <literal>length(x)==length(y)</literal>
+                                 <para>
+                                    Si <varname>x</varname> et <varname>y</varname> sont des vecteurs,
+                                    il faut <literal>length(x)==length(y)</literal>
+                                        </para>
+                                    </listitem>
+                            <listitem>
+                                 <para>
+                                    Si <varname>x</varname> est un vecteur et <varname>y</varname> est
+                                    une matrice, les mêmes abscisses sont partagées par toutes les
+                                    courbes données en colonnes de <varname>y</varname>, et nous devons
+                                    avoir <literal>length(x)==size(y,1)</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Si <varname>x</varname> est un vecteur et <varname>y</varname> est
-                                une matrice, les mêmes abscisses sont partagées par toutes les
-                                courbes données en colonnes de <varname>y</varname>, et nous devons
-                                avoir <literal>length(x)==size(y,1)</literal>.
-                            </listitem>
-                            <listitem>
-                                Si <varname>x</varname> et <varname>y</varname> sont des matrices,
-                                elles doivent être de mêmes tailles. <literal>x(:,i)</literal> sont
-                                alors les abscisses respectives de <literal>y(:,i)</literal>.
+                                 <para>
+                                    Si <varname>x</varname> et <varname>y</varname> sont des matrices,
+                                    elles doivent être de mêmes tailles. <literal>x(:,i)</literal> sont
+                                    alors les abscisses respectives de <literal>y(:,i)</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -148,7 +155,7 @@
                         portions de l'axe peuvent être ordonnées et présentées à souhait.
                     </para>
                     <para>
-                        Si un intervalle est spécifié tel que <literal>start > end</literal>, l'axe
+                        Si un intervalle est spécifié tel que <literal>start &gt; end</literal>, l'axe
                         est inversé sur la partie concernée.
                     </para>
                 </listitem>
@@ -210,9 +217,11 @@
                             <tr>
                                 <td valign="top"><literal>"isoscaled"</literal></td>
                                 <td>
-                                    Dans ce mode, tous les intervalles sont représentés avec
-                                    la même échelle. La largeur graphique est proportionnelle à
-                                    <literal>|end - start|</literal>.
+                                    <para>
+                                        Dans ce mode, tous les intervalles sont représentés avec
+                                        la même échelle. La largeur graphique est proportionnelle à
+                                        <literal>|end - start|</literal>.
+                                    </para>
                                     <para>
                                         <literal>"-isoscaled"</literal> fera la même chose, en
                                         supprimant en outre les espaces graphiques entre intervalles
@@ -223,9 +232,11 @@
                             <tr>
                                 <td valign="top"><literal>widths</literal></td>
                                 <td>
-                                    Vecteur de nombres indiquant la largeur relative des différentes
-                                    sections graphiques selon l'axe fragmenté. Le vecteur doit
-                                    avoir autant d'éléments qu'il y a d'intervalles définis.
+                                    <para>
+                                        Vecteur de nombres indiquant la largeur relative des différentes
+                                        sections graphiques selon l'axe fragmenté. Le vecteur doit
+                                        avoir autant d'éléments qu'il y a d'intervalles définis.
+                                    </para>
                                     <para>
                                         Seuls les rapports <literal>|widths| / sum(|widths|)</literal>
                                         sont considérés, de sorte que <literal>[1,2,2]</literal>
@@ -266,13 +277,15 @@
                         liste de vecteurs d'identifiants graphiques des morceaux des courbes tracées.
                         <itemizedlist>
                             <listitem>
-                                <literal>curves(i)</literal> est le vecteur des identifiants graphiques
-                                de toutes les sections tracées pour la courbe n° i définie dans
-                                <literal>y(:,i)</literal>.
+                                 <para><literal>curves(i)</literal> est le vecteur des identifiants graphiques
+                                    de toutes les sections tracées pour la courbe n° i définie dans
+                                    <literal>y(:,i)</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>curves(i)(j)</literal> adresse la courbe n° i tracée sur
-                                l'intervalle n° j défini par <literal>intervals(j,:)</literal>.
+                                 <para><literal>curves(i)(j)</literal> adresse la courbe n° i tracée sur
+                                    l'intervalle n° j défini par <literal>intervals(j,:)</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -284,15 +297,17 @@
                         section en tirets. Un exemple est fourni et illustré plus loin.
                     </para>
                     <note>
-                        Le vecteur des identifiants des courbes n° c1 à c2 > c1 pour l'unique
-                        intervalle n° i est donné par
-                        <literal>Axes(i).children($).children($-c1+1:-1:$-c2+1)</literal>.
+                        <para>
+                            Le vecteur des identifiants des courbes n° c1 à c2 &gt; c1 pour l'unique
+                            intervalle n° i est donné par
+                            <literal>Axes(i).children($).children($-c1+1:-1:$-c2+1)</literal>.
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection role="description" id="cutaxes_description">
+    <refsection role="description" xml:id="cutaxes_description">
         <title>Description</title>
         <para>
             <literal>cutaxes()</literal> permet de tracer des courbes selon un axe non régulier,
@@ -321,76 +336,87 @@
             Un axe peut être gradué symétriquement en répétant un intervalle et en inversant sa copie.
         </para>
         <note>
-            <literal>cutaxes()</literal> peut être utilisé notamment en conjonction avec les
-            fonctionnalités suivantes :
-            <itemizedlist>
-                <listitem>
-                    <literal>subplot(..)</literal> ou <literal>xsetech(..)</literal> peuvent être
-                    utilisées pour définir la zone de dessin avant d'appeler
-                    <function>cutaxes()</function>.
-                </listitem>
-                <listitem>
-                    Un rectangle à zoomer portant sur plusieurs intervalles peut être défini de
-                    manière interactive.
-                </listitem>
-            </itemizedlist>
+            <para>
+                <literal>cutaxes()</literal> peut être utilisé notamment en conjonction avec les
+                fonctionnalités suivantes :
+                <itemizedlist>
+                    <listitem>
+                        <para><literal>subplot(..)</literal> ou <literal>xsetech(..)</literal> peuvent être
+                            utilisées pour définir la zone de dessin avant d'appeler
+                            <function>cutaxes()</function>.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            Un rectangle à zoomer portant sur plusieurs intervalles peut être défini de
+                            manière interactive.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
         </note>
-        <refsect3 id="cutaxes_titles">
-            <title>Titres, légendes, et étiquettes de courbes</title>
-            <para>
-                <emphasis role="bold"><varname>axes0</varname> initial répliqué :</emphasis>
-            </para>
-            <para>
-                Dans ce cas, le titre général et les légendes des axes X et Y de
-                <varname>axes0</varname> sont transférés dans le nouveau repère graphique
-                composite. Si <varname>axes0</varname> comporte des étiquettes de données
-                (datatips), celles-ci sont également transférées. Chaque étiquette peut être
-                interactivement bougée mais est astreinte à rester sur son intervalle.
-            </para>
-            <para>
-                <emphasis role="bold">cutaxes(x,y,..) de courbes :</emphasis>
-            </para>
-            <para>
-                <emphasis role="italic">Titre général, titre de l'axe continu</emphasis> :
-                <literal>title()</literal>, <literal>xtitle()</literal>,
-                <literal>xlabel()</literal> lorsque <varname>cutaxis</varname> est <literal>"y"</literal>,
-                ou
-                <literal>ylabel()</literal> lorsque <varname>cutaxis</varname> est <literal>"x"</literal>
-                peuvent être utilisés comme d'habitude après avoir appelé <literal>cutaxes()</literal>.
-            </para>
-            <para>
-                <emphasis role="italic">Titre de l'axe fragmenté</emphasis> : il est fortement
-                recommandé d'utiliser le titre de l'intervalle le plus central, plutôt que le titre
-                du repère graphique général (lequel introduit un décalage parasite). L'identifiant
-                de l'intervalle ciblé sera utilisé en appelant
-                <literal>xlabel()</literal> ou <literal>ylabel()</literal>. Voir les exemples.
-            </para>
-            <para>
-                <emphasis role="italic">Etiquettes de courbes (datatips)</emphasis> : elles peuvent
-                être définies comme d'habitude sur les courbes tracées par
-                <literal>cutaxes()</literal>. Cependant, aucune étiquette ne peut alors être
-                glissée sur la courbe d'un intervalle à l'autre.
-            </para>
-            <para>
-                <emphasis role="bold">Bloc de légendes de courbes multiples</emphasis> : un tel bloc
-                peut être défini dans le repère graphique d'un des intervalles, en ciblant
-                préalablement l'identifiant graphique correspondant :
-                <screen><![CDATA[
+
+        <para>
+            <emphasis role="bold">Titres, légendes, et étiquettes de courbes</emphasis>
+            <anchor xml:id="cutaxes_titles"/>
+        </para>
+        <para>
+            <emphasis role="bold"><varname>axes0</varname> initial répliqué :</emphasis>
+        </para>
+        <para>
+            Dans ce cas, le titre général et les légendes des axes X et Y de
+            <varname>axes0</varname> sont transférés dans le nouveau repère graphique
+            composite. Si <varname>axes0</varname> comporte des étiquettes de données
+            (datatips), celles-ci sont également transférées. Chaque étiquette peut être
+            interactivement bougée mais est astreinte à rester sur son intervalle.
+        </para>
+        <para>
+            <emphasis role="bold">cutaxes(x,y,..) de courbes :</emphasis>
+        </para>
+        <para>
+            <emphasis role="italic">Titre général, titre de l'axe continu</emphasis> :
+            <literal>title()</literal>, <literal>xtitle()</literal>,
+            <literal>xlabel()</literal> lorsque <varname>cutaxis</varname> est <literal>"y"</literal>,
+            ou
+            <literal>ylabel()</literal> lorsque <varname>cutaxis</varname> est <literal>"x"</literal>
+            peuvent être utilisés comme d'habitude après avoir appelé <literal>cutaxes()</literal>.
+        </para>
+        <para>
+            <emphasis role="italic">Titre de l'axe fragmenté</emphasis> : il est fortement
+            recommandé d'utiliser le titre de l'intervalle le plus central, plutôt que le titre
+            du repère graphique général (lequel introduit un décalage parasite). L'identifiant
+            de l'intervalle ciblé sera utilisé en appelant
+            <literal>xlabel()</literal> ou <literal>ylabel()</literal>. Voir les exemples.
+        </para>
+        <para>
+            <emphasis role="italic">Etiquettes de courbes (datatips)</emphasis> : elles peuvent
+            être définies comme d'habitude sur les courbes tracées par
+            <literal>cutaxes()</literal>. Cependant, aucune étiquette ne peut alors être
+            glissée sur la courbe d'un intervalle à l'autre.
+        </para>
+        <para>
+            <emphasis role="bold">Bloc de légendes de courbes multiples</emphasis> : un tel bloc
+            peut être défini dans le repère graphique d'un des intervalles, en ciblant
+            préalablement l'identifiant graphique correspondant :
+            <screen><![CDATA[
 sca(axes(i));
 legend(["Curve 1" "Curve 2"],"in_upper_left");
 ]]></screen>
-                La position du bloc dans le repère intervalle se réfère aux bornes de celui-ci.
-                Il n'est pas possible de cibler le repère graphique général <varname>axes($)</varname>
-                pour définir et héberger ce bloc.
-            </para>
-        </refsect3>
+            La position du bloc dans le repère intervalle se réfère aux bornes de celui-ci.
+            Il n'est pas possible de cibler le repère graphique général <varname>axes($)</varname>
+            pour définir et héberger ce bloc.
+        </para>
+
     </refsection>
-    <refsection role="examples" id="cutaxes_examples">
+    <refsection role="examples" xml:id="cutaxes_examples">
         <title>Exemples</title>
-        <refsect3 id="cutaxes_curves">
-            <title>Options "ticksmode" et "widths". Identification et modifications des courbes</title>
-            <para/>
-            <programlisting><![CDATA[
+
+        <para>
+            <emphasis role="bold">Options "ticksmode" et "widths". Identification et modifications des courbes</emphasis>
+            <anchor xml:id="cutaxes_curves"/>
+        </para>
+        <para/>
+        <programlisting><![CDATA[
 x = [-7.5:0.5:200]';
 y =  exp(x/30).*(1+0.5*sin(x));
 
@@ -412,7 +438,7 @@ c1(3).thickness = 2;              //    .. et trait plus épais
 // Mise en mode logarithmique de la 3ème partie de l'axe fragmenté X
 a(3).log_flags = "lnn";
         ]]></programlisting>
-            <scilab:image><![CDATA[
+        <scilab:image><![CDATA[
                 x = [-7.5:0.5:200]';
                 y =  exp(x/30).*(1+0.5*sin(x));
 
@@ -433,20 +459,22 @@ a(3).log_flags = "lnn";
 
                 // Setting X-axis of the third section in log:
                 a(3).log_flags = "lnn";
-         ]]></scilab:image>
-            <para/>
-            </refsect3>
-            <refsect3 id="cutaxes_xmultiscale">
-                <title>Intervalle répliqué et inversé</title>
-            <para>
-                <literal>cutaxes()</literal> permet d'utiliser des intervalles se recouvrant partiellement,
-                se répétant avec ou sans inversion ou changement d'échelle, etc. Cette souplesse peut être
-                mise à profit de diverses façons. Par exemple, pour une abscisse radiale positive, il est
-                possible de graduer en valeurs positives les distances à 0 des deux cotés, autant vers la
-                gauche que vers la droite. Un coté peut être gradué en échelle radiale linéaire, et l'autre
-                en échelle radiale logarithmique mettant en évidence un comportement asympotique :
-            </para>
-            <programlisting><![CDATA[
+        ]]></scilab:image>
+        <para/>
+
+        <para>
+            <emphasis role="bold">Intervalle répliqué et inversé</emphasis>
+            <anchor xml:id="cutaxes_xmultiscale"/>
+        </para>
+        <para>
+            <literal>cutaxes()</literal> permet d'utiliser des intervalles se recouvrant partiellement,
+            se répétant avec ou sans inversion ou changement d'échelle, etc. Cette souplesse peut être
+            mise à profit de diverses façons. Par exemple, pour une abscisse radiale positive, il est
+            possible de graduer en valeurs positives les distances à 0 des deux cotés, autant vers la
+            gauche que vers la droite. Un coté peut être gradué en échelle radiale linéaire, et l'autre
+            en échelle radiale logarithmique mettant en évidence un comportement asympotique :
+        </para>
+        <programlisting><![CDATA[
 x = logspace(-2,2,500)';
 y = sin(10*log(x)).*(x.^0.3);
 
@@ -461,7 +489,7 @@ title "Comportement singulier en r=0"
 ylabel Ordonnées
 xlabel(a(2), "Rayon r")
          ]]></programlisting>
-            <scilab:image><![CDATA[
+        <scilab:image><![CDATA[
                 x = logspace(-2,2,500)';
                 y = sin(10*log(x)).*(x.^0.3);
 
@@ -476,14 +504,16 @@ xlabel(a(2), "Rayon r")
                 ylabel Ordinates
                 xlabel(a(2), "Radius")
          ]]></scilab:image>
-        </refsect3>
 
-        <refsect3 id="cutaxes_ymultiscale">
-            <title>Axe Y multiéchelle :</title>
-            <para>
-                <emphasis role="bold">Exemple n° 1, avec légendes des courbes</emphasis>
-            </para>
-            <programlisting><![CDATA[
+        <para>
+            <emphasis role="bold">Axe Y multiéchelle :</emphasis>
+            <anchor xml:id="cutaxes_ymultiscale"/>
+        </para>
+
+        <para>
+            <emphasis role="bold">Exemple n° 1, avec légendes des courbes</emphasis>
+        </para>
+        <programlisting><![CDATA[
 x = [-8:0.2:100]';
 y =  exp(x/14).*(1+0.5*sin(x));
 intervals = [0.01 10 ; 10 max(y)];
@@ -501,7 +531,7 @@ legend(["Courbe 1" "Courbe 2"], "in_upper_left");
 // a($).grid(1) = -1;         // supprime la grille verticale commune
 // a(1:$-1).grid(:,2) = -1;   // supprime les grilles horizontales
          ]]></programlisting>
-            <scilab:image><![CDATA[
+        <scilab:image><![CDATA[
             x = [-8:0.2:100]';
             y =  exp(x/14).*(1+0.5*sin(x));
             intervals = [0.01 10 ; 10 max(y)];
@@ -515,18 +545,18 @@ legend(["Courbe 1" "Courbe 2"], "in_upper_left");
             xlabel Abscissae
             ylabel(a(2), "Ordinates")  // a(2) is now the current axes
             legend(["Curve 1" "Curve 2"], "in_upper_left");
-         ]]></scilab:image>
-            <para>
-                <emphasis role="bold">
-                    Exemple n° 2: faibles rebonds des ailes de sinc<superscript>2</superscript>()
-                </emphasis>
-            </para>
-            <para>
-                Ci-dessous, nous traçons la courbe pour créer son repère graphique initial dans la zone
-                <literal>subplot(1,2,1)</literal>. Nous déplaçons ensuite <literal>gca()</literal> en
-                <literal>subplot(1,2,2)</literal>, avant d'appeler <literal>cutaxes(..)</literal> :
-            </para>
-            <programlisting><![CDATA[
+        ]]></scilab:image>
+        <para>
+            <emphasis role="bold">
+                Exemple n° 2: faibles rebonds des ailes de sinc<superscript>2</superscript>()
+            </emphasis>
+        </para>
+        <para>
+            Ci-dessous, nous traçons la courbe pour créer son repère graphique initial dans la zone
+            <literal>subplot(1,2,1)</literal>. Nous déplaçons ensuite <literal>gca()</literal> en
+            <literal>subplot(1,2,2)</literal>, avant d'appeler <literal>cutaxes(..)</literal> :
+        </para>
+        <programlisting><![CDATA[
 x = linspace(-15,15,400);
 clf
 subplot(1,2,1)
@@ -543,7 +573,7 @@ subplot(1,2,2)
 Axes = cutaxes(ax0, "y",[0 0.1 ; 0.1 1], "widths","-");
 is_handle_valid(ax0)  // %T: le repère graphique initial subsiste
          ]]></programlisting>
-            <scilab:image><![CDATA[
+        <scilab:image><![CDATA[
             x = linspace(-15,15,400);
             clf
             subplot(1,2,1)
@@ -557,13 +587,13 @@ is_handle_valid(ax0)  // %T: le repère graphique initial subsiste
             subplot(1,2,2)
             Axes = cutaxes(ax0, "y",[0 0.1 ; 0.1 1], "widths","-");
          ]]></scilab:image>
-            <para>
-                Ci-après, <literal>gca()</literal> reste sur la zone où nous traçons la courbe dans
-                son repère graphique initial, avant d'appeler cutaxes().
-                En conséquence, <literal>cutaxes</literal> dessine dans la même zone et supprime
-                le repère graphique initial après sa réplication par intervalles :
-            </para>
-            <programlisting><![CDATA[
+        <para>
+            Ci-après, <literal>gca()</literal> reste sur la zone où nous traçons la courbe dans
+            son repère graphique initial, avant d'appeler cutaxes().
+            En conséquence, <literal>cutaxes</literal> dessine dans la même zone et supprime
+            le repère graphique initial après sa réplication par intervalles :
+        </para>
+        <programlisting><![CDATA[
 x = linspace(-15,15,400);
 clf
 subplot(1,2,1)
@@ -573,7 +603,7 @@ ax0 = gca();
 Axes = cutaxes(ax0, "y",[0 0.1 ; 0.1 1], "widths","-");
 is_handle_valid(ax0)  // %F: le repère graphique initial a été supprimé
          ]]></programlisting>
-            <scilab:image><![CDATA[
+        <scilab:image><![CDATA[
             x = linspace(-15,15,400);
             clf
             subplot(1,2,1)
@@ -582,12 +612,14 @@ is_handle_valid(ax0)  // %F: le repère graphique initial a été supprimé
             ax0 = gca();
             Axes = cutaxes(ax0, "y", [0 0.1 ; 0.1 1], "widths","-");
          ]]></scilab:image>
-        </refsect3>
 
-    <refsect3 id="cutaxes_patch2D">
-        <title>Exemple avec Matplot1()</title>
-        <para>
-        <programlisting><![CDATA[
+         
+    <para>
+        <emphasis role="bold">Exemple avec Matplot1()</emphasis>
+        <anchor xml:id="cutaxes_patch2D"/>
+    </para>
+    <para>
+    <programlisting><![CDATA[
 clf
 gcf().axes_size = [925 455];
 subplot(1,2,1)
@@ -613,10 +645,8 @@ axes = cutaxes(x0, "y",intervals, "ticksmode","alt", "widths","isoscaled");
             axes = cutaxes(x0, "y",intervals, "ticksmode","alt", "widths","isoscaled");
      ]]></scilab:image>
         </para>
-    </refsect3>
-
     </refsection>
-    <refsection role="see also" id="cutaxes_seealso">
+    <refsection role="see also" xml:id="cutaxes_seealso">
         <title>Voir aussi</title>
         <simplelist type="inline">
             <member>
@@ -633,7 +663,7 @@ axes = cutaxes(x0, "y",intervals, "ticksmode","alt", "widths","isoscaled");
             </member>
         </simplelist>
     </refsection>
-    <refsection role="history" id="cutaxes_history">
+    <refsection role="history" xml:id="cutaxes_history">
         <title>Historique</title>
         <revhistory>
             <revision>

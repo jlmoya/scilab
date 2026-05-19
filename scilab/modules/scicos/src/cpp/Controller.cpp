@@ -169,12 +169,12 @@ model::BaseObject* Controller::referenceBaseObject(model::BaseObject* o) const
     }
 
     // not locked on purpose, this will allow referencing on View notification
-    // lock(&m_instance.onViewsStructuralModification);
+    lock(&m_instance.onViewsStructuralModification);
     for (const auto& v : m_instance.allViews)
     {
         v->objectReferenced(o->id(), o->kind(), refCount);
     }
-    // unlock(&m_instance.onViewsStructuralModification);
+    unlock(&m_instance.onViewsStructuralModification);
 
     return o;
 }
@@ -198,12 +198,12 @@ void Controller::deleteBaseObject(model::BaseObject* initial)
         --refCount;
 
         // not locked on purpose, this will allow referencing on View notification
-        // lock(&m_instance.onViewsStructuralModification);
+        lock(&m_instance.onViewsStructuralModification);
         for (const auto& v : m_instance.allViews)
         {
             v->objectUnreferenced(initial->id(), initial->kind(), refCount);
         }
-        // unlock(&m_instance.onViewsStructuralModification);
+        unlock(&m_instance.onViewsStructuralModification);
         return;
     }
 
@@ -435,6 +435,8 @@ model::BaseObject* Controller::cloneBaseObject(cloned_t& mapped, model::BaseObje
             updateChildrenRelatedPropertiesAfterClone(mappedLayer);
             setObjectProperty(cloned, CHILDREN, children);
         }
+
+        mapProperty(mapped, initial, cloned, LABEL, true);
         // FIXME what about REFERENCED_PORT ?
     }
     else if (k == DIAGRAM)
@@ -455,6 +457,7 @@ model::BaseObject* Controller::cloneBaseObject(cloned_t& mapped, model::BaseObje
         mapProperty(mapped, initial, cloned, PARENT_BLOCK, false);
         mapProperty(mapped, initial, cloned, SOURCE_PORT, false);
         mapProperty(mapped, initial, cloned, DESTINATION_PORT, false);
+        mapProperty(mapped, initial, cloned, LABEL, true);
     }
     else if (k == PORT)
     {

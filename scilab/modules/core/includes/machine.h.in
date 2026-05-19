@@ -61,11 +61,11 @@
 /* Define to 1 if you have the `bzero' function. */
 #undef HAVE_BZERO
 
-/* Define to 1 if you have the MacOS X function CFLocaleCopyCurrent in the
-   CoreFoundation framework. */
-#undef HAVE_CFLOCALECOPYCURRENT
+/* Define to 1 if you have the Mac OS X function
+   CFLocaleCopyPreferredLanguages in the CoreFoundation framework. */
+#undef HAVE_CFLOCALECOPYPREFERREDLANGUAGES
 
-/* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
+/* Define to 1 if you have the Mac OS X function CFPreferencesCopyAppValue in
    the CoreFoundation framework. */
 #undef HAVE_CFPREFERENCESCOPYAPPVALUE
 
@@ -550,13 +550,7 @@
 /* Define for large files, on AIX-style hosts. */
 #undef _LARGE_FILES
 
-/* Number of bits in time_t, on hosts where this is settable. */
-#undef _TIME_BITS
-
-/* Define to 1 on platforms where this makes time_t a 64-bit type. */
-#undef __MINGW_USE_VC2005_COMPAT
-
-/* Define to empty if 'const' does not conform to ANSI C. */
+/* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
 /* Define to `__inline__' or `__inline' if that's what the C compiler

@@ -24,6 +24,8 @@
         <para>
             Following the type of problem, finding out which method to use is not always obvious, only general guidelines can be established. Those are discussed in this page.
         </para>
+    </refsection>
+    <refsection>
         <title>Variable-size and Fixed-size</title>
         <para>
             The solvers can be divided into two distinct main families: the <emphasis>Variable</emphasis>-size and the <emphasis>Fixed</emphasis>-size step methods.
@@ -77,6 +79,8 @@
         <para>
             Variable step-size ODE solvers are not appropriate for deterministic real-time applications because the computational overhead of taking a time step varies over the course of an application.
         </para>
+    </refsection>
+    <refsection>
         <title>Explicit and Implicit - Stiffness</title>
         <para>
             Within these two families, we can distinguish <emphasis>Explicit</emphasis> solvers from <emphasis>Implicit</emphasis> ones.
@@ -105,24 +109,26 @@
         <para>
             To put it simply, the <emphasis>Explicit</emphasis> go straight to a computation of the solution, whereas the <emphasis>Implicit</emphasis> concentrate on stability, involving more operations, following the tolerances.
         </para>
+    </refsection>
+    <refsection>
         <title>So how to choose?</title>
         <para>
             Because it is not possible to know for sure whether a solver will be efficient for a given system or not, the best way is to run the most probable one on it and to compare their results.
         </para>
         <para>
             The user should first establish the complexity of his problem (stability / stiffness) and if he desires high precision, rapid simulation, predictable time or an automated program.
-            <para>
-                <emphasis role="bold">Precision:</emphasis> <emphasis>CVode</emphasis>,
-            </para>
-            <para>
-                <emphasis role="bold">Predictable time:</emphasis> Fixed-size step,
-            </para>
-            <para>
-                <emphasis role="bold">Simulation time:</emphasis> <emphasis>LSodar</emphasis>,
-            </para>
-            <para>
-                <emphasis role="bold">Automated:</emphasis> <emphasis>LSodar</emphasis>.
-            </para>
+        </para>
+        <para>
+            <emphasis role="bold">Precision:</emphasis> <emphasis>CVode</emphasis>,
+        </para>
+        <para>
+            <emphasis role="bold">Predictable time:</emphasis> Fixed-size step,
+        </para>
+        <para>
+            <emphasis role="bold">Simulation time:</emphasis> <emphasis>LSodar</emphasis>,
+        </para>
+        <para>
+            <emphasis role="bold">Automated:</emphasis> <emphasis>LSodar</emphasis>.
         </para>
     </refsection>
     <refsection>

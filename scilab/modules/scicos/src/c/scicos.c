@@ -325,7 +325,7 @@ int C2F(scicos)(double *x_in, int *xptr_in, double *z__,
                 int *zcptr_in, int *subscr, int *nsubs,
                 double *simpar, int *flag__, int *ierr_out)
 {
-    int i1, kf, lprt, in, out, job = 1;
+    int i1, kf, lprt, in, out;
 
 
     static int mxtb = 0, ierr0 = 0, kfun0 = 0, i = 0, j = 0, k = 0, jj = 0;
@@ -602,7 +602,7 @@ int C2F(scicos)(double *x_in, int *xptr_in, double *z__,
         else
         {
             //linked functions (internal or external)
-            Blocks[kf].funpt = (voidg) p;
+            Blocks[kf].funpt = p;
             Blocks[kf].scsptr = NULL;   /* this is done for being able to test if a block
                                         is a scilab block in the debugging phase when
                                         sciblk4 is called */
@@ -1415,12 +1415,6 @@ static void cossim(double *told)
     /* System generated locals */
     int i3 = 0;
 
-    //** used for the [stop] button
-    char* CommandToUnstack;
-    static int CommandLength = 0;
-    static int SeqSync = 0;
-    static int one = 1;
-
     /* Local variables */
     static scicos_flag flag__ = 0;
     static int ierr1 = 0;
@@ -1452,7 +1446,6 @@ static void cossim(double *told)
     int (* ODESStolerances) (void*, sunrealtype, sunrealtype);
     /* Generic flags for stop mode */
     int ODE_NORMAL   = 1;  /* ODE_NORMAL   = CV_NORMAL   = LS_NORMAL   = 1 */
-    int ODE_ONE_STEP = 2;  /* ODE_ONE_STEP = CV_ONE_STEP = LS_ONE_STEP = 2 */
     if (SUNContext_Create(SUN_COMM_NULL, &scicos_sunctx) < 0)
     {
         *ierr = 10000;
@@ -2128,11 +2121,6 @@ static void cossimdaskr(double *told)
 {
     /* System generated locals */
     int i3;
-    //** used for the [stop] button
-    char* CommandToUnstack;
-    static int CommandLength = 0;
-    static int SeqSync = 0;
-    static int one = 1;
 
     /* Local variables */
     static scicos_flag flag__ = 0;
@@ -2171,7 +2159,6 @@ static void cossimdaskr(double *told)
     int solver = C2F(cmsolver).solver;
     /* Flags for initial values calculation */
     int DAE_YA_YDP_INIT = 1;
-    int DAE_Y_INIT      = 2;
     /* Defining function pointers, for more readability*/
     void(* DAEFree) (void**);
     int (* DAESolve) (void*, sunrealtype, sunrealtype*, N_Vector, N_Vector, int);
@@ -2187,12 +2174,10 @@ static void cossimdaskr(double *told)
     int (* DAESetMaxNumSteps) (void*, long int);
     int (* DAESetMaxNumJacsIC) (void*, int);
     int (* DAESetMaxNumItersIC) (void*, int);
-    int (* DAESetMaxNumStepsIC) (void*, int);
     int (* DAESetLineSearchOffIC) (void*, int);
     /* For DAEs, the generic flags for stop mode depend on the used solver */
-    int DAE_NORMAL = 0, DAE_ONE_STEP = 0;
+    int DAE_NORMAL = 0;
     DAE_NORMAL   = (solver == IDA_BDF_Newton) ? 1 : 0;  /* IDA_NORMAL   = 1, DDAS_NORMAL   = 0 */
-    DAE_ONE_STEP = (solver == IDA_BDF_Newton) ? 2 : 1;  /* IDA_ONE_STEP = 2, DDAS_ONE_STEP = 1 */
     if (SUNContext_Create(SUN_COMM_NULL, &scicos_sunctx) < 0)
     {
         *ierr = 10000;
@@ -2215,7 +2200,6 @@ static void cossimdaskr(double *told)
             DAEGetConsistentIC = &IDAGetConsistentIC;
             DAESetMaxNumJacsIC = &IDASetMaxNumJacsIC;
             DAESetMaxNumItersIC = &IDASetMaxNumItersIC;
-            DAESetMaxNumStepsIC = &IDASetMaxNumStepsIC;
             DAESetLineSearchOffIC = &IDASetLineSearchOffIC;
             break;
         case DDaskr_BDF_Newton:
@@ -2234,7 +2218,6 @@ static void cossimdaskr(double *told)
             DAEGetConsistentIC = &DDaskrGetConsistentIC;
             DAESetMaxNumJacsIC = &DDaskrSetMaxNumJacsIC;
             DAESetMaxNumItersIC = &DDaskrSetMaxNumItersIC;
-            DAESetMaxNumStepsIC = &DDaskrSetMaxNumStepsIC;
             DAESetLineSearchOffIC = &DDaskrSetLineSearchOffIC;
             break;
         default: // Unknown solver number
@@ -4428,10 +4411,8 @@ static void jacpsol(sunrealtype *res, int *ires, int *neq, sunrealtype *tOld, su
     /* Here, we compute the system preconditioner matrix P, which is actually the jacobian matrix,
        so P(i,j) = dres(i)/dactual(j) + cj*dres(i)/dactualP(j), and we LU-decompose it. */
     int i = 0, j = 0, nrow = 0, info = 0;
-    sunrealtype tx = 0, del = 0, delinv = 0, ysave = 0, ypsave = 0;
+    sunrealtype del = 0, delinv = 0, ysave = 0, ypsave = 0;
     sunrealtype * e = NULL;
-
-    tx = *tOld;
 
     /* Work array used to evaluate res(*tOld, actual + small_increment, actualP + small_increment).
        savr already contains res(*tOld, actual, actualP). */
@@ -6287,7 +6268,7 @@ static int Jacobians(sunrealtype tt, sunrealtype cj, N_Vector yy,
     double  ttx = 0;
     double *xc = NULL, *xcdot = NULL, *residual = NULL;
     /*  char chr;*/
-    int i = 0, j = 0, n = 0, nx = 0, ni = 0, no = 0, nb = 0, m = 0, flag = 0;
+    int i = 0, j = 0, n = 0, nx = 0, ni = 0, no = 0, m = 0, flag = 0;
     double *RX = NULL, *Fx = NULL, *Fu = NULL, *Gx = NULL, *Gu = NULL, *ERR1 = NULL, *ERR2 = NULL;
     double *Hx = NULL, *Hu = NULL, *Kx = NULL, *Ku = NULL, *HuGx = NULL, *FuKx = NULL, *FuKuGx = NULL, *HuGuKx = NULL;
     double ysave = 0;
@@ -6347,7 +6328,6 @@ static int Jacobians(sunrealtype tt, sunrealtype cj, N_Vector yy,
         ni = 0;
     }
     n = Neq;
-    nb = nblk;
     m = n - nx;
 
     residual = (double *)data->rwork;
@@ -6829,7 +6809,6 @@ int C2F(hfjac)(double *x, double *jac, int *col)
 {
     int N = 0, j = 0;
     double *work = NULL;
-    double  *xdot = NULL;
     double inc = 0., inc_inv = 0., xi = 0., srur = 0.;
 
     N = *neq;
@@ -6846,7 +6825,6 @@ int C2F(hfjac)(double *x, double *jac, int *col)
     inc = srur * SUNMAX (SUNRabs(xi), 1);
     inc = (xi + inc) - xi;
     x[*col - 1] += inc;
-    xdot = x + N;
 
     fx_(x, jac);
     if (*ierr < 0)
@@ -6871,14 +6849,12 @@ int C2F(hfjac)(double *x, double *jac, int *col)
 int simblkKinsol(N_Vector yy, N_Vector resval, void *rdata)
 {
     double t = 0., *xc = NULL, *xcdot = NULL, *residual = NULL;
-    UserData data;
     int jj = 0, nantest = 0, N = 0;
     N = *neq;
 
     t = 0;
     xc = (double *)  NV_DATA_S(yy);
     residual = (double *) NV_DATA_S(resval);
-    data = (UserData) rdata;
     xcdot = xc;
     if (phase == 1) if ( ng > 0 && nmod > 0 )
         {
@@ -6913,12 +6889,6 @@ int simblkKinsol(N_Vector yy, N_Vector resval, void *rdata)
 /*--------------------------------------------------------------------------*/
 static int CallKinsol(double *told)
 {
-    //** used for the [stop] button
-    char* CommandToUnstack;
-    static int CommandLength = 0;
-    static int SeqSync = 0;
-    static int one = 1;
-
     N_Vector y = NULL, yscale = NULL, fscale = NULL;
     SUNMatrix m_A = NULL;
     SUNLinearSolver m_LS = NULL;
@@ -6929,7 +6899,7 @@ static int CallKinsol(double *told)
     /* double eta, egamma, ealpha, mxnewtstep, relfunc, fnormtol, scsteptol; */
     /* booleantype noInitSetup, noMinEps; */
     void *kin_mem = NULL;
-    sunrealtype reltol = 0., abstol = 0.;
+    sunrealtype reltol = 0.;
     int *Mode_save = NULL;
     int Mode_change = 0;
     static int PH = 0;
@@ -6943,7 +6913,6 @@ static int CallKinsol(double *told)
     }
 
     reltol = (sunrealtype) rtol;
-    abstol = (sunrealtype) Atol;
 
     Mode_save = NULL;
     if (nmod > 0)

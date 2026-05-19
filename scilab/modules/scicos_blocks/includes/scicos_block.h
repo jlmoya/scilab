@@ -34,7 +34,7 @@ typedef struct
     int nevprt;
     voidg funpt ;
     int type;
-    void* scsptr;
+    voidg scsptr;
     int nz;
     double *z;
     int noz;

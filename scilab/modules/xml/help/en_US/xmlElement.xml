@@ -21,14 +21,14 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
-            e = xmlElement(doc, name)
+            e = xmlElement(xdoc, name)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>a mlist typed XMLDoc</para>
                 </listitem>
@@ -54,14 +54,14 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a>Hello</a><b> world</b></root>");
-    e = xmlElement(doc, "c");
+    xdoc = xmlReadStr("<root><a>Hello</a><b> world</b></root>");
+    e = xmlElement(xdoc, "c");
     e.attributes.attr = "value";
     e.content = "!";
-    doc.root.children(3) = e;
-    xmlDump(doc)
+    xdoc.root.children(3) = e;
+    xmlDump(xdoc)
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -75,7 +75,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

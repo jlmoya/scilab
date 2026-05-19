@@ -63,22 +63,30 @@
             <warning>
                 <itemizedlist>
                     <listitem>
-                        Nenhum limiar é dado, i.e. <literal>simp</literal> não pode forçar
-                        uma simplificação.
+                         <para>
+                            Nenhum limiar é dado, i.e. <literal>simp</literal> não pode forçar
+                            uma simplificação.
+                        </para>
                     </listitem>
                     <listitem>
-                        Para sistemas lineares dinâmicos que incluem integrador(es), a
-                        simplificação modifica o ganho estático. (<literal>H(0)</literal> para
-                        sistemas contínuos <literal>H(1)</literal> para sistemas discretos)
+                         <para>
+                            Para sistemas lineares dinâmicos que incluem integrador(es), a
+                            simplificação modifica o ganho estático. (<literal>H(0)</literal> para
+                            sistemas contínuos <literal>H(1)</literal> para sistemas discretos)
+                        </para>
                     </listitem>
                     <listitem>
-                        Para dados complexos, <literal>simp</literal> retorna sua(s) entrada(s).
+                         <para>
+                            Para dados complexos, <literal>simp</literal> retorna sua(s) entrada(s).
+                        </para>
                     </listitem>
                     <listitem>
-                        Uma simplificação racional é chamada após aproximadamente cada
-                        operação sobre razões de polinômios. É possível alternar o modo de
-                        simplificação entre "on" e "off" (ligado e desligado) utilizando a função
-                        <literal>simp_mode</literal>.
+                         <para>
+                            Uma simplificação racional é chamada após aproximadamente cada
+                            operação sobre razões de polinômios. É possível alternar o modo de
+                            simplificação entre "on" e "off" (ligado e desligado) utilizando a função
+                            <literal>simp_mode</literal>.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </warning>

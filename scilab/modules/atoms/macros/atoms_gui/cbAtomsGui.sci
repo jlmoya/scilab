@@ -2,6 +2,7 @@
 // Copyright (C) 2009 - DIGITEO - Vincent COUVERT <vincent.couvert@scilab.org>
 // Copyright (C) 2009-2010 - DIGITEO - Pierre MARECHAL <pierre.marechal@scilab.org>
 // Copyright (C) 2014 - Scilab Enterprises - Antoine ELIAS
+// Copyright (C) 2026 - Dassault Systemes S.E. - Antoine ELIAS
 //
 // Copyright (C) 2012 - 2016 - Scilab Enterprises
 //
@@ -12,440 +13,442 @@
 // For more information, see the COPYING file which you should have received
 // along with this program.
 
-function cbAtomsGui()
-    // Load Atoms Internals lib if it's not already loaded
-    if ~ exists("atomsinternalslib") then
+function cbAtomsGui(msg, cb)
+    // Callback for the ATOMS browser uicontrol.
+    // Receives messages from JavaScript and responds accordingly.
+
+    // The browser uicontrol may have been destroyed between the moment the
+    // event was queued and the moment Scilab executes this callback. The
+    // generic Java-side guard skips most stale events, but the figure can
+    // still be closed while we are running here.
+    if isempty(get("atomsFigure")) then
+        return;
+    end
+
+    if ~exists("atomsinternalslib") then
         load("SCI/modules/atoms/macros/atoms_internals/lib");
     end
 
-    UItag = get(gcbo,"Tag");
-
-    // Display selected module information
-    // =========================================================================
-    if or(UItag == ["LeftListbox";"HomeListbox"]) then
-
-        if get(UItag, "string") == "" then
-            return;
+    // String message: page loaded
+    if type(msg) == 10 then
+        if msg == "loaded" then
+            atomsGuiSendData();
         end
-        // Get the selected module
-        selected = getSelected(UItag);
-        if selected(1) == "module" then
-            // Save the module name
-            set("DescFrame", "userdata", selected(2));
-            // Update the description frame
-            updateDescFrame();
-            // Show the description frame
-            showDesc();
-        elseif selected(1)=="category" then
-            LeftElements = atomsGetLeftListboxElts(selected(2));
-            set("LeftListbox", "String", LeftElements("items_str"));
-            set("LeftListbox", "UserData", LeftElements("items_mat"));
-            set("LeftFrame", "UserData", selected(2));
-
-            // Figure name
-            set("atomsFigure", "figure_name", LeftElements("title")+" - ATOMS");
-        end
+        return;
     end
 
-    // A button has been pressed
-    // =========================================================================
-    if or(UItag == ["installButton";"removeButton"]) then
-        // Get the module name
-        module = get("DescFrame","userdata");
-        // Disable callbacks
-        disableAtomsGui();
-    end
+    select msg.type
+    case "loaded"
+        atomsGuiSendData();
 
-    // Install or Update selected module
-    // =========================================================================
-    if UItag == "installButton" then
-        if get("installButton", "String") == _("Install") then
-            updateStatusBar("info",_("Installing") + "...");
-            if execstr("atomsInstall("""+module+""")","errcatch")<>0 then
-                updateStatusBar();
-                messagebox(_("Installation failed!"),_("ATOMS error"),"error");
-            else
-                updateDescFrame();
-                updateStatusBar("success",_("Installation done! Please restart Scilab to take changes into account."));
-            end
+    case "install"
+        moduleName = msg.name;
+        atomsGuiSetStatus("info", _("Installing") + " " + moduleName + "...");
+        if execstr("atomsInstall(""" + moduleName + """)", "errcatch") <> 0 then
+            atomsGuiSetStatus("error", _("Installation failed!"));
         else
-            updateStatusBar("info",_("Updating") + "...");
-            if execstr("atomsUpdate("""+module+""")","errcatch")<>0 then
-                updateStatusBar();
-                messagebox(_("Update failed!"),_("ATOMS error"),"error");
-            else
-                updateDescFrame();
-                updateStatusBar("success",_("Update done! Please restart Scilab to take changes into account."));
-            end
+            atomsGuiSetStatus("success", _("Installation done! Please restart Scilab to take changes into account."));
+            atomsGuiRefreshData();
+            atomsGuiShowDetail(moduleName);
         end
-    // Remove selected module
-    // =========================================================================
-    elseif UItag == "removeButton" then // Remove selected module
-        updateStatusBar("info",_("Removing")+" ...");
-        if execstr("atomsRemove("""+module+""")", "errcatch")<>0 then
-            updateStatusBar();
-            messagebox(_("Remove failed!"),_("ATOMS error"),"error");
+
+    case "update"
+        moduleName = msg.name;
+        atomsGuiSetStatus("info", _("Updating") + " " + moduleName + "...");
+        if execstr("atomsUpdate(""" + moduleName + """)", "errcatch") <> 0 then
+            atomsGuiSetStatus("error", _("Update failed!"));
         else
-            updateDescFrame();
-            updateStatusBar("success",_("Remove done! Please restart Scilab to take changes into account. "));
+            atomsGuiSetStatus("success", _("Update done! Please restart Scilab to take changes into account."));
+            atomsGuiRefreshData();
+            atomsGuiShowDetail(moduleName);
         end
-    end
 
-    if UItag == "autoloadCheck" then
-        module = get("DescFrame", "userdata")
-        if get("autoloadCheck", "value") == get("autoloadCheck", "max") then
-            atomsAutoloadAdd(module)
-            msg = _("The module will be automatically loaded at next startup.")
-            updateStatusBar("info", msg)
+    case "remove"
+        moduleName = msg.name;
+        atomsGuiSetStatus("info", _("Removing") + " " + moduleName + "...");
+        if execstr("atomsRemove(""" + moduleName + """)", "errcatch") <> 0 then
+            atomsGuiSetStatus("error", _("Remove failed!"));
         else
-            atomsAutoloadDel(module)
-            msg = _("Autoload at startup is canceled. The ""Toolboxes"" menu or atomsLoad() can be used to load the module when needed.")
-            updateStatusBar("info", msg)
+            atomsGuiSetStatus("success", _("Remove done! Please restart Scilab to take changes into account."));
+            atomsGuiRefreshData();
+            atomsGuiShowDetail(moduleName);
         end
+
+    case "autoload"
+        moduleName = msg.name;
+        if msg.enable then
+            atomsAutoloadAdd(moduleName);
+            atomsGuiSetStatus("info", _("The module will be automatically loaded at next startup."));
+        else
+            atomsAutoloadDel(moduleName);
+            atomsGuiSetStatus("info", _("Autoload at startup is canceled. The ""Toolboxes"" menu or atomsLoad() can be used to load the module when needed."));
+        end
+
+    case "help"
+        doc("atoms");
+
+    case "systemUpdate"
+        atomsGuiSetStatus("info", _("Updating the list of packages. Please wait..."));
+        if execstr("atomsSystemUpdate()", "errcatch") <> 0 then
+            atomsGuiSetStatus("error", _("Failed to update the list of packages."));
+        else
+            // Refresh cached module descriptions and rebuild the full payload.
+            allModules = atomsDESCRIPTIONget();
+            set("atoms_browser", "userdata", allModules);
+            atomsGuiSendData();
+            atomsGuiSetStatus("success", _("Package list updated."));
+        end
+
     end
-
-    // End of the button action
-    // =========================================================================
-    if or(UItag == ["installButton";"removeButton"]) then
-        enableLeftListbox();
-        reloadLeftListbox();
-    end
-
-    // Menu
-    // =========================================================================
-    // File:Home
-    if or(UItag == ["homeMenu";"backButton"]) then
-        showHome();
-    // File:Close
-    elseif UItag == "closeMenu" then
-        delete(findobj("Tag", "atomsFigure"));
-    // ?:Help
-    elseif UItag == "helpMenu" then
-        doc("atoms")
-    end
 endfunction
 
 // =============================================================================
-// getSelected()
-//  + Return the type: category / module
-//  + Return the name selected from a listbox.
+// atomsGuiSendData()
+//  Send all module and category data to the browser
 // =============================================================================
-function selected = getSelected(listbox)
-    index    = get(listbox, "Value");
-    UserData = get(listbox, "UserData");
-    selected = UserData(index,:);
-endfunction
+function atomsGuiSendData()
+    allModules = get("atoms_browser", "userdata");
+    [OSNAME, ARCH, LINUX, MACOSX, SOLARIS, BSD] = atomsGetPlatform();
 
-// =============================================================================
-// disableAtomsGui()
-//  + Disable all callback
-// =============================================================================
-function disableAtomsGui()
-    set("installButton", "Enable", "off");
-    set("removeButton", "Enable", "off");
-    disableLeftListbox()
-endfunction
+    // Build module list
+    modulesNames = getfield(1, allModules);
+    modulesNames(1:2) = [];
 
-function disableLeftListbox()
-    set("LeftListbox", "Callback", "");
-    set("LeftListbox", "ForegroundColor", [0.5 0.5 0.5]);
-endfunction
+    MRVersions = atomsGetMRVersion(modulesNames);
 
-function enableLeftListbox()
-    set("LeftListbox", "Callback", "cbAtomsGui");
-    set("LeftListbox", "ForegroundColor", [0 0 0]);
-endfunction
-
-// =============================================================================
-// reloadLeftListbox()
-// =============================================================================
-function reloadLeftListbox()
-    category = get("LeftFrame", "UserData");
-    LeftElements = atomsGetLeftListboxElts(category);
-    set("LeftListbox", "String", LeftElements("items_str"));
-    set("LeftListbox", "UserData", LeftElements("items_mat"));
-endfunction
-
-// =============================================================================
-// updateDescFrame()
-//  + Update the description frame with the selected module
-//  + does not change the description frame visibility
-// =============================================================================
-function updateDescFrame()
-    // Operating system detection + Architecture detection
-    // =========================================================================
-    [OSNAME,ARCH,LINUX,MACOSX,SOLARIS,BSD] = atomsGetPlatform();
-
-    // Get the modules list and the selected module
-    // =========================================================================
-    allModules     = get("atomsFigure", "userdata");
-    thisModuleName = get("DescFrame" ,"userdata");
-
-    // Reset the message frame
-    // =========================================================================
-    updateStatusBar();
-
-    // Get the module details
-    // =========================================================================
-    modulesNames       = getfield(1, allModules);
-    modulesNames (1:2) = [];
-    thisModuleStruct   = allModules(thisModuleName);
-
-    MRVersionAvailable = atomsGetMRVersion(thisModuleName);
-    MRVersionInstalled = "";
-
-    if atomsIsInstalled(thisModuleName) then
-        MRVersionInstalled = atomsVersionSort(atomsGetInstalledVers(thisModuleName),"DESC");
-        MRVersionInstalled = MRVersionInstalled(1);
-        thisModuleDetails  = thisModuleStruct(MRVersionInstalled);
+    // Get installed info
+    installed = atomsGetInstalled();
+    if installed == [] then
+        installedNames = [];
+        installedVersions = [];
     else
-        thisModuleDetails  = thisModuleStruct(MRVersionAvailable);
+        installedNames = installed(:, 1);
+        installedVersions = installed(:, 2);
     end
 
-    // Download Size
-    // =========================================================================
-    sizeHTML = "";
-
-    if isfield(thisModuleDetails,OSNAME+ARCH+"Size") then
-        sizeHTML = txt2title(_("Download size")) ..
-        + "<div>" ..
-        + atomsSize2human(thisModuleDetails(OSNAME+ARCH+"Size")) ..
-        + "</div>";
-    end
-
-    // Authors
-    // =========================================================================
-    authorMat  = thisModuleDetails.Author;
-    authorHTML = "";
-
-    for i=1:size(authorMat,"*")
-        authorHTML = authorHTML + authorMat(i)+"<br>";
-    end
-
-    authorHTML = txt2title(_("Author(s)")) ..
-    + "<div>" ..
-    + authorHTML ..
-    + "</div>";
-
-    // URLs (See also)
-    // =========================================================================
-    URLs        = [];
-    seeAlsoHTML = "";
-
-    if isfield(thisModuleDetails,"URL") & (thisModuleDetails.URL<>"") then
-        URLs = [ URLs ; thisModuleDetails.URL ];
-    end
-
-    if isfield(thisModuleDetails,"WebSite") & (thisModuleDetails.WebSite<>"") then
-        URLs = [ URLs ; thisModuleDetails.WebSite ];
-    end
-
-    if ~isempty(URLs) then
-
-        for i=1:size(URLs,"*")
-            seeAlsoHTML = seeAlsoHTML + "&nbsp;&bull;&nbsp;"+URLs(i)+"<br>";
-        end
-
-        seeAlsoHTML = txt2title(_("See also"))..
-        + "<div>" ..
-        + seeAlsoHTML ..
-        + "</div>";
-    end
-
-    // Release date
-    // =========================================================================
-    dateHTML = "";
-
-    if isfield(thisModuleDetails,"Date") ..
-        & ~isempty(regexp(thisModuleDetails.Date,"/^[0-9]{4}-[0-1][0-9]-[0-3][0-9]\s/")) then
-
-        dateHTML = txt2title(_("Release date")) ..
-        + "<div>" ..
-        + part(thisModuleDetails.Date,1:10) ..
-        + "</div>";
-    end
-
-    // Build and Set the HTML code
-    // =========================================================================
-    htmlcode = "<html>" + ..
-    "<body>" + ..
-    txt2title(_("Version")) + ..
-    "<div>" + thisModuleDetails.Version  + "</div>" + ..
-    authorHTML + ..
-    txt2title(_("Description")) + ..
-    "<div>" + ..
-    strcat(thisModuleDetails.Description,"<br>")  + ..
-    "</div>" + ..
-    seeAlsoHTML + ..
-    dateHTML + ..
-    sizeHTML + ..
-    "</body>" + ..
-    "</html>";
-
-    // Process URLs and Emails
-    htmlcode = processHTMLLinks(htmlcode);
-
-    // Update the main description
-    set("Desc", "String", htmlcode);
-
-    // Description title management
-    // =========================================================================
-    descFrameHTML = thisModuleDetails.Title;
-
-    border = get("DescFrame", "border");
-    border.title = descFrameHTML;
-    set("DescFrame", "border", border);
-
-    // Buttons
-    // =========================================================================
-    // Tests for update available
-    set("installButton", "String", _("Install"), "Enable", "off");
-    set("removeButton", "Enable", "off");
-    set("autoloadCheck", "Value", get("autoloadCheck", "min"), "Enable", "off");
-
-    if atomsIsInstalled(thisModuleName) then
-        if atomsVersionCompare(MRVersionInstalled,MRVersionAvailable) == -1 then
-            // Not up-to-date
-            set("installButton", "String", _("Update"), "Enable", "on");
-            updateStatusBar("warning",sprintf(_("A new version (''%s'') of ''%s'' is available"),MRVersionAvailable,thisModuleDetails.Title));
-        end
-
-        set("removeButton", "Enable", "on");
-
-        // Is autoloaded
-        // -------------
-        tmp = atomsAutoloadList()
-        if or(thisModuleName==tmp) then
-            set("autoloadCheck", "Value", get("autoloadCheck", "max"), "Enable", "on");
-        else
-            set("autoloadCheck", "Value", get("autoloadCheck", "min"), "Enable", "on");
-        end
+    // Get autoloaded modules
+    autoloadedList = atomsAutoloadList("all");
+    if autoloadedList == [] then
+        autoloadedNames = [];
     else
-        set("installButton", "String", _("Install"), "Enable", "on");
+        autoloadedNames = autoloadedList(:, 1);
     end
+
+    // Build flat module array as list of structs
+    modulesList = list();
+    installedNamesList = list();
+
+    for i = 1:size(modulesNames, "*")
+        name = modulesNames(i);
+        ver = MRVersions(i);
+        if ver == "-1" then
+            continue;
+        end
+
+        details = allModules(name)(ver);
+        mod = struct();
+        mod.name = name;
+        mod.title = details.Title;
+        mod.version = ver;
+        mod.summary = atomsGuiBridgeSafe(strcat(details.Summary, ascii(10)));
+
+        // Description
+        if isfield(details, "Description") then
+            mod.description = atomsGuiBridgeSafe(strcat(details.Description, ascii(10)));
+        end
+
+        // Authors
+        if isfield(details, "Author") then
+            mod.authors = atomsGuiBridgeSafe(strcat(details.Author, ", "));
+        end
+
+        // Category
+        if isfield(details, "Category") then
+            mod.category = details.Category(1);
+            if size(details.Category, "*") > 1 then
+                mod.categories = details.Category;
+            end
+        end
+
+        // URLs
+        URLs = [];
+        if isfield(details, "URL") & details.URL <> "" then
+            URLs = [URLs; details.URL];
+        end
+        if isfield(details, "WebSite") & details.WebSite <> "" then
+            URLs = [URLs; details.WebSite];
+        end
+        if ~isempty(URLs) then
+            mod.urls = URLs;
+        end
+
+        // Date
+        if isfield(details, "Date") then
+            if ~isempty(regexp(details.Date, "/^[0-9]{4}-[0-1][0-9]-[0-3][0-9]\s/")) then
+                mod.date = part(details.Date, 1:10);
+            end
+        end
+
+        // Download size
+        if isfield(details, OSNAME + ARCH + "Size") then
+            mod.size = atomsGuiSize2human(details(OSNAME + ARCH + "Size"));
+        end
+
+        // Installed?
+        isInst = or(name == installedNames);
+        mod.isInstalled = isInst;
+
+        if isInst then
+            instVers = atomsVersionSort(atomsGetInstalledVers(name), "DESC");
+            instVer = instVers(1);
+            mod.installedVersion = instVer;
+
+            // Check if update is available
+            if atomsVersionCompare(instVer, ver) == -1 then
+                mod.updateAvailable = %t;
+            else
+                mod.updateAvailable = %f;
+            end
+
+            // Use installed version details for title
+            mod.title = allModules(name)(instVer).Title;
+
+            // Autoloaded?
+            mod.autoloaded = or(name == autoloadedNames);
+        else
+            mod.updateAvailable = %f;
+            mod.autoloaded = %f;
+        end
+
+        modulesList($+1) = mod;
+        if isInst then
+            installedNamesList($+1) = name;
+        end
+    end
+
+    // Build category tree
+    mainCategories = atomsCategoryGet("filter:main");
+    catTree = list();
+
+    for i = 1:size(mainCategories, "*")
+        catName = mainCategories(i);
+        subCategories = atomsCategoryGet(catName);
+
+        cat = struct();
+        cat.name = _(catName);
+
+        // Get modules in this category
+        catModNames = atomsGetAvailable(catName, %T);
+        cat.moduleCount = size(catModNames, "*");
+        cat.modules = catModNames;
+
+        // Build sub-categories
+        if ~isempty(subCategories) then
+            children = list();
+            for j = 1:size(subCategories, "*")
+                subCatName = catName + " - " + subCategories(j);
+                subCat = struct();
+                subCat.name = _(subCategories(j));
+
+                subModNames = atomsGetAvailable(subCatName, %T);
+                subCat.moduleCount = size(subModNames, "*");
+                subCat.modules = subModNames;
+
+                children($+1) = subCat;
+            end
+            cat.children = children;
+        end
+
+        catTree($+1) = cat;
+    end
+
+    // Build installed names as flat string vector
+    instNames = [];
+    for i = 1:length(installedNamesList)
+        instNames = [instNames; installedNamesList(i)];
+    end
+
+    // Build localized labels
+    labels = struct( ...
+        "title", _("ATOMS - Package Manager"), ...
+        "home", _("Home"), ...
+        "browse", _("Browse"), ...
+        "installed", _("Installed"), ...
+        "search", _("Search modules..."), ...
+        "install", _("Install"), ...
+        "update", _("Update"), ...
+        "remove", _("Remove"), ...
+        "autoload", _("Autoload"), ...
+        "version", _("Version"), ...
+        "authors", _("Author(s)"), ...
+        "description", _("Description"), ...
+        "see_also", _("See also"), ...
+        "release_date", _("Release date"), ...
+        "download_size", _("Download size"), ...
+        "modules_title", _("Modules"), ...
+        "n_modules", _("%d module(s)"), ...
+        "n_results_for", _("%d result(s) for ""%s"""), ...
+        "no_result", _("No modules match your search."), ...
+        "no_installed", _("No modules installed."), ...
+        "update_available", _("Update available"), ...
+        "installed_label", _("Installed"), ...
+        "not_installed", _("Not installed"), ...
+        "back", _("Back"), ...
+        "autoload_tooltip", _("Load automatically at startup"));
+
+    data = struct( ...
+        "type", "modulelist", ...
+        "modules", modulesList, ...
+        "categories", catTree, ...
+        "installed", instNames, ...
+        "labels", labels);
+
+    set("atoms_browser", "data", data);
 endfunction
 
 // =============================================================================
-// atomsSize2human()
+// atomsGuiRefreshData()
+//  Re-read installed/autoload state and send refresh to browser
 // =============================================================================
-function human_str = atomsSize2human(size_str)
+function atomsGuiRefreshData()
+    allModules = get("atoms_browser", "userdata");
+    [OSNAME, ARCH, LINUX, MACOSX, SOLARIS, BSD] = atomsGetPlatform();
+
+    modulesNames = getfield(1, allModules);
+    modulesNames(1:2) = [];
+    MRVersions = atomsGetMRVersion(modulesNames);
+
+    installed = atomsGetInstalled();
+    if installed == [] then
+        installedNames = [];
+    else
+        installedNames = installed(:, 1);
+    end
+
+    autoloadedList = atomsAutoloadList("all");
+    if autoloadedList == [] then
+        autoloadedNames = [];
+    else
+        autoloadedNames = autoloadedList(:, 1);
+    end
+
+    modulesList = list();
+    instNames = [];
+
+    for i = 1:size(modulesNames, "*")
+        name = modulesNames(i);
+        ver = MRVersions(i);
+        if ver == "-1" then
+            continue;
+        end
+
+        details = allModules(name)(ver);
+        mod = struct();
+        mod.name = name;
+        mod.title = details.Title;
+        mod.version = ver;
+        mod.summary = atomsGuiBridgeSafe(strcat(details.Summary, ascii(10)));
+
+        if isfield(details, "Description") then
+            mod.description = atomsGuiBridgeSafe(strcat(details.Description, ascii(10)));
+        end
+
+        if isfield(details, "Author") then
+            mod.authors = atomsGuiBridgeSafe(strcat(details.Author, ", "));
+        end
+
+        if isfield(details, "Category") then
+            mod.category = details.Category(1);
+            if size(details.Category, "*") > 1 then
+                mod.categories = details.Category;
+            end
+        end
+
+        URLs = [];
+        if isfield(details, "URL") & details.URL <> "" then
+            URLs = [URLs; details.URL];
+        end
+        if isfield(details, "WebSite") & details.WebSite <> "" then
+            URLs = [URLs; details.WebSite];
+        end
+        if ~isempty(URLs) then
+            mod.urls = URLs;
+        end
+
+        if isfield(details, "Date") then
+            if ~isempty(regexp(details.Date, "/^[0-9]{4}-[0-1][0-9]-[0-3][0-9]\s/")) then
+                mod.date = part(details.Date, 1:10);
+            end
+        end
+
+        if isfield(details, OSNAME + ARCH + "Size") then
+            mod.size = atomsGuiSize2human(details(OSNAME + ARCH + "Size"));
+        end
+
+        isInst = or(name == installedNames);
+        mod.isInstalled = isInst;
+
+        if isInst then
+            instVers = atomsVersionSort(atomsGetInstalledVers(name), "DESC");
+            instVer = instVers(1);
+            mod.installedVersion = instVer;
+            mod.updateAvailable = atomsVersionCompare(instVer, ver) == -1;
+            mod.title = allModules(name)(instVer).Title;
+            mod.autoloaded = or(name == autoloadedNames);
+            instNames = [instNames; name];
+        else
+            mod.updateAvailable = %f;
+            mod.autoloaded = %f;
+        end
+
+        modulesList($+1) = mod;
+    end
+
+    data = struct( ...
+        "type", "refresh", ...
+        "modules", modulesList, ...
+        "installed", instNames);
+
+    set("atoms_browser", "data", data);
+endfunction
+
+// =============================================================================
+// atomsGuiSetStatus()
+// =============================================================================
+function atomsGuiSetStatus(level, msg)
+    data = struct("type", "status", "level", level, "message", msg);
+    set("atoms_browser", "data", data);
+endfunction
+
+// =============================================================================
+// atomsGuiShowDetail()
+// =============================================================================
+function atomsGuiShowDetail(moduleName)
+    data = struct("type", "detail", "name", moduleName);
+    set("atoms_browser", "data", data);
+endfunction
+
+// =============================================================================
+// atomsGuiBridgeSafe()
+//  Sanitize strings before sending to the browser.
+//  The Java bridge wraps JSON in single-quoted JS strings, so newlines
+//  and single quotes in the data would break the executeJavaScript call.
+// =============================================================================
+function s = atomsGuiBridgeSafe(s)
+    s = strsubst(s, ascii(13), "");
+    s = strsubst(s, ascii(9), " ");
+endfunction
+
+// =============================================================================
+// atomsGuiSize2human()
+// =============================================================================
+function human_str = atomsGuiSize2human(size_str)
     size_int = strtod(size_str);
     if size_int < 1024 then
         human_str = string(size_int) + " " + _("Bytes");
     elseif size_int < 1024*1024 then
         human_str = string(round(size_int/1024)) + " " + _("KB");
     else
-        human_str = string( round((size_int*10)/(1024*1024)) / 10 ) + " " + _("MB");
+        human_str = string(round((size_int*10)/(1024*1024)) / 10) + " " + _("MB");
     end
 endfunction
-
-// =============================================================================
-// show()
-// =============================================================================
-function show(tag)
-    set(tag, "Visible", "On");
-endfunction
-
-// =============================================================================
-// hide()
-// =============================================================================
-function hide(tag)
-    set(tag, "Visible", "Off");
-endfunction
-
-// =============================================================================
-// showHome()
-// + Hide the detailed description of a module
-// + Show the home page
-// =============================================================================
-function showHome()
-    // Reset the message frame
-    updateStatusBar();
-
-    //refresh installed listbox
-    HomeElements = atomsGetHomeListboxElts();
-    set("HomeListbox", "String", HomeElements("items_str"));
-    set("HomeListbox", "UserData", HomeElements("items_mat"));
-
-    //active home layer
-    set("LayerFrame", "String", "HomeFrame");
-    //reset listbox selection
-    set("HomeListbox", "value", []);
-
-    // reset the left listbox
-    LeftElements = atomsGetLeftListboxElts("filter:main");
-    set("LeftListbox", "String", LeftElements("items_str"));
-    set("LeftListbox", "UserData", LeftElements("items_mat"));
-endfunction
-
-// =============================================================================
-// showDesc()
-// + Hide the home page
-// + Show the detailed description of a module
-// =============================================================================
-function showDesc()
-    //active description layer
-    set("LayerFrame", "String", "DescFrame");
-endfunction
-
-// =============================================================================
-// updateStatusBar
-// + Update the string in the msg Frame
-// =============================================================================
-function updateStatusBar(status,msg)
-    rhs = argn(2);
-
-    if rhs==0 then
-        set("msgText", "String", "", "Icon", "");
-        return
-    end
-
-    select status
-    case "warning" then
-        fontcolor = [0.75 0 0]; // red
-        icon      = "software-update-available";
-    case "success" then
-        fontcolor = [0 0.5 0];// dark green
-        icon      = "emblem-default";
-    case "info" then
-        fontcolor = [0.5 0.5 0.5]; // dark gray
-        icon      = "dialog-information";
-    end
-
-    set("msgText", "Foregroundcolor", fontcolor,  "String", msg, "Icon", icon);
-endfunction
-
-// =============================================================================
-// processHTMLLinks
-// + Find URLs
-// + Convert them in HTML (hyperlinks)
-// =============================================================================
-function txtout = processHTMLLinks(txtin)
-    regexUrl   = "/((((H|h)(T|t)|(F|f))(T|t)(P|p)((S|s)?))\:\/\/)(www|[a-zA-Z0-9])[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,6}(\:[0-9]{1,5})*(\/($|[a-zA-Z0-9\.\,\;\?\''\\\+&amp;%\$#\=~_\-\/]+))*/";
-    txtout     = "";
-
-    [mat_start,mat_end,mat_match] = regexp(txtin,regexUrl);
-
-    if ~isempty(mat_match) then
-        mat_end = [ 0 mat_end ];
-        for i=1:size(mat_match,"*")
-            txtout = txtout + part(txtin,[mat_end(i)+1:mat_start(i)-1]) ..
-            + "<a href="""+mat_match(i)+""" target=""_blank"">" ..
-            + mat_match(i) ..
-            + "</a>";
-        end
-        txtout = txtout + part(txtin,mat_end(size(mat_end,"*"))+1:length(txtin));
-    else
-        txtout = txtin;
-    end
-endfunction
-
-// =============================================================================
-// txt2title
-// =============================================================================
-function txtout = txt2title(txtin)
-    txtout = "<div style=""font-weight:bold;margin-top:10px;margin-bottom:3px;"">" + ..
-    txtin + ..
-    "</div>";
-endfunction
-

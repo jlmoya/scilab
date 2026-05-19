@@ -21,76 +21,72 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="MATDET" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATDET" xml:lang="en_US">
     <refnamediv>
         <refname>MATDET</refname>
         <refpurpose>Matrix Determinant</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATDET.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATDET">
+    <refsection xml:id="Contents_MATDET">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATDET">Description</xref>
+                <para><link linkend="Description_MATDET">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATDET">Parameters</xref>
+                <para><link linkend="Dialogbox_MATDET">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATDET">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATDET">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="MATDET">Example</xref>
+                <para><link linkend="MATDET">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATDET">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATDET">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATDET">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATDET">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATDET">See also</xref>
+                <para><link linkend="Seealso_MATDET">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATDET">
+    <refsection xml:id="Description_MATDET">
         <title>Description</title>
         <para>
             The MATDET outputs the determinant of a square input matrix. If the input is:
-            <para>
-            </para>
+        </para>
+        <para>
             A=[A11 A12 A13;A21 A22 A23;A31 A32 A33]
-            <para>
-            </para>
+        </para>
+        <para>
             then the output of the block has the form of:
-            <para>
-            </para>
+        </para>
+        <para>
             y=A11*(A22*A33-A23*A32)-A12*(A21*A33-A23*A31)+A13*(A21*A32-A22*A31).
         </para>
         <para>
             The equivalent function of MATDET in Scilab is <link linkend="det">det</link>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATDET">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_MATDET">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATDET_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATDET_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -104,7 +100,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATDET">
+    <refsection xml:id="Defaultproperties_MATDET">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -177,15 +173,16 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_MATDET">
+    <refsection xml:id="Example_MATDET">
         <title>Example</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             U = [1 0 63;2 -2 5;9 9 4]
             y = 2215
-        </programlisting>
+        ]]></programlisting>
         <para>
             <emphasis role="bold">Determinant example: det([tan(x) 0 ; 0 cos(x)]) = sin(x)</emphasis>
         </para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDET_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -193,9 +190,10 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_MATDET">
+    <refsection xml:id="Interfacingfunction_MATDET">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -204,14 +202,18 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Computationalfunction_MATDET">
+    <refsection xml:id="Computationalfunction_MATDET">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_det.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_det.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_det.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_det.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

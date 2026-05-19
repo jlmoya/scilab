@@ -15,7 +15,6 @@ colvect(1,1) = 1;
 colvect(2,1) = -2;
 linevect = colvect';
 
-
 a=[1; ...
 -2];
 assert_checkequal(a,  colvect);
@@ -732,6 +731,10 @@ assert_checkequal(a, expected);
 str_cmd = ["a = [1 -... /* the start of a";
           "multiline comment */ 2 3]"]; // this currently generates an error
 assert_checktrue(execstr(str_cmd, "errcatch") <> 0);
+
+// Very long line test (eg. more than 16k)
+str_cmd = 'a = ""' + strcat(string(1:100000)) + '"";';
+execstr(str_cmd);
 
 // --------------------------------------------
 

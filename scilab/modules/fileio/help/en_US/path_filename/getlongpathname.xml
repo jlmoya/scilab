@@ -26,7 +26,7 @@
             [longpath, bOK] = getlongpathname(shortpath)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -59,13 +59,13 @@
             specified path <varname>shortpath</varname> to its long form. If no long path is found, this
             primitive returns the specified name.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note: If the path cannot be converted (<varname>bOK</varname> is <constant>%F</constant>) and in particular if the
                 operating system is not Windows, the returned long path is identical to the
                 input short path.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>

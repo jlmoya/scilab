@@ -23,50 +23,50 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/IN_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_IN_f">
+    <refsection xml:id="Contents_IN_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Palette_IN_f">Palette</xref>
+                <para><link linkend="Palette_IN_f">Palette</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Description_IN_f">Description</xref>
+                <para><link linkend="Description_IN_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatype_IN_f">Type de données</xref>
+                <para><link linkend="Datatype_IN_f">Type de données</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_IN_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_IN_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_IN_f">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_IN_f">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_IN_f">Exemple</xref>
+                <para><link linkend="Example_IN_f">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_IN_f">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_IN_f">Fonction d'interfaçage</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Palette_IN_f">
+    <refsection xml:id="Palette_IN_f">
         <title>Palettes</title>
         <itemizedlist>
             <listitem>
-                <link linkend="Portaction_pal">Palette Port &amp; Sous-systèmes</link>
+                <para><link linkend="Portaction_pal">Palette Port &amp; Sous-systèmes</link></para>
             </listitem>
             <listitem>
-                <link linkend="Sources_pal">Palette Sources</link>
+                <para><link linkend="Sources_pal">Palette Sources</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_IN_f">
+    <refsection xml:id="Description_IN_f">
         <title>Description</title>
         <para>
             Ce bloc représente un port d'entrée régulier. Il doit seulement être utilisé à l'intérieur
@@ -78,7 +78,7 @@
             réguliers. Vous pouvez l'initialiser avec le paramètre <emphasis role="bold">Port number</emphasis>.
         </para>
     </refsection>
-    <refsection id="Datatype_IN_f">
+    <refsection xml:id="Datatype_IN_f">
         <title>Types de données</title>
         <itemizedlist>
             <listitem>
@@ -88,15 +88,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_IN_f">
+    <refsection xml:id="Dialogbox_IN_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/portaction_pal/fr_FR/IN_f_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -137,7 +136,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_IN_f">
+    <refsection xml:id="Defaultproperties_IN_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -202,7 +201,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_IN_f">
+    <refsection xml:id="Example_IN_f">
         <title>Exemple</title>
         <para>
             Dans l'exemple suivant le Super bloc créé est un modulateur d'amplitude.
@@ -224,7 +223,7 @@
             xcos_simulate(scs_m, 4);]]>
         </scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_IN_f">
+    <refsection xml:id="Interfacingfunction_IN_f">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -234,14 +233,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection role="see also" id="Seealso_IN_f">
+    <refsection role="see also" xml:id="Seealso_IN_f">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="OUT_f">OUT_f</link>
+                <para><link linkend="OUT_f">OUT_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="SUPER_f">SUPER_f</link>
+                <para><link linkend="SUPER_f">SUPER_f</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

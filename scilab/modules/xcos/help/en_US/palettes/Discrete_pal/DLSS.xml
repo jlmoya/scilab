@@ -31,33 +31,33 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DLSS.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DLSS">
+    <refsection xml:id="Contents_DLSS">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DLSS">Description</xref>
+                <para><link linkend="Description_DLSS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DLSS">Parameters</xref>
+                <para><link linkend="Dialogbox_DLSS">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DLSS">Default properties</xref>
+                <para><link linkend="Defaultproperties_DLSS">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DLSS">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DLSS">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DLSS">Computational function</xref>
+                <para><link linkend="Computationalfunction_DLSS">Computational function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DLSS">
+    <refsection xml:id="Description_DLSS">
         <title>Description</title>
         <para>
             This block realizes a discrete-time linear state-space system. The
@@ -66,14 +66,14 @@
             event on the unique input event port, the state is updated.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DLSS">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_DLSS">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/DLSS_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/DLSS_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -121,7 +121,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_DLSS">
+    <refsection xml:id="Defaultproperties_DLSS">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -194,7 +194,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DLSS">
+    <refsection xml:id="Interfacingfunction_DLSS">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -202,7 +202,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DLSS">
+    <refsection xml:id="Computationalfunction_DLSS">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

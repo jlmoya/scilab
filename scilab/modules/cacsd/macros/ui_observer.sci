@@ -115,10 +115,10 @@ function N=lowlevel()
     Kleft=K(:,1:size(K,1))
     if size(Kleft,"*")==1 & abs(Kleft) <1.d-8 then
         N=[];
-        error(msprintf(gettext("%s: Bad conditionning.\n"),"ui_observer"));
+        error(msprintf(gettext("%s: Bad conditioning.\n"),"ui_observer"));
     end
     if rcond(Kleft) <= 1.d-10 then
-        warning(msprintf(gettext("%s: Bad conditionning.\n"),"ui_observer"));
+        warning(msprintf(gettext("%s: Bad conditioning.\n"),"ui_observer"));
         K1=pinv(Kleft)*K;N=K1(:,size(K,1)+1:$);return
     end
     K1=inv(Kleft)*K;   //test conditioning here!

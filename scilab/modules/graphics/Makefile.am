@@ -34,6 +34,7 @@ MACROSDIRSEXT = macros/datatips \
 GRAPHICS_C_SOURCES = \
     src/c/GetCommandArg.c \
     src/c/loadTextRenderingAPI.c \
+    src/c/getHandleProperty/GetHashTable.c \
     src/c/getHandleProperty/get_figure_position_property.c \
     src/c/getHandleProperty/get_figure_size_property.c \
     src/c/getHandleProperty/get_visible_property.c \
@@ -162,7 +163,6 @@ GRAPHICS_C_SOURCES = \
     src/c/getHandleProperty/get_x_ticks_property.c \
     src/c/getHandleProperty/get_ticks_format_property.c \
     src/c/getHandleProperty/get_ticks_st_property.c \
-    src/c/getHandleProperty/setGetHashTable.c \
     src/c/getHandleProperty/get_segs_color_property.c \
     src/c/getHandleProperty/get_screen_position_property.c \
     src/c/getHandleProperty/get_event_handler_property.c \
@@ -183,8 +183,8 @@ GRAPHICS_C_SOURCES = \
     src/c/getHandleProperty/get_infobar_property.c \
     src/c/getHandleProperty/get_dockable_property.c \
     src/c/getHandleProperty/get_rect_property.c \
-    src/c/getHandleProperty/GetHashTable.c \
     src/c/graphicModuleLoad.c \
+    src/c/getHandleProperty/SetHashTable.c \
     src/c/getHandleProperty/set_old_style_property.c \
     src/c/getHandleProperty/set_figure_name_property.c \
     src/c/getHandleProperty/getPropertyAssignedValue.c \
@@ -266,7 +266,6 @@ GRAPHICS_C_SOURCES = \
     src/c/getHandleProperty/set_z_ticks_property.c \
     src/c/getHandleProperty/set_axes_bounds_property.c \
     src/c/getHandleProperty/set_tics_style_property.c \
-    src/c/getHandleProperty/SetHashTable.c \
     src/c/getHandleProperty/set_handle_visible_property.c \
     src/c/getHandleProperty/set_labels_font_color_property.c \
     src/c/getHandleProperty/set_parent_property.c \
@@ -412,6 +411,7 @@ GRAPHICS_C_SOURCES = \
 GRAPHICS_CXX_SOURCES = \
     src/cpp/addColors.cpp \
     src/cpp/get_tag_property.cpp \
+    src/cpp/setGetHashTable.cpp \
     src/cpp/set_data_property.cpp \
     src/cpp/ContourOnMesh.cpp
 
@@ -580,7 +580,6 @@ libscigraphics_disable_la_CPPFLAGS = \
     -I$(top_srcdir)/modules/ast/includes/symbol/ \
     -I$(top_srcdir)/modules/ast/includes/system_env/ \
     -I$(top_srcdir)/modules/ast/includes/types/ \
-    -I$(top_srcdir)/libs/hashtable/ \
     -I$(top_srcdir)/modules/api_scilab/includes/ \
     -I$(top_srcdir)/modules/localization/includes/ \
     -I$(top_srcdir)/modules/output_stream/includes/ \

@@ -87,10 +87,12 @@ function [y1,...,yn,varargout]=foo(x1,...,xm,varargin)
                     variable <varname>y</varname> sera définie dans le contexte
                     local de la fonction.
                     <note>
-                        Noter qu'alors il n'est pas possible de passer
-                        plus d'arguments d'entrée que le nombre
-                        d'arguments formel declarés dans la définition
-                        de la syntaxe d'appel de la fonction.
+                        <para>
+                            Noter qu'alors il n'est pas possible de passer
+                            plus d'arguments d'entrée que le nombre
+                            d'arguments formel declarés dans la définition
+                            de la syntaxe d'appel de la fonction.
+                        </para>
                     </note>
                 </para>
                 <para>Il est possible de vérifier quelles sont les variables

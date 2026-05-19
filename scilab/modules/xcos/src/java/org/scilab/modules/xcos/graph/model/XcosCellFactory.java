@@ -232,6 +232,10 @@ public final class XcosCellFactory {
                     .filter(c -> c instanceof BasicPort)
                     .map(c -> (BasicPort) c)
                     .forEach(c -> ports.put(c.getUID(), c));
+
+                    b.updateStyle(controller, diagram, b);
+                    b.updateValue(controller, diagram, b);
+                    b.updateBlockView();
                     break;
                 case LINK:
                     BasicLink l = createLink(controller, uid, kind);
@@ -324,7 +328,10 @@ public final class XcosCellFactory {
         } else {
             block = createBlock(BlockInterFunction.BASIC_BLOCK, interfaceFunction);
         }
-        block.setStyle(interfaceFunction);
+        // Set the block style if the user did not specify one
+        if (block.getStyle() == "") {
+            block.setStyle(interfaceFunction);
+        }
 
         return block;
     }
@@ -420,9 +427,15 @@ public final class XcosCellFactory {
         }
 
         String value;
-        String[] description = { null };
-        controller.getObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, description);
-        value = description[0];
+        if (kind == Kind.ANNOTATION) {
+            String[] description = { null };
+            controller.getObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, description);
+            value = description[0];
+        } else {
+            String[] name = { "" };
+            controller.getObjectProperty(uid, kind, ObjectProperties.NAME, name);
+            value = name[0];
+        }
 
         VectorOfDouble geom = new VectorOfDouble(4);
         controller.getObjectProperty(uid, kind, ObjectProperties.GEOMETRY, geom);
@@ -682,9 +695,9 @@ public final class XcosCellFactory {
          */
 
         String value;
-        String[] description = { null };
-        controller.getObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, description);
-        value = description[0];
+        String[] name = { "" };
+        controller.getObjectProperty(uid, kind, ObjectProperties.NAME, name);
+        value = name[0];
 
         String[] style = new String[] { "" };
         controller.getObjectProperty(uid, kind, ObjectProperties.STYLE, style);

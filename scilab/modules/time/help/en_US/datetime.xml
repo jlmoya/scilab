@@ -31,7 +31,7 @@
             dt = datetime(..., "OutputFormat", outfmt)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -853,14 +853,16 @@
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Introduction in Scilab.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>2024.1.0</revnumber>
                 <revdescription>
-                    <literal>datetime()</literal> and <literal>datetime("now")</literal> handle milliseconds values.
+                    <para>
+                        <literal>datetime()</literal> and <literal>datetime("now")</literal> handle milliseconds values.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

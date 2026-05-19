@@ -38,9 +38,6 @@
 /*------------------------------------------------------------------------*/
 void* get_current_axes_property(void* _pvCtx, int iObjUID)
 {
-    int iFigureUID = 0;
-    int iSubWinUID = 0;
-
     if (iObjUID != 0)
     {
         /* This property should not be called on an handle */
@@ -48,7 +45,7 @@ void* get_current_axes_property(void* _pvCtx, int iObjUID)
         return NULL;
     }
 
-    iSubWinUID = getOrCreateDefaultSubwin();
+    getOrCreateDefaultSubwin();
     return sciReturnHandle(getHandle(getCurrentSubWin()));
 }
 /*------------------------------------------------------------------------*/

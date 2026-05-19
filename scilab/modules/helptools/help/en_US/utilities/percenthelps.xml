@@ -28,16 +28,20 @@
             Each row refers to the help chapter of a loaded external module:
             <itemizedlist>
                <listitem>
-                   <literal>%helps(k,1)</literal> is the absolute pathname to its help directory.
+                    <para><literal>%helps(k,1)</literal> is the absolute pathname to its help directory.
+                   </para>
                </listitem>
                <listitem>
-                   <literal>%helps(k,2)</literal> is the title of its help chapter.
+                    <para><literal>%helps(k,2)</literal> is the title of its help chapter.
+                   </para>
                </listitem>
             </itemizedlist>
         </para>
         <warning>
-          This variable must NOT be modified by hand. <literal>add_help_chapter</literal>
-          must be used to add a new help chapter and update <literal>%helps</literal>.
+            <para>
+                This variable must NOT be modified by hand. <literal>add_help_chapter</literal>
+                must be used to add a new help chapter and update <literal>%helps</literal>.
+            </para>
         </warning>
     </refsection>
     <refsection role="examples">

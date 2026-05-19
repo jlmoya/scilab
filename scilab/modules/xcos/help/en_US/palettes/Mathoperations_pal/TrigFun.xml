@@ -21,48 +21,45 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:id="TrigFun" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="TrigFun" xml:lang="en_US">
     <refnamediv>
         <refname>TrigFun</refname>
         <refpurpose>Trigonometric function</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/TrigFun.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_TrigFun">
+    <refsection xml:id="Contents_TrigFun">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TrigFun">Description</xref>
+                <para><link linkend="Description_TrigFun">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_TrigFun">Parameters</xref>
+                <para><link linkend="Dialogbox_TrigFun">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TrigFun">Default properties</xref>
+                <para><link linkend="Defaultproperties_TrigFun">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_TrigFun">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_TrigFun">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_TrigFun">Computational function</xref>
+                <para><link linkend="Computationalfunction_TrigFun">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_TrigFun">Voir aussi</xref>
+                <para><link linkend="Seealso_TrigFun">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_TrigFun">
+    <refsection xml:id="Description_TrigFun">
         <title>Description</title>
         <para>
             The Trigonometric Function block performs numerous common trigonometric functions.
@@ -131,14 +128,13 @@
             vector's elements of input.
         </para>
     </refsection>
-    <refsection id="Dialogbox_TrigFun">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_TrigFun">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/TrigFun_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/TrigFun_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -149,7 +145,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_TrigFun">
+    <refsection xml:id="Defaultproperties_TrigFun">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -221,7 +217,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Interfacingfunction_TrigFun">
+    <refsection xml:id="Interfacingfunction_TrigFun">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -229,44 +225,68 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_TrigFun">
+    <refsection xml:id="Computationalfunction_TrigFun">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/acos_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/acos_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/acosh_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/acosh_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/asin_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/asin_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/asinh_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/asinh_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/atan_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/atan_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/atanh_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/atanh_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/cos_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/cos_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/cosh_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/cosh_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/sin_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/sin_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/sinh_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/sinh_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/tan_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/tan_blk.c (Type 4)
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/tanh_blk.c (Type 4)
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/tanh_blk.c (Type 4)
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

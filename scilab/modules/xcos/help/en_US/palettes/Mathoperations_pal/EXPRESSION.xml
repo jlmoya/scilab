@@ -31,49 +31,48 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/EXPRESSION.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_EXPRESSION">
+    <refsection xml:id="Contents_EXPRESSION">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_EXPRESSION">Description</xref>
+                <para><link linkend="Description_EXPRESSION">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_EXPRESSION">Parameters</xref>
+                <para><link linkend="Dialogbox_EXPRESSION">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_EXPRESSION">Default properties</xref>
+                <para><link linkend="Defaultproperties_EXPRESSION">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_EXPRESSION">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_EXPRESSION">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_EXPRESSION">Example</xref>
+                <para><link linkend="Example_EXPRESSION">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_EXPRESSION">
+    <refsection xml:id="Description_EXPRESSION">
         <title>Description</title>
         <para>
             The Expression block applies the specified Scilab expressions to its input.
         </para>
     </refsection>
-    <refsection id="Dialogbox_EXPRESSION">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_EXPRESSION">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/mathoperations_pal/en_US/EXPRESSION_gui.png"
-                           align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                           align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -141,17 +140,21 @@
                 </table>
                 </para>
                 <warning>
+                    <para>
                     In the provided expression, any subexpression being an exponent more than
                     1-character long must end with a space, to be correctly displayed on the
                     block's icon.
-                    <para/>
+                    </para>
+                    <para>
                     This constrain has no consequence on the computational validity of the expression.
-                    <para/>
+                    </para>
+                    <para>
                     Examples: "u1^12-u2", "u1^ 12-u2", "u1^abc - 3", "u1^(u2-3) + 4" will be
                     correctly displayed, while "u1^abc-3" would be displayed as "u1^{abc-3}"
                     (but well computed as <literal>u1^abc + 3</literal>)
                     and "u1^(u2-3)+4" as "u1^{(u2-3)+4}" instead of "u1^{(u2-3)} + 4".
                     "u1^abc - 3" and "u1^(u2-3) + 4" will have to be entered instead.
+                    </para>
                 </warning>
             </listitem>
             <listitem>
@@ -164,7 +167,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_EXPRESSION">
+    <refsection xml:id="Defaultproperties_EXPRESSION">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -241,7 +244,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_EXPRESSION">
+    <refsection xml:id="Example_EXPRESSION">
         <title>Example</title>
         <para>
             The following example calculate an arbitrary expression with multiple different configuration or blocks.
@@ -264,7 +267,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_EXPRESSION">
+    <refsection xml:id="Interfacingfunction_EXPRESSION">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

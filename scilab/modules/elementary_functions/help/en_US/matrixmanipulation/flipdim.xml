@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="flipdim" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="flipdim" xml:lang="en">
     <refnamediv>
         <refname>flipdim</refname>
         <refpurpose>reverses the order of (blocks of) rows, columns, pages.. of an array</refpurpose>
@@ -29,7 +26,7 @@
             y = flipdim(x, dim, blockSize)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -80,7 +77,7 @@
             <varname>x</varname> in <literal>size(x,1)/blockSize</literal> blocks
             of <varname>blockSize</varname> rows (<literal>dim=1</literal>),
             or in <literal>size(x,2)/blockSize</literal> blocks of <varname>blockSize</varname>
-            columns (<literal>dim=2</literal>), etc (<literal>dim>2</literal>)
+            columns (<literal>dim=2</literal>), etc (<literal>dim&gt;2</literal>)
             and to invert their order.
             In each block, the order of components (rows, columns, pages etc)
             is unchanged.
@@ -165,7 +162,7 @@ end
   9 -6 -7  0
   8 -7 -8 -1
 ]]></screen>
-    <para></para>
+    <para/>
     <screen><![CDATA[
 --> x
  x  =
@@ -187,7 +184,7 @@ end
   9  4 -3
  -4 -8 -3
 ]]></screen>
-    <para></para>
+    <para/>
     <screen><![CDATA[
 --> x
  x  =
@@ -230,18 +227,24 @@ end
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            Extension to all regular data types: booleans, integers,
-                            strings, polynomials, rationals, graphic handles, etc.
-                        </listitem>
-                        <listitem>
-                            New input argument <literal>blockSize</literal> to flip
-                            <literal>x</literal> blockwise.
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Extension to all regular data types: booleans, integers,
+                                    strings, polynomials, rationals, graphic handles, etc.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New input argument <literal>blockSize</literal> to flip
+                                    <literal>x</literal> blockwise.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

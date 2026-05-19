@@ -240,7 +240,7 @@ if (length(letters) <> NB_CHARACTERS) then pause,end
 
 // == TEST 7 ===================================================================
 
-A = floor( 126 * rand(100,100) );
+A = ceil( 127 * rand(100,100) );
 
 if or( ascii(A) <> ascii(int8(A)) )  then pause, end
 if or( ascii(A) <> ascii(int16(A)) ) then pause, end

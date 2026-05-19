@@ -27,7 +27,7 @@
             b = or(A, n)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -44,15 +44,20 @@
                         A number is considered as %F (false) if it is 0 or 0+0i.
                         Otherwise (including %nan), it is equivalent to %T (true).
                     </para>
-                    <note>Special <varname>A</varname>:
-                        <itemizedlist>
-                            <listitem>
-                                <literal>or([])</literal> returns <literal>%F</literal>.
-                            </listitem>
-                            <listitem>
-                                <literal>or(%nan)</literal> returns <literal>%T</literal>.
-                            </listitem>
-                        </itemizedlist>
+                    <note>
+                        <para>
+                            Special <varname>A</varname>:
+                            <itemizedlist>
+                                <listitem>
+                                    <para><literal>or([])</literal> returns <literal>%F</literal>.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><literal>or(%nan)</literal> returns <literal>%T</literal>.
+                                    </para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -65,11 +70,15 @@
                         It is set to
                         <itemizedlist>
                             <listitem>
-                                %F, if all <varname>A</varname>'s components are %F or zero.
+                                 <para>
+                                    %F, if all <varname>A</varname>'s components are %F or zero.
+                                </para>
                             </listitem>
                             <listitem>
-                                %T, otherwise (at least one <varname>A</varname>'s
-                                component is %T or non-zero).
+                                 <para>
+                                    %T, otherwise (at least one <varname>A</varname>'s
+                                    component is %T or non-zero).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -91,33 +100,32 @@
                         all <varname>A</varname>'s elements. Otherwise:
                         <itemizedlist>
                             <listitem>
-                                n = 1 | "r" : <function>or()</function> is
-                                applied row-wise. If <varname>A</varname>
-                                is a matrix, the result <varname>b</varname> is a
-                                <emphasis role="bold">r</emphasis>ow, with
-                                <literal>b(j) = or(A(:,j))</literal>
-                            </listitem>
-                            <listitem>
-                                n = 2 | "c" :
-                                <function>or()</function> is applied column-wise.
-                                If <varname>A</varname>
-                                is a matrix, the result <varname>b</varname> is a
-                                <emphasis role="bold">c</emphasis>olumn, with
-                                <literal>b(i) = or(A(i,:))</literal>
-                            </listitem>
-                            <listitem>
-                                n > 2 : If <varname>A</varname> is an
-                                hypermatrix with at least <varname>n</varname>
-                                dimensions, <function>or()</function> is applied
-                                accross the n<superscript>th</superscript> dimension.
-                                <para>
-                                    Example: If <literal>ndims(A)==3</literal>
-                                    and <literal>n=3</literal>,
-                                    <varname>b</varname> is a boolean matrix of size
-                                    size(A)([1 2]), with <literal>b(i,j) = or(A(i,j,:))
-                                    </literal>
+                                 <para>
+                                    n = 1 | "r" : <function>or()</function> is
+                                    applied row-wise. If <varname>A</varname>
+                                    is a matrix, the result <varname>b</varname> is a
+                                    <emphasis role="bold">r</emphasis>ow, with
+                                    <literal>b(j) = or(A(:,j))</literal>
                                 </para>
                             </listitem>
+                            <listitem>
+                                 <para>
+                                    n = 2 | "c" :
+                                    <function>or()</function> is applied column-wise.
+                                    If <varname>A</varname>
+                                    is a matrix, the result <varname>b</varname> is a
+                                    <emphasis role="bold">c</emphasis>olumn, with
+                                    <literal>b(i) = or(A(i,:))</literal>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    n &gt; 2 : If <varname>A</varname> is an
+                                    hypermatrix with at least <varname>n</varname>
+                                    dimensions, <function>or()</function> is applied
+                                    accross the n<superscript>th</superscript> dimension.
+                                    </para>
+                                </listitem>
                         </itemizedlist>
                     </para>
                 </listitem>
@@ -308,9 +316,9 @@ or(A, "c")
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Complex numbers are now accepted.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

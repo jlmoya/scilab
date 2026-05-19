@@ -29,7 +29,7 @@ function DV=cost(pv, xv, yv)
 endfunction
 p=77;
 cmd="[fopt,xopt,gopt]=leastsq(list(cost,time,value),p)";
-error_message="Operator *: Wrong dimensions for operation [7x1] * [7x1].";
+error_message=msprintf(_("Operator %ls: Wrong dimensions for operation [%ls] %ls [%ls].\n"),"*","7x1","*","7x1");
 assert_checkerror(cmd,error_message);
 
 // test optim() and leastsq() calls
@@ -54,7 +54,7 @@ cmds = [
 "leastsq(eq,0,algo=""qn"")"
 ]
 for i=1:size(cmds,1)
-    assert_checkerror(cmds(i),"Undefined variable: z")
+    assert_checkerror(cmds(i),msprintf(_("Undefined variable: %s\n"),"z"))
 end
 
 // test fsolve
@@ -62,9 +62,9 @@ function f=jeq(x)
     f=2*x+t
 endfunction
 clear z
-assert_checkerror("fsolve(0,eq)","Undefined variable: z")
+assert_checkerror("fsolve(0,eq)",msprintf(_("Undefined variable: %s\n"),"z"))
 z=1;
-assert_checkerror("fsolve(0,eq,jeq)","Undefined variable: t")
+assert_checkerror("fsolve(0,eq,jeq)",msprintf(_("Undefined variable: %s\n"),"t"))
 
 // test lsqrsolve
 function f=res(x,m)
@@ -74,7 +74,7 @@ function f=jres(x,m)
     f=2*x+t
 endfunction
 clear z
-assert_checkerror("lsqrsolve(0,res,1)","Undefined variable: z")
+assert_checkerror("lsqrsolve(0,res,1)",msprintf(_("Undefined variable: %s\n"),"z"))
 z=1;
-assert_checkerror("lsqrsolve(0,res,1,jres)","Undefined variable: t")
+assert_checkerror("lsqrsolve(0,res,1,jres)",msprintf(_("Undefined variable: %s\n"),"t"))
 

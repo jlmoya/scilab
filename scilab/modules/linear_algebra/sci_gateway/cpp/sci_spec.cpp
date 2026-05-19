@@ -118,7 +118,7 @@ types::Function::ReturnValue sci_spec(types::typed_list &in, int _iRetCount, typ
             return types::Function::Error;
         }
 
-        symmetric = isSymmetric(pDblA->getReal(), pDblA->getImg(), pDblA->isComplex(), pDblA->getRows(), pDblA->getCols()) == 1;
+        symmetric = isHermitian(pDblA->getReal(), pDblA->getImg(), pDblA->isComplex(), pDblA->getRows(), pDblA->getCols()) == 1;
         int eigenValuesCols = (_iRetCount <= 1) ? 1 : pDblA->getCols();
 
         if (symmetric)

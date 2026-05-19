@@ -23,7 +23,7 @@
             writetimeseries(..., OptionName, Value, ...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -36,14 +36,15 @@
             <varlistentry>
                 <term>filename</term>
                 <listitem>
-                    <para>file path</para>
+                    <para>file path. Accepted formats: ".xslx", ".csv", ".txt" and ".dat".</para>
                     <para/>
                 </listitem>
             </varlistentry>
-            <para>
-                Optional pairs <emphasis role="bold">OptionName, Value</emphasis> are:
-            </para>
-            <para/>
+        </variablelist>
+        <para>
+            Optional pairs <emphasis role="bold">OptionName, Value</emphasis> are:
+        </para>
+        <variablelist>
             <varlistentry>
                 <term><emphasis role="bold">"Delimiter"</emphasis>, string</term>
                 <listitem>
@@ -63,6 +64,38 @@
                     <para/>
                 </listitem>
             </varlistentry>
+            <varlistentry>
+                <term><emphasis role="bold">"sheet"</emphasis>, string or positive integer</term>
+                <listitem>
+                    <para>specifies which sheet to write to.</para>
+                    <itemizedlist>
+                        <listitem><para>If string: if the sheet name does not exist, <literal>writetimeseries</literal> creates a new sheet.</para></listitem>
+                        <listitem><para>If integer: select the sheet. If the index is greater than the number of sheets, 
+                            then a new sheet is created with the name "Sheet_" + string(index).</para></listitem>
+                    </itemizedlist>
+                    <para>Default: 1 (first sheet). Available option only is for Excel files.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><emphasis role="bold">"range"</emphasis>, string or positive integer</term>
+                <listitem>
+                    <para>A string or 2x2 matrix specifying where to start writing data.</para>
+                    <para>String formats: "A1:C10" (cell range), "A:C" (column range), "1:3" (row range), "B5" (first cell), "B" (first column), "3" (first row).</para>
+                    <para>Matrix format: [row1 col1; row2 col2] where all values are positive integers >= 1.</para>
+                    <para>Default: "". Available option only is for Excel files.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><emphasis role="bold">"writemode"</emphasis>, string</term>
+                <listitem>
+                    <para>specifies the write mode:</para>
+                    <itemizedlist>
+                        <listitem><para>"overwrite": Clears the sheet before writing data.</para></listitem>
+                        <listitem><para>"append": Keeps existing data and adds new data at the specified range.</para></listitem>
+                    </itemizedlist>
+                    <para>Default: data is written without clearing (preserves other cells). Available option only is for Excel files.</para>
+                </listitem>
+            </varlistentry>
         </variablelist>
     </refsection>
     <refsection>
@@ -70,7 +103,7 @@
         <para>
             The <emphasis role="bold">writetimeseries</emphasis> function writes a timeseries into a text file, where data are separated by comma (default value).
             It is possible to specify the delimiter to be applied: <emphasis role="bold">writetimeseries(ts, filename, "Delimiter", delim)</emphasis>
-            Accepted file formats are .txt, .dat or .csv.
+            Accepted file formats are .txt, .dat, .csv and .xlsx.
         </para>
         <para>
             <emphasis role="bold">writetimeseries(ts)</emphasis> writes timeseries ts into the file timeseries.txt saved in TMPDIR.
@@ -83,6 +116,7 @@
     </refsection>
     <refsection>
         <title>Examples</title>
+        <para>
         <programlisting role="example"><![CDATA[
             dt = [datetime(2022,1,10):caldays(1):datetime(2022,1,21)]';
             hc = [13574; 13169; 11999; 12146; 15456; 10545; 11091; 21657; 11393; 10283; 10924; 16208];
@@ -93,6 +127,62 @@
             r = readtimeseries(fullfile(TMPDIR, "data.txt"));
         ]]>
         </programlisting>
+        </para>
+        <para><emphasis role="bold">t = writetable(filename, "sheet", sheetName)</emphasis></para>
+        <para>
+        <programlisting role="example"><![CDATA[
+            dt = datetime(2025, 5, 1, 8, 0, 0) + minutes([0; 5; 12; 20; 33; 47; 60]);
+            id = ["S1"; "S1"; "S2"; "S1"; "S3"; "S2"; "S1"];
+            value = [10.2; 11.5; 9.8; 10.9; 12.1; 9.5; 11.0];
+            status = ["OK"; "OK"; "OK"; "WARN"; "OK"; "ERROR"; "OK"];
+
+            ts = timeseries(dt, id, value, status, "VariableNames", ["TIME", "ID", "VALUE", "STATUS"])
+
+            //  ts = [7x3 timeseries]
+            //
+            //          TIME           ID    VALUE   STATUS
+            //   ___________________   ___   _____   ______
+            //                                             
+            //   2025-05-01 08:00:00   S1    10.2    OK    
+            //   2025-05-01 08:05:00   S1    11.5    OK    
+            //   2025-05-01 08:12:00   S2    9.8     OK    
+            //   2025-05-01 08:20:00   S1    10.9    WARN  
+            //   2025-05-01 08:33:00   S3    12.1    OK    
+            //   2025-05-01 08:47:00   S2    9.5     ERROR 
+            //   2025-05-01 09:00:00   S1    11      OK  
+
+            path = fullfile(TMPDIR, "data_ts.xlsx");
+            xlsxSheet(path, "create", "data"); // create "data" sheet
+            writetimeseries(ts, path, "sheet", "data"); // write table in "data" sheet
+            ts2 = readtimeseries(path, "sheet", "data")
+
+            //  ts2 = [7x3 timeseries]
+            //
+            //          TIME           ID    VALUE   STATUS
+            //   ___________________   ___   _____   ______
+            //                                             
+            //   2025-05-01 08:00:00   S1    10.2    OK    
+            //   2025-05-01 08:05:00   S1    11.5    OK    
+            //   2025-05-01 08:12:00   S2    9.8     OK    
+            //   2025-05-01 08:20:00   S1    10.9    WARN  
+            //   2025-05-01 08:33:00   S3    12.1    OK    
+            //   2025-05-01 08:47:00   S2    9.5     ERROR 
+            //   2025-05-01 09:00:00   S1    11      OK  
+
+            ts3 = readtimeseries(path, "sheet", "data", "range","A1:D5")
+
+            // ts3 = [4x3 timeseries]
+            //
+            //          TIME           ID    VALUE   STATUS
+            //   ___________________   ___   _____   ______
+            //                                             
+            //   2025-05-01 08:00:00   S1    10.2    OK    
+            //   2025-05-01 08:05:00   S1    11.5    OK    
+            //   2025-05-01 08:12:00   S2    9.8     OK    
+            //   2025-05-01 08:20:00   S1    10.9    WARN  
+        ]]>
+        </programlisting>
+        </para>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -110,8 +200,14 @@
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Introduction in Scilab.
+                </revremark>
+            </revision>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revdescription>
+                    <para><literal>writetable</literal> can now write Excel (.xlsx) files.</para>
                 </revdescription>
             </revision>
         </revhistory>

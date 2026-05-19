@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>f = polfact(p)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -41,9 +41,11 @@
                         are polynomials of degree 1 or 2.
                     </para>
                     <warning>
-                        The coefficients of <varname>f</varname> polynomials are computed with
-                        a relative uncertainty of
-                        <literal>%eps</literal><superscript>1/degree(p)</superscript>.
+                        <para>
+                            The coefficients of <varname>f</varname> polynomials are computed with
+                            a relative uncertainty of
+                            <literal>%eps</literal><superscript>1/degree(p)</superscript>.
+                        </para>
                     </warning>
                 </listitem>
             </varlistentry>

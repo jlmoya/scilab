@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="fr" xml:id="for">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="for">
     <refnamediv>
         <refname>for</refname>
         <refpurpose>Ouverture d'une boucle itérative non conditionnelle</refpurpose>
@@ -205,13 +202,17 @@ for j = 1:n, v = a(:,j), write(%io(2),v), end
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            L'<literal>expression</literal> alimentant les itérations peut maintenant être
-                            un vecteur d'identifiants graphiques.
-                            <literal>for</literal> est désormais protégé. Les affectations telles que
-                            <literal>for=1</literal> ne sont plus possibles.
+                             <para>
+                                L'<literal>expression</literal> alimentant les itérations peut maintenant être
+                                un vecteur d'identifiants graphiques.
+                                <literal>for</literal> est désormais protégé. Les affectations telles que
+                                <literal>for=1</literal> ne sont plus possibles.
+                            </para>
                         </listitem>
                         <listitem>
-                            Le nombre de caractères constituant le corps d'une instruction conditionnelle (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, ou <literal>select/case</literal>) n'est plus limité à 16k.
+                             <para>
+                                Le nombre de caractères constituant le corps d'une instruction conditionnelle (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, ou <literal>select/case</literal>) n'est plus limité à 16k.
+                            </para>
                         </listitem>
                    </itemizedlist>
                 </revdescription>
@@ -219,8 +220,10 @@ for j = 1:n, v = a(:,j), write(%io(2),v), end
             <revision>
                 <revnumber>2023.0.0</revnumber>
                 <revdescription>
-                    <literal>expression</literal> peut être une hypermatrice. Il est alors traité
-                    par colonne comme <literal>matrix(expression, size(expression,1), -1)</literal>.
+                    <para>
+                        <literal>expression</literal> peut être une hypermatrice. Il est alors traité
+                        par colonne comme <literal>matrix(expression, size(expression,1), -1)</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

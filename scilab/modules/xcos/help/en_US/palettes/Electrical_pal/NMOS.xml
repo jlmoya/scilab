@@ -31,37 +31,37 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/NMOS.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_NMOS">
+    <refsection xml:id="Contents_NMOS">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_NMOS">Description</xref>
+                <para><link linkend="Description_NMOS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_NMOS">Parameters</xref>
+                <para><link linkend="Dialogbox_NMOS">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_NMOS">Default properties</xref>
+                <para><link linkend="Defaultproperties_NMOS">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_NMOS">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_NMOS">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="NMOS">Modelica model</xref>
+                <para><link linkend="NMOS">Modelica model</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_NMOS">See also</xref>
+                <para><link linkend="Seealso_NMOS">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_NMOS">
+    <refsection xml:id="Description_NMOS">
         <title>Description</title>
         <para>The NMos model is a simple model of a n-channel metal-oxide
             semiconductor FET. It differs slightly from the device used in the SPICE
@@ -284,14 +284,13 @@
         </informaltable>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_NMOS">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_NMOS">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/NMOS_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/NMOS_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -358,7 +357,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_NMOS">
+    <refsection xml:id="Defaultproperties_NMOS">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -521,7 +520,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_NMOS">
+    <refsection xml:id="Interfacingfunction_NMOS">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -529,7 +528,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_NMOS">
+    <refsection xml:id="Modelicamodel_NMOS">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

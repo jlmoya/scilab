@@ -35,7 +35,7 @@
             mfile2sci(M_file_path, result_path, Recmode, only_double, verbose_mode, prettyprintoutput)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <para>
             To use the default value of some input arguments, just skip their value as in
@@ -178,8 +178,10 @@
             comment which begins by "//!" (according to verbose_mode)
         </para>
         <note>
-            <literal>mfile2sci()</literal> without input argument launches a GUI allowing to
-            select a file/directory, and to configure and run the converter:
+            <para>
+                <literal>mfile2sci()</literal> without input argument launches a GUI allowing to
+                select a file/directory, and to configure and run the converter:
+            </para>
             <programlisting role="example"><![CDATA[
 mfile2sci()
             ]]></programlisting>
@@ -251,7 +253,9 @@ rot90(m,1)
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    The <varname>only_double</varname> option is now %F by default.
+                    <para>
+                        The <varname>only_double</varname> option is now %F by default.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -60,8 +60,8 @@
     </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example">
-            <![CDATA[
+        <programlisting role="example"><![CDATA[
+            
 if getos() == 'Windows' then
     winqueryreg 'HKEY_LOCAL_MACHINE' 'HARDWARE\DESCRIPTION\System\CentralProcessor\0\' 'ProcessorNameString'
 
@@ -77,10 +77,10 @@ if getos() == 'Windows' then
     winqueryreg('HKEY_CURRENT_CONFIG', 'Software\Fonts\','LogPixels')
     winqueryreg('key' ,'HKLM', 'Software\Microsoft\.NETFramework')
 end
- ]]>
-        </programlisting>
+ 
+        ]]></programlisting>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -89,12 +89,18 @@ end
             </revision>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>Manage shortcut root names.</listitem>
-                        <listitem>Can retrieve key list names.</listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>Manage shortcut root names.</para>
+                            </listitem>
+                            <listitem>
+                                <para>Can retrieve key list names.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

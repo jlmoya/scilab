@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="atanh" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="atanh" xml:lang="pt">
     <refnamediv>
         <refname>atanh</refname>
         <refpurpose>arco-tangente hiperbólico</refpurpose>
@@ -115,11 +112,14 @@ atanh(x.')
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>atanh(-1)</literal> is now always <literal>-Inf</literal>, and
-                            <literal>atanh(1)</literal> always <literal>Inf</literal>.
+                             <para><literal>atanh(-1)</literal> is now always <literal>-Inf</literal>, and
+                                <literal>atanh(1)</literal> always <literal>Inf</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            For any real x>1, imag(atanh(x)) is now > 0.
+                             <para>
+                                For any real x&gt;1, imag(atanh(x)) is now &gt; 0.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

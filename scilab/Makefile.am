@@ -276,28 +276,27 @@ javadoc-all:
 	-sourcepath $$LISTMODULES \
 	$$LISTPKG
 
-doc-inline-fr_FR:
-	@$(MAKE) $(AM_MAKEFLAGS) doc-inline ALL_LINGUAS_DOC=fr_FR
+help-fr_FR:
+	@$(MAKE) $(AM_MAKEFLAGS) help ALL_LINGUAS_DOC=fr_FR
 
-doc-inline-en_US:
-	@$(MAKE) $(AM_MAKEFLAGS) doc-inline ALL_LINGUAS_DOC=en_US
+help-en_US:
+	@$(MAKE) $(AM_MAKEFLAGS) help ALL_LINGUAS_DOC=en_US
 
-doc-inline-pt_BR:
-	@$(MAKE) $(AM_MAKEFLAGS) doc-inline ALL_LINGUAS_DOC=pt_BR
+help-pt_BR:
+	@$(MAKE) $(AM_MAKEFLAGS) help ALL_LINGUAS_DOC=pt_BR
 
-doc-inline-ru_RU:
-	@$(MAKE) $(AM_MAKEFLAGS) doc-inline ALL_LINGUAS_DOC=ru_RU
+help-ru_RU:
+	@$(MAKE) $(AM_MAKEFLAGS) help ALL_LINGUAS_DOC=ru_RU
 
-doc-inline-ja_JP:
-	@$(MAKE) $(AM_MAKEFLAGS) doc-inline ALL_LINGUAS_DOC=ja_JP
+help-ja_JP:
+	@$(MAKE) $(AM_MAKEFLAGS) help ALL_LINGUAS_DOC=ja_JP
 
-doc-inline: $(top_builddir)/scilab-bin $(top_builddir)/bin/scilab-cli
-if BUILD_HELP # Java is not needed for this build but helptools module is disabled when building without Java (xmltoinline function is not available)
+help: $(top_builddir)/scilab-bin $(top_builddir)/bin/scilab-cli
 	@if test -x $(top_builddir)/scilab-bin; then \
 		cd $(top_builddir);\
 		for l in $(ALL_LINGUAS_DOC); do \
 			echo "-- Building help ($$l) --"; \
-			COMMAND="try xmltoinline([],[],'$$l');catch disp(lasterror()); exit(-1);end;exit(0);"; \
+			COMMAND="try generate_inline_links('$$l');catch disp(lasterror()); exit(-1);end;exit(0);"; \
 			if test "$(MACOSX)" = "1"; then \
 				echo "LANG=$$l.UTF-8 HOME=/tmp $(top_builddir)/bin/scilab-cli -noatomsautoload -nb -l $$l -nouserstartup -e \"$$COMMAND\"";\
 				LANG=$$l.UTF-8 HOME=/tmp $(top_builddir)/bin/scilab-cli -noatomsautoload -nb -l $$l -nouserstartup -e "$$COMMAND" || exit 1;\
@@ -309,9 +308,6 @@ if BUILD_HELP # Java is not needed for this build but helptools module is disabl
 	else \
 		echo "Cannot find scilab-cli binary"; \
 	fi
-else
-	@echo "Cannot buid help. Add --enable-build-help to the ./configure if you want to build it."
-endif
 
 doc-fr_FR:
 	@$(MAKE) $(AM_MAKEFLAGS) doc ALL_LINGUAS_DOC=fr_FR
@@ -424,7 +420,7 @@ clean-recursive: clean-help clean-localization clean-macros clean-generated
 clean-macros:
 # Find is necessary because of subdirs...
 	-@echo "-- Cleaning macros (*.bin) --"; \
-	find $(top_builddir) -name "*.bin" | xargs --no-run-if-empty rm 2> /dev/null; \
+	find $(top_builddir)/modules -path "*/macros/*" -name "*.bin" -exec rm -f {} + 2> /dev/null; \
 	echo "-- Cleaning lib files (lib) --"; \
 	find $(top_builddir)/modules/*/macros -name "lib" | xargs --no-run-if-empty rm 2> /dev/null
 
@@ -569,7 +565,7 @@ DOCIMAGES=scilab_images.jar
 
 # Path to built files
 PATHTODOCFILES = modules/helptools/jar/
-PATHTOHELPFILES = modules/helptools/inline/
+PATHTOHELPFILES = modules/core/inline/
 
 # Path to scirenderer jar
 PATHTOSCIRENDERER = modules/scirenderer/jar/
@@ -606,17 +602,6 @@ if BUILD_HELP
 	    	$(INSTALL_DATA) "$$file" $(DESTDIR)$(pkgdatadir)/$(PATHTODOCFILES) ; \
 		done; \
 	fi
-# Inline help
-	@$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES); \
-	echo $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES); \
-	for lang in $(ALL_LINGUAS); do \
-		if test -d $(top_builddir)/$(PATHTOHELPFILES)/$$lang/; then \
-			echo $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES)/$$lang; \
-			$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES)/$$lang; \
-			echo $(INSTALL_DATA) $(top_builddir)/$(PATHTOHELPFILES)/$$lang/*.* $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES)/$$lang/; \
-			$(INSTALL_DATA) $(top_builddir)/$(PATHTOHELPFILES)/$$lang/*.* $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES)/$$lang/; \
-		fi \
-	done
 ## Install Javasci documentation (javadoc)
 ## See target javadoc in this file to see how it is build
 	@if test -d $(PATHTOJAVASCIDOC); then \
@@ -632,6 +617,17 @@ if BUILD_HELP
 	done; \
 	fi
 endif
+# Inline help index (always built & available)
+	@$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES); \
+	echo $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES); \
+	for lang in $(ALL_LINGUAS); do \
+		if test -d $(top_builddir)/$(PATHTOHELPFILES)/$$lang/; then \
+			echo $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES)/$$lang; \
+			$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES)/$$lang; \
+			echo $(INSTALL_DATA) $(top_builddir)/$(PATHTOHELPFILES)/$$lang/*.* $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES)/$$lang/; \
+			$(INSTALL_DATA) $(top_builddir)/$(PATHTOHELPFILES)/$$lang/*.* $(DESTDIR)$(pkgdatadir)/$(PATHTOHELPFILES)/$$lang/; \
+		fi \
+	done
 if !EXTERNAL_SCIRENDERER
 if GUI
 # Also install scirenderer.jar

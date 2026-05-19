@@ -12,7 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="DoPri">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="DoPri">
     <refnamediv>
         <refname>Dormand-Prince 4(5)</refname>
         <refpurpose>
@@ -65,17 +65,20 @@
             plus la moyenne pondérée de six incréments, où chaque incrément est le produit du pas, <emphasis>h</emphasis>, et une estimation de la pente spécifiée par la fonction <emphasis>f(t,y)</emphasis> :
             <itemizedlist>
                 <listitem>
-                    <emphasis>k1</emphasis> est l'incrément basé sur la pente au début de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript>
-                    </emphasis>
-                    (méthode d'Euler),
+                     <para><emphasis>k1</emphasis> est l'incrément basé sur la pente au début de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript>
+                        </emphasis>
+                        (méthode d'Euler),
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k2, k3, k4</emphasis> et <emphasis>k5</emphasis> sont les incréments basés sur la pente à repectivement <emphasis>0.2, 0.3, 0.8</emphasis> et <emphasis>0.9</emphasis> de l'intervalle, s'utilisant mutuellement,
+                     <para><emphasis>k2, k3, k4</emphasis> et <emphasis>k5</emphasis> sont les incréments basés sur la pente à repectivement <emphasis>0.2, 0.3, 0.8</emphasis> et <emphasis>0.9</emphasis> de l'intervalle, s'utilisant mutuellement,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k6</emphasis> est l'incrément basé sur la pente à la fin de l'intervalle, utilisant des combinaisons des autres <emphasis>ki</emphasis>.
+                     <para><emphasis>k6</emphasis> est l'incrément basé sur la pente à la fin de l'intervalle, utilisant des combinaisons des autres <emphasis>ki</emphasis>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -174,7 +177,7 @@ Temps pour Dormand-Prince:
         </para>
         <para>
             Maintenant, dans le script suivant, on compare la différence de temps entre <emphasis>Dormand-Prince</emphasis> et <emphasis>CVode</emphasis> en lançant l'exemple avec les cinq solveurs tour à tour :
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integDoPri.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integDoPri.sce">
                 Open the script
             </link>
         </para>
@@ -247,10 +250,10 @@ Temps pour Dormand-Prince :
     <refsection>
         <title>Bibliographie</title>
         <para>
-            Journal of Computational and Applied Mathematics, Volume 15, Parution 2, 2 Juin 1986, Pages 203-211 <ulink url="http://dl.acm.org/citation.cfm?id=9958.9963&amp;coll=DL&amp;dl=GUIDE">Dormand-Prince Method</ulink>
+            Journal of Computational and Applied Mathematics, Volume 15, Parution 2, 2 Juin 1986, Pages 203-211 <link xlink:href="http://dl.acm.org/citation.cfm?id=9958.9963&amp;coll=DL&amp;dl=GUIDE">Dormand-Prince Method</link>
         </para>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</link>
         </para>
     </refsection>
     <refsection>
@@ -258,7 +261,7 @@ Temps pour Dormand-Prince :
         <revhistory>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revdescription>Dormand-Prince 4(5) ajouté</revdescription>
+                <revremark>Dormand-Prince 4(5) ajouté</revremark>
             </revision>
         </revhistory>
     </refsection>

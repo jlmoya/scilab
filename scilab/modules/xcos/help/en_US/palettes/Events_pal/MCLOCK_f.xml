@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/MCLOCK_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MCLOCK_f">
+    <refsection xml:id="Contents_MCLOCK_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MCLOCK_f">Description</xref>
+                <para><link linkend="Description_MCLOCK_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MCLOCK_f">Parameters</xref>
+                <para><link linkend="Dialogbox_MCLOCK_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MCLOCK_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_MCLOCK_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MCLOCK_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MCLOCK_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_MCLOCK_f">Example</xref>
+                <para><link linkend="Example_MCLOCK_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MCLOCK_f">
+    <refsection xml:id="Description_MCLOCK_f">
         <title>Description</title>
         <para>
             Add here a paragraph of the function description
@@ -67,13 +67,12 @@
         <para>
         </para>
     </refsection>
-    <refsection id="Dialogbox_MCLOCK_f">
-        <title>Parameters</title>
+    <refsection xml:id="Dialogbox_MCLOCK_f">
+        <title>Arguments</title>
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../../../../images/gui/MCLOCK_f_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    <imagedata fileref="../../../../images/gui/MCLOCK_f_gui.gif" align="center"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
@@ -94,7 +93,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MCLOCK_f">
+    <refsection xml:id="Defaultproperties_MCLOCK_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -151,7 +150,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MCLOCK_f">
+    <refsection xml:id="Interfacingfunction_MCLOCK_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -159,8 +158,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MCLOCK_f">
+    <refsection xml:id="Example_MCLOCK_f">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/MCLOCK_f_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -168,5 +168,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

@@ -41,7 +41,7 @@
             param3d1  // demo
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -165,7 +165,9 @@
                                 </table>
                                 </para>
                                 <note>
-                                    Isometrical modes are rendered with <literal>gca().cube_scaling="off"</literal>.
+                                    <para>
+                                        Isometrical modes are rendered with <literal>gca().cube_scaling="off"</literal>.
+                                    </para>
                                 </note>
                             </listitem>
                         </varlistentry>
@@ -266,7 +268,9 @@
             same number of points. When it is given, the optional argument <literal>h</literal>
             returns the Compound of curves entities.
             <note>
-                The handle of curve #i is <literal>h.children($-i+1)</literal>.
+                <para>
+                    The handle of curve #i is <literal>h.children($-i+1)</literal>.
+                </para>
             </note>
         </para>
     </refsection>
@@ -481,9 +485,9 @@ gcf().children.foreground = color("grey70");
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

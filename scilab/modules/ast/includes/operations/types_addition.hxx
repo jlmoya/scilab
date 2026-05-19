@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 *  Copyright (C) 2008-2008 - DIGITEO - Antoine ELIAS
 *  Copyright (C) 2010-2010 - DIGITEO - Bruno JOFRET
@@ -22,7 +22,7 @@
 #include "string.hxx"
 #include "polynom.hxx"
 #include "sparse.hxx"
-#include "string.hxx"
+
 extern "C"
 {
 #include "os_string.h"

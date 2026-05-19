@@ -92,6 +92,34 @@ g = gallery(name, 3);
 expected = [0.2 1/3 1; 1/3 1 -1; 1 -1 -1/3];
 assert_checkequal(g, expected);
 
+// minij
+name = "minij";
+msg = msprintf(_("%s: Wrong size for input argument #%d: A scalar expected.\n"), "gallery", 2);
+assert_checkerror("gallery(name, 1:2)", msg);
+
+assert_checkequal(gallery(name, []), []);
+assert_checkequal(gallery(name, 1), 1);
+
+g = gallery(name, 3);
+assert_checkequal(g, [1 1 1; 1 2 2; 1 2 3]);
+
+g = gallery(name, 5);
+assert_checkequal(g, [1 1 1 1 1; 1 2 2 2 2; 1 2 3 3 3; 1 2 3 4 4; 1 2 3 4 5]);
+
+// moler
+name = "moler";
+msg = msprintf(_("%s: Wrong size for input argument #%d: A scalar expected.\n"), "gallery", 2);
+assert_checkerror("gallery(name, 1:2)", msg);
+
+assert_checkequal(gallery(name, []), []);
+assert_checkequal(gallery(name, 1), 1);
+
+g = gallery(name, 3);
+assert_checkequal(g, [1 -1 -1; -1 2 0; -1 0 3]);
+
+g = gallery(name, 5);
+assert_checkequal(g, [1 -1 -1 -1 -1; -1 2 0 0 0; -1 0 3 1 1; -1 0 1 4 2; -1 0 1 2 5]);
+
 // checkerror
 msg = msprintf(_("%s: Wrong number of input argument: At least %d expected.\n"), "gallery", 1);
 assert_checkerror("gallery()", msg);

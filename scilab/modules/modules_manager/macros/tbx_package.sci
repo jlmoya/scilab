@@ -62,10 +62,6 @@ function [package_file, listing, DESCRIPTION] = tbx_package(tbx_path, build_id, 
             // filter some directory
             [_, dname] = fileparts(f);
             select dname
-            case "help"
-                // help source files are not embedded
-                rmdir(f, 's');
-                continue
             case {"Release", "Debug"}
                 // windows msvc "Release"/"Debug" directory
                 rmdir(f, 's');

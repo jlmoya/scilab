@@ -54,7 +54,7 @@ function demo_pend3d1()
                     ggpp(x,u,lambda)];
     endfunction
 
-    [T,y1] = ida(index1,T,y0,yd0,yIsAlgebraic=7,calcIc="y0yp0");
+    [T,y1] = ida(index1,T,y0,yd0,yIsAlgebraic=7,calcIc="y0yp0",maxSteps=2000);
     x1=y1(1:3,:);
 
     //ode model with constraint (handled by projection)

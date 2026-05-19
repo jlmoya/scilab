@@ -24,8 +24,8 @@
             opt = optimbase_histset(opt, iter, key, value)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Argument</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>opt </term>
@@ -69,6 +69,8 @@
                 <listitem>
                     <para>The x optimum.</para>
                 </listitem>
+            </varlistentry>
+            <varlistentry>
                 <term>-fopt </term>
                 <listitem>
                     <para>The optimum cost function value.</para>

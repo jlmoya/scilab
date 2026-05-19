@@ -13,52 +13,49 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-		  xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" 
-		  xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" 
-		  xml:id="BITCLEAR" xml:lang="fr_FR" xml.mml="http://www.w3.org/1998/Math/MathML">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="BITCLEAR" xml:lang="fr_FR" xmlns:mml="http://www.w3.org/1998/Math/MathML">
     <refnamediv>
         <refname>BITCLEAR</refname>
         <refpurpose>Positionne un bit à 0</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
 				<imagedata align="center" fileref="../../../../images/palettes/BITCLEAR.png"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
     </refsection>
-    <refsection id="Contents_BITCLEAR">
+    <refsection xml:id="Contents_BITCLEAR">
         <title>Contenu</title>
 		<itemizedlist>
 			<listitem>
-				<xref linkend="Description_BITCLEAR">Description</xref>
+				<para><link linkend="Description_BITCLEAR">Description</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Data Type_BITCLEAR">Types de données</xref>
+				<para><link linkend="Data_Type_BITCLEAR">Types de données</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Dialogbox_BITCLEAR">Paramètres</xref>
+				<para><link linkend="Dialogbox_BITCLEAR">Paramètres</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Defaultproperties_BITCLEAR">Propriétés par défaut</xref>
+				<para><link linkend="Defaultproperties_BITCLEAR">Propriétés par défaut</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Example_BITCLEAR">Exemple</xref>
+				<para><link linkend="Example_BITCLEAR">Exemple</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Interfacingfunction_BITCLEAR">Fonction d'interfaçage</xref>
+				<para><link linkend="Interfacingfunction_BITCLEAR">Fonction d'interfaçage</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Computationalfunction_BITCLEAR">Fonctions de calcul</xref>
+				<para><link linkend="Computationalfunction_BITCLEAR">Fonctions de calcul</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Seealso_BITCLEAR">Voir aussi</xref>
+				<para><link linkend="Seealso_BITCLEAR">Voir aussi</link></para>
 			</listitem>
 		</itemizedlist>
     </refsection>
-    <refsection id="Description_BITCLEAR">
+    <refsection xml:id="Description_BITCLEAR">
         <title>Description</title>
         <para>
             Ce bloc met à <literal>0</literal> un bit spécifié de son entrée. L'utilisateur donne
@@ -76,7 +73,7 @@
             pour les autres bits.
         </para>
     </refsection>
-    <refsection id="Data Type_BITCLEAR">
+    <refsection xml:id="Data_Type_BITCLEAR">
         <title>Types de données</title>
         <para>
             Le bloc supporte les types de données suivants  :
@@ -94,15 +91,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_BITCLEAR">
+    <refsection xml:id="Dialogbox_BITCLEAR">
         <title>Paramètres</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
-				<imagedata fileref="../../../gui/integer_pal/fr_FR/BITCLEAR_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+				<imagedata fileref="../../../gui/integer_pal/fr_FR/BITCLEAR_gui.png" align="center"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -141,7 +136,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_BITCLEAR">
+    <refsection xml:id="Defaultproperties_BITCLEAR">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -214,20 +209,22 @@
         </itemizedlist>
 		<para/>
     </refsection>
-    <refsection id="Example_BITCLEAR">
+    <refsection xml:id="Example_BITCLEAR">
         <title>Exemple</title>
         <para>
             Ci-dessous un cas simple d'utilisation du bloc.
         </para>
-		<link type="scilab" linkend="scilab.xcos/xcos/examples/integer_pal/fr_FR/BITCLEAR_fr_FR.zcos">
-			<inlinemediaobject>
-				<imageobject>
-					<imagedata align="center" fileref="../../../../examples/integer_pal/fr_FR/BITCLEAR_fr_FR.zcos" valign="middle"/>
-				</imageobject>
-			</inlinemediaobject>
-		</link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/integer_pal/fr_FR/BITCLEAR_fr_FR.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/integer_pal/fr_FR/BITCLEAR_fr_FR.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Interfacingfunction_BITCLEAR">
+    <refsection xml:id="Interfacingfunction_BITCLEAR">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -237,23 +234,29 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_BITCLEAR">
+    <refsection xml:id="Computationalfunction_BITCLEAR">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/bit_clear_32.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/bit_clear_32.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/bit_clear_16.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/bit_clear_16.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/bit_clear_8.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/bit_clear_8.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection role="see also" id="Seealso_BITCLEAR">
+    <refsection role="see also" xml:id="Seealso_BITCLEAR">
         <title>Voir aussi</title>
-        <simplelist>
+        <simplelist type="inline">
             <member>
                 <link linkend="BITSET">BITSET</link>
             </member>

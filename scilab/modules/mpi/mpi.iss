@@ -38,4 +38,5 @@ Source: modules\{#MPILIB}\examples\*.*; DestDir: {app}\modules\{#MPILIB}\example
 ;
 Source: modules\{#MPILIB}\tests\*.*; DestDir: {app}\modules\{#MPILIB}\tests; Flags: recursesubdirs; Components: {#COMPN_MPI} and {#COMPN_TESTS}
 ;
+Source: modules\{#MPILIB}\help\*.*; DestDir: {app}\modules\{#MPILIB}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

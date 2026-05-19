@@ -24,7 +24,7 @@
         <synopsis>y = double(X)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -45,26 +45,35 @@
         <title>Description</title>
         <para>converts data stored using 1, 2, 4 or 8 bytes integers into
             decimal representation on 8 bytes. If <literal>X</literal>
-                entries are already double precision floats, nothing is done.
-          <note><function>double()</function> and <literal>iconvert(..,0)</literal>
-          are equivalent and have the same speed.
-          </note>
-          <note>Booleans can also be processed with <function>double()</function>.
-            However, <literal>bool2s()</literal> does it roughly twice faster.
-          </note>
-          <important>Since the mantissa of <literal>uint64</literal> is encoded on
-          64 bits while the mantissa of (<literal>double</literal> precision) decimal
-          numbers is encoded only on 52 bits, the relative accuracy of
-          <literal>uint64</literal> integers greater than 2<superscript>52</superscript>
-          may then be up to
-          2<superscript>12</superscript> ~4000 times better for them
-          than for "<literal>double</literal>". As a consequence, applying
-          <function>double()</function> on <literal>int64</literal> or
-          <literal>uint64</literal> integers greater than 2<superscript>52</superscript>
-          change their values
-          and downgrades their accuracy (roundoff errors). Some examples illustrating
-          such effects are provided herebelow.
-          </important>
+            entries are already double precision floats, nothing is done.
+            <note>
+                <para>
+                    <function>double()</function> and <literal>iconvert(..,0)</literal>
+                    are equivalent and have the same speed.
+                </para>
+            </note>
+            <note>
+                <para>
+                    Booleans can also be processed with <function>double()</function>.
+                    However, <literal>bool2s()</literal> does it roughly twice faster.
+                </para>
+            </note>
+            <important>
+                <para>
+                    Since the mantissa of <literal>uint64</literal> is encoded on
+                    64 bits while the mantissa of (<literal>double</literal> precision) decimal
+                    numbers is encoded only on 52 bits, the relative accuracy of
+                    <literal>uint64</literal> integers greater than 2<superscript>52</superscript>
+                    may then be up to
+                    2<superscript>12</superscript> ~4000 times better for them
+                    than for "<literal>double</literal>". As a consequence, applying
+                    <function>double()</function> on <literal>int64</literal> or
+                    <literal>uint64</literal> integers greater than 2<superscript>52</superscript>
+                    change their values
+                    and downgrades their accuracy (roundoff errors). Some examples illustrating
+                    such effects are provided herebelow.
+                </para>
+            </important>
         </para>
     </refsection>
 
@@ -242,9 +251,9 @@ tic(),for j=1:100, iconvert(i,0); end, toc()
         <revhistory>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revdescription>
+                <revremark>
                     New int64 and uint64 encoded integers can now be converted.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

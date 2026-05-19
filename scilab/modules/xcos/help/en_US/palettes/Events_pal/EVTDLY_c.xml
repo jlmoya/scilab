@@ -31,41 +31,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/EVTDLY_c.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
 
     </refsection>
-    <refsection id="Contents_EVTDLY_c">
+    <refsection xml:id="Contents_EVTDLY_c">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_EVTDLY_c">Description</xref>
+                <para><link linkend="Description_EVTDLY_c">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_EVTDLY_c">Parameters</xref>
+                <para><link linkend="Dialogbox_EVTDLY_c">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_EVTDLY_c">Default properties</xref>
+                <para><link linkend="Defaultproperties_EVTDLY_c">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_EVTDLY_c">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_EVTDLY_c">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_EVTDLY_c">Computational function</xref>
+                <para><link linkend="Computationalfunction_EVTDLY_c">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_EVTDLY_c">Example</xref>
+                <para><link linkend="Example_EVTDLY_c">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_EVTDLY_c">See also</xref>
+                <para><link linkend="Seealso_EVTDLY_c">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_EVTDLY_c">
+    <refsection xml:id="Description_EVTDLY_c">
         <title>Description</title>
         <para>
             One event is generated  <emphasis role="bold">Delay</emphasis>  after an event enters the unique
@@ -84,13 +84,12 @@
             <emphasis>i</emphasis> the event occurrence.
         </para>
     </refsection>
-    <refsection id="Dialogbox_EVTDLY_c">
-        <title>Parameters</title>
+    <refsection xml:id="Dialogbox_EVTDLY_c">
+        <title>Arguments</title>
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../../../../images/gui/EVTDLY_c_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    <imagedata fileref="../../../../images/gui/EVTDLY_c_gui.gif" align="center"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
@@ -113,7 +112,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_EVTDLY_c">
+    <refsection xml:id="Defaultproperties_EVTDLY_c">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -170,8 +169,9 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Example_EVTDLY_c">
+    <refsection xml:id="Example_EVTDLY_c">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/EVTDLY_c_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -179,9 +179,10 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_EVTDLY_c">
+    <refsection xml:id="Interfacingfunction_EVTDLY_c">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -189,7 +190,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_EVTDLY_c">
+    <refsection xml:id="Computationalfunction_EVTDLY_c">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

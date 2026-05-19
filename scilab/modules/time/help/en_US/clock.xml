@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="clock">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="clock">
     <refnamediv>
         <refname>clock</refname>
         <refpurpose>
@@ -26,35 +24,38 @@
         <title>Syntax</title>
         <synopsis>[datetime, timezone, Dst] = clock()</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>datetime</term>
                 <listitem>
-                    [year, month, day, hour, minute, second] vector.
-                    The first five elements are integers. The <literal>second</literal> element
-                    is accurate up to the millisecond.
-                    <para/>
-                </listitem>
+                     <para>
+                        [year, month, day, hour, minute, second] vector.
+                        The first five elements are integers. The <literal>second</literal> element
+                        is accurate up to the millisecond.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>timezone</term>
                 <listitem>
-                    A scalar multiple of 0.25 in [-12, 12]. Most of geographical areas have an
-                    integer time zone. A few are on a half-an-hour or even a quarter time zone.
-                    <varname>timezone</varname> &lt; 0 for Brasil, and > 0 for France, Russia,
-                    and Japan, etc.
-                    <para/>
-                </listitem>
+                     <para>
+                        A scalar multiple of 0.25 in [-12, 12]. Most of geographical areas have an
+                        integer time zone. A few are on a half-an-hour or even a quarter time zone.
+                        <varname>timezone</varname> &lt; 0 for Brasil, and &gt; 0 for France, Russia,
+                        and Japan, etc.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Dst</term>
                 <listitem>
-                    0 or 1: Daylight saving time. 1 if the time area of the computer is registered
-                    to apply a Daylight saving time offset, and currently applies it ; 0 otherwise.
-                    <para/>
-                </listitem>
+                     <para>
+                        0 or 1: Daylight saving time. 1 if the time area of the computer is registered
+                        to apply a Daylight saving time offset, and currently applies it ; 0 otherwise.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -66,9 +67,11 @@
             provides the local legal time.
         </para>
         <warning>
-            The time zone of the computer can also be retrieved through the computer's OS.
-            However, when a Daylight saving time offset applies, the returned
-            time zone may include it.
+            <para>
+                The time zone of the computer can also be retrieved through the computer's OS.
+                However, when a Daylight saving time offset applies, the returned
+                time zone may include it.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -126,9 +129,9 @@ powershell("Get-Timezone")(3:8)
         <revhistory>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     Time zone and Daylight saving time outputs added.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

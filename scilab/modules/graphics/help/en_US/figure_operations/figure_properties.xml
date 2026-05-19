@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="figure_properties">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="figure_properties">
     <refnamediv>
         <refname>figure properties</refname>
         <refpurpose>description of the graphics
@@ -70,16 +67,19 @@
                                     Vector <literal>[width, height]</literal>, providing the
                                     external size of the graphic window, in screen pixels.
                                 </para>
-                                <para>
                                 <warning>
-                                    When the figure is docked (to the Scilab desktop, etc),
-                                    .figure_size holds for the whole docked block and should not
-                                    be set.
+                                    <para>
+                                        When the figure is docked (to the Scilab desktop, etc),
+                                        .figure_size holds for the whole docked block and should not
+                                        be set.
+                                    </para>
                                 </warning>
                                 <warning>
-                                    The OS window manager defines some minimal sizes. If sizes
-                                    smaller than minimal ones are provided, the minimal ones are
-                                    actually set.
+                                    <para>
+                                        The OS window manager defines some minimal sizes. If sizes
+                                        smaller than minimal ones are provided, the minimal ones are
+                                        actually set.
+                                    </para>
                                     <para>
                                         On Windows, minimal sizes can be retrieved with
                                         <screen><![CDATA[
@@ -90,11 +90,12 @@
                                     </para>
                                 </warning>
                                 <warning>
-                                    When a figure is created in .auto_resize="on" mode,
-                                    the .axes_size value is set as specified, and .figure_size
-                                    is set accordingly, not the reverse.
+                                    <para>
+                                        When a figure is created in .auto_resize="on" mode,
+                                        the .axes_size value is set as specified, and .figure_size
+                                        is set accordingly, not the reverse.
+                                    </para>
                                 </warning>
-                                </para>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
@@ -105,8 +106,10 @@
                                     graphical area in the window, in pixels.
                                 </para>
                                 <warning>
-                                    This property should not be modified if the figure is docked
-                                    to the Scilab desktop.
+                                    <para>
+                                        This property should not be modified if the figure is docked
+                                        to the Scilab desktop.
+                                    </para>
                                 </warning>
                             </listitem>
                         </varlistentry>
@@ -322,9 +325,11 @@
                                     of the graphic window.
                                 </para>
                                 <note>
-                                    A multi-line message is possible, using ascii(10) as lines
-                                    separator, as with "Line #1"+ascii(10)+"Line #2".
-                                    Styling the text is not possible (HTML styles not supported).
+                                    <para>
+                                        A multi-line message is possible, using ascii(10) as lines
+                                        separator, as with "Line #1"+ascii(10)+"Line #2".
+                                        Styling the text is not possible (HTML styles not supported).
+                                    </para>
                                 </note>
                             </listitem>
                         </varlistentry>
@@ -377,26 +382,34 @@
                                     <literal>"off"</literal> means that
                                     <itemizedlist>
                                         <listitem>
-                                            the newly created figure has no default axes.
+                                             <para>
+                                                the newly created figure has no default axes.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            for an existing figure, it is possible to actually delete
-                                            all its existing axes.
+                                             <para>
+                                                for an existing figure, it is possible to actually delete
+                                                all its existing axes.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                     In both cases,
                                     <itemizedlist>
                                         <listitem>
-                                            without any axes, the figure can't be the default
-                                            target of any plotting instruction. This feature
-                                            can be used to protect an interactive interface built in
-                                            a figure (like the demos and the ATOMS ones) from being the default
-                                            plotting target when there is no other proper opened
-                                            graphical figures.
+                                             <para>
+                                                without any axes, the figure can't be the default
+                                                target of any plotting instruction. This feature
+                                                can be used to protect an interactive interface built in
+                                                a figure (like the demos and the ATOMS ones) from being the default
+                                                plotting target when there is no other proper opened
+                                                graphical figures.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            It is still possible to force creating an axes using the
-                                            <link linkend="newaxes">newaxes</link> function.
+                                             <para>
+                                                It is still possible to force creating an axes using the
+                                                <link linkend="newaxes">newaxes</link> function.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                 </para>
@@ -413,8 +426,8 @@
                     <variablelist>
                         <varlistentry>
                             <term>visible: </term>
-                            <para>{"on"} | "off"</para>
                             <listitem>
+                                <para>{"on"} | "off"</para>
                                 <para>This field sets if the contents of the figure (axes and uicontrols) has to be
                                     redrawn. Its value should be <literal>"on"</literal> or <literal>"off"</literal>.
                                 </para>
@@ -422,8 +435,8 @@
                         </varlistentry>
                         <varlistentry>
                             <term>rotation_style: </term>
-                            <para>{"unary"} | "multiple"</para>
                             <listitem>
+                                <para>{"unary"} | "multiple"</para>
                                 <para>This field is related to the "3D Rot" button. It takes
                                     <literal>unary</literal> as value (default) in the aim to rotate only
                                     selected 3D plot. In the other case its value can be
@@ -438,11 +451,11 @@
         <variablelist>
             <varlistentry>
                 <term>Creation related properties: </term>
-                <para>
-                    Some properties can only be set at creation time when using the <link linkend="figure">figure</link> function (and will then be read-only).
-                    When a new figure is created using <link linkend="gcf">gcf</link> or <link linkend="scf">scf</link>, these properties will be set according to <link linkend="gdf">gdf</link>.
-                </para>
                 <listitem>
+                    <para>
+                        Some properties can only be set at creation time when using the <link linkend="figure">figure</link> function (and will then be read-only).
+                        When a new figure is created using <link linkend="gcf">gcf</link> or <link linkend="scf">scf</link>, these properties will be set according to <link linkend="gdf">gdf</link>.
+                    </para>
                     <variablelist>
                         <varlistentry>
                             <term>dockable</term>
@@ -511,8 +524,8 @@
     </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example">
-            <![CDATA[
+        <programlisting role="example"><![CDATA[
+            
 lines(0) // disables vertical paging
 
 //Example 1
@@ -539,8 +552,8 @@ plot2d()
 scf(214);
 t=-%pi:0.3:%pi;
 plot3d(t,t,sin(t)'*cos(t),35,45,'X@Y@Z',[15,2,4]);
- ]]>
-        </programlisting>
+ 
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -580,7 +593,7 @@ plot3d(t,t,sin(t)'*cos(t),35,45,'X@Y@Z',[15,2,4]);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -589,26 +602,56 @@ plot3d(t,t,sin(t)'*cos(t),35,45,'X@Y@Z',[15,2,4]);
             </revision>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>"visible" property meaning changed (uicontrols managed and the whole figure can be made invisible in some cases.</listitem>
-                        <listitem>"icon" property added to allow figure icon change.</listitem>
-                        <listitem>"menubar_visible" property added.</listitem>
-                        <listitem>"toolbar_visible" property added.</listitem>
-                        <listitem>"infobar_visible" property added.</listitem>
-                        <listitem>"resize" property added.</listitem>
-                        <listitem>"dockable" property added.</listitem>
-                        <listitem>"menubar" property added.</listitem>
-                        <listitem>"toolbar" property added.</listitem>
-                        <listitem>"default_axes" property added.</listitem>
-                        <listitem>"layout" property added.</listitem>
-                        <listitem>"layout_options" property added.</listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>"visible" property meaning changed (uicontrols managed and the whole figure can be made invisible in some cases.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"icon" property added to allow figure icon change.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"menubar_visible" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"toolbar_visible" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"infobar_visible" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"resize" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"dockable" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"menubar" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"toolbar" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"default_axes" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"layout" property added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>"layout_options" property added.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revremark>"anti_aliasing" property default value is now "8x" and can now only be changed (specifically) at figure creation time using <link linkend="figure">figure</link> or (globally) by setting default its value using <link linkend="gdf">gdf</link>.</revremark>
+                <revdescription>
+                    <para>
+                        "anti_aliasing" property default value is now "8x" and can now only be changed (specifically) at figure creation time using <link linkend="figure">figure</link> or (globally) by setting default its value using <link linkend="gdf">gdf</link>.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

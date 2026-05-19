@@ -198,7 +198,6 @@ void MeshFecDataDecomposer::fillColors(int id, float* buffer, int bufferLength, 
     float maxColor[3];
 
     int colormapSize = 0;
-    int* piColormapSize = &colormapSize;
 
     int numVertices = 0;
     int* piNumVertices = &numVertices;

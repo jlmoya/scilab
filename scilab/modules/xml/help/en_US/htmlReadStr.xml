@@ -21,10 +21,10 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
-            doc = htmlReadStr(string)
+            xdoc = htmlReadStr(string)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -34,7 +34,7 @@
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>a mlist typed XMLDoc</para>
                 </listitem>
@@ -51,7 +51,7 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = htmlReadStr(["<!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01//EN""";
+    xdoc = htmlReadStr(["<!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01//EN""";
                        """http://www.w3.org/TR/html4/strict.dtd"">";
                        "<html lang=""en"">";
                        "  <head>";
@@ -65,10 +65,10 @@
                        "</html>"]);
 
     // Dump a HTML document
-    htmlDump(doc)
+    htmlDump(xdoc)
 
     // Free the resources associated with the document
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -88,7 +88,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

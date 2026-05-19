@@ -41,4 +41,5 @@ Source: modules\{#PARAMETERS}\demos\*.*; DestDir: {app}\modules\{#PARAMETERS}\de
 ;
 Source: modules\{#PARAMETERS}\tests\*.*; DestDir: {app}\modules\{#PARAMETERS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#PARAMETERS}\help\*.*; DestDir: {app}\modules\{#PARAMETERS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

@@ -236,6 +236,11 @@ void SetBrowseVarData()
             piAllVariableTypes[i] = sci_cell;
             pstAllVariableListTypes[i] = os_strdup("");
         }
+        else if (pIT->isObject())
+        {
+            piAllVariableTypes[i] = sci_object;
+            pstAllVariableListTypes[i] = wide_string_to_UTF8(pIT->getTypeStr().data());
+        }
         else
         {
             pstAllVariableListTypes[i] = os_strdup("");

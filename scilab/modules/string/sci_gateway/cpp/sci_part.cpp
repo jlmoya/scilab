@@ -160,17 +160,17 @@ types::Function::ReturnValue sci_part(types::typed_list& in, int _iRetCount, typ
         }
 
         int i_len = pD->getSize();
-        index.reserve(i_len);
+        index.resize(i_len);
+        const double* pdata = pD->get(); 
         for (int i = 0; i < i_len; i++)
         {
-            int idx = static_cast<int>(pD->get()[i]);
+            int idx = static_cast<int>(pdata[i]);
             if (idx < 1)
             {
                 Scierror(36, _("%s: Wrong values for input argument #%d: Must be >= 1.\n"), "part", 2);
                 return types::Function::Error;
             }
-
-            index.push_back(idx);
+            index[i] = idx;
         }
     }
     else if (index.empty())
@@ -180,37 +180,30 @@ types::Function::ReturnValue sci_part(types::typed_list& in, int _iRetCount, typ
     }
 
     types::String* pOut = new types::String(pS->getRows(), pS->getCols());
-    std::wstring string_in;
 
-    // allocate the output strings
-    std::wstring string_out(index.size(), L' ');
+    // Get direct access to the data arrays
+    wchar_t** out_data = pOut->get();
+    wchar_t** in_data = pS->get();
+
     for (int i = 0; i < pS->getSize(); ++i)
     {
-        pOut->set(i, string_out.data());
-    }
-
-    // part() algorithm
-    for (int i = 0; i < pS->getSize(); ++i)
-    {
-        wchar_t* wcs_in = pS->get()[i];
-        wchar_t* wcs_out = pOut->get()[i];
-        
-        // typesafe int checking
+        wchar_t* wcs_in = in_data[i];
         size_t s_len = wcslen(wcs_in);
-        int wcs_len = (int) s_len;
-        if (s_len > (size_t) std::numeric_limits<int>::max()) [[unlikely]]
-        {
-            wcs_len = std::numeric_limits<int>::max();
-        }
+        int wcs_len = (s_len > std::numeric_limits<int>::max()) 
+                    ? std::numeric_limits<int>::max() 
+                    : static_cast<int>(s_len);
+
+        // Allocate and initialize output string
+        out_data[i] = new wchar_t[index.size() + 1];
+        std::wmemset(out_data[i], L' ', index.size());
+        out_data[i][index.size()] = L'\0';
 
         for (size_t j = 0; j < index.size(); ++j)
         {
-            if (index[j] > wcs_len) [[unlikely]]
+            if (index[j] <= wcs_len) [[likely]]
             {
-                continue;
+                out_data[i][j] = wcs_in[index[j] - 1];
             }
-
-            wcs_out[j] = wcs_in[index[j] - 1];
         }
     }
 

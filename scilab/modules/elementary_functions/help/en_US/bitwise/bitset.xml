@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="bitset" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bitset" xml:lang="en">
     <refnamediv>
         <refname>bitset</refname>
         <refpurpose>Sets bits of given indices in some integers</refpurpose>
@@ -28,8 +25,8 @@
             y = bitset(x, bitInd, bitVal)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
@@ -55,7 +52,7 @@
                 <tr align="center"><td>int16 </td><td>15</td><td>  </td><td>uint16</td><td>16</td></tr>
                 <tr align="center"><td>int32 </td><td>31</td><td>  </td><td>uint32</td><td>32</td></tr>
                 <tr align="center"><td>int64 </td><td>63</td><td>  </td><td>uint16</td><td>64</td></tr>
-                <tr align="center"><td>decimal</td><td>1024</td><td>  </td><td></td><td></td></tr>
+                <tr align="center"><td>decimal</td><td>1024</td><td>  </td><td/><td/></tr>
             </table>
                     </para>
                     <para>
@@ -375,31 +372,43 @@ ns = bitset(n, [  10 40       61    63 64 65   ], ..
         <revhistory>
             <revision>
                 <revnumber>5.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function introduced
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            64-bit integers now supported.
-                        </listitem>
-                        <listitem>
-                            Support to positive signed integers added.
-                        </listitem>
-                        <listitem>
-                            With decimal numbers, bits #53 to #1024 can now be properly set.
-                        </listitem>
-                        <listitem>
-                            For each input element, several bits can now be set at the same time.
-                        </listitem>
-                        <listitem>
-                            Input arguments can now mixed arrays and scalars, instead of mandatory
-                            element-wise arrays.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    64-bit integers now supported.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Support to positive signed integers added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    With decimal numbers, bits #53 to #1024 can now be properly set.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    For each input element, several bits can now be set at the same time.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Input arguments can now mixed arrays and scalars, instead of mandatory
+                                    element-wise arrays.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

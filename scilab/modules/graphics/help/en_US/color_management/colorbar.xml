@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="colorbar">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="colorbar">
     <refnamediv>
         <refname>colorbar</refname>
         <refpurpose>draws a vertical color bar</refpurpose>
@@ -31,20 +28,26 @@
             h = colorbar(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <para>
             <itemizedlist>
                 <listitem>
-                    Let U be the Z values of the plot for which a colorbar scale is needed, %inf,
-                    -%inf and %nan values being ignored.
+                     <para>
+                        Let U be the Z values of the plot for which a colorbar scale is needed, %inf,
+                        -%inf and %nan values being ignored.
+                    </para>
                 </listitem>
                 <listitem>
-                    Let minU and maxU be the minimum and the maximum of U values.
+                     <para>
+                        Let minU and maxU be the minimum and the maximum of U values.
+                    </para>
                 </listitem>
                 <listitem>
-                    Let Nc be the Number of colors in the current color map:
-                    <literal>Nc = size(gcf().color_map,1)</literal>.
+                     <para>
+                        Let Nc be the Number of colors in the current color map:
+                        <literal>Nc = size(gcf().color_map,1)</literal>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -163,10 +166,14 @@
             sets umin=minU and umax=maxU.
             <itemizedlist>
                 <listitem>
-                    For a Matplot.image_type="index", sets colminmax = [minU maxU].
+                     <para>
+                        For a Matplot.image_type="index", sets colminmax = [minU maxU].
+                    </para>
                 </listitem>
                 <listitem>
-                    Otherwise, sets colminmax = [1 Nc]
+                     <para>
+                        Otherwise, sets colminmax = [1 Nc]
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -202,12 +209,14 @@
     </refsection>
     <refsection>
         <title>Examples</title>
-        <refsect3>
-            <title>Example #1</title>
-            <para>
-                Without underlaying U data :
-                Direct umin and umax specifications.
-            </para>
+
+        <para>
+            <emphasis role="bold">Example #1</emphasis>
+        </para>
+        <para>
+            Without underlaying U data :
+            Direct umin and umax specifications.
+        </para>
         <programlisting role="example"><![CDATA[
 clf reset                           // clears and resets the figure
 gcf().color_map = jet(100); // sets its color map
@@ -269,11 +278,11 @@ colbar3.y_location = "left";
 
 // Color bars are automatically redrawn and regraduated
 // when resizing the figure. Try it!
-     ]]></programlisting>
+        ]]></programlisting>
         <para>
             ➞ Customized color bar style:
         </para>
-        <scilab:image>clf reset                           // clears and resets the figure
+        <scilab:image><![CDATA[clf reset                           // clears and resets the figure
 gcf().color_map = jet(100); // sets its color map
 
 // Axes on the left
@@ -334,16 +343,17 @@ colbar3.y_location = "left";
 // Color bars are automatically redrawn and regraduated
 // when resizing the figure. Try it!
 
-            gcf().axes_size = [770 440];
-        </scilab:image>
-        </refsect3>
+        gcf().axes_size = [770 440];
+        ]]></scilab:image>
+
         <!--===================================================-->
-        <refsect3>
-            <title>Example #2 : Matplot</title>
-            <para>
-                <emphasis role="bold">After Matplot()</emphasis> here used with the default colormap.
-            </para>
-            <programlisting role="example"><![CDATA[
+        <para>
+            <emphasis role="bold">Example #2 : Matplot</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">After Matplot()</emphasis> here used with the default colormap.
+        </para>
+        <programlisting role="example"><![CDATA[
 clf reset   // Default colormap used
 // 1) Matplot: implicit minU, maxU, colminmax = [umin umax]
 subplot(2,2,1)
@@ -364,8 +374,8 @@ colorbar(3,7, [3 7])
 // Ticks 2.5-7.5 expected:
 //  - integer values ticked at the middle of colors blocks
 //  - other .5 values ticked at the blocks separations
-            ]]></programlisting>
-            <scilab:image>
+        ]]></programlisting>
+        <scilab:image><![CDATA[
 clf reset   // Default colormap used
 gcf().axes_size = [770 620];
 // 1) Matplot: implicit minU, maxU, colminmax = [umin umax]
@@ -387,18 +397,19 @@ colorbar(3,7, [3 7])
 // Ticks 2.5-7.5 expected:
 //  - integer values ticked at the middle of colors blocks
 //  - other .5 values ticked at the blocks separations
-            </scilab:image>
-        </refsect3>
+        ]]></scilab:image>
+
         <!--===================================================-->
-        <refsect3>
-            <title>Example #3: After Sgrayplot()</title>
-            <para>
-                U data are available from the underlaying Fec object.
-                Then <literal>umin</literal> and <literal>umax</literal> may be implicit.
-                Here we use a small number of colors, showing that a given [umin umax] data
-                range (here implicitly [-1, 1], is exactly covered by chosen colors.
-            </para>
-            <programlisting role="example"><![CDATA[
+        <para>
+            <emphasis role="bold">Example #3: After Sgrayplot()</emphasis>
+        </para>
+        <para>
+            U data are available from the underlaying Fec object.
+            Then <literal>umin</literal> and <literal>umax</literal> may be implicit.
+            Here we use a small number of colors, showing that a given [umin umax] data
+            range (here implicitly [-1, 1], is exactly covered by chosen colors.
+        </para>
+        <programlisting role="example"><![CDATA[
 x = linspace(0,1,81);
 z = cos(2*%pi*x)'*sin(2*%pi*x);
 n = 10;
@@ -414,8 +425,8 @@ colorbar
 // * "1" tick at the very top
 // * Nice subticks, at blocks middles & blocks limits
 // * The contours levels must be at the right levels on the color bar
-            ]]></programlisting>
-            <scilab:image>
+        ]]></programlisting>
+        <scilab:image><![CDATA[
 x = linspace(0,1,81);
 z = cos(2*%pi*x)'*sin(2*%pi*x);
 n = 10;
@@ -426,11 +437,11 @@ contour(x,x,z,[-0.8 -0.6 -0.4 -0.2 0 0.2 0.4 0.6 0.8]);
 gce().children.children(1:2:$-1).foreground=-1; // contours in black
 colorbar
 gcf().axes_size = [760 450];
-            </scilab:image>
-            <para>
-                <emphasis role="bold">Partial colors range: 8 colors used over 20</emphasis>:
-            </para>
-            <programlisting role="example"><![CDATA[
+        ]]></scilab:image>
+        <para>
+            <emphasis role="bold">Partial colors range: 8 colors used over 20</emphasis>:
+        </para>
+        <programlisting role="example"><![CDATA[
 x = linspace(0,1,81);
 z = cos(2*%pi*x)'*sin(2*%pi*x);
 n = 8;
@@ -450,8 +461,8 @@ subplot(1,2,2)
 Sgrayplot(x, x, z, zminmax = [-0.6 0.8], colminmax = [5 11]);
 contour(x,x,z,[-0.6 -0.4 -0.2 0.2 0.4 0.6]);
 colorbar(-0.6, 0.8,[5 11]);
-            ]]></programlisting>
-            <scilab:image><![CDATA[
+        ]]></programlisting>
+        <scilab:image><![CDATA[
 x = linspace(0,1,81);
 z = cos(2*%pi*x)'*sin(2*%pi*x);
 n = 8;
@@ -471,13 +482,14 @@ subplot(1,2,2)
 Sgrayplot(x, x, z, zminmax = [-0.6 0.8], colminmax = [5 11]);
 contour(x,x,z,[-0.6 -0.4 -0.2 0.2 0.4 0.6]);
 colorbar(-0.6, 0.8,[5 11]);
-            ]]></scilab:image>
-        </refsect3>
+        ]]></scilab:image>
+
         <!--===================================================-->
-        <refsect3>
-            <title>Example #4: for a Fac3d object</title>
-            <para> After plot3d1() or surf():
-            <programlisting role="example"><![CDATA[
+        <para>
+            <emphasis role="bold">Example #4: for a Fac3d object</emphasis>
+        </para>
+        <para> After plot3d1() or surf():
+        <programlisting role="example"><![CDATA[
 function [zz, zz1] = plotSphere()
     r = 0.3;
     orig = [1.5 0 0];
@@ -517,8 +529,8 @@ colorbar(,,[60 120]);  // graduations on [0, 0.3]
 subplot(2,2,4)
 plotSphere();
 colorbar(,,[1 $/2]);  // graduations on [-0.3, 0]
-            ]]></programlisting>
-            <scilab:image><![CDATA[
+        ]]></programlisting>
+        <scilab:image><![CDATA[
 function [zz, zz1] = plotSphere()
     r = 0.3;
     orig = [1.5 0 0];
@@ -558,14 +570,15 @@ colorbar(,,[50 100]);  // graduations on [0, 0.3]
 subplot(2,2,4)
 plotSphere();
 colorbar(,,[1 $/2]);  // graduations on [-0.3, 0]
-            ]]></scilab:image>
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Example #5 : Plot3d object</title>
-            <para> After plot3d() or surf():</para>
-            <para>
-                <programlisting role="example"><![CDATA[
+        ]]></scilab:image>
+        </para>
+
+        <para>
+            <emphasis role="bold">Example #5 : Plot3d object</emphasis>
+        </para>
+        <para> After plot3d() or surf():</para>
+        <para>
+            <programlisting role="example"><![CDATA[
 function plotSample()
     t=[-4:0.1:4];
     e = plot3d(t,t,sin(t)'*cos(t));
@@ -588,7 +601,7 @@ plotSample();
 colorbar(,,[0.6 1]);
 
 gcf().children([2 4]).rotation_angles = [55 45];
-                ]]></programlisting>
+            ]]></programlisting>
             <scilab:image><![CDATA[
 function plotSample()
     t=[-4:0.1:4];
@@ -613,16 +626,17 @@ colorbar(,,[0.6 1]);
 
 gcf().children([2 4]).rotation_angles = [55 45];
             ]]></scilab:image>
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Example #6: Demo</title>
-            <para>
-                <programlisting role="example">
+        </para>
+
+        <para>
+            <emphasis role="bold">Example #6: Demo</emphasis>
+        </para>
+        <para>
+            <programlisting role="example"><![CDATA[
 exec("SCI/modules/graphics/demos/colormap/colormaps.dem.sce",-1)
-                </programlisting>
-            </para>
-        </refsect3>
+            ]]></programlisting>
+        </para>
+
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -653,41 +667,57 @@ exec("SCI/modules/graphics/demos/colormap/colormaps.dem.sce",-1)
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            colorbar() syntax added.
-                        </listitem>
-                        <listitem>
-                            implicit umin or/and umax values can now be infered either from actual
-                            U data values, or from colminmax and the colormap size.
-                        </listitem>
-                        <listitem>
-                            colminmax bounds can now be specified as fractions of the colormap size.
-                        </listitem>
-                        <listitem>
-                            umin=-%inf and umax=%inf semantics are now available.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    colorbar() syntax added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    implicit umin or/and umax values can now be infered either from actual
+                                    U data values, or from colminmax and the colormap size.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    colminmax bounds can now be specified as fractions of the colormap size.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    umin=-%inf and umax=%inf semantics are now available.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            $ can be used in colminmax.
-                        </listitem>
-                        <listitem>
-                            After calling colorbar(), gce() provides the color bar's handle.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    $ can be used in colminmax.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    After calling colorbar(), gce() provides the color bar's handle.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

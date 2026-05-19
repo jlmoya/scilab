@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="struct">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="struct">
     <refnamediv>
         <refname>struct</refname>
         <refpurpose>строит структуру или массив структур</refpurpose>
@@ -32,30 +30,33 @@
             <varlistentry>
                 <term>field1, field2, ...</term>
                 <listitem>
-                    строки: имена полей структуры с учётом регистра. Разрешены
-                    расширенные не-ascii UTF-символы.
-                    <para/>
-                </listitem>
+                     <para>
+                        строки: имена полей структуры с учётом регистра. Разрешены
+                        расширенные не-ascii UTF-символы.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>value1, value2, ...</term>
                 <listitem>
-                    данные, присвоенные соответствующим полям. Поддерживаются все
-                    типы данных. Если несколько значений являются нескалярными
-                    cell-массивами, то они должны быть одинакового размера. Для
-                    любого cell-скаляра cell-контейнер удаляется и его содержимое
-                    рассматривается и присваивается полю как единое целое. Обработка
-                    cell-массивов описана ниже.
-                    <para/>
-                </listitem>
+                     <para>
+                        данные, присвоенные соответствующим полям. Поддерживаются все
+                        типы данных. Если несколько значений являются нескалярными
+                        cell-массивами, то они должны быть одинакового размера. Для
+                        любого cell-скаляра cell-контейнер удаляется и его содержимое
+                        рассматривается и присваивается полю как единое целое. Обработка
+                        cell-массивов описана ниже.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>st</term>
                 <listitem>
-                    скалярная структура или массив структур, если хотя бы одно
-                    значение является нескалярным cell-массивом.
-                    <para/>
-                </listitem>
+                     <para>
+                        скалярная структура или массив структур, если хотя бы одно
+                        значение является нескалярным cell-массивом.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

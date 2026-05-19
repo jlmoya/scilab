@@ -122,6 +122,7 @@ public class ScilabImageConverter implements ExternalImageConverter {
         buffer.append("driver(\"png\");\n");
         buffer.append("xinit(\"").append(imageFile.getAbsolutePath()).append("\");\n");
         buffer.append("scf();\n");
+        buffer.append("rand(\"seed\", 0);\n");
         buffer.append(code).append("\n");
         buffer.append("gcf().anti_aliasing=\"2x\";\n"); // This line is needed to activate anti-aliasing in canvas in Export.java (in setVisitor() method, see updateObject() in DrawerVisitor constructor)
         buffer.append("xend();\n");

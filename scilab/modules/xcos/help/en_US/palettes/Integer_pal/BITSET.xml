@@ -32,44 +32,44 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/BITSET.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_BITSET">
+    <refsection xml:id="Contents_BITSET">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_BITSET">Description</xref>
+                <para><link linkend="Description_BITSET">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_BITSET">Data types</xref>
+                <para><link linkend="Data_Type_BITSET">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_BITSET">Parameters</xref>
+                <para><link linkend="Dialogbox_BITSET">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_BITSET">Default properties</xref>
+                <para><link linkend="Defaultproperties_BITSET">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_BITSET">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_BITSET">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_BITSET">Computational function</xref>
+                <para><link linkend="Computationalfunction_BITSET">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_BITSET">Example</xref>
+                <para><link linkend="Example_BITSET">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_BITSET">See also</xref>
+                <para><link linkend="Seealso_BITSET">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_BITSET">
+    <refsection xml:id="Description_BITSET">
         <title>Description</title>
         <para>
             This block sets to <literal>1</literal> the specified bit of its input. The user gives
@@ -86,7 +86,7 @@
             for the other bits.
         </para>
     </refsection>
-    <refsection id="Data_Type_BITSET">
+    <refsection xml:id="Data_Type_BITSET">
         <title>Data types</title>
         <para>
             The block supports the following types :
@@ -105,14 +105,13 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Dialogbox_BITSET">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_BITSET">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../gui/integer_pal/en_US/BITSET_gui.png" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../gui/integer_pal/en_US/BITSET_gui.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -149,7 +148,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_BITSET">
+    <refsection xml:id="Defaultproperties_BITSET">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -223,7 +222,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_BITSET">
+    <refsection xml:id="Example_BITSET">
         <title>Example</title>
         <para>
             Below a simple use case of the block.
@@ -239,7 +238,7 @@
         </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_BITSET">
+    <refsection xml:id="Interfacingfunction_BITSET">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -249,7 +248,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_BITSET">
+    <refsection xml:id="Computationalfunction_BITSET">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

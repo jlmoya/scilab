@@ -34,6 +34,7 @@ Source: modules\{#CORE}\license.txt; DestDir: {app}\modules\{#CORE}; Components:
 ;
 Source: modules\{#CORE}\etc\{#CORE}.quit; DestDir: {app}\modules\{#CORE}\etc; Components: {#COMPN_SCILAB}
 Source: modules\{#CORE}\etc\{#CORE}.start; DestDir: {app}\modules\{#CORE}\etc; Components: {#COMPN_SCILAB}
+Source: modules\{#CORE}\etc\help_text.xsl; DestDir: {app}\modules\{#CORE}\etc; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#CORE}\includes\*.h; DestDir: {app}\modules\{#CORE}\includes; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 Source: modules\{#CORE}\includes\*.hxx; DestDir: {app}\modules\{#CORE}\includes; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
@@ -51,4 +52,7 @@ Source: modules\{#CORE}\demos\*.*; DestDir: {app}\modules\{#CORE}\demos; Flags: 
 ;
 Source: modules\{#CORE}\tests\*.*; DestDir: {app}\modules\{#CORE}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#CORE}\inline\*.*; DestDir: {app}\modules\{#CORE}\inline; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
+;
+Source: modules\{#CORE}\help\*.*; DestDir: {app}\modules\{#CORE}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

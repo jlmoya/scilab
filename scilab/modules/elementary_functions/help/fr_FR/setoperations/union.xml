@@ -10,10 +10,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="union" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="union" xml:lang="fr">
     <refnamediv>
         <refname>union</refname>
         <refpurpose>
@@ -27,80 +24,96 @@
             [v, ka, kb] = union(a, b, orient)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                    peuvent être :
-                    <itemizedlist>
-                        <listitem>
-                            tableaux de booléens, de nombres, de texte, de <link linkend="duration">duration</link> ou de 
-                            <link linkend="datetime">datetime</link>. Matrices creuses booléennes
-                            ou numériques acceptées. Les types de <varname>a</varname> et de
-                            <varname>b</varname> peuvent être distincts mais compatibles pour la
-                            concaténation.
-                        </listitem>
-                        <listitem>
-                            <link linkend="table">table</link> et <link linkend="timeseries">timeseries</link>:  
-                            <varname>a</varname> et <varname>b</varname> doivent avoir les mêmes noms de variable. 
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        peuvent être :
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    tableaux de booléens, de nombres, de texte, de <link linkend="duration">duration</link> ou de 
+                                    <link linkend="datetime">datetime</link>. Matrices creuses booléennes
+                                    ou numériques acceptées. Les types de <varname>a</varname> et de
+                                    <varname>b</varname> peuvent être distincts mais compatibles pour la
+                                    concaténation.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><link linkend="table">table</link> et <link linkend="timeseries">timeseries</link>:  
+                                    <varname>a</varname> et <varname>b</varname> doivent avoir les mêmes noms de variable. 
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>orient</term>
-                Orientation du traitement :
                 <listitem>
-                    <itemizedlist>
-                        <listitem>
-                            1 or "r": union des lignes de <varname>a</varname> et de
-                            <varname>b</varname>.
-                        </listitem>
-                        <listitem>
-                            2 or "c": union des colonnes de <varname>a</varname> et de
-                            <varname>b</varname>.
-                        </listitem>
-                    </itemizedlist>
-                    Cette option n'est pas supportée pour les types table et timeseries.
-                    <para/>
-                </listitem>
+                    <para>
+                        Orientation du traitement :
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    1 or "r": union des lignes de <varname>a</varname> et de
+                                    <varname>b</varname>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    2 or "c": union des colonnes de <varname>a</varname> et de
+                                    <varname>b</varname>.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        Cette option n'est pas supportée pour les types table et timeseries.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    dépend du type de <varname>a</varname> et <varname>b</varname> :
-                    <itemizedlist>
-                        <listitem>
-                            vecteur ligne, ou matrice. Le type de <varname>v</varname> est celui
-                            de <literal>[a(:) ; b(:)]</literal>.
-                        </listitem>
-                        <listitem>
-                            table ou timeseries
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        dépend du type de <varname>a</varname> et <varname>b</varname> :
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    vecteur ligne, ou matrice. Le type de <varname>v</varname> est celui
+                                    de <literal>[a(:) ; b(:)]</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    table ou timeseries
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>ka</term>
                 <listitem>
-                    vecteur ligne d'entiers : rangs dans <varname>a</varname> des
-                    éléments/lignes/colonnes de <varname>v</varname> présents dans
-                    <varname>a</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        vecteur ligne d'entiers : rangs dans <varname>a</varname> des
+                        éléments/lignes/colonnes de <varname>v</varname> présents dans
+                        <varname>a</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>kb</term>
                 <listitem>
-                    vecteur ligne d'entiers : rangs dans <varname>b</varname> des
-                    éléments/lignes/colonnes de <varname>v</varname> restants issus de
-                    <varname>b</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        vecteur ligne d'entiers : rangs dans <varname>b</varname> des
+                        éléments/lignes/colonnes de <varname>v</varname> restants issus de
+                        <varname>b</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -247,8 +260,8 @@ full(U), ka, kb
             A = table([1;3;4;2], ["d";"c";"f";"h"], [%f;%t;%t; %f], "VariableNames", ["double", "string", "boolean"]);
             B = table([2;3;4;1], [%t;%t;%t;%t], ["d";"c";"f";"h"], "VariableNames", ["double", "boolean", "string"]);
             [u, ka, kb] = union(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <para/>
         <para>
         <literal>union()</literal> pour timeseries:
@@ -257,8 +270,8 @@ full(U), ka, kb
             A = timeseries(hours([1:10])', floor(rand(10,1)*10));
             B = timeseries(hours(1:2:15)', floor(rand(8,1)*15));
             [u, ka, kb] = union(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>Voir aussi</title>
@@ -276,21 +289,21 @@ full(U), ka, kb
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Extension aux matrices booléennes.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     Extension aux matrices creuses booléennes, réelles, ou complexes.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Gestion des types duration, datetime, table et timeseries ajoutée.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

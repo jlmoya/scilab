@@ -1,5 +1,5 @@
 #==================================================
-# Visual C++/Intel Fortran 10.x 
+# Visual C++/Intel Fortran 10.x
 # Allan CORNET - 2008
 #==================================================
 all::
@@ -16,7 +16,7 @@ LINKER=link
 MACHINE=/machine:arm64
 DWIN=-D_M_ARM64
 !ELSEIF "$(WIN64)" == "OK"
-MACHINE=/machine:x64
+MACHINE=/machine:X64
 DWIN=-D_WIN64
 !ELSE
 MACHINE=/machine:ix86
@@ -29,7 +29,7 @@ LINKER_OPTIMISATION_MODE=/DEBUG -PDB:"$(DIR_OBJ)\$(LIBRARY).pdb"
 CC__OPTIMISATION_MODE=-Zi -Od -MDd
 !ELSE
 DIR_OBJ=Release
-LINKER_OPTIMISATION_MODE=/RELEASE 
+LINKER_OPTIMISATION_MODE=/RELEASE
 CC__OPTIMISATION_MODE=-Z7 -O2 -MD -DNDEBUG
 !ENDIF
 
@@ -41,9 +41,9 @@ LINKER_FLAGS=/NOLOGO $(MACHINE) /DYNAMICBASE:NO /NXCOMPAT:NO $(LINKER_OPTIMISATI
 !ENDIF
 CC_OPTIONS = $(CC_COMMON) -W3 -Gd $(CC__OPTIMISATION_MODE) /Fo"$(DIR_OBJ)/" /Fd"$(DIR_OBJ)/"
 #==================================================
-CC_LDFLAGS = 
+CC_LDFLAGS =
 #==================================================
-# Fortran Compiler 
+# Fortran Compiler
 #==================================================
 USE_F2C=NO
 # detect intel fortran compiler
@@ -56,7 +56,7 @@ USE_F2C=YES
 #==================================================
 # if USE_F2C is set to NO we will use the following Fortran compiler (i.e Intel Fortran 10.x)
 !IF "$(USE_F2C)" == "NO"
-FC=ifort 
+FC=ifort
 FC_OPTIONS_COMMON=/nologo /DFORDLL /assume:underscore \
 /noaltparam /f77rtl /fpscomp:nolibs /names:lowercase \
 /iface:cref /threads /c /Qvc9 \
@@ -73,12 +73,12 @@ FC_OPTIONS=$(FC_OPTIONS_COMMON)
 LINKER_FLAGS=$(LINKER_FLAGS) /force:multiple
 !ENDIF
 #==================================================
-# resource compiler 
+# resource compiler
 #==================================================
 RC=rc
 RCVARS=-r -DWIN32
 #==================================================
-# default rules for Fortran 77 & 90 Compilation 
+# default rules for Fortran 77 & 90 Compilation
 #==================================================
 !IF "$(USE_F2C)" == "YES"
 #==================================================
@@ -86,7 +86,7 @@ RCVARS=-r -DWIN32
 #==================================================
 .f{$(DIR_OBJ)}.obj	:
 	@echo ----------- Compile file $< (using f2c) -------------
-!IF "$(F2C_IMPORT_COMMON)" == "YES"	
+!IF "$(F2C_IMPORT_COMMON)" == "YES"
 	@"$(SCIDIR)/bin/f2c.exe" -E -I"$(SCIDIR)/modules/core/includes" $(FFLAGS) $< 2>NUL
 !ELSE
 	@"$(SCIDIR)/bin/f2c.exe" -I"$(SCIDIR)/modules/core/includes" $(FFLAGS) $< 2>NUL
@@ -99,7 +99,7 @@ RCVARS=-r -DWIN32
   -del $(<:.f=.c)
 !ENDIF
 .f90{$(DIR_OBJ)}.obj	:
-	@echo F2C cannot build .f90 file	
+	@echo F2C cannot build .f90 file
 !ELSE
 #==================================================
 # INTEL FORTRAN
@@ -119,7 +119,7 @@ RCVARS=-r -DWIN32
 .cxx{$(DIR_OBJ)}.obj	:
 	@echo ------------- Compile file $< --------------
 	-IF NOT EXIST  $(DIR_OBJ) mkdir $(DIR_OBJ)
-	@$(CC) $(CFLAGS) /EHsc $< 
+	@$(CC) $(CFLAGS) /EHsc $<
 #==================================================
 .cpp{$(DIR_OBJ)}.obj	:
 	@echo ------------- Compile file $< --------------
@@ -131,25 +131,24 @@ RCVARS=-r -DWIN32
 .c{$(DIR_OBJ)}.obj	:
 	@echo ------------- Compile file $< --------------
 	-IF NOT EXIST  $(DIR_OBJ) mkdir $(DIR_OBJ)
-	$(CC) $(CFLAGS) $< 
+	$(CC) $(CFLAGS) $<
 #==================================================
-# clean 
+# clean
 RM = del
 #==================================================
 clean::
-	-del *.bak 
+	-del *.bak
   -del "$(DIR_OBJ)\*.obj"
 !IF "$(DEBUG_SCILAB_DYNAMIC_LINK)" == "YES"
   -del "$(DIR_OBJ)\*.pdb"
 !ENDIF
   -rmdir "$(DIR_OBJ)"
 #==================================================
-distclean::  
-  -del *.bak 
+distclean::
+  -del *.bak
   -del "$(DIR_OBJ)\*.obj"
 !IF "$(DEBUG_SCILAB_DYNAMIC_LINK)" == "YES"
   -del "$(DIR_OBJ)\*.pdb"
 !ENDIF
   -rmdir "$(DIR_OBJ)"
 #==================================================
-

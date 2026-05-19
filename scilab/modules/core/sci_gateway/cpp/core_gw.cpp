@@ -89,6 +89,9 @@ int CoreModule::Load()
     symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"methods", &sci_methods, MODULE_NAME));
     symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"enumeration", &sci_enumeration, MODULE_NAME));
     symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"show_vtable", &sci_show_vtable, MODULE_NAME));
+    symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"%_help", &sci_percent_help, MODULE_NAME));
+    symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"generate_inline_links", &sci_generate_inline_links, MODULE_NAME));
+    symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"loadToolboxInlineHelp", &sci_loadToolboxInlineHelp, MODULE_NAME));
 
 #ifndef NDEBUG
     symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"inspectorGetItemCount", &sci_inspectorGetItemCount, MODULE_NAME));

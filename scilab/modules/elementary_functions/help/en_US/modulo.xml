@@ -34,7 +34,7 @@
       <para></para>
         <synopsis>i = pmodulo(n,m)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -59,13 +59,13 @@
                         <varname>i</varname> takes the sizes of the bigger <varname>m</varname>
                         or <varname>n</varname>.
                     </para>
-                    <para>
-                        <warning>
+                    <warning>
+                        <para>
                             For polynomials, when all remainders in the array <varname>i</varname>
                             are constant (degree==0), <varname>i</varname> is of type 1
                             (numbers) instead of 2 (constant polynomials).
-                        </warning>
-                    </para>
+                        </para>
+                    </warning>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -97,11 +97,13 @@
         </para>
         <para>
             <warning>
-                If <varname>m</varname> contains at least one 0 value, <literal>modulo(x,m)</literal>
-                and <literal>pmodulo(x,m)</literal> will perform a division by zero.
-                If <varname>m</varname> is of real type, this exception will be processed according
-                to the <literal>ieee()</literal> mode.
-                For encoded integers, it will always yield an error.
+                <para>
+                    If <varname>m</varname> contains at least one 0 value, <literal>modulo(x,m)</literal>
+                    and <literal>pmodulo(x,m)</literal> will perform a division by zero.
+                    If <varname>m</varname> is of real type, this exception will be processed according
+                    to the <literal>ieee()</literal> mode.
+                    For encoded integers, it will always yield an error.
+                </para>
             </warning>
         </para>
     </refsection>
@@ -156,7 +158,7 @@ pmodulo(%z^2+1, %z)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

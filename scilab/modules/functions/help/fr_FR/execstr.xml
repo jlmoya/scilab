@@ -27,7 +27,7 @@
             [ierr, errormsg, callstack] = execstr(instr,'errcatch' [,msg])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -75,7 +75,9 @@
             <varname>instr</varname>.
         </para>
         <note>
-            Note : les instructions <varname>instr</varname> ne doivent pas comporter de marques de suite (..).
+            <para>
+                Note : les instructions <varname>instr</varname> ne doivent pas comporter de marques de suite (..).
+            </para>
         </note>
         <para>
             Si <literal>'errcatch'</literal> n'est pas présent dans les arguments, les erreurs sont contrôlées comme d'habitude.

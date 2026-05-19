@@ -29,16 +29,16 @@
     <br/>
     <br/>
     <div class="refsection">
-        <h2 class="title">Welcome to Scilab 2026.0.0</h2>
+        <h2 class="title">Welcome to Scilab 2026.1.0</h2>
         <p class="para">
-            Scilab 2026.0.0 is a new stable release of Scilab, the open-source
+            Scilab 2026.1.0 is a new stable release of Scilab, the open-source
             platform for numerical computation.
         </p>
         <p class="para">
             Here is a tour of the changes since Scilab 2025.1.0.
         </p>
         <p class="para">
-            To view it in the documentation browser, enter <code>doc("2026.0.0")</code>
+            To view it in the documentation browser, enter <code>doc("2026.1.0")</code>
             in the console, and browse related pages.
         </p>
         <h3 class="title">Feature changes and additions</h3>
@@ -46,21 +46,43 @@
             <li>New functions:
                 <ul>
                     <li><code>cdftnc()</code>: Cumulative distribution function of the non-central student's T distribution.</li>
+                    <li><code>check_help()</code>: Validate Scilab XML help files against the Scilab Relax NG schema.</li>
                     <li><code>dbscan()</code>: Density-based clustering.</li>
                     <li><code>enumeration()</code>: Get the enumeration of a classdef or an object.</li>
                     <li><code>estimate_bandwidth()</code>: Estimate an appropriate bandwidth for mean shift clustering.</li>
+                    <li><code>help()</code>: Display an inline summary of a documentation page in Scilab console.</li>
                     <li><code>gallery()</code>: Generate test matrices.</li>
                     <li><code>gradient()</code>: Compute numerical gradient.</li>
                     <li><code>isa()</code>: Check variable type.</li>
+                    <li><code>ishermitian()</code>: Check whether a matrix is hermitian.</li>
+                    <li><code>issymmetric()</code>: Check whether a matrix is symmetric.</li>
                     <li><code>meanshift()</code>: Mean shift clustering algorithm.</li>
                     <li><code>methods()</code>: Get accessible methods of a classdef or an object.</li>
+                    <li><code>parquetRead()</code>: Read a Parquet or Arrow file and return a table.</li>
+                    <li><code>parquetWrite()</code>: Write a table in a Parquet or Arrow file.</li>
+                    <li><code>pdist()</code>: Pairwise distances between observations.</li>
+                    <li><code>pdist2()</code>: Pairwise distances between two sets of observations.</li>
                     <li><code>properties()</code>: Get accessible properties of a classdef or an object.</li>
                     <li><code>sortrows()</code>: Sort rows of a vector, matrix, table, or timeseries.</li>
                     <li><code>spset()</code>: Set non-zero entries of a sparse matrix.</li>
+                    <li><code>squareform()</code>: Conversion between a distance vector and a symmetric distance matrix.</li>
+                    <li><code>summary()</code>: Summary of <code>table</code> or <code>timeseries</code> variables (properties, statistics...).</li>             
+                    <li><code>xcosDiagramExport()</code>: Export an Xcos diagram to an image.</li>
+                    <li><code>xlsxInfo()</code>: Get information about an Excel file.</li>
+                    <li><code>xlsxRead()</code>: Read data from an Excel file and return a matrix or cell.</li>
+                    <li><code>xlsxSheet()</code>: Manage sheets in an Excel file.</li>
+                    <li><code>xlsxWrite()</code>: Write data (matrix or cell) to an Excel file.</li>
                 </ul>
             </li>
             <li>Features improvements:
                 <ul>
+                    <li>New web-based GUIs for ATOMS &amp; Scilab Demonstration using "browser" uicontrols.</li>
+                    <li>Objects defined using <code>classdef</code> now support static properties and methods.</li>
+                    <li><code>csvTextScan()</code> now manages a "substitute" option as <code>csvRead()</code> to enable replacement of particular strings in the read file.</li>
+                    <li><code>dbscan()</code> now accepts two more input arguments to specify metric distances and parameters.</li>
+                    <li><code>dbscan()</code>, <code>kmeans()</code> and <code>meanshift()</code> now use <code>pdist2()</code> for better performances.</li>
+                    <li><code>format()</code> now supports engineering notation (similar to the exponential notation but with exponent value divisible by three).</li>
+                    <li><code>gallery()</code> can now generate "minij" (Symmetric positive definite matrix) and "moler" (Moler symmetric positive definite matrix) test matrices.</li>
                     <li><code>host()</code> has been rewritten and is now used as a backend for all other functions that perform system calls (<code>dos()</code>, <code>unix()</code>, <code>unix_g()</code>, <code>unix_s()</code>, <code>unix_w()</code>, and <code>unix_x()</code>), which are now obsolete.</li>
                     <li><code>intersect()</code> now manages <code>duration</code>, <code>datetime</code>, <code>table</code>, and <code>timeseries</code> types.</li>
                     <li><code>lib()</code> can now load a library without exposing its symbols (default behavior remains unchanged).</li>
@@ -68,12 +90,14 @@
                     <li><code>table()</code>, and <code>timeseries()</code> now manage integers.</li>
                     <li><code>union()</code> now manages <code>duration</code>, <code>datetime</code>, <code>table</code>, and <code>timeseries</code> types.</li>
                     <li>Options names are now case-insensitive for <code>duration()</code>, <code>calendarDuration()</code>, <code>datetime()</code>, <code>timeseries()</code>, <code>table()</code> functions.</li>
+                    <li>"use_vectorized" parameter is now available for <code>optim_ga()</code>, <code>optim_moga()</code>, <code>optim_nsga()</code>, <code>optim_nsga2()</code> to indicate that the cost function is vectorized (called with the whole population at once).</li>
                 </ul>
             </li>
-            <li>Language changes:
+            <li>Language evolutions:
                 <ul>
                     <li>Classes/Objects can now be defined and used in Scilab based on the new <code>classdef</code>, <code>enumeration</code>, <code>properties</code> &amp; <code>methods</code> keywords.</li>
                     <li>The <code>end</code> keyword can now be used to specify the last row/column index of an array, similarly to <code>$</code>.</li>
+                    <li>Arithmetic operators now perform <strong>automatic expansion</strong> with no memory overhead: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using <code>.*.</code> or <code>repmat()</code>) unnecessary for most case. See <code>doc operator_expand</code>.</li>
                 </ul>
             </li>
             <li>Graphics:

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="libraryinfo">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="libraryinfo">
     <refnamediv>
         <refname>libraryinfo</refname>
         <refpurpose>gets the path and the set of primary functions of a loaded library</refpurpose>
@@ -28,7 +25,7 @@
             [macros, libpath] = libraryinfo(libraryname)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -63,54 +60,64 @@
             are stored. Subsidiary functions that may follow the main ones in .sci files
             are private and are not returned.
             <warning>
-                Only loaded libraries can be addressed by <literal>libraryinfo()</literal>.
+                <para>
+                    Only loaded libraries can be addressed by <literal>libraryinfo()</literal>.
+                </para>
             </warning>
         </para>
-        <refsect3>
-            <title>Getting some library info from its handle</title>
-            <para>
-                <literal>libraryinfo()</literal> works from the literal name of the library.
-                In some cases, we may have only its handle, defined when loading the library.
-                For instance, <literal>libraryinfo("iolib")</literal> works,
-                <literal>libraryinfo(iolib)</literal> does not.
-                How to use the handle to get any info? Let's go on with the <literal>iolib</literal>
-                example:
-                <itemizedlist>
-                    <listitem>
-                        <emphasis role="bold">Getting the path</emphasis>:
+
+        <para>
+            <emphasis role="bold">Getting some library info from its handle</emphasis>
+        </para>
+        <para>
+            <literal>libraryinfo()</literal> works from the literal name of the library.
+            In some cases, we may have only its handle, defined when loading the library.
+            For instance, <literal>libraryinfo("iolib")</literal> works,
+            <literal>libraryinfo(iolib)</literal> does not.
+            How to use the handle to get any info? Let's go on with the <literal>iolib</literal>
+            example:
+            <itemizedlist>
+                <listitem>
+                        <para><emphasis role="bold">Getting the path</emphasis>:
                         <literal>libpath = string(iolib)(1)</literal>
-                    </listitem>
-                    <listitem>
-                        <emphasis role="bold">Getting the column vector of members functions</emphasis>:
+                    </para>
+                </listitem>
+                <listitem>
+                        <para><emphasis role="bold">Getting the column vector of members functions</emphasis>:
                         <literal>functions = string(iolib)(2:$)</literal>
-                    </listitem>
-                    <listitem>
-                        <emphasis role="bold">Getting the literal name of the library</emphasis>:
+                    </para>
+                </listitem>
+                <listitem>
+                        <para><emphasis role="bold">Getting the literal name of the library</emphasis>:
                         <literal>libraryname = xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
-                    </listitem>
-                </itemizedlist>
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Unloaded library: getting info through its path</title>
-            <para>
-                If the considered library is not loaded, neither <literal>libraryinfo()</literal>
-                nor  <literal>string()</literal> can work.
-            </para>
-            <para>
-                Provided that we know its libpath, we then can
-                <itemizedlist>
-                    <listitem>
-                        <emphasis role="bold">get its literal name</emphasis>:
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+
+        <para>
+            <emphasis role="bold">Unloaded library: getting info through its path</emphasis>
+        </para>
+        <para>
+            If the considered library is not loaded, neither <literal>libraryinfo()</literal>
+            nor  <literal>string()</literal> can work.
+        </para>
+        <para>
+            Provided that we know its libpath, we then can
+            <itemizedlist>
+                <listitem>
+                        <para><emphasis role="bold">get its literal name</emphasis>:
                         <literal>xmlGetValues("//scilablib", "name", libpath+"/lib")</literal>
-                    </listitem>
-                    <listitem>
-                        <emphasis role="bold">get the column vector of members functions</emphasis>:
+                    </para>
+                </listitem>
+                <listitem>
+                        <para><emphasis role="bold">get the column vector of members functions</emphasis>:
                         <literal>functions = xmlGetValues("//scilablib/macro", "name", libpath+"/lib")</literal>
-                    </listitem>
-                </itemizedlist>
-            </para>
-        </refsect3>
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+
     </refsection>
     <refsection>
         <title>Examples</title>

@@ -240,7 +240,7 @@ void RunVisitorT<T>::visitprivate(const CallExp& e)
         setExpectedSize(iSaveExpectedSize);
 
         // override iRetCount only in relevant cases
-        if (pIT->isCallable() && e.getParent()->isSeqExp() || pIT->isClassdef())
+        if ((pIT->isCallable() && e.getParent()->isSeqExp()) || pIT->isClassdef())
         {
             iRetCount = std::max(0, iRetCount);
         }
@@ -308,6 +308,31 @@ void RunVisitorT<T>::visitprivate(const CallExp& e)
 
             if (skipNormalProcess == false)
             {
+                // a("name") is the same as a.name : direct property/method access.
+                // User extract overload is only for indexing (a(1), a(2,2), etc.).
+                if (pIT->isObject()
+                    && in.size() == 1
+                    && in[0]->isString()
+                    && in[0]->getAs<types::String>()->getSize() == 1)
+                {
+                    types::Object* obj = pIT->getAs<types::Object>();
+                    std::wstring fieldName = in[0]->getAs<types::String>()->get(0);
+                    types::InternalType* pExtract = nullptr;
+                    if (obj->extract(fieldName, pExtract) && pExtract != nullptr)
+                    {
+                        out.push_back(pExtract);
+                        setExpectedSize(iSaveExpectedSize);
+                        setResult(out);
+                        cleanIn(in, out);
+                        CoverageInstance::stopChrono((void*)&e);
+                        return;
+                    }
+
+                    wchar_t szError[bsiz];
+                    os_swprintf(szError, bsiz, _W("Unknown field: %ls.\n").c_str(), fieldName.c_str());
+                    throw InternalError(szError, 999, e.getLocation());
+                }
+
                 if (pIT->isObject() && pIT->getAs<types::Object>()->hasMethod(L"extract"))
                 {
                     types::optional_list opt;

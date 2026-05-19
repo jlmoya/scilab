@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="ieee">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="ieee">
     <refnamediv>
         <refname>ieee</refname>
         <refpurpose>fixe ou indique le mode d'exception IEEE pour les calculs</refpurpose>
@@ -28,7 +25,7 @@
             ieee(mod)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -60,13 +57,17 @@
             <varlistentry>
                 <term>1</term>
                 <listitem>
-                    les exceptions produisent un warning.
+                     <para>
+                        les exceptions produisent un warning.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>2</term>
                 <listitem>
-                    les exceptions produisent Inf ou Nan.
+                     <para>
+                        les exceptions produisent Inf ou Nan.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -76,28 +77,35 @@
             virgule flottante.
         </para>
         <note>
-            Le mode initial par défaut est 2. Ce réglage peut être modifié indifféremment comme suit:
+            <para>
+                Le mode initial par défaut est 2. Ce réglage peut être modifié indifféremment comme suit:
+            </para>
             <itemizedlist>
                 <listitem>
-                  Via l'interface des Préférences : <code>preferences</code>, section
-                  <emphasis role="italic">Général => Environment => ieee</emphasis>.
+                     <para>
+                      Via l'interface des Préférences : <code>preferences</code>, section
+                      <emphasis role="italic">Général =&gt; Environment =&gt; ieee</emphasis>.
+                    </para>
                 </listitem>
                 <listitem>
-                  En utilisant <code>xmlSetValues</code> comme suit (ici pour ieee(1)) :
-                  <para>
-                  <literal>xmlSetValues("//general/body/environment", ["fpe";"1"])</literal>
-                  </para>
-                </listitem>
+                     <para>
+                      En utilisant <code>xmlSetValues</code> comme suit (ici pour ieee(1)) :
+                      </para>
+                  </listitem>
                 <listitem>
-                    Ou en indiquant <literal>ieee(mod)</literal> dans votre fichier de démarrage
-                    personnel.
+                     <para>
+                        Ou en indiquant <literal>ieee(mod)</literal> dans votre fichier de démarrage
+                        personnel.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
         <warning>
-            Certaines exceptions IEEE générées dans certains algorithmes provenant de
-            bibliothèques ne sont pas prises en compte par les modes <literal>ieee</literal>
-            pour l'instant.
+            <para>
+                Certaines exceptions IEEE générées dans certains algorithmes provenant de
+                bibliothèques ne sont pas prises en compte par les modes <literal>ieee</literal>
+                pour l'instant.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -127,7 +135,7 @@ ieee(2); 1/0, log(0)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

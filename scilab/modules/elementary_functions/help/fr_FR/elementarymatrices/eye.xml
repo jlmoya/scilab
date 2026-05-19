@@ -11,7 +11,7 @@
             X = eye()
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -42,9 +42,11 @@
             <literal>X(i,i,...,i) = 1</literal> avec <literal>i</literal> de 1 à <literal>min(size(A))</literal>.
         </para>
         <warning>
-            <literal>eye(10)</literal> est équivalent à
-            <literal>eye(A)</literal> avec <literal>A=10</literal> c'est à dire
-            <literal>1</literal>. Ce n'est pas une matrice identité 10 x 10 !.
+            <para>
+                <literal>eye(10)</literal> est équivalent à
+                <literal>eye(A)</literal> avec <literal>A=10</literal> c'est à dire
+                <literal>1</literal>. Ce n'est pas une matrice identité 10 x 10 !.
+            </para>
         </warning>
         <para>
             Si <literal>A</literal> est un système linéaire représenté par une
@@ -81,7 +83,7 @@ eye(zeros(4,4,4,4))
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

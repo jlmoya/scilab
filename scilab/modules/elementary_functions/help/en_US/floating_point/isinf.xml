@@ -27,7 +27,7 @@
             r = isinf(x)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -97,12 +97,13 @@ isinf(inf-nan*i)
  ans  =
   F
 ]]></screen>
-        Please note that <literal>%inf-%nan*%i</literal> is computed as
-        <literal>%inf - %nan*complex(0,1) == %inf - complex(%nan*0, %nan*1) == %inf - complex(%nan, %nan)
-            == complex(%inf-%nan, -%nan) == complex(%nan, %nan)
-        </literal>
-        , where Inf is eaten by Nan and no longer appears.
-        <para/>
+        <para>
+            Please note that <literal>%inf-%nan*%i</literal> is computed as
+            <literal>%inf - %nan*complex(0,1) == %inf - complex(%nan*0, %nan*1) == %inf - complex(%nan, %nan)
+                == complex(%inf-%nan, -%nan) == complex(%nan, %nan)
+            </literal>
+            , where Inf is eaten by Nan and no longer appears.
+        </para>
         <para>
             With polynomials :
         </para>
@@ -155,9 +156,9 @@ isinf([p q r])
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Extension to polynomials.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

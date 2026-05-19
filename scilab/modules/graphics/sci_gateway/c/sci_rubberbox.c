@@ -218,7 +218,6 @@ int sci_rubberbox(char * fname, void *pvApiCtx)
 
     double *piJavaValues = NULL;
     int iFigureUID = 0;
-    int* piFigureUID = &iFigureUID;
     int iSubwinUID = getOrCreateDefaultSubwin();
     int iView = 0;
     int* piView = &iView;

@@ -21,48 +21,45 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:id="QUANT_f" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="QUANT_f" xml:lang="en_US">
     <refnamediv>
         <refname>QUANT_f</refname>
         <refpurpose>Quantization</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/QUANT_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_QUANT_f">
+    <refsection xml:id="Contents_QUANT_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_QUANT_f">Description</xref>
+                <para><link linkend="Description_QUANT_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_QUANT_f">Parameters</xref>
+                <para><link linkend="Dialogbox_QUANT_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_QUANT_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_QUANT_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_QUANT_f">Examples</xref>
+                <para><link linkend="Example_QUANT_f">Examples</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_QUANT_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_QUANT_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_QUANT_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_QUANT_f">Computational function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_QUANT_f">
+    <refsection xml:id="Description_QUANT_f">
         <title>Description</title>
         <para>
             This block outputs the quantization of the input according to a choice of methods
@@ -99,14 +96,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_QUANT_f">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_QUANT_f">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/QUANT_f_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/QUANT_f_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -124,7 +120,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_QUANT_f">
+    <refsection xml:id="Defaultproperties_QUANT_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -197,7 +193,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_QUANT_f">
+    <refsection xml:id="Example_QUANT_f">
         <title>Examples</title>
         <para>
             Example of a sine quantized every 0.2 step with the Ceil method (using the ceil value
@@ -237,7 +233,7 @@
             ]]></scilab:image>
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_QUANT_f">
+    <refsection xml:id="Interfacingfunction_QUANT_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -245,20 +241,28 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_QUANT_f">
+    <refsection xml:id="Computationalfunction_QUANT_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                 SCI/modules/scicos_blocks/src/fortran/qzrnd.f
+                 <para>
+                     SCI/modules/scicos_blocks/src/fortran/qzrnd.f
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/fortran/qztrn.f
+                 <para>
+                     SCI/modules/scicos_blocks/src/fortran/qztrn.f
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/fortran/qzflr.f
+                 <para>
+                     SCI/modules/scicos_blocks/src/fortran/qzflr.f
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/fortran/qzcel.f
+                 <para>
+                     SCI/modules/scicos_blocks/src/fortran/qzcel.f
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

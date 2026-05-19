@@ -68,12 +68,15 @@
             simplification problem.
         </para>
         <note>
-          Note that <literal>123./B</literal> is interpreted as <literal>(123)./B</literal>.
-          In this case, the dot is part of the operator, not of the decimal number.
-          <para/>
-          In the opposite, <literal>G/.5</literal> is interpreted as <literal>G/(.5)</literal> :
-          The dot here is part of the number, while it is not the case in
-          <literal>G/. 5</literal>
+            <para>
+                Note that <literal>123./B</literal> is interpreted as <literal>(123)./B</literal>.
+                In this case, the dot is part of the operator, not of the decimal number.
+            </para>
+            <para>
+                In the opposite, <literal>G/.5</literal> is interpreted as <literal>G/(.5)</literal> :
+                The dot here is part of the number, while it is not the case in
+                <literal>G/. 5</literal>
+            </para>
         </note>
         <para>
             Comment <literal>//</literal> comments a line i.e. lines which begin by
@@ -154,7 +157,7 @@ comments are useful */
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

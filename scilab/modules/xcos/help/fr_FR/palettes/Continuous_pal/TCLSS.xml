@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/TCLSS.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_TCLSS">
+    <refsection xml:id="Contents_TCLSS">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TCLSS">Description</xref>
+                <para><link linkend="Description_TCLSS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_TCLSS">Paramètres</xref>
+                <para><link linkend="Dialogbox_TCLSS">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TCLSS">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_TCLSS">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_TCLSS">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_TCLSS">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_TCLSS">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_TCLSS">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_TCLSS">Exemple</xref>
+                <para><link linkend="Example_TCLSS">Exemple</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_TCLSS">
+    <refsection xml:id="Description_TCLSS">
         <title>Description</title>
         <para>
             Ce bloc réalise une représentation d'état d'un système continu linéaire
@@ -65,15 +65,14 @@
             Les dimensions doivent être compatibles. Les tailles des entrées et sorties sont ajustées automatiquement.
         </para>
     </refsection>
-    <refsection id="Dialogbox_TCLSS">
+    <refsection xml:id="Dialogbox_TCLSS">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/TCLSS_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -120,7 +119,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_TCLSS">
+    <refsection xml:id="Defaultproperties_TCLSS">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -196,7 +195,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_TCLSS">
+    <refsection xml:id="Interfacingfunction_TCLSS">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -204,7 +203,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_TCLSS">
+    <refsection xml:id="Computationalfunction_TCLSS">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -212,7 +211,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_TCLSS">
+    <refsection xml:id="Example_TCLSS">
         <title>Exemple</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/TCLSS_Example.zcos">

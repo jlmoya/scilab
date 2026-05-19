@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="fr">
     <refnamediv>
         <refname>scilab</refname>
         <refpurpose>lance Scilab en mode interactif ou batch avec options
@@ -88,19 +85,27 @@ Developer Debug arguments:
                         Cette option permet de transmettre des données à la session Scilab à ouvrir :
                         <itemizedlist>
                             <listitem>
-                              Des données consécutives sont séparées par un ou plusieurs espaces.
+                                 <para>
+                                  Des données consécutives sont séparées par un ou plusieurs espaces.
+                                </para>
                             </listitem>
                             <listitem>
-                              Une expression entre guillemets <literal>"</literal> constitue une
-                              donnée unique.
+                                 <para>
+                                  Une expression entre guillemets <literal>"</literal> constitue une
+                                  donnée unique.
+                                </para>
                             </listitem>
                             <listitem>
-                              Pour inclure un guillemet dans une donnée, écrire <literal>\"</literal>
-                              au lieu de <literal>"</literal>.
+                                 <para>
+                                  Pour inclure un guillemet dans une donnée, écrire <literal>\"</literal>
+                                  au lieu de <literal>"</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                              L'apostrophe <literal>'</literal> est un caractère normal. Il n'a pas
-                              de signification particulière.
+                                 <para>
+                                  L'apostrophe <literal>'</literal> est un caractère normal. Il n'a pas
+                                  de signification particulière.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -119,8 +124,8 @@ i = find(a=="-args")
 a(i+1)
 evstr(a(i+2))*2
 "Cette session a été lancée depuis " + a(i+3)
-                        ]]>
-                        </programlisting>
+                        
+                        ]]></programlisting>
                         <screen><![CDATA[
 --> // Dans la session ouverte :
 --> a = sciargs()
@@ -151,16 +156,18 @@ evstr(a(i+2))*2
 ]]></screen>
                      </para>
                     <para>
-                      Noter ici que <literal>>scilab -nw</literal> a été traduit en
+                      Noter ici que <literal>&gt;scilab -nw</literal> a été traduit en
                       <literal>Wscilex-cli.exe</literal> par le script batch de lancement
                       <literal>scilab</literal>, de sorte que l'option "-nw" ne figure pas dans le
                       résultat de <literal>sciargs()</literal> (voir plus loin).
                      </para>
                      <para>
                      <note>
-                       Utiliser <literal>-args</literal> comme
-                       <emphasis role="italic">dernière</emphasis> option sur la ligne de commande
-                       est plus sûr.
+                        <para>
+                            Utiliser <literal>-args</literal> comme
+                            <emphasis role="italic">dernière</emphasis> option sur la ligne de commande
+                            est plus sûr.
+                        </para>
                      </note>
                      </para>
                 </listitem>
@@ -200,8 +207,10 @@ evstr(a(i+2))*2
                         </itemizedlist>
                     </para>
                     <warning>
-                        Les options <literal>-e</literal> et <literal>-f</literal> ne peuvent pas
-                        être utilisées ensemble.
+                        <para>
+                            Les options <literal>-e</literal> et <literal>-f</literal> ne peuvent pas
+                            être utilisées ensemble.
+                        </para>
                     </warning>
                 </listitem>
             </varlistentry>
@@ -267,11 +276,13 @@ evstr(a(i+2))*2
                         (brésilien), ou l'anglais.
                     </para>
                     <note>
-                        Sous Windows, en modes Scilab "-nw" ou "-nwni", la police sélectionnée
-                        pour le terminal doit être TrueType pour supporter l'encodage UTF-8 des
-                        polices internationales, telle que <emphasis>Monospaced</emphasis>
-                        (meilleur choix, si disponible) ou
-                        <emphasis>Consolas</emphasis> ou <emphasis>Lucida Console</emphasis>..
+                        <para>
+                            Sous Windows, en modes Scilab "-nw" ou "-nwni", la police sélectionnée
+                            pour le terminal doit être TrueType pour supporter l'encodage UTF-8 des
+                            polices internationales, telle que <emphasis>Monospaced</emphasis>
+                            (meilleur choix, si disponible) ou
+                            <emphasis>Consolas</emphasis> ou <emphasis>Lucida Console</emphasis>.
+                        </para>
                     </note>
                     <para>Avec certains systèmes, la compilation des locales peut être
                         nécessaire pour rendre correctement les polices UTF-8.
@@ -296,8 +307,10 @@ evstr(a(i+2))*2
                         exécutés.
                     </para>
                     <warning>
-                        Cette option désactive de nombreuses fonctionnalités de Scilab.
-                        À utiliser avec expertise et discernement.
+                        <para>
+                            Cette option désactive de nombreuses fonctionnalités de Scilab.
+                            À utiliser avec expertise et discernement.
+                        </para>
                     </warning>
                 </listitem>
             </varlistentry>
@@ -336,11 +349,15 @@ evstr(a(i+2))*2
                         "-nw" est utilisée est
                         <itemizedlist>
                             <listitem>
-                                Sous Windows : <literal>WScilex-cli.exe</literal>.
+                                 <para>
+                                    Sous Windows : <literal>WScilex-cli.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Sous Linux ou MacOS : <literal>scilab-adv-cli</literal>
-                                (Scilab Advanced Command Line Interpreter).
+                                 <para>
+                                    Sous Linux ou MacOS : <literal>scilab-adv-cli</literal>
+                                    (Scilab Advanced Command Line Interpreter).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -350,15 +367,19 @@ evstr(a(i+2))*2
                 <term>-nwni / -nogui</term>
                 <listitem>
                     <important>
-                        Cette option supprime le chargement de la Machine Virtuelle Java en mémoire.
-                        Elle accélère le démarrage de Scilab et réduit la mémoire consommée. Mais alors...
+                        <para>
+                            Cette option supprime le chargement de la Machine Virtuelle Java en mémoire.
+                            Elle accélère le démarrage de Scilab et réduit la mémoire consommée. Mais alors...
+                        </para>
                     </important>
                     <warning>
-                        Scilab est lancé en tant que simple interprêteur de commandes, sans aucune
-                        fonctionalité avancée requérant la JVM : les fonctionalités graphiques,
-                        les interfaces graphiques dont les navigateurs d'aide, de démos, de modules
-                        externes, de variables, l'éditeur Scinotes, le module "Java depuis Scilab"...
-                        ne sont pas disponibles dans ce mode.
+                        <para>
+                            Scilab est lancé en tant que simple interprêteur de commandes, sans aucune
+                            fonctionalité avancée requérant la JVM : les fonctionalités graphiques,
+                            les interfaces graphiques dont les navigateurs d'aide, de démos, de modules
+                            externes, de variables, l'éditeur Scinotes, le module "Java depuis Scilab"...
+                            ne sont pas disponibles dans ce mode.
+                        </para>
                     </warning>
                     <para>
                         La redirection (piping) est disponible pour tous les systèmes
@@ -369,11 +390,15 @@ evstr(a(i+2))*2
                         "-nwni" est utilisée est
                         <itemizedlist>
                             <listitem>
-                                Sous Windows : <literal>Scilex.exe</literal>.
+                                 <para>
+                                    Sous Windows : <literal>Scilex.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Sous Linux ou MacOS : <literal>scilab-cli</literal>
-                                (Scilab Command Line Interpreter).
+                                 <para>
+                                    Sous Linux ou MacOS : <literal>scilab-cli</literal>
+                                    (Scilab Command Line Interpreter).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -403,8 +428,8 @@ evstr(a(i+2))*2
                 <listitem>
                     <para>
                         Cette option est utilisée lorsque Scilab est utilisé comme interface
-                        de calcul au sein du logiciel libre d'édition Scientifique <ulink url="http://texmacs.org">TeXmacs</ulink>, via le module ATOMS
-                        <ulink url="https://atoms.scilab.org/toolboxes/texmacs">TeXmacs</ulink>.
+                        de calcul au sein du logiciel libre d'édition Scientifique <link xlink:href="http://texmacs.org">TeXmacs</link>, via le module ATOMS
+                        <link xlink:href="https://atoms.scilab.org/toolboxes/texmacs">TeXmacs</link>.
                         Celui-ci doit être préalablement installé sous Scilab avec
                         la commande <code>atomsInstall('texmacs')</code>.
                     </para>
@@ -437,7 +462,7 @@ evstr(a(i+2))*2
             <varlistentry>
                 <term>-debug-rr</term>
                 <listitem>
-                    <para>Lance Scilab sous <ulink url="https://rr-project.org/">rr</ulink>.</para>
+                    <para>Lance Scilab sous <link xlink:href="https://rr-project.org/">rr</link>.</para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -566,7 +591,7 @@ evstr(a(i+2))*2
         <para>
             De nombreuses options sont disponibles. Elles peuvent améliorer les performances,
             changer le rendu graphique, la gestion de la mémoire...
-            Voir: <ulink url="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</ulink>
+            Voir: <link xlink:href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</link>
         </para>
     </refsection>
     <refsection role="examples">
@@ -585,7 +610,7 @@ echo "handle SIGSEGV nostop" > debug.txt
 export SCILAB_GDB_OPT="--command=debug.txt"
 # Lançons Scilab en mode debug
 scilab -debug ]]></screen>
-        <para></para>
+        <para/>
         <screen><![CDATA[
 # Sous GNU/Linux, Mac OS X or Unix:
 $ echo "disp(%pi)" | scilab-cli
@@ -632,7 +657,7 @@ echo $? ]]></screen>
                 <link linkend="preferences">preferences</link>
             </member>
             <member>
-                <ulink url="http://texmacs.org/">TeXmacs</ulink>
+                <link xlink:href="http://texmacs.org/">TeXmacs</link>
             </member>
         </simplelist>
     </refsection>
@@ -661,55 +686,68 @@ echo $? ]]></screen>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            Options pour l'utilisateur :
-                            <itemizedlist>
-                                <listitem>
-                                    Ajoutées : <literal>--help</literal>, <literal>-quit</literal>
-                                </listitem>
-                                <listitem>
-                                    Supprimée : <literal>-mem</literal>
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
-                        <listitem>
-                            Options ajoutées pour les développeurs :
-                            <itemizedlist>
-                                <listitem>
-                                    <literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
-                                    <literal>--pretty-print</literal>
-                                </listitem>
-                                <listitem>
-                                    <literal>--AST-timed</literal>, <literal>--timed</literal>
-                                </listitem>
-                                <listitem>
-                                    <literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
-                                    <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
-            </revision>
-            <revision>
-                <revnumber>6.0.1</revnumber>
-                <revremark>
-                    Option <literal>-scihome</literal> ajoutée.
-                  <para>Sur Windows, un nouveau fichier <literal>scilab.bat</literal> devient
-                    le principal script executable gérant toutes les options de lancement. Il y a
-                    désormais 3 binaires exécutables Wscilex.exe, Wscilex-cli.exe, et Scilex.exe
-                    correspondant à chacun des modes STD|NW|NWNI de lancement de Scilab.
-                  </para>
-                </revremark>
-            </revision>
-        </revhistory>
-    </refsection>
-    <!--add some kewywords -->
-    <refnamediv xml:id="wscilex"></refnamediv>
-    <refnamediv xml:id="wscilex-cli"></refnamediv>
-    <refnamediv xml:id="scilex"></refnamediv>
-    <refnamediv xml:id="scilab-cli"></refnamediv>
-    <refnamediv xml:id="scilab-adv-cli"></refnamediv>
-</refentry>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Options pour l'utilisateur :
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>
+                                                Ajoutées : <literal>--help</literal>, <literal>-quit</literal>
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                Supprimée : <literal>-mem</literal>
+                                            </para>
+                                        </listitem>
+                                  </itemizedlist>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Options ajoutées pour les développeurs :
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>
+                                                <literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
+                                                <literal>--pretty-print</literal>
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                <literal>--AST-timed</literal>, <literal>--timed</literal>
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                <literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
+                                                <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
+                                            </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        </para>
+                    </revdescription>
+                </revision>
+                <revision>
+                    <revnumber>6.0.1</revnumber>
+                    <revdescription>
+                        <para>
+                            Option <literal>-scihome</literal> ajoutée.
+                        </para>
+                        <para>
+                            Sur Windows, un nouveau fichier <literal>scilab.bat</literal> devient
+                            le principal script executable gérant toutes les options de lancement. Il y a
+                            désormais 3 binaires exécutables Wscilex.exe, Wscilex-cli.exe, et Scilex.exe
+                            correspondant à chacun des modes STD|NW|NWNI de lancement de Scilab.
+                        </para>
+                    </revdescription>
+                </revision>
+            </revhistory>
+        </refsection>
+    </refentry>

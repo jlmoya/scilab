@@ -5,6 +5,7 @@
 //  This file is distributed under the same license as the Scilab package.
 // =============================================================================
 // <-- CLI SHELL MODE -->
+// <-- NO CHECK REF -->
 //
 // <-- Non-regression test for bug 13839 -->
 //
@@ -16,13 +17,7 @@
 m = sprand(100,10,0.007);
 i = find(m~=0 & m<0.5);
 m(i) = m(i)-0.5;
-try
-    sign(m);
-catch
-    pause
-end
-try
-    sign(m+%i*m);
-catch
-    pause
-end
+err = execstr("sign(m);", "errcatch");
+assert_checkequal(err, 0);
+err = execstr("sign(m+%i*m);", "errcatch");
+assert_checkequal(err, 0);

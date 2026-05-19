@@ -8,20 +8,20 @@
         <title>Syntax</title>
         <synopsis>[status, message] = xcosValidateCompareBlock(block1, block2)</synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_xcosValidateCompareBlock">
+    <refsection xml:id="Parameters_xcosValidateCompareBlock" role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
-                <term>block1</term>: A Xcos block.
+                <term>block1</term><listitem><para>: A Xcos block.</para></listitem>
             </varlistentry>
             <varlistentry>
-                <term>block2</term>: A Xcos block.
+                <term>block2</term><listitem><para>: A Xcos block.</para></listitem>
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="Description_xcosValidateCompareBlock">
+    <refsection xml:id="Description_xcosValidateCompareBlock">
         <title>Description</title>
-        This function is used to compare two Blocks.
+        <para>This function is used to compare two Blocks.</para>
 
         <para>
             Function will go through each block field and compare the two values.
@@ -29,7 +29,7 @@
             <literal>message</literal> will contain some information about non-homogeneous fields.
         </para>
     </refsection>
-    <refsection id="Filecontent_xcosValidateCompareBlock">
+    <refsection xml:id="Filecontent_xcosValidateCompareBlock">
         <title>File content</title>
         <itemizedlist>
             <listitem>
@@ -37,7 +37,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Examples_xcosValidateCompareBlock">
+    <refsection xml:id="Examples_xcosValidateCompareBlock">
         <title>Examples</title>
         <para>
             <programlisting role="example"><![CDATA[
@@ -62,7 +62,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

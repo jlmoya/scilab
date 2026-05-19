@@ -22,7 +22,7 @@
         <title>Séquence d'appel</title>
         <synopsis>f = polfact(p)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -43,9 +43,11 @@
                         sont tous de degré 1 ou 2.
                     </para>
                     <warning>
-                        Les coefficients des polynômes <varname>f</varname> sont calculés avec une
-                        incertitude relative de
-                        <literal>%eps</literal><superscript>1/degree(p)</superscript>.
+                        <para>
+                            Les coefficients des polynômes <varname>f</varname> sont calculés avec une
+                            incertitude relative de
+                            <literal>%eps</literal><superscript>1/degree(p)</superscript>.
+                        </para>
                     </warning>
                 </listitem>
             </varlistentry>

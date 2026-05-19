@@ -15,7 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"  xml:id="optim" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="optim" xml:lang="en">
     <refnamediv>
         <refname>optim</refname>
         <refpurpose>non-linear optimization - find minimum of f(x)</refpurpose>
@@ -34,7 +34,7 @@
             [fopt, xopt, [gopt, work, iters, evals, err], ti, td] = optim(..., params="si","sd")
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -211,7 +211,7 @@
                                 parameters of the <literal>nird</literal> common, which is
                                 defined as:
                             </para>
-                            <screen>common /nird/ nizs,nrzs,ndzs</screen>
+                            <screen><![CDATA[common /nird/ nizs,nrzs,ndzs]]></screen>
                             <para>This allows Scilab to allocate memory inside its internal
                                 workspace. The second time the objective function is called,
                                 <literal>ind</literal> is set to 11 and the objective function
@@ -318,18 +318,18 @@
                             <itemizedlist>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=1</literal>: initial and final print,
+                                        <literal>iflag&gt;=1</literal>: initial and final print,
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=2</literal>: one line per iteration (number of iterations,
+                                        <literal>iflag&gt;=2</literal>: one line per iteration (number of iterations,
                                         number of calls to f, value of f),
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=3</literal>: extra information on line searches.
+                                        <literal>iflag&gt;=3</literal>: extra information on line searches.
                                     </para>
                                 </listitem>
                             </itemizedlist>
@@ -342,18 +342,18 @@
                             <itemizedlist>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=1</literal>: initial and final print,
+                                        <literal>iflag&gt;=1</literal>: initial and final print,
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=2</literal>: one line per iteration (number of iterations,
+                                        <literal>iflag&gt;=2</literal>: one line per iteration (number of iterations,
                                         number of calls to f, value of f),
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=3</literal>: extra information on line searches.
+                                        <literal>iflag&gt;=3</literal>: extra information on line searches.
                                     </para>
                                 </listitem>
                             </itemizedlist>
@@ -366,7 +366,7 @@
                             <itemizedlist>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=1</literal> and <literal>iflag>=2</literal>: initial and final print,
+                                        <literal>iflag&gt;=1</literal> and <literal>iflag&gt;=2</literal>: initial and final print,
                                     </para>
                                 </listitem>
                                 <listitem>
@@ -377,7 +377,7 @@
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=4</literal>: extra information on lines searches.
+                                        <literal>iflag&gt;=4</literal>: extra information on lines searches.
                                     </para>
                                 </listitem>
                             </itemizedlist>
@@ -390,12 +390,12 @@
                             <itemizedlist>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=1</literal>: initial and final print,
+                                        <literal>iflag&gt;=1</literal>: initial and final print,
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=2</literal>: one print per iteration,
+                                        <literal>iflag&gt;=2</literal>: one print per iteration,
                                     </para>
                                 </listitem>
                                 <listitem>
@@ -413,32 +413,32 @@
                             <itemizedlist>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=1</literal>: initial and final print,
+                                        <literal>iflag&gt;=1</literal>: initial and final print,
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=2</literal>: one print on each convergence,
+                                        <literal>iflag&gt;=2</literal>: one print on each convergence,
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=3</literal>: one print per iteration,
+                                        <literal>iflag&gt;=3</literal>: one print per iteration,
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=4</literal>: line search,
+                                        <literal>iflag&gt;=4</literal>: line search,
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=5</literal>: various tolerances,
+                                        <literal>iflag&gt;=5</literal>: various tolerances,
                                     </para>
                                 </listitem>
                                 <listitem>
                                     <para>
-                                        <literal>iflag>=6</literal>: weight and information on the computation of direction.
+                                        <literal>iflag&gt;=6</literal>: weight and information on the computation of direction.
                                     </para>
                                 </listitem>
                             </itemizedlist>
@@ -509,40 +509,52 @@
                         The success flag is <literal>9</literal> and possible values are:
                         <itemizedlist>
                             <listitem>
-                                <literal>err=1</literal>: Norm of projected gradient lower than...
+                                 <para><literal>err=1</literal>: Norm of projected gradient lower than...
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=2</literal>: At last iteration f decreases by less than...
+                                 <para><literal>err=2</literal>: At last iteration f decreases by less than...
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=3</literal>: Optimization stops because of too small variations for x.
+                                 <para><literal>err=3</literal>: Optimization stops because of too small variations for x.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=4</literal>: Optim stops: maximum number of calls to f is reached.
+                                 <para><literal>err=4</literal>: Optim stops: maximum number of calls to f is reached.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=5</literal>: Optim stops: maximum number of iterations is reached.
+                                 <para><literal>err=5</literal>: Optim stops: maximum number of iterations is reached.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=6</literal>: Optim stops: too small variations in gradient direction.
+                                 <para><literal>err=6</literal>: Optim stops: too small variations in gradient direction.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=7</literal>: Stop during calculation of descent direction.
+                                 <para><literal>err=7</literal>: Stop during calculation of descent direction.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=8</literal>: Stop during calculation of estimated hessian.
+                                 <para><literal>err=8</literal>: Stop during calculation of estimated hessian.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=9</literal>: End of optimization, successful completion.
+                                 <para><literal>err=9</literal>: End of optimization, successful completion.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=10</literal>: End of optimization (linear search fails).
+                                 <para><literal>err=10</literal>: End of optimization (linear search fails).
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=12</literal>: End of optimization: Linear search failed because of a too small step increment (equivalent to <literal>err=10</literal>).
+                                 <para><literal>err=12</literal>: End of optimization: Linear search failed because of a too small step increment (equivalent to <literal>err=10</literal>).
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>err=13</literal>: Optim stops: Maximum number of calls to the user function (cost+gradient) has been exceeded (equivalent to <literal>err=4</literal>).
+                                 <para><literal>err=13</literal>: Optim stops: Maximum number of calls to the user function (cost+gradient) has been exceeded (equivalent to <literal>err=4</literal>).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -556,7 +568,7 @@
             This function solves unconstrained nonlinear optimization problems:
         </para>
         <para>
-            find the minimum of <latex><![CDATA[$F(x)$]]></latex> w.r.t. <latex><![CDATA[$x$]]></latex> where <latex><![CDATA[$F:R^n\rightarrow R$]]></latex>
+            find the minimum of <latex>$F(x)$</latex> w.r.t. <latex>$x$</latex> where <latex>$F:R^n\rightarrow R$</latex>
         </para>
         <para>
             where <literal>x</literal> is a vector and <literal>f(x)</literal>
@@ -565,8 +577,8 @@
         </para>
         <screen><![CDATA[
 min f(x)
-binf &lt;= x &lt;= bsup]]>
-        </screen>
+binf &lt;= x &lt;= bsup
+        ]]></screen>
         <para>
             where <literal>binf</literal> is the lower bound and
             <literal>bsup</literal> is the upper bound on <literal>x</literal>.
@@ -587,7 +599,7 @@ binf &lt;= x &lt;= bsup]]>
                         If <literal>costf</literal> is a Scilab function, its calling
                         sequence must be:
                     </para>
-                    <screen>[f, g, ind] = costf(x, ind)</screen>
+                    <screen><![CDATA[[f, g, ind] = costf(x, ind)]]></screen>
                     <para>
                         where <literal>x</literal> is the current point,
                         <literal>ind</literal> is an integer flag described below,
@@ -609,8 +621,8 @@ binf &lt;= x &lt;= bsup]]>
                         <literal>real_costf</literal>, the first element in the list, must
                         be a Scilab function with syntax:
                         <screen><![CDATA[
-[f,g,ind]=real_costf(x,ind,arg1,...,argn)]]>
-                        </screen>
+[f,g,ind]=real_costf(x,ind,arg1,...,argn)
+                        ]]></screen>
                         The <literal>x</literal>, <literal>f</literal>,
                         <literal>g</literal>, <literal>ind</literal> arguments have the same
                         meaning as before. In this case, each time the objective function is
@@ -634,7 +646,7 @@ binf &lt;= x &lt;= bsup]]>
                                 <para>The calling sequence of the Fortran subroutine computing
                                     the objective must be:
                                 </para>
-                                <screen>subroutine costf(ind,n,x,f,g,ti,tr,td)</screen>
+                                <screen><![CDATA[subroutine costf(ind,n,x,f,g,ti,tr,td)]]></screen>
                                 <para>with the following declarations:</para>
                                 <screen><![CDATA[
 integer ind,n ti(*)
@@ -658,7 +670,7 @@ real tr(*)]]></screen>
                                 <para>The syntax of the C function computing the
                                     objective must be:
                                 </para>
-                                <screen>void costf(int *ind, int *n, double *x, double *f, double *g, int *ti, float *tr, double *td)</screen>
+                                <screen><![CDATA[void costf(int *ind, int *n, double *x, double *f, double *g, int *ti, float *tr, double *td)]]></screen>
                                 <para>
                                     The argument <literal>ind</literal> is described
                                     below.
@@ -788,8 +800,8 @@ x0 = [1; -1; 1];
 
 // Additional messages are printed in the console.
 [fopt, xopt] = optim(cost, x0, iprint = 3)
-]]>
-        </programlisting>
+
+        ]]></programlisting>
     </refsection>
     <refsection>
         <title>Example: Print messages</title>
@@ -817,8 +829,8 @@ endfunction
 
 x0 = [1; -1; 1];
 [fopt, xopt] = optim(cost, x0, iprint = -1)
-]]>
-        </programlisting>
+
+        ]]></programlisting>
         <para>The previous script produces the following output.</para>
         <screen><![CDATA[
 -->[fopt, xopt] = optim(cost, x0, iprint = -1)
@@ -876,9 +888,9 @@ plot(xopt(1), xopt(2), "r*")
 
 // 5. Plot the optimization process, during optimization
 [fopt, xopt] = optim (rosenbrockPlot, x0, iprint = -1)
-]]>
-        </programlisting>
-        <scilab:image>
+
+        ]]></programlisting>
+        <scilab:image><![CDATA[
             function [f, g, ind]=rosenbrock(x, ind)
             f = 100.0 *(x(2) - x(1)^2)^2 + (1 - x(1))^2;
             g(1) = - 400. * (x(2) - x(1)**2) * x(1) -2. * (1. - x(1))
@@ -906,7 +918,7 @@ plot(xopt(1), xopt(2), "r*")
             plot(x0(1), x0(2), "b.")
             plot(xopt(1), xopt(2), "r*")
             [fopt, xopt] = optim (rosenbrockPlot, x0, iprint = -1)
-        </scilab:image>
+        ]]></scilab:image>
 
     </refsection>
     <refsection>
@@ -933,8 +945,8 @@ endfunction
 x0 = [-1.2 1.0];
 
 [fopt, xopt] = optim (rosenbrockCost, x0)
-]]>
-        </programlisting>
+
+        ]]></programlisting>
     </refsection>
     <refsection>
         <title>Example: Counting function evaluations and number of
@@ -1015,8 +1027,8 @@ c = 3.0;
 d = 4.0;
 costf = list (costfunction, a, b, c, d);
 [fopt, xopt] = optim (costf, x0, iprint = 2)
-]]>
-        </programlisting>
+
+        ]]></programlisting>
         <para>In complex cases, the cost function may have so many parameters,
             that having a function which takes all arguments as inputs is not
             convenient. For example, consider the situation where the cost function
@@ -1058,8 +1070,8 @@ parameters.c = c;
 parameters.d = d;
 costf = list (costfunction, parameters);
 [fopt, xopt] = optim (costf, x0, iprint = 2)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <para>In the following example, the parameters are defined before the
             optimizer is called. They are directly used in the cost function.
         </para>
@@ -1076,8 +1088,8 @@ b = 2.0;
 c = 3.0;
 d = 4.0;
 [fopt, xopt] = optim (costfunction, x0, iprint = 2)
-]]>
-        </programlisting>
+
+        ]]></programlisting>
         <para>While the previous example perfectly works, there is a risk that the
             same variables are used by some internal function used by
             <literal>optim</literal>. In this case, the value of the parameters are
@@ -1105,8 +1117,8 @@ b = 2.0;
 c = 3.0;
 d = 4.0;
 [fopt, xopt] = optim (costfunction, x0, iprint = 2)
-]]>
-        </programlisting>
+
+        ]]></programlisting>
         <para>While the previous example perfectly works, there is a risk that the
             same variables are used by some internal function used by
             <literal>optim</literal>. In this case, the value of the parameters are
@@ -1151,8 +1163,8 @@ index = 1;
 gnd = numderivative (simplified, x0.');
 mprintf("Exact derivative:[%s]\n", strcat (string(g), " "));
 mprintf("Numerical derivative:[%s]\n", strcat (string(gnd), " "));
-]]>
-        </programlisting>
+
+        ]]></programlisting>
         <para>The previous script produces the following output. Obviously, the
             difference between the two gradient is enormous, which shows that the
             wrong formula has been used in the gradient.
@@ -1212,8 +1224,8 @@ link(l, 'rosenc', 'c')
 x0 = [40; 10; 50];
 p = 100;
 [f, xo, go] = optim('rosenc', x0, 'td', p)
-]]>
-        </programlisting>
+
+        ]]></programlisting>
     </refsection>
     <refsection>
         <title>Example: Fortran function</title>
@@ -1259,8 +1271,8 @@ link(l, 'rosenf', 'f')
 x0 = [40; 10; 50];
 p = 100;
 [f, xo, go] = optim('rosenf', x0, 'td', p)
-]]>
-        </programlisting>
+
+        ]]></programlisting>
     </refsection>
     <refsection>
         <title>Example: Fortran function with initialization</title>
@@ -1349,8 +1361,8 @@ x0 = 1.2 * ones(1, 5);
 // Solve the problem
 //
 [f, x, g] = optim('rosenf', x0, 'in');
-]]>
-        </programlisting>
+
+        ]]></programlisting>
     </refsection>
     <refsection>
         <title>Example: Fortran function with initialization on Windows with Intel
@@ -1381,8 +1393,8 @@ fortransource = ['subroutine rosenf(ind,n,x,f,g,izs,rzs,dzs)'
 'c     f.bonnans, oct 86'
 '      implicit double precision (a-h,o-z)'
 [etc...]
-]]>
-        </screen>
+
+        ]]></screen>
     </refsection>
     <refsection>
         <title>Example: Fortran function with tab saving
@@ -1485,8 +1497,8 @@ xopt = .1*bs;
 // Initializes ti and td but return only td
 [f, x, td] = optim('rosenf', x0, 'in', 'sd')
 [f, x, td] = optim('rosenf', x0, 'td', td, 'sd')
-]]>
-        </programlisting>
+
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

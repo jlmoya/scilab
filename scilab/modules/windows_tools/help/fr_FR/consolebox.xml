@@ -30,7 +30,7 @@
         </synopsis>
     </refsynopsisdiv>
     <refsection role="arguments">
-        <title>Arguments</title>
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>status</term>
@@ -46,8 +46,10 @@
     <refsection role="description">
         <title>Description</title>
         <note>
-            La fonction <literal>consolebox(…)</literal> est disponible uniquement si la session
-            Scilab a été lancée en mode normal (<literal>getscilabmode()=="STD"</literal>).
+            <para>
+                La fonction <literal>consolebox(…)</literal> est disponible uniquement si la session
+                Scilab a été lancée en mode normal (<literal>getscilabmode()=="STD"</literal>).
+            </para>
         </note>
         <para>
             La fenêtre noire "consolebox" est le terminal (par défaut caché) du système
@@ -107,17 +109,25 @@
             les résultats donnés par Windows et en suppriment l'affichage dans la consolebox.
         </para>
         <important>
-            Certaines fonctions Scilab de bas niveau (tel que le compilateur des pages d'aide de
-            Scilab, ou d'autres fonctions) envoient leurs messages d'erreur dans la consolebox,
-            sans quoi ces messages pollueraient la console du bureau Scilab.
-            <literal>consolebox on</literal> permet de consulter ces messages très utiles pour le
-            débogage.
+            <para>
+                Certaines fonctions Scilab de bas niveau (tel que le compilateur des pages d'aide de
+                Scilab, ou d'autres fonctions) envoient leurs messages d'erreur dans la consolebox,
+                sans quoi ces messages pollueraient la console du bureau Scilab.
+                <literal>consolebox on</literal> permet de consulter ces messages très utiles pour le
+                débogage.
+            </para>
         </important>
         <note>
-            Lorsque la console Scilab a le focus, la touche <literal>F12</literal> permet de faire
-            apparaitre ou disparaitre la consolebox.
+            <para>
+                Lorsque la console Scilab a le focus, la touche <literal>F12</literal> permet de faire
+                apparaitre ou disparaitre la consolebox.
+            </para>
         </note>
-        <note><literal>host("cls")</literal> efface le contenu de la consolebox.</note>
+        <note>
+            <para>
+                <literal>host("cls")</literal> efface le contenu de la consolebox.
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Exemples</title>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="log2" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="log2" xml:lang="en">
     <refnamediv>
         <refname>log2</refname>
         <refpurpose>
@@ -30,7 +27,7 @@
             [m, e] = log2(u)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -57,7 +54,9 @@
             <literal>y = log2(x)</literal> is the "element-wise" base 2 logarithm, with
             <literal>y(i,j) = log2(x(i,j))</literal>.
             <note>
-                <literal>log2(-%inf) == %inf + log2(-1)</literal>
+                <para>
+                    <literal>log2(-%inf) == %inf + log2(-1)</literal>
+                </para>
             </note>
         </para>
         <para>
@@ -68,11 +67,14 @@
             <note>
                 <itemizedlist>
                     <listitem>
-                        <literal>[m, e] = log2([0 %nan -%inf %inf])</literal> returns
-                        <literal>m=[0  NaN -Inf Inf]</literal> and <literal>e=[0 0 0 0]</literal>.
+                         <para><literal>[m, e] = log2([0 %nan -%inf %inf])</literal> returns
+                            <literal>m=[0  NaN -Inf Inf]</literal> and <literal>e=[0 0 0 0]</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                        This syntax corresponds to the ANSI C function frexp().
+                         <para>
+                            This syntax corresponds to the ANSI C function frexp().
+                        </para>
                     </listitem>
                 </itemizedlist>
             </note>

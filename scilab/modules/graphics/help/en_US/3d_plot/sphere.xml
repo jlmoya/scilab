@@ -16,7 +16,7 @@
         <title>Syntax</title>
         <synopsis>[x, y, z] = sphere(n)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -72,8 +72,6 @@ gca().isoview = "on";
             gcf().color_map = parula(64);
             gca().isoview = "on";
         </scilab:image>
-    </refsection>
-    <refsection>
         <para><emphasis role="bold">Sphere centered on (1,2,3) with radius equal to 1:</emphasis></para>
         <programlisting role="example"><![CDATA[
 scf();
@@ -89,8 +87,6 @@ gca().isoview = "on";
             gcf().color_map = autumn(64);
             gca().isoview = "on";
         </scilab:image>
-    </refsection>
-    <refsection>
         <para><emphasis role="bold">Sphere centered on origin with a vector n:</emphasis></para>
         <programlisting role="example"><![CDATA[
 scf();
@@ -126,9 +122,11 @@ gca().isoview = "on";
         <revhistory>
             <revision>
                 <revnumber>2025.1.0</revnumber>
-                <revremark>
-                    Function <literal>sphere</literal> introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function <literal>sphere</literal> introduced.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

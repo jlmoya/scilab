@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="intc" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intc" xml:lang="pt">
     <refnamediv>
         <refname>intc</refname>
         <refpurpose>integral de Cauchy</refpurpose>
@@ -47,17 +44,19 @@
             <varlistentry>
                 <term>abserr, relerr</term>
                 <listitem>
-                    real scalars: absolute and relative errors.
-                    Default values: <literal>1.d-13</literal> and <literal>1d-8</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        real scalars: absolute and relative errors.
+                        Default values: <literal>1.d-13</literal> and <literal>1d-8</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>err</term>
                 <listitem>
-                    real number: estimated absolute error on the result.
-                    <para/>
-                </listitem>
+                     <para>
+                        real number: estimated absolute error on the result.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

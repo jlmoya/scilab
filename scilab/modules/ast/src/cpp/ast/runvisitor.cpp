@@ -440,18 +440,11 @@ void RunVisitorT<T>::visitprivate(const FieldExp &e)
         setResult(pReturn);
         if (pValue->isDeletable())
         {
-            if (pValue->isContainer())
-            {
-                // prevent delete of pReturn in case where
-                // extract not return a clone
-                pReturn->IncreaseRef();
-                pValue->killMe();
-                pReturn->DecreaseRef();
-            }
-            else
-            {
-                pValue->killMe();
-            }
+            // prevent delete of pReturn in case where
+            // extract not return a clone
+            pReturn->IncreaseRef();
+            pValue->killMe();
+            pReturn->DecreaseRef();
         }
     }
     else if (pValue->isFieldExtractionOverloadable())
@@ -1440,13 +1433,12 @@ void RunVisitorT<T>::visitprivate(const ClassDec & e)
             {
                 std::wstring attr(a->getAs<SimpleVar>()->getSymbol().getName());
                 std::transform(attr.begin(), attr.end(), attr.begin(), std::towlower);
-                /*
                 if (attr == L"static")
                 {
                     staticFlag = true;
                     continue;
                 }
-                */
+
                 if (attr == L"private")
                 {
                     accessFlag = types::AccessModifier::PRIVATE;
@@ -1515,12 +1507,11 @@ void RunVisitorT<T>::visitprivate(const ClassDec & e)
             {
                 std::wstring attr(a->getAs<SimpleVar>()->getSymbol().getName());
                 std::transform(attr.begin(), attr.end(), attr.begin(), std::towlower);
-                /*
                 if (attr == L"static")
                 {
                     staticFlag = true;
+                    continue;
                 }
-                */
 
                 if (attr == L"private")
                 {

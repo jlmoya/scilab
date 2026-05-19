@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-    xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-    xml:lang="ru" xml:id="while">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="while">
     <refnamediv>
         <refname>while</refname>
         <refpurpose>ключевое слово while</refpurpose>
@@ -138,11 +135,14 @@ e,k
                 <revremark>
                     <itemizedlist>
                       <listitem>
-                        Синтаксис <literal>[,else instructions]</literal> более не поддерживается.
+                           <para>
+                            Синтаксис <literal>[,else instructions]</literal> более не поддерживается.
+                          </para>
                       </listitem>
                       <listitem>
-                        <literal>while</literal> теперь защищено:
-                        Назначения вроде <literal>while=1</literal> более недопустимы.
+                           <para><literal>while</literal> теперь защищено:
+                            Назначения вроде <literal>while=1</literal> более недопустимы.
+                          </para>
                       </listitem>
                   </itemizedlist>
                 </revremark>

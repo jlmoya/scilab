@@ -21,57 +21,54 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="EXTTRI" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="EXTTRI" xml:lang="en_US">
     <refnamediv>
         <refname>EXTTRI</refname>
         <refpurpose>Triangular or Diagonal Extraction</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/EXTTRI.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_EXTTRI">
+    <refsection xml:id="Contents_EXTTRI">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_EXTTRI">Description</xref>
+                <para><link linkend="Description_EXTTRI">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_EXTTRI">Parameters</xref>
+                <para><link linkend="Dialogbox_EXTTRI">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_EXTTRI">Default properties</xref>
+                <para><link linkend="Defaultproperties_EXTTRI">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_EXTTRI">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_EXTTRI">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_EXTTRI">Computational function</xref>
+                <para><link linkend="Computationalfunction_EXTTRI">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_EXTTRI">Example</xref>
+                <para><link linkend="Example_EXTTRI">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_EXTTRI">See also</xref>
+                <para><link linkend="Seealso_EXTTRI">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_EXTTRI">
+    <refsection xml:id="Description_EXTTRI">
         <title>Description</title>
         <para>
             The EXTTRI block extracts some elements from the input matrix u. The size of the output
             matrix is the same that those of the input matrix.
-            <para>
             </para>
+            <para>
             When the <emphasis role="bold">extraction type</emphasis> parameter is set to:
         </para>
         <itemizedlist>
@@ -102,14 +99,13 @@
             <link linkend="tril">tril(u)</link> and <link linkend="diag">diag(u)</link>, respectively
         </para>
     </refsection>
-    <refsection id="Dialogbox_EXTTRI">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_EXTTRI">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/EXTTRI_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/EXTTRI_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -133,7 +129,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_EXTTRI">
+    <refsection xml:id="Defaultproperties_EXTTRI">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -206,7 +202,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_EXTTRI">
+    <refsection xml:id="Example_EXTTRI">
         <title>Example</title>
         <screen><![CDATA[
 A = [1 2 3 ; 4 5 6 ; 7 8 9 ; 10 11 12]
@@ -214,6 +210,7 @@ If the extraction type is 2 then the output is
 B = [1 0 0 ; 4 5 0 ; 7 8 9 ; 10 11 12]
 ]]></screen>
         <para><emphasis role="bold">Example of diagonal extraction</emphasis></para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/EXTTRI_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -221,8 +218,9 @@ B = [1 0 0 ; 4 5 0 ; 7 8 9 ; 10 11 12]
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
-    <refsection id="Interfacingfunction_EXTTRI">
+    <refsection xml:id="Interfacingfunction_EXTTRI">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -230,26 +228,38 @@ B = [1 0 0 ; 4 5 0 ; 7 8 9 ; 10 11 12]
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_EXTTRI">
+    <refsection xml:id="Computationalfunction_EXTTRI">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttril.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttril.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttriu.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttriu.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/extdiag.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/extdiag.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttrilz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttrilz.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttriuz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttriuz.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/extdiagz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/extdiagz.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

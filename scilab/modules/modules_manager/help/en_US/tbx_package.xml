@@ -29,7 +29,7 @@
         </synopsis>
     </refsynopsisdiv>
 
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -90,10 +90,12 @@
         <title>Description</title>
         <para>
             <emphasis role="bold">tbx_package(…)</emphasis> create a single compressed file of a toolbox hierarchy. The toolbox hierarchy should contains binary artifacts produced by <link linkend="tbx_make"/>.  
-            The resulting file can be installed locally using <link linkend="atomsInstall"/> or uploaded to <ulink url="https://atoms.scilab.org">ATOMS web portal</ulink> for sharing it.
+            The resulting file can be installed locally using <link linkend="atomsInstall"/> or uploaded to <link xlink:href="https://atoms.scilab.org">ATOMS web portal</link> for sharing it.
         </para>
         <important>
-            The toolbox name (id) and version are read from the <literal>DESCRIPTION</literal> file. This file is mandatory in the toolbox.
+            <para>
+                The toolbox name (id) and version are read from the <literal>DESCRIPTION</literal> file. This file is mandatory in the toolbox.
+            </para>
         </important>
         <para>
             <emphasis role="bold">tbx_package(tbx_path)</emphasis> create the toolbox whose root's
@@ -141,7 +143,7 @@ tbx_package
         </simplelist>
     </refsection>
 
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -150,7 +152,11 @@ tbx_package
             </revision>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revremark><literal>desc</literal> output parameters added.</revremark>
+                <revdescription>
+                    <para>
+                        <literal>desc</literal> output parameters added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

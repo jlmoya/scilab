@@ -12,7 +12,6 @@
 //
 conf = "SCI/modules/slint/etc/slint_all.xml";
 a = slint("SCI/modules/slint/tests/unit_tests/files/GlobalKeyword.sci", conf, %f);
-Module developed with the contribution of CNES.
 assert_checktrue(isfield(a.info, "00001"));
 assert_checkequal(size(a.info("00001"), "*"), 1);
 assert_checkequal(a.info("00001").loc, [2 5; 2 11]);

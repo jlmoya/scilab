@@ -118,25 +118,32 @@ e,k
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            The <literal>[,else instructions]</literal> syntax is no longer supported.
-                        </listitem>
-                        <listitem>
-                            <literal>while</literal> is now protected:
-                            Assignments like <literal>while=1</literal> are no longer possible.
-                        </listitem>
-                        <listitem>
-                            The number of characters used to define the body of any conditional instruction (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, or <literal>select/case</literal>) is no more limited to 16k.
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The <literal>[,else instructions]</literal> syntax is no longer supported.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>while</literal> is now protected:
+                                    Assignments like <literal>while=1</literal> are no longer possible.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The number of characters used to define the body of any conditional instruction (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, or <literal>select/case</literal>) is no more limited to 16k.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

@@ -415,7 +415,7 @@ static void setFigureSettings(int iFigureUID, scicos_block * block)
     {
         setGraphicObjectProperty(iFigureUID, __GO_SIZE__, &win_dim, jni_int_vector, 2);
     }
-};
+}
 
 /*****************************************************************************
  *

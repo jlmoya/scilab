@@ -12,10 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="comet3d">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="comet3d">
     <refnamediv>
         <refname>comet3d</refname>
         <refpurpose>3次元 comet アニメーションプロット</refpurpose>
@@ -37,56 +34,61 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    実数ベクトルまたは行列. 省略された場合,
-                    ベクトル <literal>1:np</literal> が指定されたと仮定されます.
-                    ただし,<literal>np</literal> は曲線の点の数(下記参照)です.
-                    行列として、各列は別々の彗星の軌跡の水平座標を定義します.
-                    <para/>
-                </listitem>
+                     <para>
+                        実数ベクトルまたは行列. 省略された場合,
+                        ベクトル <literal>1:np</literal> が指定されたと仮定されます.
+                        ただし,<literal>np</literal> は曲線の点の数(下記参照)です.
+                        行列として、各列は別々の彗星の軌跡の水平座標を定義します.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    実数ベクトル（デフォルト値<literal>=1：np</literal>）または行列.
-                    行列として、各列は、個々の彗星の痕跡のy座標を定義します.
-                    <para/>
-                </listitem>
+                     <para>
+                        実数ベクトル（デフォルト値<literal>=1：np</literal>）または行列.
+                        行列として、各列は、個々の彗星の痕跡のy座標を定義します.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>z</term>
                 <listitem>
-                    長さがnpの実数ベクトル、またはnp個の行を持つ行列.
-                    行列として、各列は個々の彗星のトレースのz座標を定義します. <literal>nc=size（z,"c"）</literal>
-                    は、同時に描画される彗星の数です.
-                    <para/>
-                </listitem>
+                     <para>
+                        長さがnpの実数ベクトル、またはnp個の行を持つ行列.
+                        行列として、各列は個々の彗星のトレースのz座標を定義します. <literal>nc=size（z,"c"）</literal>
+                        は、同時に描画される彗星の数です.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Lf</term>
                 <listitem>
-                    範囲 <literal>[0 1[</literal> の実数スカラー. デフォルト値は 0.1です.
-                    これは、彗星の痕跡のLeading fractionを定義します。最近の点は太い線でプロットされています
-                    （<literal>k=Lf*np</literal>）。
-                    <para/>
-                </listitem>
+                     <para>
+                        範囲 <literal>[0 1[</literal> の実数スカラー. デフォルト値は 0.1です.
+                        これは、彗星の痕跡のLeading fractionを定義します。最近の点は太い線でプロットされています
+                        （<literal>k=Lf*np</literal>）。
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>fun</term>
                 <listitem>
-                    呼び出し手順 <literal>z=fun(x,y)</literal> のScilab関数.
-                    <para/>
-                </listitem>
+                     <para>
+                        呼び出し手順 <literal>z=fun(x,y)</literal> のScilab関数.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>c</term>
                 <listitem>
-                    <literal>nc</literal> colors of the <literal>nc</literal> comets traces.
-                    They may be specified as a vector of <literal>nc</literal> color indices or
-                    <link linkend="color_list">color names</link> or "#RRGGBB" hexadecimal
-                    color codes. Or by a matrix (ncx3) of <literal>[r,g,b]</literal> vectors of
-                    Red-Green-Blue intensities in the [0,1] interval.
-                    <para/>
-                </listitem>
+                     <para><literal>nc</literal> colors of the <literal>nc</literal> comets traces.
+                        They may be specified as a vector of <literal>nc</literal> color indices or
+                        <link linkend="color_list">color names</link> or "#RRGGBB" hexadecimal
+                        color codes. Or by a matrix (ncx3) of <literal>[r,g,b]</literal> vectors of
+                        Red-Green-Blue intensities in the [0,1] interval.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

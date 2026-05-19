@@ -49,4 +49,5 @@ Source: modules\{#HISTORY_MANAGER}\macros\cleanmacros.bat; DestDir: {app}\module
 ;
 Source: modules\{#HISTORY_MANAGER}\tests\*.*; DestDir: {app}\modules\{#HISTORY_MANAGER}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#HISTORY_MANAGER}\help\*.*; DestDir: {app}\modules\{#HISTORY_MANAGER}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

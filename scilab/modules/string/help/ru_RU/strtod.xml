@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="strtod" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="strtod" xml:lang="ru">
     <refnamediv>
         <refname>strtod</refname>
         <refpurpose>проверка синтаксиса и преобразование строк литеральных чисел в десятичные числа</refpurpose>
@@ -73,71 +70,81 @@
             значения  <varname>str</varname> и пытается интерпретировать его содержимое как десятичное число:
             <itemizedlist>
                 <listitem>
-                    Если это удалось, по крайней мере для головной части <varname>str(i)</varname>,
-                    то соответствующее число возвращается в <varname>d(i)</varname>. Если возможно,
-                    завершающая часть <varname>str(i)</varname> игнорируется и возвращается в
-                    <varname>tails(i)</varname>; в противном случае <varname>tails(i)</varname> возвращает "".
+                     <para>
+                        Если это удалось, по крайней мере для головной части <varname>str(i)</varname>,
+                        то соответствующее число возвращается в <varname>d(i)</varname>. Если возможно,
+                        завершающая часть <varname>str(i)</varname> игнорируется и возвращается в
+                        <varname>tails(i)</varname>; в противном случае <varname>tails(i)</varname> возвращает "".
+                   </para>
                </listitem>
                 <listitem>
-                    В противном случае <varname>d(i)</varname> возвращает <literal>%nan</literal>,
-                    а <varname>tails(i)</varname> полностью равна <varname>str(i)</varname>.
+                     <para>
+                        В противном случае <varname>d(i)</varname> возвращает <literal>%nan</literal>,
+                        а <varname>tails(i)</varname> полностью равна <varname>str(i)</varname>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
         <warning>
             <itemizedlist>
                 <listitem>
-                    Комплексные числа: функция <function>strtod(..)</function> проверяет
-                    синтаксис и возвращает только их вещественную часть при условии, что она записана перед
-                    мнимой частью.
+                     <para>
+                        Комплексные числа: функция <function>strtod(..)</function> проверяет
+                        синтаксис и возвращает только их вещественную часть при условии, что она записана перед
+                        мнимой частью.
+                    </para>
                 </listitem>
                 <listitem>
-                    <function>strtod(..)</function> не признаёт никаких разделителей тысяч, ни " ", ни ",",
-                    ни каких иных.
+                     <para><function>strtod(..)</function> не признаёт никаких разделителей тысяч, ни " ", ни ",",
+                        ни каких иных.
+                    </para>
                 </listitem>
                 <listitem>
-                    <function>strtod(..)</function> проверяет синтаксис строк только по десятичным числам.
-                    Она не интерпретирует строки шестнадцатеричных, восьмеричных или иных чисел.
+                     <para><function>strtod(..)</function> проверяет синтаксис строк только по десятичным числам.
+                        Она не интерпретирует строки шестнадцатеричных, восьмеричных или иных чисел.
+                    </para>
                 </listitem>
                 <listitem>
-                    <function>strtod(..)</function> не интерпретирует никаких имён переменных, предопределённых
-                    в Scilab или предопределённых пользователем, или специальных строк <literal>%inf</literal>
-                    или <literal>%nan</literal>. Следовательно:
-                    <programlisting role="example"><![CDATA[
-s = ["-0.034" "- 0.034"  "+1234.5678" "1234 5678"
-     "-.764"  "+.432"    "12,231.7"   "-5.458,871"
-     "1e43"   "-3.5d-12" "-1.2+i"     "i+1.2"
-     ""       "%inf"     "Inf"        "-Inf"
-     "%i"     "%pi"      "%e"         "%eps"
-     "%F"     "0x19B"    "#14C4"      "o5745"
-     ]
-strtod(s)
-]]>             </programlisting>
-                <screen><![CDATA[  s  =
-!-0.034  - 0.034   +1234.5678  1234 5678   !
-!-.764   +.432     12,231.7    -5.458,871  !
-!1e43    -3.5d-12  -1.2+i      i+1.2       !
-!        %inf      Inf         -Inf        !
-!%i      %pi       %e          %eps        !
-!%F      0x19B     #14C4       o5745       !
---> strtod(s)
- ans  =
-  -0.034       Nan         1234.5678   1234.
-  -0.764       0.432       12.        -5.458
-   1.000D+43  -3.500D-12  -1.2         Nan
-   Nan         Nan         Nan         Nan
-   Nan         Nan         Nan         Nan
-   Nan         0.          Nan         Nan
-]]></screen>
+                     <para><function>strtod(..)</function> не интерпретирует никаких имён переменных, предопределённых
+                        в Scilab или предопределённых пользователем, или специальных строк <literal>%inf</literal>
+                        или <literal>%nan</literal>. Следовательно:
+                        <programlisting role="example"><![CDATA[
+    s = ["-0.034" "- 0.034"  "+1234.5678" "1234 5678"
+         "-.764"  "+.432"    "12,231.7"   "-5.458,871"
+         "1e43"   "-3.5d-12" "-1.2+i"     "i+1.2"
+         ""       "%inf"     "Inf"        "-Inf"
+         "%i"     "%pi"      "%e"         "%eps"
+         "%F"     "0x19B"    "#14C4"      "o5745"
+         ]
+    strtod(s)
+                 ]]></programlisting><screen><![CDATA[  s  =
+    !-0.034  - 0.034   +1234.5678  1234 5678   !
+    !-.764   +.432     12,231.7    -5.458,871  !
+    !1e43    -3.5d-12  -1.2+i      i+1.2       !
+    !        %inf      Inf         -Inf        !
+    !%i      %pi       %e          %eps        !
+    !%F      0x19B     #14C4       o5745       !
+    --> strtod(s)
+     ans  =
+      -0.034       Nan         1234.5678   1234.
+      -0.764       0.432       12.        -5.458
+       1.000D+43  -3.500D-12  -1.2         Nan
+       Nan         Nan         Nan         Nan
+       Nan         Nan         Nan         Nan
+       Nan         0.          Nan         Nan
+    ]]></screen></para>
+            </listitem>
+                <listitem>
+                     <para><function>strtod(..)</function> не интерпретирует эскейп-последовательности  <literal>"\n"</literal>,
+                        <literal>"\t"</literal> и др.
+                    </para>
                 </listitem>
                 <listitem>
-                    <function>strtod(..)</function> не интерпретирует эскейп-последовательности  <literal>"\n"</literal>,
-                    <literal>"\t"</literal> и др.
-                </listitem>
-                <listitem>
-                    Эта функция основана на Си-функции strtod, которая по-разному ведёт себя в  Windows и Linux.
-                    На самом деле в Windows можно использовать "d" и "D" для экспонент, но нельзя использовать
-                    шестнадцатеричные числа.
+                     <para>
+                        Эта функция основана на Си-функции strtod, которая по-разному ведёт себя в  Windows и Linux.
+                        На самом деле в Windows можно использовать "d" и "D" для экспонент, но нельзя использовать
+                        шестнадцатеричные числа.
+                    </para>
                 </listitem>
             </itemizedlist>
         </warning>

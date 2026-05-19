@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="modulo" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="modulo" xml:lang="pt">
     <refnamediv>
         <refname>modulo</refname>
         <refpurpose>
@@ -31,7 +28,7 @@
     <refsynopsisdiv>
         <title>Seqüência de Chamamento</title>
         <synopsis>i = modulo(n,m)</synopsis>
-        <para></para>
+        <para/>
         <synopsis>i = pmodulo(n,m)</synopsis>
     </refsynopsisdiv>
     <refsection>
@@ -80,18 +77,13 @@
             Para números,
             <itemizedlist>
                 <listitem>
-                    <para>
-                    <literal>modulo()</literal> calcula <literal>i = n - m .* int (n ./m)</literal>.
-                    O resultado é negativo (ou nulo) quando <varname>n</varname> é negativo e
-                    é positivo caso contrário.
-                    </para>
-                </listitem>
+                     <para>
+                    </para>
+                </listitem>
                 <listitem>
-                    <para>
-                    <literal>pmodulo()</literal> calcula <literal>i = n - | m | .* floor (n ./ | m |)</literal>.
-                    O resultado é sempre positivo ou nulo.
-                    </para>
-                </listitem>
+                     <para>
+                    </para>
+                </listitem>
             </itemizedlist>
         </para>
         <para>
@@ -144,7 +136,7 @@ modulo( %z^2+1, %z)
 pmodulo(%z^2+1, %z)
  ]]></programlisting>
     </refsection>
-    <refsection role= "see also">
+    <refsection role="see also">
         <title>Ver Também</title>
         <simplelist type="inline">
             <member>

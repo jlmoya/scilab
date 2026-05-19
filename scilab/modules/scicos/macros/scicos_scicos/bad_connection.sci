@@ -33,7 +33,7 @@ function bad_connection(path_out,prt_out,nout,outtyp,path_in,prt_in,nin,intyp,ty
     //!
 
     if %scicos_debug_gr then
-        disp("bad_connection...")
+        disp("bad_connection...", path_out,prt_out,nout,outtyp,path_in,prt_in,nin,intyp,typ)
     end
 
     rhs = argn(2) ;

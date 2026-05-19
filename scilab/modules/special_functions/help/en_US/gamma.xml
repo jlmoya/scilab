@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="gamma" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="gamma" xml:lang="en">
     <refnamediv>
         <refname>gamma</refname>
         <refpurpose>gamma function, complete or incomplete normalized</refpurpose>
@@ -30,37 +27,39 @@
             y = gamma(x, .., "upper")
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>u</term>
                 <listitem>
-                    array of positive or negative real numbers
-                    <para/>
-                    <literal>gamma(u)</literal> and <literal>gamma(x,…)</literal> can be overloaded
-                    for complex numbers with <literal>%s_gamma_user()</literal>, and for other
-                    <varname>a</varname> types with the usual overload naming rule.
-                    <para/>
-                </listitem>
+                     <para>
+                        array of positive or negative real numbers
+                        <literal>gamma(u)</literal> and <literal>gamma(x,…)</literal> can be overloaded
+                        for complex numbers with <literal>%s_gamma_user()</literal>, and for other
+                        <varname>a</varname> types with the usual overload naming rule.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x, a, b</term>
                 <listitem>
-                    arrays of positive real numbers.
-                    If at least one input is not scalar, scalar ones are expanded to its size.
-                    If several inputs are not scalar, they must have the same size.
-                    <para/>
-                </listitem>
+                     <para>
+                        arrays of positive real numbers.
+                        If at least one input is not scalar, scalar ones are expanded to its size.
+                        If several inputs are not scalar, they must have the same size.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    array of real numbers, with the size of <varname>u</varname>
-                    or of (the non-scalar) <varname>x</varname>, <varname>a</varname>,
-                    or <varname>b</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        array of real numbers, with the size of <varname>u</varname>
+                        or of (the non-scalar) <varname>x</varname>, <varname>a</varname>,
+                        or <varname>b</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -78,52 +77,54 @@
                 \Gamma(u)=\int_0^\infty\! t^{u-1}e^{-t}\,dt
             </latex>
         </para>
-        <refsect3>
-            <title>Incomplete normalized integrals</title>
+
+        <para>
+            <emphasis role="bold">Incomplete normalized integrals</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">gamma(x, a)</emphasis> computes the integral
+            <latex style="display" fontsize="18" alt="P(x,a)= ∫_0→x t^{a-1}.exp(-t).dt / Γ(a)">
+                P(x,a)=\frac{1}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-t}\,dt
+            </latex>
+        </para>
+        <para>
+            <emphasis role="bold">gamma(x, a, b)</emphasis> computes the generalized integral
+            <latex style="display" fontsize="18" alt="P(x,a,b)= ∫_0→x t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
+                P(x,a,b)=\frac{b^a}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-b\,t}\,dt
+            </latex>
+        </para>
+        <para>
+            <emphasis role="bold">gamma(x, a, "upper")</emphasis> computes accurately the
+            complementary integral
+            <latex style="display" fontsize="18" alt="Q(x,a)= ∫_x→∞ t^{a-1}.exp(-t).dt / Γ(a) = 1-P(x,a)">
+                Q(x,a)=1-P(x,a)=\frac{1}{\Gamma(a)}\int_x^\infty\! t^{a-1}e^{-t}\,dt
+            </latex>
+            even for big x and P(x,a)→1. Finally,
+        </para>
+        <para>
+            <emphasis role="bold">gamma(x, a, b, "upper")</emphasis> computes the generalized
+            complementary integral
+            <latex style="display" fontsize="18" alt="Q(x,a,b)= ∫_x→∞ t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
+                Q(x,a,b)=\frac{b^a}{\Gamma(a)}\int_x^\infty\! t^{a-1}e^{-b\,t}\,dt
+            </latex>
+        </para>
+        <note>
             <para>
-                <emphasis role="bold">gamma(x, a)</emphasis> computes the integral
-                <latex style="display" fontsize="18" alt="P(x,a)= ∫_0→x t^{a-1}.exp(-t).dt / Γ(a)">
-                    P(x,a)=\frac{1}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-t}\,dt
+                The inverse incomplete normalized gamma function can be computed with
+                <emphasis role="bold">x = cdfgam("X", a, b, y, 1-y)</emphasis>,
+                that is the <varname>x</varname> bound such that
+                <latex alt="y=∫_0→x t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
+                y=\frac{b^a}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-b\,t}\,dt
                 </latex>
             </para>
             <para>
-                <emphasis role="bold">gamma(x, a, b)</emphasis> computes the generalized integral
-                <latex style="display" fontsize="18" alt="P(x,a,b)= ∫_0→x t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
-                    P(x,a,b)=\frac{b^a}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-b\,t}\,dt
-                </latex>
+                Calling <emphasis role="bold">x = cdfgam("X", a, b, z-1, z)</emphasis> with
+                <literal>z=1-y</literal> will be preferred when 0.5 &lt; y &lt; 1, to get a full
+                accuracy on <varname>x</varname>.
             </para>
-            <para>
-                <emphasis role="bold">gamma(x, a, "upper")</emphasis> computes accurately the
-                complementary integral
-                <latex style="display" fontsize="18" alt="Q(x,a)= ∫_x→∞ t^{a-1}.exp(-t).dt / Γ(a) = 1-P(x,a)">
-                    Q(x,a)=1-P(x,a)=\frac{1}{\Gamma(a)}\int_x^\infty\! t^{a-1}e^{-t}\,dt
-                </latex>
-                even for big x and P(x,a)→1. Finally,
-            </para>
-            <para>
-                <emphasis role="bold">gamma(x, a, b, "upper")</emphasis> computes the generalized
-                complementary integral
-                <latex style="display" fontsize="18" alt="Q(x,a,b)= ∫_x→∞ t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
-                    Q(x,a,b)=\frac{b^a}{\Gamma(a)}\int_x^\infty\! t^{a-1}e^{-b\,t}\,dt
-                </latex>
-            </para>
-            <note>
-                <para>
-                    The inverse incomplete normalized gamma function can be computed with
-                    <emphasis role="bold">x = cdfgam("X", a, b, y, 1-y)</emphasis>,
-                    that is the <varname>x</varname> bound such that
-                    <latex alt="y=∫_0→x t^{a-1}.exp(-bt).dt . b^a / Γ(a)">
-                    y=\frac{b^a}{\Gamma(a)}\int_0^x\! t^{a-1}e^{-b\,t}\,dt
-                    </latex>
-                </para>
-                <para>
-                    Calling <emphasis role="bold">x = cdfgam("X", a, b, z-1, z)</emphasis> with
-                    <literal>z=1-y</literal> will be preferred when 0.5 &lt; y &lt; 1, to get a full
-                    accuracy on <varname>x</varname>.
-                </para>
-            </note>
-        </refsect3>
-   </refsection>
+        </note>
+
+    </refsection>
     <refsection>
         <title>Examples</title>
         <para>
@@ -161,7 +162,7 @@ plot2d(x, y, style=0, axesflag=5, rect=[a,-10,b,10])
 title("$\Gamma(u)$", "fontsize",3.5)
 xgrid(color("grey60"))
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             [a, b] = (-3, 5);
             x = linspace(a,b,40000);
             y = gamma(x);
@@ -170,7 +171,7 @@ xgrid(color("grey60"))
             title("$\Gamma(u)$", "fontsize",3.5)
             xgrid(color("grey60"))
             gcf().axes_size = [550,400];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             Incomplete normalized P(x,a) gamma function:
@@ -189,7 +190,7 @@ ylabel("x", "fontsize",2)
 zlabel("P(x,a)", "fontsize",2)
 xgrid
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = 0.1:0.2:8;
             a = 0.1:0.2:7;
             [X, A] = ndgrid(x, a);
@@ -203,7 +204,7 @@ xgrid
             zlabel("P(x,a)", "fontsize",2)
             xgrid
             gca().rotation_angles = [64 18];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             Incomplete generalized normalized P(x,a,b) function:
@@ -223,7 +224,7 @@ zlabel("")
 gca().rotation_angles = [58 75];
 xgrid
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             a = 0.1:0.2:8;
             b = 0.1:0.2:7;
             [A, B] = ndgrid(a, b);
@@ -237,7 +238,7 @@ xgrid
             zlabel("")
             gca().rotation_angles = [58 75];
             xgrid
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -256,7 +257,7 @@ xgrid
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -265,16 +266,21 @@ xgrid
             </revision>
             <revision>
               <revnumber>6.0.2</revnumber>
-              <revremark>
-                <itemizedlist>
-                  <listitem>
-                    The input can now be an hypermatrix.
-                  </listitem>
-                  <listitem>
-                    <literal>gamma</literal> can now be overloaded for complex numbers.
-                  </listitem>
-                </itemizedlist>
-              </revremark>
+              <revdescription>
+                <para>
+                    <itemizedlist>
+                    <listitem>
+                        <para>
+                            The input can now be an hypermatrix.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para><literal>gamma</literal> can now be overloaded for complex numbers.
+                        </para>
+                    </listitem>
+                    </itemizedlist>
+                </para>
+              </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>

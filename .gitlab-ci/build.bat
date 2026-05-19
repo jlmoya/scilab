@@ -110,6 +110,8 @@ if "%CI_PIPELINE_SOURCE%" == "merge_request_event" set ISS_MR=1
 "C:\Program Files (x86)\Inno Setup 6\iscc.exe" Scilab.iss /DMR=%ISS_MR% >> ..\%LOG_PATH%\build_iss_%CI_COMMIT_SHORT_SHA%.log
 IF %ERRORLEVEL% NEQ 0 tail --lines=20 ..\%LOG_PATH%\build_iss_%CI_COMMIT_SHORT_SHA%.log 1>&2 & exit 1
 
+REM store log on the shared directory
+dir /s /b "..\%SCI_VERSION_STRING%\" "%SCILAB_COMMON_PATH%\%SCI_VERSION_STRING%\log\"
 copy "..\%SCI_VERSION_STRING%\" "%SCILAB_COMMON_PATH%\%SCI_VERSION_STRING%\log\"
 IF %ERRORLEVEL% NEQ 0 exit 1
 

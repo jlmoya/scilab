@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>[x1, y1, rect] = xchange(x, y, dir)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -78,14 +78,14 @@
             <varname>rect</varname> is the coordinates in pixel of the rectangle
             in which the plot was done: <literal>[upper-left point, width, height]</literal>.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Coordinates in pixels are relative to the top-left point of graphical area in figure
                 (see <literal>axes_size</literal> in <link linkend="figure_properties">figure properties</link>)
                 unlike <link linkend="uicontrol">uicontrols</link> positions which are relative to the bottom-left
                 point of the graphical area (see examples below).
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>

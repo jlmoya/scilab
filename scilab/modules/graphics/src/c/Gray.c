@@ -51,9 +51,6 @@ int C2F(xgray)(double *x, double *y, double *z, int *n1, int *n2, char *strflag,
     double xx[2], yy[2];
     int nn1 = 1, nn2 = 2;
     double drect[6];
-    BOOL bounds_changed = FALSE;
-    BOOL isRedrawn = FALSE;
-    BOOL axes_properties_changed = FALSE;
 
     char textLogFlags[3];
     double rotationAngles[2];
@@ -75,7 +72,7 @@ int C2F(xgray)(double *x, double *y, double *z, int *n1, int *n2, char *strflag,
     /* Adding F.Leray 22.04.04 */
     iSubwinUID = getCurrentSubWin();
 
-    isRedrawn = checkRedrawing();
+    checkRedrawing();
 
     rotationAngles[0] = 0.0;
     rotationAngles[1] = 270.0;
@@ -163,16 +160,11 @@ int C2F(xgray)(double *x, double *y, double *z, int *n1, int *n2, char *strflag,
 
         if (strflag[1] != '0')
         {
-            bounds_changed = update_specification_bounds(iSubwinUID, drect, 2);
+            update_specification_bounds(iSubwinUID, drect, 2);
         }
     }
 
-    if (firstPlot)
-    {
-        bounds_changed = TRUE;
-    }
-
-    axes_properties_changed = strflag2axes_properties(iSubwinUID, strflag);
+    strflag2axes_properties(iSubwinUID, strflag);
 
     firstPlot = 0;
     setGraphicObjectProperty(iSubwinUID, __GO_FIRST_PLOT__, &firstPlot, jni_bool, 1);
@@ -223,8 +215,6 @@ int C2F(implot)(unsigned char *z, int *n1, int *n2, char *strflag, double *brect
     double xx[2], yy[2];
     static int nn1 = 1, nn2 = 2;
     double drect[6];
-    BOOL bounds_changed = FALSE;
-    BOOL axes_properties_changed = FALSE;
 
     char textLogFlags[3];
     double rotationAngles[2];
@@ -314,16 +304,11 @@ int C2F(implot)(unsigned char *z, int *n1, int *n2, char *strflag, double *brect
 
         if (strflag[1] != '0')
         {
-            bounds_changed = update_specification_bounds(iSubwinUID, drect, 2);
+            update_specification_bounds(iSubwinUID, drect, 2);
         }
     }
 
-    if (firstPlot)
-    {
-        bounds_changed = TRUE;
-    }
-
-    axes_properties_changed = strflag2axes_properties(iSubwinUID, strflag);
+    strflag2axes_properties(iSubwinUID, strflag);
 
     firstPlot = 0;
     setGraphicObjectProperty(iSubwinUID, __GO_FIRST_PLOT__, &firstPlot, jni_bool, 1);
@@ -379,8 +364,6 @@ int C2F(xgray1)(double *z, int *n1, int *n2, char *strflag, double *brect, int *
     double xx[2], yy[2];
     static int nn1 = 1, nn2 = 2;
     double drect[6];
-    BOOL bounds_changed = FALSE;
-    BOOL axes_properties_changed = FALSE;
 
     char textLogFlags[3];
     double rotationAngles[2];
@@ -470,16 +453,11 @@ int C2F(xgray1)(double *z, int *n1, int *n2, char *strflag, double *brect, int *
 
         if (strflag[1] != '0')
         {
-            bounds_changed = update_specification_bounds(iSubwinUID, drect, 2);
+            update_specification_bounds(iSubwinUID, drect, 2);
         }
     }
 
-    if (firstPlot)
-    {
-        bounds_changed = TRUE;
-    }
-
-    axes_properties_changed = strflag2axes_properties(iSubwinUID, strflag);
+    strflag2axes_properties(iSubwinUID, strflag);
 
     firstPlot = 0;
     setGraphicObjectProperty(iSubwinUID, __GO_FIRST_PLOT__, &firstPlot, jni_bool, 1);
@@ -541,12 +519,11 @@ int C2F(xgray2)(double *z, int *n1, int *n2, double *xrect)
 {
     int iSubwinUID = 0;
     int iGrayplotUID = 0;
-    BOOL isRedrawn = FALSE;
     double y; /* void for ConstructGrayplot */
     int clipState = 0;
     int firstPlot = 0;
 
-    isRedrawn = checkRedrawing();
+    checkRedrawing();
 
     /*---- Boundaries of the frame ----*/
     iSubwinUID = getCurrentSubWin();
@@ -577,12 +554,10 @@ int C2F(implot1)(unsigned char *z, int *n1, int *n2, double *xrect, int plottype
 {
     int iSubwinUID = 0;
     int iGrayplotUID = 0;
-    BOOL isRedrawn = FALSE;
-    double y = 0; /* void for ConstructGrayplot */
     int clipState = 0;
     int firstPlot = 0;
 
-    isRedrawn = checkRedrawing();
+    checkRedrawing();
 
     /*---- Boundaries of the frame ----*/
     iSubwinUID = getCurrentSubWin();

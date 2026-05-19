@@ -28,8 +28,8 @@
 
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>condition :</term>
@@ -72,13 +72,17 @@
         <para>
             <itemizedlist>
                 <listitem>
-                    Consider the case where an excellent algorithm is able to make accurate computations,
-                    even for an ill-conditioned problem.
-                    In this case, we may require more accuracy (positive offset).
+                     <para>
+                        Consider the case where an excellent algorithm is able to make accurate computations,
+                        even for an ill-conditioned problem.
+                        In this case, we may require more accuracy (positive offset).
+                    </para>
                 </listitem>
                 <listitem>
-                    Consider the case where there is a trade-off between performance and accuracy, where performance wins.
-                    In this case, we may require less accuracy (negative offset).
+                     <para>
+                        Consider the case where there is a trade-off between performance and accuracy, where performance wins.
+                        In this case, we may require less accuracy (negative offset).
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -169,13 +173,14 @@ legend(["Offset=0","Offset=+10","Offset=-10"]);
 
    ]]></programlisting>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>Function introduced
-                </revdescription>
+                <revremark>
+                    Function introduced
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

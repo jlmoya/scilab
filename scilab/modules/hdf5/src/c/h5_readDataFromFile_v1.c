@@ -242,7 +242,6 @@ int getSODFormatAttribute_v1(hid_t _iFile)
 int getDatasetDimension_v1(hid_t _iDatasetId, int *_piRows, int *_piCols)
 {
     int iRet = 0;
-    int iDummy = 0;
 
     *_piRows = readIntAttribute_v1(_iDatasetId, g_SCILAB_CLASS_ROWS);
     *_piCols = readIntAttribute_v1(_iDatasetId, g_SCILAB_CLASS_COLS);
@@ -253,7 +252,6 @@ int getDatasetDimension_v1(hid_t _iDatasetId, int *_piRows, int *_piCols)
 int getSparseDimension_v1(hid_t _iDatasetId, int *_piRows, int *_piCols, int *_piNbItem)
 {
     int iRet = 0;
-    int iDummy = 0;
 
     //get number of item in the sparse matrix
     getDatasetDims_v1(_iDatasetId, _piRows, _piCols);

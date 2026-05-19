@@ -39,4 +39,5 @@ Source: modules\{#COVERAGE}\macros\cleanmacros.bat; DestDir: {app}\modules\{#COV
 ;
 Source: modules\{#COVERAGE}\tests\*.*; DestDir: {app}\modules\{#COVERAGE}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB}  and {#COMPN_TESTS}
 ;
+Source: modules\{#COVERAGE}\help\*.*; DestDir: {app}\modules\{#COVERAGE}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>Makename=ilib_gen_Make(name,files,libs,makename [,with_gateway,ldflags,cflags,fflags,cc])</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -96,9 +96,11 @@
         <para>
             Utility function used by <literal>ilib_build</literal>
         </para>
-        <para>
-            <warning>This function should not be used directly.</warning>
-        </para>
+        <warning>
+            <para>
+                This function should not be used directly.
+            </para>
+        </warning>
         <para>
             This function generates a Makefile adapted to the Operating System for
             building shared libraries to be loaded in Scilab. Proper options and

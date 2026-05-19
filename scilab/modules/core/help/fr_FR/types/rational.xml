@@ -51,9 +51,11 @@
             <literal>conj</literal>, <literal>isreal</literal>, etc.
         </para>
         <warning>
-            Il est possible d'adresser des éléments d'un tableau <literal>R</literal> de fractions
-            rationnelles avec leur indice linéarisé k via la syntaxe <literal>R(k,0)</literal>,
-            où j=0 est utilisé au lieu des réels indices <literal>j</literal> (et suivants).
+            <para>
+                Il est possible d'adresser des éléments d'un tableau <literal>R</literal> de fractions
+                rationnelles avec leur indice linéarisé k via la syntaxe <literal>R(k,0)</literal>,
+                où j=0 est utilisé au lieu des réels indices <literal>j</literal> (et suivants).
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -131,9 +133,11 @@ horner(R, 1-%z^2)
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    Il est désormais possible d'adresser les éléments d'un tableau de fractions
-                    rationnelles par leurs indices linéarisés k via la syntaxe
-                    <literal>R(k,0)</literal>.
+                    <para>
+                        Il est désormais possible d'adresser les éléments d'un tableau de fractions
+                        rationnelles par leurs indices linéarisés k via la syntaxe
+                        <literal>R(k,0)</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

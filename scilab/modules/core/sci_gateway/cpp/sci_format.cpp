@@ -28,8 +28,10 @@ extern "C"
 /*--------------------------------------------------------------------------*/
 #define e_type_format L"e"
 #define v_type_format L"v"
+#define eng_type_format L"eng"
 #define _e_type_format "e"
 #define _v_type_format "v"
+#define _eng_type_format "eng"
 #define format_MIN 2
 #define format_MAX 25
 #define format_e_MIN 8
@@ -64,11 +66,11 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
     }
     else if (in.size() == 1 && in[0]->isString())
     {
-        //'e' or 'v'
+        //'e', 'eng' or 'v' 
         types::String *pS = in[0]->getAs<types::String>();
         if (pS->isScalar() == false)
         {
-            Scierror(999, _("%s: Wrong value for input argument #%d: '%s' or '%s' expected.\n"), "format", 1, _e_type_format, _v_type_format);
+            Scierror(999, _("%s: Wrong value for input argument #%d: '%s', '%s' or '%s' expected.\n"), "format", 1, _e_type_format, _v_type_format, _eng_type_format);
             return types::Function::Error;
         }
 
@@ -81,9 +83,13 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
         {
             iType = 1;
         }
+        else if (wcscmp(pwst, eng_type_format) == 0)
+        {
+            iType = 2;
+        }
         else
         {
-            Scierror(999, _("%s: Wrong value for input argument #%d: '%s' or '%s' expected.\n"), "format", 1, _e_type_format, _v_type_format);
+            Scierror(999, _("%s: Wrong value for input argument #%d: '%s', '%s' or '%s' expected.\n"), "format", 1, _e_type_format, _v_type_format, _eng_type_format);
             return types::Function::Error;
         }
     }
@@ -104,7 +110,7 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
                     return types::Function::Error;
                 }
 
-                if (iType != 0 && iType != 1)
+                if (iType != 0 && iType != 1 && iType != 2)
                 {
                     Scierror(999, _("%s: Wrong value for input argument #%d.\n"), "format", 1);
                     return types::Function::Error;
@@ -149,7 +155,7 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
             types::String *pS = in[0]->getAs<types::String>();
             if (pS->isScalar() == false)
             {
-                Scierror(999, _("%s: Wrong value for input argument #%d: '%s' or '%s' expected.\n"), "format", 1, _e_type_format, _v_type_format);
+                Scierror(999, _("%s: Wrong value for input argument #%d: '%s', '%s' or '%s' expected.\n"), "format", 1, _e_type_format, _v_type_format, _eng_type_format);
                 return types::Function::Error;
             }
 
@@ -162,9 +168,13 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
             {
                 iType = 1;
             }
+            else if (wcscmp(pwst, eng_type_format) == 0)
+            {
+                iType = 2;
+            }
             else
             {
-                Scierror(999, _("%s: Wrong value for input argument #%d: '%s' or '%s' expected.\n"), "format", 1, _e_type_format, _v_type_format);
+                Scierror(999, _("%s: Wrong value for input argument #%d: '%s', '%s' or '%s' expected.\n"), "format", 1, _e_type_format, _v_type_format, _eng_type_format);
                 return types::Function::Error;
             }
 
@@ -189,7 +199,7 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
 
             if (dLen != (double)iLen)
             {
-                Scierror(999, _("%s: Wrong value for input argument #%d: An integer value expected.\n"), "format", 2);
+                Scierror(999, _("%s: Wrong value for input argument #%d: An integer value expected.\n"), "format", 1);
                 return types::Function::Error;
             }
 
@@ -229,7 +239,7 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
                 types::String *pS = in[1]->getAs<types::String>();
                 if (pS->isScalar() == false)
                 {
-                    Scierror(999, _("%s: Wrong value for input argument #%d: '%s' or '%s' expected.\n"), "format", 2, _e_type_format, _v_type_format);
+                    Scierror(999, _("%s: Wrong value for input argument #%d: '%s', '%s' or '%s' expected.\n"), "format", 2, _e_type_format, _v_type_format, _eng_type_format);
                     return types::Function::Error;
                 }
 
@@ -242,9 +252,13 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
                 {
                     iType = 1;
                 }
+                else if (wcscmp(pwst, eng_type_format) == 0)
+                {
+                    iType = 2;
+                }
                 else
                 {
-                    Scierror(999, _("%s: Wrong value for input argument #%d: '%s' or '%s' expected.\n"), "format", 2, _e_type_format, _v_type_format);
+                    Scierror(999, _("%s: Wrong value for input argument #%d: '%s', '%s' or '%s' expected.\n"), "format", 2, _e_type_format, _v_type_format, _eng_type_format);
                     return types::Function::Error;
                 }
             }
@@ -267,7 +281,7 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
                     return types::Function::Error;
                 }
 
-                if (iType != 0 && iType != 1)
+                if (iType != 0 && iType != 1 && iType != 2)
                 {
                     Scierror(999, _("%s: Wrong value for input argument #%d.\n"), "format", 2);
                     return types::Function::Error;
@@ -333,7 +347,7 @@ types::Function::ReturnValue sci_format(types::typed_list &in, int _iRetCount, t
     }
     else
     {
-        //iType == 0
+        //iType == 0 | iType == 2
         if (iLen < format_e_MIN || iLen > format_MAX)
         {
             Scierror(999, _("%s: Wrong value for input argument #%d: Must be in the interval [%d, %d].\n"), "format", 1, format_e_MIN, format_MAX);

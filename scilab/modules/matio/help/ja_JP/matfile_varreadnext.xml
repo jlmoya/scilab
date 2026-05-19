@@ -13,10 +13,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="matfile_varreadnext">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="matfile_varreadnext">
     <refnamediv>
         <refname>matfile_varreadnext</refname>
         <refpurpose>Matlab バイナリ MATファイルの次の変数を読み込む.</refpurpose>
@@ -55,17 +52,19 @@
             <varlistentry>
                 <term>vartype</term>
                 <listitem>
-                    <para>実数: 変数の型(読み込みに成功した場合)または:</para>
-                    <itemizedlist>
-                        <listitem>
-                            <emphasis>0</emphasis>: 変数の型が不明の場合.
-                        </listitem>
-                        <listitem>
-                            <emphasis>-1</emphasis>: ファイル終端に達した場合.
-                        </listitem>
-                    </itemizedlist>
-                    Please see <link linkend="matfile_listvar">matfile_listvar</link> for the list
-                    of Matlab types.
+                     <para><itemizedlist>
+                            <listitem>
+                                 <para><emphasis>0</emphasis>: 変数の型が不明の場合.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><emphasis>-1</emphasis>: ファイル終端に達した場合.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        Please see <link linkend="matfile_listvar">matfile_listvar</link> for the list
+                        of Matlab types.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>

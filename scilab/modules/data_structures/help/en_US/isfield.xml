@@ -23,7 +23,7 @@
         <title>Syntax</title>
         <synopsis>bool = isfield(s, fieldname)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -51,7 +51,7 @@
     <refsection>
         <title>Description</title>
         <para>
-            This function returns <constant>%t</constant> if the specified structure or tlist or mlist <varname>s</varname> includes the field <varname>fieldname</varname>, regardless of the corresponding value. For a structure, the hidden field <code class="literal">dims</code> is ignored.
+            This function returns <constant>%t</constant> if the specified structure or tlist or mlist <varname>s</varname> includes the field <varname>fieldname</varname>, regardless of the corresponding value. For a structure, the hidden field <literal>dims</literal> is ignored.
         </para>
     </refsection>
     <refsection>
@@ -90,7 +90,7 @@ isfield(s, ["b" "t" ""])  // =>  F  T  T  (anonymous fields can be detected)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

@@ -15,10 +15,7 @@
  *
  -->
 <!--  module: core  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="mode" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="mode" xml:lang="en">
     <refnamediv>
         <refname>mode</refname>
         <refpurpose>sets or queries the mode echoing Scilab instructions in the console</refpurpose>
@@ -30,13 +27,14 @@
             k = mode()
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>k</term>
-                <para>integer from -1 to 6: chosen or current execution / echoing mode.
-                </para>
+                <listitem>
+                    <para>integer from -1 to 6: chosen or current execution / echoing mode.</para>
+                </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -50,78 +48,82 @@
             to any instruction always cancels the display of its result, whatever is the current
             execution <literal>mode</literal>.
         </para>
-        <refsect3>
-            <title>Contexts</title>
-            <literal>mode(..)</literal> and other instructions can be used and executed in various
-            contexts:
-            <itemizedlist>
-                <listitem>
-                    <para>
-                    <emphasis role="bold">Functions (F)</emphasis>: a function written in Scilab
-                    language may include <literal>mode</literal> instructions. After being compiled
-                    and called, effects of an inner <literal>mode</literal> instruction are tagged
-                    with a <emphasis role="bold">F</emphasis> in the table herebelow.
-                    By default, instructions in functions are run in silent mode
-                    <literal>mode(-1)</literal>, whatever is the current mode in the calling environment.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                    <emphasis role="bold">Scripts (S)</emphasis>: Scilab instructions written in a
-                    file (typically with the .sce extension) out of any function definition may
-                    include <literal>mode</literal> instructions. When such a file is run with
-                    <literal>exec(filename)</literal> or <literal>exec(filename, mode_k)</literal>,
-                    effects of a <literal>mode</literal> instruction in the executed file are tagged
-                    with a <emphasis role="bold">S</emphasis> in the table herebelow.
-                    By default, scripts are run in <literal>mode(3)</literal> mode,
-                    <emphasis role="italic">whatever is the current mode in the calling
-                    environment</emphasis>. This is overridden with the <literal>mode_k</literal>
-                    option.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                    <emphasis role="bold">Console (C)</emphasis>: Scilab instructions directly
-                    entered in the console are always displayed as entered. Effects of the current
-                    <literal>mode</literal> or of any forthcoming <literal>mode</literal>
-                    instruction entered in the console are tagged with a
-                    <emphasis role="bold">C</emphasis> in the table herebelow.
-                    By default, results of instructions run in the console are displayed in
-                    <literal>mode(2)</literal>.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                    <emphasis role="bold">execstr(T)</emphasis>: This function accepts a matrix of
-                    text T. Each component is executed as a series of Scilab instructions, that may
-                    include <literal>mode</literal> ones.
-                    Effects of any forthcoming <literal>mode</literal> instruction met in the matrix
-                    are tagged with a <emphasis role="bold">T</emphasis> (as Text) in the table
-                    herebelow.
-                    By default, all instructions are run in silent mode <literal>mode(-1)</literal>,
-                    <emphasis role="italic">whatever is the current mode in the calling
-                    environment</emphasis> running <literal>execstr()</literal>.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                    <emphasis role="bold">Callbacks (K)</emphasis>: a callback is a unique string
-                    in which Scilab instructions are written. This string is assigned to an
-                    interactive component such as the item of a menu, a checkbox, etc. The
-                    instructions are executed when the component is activated by an interaction:
-                    the menu is selected, the checkbox is checked or unchecked, etc. A callback may
-                    include some <literal>mode</literal> instructions. The instructions of a callback
-                    are always executed directly at the console level. Their effects remain in
-                    the console after the callback is completed. Effects of a <literal>mode</literal>
-                    instruction used in a callbacK are tagged with a <emphasis role="bold">K</emphasis>
-                    in the table herebelow.
-                    </para>
-                </listitem>
-            </itemizedlist>
-        </refsect3>
-        <refsect3>
-            <title>Features</title>
-        <table border="1" cellpadding="3pt" style="text-align:center" align="center">
+
+        <para>
+            <emphasis role="bold">Contexts</emphasis>
+        </para>
+        <para>
+            <literal>mode(..)</literal> and other instructions can be used and executed in various contexts:
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                <emphasis role="bold">Functions (F)</emphasis>: a function written in Scilab
+                language may include <literal>mode</literal> instructions. After being compiled
+                and called, effects of an inner <literal>mode</literal> instruction are tagged
+                with a <emphasis role="bold">F</emphasis> in the table herebelow.
+                By default, instructions in functions are run in silent mode
+                <literal>mode(-1)</literal>, whatever is the current mode in the calling environment.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                <emphasis role="bold">Scripts (S)</emphasis>: Scilab instructions written in a
+                file (typically with the .sce extension) out of any function definition may
+                include <literal>mode</literal> instructions. When such a file is run with
+                <literal>exec(filename)</literal> or <literal>exec(filename, mode_k)</literal>,
+                effects of a <literal>mode</literal> instruction in the executed file are tagged
+                with a <emphasis role="bold">S</emphasis> in the table herebelow.
+                By default, scripts are run in <literal>mode(3)</literal> mode,
+                <emphasis role="italic">whatever is the current mode in the calling
+                environment</emphasis>. This is overridden with the <literal>mode_k</literal>
+                option.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                <emphasis role="bold">Console (C)</emphasis>: Scilab instructions directly
+                entered in the console are always displayed as entered. Effects of the current
+                <literal>mode</literal> or of any forthcoming <literal>mode</literal>
+                instruction entered in the console are tagged with a
+                <emphasis role="bold">C</emphasis> in the table herebelow.
+                By default, results of instructions run in the console are displayed in
+                <literal>mode(2)</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                <emphasis role="bold">execstr(T)</emphasis>: This function accepts a matrix of
+                text T. Each component is executed as a series of Scilab instructions, that may
+                include <literal>mode</literal> ones.
+                Effects of any forthcoming <literal>mode</literal> instruction met in the matrix
+                are tagged with a <emphasis role="bold">T</emphasis> (as Text) in the table
+                herebelow.
+                By default, all instructions are run in silent mode <literal>mode(-1)</literal>,
+                <emphasis role="italic">whatever is the current mode in the calling
+                environment</emphasis> running <literal>execstr()</literal>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                <emphasis role="bold">Callbacks (K)</emphasis>: a callback is a unique string
+                in which Scilab instructions are written. This string is assigned to an
+                interactive component such as the item of a menu, a checkbox, etc. The
+                instructions are executed when the component is activated by an interaction:
+                the menu is selected, the checkbox is checked or unchecked, etc. A callback may
+                include some <literal>mode</literal> instructions. The instructions of a callback
+                are always executed directly at the console level. Their effects remain in
+                the console after the callback is completed. Effects of a <literal>mode</literal>
+                instruction used in a callbacK are tagged with a <emphasis role="bold">K</emphasis>
+                in the table herebelow.
+                </para>
+            </listitem>
+        </itemizedlist>
+
+        <para>
+            <emphasis role="bold">Features</emphasis>
+        </para>
+        <table border="1" style="text-align:center">
             <tr style="text-align:center">
                 <th align="left">mode #</th>
                 <th>-1</th><th>0</th>  <th>1</th>    <th>2</th> <th>3</th> <th>4</th> <th>6</th>
@@ -132,124 +134,128 @@
             </tr>
             <tr style="text-align:center">
                 <td align="left">Displays results [b]</td>
-                <td></td><td>always</td><td>always</td><td>always</td><td>always</td><td>always</td><td>always</td>
+                <td/><td>always</td><td>always</td><td>always</td><td>always</td><td>always</td><td>always</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Step by step [s]</td>
-                <td></td>  <td></td>  <td> </td>  <td></td>  <td></td> <td>S F K</td> <td>S F T K</td>
+                <td/>  <td/>  <td> </td>  <td/>  <td/> <td>S F K</td> <td>S F T K</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Compact [c]</td>
-                <td>C++</td><td>+</td><td>++</td><td></td><td>SFT +</td><td>CK++ SFT+</td><td>S+</td>
+                <td>C++</td><td>+</td><td>++</td><td/><td>SFT +</td><td>CK++ SFT+</td><td>S+</td>
             </tr>
             <tr style="text-align:center">
                 <td align="left">Comments</td>
-                <td>[d]</td>  <td></td>   <td>[e]</td>     <td>[f]</td> <td>[g]</td><td>[h]</td><td>[h,i]</td>
+                <td>[d]</td>  <td/>   <td>[e]</td>     <td>[f]</td> <td>[g]</td><td>[h]</td><td>[h,i]</td>
             </tr>
         </table>
-        </refsect3>
-        <refsect3>
-            <title>Comments</title>
-            <!-- <emphasis role="bold">Comments:</emphasis> -->
-            <table>
-                <tr>
-                    <td valign="top">[a]: </td>
-                    <td>
-                        In normal modes, instructions are displayed with the <literal>--></literal>
-                        heading prompt. In step-by-step modes, <literal>>></literal> is used instead.
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[b]: </td>
-                    <td>provided that no <link linkend="semicolon">semicolon</link> is appended.
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[c]: </td>
-                    <td>"+" means: no extra blank line after results. "++" means: no extra blank
-                    line neither after completed instructions, nor after results.
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[d]: </td>
-                    <td>
-                        Default silent mode in functions and with <literal>execstr()</literal>.
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[e]: </td>
-                    <td>
-                        <literal>mode(5)</literal> is equivalent to <literal>mode(1)</literal>
-                        but must not be used.
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[f]: </td>
-                    <td>
-                        Default mode in the console.
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[g]: </td>
-                    <td>
-                        Default <literal>exec()</literal> mode.
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[h]: </td>
-                    <td valign="top">
-                        <simplelist>
-                            <member>
-                                Any comment <literal>//</literal> is displayed without prompting and
-                                being stepped.
-                            </member>
-                            <member>
-                                Some parasitic <literal>--></literal> prompts and extra blank lines
-                                may be sometimes displayed (bug).
-                            </member>
-                            <member>
-                                A callback is always made of a unique string of instructions, as if
-                                they were specified and run on a single row. Therefore, both
-                                available stepping execution modes are activable but useless in any
-                                callback.
-                            </member>
-                        </simplelist>
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[i]: </td>
-                    <td>
-                        <literal>mode(7)</literal> does the same but must not be used.
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">[s]: </td>
-                    <td>
-                        The step-by-step mode stops after each line of instruction(s) and waits for
-                        the user pressing the <literal>&lt;enter></literal> or
-                        <literal>p&lt;enter></literal> keys to go on. Entering <literal>p</literal>
-                        enters the <link linkend="pause">pause</link> mode. These modes may be used
-                        for instance in demos, or as a raw debugging mode.
-                    </td>
-                </tr>
-            </table>
-        </refsect3>
-        <para> </para>
+
+        <para>
+            <emphasis role="bold">Comments</emphasis>
+        </para>
+        <table>
+            <tr>
+                <td valign="top">[a]: </td>
+                <td>
+                    In normal modes, instructions are displayed with the <literal>--&gt;</literal>
+                    heading prompt. In step-by-step modes, <literal>&gt;&gt;</literal> is used instead.
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[b]: </td>
+                <td>provided that no <link linkend="semicolon">semicolon</link> is appended.
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[c]: </td>
+                <td>"+" means: no extra blank line after results. "++" means: no extra blank
+                line neither after completed instructions, nor after results.
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[d]: </td>
+                <td>
+                    Default silent mode in functions and with <literal>execstr()</literal>.
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[e]: </td>
+                <td>
+                    <literal>mode(5)</literal> is equivalent to <literal>mode(1)</literal>
+                    but must not be used.
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[f]: </td>
+                <td>
+                    Default mode in the console.
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[g]: </td>
+                <td>
+                    Default <literal>exec()</literal> mode.
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[h]: </td>
+                <td valign="top">
+                    <simplelist>
+                        <member>
+                            Any comment <literal>//</literal> is displayed without prompting and
+                            being stepped.
+                        </member>
+                        <member>
+                            Some parasitic <literal>--&gt;</literal> prompts and extra blank lines
+                            may be sometimes displayed (bug).
+                        </member>
+                        <member>
+                            A callback is always made of a unique string of instructions, as if
+                            they were specified and run on a single row. Therefore, both
+                            available stepping execution modes are activable but useless in any
+                            callback.
+                        </member>
+                    </simplelist>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[i]: </td>
+                <td>
+                    <literal>mode(7)</literal> does the same but must not be used.
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">[s]: </td>
+                <td>
+                    The step-by-step mode stops after each line of instruction(s) and waits for
+                    the user pressing the <literal>&lt;enter&gt;</literal> or
+                    <literal>p&lt;enter&gt;</literal> keys to go on. Entering <literal>p</literal>
+                    enters the <link linkend="pause">pause</link> mode. These modes may be used
+                    for instance in demos, or as a raw debugging mode.
+                </td>
+            </tr>
+        </table>
         <important>
-            The mode in the calling environment is never changed after using
-            <literal>mode(..)</literal> in a called function, in an executed script.sce or
-            as an <literal>execstr()</literal> input, after the execution is completed and returns.
-            When <literal>mode(k)</literal> is used in a <emphasis role="italic">callback</emphasis>
-            that is executed, it becomes and remains the actual echoing mode in the console after
-            the end of the callback.
+            <para>
+                The mode in the calling environment is never changed after using
+                <literal>mode(..)</literal> in a called function, in an executed script.sce or
+                as an <literal>execstr()</literal> input, after the execution is completed and returns.
+                When <literal>mode(k)</literal> is used in a <emphasis role="italic">callback</emphasis>
+                that is executed, it becomes and remains the actual echoing mode in the console after
+                the end of the callback.
+            </para>
         </important>
         <important>
-            Output intentionnally displayed by functions like <literal>disp()</literal> or
-            <literal>mprinf()</literal> are never cancelled, even with <literal>mode(-1)</literal>.
+            <para>
+                Output intentionnally displayed by functions like <literal>disp()</literal> or
+                <literal>mprinf()</literal> are never cancelled, even with <literal>mode(-1)</literal>.
+            </para>
         </important>
         <warning>
-            <literal>mode(5)</literal>, <literal>mode(7)</literal>, and other unregistered values
-            may be accepted but should not be used: they could be removed or redefined in the future.
+            <para>
+                <literal>mode(5)</literal>, <literal>mode(7)</literal>, and other unregistered values
+                may be accepted but should not be used: they could be removed or redefined in the future.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -364,15 +370,21 @@ delmenu mode_test
                 <revdescription>
                 <itemizedlist>
                     <listitem>
-                        mode(4) is now stepped and can be paused, in scripts as well as in functions.
+                         <para>
+                            mode(4) is now stepped and can be paused, in scripts as well as in functions.
+                        </para>
                     </listitem>
                     <listitem>
-                        For/in scripts, mode(4) now displays each line of instructions, and
-                        displays results in a compact way. It can be used for demos.
+                         <para>
+                            For/in scripts, mode(4) now displays each line of instructions, and
+                            displays results in a compact way. It can be used for demos.
+                        </para>
                     </listitem>
                     <listitem>
-                        Callbacks were always executed in silent mode(-1). They are now executed by
-                        default in the current <literal>mode()</literal>.
+                         <para>
+                            Callbacks were always executed in silent mode(-1). They are now executed by
+                            default in the current <literal>mode()</literal>.
+                        </para>
                     </listitem>
                 </itemizedlist>
                 </revdescription>

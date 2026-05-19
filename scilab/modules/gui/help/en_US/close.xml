@@ -12,9 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="close">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="close">
     <refnamediv>
         <refname>close</refname>
         <refpurpose>
@@ -34,7 +32,7 @@
             close browsevar
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -156,16 +154,22 @@ close editvar
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            Vector of several figures ids now accepted.
-                        </listitem>
-                        <listitem>
-                            Extension to <literal>close doc</literal>, <literal>close xcos</literal>,
-                            <literal>close xcos!</literal>, <literal>close browsevar</literal>,
-                            and <literal>close editvar</literal>
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Vector of several figures ids now accepted.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Extension to <literal>close doc</literal>, <literal>close xcos</literal>,
+                                    <literal>close xcos!</literal>, <literal>close browsevar</literal>,
+                                    and <literal>close editvar</literal>
+                                    </para>
+                                </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

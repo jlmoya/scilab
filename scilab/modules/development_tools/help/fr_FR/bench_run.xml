@@ -26,8 +26,8 @@
             [modutests_names, elapsed_time, nb_iterations] = bench_run(path_to_module[, test_name[, options, [exportToFile]])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>module</term>
@@ -40,10 +40,8 @@
                 <listitem>
                     <para>
                         Vecteur de chaînes de caractères. Contient les chemins des modules à tester. Si <literal>"/chemin/vers/module"</literal> est donné en argument d'entrée, les tests sont récupérés dans le sous répertoire
-                        <literal>
-                            /chemin/vers/module/<emphasis role="bold">tests/benchmarks</emphasis>
-                        </literal>
-                        .A utiliser pour les tests de performance maison.
+                        <literal>/chemin/vers/module/</literal><emphasis role="bold">tests/benchmarks</emphasis>
+                        . A utiliser pour les tests de performance maison.
                     </para>
                 </listitem>
             </varlistentry>
@@ -55,12 +53,14 @@
                         Le nom d'un test est le nom du fichier sans <literal>.tst</literal>. Si plusieurs modules ou répertoires sont donnés comme premier argument d'entrée, recherche les tests dans chacun de ces modules ou répertoires.
                     </para>
                     <note>
-                        Il est possible d'utiliser un libellé partiel/générique
-                        afin de lancer plusieurs bancs-tests dédiés à la même
-                        fonction/fonctionnalité. Par exemple, spécifier
-                        <literal>"ascii"</literal> sélectionnera tous les tests
-                        (dans les modules ciblés) dont le nom contient
-                        <literal>"ascii"</literal> (voir les exemples).
+                        <para>
+                            Il est possible d'utiliser un libellé partiel/générique
+                            afin de lancer plusieurs bancs-tests dédiés à la même
+                            fonction/fonctionnalité. Par exemple, spécifier
+                            <literal>"ascii"</literal> sélectionnera tous les tests
+                            (dans les modules ciblés) dont le nom contient
+                            <literal>"ascii"</literal> (voir les exemples).
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -266,21 +266,28 @@ b = chol(a);
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>bench_run()</literal> peut maintenant retourner les résultats des tests de performance via les nouveaux paramètres de sortie
-                            <literal>modutests_names</literal>, <literal>elapsed_time</literal> et <literal>nb_iterations</literal>
+                             <para><literal>bench_run()</literal> peut maintenant retourner les résultats des tests de performance via les nouveaux paramètres de sortie
+                                <literal>modutests_names</literal>, <literal>elapsed_time</literal> et <literal>nb_iterations</literal>
+                            </para>
                         </listitem>
                         <listitem>
-                            L'export des résultats au format XML est désormais possible
+                             <para>
+                                L'export des résultats au format XML est désormais possible
+                            </para>
                         </listitem>
                         <listitem>
-                            Les paramètres de  configuration globale
-                            mode(),format(), ieee(), warning() et funcprot()
-                            sont protégés lors des tests.
+                             <para>
+                                Les paramètres de  configuration globale
+                                mode(),format(), ieee(), warning() et funcprot()
+                                sont protégés lors des tests.
+                            </para>
                         </listitem>
                         <listitem>
-                            Les libellés partiels/génériques de tests sont désormais
-                            permis afin de lancer un lot de tests dédiés à la même
-                            fonction/fonctionnalité.
+                             <para>
+                                Les libellés partiels/génériques de tests sont désormais
+                                permis afin de lancer un lot de tests dédiés à la même
+                                fonction/fonctionnalité.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

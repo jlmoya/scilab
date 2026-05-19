@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>status = matfile_varwrite(fd, name, value, compressionflag)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -68,11 +68,11 @@
         <para>
             Writes a variable in a Matlab binary MAT-file opened by <link linkend="matfile_open">matfile_open</link>.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 <function>matfile_varwrite</function> will fail if the MAT-file is not open with the "w" mode and will override any variable stored in the file.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -109,7 +109,7 @@ matfile_close(fd);
         <para>
             This function uses MATIO library (
             <literal>
-                <ulink url="http://sourceforge.net/projects/matio/">http://sourceforge.net/projects/matio/</ulink>
+                <link xlink:href="http://sourceforge.net/projects/matio/">http://sourceforge.net/projects/matio/</link>
             </literal>
             ).
         </para>

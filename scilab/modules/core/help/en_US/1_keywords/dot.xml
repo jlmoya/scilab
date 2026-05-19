@@ -40,13 +40,13 @@
                         the matrix with elements <literal>c(i,j) = a(i,j)/b(i,j)</literal>. Kronecker product
                         is noted <literal>.*.</literal> .
                     </para>
-                    <para>
-                        <note>
+                    <note>
+                        <para>
                             Note that when dot is used with an operation, it is not considered part of the number directly preceding the dot,
                             therefore <literal>2.*x</literal> and <literal>2 .*x</literal> are evaluated
                             as <literal>(2).*x</literal> and not as <literal>2.0*x</literal>.
-                        </note>
-                    </para>
+                        </para>
+                    </note>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -83,10 +83,13 @@ endfunction
                         physical line 3 would be empty. This is done this way because
                         continuation marks can be put anywhere even inside an
                         expression.
-                        <note>The difference between logical and physical
-                            lines is of importance when dealing with edition (scinotes, edit)
-                            and within error messages
-                            (whereami), when the line number is provided or displayed.
+                        <note>
+                            <para>
+                                The difference between logical and physical
+                                lines is of importance when dealing with edition (scinotes, edit)
+                                and within error messages
+                                (whereami), when the line number is provided or displayed.
+                            </para>
                         </note>
                     </para>
                     <para>
@@ -230,12 +233,12 @@ y = 12..
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
+                <revdescription>
                     <para>
                         It is not possible anymore to cut a scalar number.
                     </para>
@@ -246,7 +249,7 @@ y = 12..
                         In console-oriented calls, <literal>myfun ..</literal> no longer expects
                         a continuation on the next line.
                     </para>
-                </revremark>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

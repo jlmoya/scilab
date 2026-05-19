@@ -27,8 +27,8 @@
             %m2scideclare variable_name|sizes|data_type|property
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>variable_name</term>
@@ -39,8 +39,10 @@
                         ou décrire le contenu d'une Cell en utilisant la syntaxe
                         <literal>x(1,2).entries</literal>.
                         <note>
-                            NOTEZ que pour les Cells et les
-                            Structs <literal>*</literal> peut être utilisé comme index.
+                            <para>
+                                NOTEZ que pour les Cells et les
+                                Structs <literal>*</literal> peut être utilisé comme index.
+                            </para>
                         </note>
                     </para>
                 </listitem>
@@ -52,10 +54,12 @@
                         Tailles de la variable déclarée, séparées par des espaces.
                         Si une taille est inconnue, la remplacer par <literal>?</literal>.
                         <warning>
-                            NOTER qu'une chaînes de caractères Matlab (définies entre apostrophes)
-                            est considérée comme un vecteur de caractères adressables un à un.
-                            En conséquence, la taille de 'string' est <literal>|1 6|</literal>
-                            (non <literal>|1 1|</literal>).
+                            <para>
+                                NOTER qu'une chaînes de caractères Matlab (définies entre apostrophes)
+                                est considérée comme un vecteur de caractères adressables un à un.
+                                En conséquence, la taille de 'string' est <literal>|1 6|</literal>
+                                (non <literal>|1 1|</literal>).
+                            </para>
                         </warning>
                     </para>
                 </listitem>
@@ -68,9 +72,11 @@
                         dans la page décrivant <link linkend="Type">Type</link>.
                     </para>
                     <note>
-                        Les valeurs de propriétés qui ne sont pas prédéfinies comme constantes
-                        dans m2ci -- telles que 'int8' ou 'Axes' -- doivent être  spécifiées
-                        sans apostrophes ni guillements dans la ligne %m2scideclare.
+                        <para>
+                            Les valeurs de propriétés qui ne sont pas prédéfinies comme constantes
+                            dans m2ci -- telles que 'int8' ou 'Axes' -- doivent être  spécifiées
+                            sans apostrophes ni guillements dans la ligne %m2scideclare.
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -137,12 +143,14 @@
                         </listitem>
                     </itemizedlist>
                     <note>
-                        Ce fonctionnement peut être mis à profit par les développeurs souhaitant
-                        corriger ou étendre le convertisseur, en utilisant
-                        <literal>%m2scideclare</literal> dans les tests : si le type, le sous-type
-                        ou les dimensions de l'objet considéré ne sont pas ceux attendus et donnés
-                        par <literal>%m2scideclare</literal>, l'alerte générée sera exploitée pour
-                        corriger le convertisseur.
+                        <para>
+                            Ce fonctionnement peut être mis à profit par les développeurs souhaitant
+                            corriger ou étendre le convertisseur, en utilisant
+                            <literal>%m2scideclare</literal> dans les tests : si le type, le sous-type
+                            ou les dimensions de l'objet considéré ne sont pas ceux attendus et donnés
+                            par <literal>%m2scideclare</literal>, l'alerte générée sera exploitée pour
+                            corriger le convertisseur.
+                        </para>
                     </note>
                     <para>
                         Si en tant qu'utilisateur du convertisseur vous rencontrez une telle alerte
@@ -158,49 +166,49 @@
         <title>Exemples</title>
            <itemizedlist>
               <listitem>
-                <literal>%m2scideclare var1|2 3|Double|Real</literal>
+                <para><literal>%m2scideclare var1|2 3|Double|Real</literal></para>
                 <para>
                   var1 est déclarée comme une matrice de Doubles de taille 2x3
                   et contenant des données réelles
                 </para>
               </listitem>
               <listitem>
-                <literal>%m2scideclare var2|2 3 10|Double|Complex</literal>
+                <para><literal>%m2scideclare var2|2 3 10|Double|Complex</literal></para>
                 <para>
                   var2 est déclarée comme une hypermatrice de Doubles de taille 2x3x10
                   et contenant des nombres complexes.
                 </para>
               </listitem>
               <listitem>
-                <literal>%m2scideclare var3(1,2).name|1 10|String|?</literal>
+                <para><literal>%m2scideclare var3(1,2).name|1 10|String|?</literal></para>
                 <para>
                   var3 est déclarée comme un tableau de Structs contenant une chaîne de
                   caractères de taille 1x10 dans le champ 'name' de la Struct à l'indice (1,2)
                 </para>
               </listitem>
               <listitem>
-                <literal>%m2scideclare var4(1,5).entries|1 ?|Boolean|?</literal>
+                <para><literal>%m2scideclare var4(1,5).entries|1 ?|Boolean|?</literal></para>
                 <para>
                   var4 est déclarée comme un tableau de Cells contenant
                   un vecteur ligne de booléens à l'indice (1,5)
                 </para>
               </listitem>
               <listitem>
-                <literal>%m2scideclare var4(1,6).entries|? ?|Int|?</literal>
+                <para><literal>%m2scideclare var4(1,6).entries|? ?|Int|?</literal></para>
                 <para>
                   var4 est déclarée comme un tableau de Cells contenant un vecteur ligne de
                   booléens à l'indice (1,5) et des données entières à l'indice (1,6).
                 </para>
               </listitem>
               <listitem>
-                <literal>%m2scideclare var5(*,*).name|1 ?|String|?</literal>
+                <para><literal>%m2scideclare var5(*,*).name|1 ?|String|?</literal></para>
                 <para>
                   var5 est déclarée comme un tableau de Structs contenant une
                   chaîne de caractères de taille 1xn dans chaque champ 'name'
                 </para>
               </listitem>
               <listitem>
-                <literal>%m2scideclare var6(2,*).entries|1 3|Double|Real</literal>
+                <para><literal>%m2scideclare var6(2,*).entries|1 3|Double|Real</literal></para>
                 <para>
                   var6 est déclarée comme un tableau de Cells contenant un
                   veteur de Doubles de taille 1x3 dans chaque élement de sa
@@ -223,25 +231,29 @@
             <revision>
                 <revnumber>&lt; 5.0</revnumber>
                 <revdescription>
-                    <literal>%m2sciassume</literal> est obsolète et est remplacée par
-                    <literal>m2scideclare</literal>.
+                    <para>
+                        <literal>%m2sciassume</literal> est obsolète et est remplacée par
+                        <literal>m2scideclare</literal>.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    <literal>m2scideclare</literal> accepte tous les nouveaux vtypes et valeurs de
-                    sous-types
-                    <literal>Polynomial</literal>,
-                    <literal>Function/Macro</literal>, <literal>Function/Builtin</literal>,
-                    <literal>String/Char</literal>,
-                    <literal>Handle/'Figure'</literal>, <literal>Handle/'Axes'</literal>,
-                    <literal>Int/'int8'</literal>,  <literal>Int/'int16'</literal>,
-                    <literal>Int/'int32'</literal>, <literal>Int/'int64'</literal>,
-                    <literal>Int/'uint8'</literal>, <literal>Int/'uint16'</literal>,
-                    <literal>Int/'uint32'</literal>, <literal>Int/'uint64'</literal>,
-                    <literal>Sparse/Boolean</literal>.
-                    Le vtype <literal>Sparse</literal> devient effectivement utilisable.
+                    <para>
+                        <literal>m2scideclare</literal> accepte tous les nouveaux vtypes et valeurs de
+                        sous-types
+                        <literal>Polynomial</literal>,
+                        <literal>Function/Macro</literal>, <literal>Function/Builtin</literal>,
+                        <literal>String/Char</literal>,
+                        <literal>Handle/'Figure'</literal>, <literal>Handle/'Axes'</literal>,
+                        <literal>Int/'int8'</literal>,  <literal>Int/'int16'</literal>,
+                        <literal>Int/'int32'</literal>, <literal>Int/'int64'</literal>,
+                        <literal>Int/'uint8'</literal>, <literal>Int/'uint16'</literal>,
+                        <literal>Int/'uint32'</literal>, <literal>Int/'uint64'</literal>,
+                        <literal>Sparse/Boolean</literal>.
+                        Le vtype <literal>Sparse</literal> devient effectivement utilisable.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

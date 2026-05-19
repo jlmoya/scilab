@@ -24,7 +24,7 @@
         <title>Syntax</title>
         <synopsis>TCL_SetVar(varname, value [,interp])</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -64,7 +64,7 @@
             use <literal>TCL_EvalStr</literal>).
         </para>
         <para>
-            More information about Tcl/Tk: <ulink url="http://www.tcl.tk/doc/">http://www.tcl.tk/doc/</ulink>
+            More information about Tcl/Tk: <link xlink:href="http://www.tcl.tk/doc/">http://www.tcl.tk/doc/</link>
         </para>
         <para>
             Note: TCL variables are not saved by <link linkend="save">save</link> function since they are not Scilab variables.

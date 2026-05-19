@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en"
-        xml:id="percentonprompt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="percentonprompt">
     <refnamediv>
         <refname>%onprompt</refname>
         <refpurpose>special custom function called after each line execution in console</refpurpose>
@@ -27,13 +24,19 @@
             If it is defined, the function <literal>%onprompt()</literal>
             <itemizedlist>
                 <listitem>
-                    must be written in Scilab language.
+                     <para>
+                        must be written in Scilab language.
+                    </para>
                 </listitem>
                 <listitem>
-                    expects no explicit input argument.
+                     <para>
+                        expects no explicit input argument.
+                    </para>
                 </listitem>
                 <listitem>
-                    assigns to <literal>ans</literal> its first explicit output argument (if any).
+                     <para>
+                        assigns to <literal>ans</literal> its first explicit output argument (if any).
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -50,28 +53,31 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    <literal>%onprompt()</literal> may be (re)defined at any execution level.
+                     <para><literal>%onprompt()</literal> may be (re)defined at any execution level.
+                    </para>
                 </listitem>
                 <listitem>
-                    If some diaries are open and <literal>%onprompt()</literal> displays some
-                    contents in the console, these ones are recorded in the diaries with all other
-                    console outputs.
+                     <para>
+                        If some diaries are open and <literal>%onprompt()</literal> displays some
+                        contents in the console, these ones are recorded in the diaries with all other
+                        console outputs.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
     </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example">
-            <![CDATA[
+        <programlisting role="example"><![CDATA[
+            
 // Redisplaying the last line of instructions after its execution:
 function %onprompt()
     mprintf("%s\n", gethistory()($));
 endfunction
 a = grand(3,5,"uin",-9,9), b = %pi;
 // This is a comment
- ]]>
-        </programlisting>
+ 
+        ]]></programlisting>
         <screen><![CDATA[
 --> a = grand(3,5,"uin",-9,9), b = %pi
  a  =

@@ -18,39 +18,52 @@
         <refname>API types</refname>
         <refpurpose>This page lists all types used by API Scilab.</refpurpose>
     </refnamediv>
-    <refsection id="api_types_scilabEnv">
-        <refname>scilabEnv</refname>
-        <refpurpose>This a pointer of internal information provided by Scilab engine, you just have to forwarding it to API function.</refpurpose>
-        <para>Like pvApiCtx before, please to do use it. You may have to chance its structure at any moment.</para>
-    </refsection>
-    <refsection id="api_types_scilabVar">
-        <refname>scilabVar</refname>
-        <refpurpose>It is the type of Scilab variable in API Scilab.</refpurpose>
-        <para>Each API Scilab that read or write in Scilab varaible use it to reference a variable.</para>
-    </refsection>
-    <refsection id="api_types_scilabStatus">
-        <refname>scilabStatus</refname>
-        <refpurpose>scilabStatus is used by API Scilab to provide a status of execution.</refpurpose>
-        <para>It is a enum type: </para>
-        <programlisting role="code_gateway">
-            <![CDATA[
-typedef enum __SCILAB_STATUS__
-{
-    STATUS_OK = 0,
-    STATUS_ERROR = 1
-}scilabStatus;
-            ]]>
-        </programlisting>
-    </refsection>
-    <refsection id="api_types_scilabOpt">
-        <refname>scilabOpt</refname>
-        <refpurpose>It is a list of optional arguments given in the call.</refpurpose>
-        <para>
-            You may use
-            <link linkend="api_optional_scilab_getOptional">
-                <varname>scilab_getOptional</varname>
-            </link>
-            to retrieve optional values.
-        </para>
+    <refsection>
+        <title>Description</title>
+        <variablelist>
+            <varlistentry xml:id="api_types_scilabEnv">
+                <term>scilabEnv</term>
+                <listitem>
+                    <para>This a pointer of internal information provided by Scilab engine, you just have to forwarding it to API function.</para>
+                    <para>Like pvApiCtx before, please to do use it. You may have to chance its structure at any moment.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry xml:id="api_types_scilabVar">
+                <term>scilabVar</term>
+                <listitem>
+                    <para>It is the type of Scilab variable in API Scilab.</para>
+                    <para>Each API Scilab that read or write in Scilab varaible use it to reference a variable.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry xml:id="api_types_scilabStatus">
+                <term>scilabStatus</term>
+                <listitem>
+                    <para>scilabStatus is used by API Scilab to provide a status of execution.</para>
+                    <para>It is a enum type: </para>
+                    <programlisting role="code_gateway">
+                        <![CDATA[
+            typedef enum __SCILAB_STATUS__
+            {
+                STATUS_OK = 0,
+                STATUS_ERROR = 1
+            }scilabStatus;
+                        ]]>
+                    </programlisting>
+                </listitem>
+            </varlistentry>
+            <varlistentry xml:id="api_types_scilabOpt">
+                <term>scilabOpt</term>
+                <listitem>
+                    <para>It is a list of optional arguments given in the call.</para>
+                    <para>
+                        You may use
+                        <link linkend="api_optional_scilab_getOptional">
+                            <varname>scilab_getOptional</varname>
+                        </link>
+                        to retrieve optional values.
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
     </refsection>
 </refentry>

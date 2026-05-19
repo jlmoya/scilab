@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="lines" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="lines" xml:lang="ru">
     <refnamediv>
         <refname>lines</refname>
         <refpurpose>строки и столбцы, используемые для отображения</refpurpose>
@@ -150,12 +147,16 @@ rand(2,8)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            lines по умолчанию установлена в 0. Добавлен Аргумент -1.
-                            За более подробной информацией обращайтесь к SEP #67.
+                             <para>
+                                lines по умолчанию установлена в 0. Добавлен Аргумент -1.
+                                За более подробной информацией обращайтесь к SEP #67.
+                            </para>
                         </listitem>
                         <listitem>
-                            lines работает с вектором [nc, nl] размером 1 на 2
-                            в качестве входного аргумента.
+                             <para>
+                                lines работает с вектором [nc, nl] размером 1 на 2
+                                в качестве входного аргумента.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -163,4 +164,3 @@ rand(2,8)
         </revhistory>
     </refsection>
 </refentry>
-

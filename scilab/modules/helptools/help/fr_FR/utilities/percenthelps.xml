@@ -28,17 +28,21 @@
             Chaque ligne référence le chapitre d'aide d'un module externe chargé en session :
             <itemizedlist>
                <listitem>
-                   <literal>%helps(k,1)</literal> est le chemin absolu du répertoire d'aide du module.
+                    <para><literal>%helps(k,1)</literal> est le chemin absolu du répertoire d'aide du module.
+                   </para>
                </listitem>
                <listitem>
-                   <literal>%helps(k,2)</literal> est le titre du chapitre d'aide.
+                    <para><literal>%helps(k,2)</literal> est le titre du chapitre d'aide.
+                   </para>
                </listitem>
             </itemizedlist>
         </para>
         <warning>
-          Cette variable ne doit PAS être modifiée manuellement. <literal>add_help_chapter</literal>
-          doit être utilisée pour ajouter au navigateur d'aide (à redémarrer) le chapitre relatif
-          à un module externe chargé, et pour actualiser <literal>%helps</literal>.
+            <para>
+                Cette variable ne doit PAS être modifiée manuellement. <literal>add_help_chapter</literal>
+                doit être utilisée pour ajouter au navigateur d'aide (à redémarrer) le chapitre relatif
+                à un module externe chargé, et pour actualiser <literal>%helps</literal>.
+            </para>
         </warning>
     </refsection>
     <refsection role="examples">

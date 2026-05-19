@@ -30,8 +30,8 @@
             [flag,errmsg] = assert_checkerror ( ... )
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>instr:</term>
@@ -247,12 +247,14 @@ assert_checkerror ( "y = f(""a"")" , msg2 );
 assert_checkerror("f(""foo"")", [], 123456789);
         ]]></programlisting>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>Function introduced</revdescription>
+                <revremark>
+                    Function introduced
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

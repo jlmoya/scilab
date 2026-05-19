@@ -31,34 +31,34 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Inductor.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_Inductor">
+    <refsection xml:id="Contents_Inductor">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_Inductor">Description</xref>
+                <para><link linkend="Description_Inductor">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_Inductor">Parameters</xref>
+                <para><link linkend="Dialogbox_Inductor">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_Inductor">Default properties</xref>
+                <para><link linkend="Defaultproperties_Inductor">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Inductor">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_Inductor">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Inductor">Modelica model</xref>
+                <para><link linkend="Inductor">Modelica model</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_Inductor">
+    <refsection xml:id="Description_Inductor">
         <title>Description</title>
         <para>
             Inductor is an electrical component that can store energy in
@@ -76,14 +76,13 @@
             signals.
         </para>
     </refsection>
-    <refsection id="Dialogbox_Inductor">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_Inductor">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/Inductor_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/Inductor_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -94,7 +93,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_Inductor">
+    <refsection xml:id="Defaultproperties_Inductor">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -153,7 +152,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_Inductor">
+    <refsection xml:id="Interfacingfunction_Inductor">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -161,7 +160,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_Inductor">
+    <refsection xml:id="Modelicamodel_Inductor">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

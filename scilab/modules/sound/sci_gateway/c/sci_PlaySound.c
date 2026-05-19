@@ -37,8 +37,6 @@ int sci_PlaySound(char *fname, void* pvApiCtx)
     int *piAddressVarOne = NULL;
     wchar_t *pStVarOne = NULL;
     int iType1 = 0;
-    int lenStVarOne = 0;
-    int m1 = 0, n1 = 0;
     wchar_t *expandedPath = NULL;
 
     CheckInputArgument(pvApiCtx, 1, 1);
@@ -109,28 +107,19 @@ int sci_PlaySound(char *fname, void* pvApiCtx)
         pStVarOne = NULL;
     }
 
-#ifdef _MSC_VER
+    if (expandedPath)
     {
-        if (expandedPath)
+        int iError = playsound(expandedPath);
+        FREE(expandedPath);
+        expandedPath = NULL;
+        if (iError)
         {
-            playsound(expandedPath);
-            FREE(expandedPath);
-            expandedPath = NULL;
+            Scierror(999, _("%s: An error occurred: %s\n"), fname, _("Cannot play file.") );
         }
+    }
 
-        AssignOutputVariable(pvApiCtx, 1) = 0;
-        ReturnArguments(pvApiCtx);
-    }
-#else
-    {
-        if (expandedPath)
-        {
-            FREE(expandedPath);
-            expandedPath = NULL;
-        }
-        Scierror(999, _("%s: An error occurred: %s\n"), fname, _("Cannot play file.") );
-    }
-#endif
+    AssignOutputVariable(pvApiCtx, 1) = 0;
+    ReturnArguments(pvApiCtx);
     return 0;
 }
 /*--------------------------------------------------------------------------*/
@@ -143,8 +132,10 @@ static int playsound(wchar_t *wcFilename)
         PlaySoundW(NULL, NULL, SND_PURGE);
         PlaySoundW(wcFilename, NULL, SND_ASYNC | SND_FILENAME);
     }
-#endif
     return 0;
+#else
+    return -1;
+#endif
 }
 /*--------------------------------------------------------------------------*/
 

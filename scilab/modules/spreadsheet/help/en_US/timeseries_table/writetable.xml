@@ -23,7 +23,7 @@
             writetable(..., OptionName, Value, ...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -36,14 +36,15 @@
             <varlistentry>
                 <term>filename</term>
                 <listitem>
-                    <para>name or path of file</para>
+                    <para>name or path of file. Accepted formats: ".xslx", ".csv", ".txt" and ".dat".</para>
                     <para/>
                 </listitem>
             </varlistentry>
-            <para>
-                Optional pairs <emphasis role="bold">OptionName, Value</emphasis> are:
-            </para>
-            <para/>
+        </variablelist>
+        <para>
+            Optional pairs <emphasis role="bold">OptionName, Value</emphasis> are:
+        </para>
+        <variablelist>
             <varlistentry>
                 <term><emphasis role="bold">"Delimiter"</emphasis>, string</term>
                 <listitem>
@@ -73,13 +74,45 @@
                     <para/>
                 </listitem>
             </varlistentry>
+            <varlistentry>
+                <term><emphasis role="bold">"sheet"</emphasis>, string or positive integer</term>
+                <listitem>
+                    <para>specifies which sheet to write to.</para>
+                    <itemizedlist>
+                        <listitem><para>If string: if the sheet name does not exist, <literal>writetable</literal> creates a new sheet.</para></listitem>
+                        <listitem><para>If integer: select the sheet. If the index is greater than the number of sheets, 
+                            then a new sheet is created with the name "Sheet_" + string(index).</para></listitem>
+                    </itemizedlist>
+                    <para>Default: 1 (first sheet). Available option only is for Excel files.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><emphasis role="bold">"range"</emphasis>, string or positive integer</term>
+                <listitem>
+                    <para>A string or 2x2 matrix specifying where to start writing data.</para>
+                    <para>String formats: "A1:C10" (cell range), "A:C" (column range), "1:3" (row range), "B5" (first cell), "B" (first column), "3" (first row).</para>
+                    <para>Matrix format: [row1 col1; row2 col2] where all values are positive integers >= 1.</para>
+                    <para>Default: "". Available option only is for Excel files.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><emphasis role="bold">"writemode"</emphasis>, string</term>
+                <listitem>
+                    <para>specifies the write mode:</para>
+                    <itemizedlist>
+                        <listitem><para>"overwrite": Clears the sheet before writing data.</para></listitem>
+                        <listitem><para>"append": Keeps existing data and adds new data at the specified range.</para></listitem>
+                    </itemizedlist>
+                    <para>Default: data is written without clearing (preserves other cells). Available option only is for Excel files.</para>
+                </listitem>
+            </varlistentry>
         </variablelist>
     </refsection>
     <refsection>
         <title>Description</title>
         <para>
             The <emphasis role="bold">writetable</emphasis> function writes a table into a text file, where data are separated by comma. 
-            Accepted file formats are .txt, .dat or .csv.
+            Accepted file formats are .txt, .dat, .csv and .xlsx.
         </para>
         <para>
             <emphasis role="bold">writetable(t)</emphasis> writes table t into the file table.txt saved in TMPDIR.
@@ -132,6 +165,48 @@
         ]]>
         </programlisting>
         </para>
+        <para><emphasis role="bold">t = writetable(filename, "sheet", sheetName)</emphasis></para>
+        <para>
+        <programlisting role="example"><![CDATA[
+            id = [1;2;3];
+            name = ["Martin"; "Mary"; "Alice"];
+            value = [10.5; 15.8; 20.3];
+            t = table(id, name, value, "VariableNames", ["ID", "NAME", "VALUE"])
+
+            // t = [3x3 table]
+            //
+            //   ID     NAME    VALUE
+            //   ___   ______   _____
+            //                       
+            //   1     Martin   10.5 
+            //   2     Mary     15.8 
+            //   3     Alice    20.3 
+
+            path = fullfile(TMPDIR, "data.xlsx");
+            xlsxSheet(path, "create", "data"); // create "data" sheet
+            writetable(t, path, "sheet", "data"); // write table in "data" sheet
+            t2 = readtable(path, "sheet", "data")
+
+            // t2 = [3x3 table]
+            //
+            //   ID     NAME    VALUE
+            //   ___   ______   _____
+            //                       
+            //   1     Martin   10.5 
+            //   2     Mary     15.8 
+            //   3     Alice    20.3 
+
+            t3 = readtable(path, "sheet", "data", "range", [1 1;2 3])
+
+            // t3 = [1x3 table]
+            //
+            //   ID     NAME    VALUE
+            //   ___   ______   _____
+            //                       
+            //   1     Martin   10.5 
+        ]]>
+        </programlisting>
+        </para>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -149,8 +224,14 @@
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Introduction in Scilab.
+                </revremark>
+            </revision>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revdescription>
+                    <para><literal>writetable</literal> can now write Excel (.xlsx) files.</para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -36,9 +36,9 @@ int sci_beta(char *fname, void* pvApiCtx)
     *   The switch limit have been set by using the gp-pari software.
     *
     */
-    int mx = 0, nx = 0, itx = 0, lx = 0, lxc = 0, my = 0, ny = 0;
-    int ity = 0, ly = 0, lyc = 0, lz = 0, i = 0;
-    double *x = NULL, *y = NULL, *z = NULL, xpy = 0.;
+    int mx = 0, nx = 0, my = 0, ny = 0;
+    int i = 0;
+    double xpy = 0.;
     double switch_limit = 2;
 
     SciErr sciErr;

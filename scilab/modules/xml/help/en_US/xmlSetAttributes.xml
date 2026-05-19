@@ -24,7 +24,7 @@
             xmlObj = xmlSetAttributes(xmlObj, nameValue)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -48,27 +48,27 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a><b><c></c></b></a><b></b></root>");
+    xdoc = xmlReadStr("<root><a><b><c></c></b></a><b></b></root>");
 
     // Retrieve all the nodes
-    xp = xmlXPath(doc, "//*");
+    xp = xmlXPath(xdoc, "//*");
 
     // Add the attributes hello="world" and bonjour="monde" to all the nodes
     xmlSetAttributes(xp, ["hello" "world" ; "bonjour" "monde"]);
-    xmlDump(doc)
+    xmlDump(xdoc)
 
     // Add the attribute foo="bar" to the first child of root
-    xmlSetAttributes(doc.root.children(1), ["foo" "bar"]);
-    xmlDump(doc)
+    xmlSetAttributes(xdoc.root.children(1), ["foo" "bar"]);
+    xmlDump(xdoc)
 
     // Add the attribute bar="foo" to all the children of root
-    xmlSetAttributes(doc.root.children, ["bar" "foo"]);
+    xmlSetAttributes(xdoc.root.children, ["bar" "foo"]);
 
     // Add the attribute truc="machin" to the list of the attributes of the second <b>
-    xmlSetAttributes(doc.root.children(2).attributes, ["truc" "machin"]);
-    xmlDump(doc)
+    xmlSetAttributes(xdoc.root.children(2).attributes, ["truc" "machin"]);
+    xmlDump(xdoc)
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -79,7 +79,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

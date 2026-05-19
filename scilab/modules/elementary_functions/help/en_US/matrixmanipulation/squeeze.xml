@@ -24,7 +24,7 @@
         <title>Syntax</title>
         <synopsis>r = squeeze(hypIn)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -49,7 +49,9 @@
             If the input <varname>hypIn</varname> is a matrix, it is returned as is.
         </para>
         <note>
-            Scilab squeezes highest singleton dimensions automatically.
+            <para>
+                Scilab squeezes highest singleton dimensions automatically.
+            </para>
         </note>
     </refsection>
     <refsection>

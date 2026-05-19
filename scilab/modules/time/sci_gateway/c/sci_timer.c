@@ -38,6 +38,11 @@ int sci_timer(char *fname, void* pvApiCtx)
         double * pDblReal = NULL;
 
         sciErr = allocMatrixOfDouble(pvApiCtx, Rhs + 1, n1, n1, &pDblReal);
+        if (sciErr.iErr != 0)
+        {
+            Scierror(999, _("%s: Unable to create variable in Scilab memory"), fname);
+            return 1;
+        }
 
         *pDblReal = (double)timerval;
 

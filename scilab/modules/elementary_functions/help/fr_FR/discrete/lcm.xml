@@ -15,10 +15,7 @@
  *
  -->
 <!--  module: polynomials  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="fr" xml:id="lcm">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="lcm">
     <refnamediv>
         <refname>lcm</refname>
         <refpurpose>Plus petit multiple commun (PPCM) de polynômes ou d'entiers
@@ -31,7 +28,7 @@
           [pp, fact] = lcm(p)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -76,17 +73,23 @@
           Si <literal>p</literal> sont des entiers,
             <itemizedlist>
                 <listitem>
-                    s'il s'agit d'entiers encodés, ils sont préalablement convertis en entiers
-                    décimaux avant les calculs.
+                     <para>
+                        s'il s'agit d'entiers encodés, ils sont préalablement convertis en entiers
+                        décimaux avant les calculs.
+                    </para>
                 </listitem>
                 <listitem>
-                    S'il s'agit d'entiers encodés en int64 ou uint64, les |valeurs| d'entrée > 2^53
-                    seront tronquées par la conversion en décimaux et le résultat
-                    <literal>p</literal> sera erroné.
+                     <para>
+                        S'il s'agit d'entiers encodés en int64 ou uint64, les |valeurs| d'entrée &gt; 2^53
+                        seront tronquées par la conversion en décimaux et le résultat
+                        <literal>p</literal> sera erroné.
+                    </para>
                 </listitem>
                 <listitem>
-                    si un ou plusieurs éléments de <literal>p</literal> sont négatifs, le
-                    résultat <literal>pp</literal> sera toujours positif.
+                     <para>
+                        si un ou plusieurs éléments de <literal>p</literal> sont négatifs, le
+                        résultat <literal>pp</literal> sera toujours positif.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -206,27 +209,31 @@ V = [3*2^52 , 3*5]
         <revhistory>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revdescription>
+                <revremark>
                    Pour un ensemble d'entiers dont certains sont négatifs, lcm() en retourne désormais
                    toujours la valeur absolue du PPCM.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <varname>p</varname> peut désormais être des entiers int64 ou uint64
-                            encodés sur 64 bits.
+                             <para><varname>p</varname> peut désormais être des entiers int64 ou uint64
+                                encodés sur 64 bits.
+                            </para>
                         </listitem>
                         <listitem>
-                            <varname>p</varname> peut désormais être une matrice de format
-                            quelconque, non nécessairement un vecteur ligne.
+                             <para><varname>p</varname> peut désormais être une matrice de format
+                                quelconque, non nécessairement un vecteur ligne.
+                            </para>
                         </listitem>
                         <listitem>
-                            Lorsque <varname>p</varname> est une matrice d'entiers encodés ou
-                            décimaux, <varname>pp</varname> et <varname>fact</varname> sont
-                            désormais des entiers décimaux (au lieu d'entiers encodés int32).
+                             <para>
+                                Lorsque <varname>p</varname> est une matrice d'entiers encodés ou
+                                décimaux, <varname>pp</varname> et <varname>fact</varname> sont
+                                désormais des entiers décimaux (au lieu d'entiers encodés int32).
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

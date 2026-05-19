@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,9 +32,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
@@ -46,6 +49,7 @@ import org.scilab.modules.commons.xml.XConfiguration;
 import org.scilab.modules.core.Scilab;
 import org.scilab.modules.graph.actions.base.GraphActionManager;
 import org.scilab.modules.graph.utils.ScilabExported;
+import org.scilab.modules.graph.utils.ScilabGraphRenderer;
 import org.scilab.modules.gui.bridge.menu.SwingScilabMenu;
 import org.scilab.modules.gui.bridge.menubar.SwingScilabMenuBar;
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
@@ -58,6 +62,7 @@ import org.scilab.modules.gui.tabfactory.ScilabTabFactory;
 import org.scilab.modules.gui.utils.BarUpdater;
 import org.scilab.modules.gui.utils.ClosingOperationsManager;
 import org.scilab.modules.gui.utils.WindowsConfigurationManager;
+import org.scilab.modules.xcos.actions.ExportAction;
 import org.scilab.modules.xcos.actions.ExternalAction;
 import org.scilab.modules.xcos.actions.StopAction;
 import org.scilab.modules.xcos.block.AfficheBlock;
@@ -68,6 +73,7 @@ import org.scilab.modules.xcos.graph.DiagramComparator;
 import org.scilab.modules.xcos.graph.XcosDiagram;
 import org.scilab.modules.xcos.graph.model.ScicosObjectOwner;
 import org.scilab.modules.xcos.graph.model.XcosCell;
+import org.scilab.modules.xcos.graph.model.XcosCellFactory;
 import org.scilab.modules.xcos.graph.model.XcosGraphModel;
 import org.scilab.modules.xcos.io.XcosFileType;
 import org.scilab.modules.xcos.palette.PaletteManager;
@@ -200,8 +206,6 @@ public final class Xcos {
         }
 
         JavaController.unregister_view(view);
-
-        super.finalize();
     }
 
     /**
@@ -859,6 +863,100 @@ public final class Xcos {
             }
         } else {
             throw new IllegalArgumentException("not handled filetype");
+        }
+    }
+
+    /**
+     * Export an xcos diagram to image.
+     *
+     * @param diagramId
+     *            the diagram to load into
+     * @param file
+     *            the file
+     * @throws Exception
+     *             on loading error
+     */
+    @ScilabExported(module = "xcos", filename = "Xcos.giws.xml")
+    public static void xcosDiagramExport(long diagramId, String file) throws Exception {
+        ArrayList<String> imageFormats = new ArrayList<>(Arrays.asList(ImageIO.getWriterFileSuffixes()));
+        imageFormats.add("svg");
+        String format = "";
+        for (String f : imageFormats) {
+            if (file.endsWith(f))
+            {
+                format = f;
+                break;
+            }
+        }
+        if (format.isEmpty())
+        {
+            throw new RuntimeException("Invalid file format, use one of " + String.join(", ", imageFormats));
+        }
+
+        String[] name = { "" };
+        JavaController controller = new JavaController();
+        Kind kind = controller.getKind(diagramId);
+        controller.getObjectProperty(diagramId, kind, ObjectProperties.NAME, name);
+        name[0] = name[0].replaceAll("[\\\\/:*?\"<>|]", "_");
+
+        XcosDiagram graph = new XcosDiagram(controller, diagramId, kind, "");
+        XcosCellFactory.insertChildren(controller, graph);
+        String filename = String.format(file, name[0]);
+
+        ExportAction.export(graph, new File(filename), format, null);
+        // without String Formatter, output only the single layer
+        if (file.equals(filename))
+        {
+            return;
+        }
+
+        // look for all layers
+        ArrayList<Long> layers = new ArrayList<>();
+        ArrayList<String> paths = new ArrayList<>();
+
+        ArrayList<Long> stash = new ArrayList<>();
+        VectorOfScicosID children = new VectorOfScicosID();
+        
+        BiConsumer<Long, Kind> processChildren = (parentId, parentKind) -> {
+            final String stashPath = (parentId == diagramId) ? name[0] : paths.get(layers.indexOf(parentId));
+            controller.getObjectProperty(parentId, parentKind, ObjectProperties.CHILDREN, children);
+            int len = children.size();
+            for (int i = 0; i < len; i++) {
+                Long id = children.get(i);
+                if (controller.getKind(id) == Kind.BLOCK) {
+                    String[] interfaceFunction = { "" };
+                    controller.getObjectProperty(id, Kind.BLOCK, ObjectProperties.INTERFACE_FUNCTION, interfaceFunction);
+                    if (!"SUPER_f".equals(interfaceFunction[0])) {
+                        continue;
+                    }
+                    stash.add(id);
+
+                    layers.add(id);
+                    controller.getObjectProperty(id, Kind.BLOCK, ObjectProperties.NAME, name);
+                    name[0] = name[0].replaceAll("[\\\\/:*?\"<>|]", "_");
+                    String path =  stashPath + "_" + ((name[0].isEmpty()) ? (i + 1) : name[0]);
+                    paths.add(path);
+                    
+                }
+            }
+        };
+
+        processChildren.accept(diagramId, kind);
+        while (!stash.isEmpty()) {
+            final long layerId = stash.remove(stash.size() - 1);
+            processChildren.accept(layerId, Kind.BLOCK);
+        }
+
+        // Generate all the layers
+        for (int i = 0; i < layers.size(); i++)
+        {
+            Long layerId = layers.get(i);
+            String path = paths.get(i);
+            graph = new XcosDiagram(controller, layerId, Kind.BLOCK, "");
+            XcosCellFactory.insertChildren(controller, graph);
+            
+            filename = String.format(file, path);
+            ExportAction.export(graph, new File(filename), format, null);
         }
     }
 

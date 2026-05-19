@@ -28,7 +28,7 @@
             h = Matplot(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -331,12 +331,14 @@
             <literal>(x=j, y=(n1-i+1))</literal>.
             If a matrix entry is outside the colormap, the corresponding rectangle is not displayed.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 To update the Matplot data, the <literal>data</literal> field of the corresponding handle must be used.
-            </warning>
-            <literal>data</literal> can be a matrix (or an hypermatrix) containing RGB, RGBA, ... data (see <link linkend="Matplot_properties">Matplot_properties</link>).
-        </para>
+            </para>
+            <para>
+                <literal>data</literal> can be a matrix (or an hypermatrix) containing RGB, RGBA, ... data (see <link linkend="Matplot_properties">Matplot_properties</link>).
+            </para>
+        </warning>
         <para>
             Enter the command <code>Matplot()</code> to see a demo.
         </para>
@@ -382,9 +384,11 @@ Matplot(1:nbcol)
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <literal>data</literal> can now be a matrix (or an hypermatrix) containing RGB, RGBA, ... data (see <link linkend="Matplot_properties">Matplot_properties</link>).
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>data</literal> can now be a matrix (or an hypermatrix) containing RGB, RGBA, ... data (see <link linkend="Matplot_properties">Matplot_properties</link>).
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>

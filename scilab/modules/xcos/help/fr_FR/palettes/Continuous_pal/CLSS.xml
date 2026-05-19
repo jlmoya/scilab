@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/CLSS.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CLSS">
+    <refsection xml:id="Contents_CLSS">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CLSS">Description</xref>
+                <para><link linkend="Description_CLSS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CLSS">Paramètres</xref>
+                <para><link linkend="Dialogbox_CLSS">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CLSS">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_CLSS">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CLSS">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_CLSS">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CLSS">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_CLSS">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CLSS">Exemple</xref>
+                <para><link linkend="Example_CLSS">Exemple</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_CLSS">
+    <refsection xml:id="Description_CLSS">
         <title>Description</title>
         <para>Ce bloc réalise une représentation d'état linéaire en temps continu</para>
         <para>
@@ -73,14 +73,13 @@
             Les dimensions doivent être compatibles.
         </para>
     </refsection>
-    <refsection id="Dialogbox_CLSS">
+    <refsection xml:id="Dialogbox_CLSS">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/CLSS_gui.gif" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/CLSS_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -127,7 +126,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_CLSS">
+    <refsection xml:id="Defaultproperties_CLSS">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -200,7 +199,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_CLSS">
+    <refsection xml:id="Interfacingfunction_CLSS">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -208,7 +207,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CLSS">
+    <refsection xml:id="Computationalfunction_CLSS">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -216,7 +215,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_CLSS">
+    <refsection xml:id="Example_CLSS">
         <title>Exemple</title>
         <para>Cet exemple illustre l'utilisation du bloc CLSS pour simuler et afficher
             la forme d'onde en sortie <emphasis role="bold">y(t)=Vc(t)</emphasis> du circuit RLC ci-dessous.

@@ -13,46 +13,43 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATPINV" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATPINV" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATPINV</refname>
         <refpurpose>Pseudo-inverse de matrice</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATPINV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATPINV">
+    <refsection xml:id="Contents_MATPINV">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATPINV">Description</xref>
+                <para><link linkend="Description_MATPINV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATPINV">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATPINV">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATPINV">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATPINV">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATPINV">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATPINV">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATPINV">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATPINV">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATPINV">Voir aussi</xref>
+                <para><link linkend="Seealso_MATPINV">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATPINV">
+    <refsection xml:id="Description_MATPINV">
         <title>Description</title>
         <para>
             Le bloc MATPINV sort l'inverse d'une matrice d'entrée rectangulaire en utilisant la
@@ -75,15 +72,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATPINV">
+    <refsection xml:id="Dialogbox_MATPINV">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATPINV_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATPINV_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -97,7 +92,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATPINV">
+    <refsection xml:id="Defaultproperties_MATPINV">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -170,7 +165,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATPINV">
+    <refsection xml:id="Interfacingfunction_MATPINV">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -178,28 +173,32 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATPINV">
+    <refsection xml:id="Computationalfunction_MATPINV">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_pinv.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_pinv.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_pinv.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_pinv.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_MATPINV" role="see also">
+    <refsection xml:id="Seealso_MATPINV" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATINV">MATINV</link>
+                <para><link linkend="MATINV">MATINV</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATSING">MATSING</link>
+                <para><link linkend="MATSING">MATSING</link></para>
             </listitem>
             <listitem>
-                <link linkend="pinv">pinv (Fonction Scilab)</link>
+                <para><link linkend="pinv">pinv (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

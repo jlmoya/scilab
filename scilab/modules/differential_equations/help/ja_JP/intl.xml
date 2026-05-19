@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="intl" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intl" xml:lang="ja">
     <refnamediv>
         <refname>intl</refname>
         <refpurpose>コーシー積分</refpurpose>
@@ -35,34 +32,39 @@
             <varlistentry>
                 <term>z0</term>
                 <listitem>
-                    複素数<para/>
-                </listitem>
+                     <para>
+                        複素数</para>
+                       </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                    実数<para/>
-                </listitem>
+                     <para>
+                        実数</para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>r</term>
                 <listitem>
-                    正の実数<para/>
-                </listitem>
+                     <para>
+                        正の実数</para>
+                        </listitem>
             </varlistentry>
             <varlistentry>
                 <term>f</term>
                 <listitem>
-                    統合する機能のハンドル(タイプ 13 または 130).<para/>
-                </listitem>
+                     <para>
+                        統合する機能のハンドル(タイプ 13 または 130).</para>
+                                                </listitem>
             </varlistentry>
             <varlistentry>
                 <term>abserr, relerr</term>
                 <listitem>
-                    実スカラー, 絶対および相対エラー.
-                    デフォルト値: <literal>1.d-13</literal> および <literal>1d-8</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        実スカラー, 絶対および相対エラー.
+                        デフォルト値: <literal>1.d-13</literal> および <literal>1d-8</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

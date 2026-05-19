@@ -27,7 +27,7 @@
             [Sk, rk, ro] = h_inf(P, r, romin, romax, nmax)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -126,16 +126,18 @@
         <title>Authors</title>
         <para>F.Delebecque INRIA (1990)  </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revremark>
-                    <literal>Sl</literal> is now checked for
-                    continuous time linear dynamical system.  This modification
-                    has been introduced by this <ulink url="https://gitlab.com/scilab/scilab/-/commit/3d7083daae3339813ba747c8adcda1f9599bb80d">commit</ulink>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>Sl</literal> is now checked for
+                        continuous time linear dynamical system.  This modification
+                        has been introduced by this <link xlink:href="https://gitlab.com/scilab/scilab/-/commit/3d7083daae3339813ba747c8adcda1f9599bb80d">commit</link>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>t=isrow(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -43,17 +43,17 @@
         <title>Description</title>
         <para>
             <literal>
-                isrow(<varname>x</varname>)
+                isrow(x)
             </literal>
             returns true if <varname>x</varname>
             is a row. Scalars are considered as rows, and hypermatrix can be considered as rows only if
             all of its dimensions, except the last one, are equal to 1.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note that <literal>isrow([])</literal> returns false.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -103,7 +103,7 @@ isrow(s) // 3D array of structures (with 2 singleton dims)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

@@ -27,7 +27,7 @@
             h = grayplot(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -139,9 +139,11 @@ grayplot(t,t,m)
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    Option <function>logflag</function> introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Option <function>logflag</function> introduced.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>

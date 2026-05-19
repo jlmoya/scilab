@@ -11,7 +11,7 @@
         <synopsis>fec(x,y,triangles,func,[strf,leg,rect,nax,zminmax,colminmax])
             h = fec(...)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -343,22 +343,20 @@ xtitle("fec using the hot colormap, composed by one quadrangle")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.2</revnumber>
                 <revremark>
-                    <para>
-                        Le maillage peut désormais être consitué de polygones convexes.
-                    </para>
+                    Le maillage peut désormais être consitué de polygones convexes.
                 </revremark>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     La fonction renvoie le(s) handle(s) créé(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

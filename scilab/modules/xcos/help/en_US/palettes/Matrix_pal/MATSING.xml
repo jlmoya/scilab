@@ -21,47 +21,44 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="MATSING" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATSING" xml:lang="en_US">
     <refnamediv>
         <refname>MATSING</refname>
         <refpurpose>SVD Decomposition</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATSING.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATSING">
+    <refsection xml:id="Contents_MATSING">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATSING">Description</xref>
+                <para><link linkend="Description_MATSING">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATSING">Parameters</xref>
+                <para><link linkend="Dialogbox_MATSING">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATSING">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATSING">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATSING">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATSING">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATSING">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATSING">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATSING">See also</xref>
+                <para><link linkend="Seealso_MATSING">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATSING">
+    <refsection xml:id="Description_MATSING">
         <title>Description</title>
         <para>
             The MATSING block computes the economy sized SVD of the MxN input matrix A by finding U,S and V such that
@@ -88,14 +85,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_MATSING">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_MATSING">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATSING_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATSING_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -121,7 +117,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATSING">
+    <refsection xml:id="Defaultproperties_MATSING">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -194,7 +190,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATSING">
+    <refsection xml:id="Interfacingfunction_MATSING">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -202,20 +198,28 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATSING">
+    <refsection xml:id="Computationalfunction_MATSING">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_sing.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_sing.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_svd.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_svd.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_sing.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_sing.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_svd.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_svd.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -14,7 +14,7 @@
             vp = linear_interpn(xp1,xp2,..,xpn, x1,...,xn, v, out_mode)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -69,7 +69,7 @@
             <emphasis>f</emphasis>) at the grid points :
         </para>
         <para>
-            <table align="center">
+            <table>
             <tr><td>
                     v(i<subscript>1</subscript>,
                       i<subscript>2</subscript>,…,
@@ -87,7 +87,7 @@
             matrices) <literal>xp1, xp2, ..., xpn</literal>:
         </para>
         <para>
-            <table align="center">
+            <table>
             <tr align="center">
                 <td>vp(i) = <emphasis>s</emphasis>(xp1(i), xp2(i), …, xpn(i))</td></tr>
             <tr align="center"><td>or</td></tr>
@@ -104,7 +104,7 @@
             <literal>out_mode</literal> defines the evaluation rule when:
         </para>
         <para>
-            <table align="center">
+            <table>
             <tr><td>P(i) ∉ [x1(1), x1($)] × [x2(1), x2($)] × … × [xn(1), xn($)]</td></tr>
             </table>
         </para>

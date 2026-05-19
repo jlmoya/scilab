@@ -18,125 +18,132 @@
         <refname>API string functions</refname>
         <refpurpose>This page lists all the functions to manipulate Scilab native objects containing strings</refpurpose>
     </refnamediv>
-    <refsynopsisdiv>
-        <refsection id="api_string_scilab_createStringMatrix">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createStringMatrix</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, int dim, const int* dims)
-            </literal>
-            <para>
-                Create a string matrix with <varname>dim</varname> dimensions (<varname>dims</varname>[0], <varname>dims</varname>[1], ..., <varname>dims</varname>[<varname>dim</varname>-1]).
-            </para>
-        </refsection>
-        <refsection id="api_string_scilab_createStringMatrix2d">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createStringMatrix2d</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, int row, int col)
-            </literal>
-            <para>
-                Create an string matrix with 2 dimensions (<varname>row</varname>, <varname>col</varname>).
-            </para>
-        </refsection>
-        <refsection id="api_string_scilab_createString">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createString</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, const wchar_t* val)
-            </literal>
-            <para>Create a scalar string.</para>
-        </refsection>
-        <refsection id="api_string_scilab_getStringArray">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_getStringArray</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, wchar_t*** strs)
-            </literal>
-            <para>
-                Get pointer on internal array of string of <varname>var</varname>.
-            </para>
-        </refsection>
-        <refsection id="api_string_scilab_getString">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_getString</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, wchar_t** str)
-            </literal>
-            <para>Get string value from an scalar string variable.</para>
-        </refsection>
-        <refsection id="api_string_scilab_setStringArray">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setStringArray</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, const wchar_t* const* strs)
-            </literal>
-            <para>
-                Set values of string variable <literal>var</literal>.
-            </para>
-        </refsection>
-        <refsection id="api_string_scilab_setString">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setString</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, const wchar_t* str)
-            </literal>
-            <para>
-                Set value of a scalar string variable <literal>var</literal>.
-            </para>
-        </refsection>
-    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>
+            <anchor xml:id="api_string_scilab_createStringMatrix"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createStringMatrix</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, int dim, const int* dims)</literal>
+        </para>
+        <para>
+            Create a string matrix with <varname>dim</varname> dimensions (<varname>dims</varname>[0], <varname>dims</varname>[1], ..., <varname>dims</varname>[<varname>dim</varname>-1]).
+        </para>
+
+        <para>
+            <anchor xml:id="api_string_scilab_createStringMatrix2d"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createStringMatrix2d</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, int row, int col)</literal>
+        </para>
+        <para>
+            Create an string matrix with 2 dimensions (<varname>row</varname>, <varname>col</varname>).
+        </para>
+
+        <para>
+            <anchor xml:id="api_string_scilab_createString"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createString</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, const wchar_t* val)</literal>
+        </para>
+        <para>Create a scalar string.</para>
+
+        <para>
+            <anchor xml:id="api_string_scilab_getStringArray"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_getStringArray</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> var, wchar_t*** strs)</literal>
+        </para>
+        <para>
+            Get pointer on internal array of string of <varname>var</varname>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_string_scilab_getString"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_getString</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env,</literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> var, wchar_t** str)</literal>
+        </para>
+        <para>Get string value from an scalar string variable.</para>
+
+        <para>
+            <anchor xml:id="api_string_scilab_setStringArray"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setStringArray</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env,</literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal> var, const wchar_t* const* strs)</literal>
+        </para>
+        <para>
+            Set values of string variable <literal>var</literal>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_string_scilab_setString"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setString</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal> env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, const wchar_t* str)</literal>
+        </para>
+        <para>
+            Set value of a scalar string variable <literal>var</literal>.
+        </para>
+    </refsection>
     <refsection>
         <title>Examples</title>
         <programlisting role="code_gateway">

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="strsplit" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="strsplit" xml:lang="en">
     <refnamediv>
         <refname>strsplit</refname>
         <refpurpose>split a single string at some given positions or patterns</refpurpose>
@@ -33,68 +30,75 @@
             [chunks, matched_separators] = strsplit(string, regexp, limit)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>string</term>
                 <listitem>
-                    a single character string to split. UTF8 extended characters supported.
-                    <para/>
-                </listitem>
+                     <para>
+                        a single character string to split. UTF8 extended characters supported.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>indices</term>
                 <listitem>
-                    vector of increasing indices, in the interval
-                    <literal>[1, length(string)-1]</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        vector of increasing indices, in the interval
+                        <literal>[1, length(string)-1]</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>separators</term>
                 <listitem>
-                    matrix of strings searched in the <varname>string</varname> and used as scissors.
-                     UTF8 extended characters are supported.
-                    <para/>
-                </listitem>
+                     <para>
+                        matrix of strings searched in the <varname>string</varname> and used as scissors.
+                         UTF8 extended characters are supported.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>regexp</term>
                 <listitem>
-                    single string starting and ending with "/" and specifying a case-sensitive
-                    regular expression pattern used as splitting separator. No regexp option
-                    can be used after the trailing "/" delimiter. The regular expression
-                    may include UTF8 extended characters. The "/" and "\" characters used
-                    in the body of the regexp must be protected as "\/" and "\\".
-                    Example: <literal>"/k.{2}o/"</literal>
-                    <para/>
-                </listitem>
+                     <para>
+                        single string starting and ending with "/" and specifying a case-sensitive
+                        regular expression pattern used as splitting separator. No regexp option
+                        can be used after the trailing "/" delimiter. The regular expression
+                        may include UTF8 extended characters. The "/" and "\" characters used
+                        in the body of the regexp must be protected as "\/" and "\\".
+                        Example: <literal>"/k.{2}o/"</literal>
+                             </para>
+                         </listitem>
             </varlistentry>
             <varlistentry>
                 <term>chunks</term>
                 <listitem>
-                    column of strings, with <literal>length(indices)+1</literal>
-                    elements = split chunks.
-                    <para/>
-                </listitem>
+                     <para>
+                        column of strings, with <literal>length(indices)+1</literal>
+                        elements = split chunks.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>matched_separators</term>
                 <listitem>
-                    column of strings, of size <literal>size(chunks,1)-1</literal> :
-                    matched separators or expression patterns.
-                    <para/>
-                </listitem>
+                     <para>
+                        column of strings, of size <literal>size(chunks,1)-1</literal> :
+                        matched separators or expression patterns.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>limit</term>
                 <listitem>
-                    integer > 0: Maximum number of times that separators are searched and used along
-                    the <varname>string</varname>. If this one includes more separators occurrences,
-                    its unsplit tail is returned as last chunk in <literal>chunks($)</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        integer &gt; 0: Maximum number of times that separators are searched and used along
+                        the <varname>string</varname>. If this one includes more separators occurrences,
+                        its unsplit tail is returned as last chunk in <literal>chunks($)</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -157,38 +161,38 @@
             Then <literal>strcat([chunks' ; [matched_separators' ""]])</literal> should be
             equal to <varname>string</varname>.
         </para>
-        <para>
-            <note>
-            <emphasis>Comparison between strsplit() and tokens()</emphasis>:
-            <table>
-                <tr><th>strsplit()</th>     <th>tokens()</th></tr>
-                <tr>
-                    <td>can work with indices</td>
-                    <td>works only with separators</td>
-                </tr>
-                <tr>
-                    <td>works with regexp</td>
-                    <td>does not accept regexp</td>
-                </tr>
-                <tr>
-                    <td>works with any separator</td>
-                    <td>is restricted to 1-character separators</td>
-                </tr>
-                <tr>
-                    <td>keeps all empty chunks</td>
-                    <td>removes them</td>
-                </tr>
-                <tr>
-                    <td>can limit the number of split</td>
-                    <td>always splits all</td>
-                </tr>
-                <tr>
-                    <td>slower</td>
-                    <td>faster</td>
-                </tr>
-            </table>
-            </note>
-        </para>
+        <note>
+            <para>
+                <emphasis>Comparison between strsplit() and tokens()</emphasis>:
+                <table>
+                    <tr><th>strsplit()</th>     <th>tokens()</th></tr>
+                    <tr>
+                        <td>can work with indices</td>
+                        <td>works only with separators</td>
+                    </tr>
+                    <tr>
+                        <td>works with regexp</td>
+                        <td>does not accept regexp</td>
+                    </tr>
+                    <tr>
+                        <td>works with any separator</td>
+                        <td>is restricted to 1-character separators</td>
+                    </tr>
+                    <tr>
+                        <td>keeps all empty chunks</td>
+                        <td>removes them</td>
+                    </tr>
+                    <tr>
+                        <td>can limit the number of split</td>
+                        <td>always splits all</td>
+                    </tr>
+                    <tr>
+                        <td>slower</td>
+                        <td>faster</td>
+                    </tr>
+                </table>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>

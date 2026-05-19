@@ -24,7 +24,7 @@
         <title>Syntax</title>
         <synopsis>TF = setlanguage(language)</synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -64,10 +64,13 @@
         <para>
             <literal>setlanguage</literal> works on all supported operating systems.
         </para>
-        <warning>The new language is not taken into account in the menus of interfaces (help browser,
-            variables browser, code editor, etc). No menus translation is done neither "on-the-flight"
-            nor after reopening the interfaces. To set the language used in the menus, please use
-            <literal>setdefaultlanguage(..)</literal> instead.
+        <warning>
+            <para>
+                The new language is not taken into account in the menus of interfaces (help browser,
+                variables browser, code editor, etc). No menus translation is done neither "on-the-flight"
+                nor after reopening the interfaces. To set the language used in the menus, please use
+                <literal>setdefaultlanguage(..)</literal> instead.
+            </para>
         </warning>
     </refsection>
     <refsection role="examples">

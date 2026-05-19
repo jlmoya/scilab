@@ -5,6 +5,7 @@
  * Copyright (C) 2011-2017 - Scilab Enterprises - Clement DAVID
  * Copyright (C) 2015 - Marcos Cardinot
  * Copyright (C) 2017-2019 - ESI Group - Clement DAVID
+ * Copyright (C) 2022-2025 - Dassault Systèmes S.E. - Clement DAVID
  *
  * Copyright (C) 2012 - 2016 - Scilab Enterprises
  *
@@ -351,7 +352,7 @@ public class XcosDiagram extends ScilabGraph {
         /*
          * Prepare validation
          */
-        
+
         Map<String, List<ContextUpdate>> ioblocks = new HashMap<>();
         fillContext(ioblocks, controller);
 
@@ -579,7 +580,7 @@ public class XcosDiagram extends ScilabGraph {
          */
         private static void updatePortNumber(JavaController controller, List<ContextUpdate> updatedIOBlocks, Map<String, List<ContextUpdate>> context) {
             VectorOfInt ipar = new VectorOfInt(1);
-            
+
             // create a local map where IOBlocks are not initially present but are added during the loop
             Map<String, List<ContextUpdate>> inProgressContext = new HashMap<>();
             for (String k : context.keySet())
@@ -606,7 +607,7 @@ public class XcosDiagram extends ScilabGraph {
                         controller.getObjectProperty(blocks.get(i).getUID(), Kind.BLOCK, ObjectProperties.IPAR, ipar);
                         if (ipar.size() < 1)
                             return; // something is buggy in this block avoid editing the diagram
-                        
+
                         int blockIndex = ipar.get(0);
                         if (blockIndex - pre > 1)
                         {
@@ -658,7 +659,7 @@ public class XcosDiagram extends ScilabGraph {
 
             String[] superBlockUID = {""};
             controller.getObjectProperty(diagram.getUID(), diagram.getKind(), ObjectProperties.UID, superBlockUID);
-            
+
             // create a full context
             Map<String, List<ContextUpdate>> context = new HashMap<>();
             diagram.fillContext(context, controller);
@@ -840,6 +841,32 @@ public class XcosDiagram extends ScilabGraph {
     }
 
     /**
+     * On clone, regenerate UID for cloned SuperBlock to ensure sub-system (eg. independant graph) does not have the same UID
+     */
+    @Override
+    public Object[] cloneCells(Object[] cells, boolean allowInvalidEdges) {
+        Object[] clonedCells = super.cloneCells(cells, allowInvalidEdges);
+        // share controller and children vector
+        JavaController controller = new JavaController();
+        VectorOfScicosID children = new VectorOfScicosID();
+
+        for (Object c : clonedCells) {
+            if (c instanceof XcosCell) {
+                XcosCell cell = (XcosCell) c;
+                controller.setObjectProperty(cell.getUID(), cell.getKind(), ObjectProperties.UID, new UID().toString());
+
+                controller.getObjectProperty(cell.getUID(), cell.getKind(), ObjectProperties.CHILDREN, children);
+                for (int i = 0; i < children.size(); i++) {
+                    long id = children.get(i);
+                    controller.setObjectProperty(id, controller.getKind(id), ObjectProperties.UID, new UID().toString());
+                }
+            }
+        }
+
+        return clonedCells;
+    }
+
+    /**
      * Add an edge from a source to the target.
      *
      * @param cell the edge to add (may be null)
@@ -868,7 +895,7 @@ public class XcosDiagram extends ScilabGraph {
         // Switch source and target !
         if (target instanceof CommandPort && source instanceof ControlPort && cell instanceof CommandControlLink) {
             BasicLink current = (BasicLink) cell;
-            current.invertDirection();
+            invertDirection(current);
 
             return super.addCell(cell, parent, index, target, source);
         }
@@ -881,7 +908,7 @@ public class XcosDiagram extends ScilabGraph {
         // Switch source and target !
         if (target instanceof ExplicitOutputPort && source instanceof ExplicitInputPort && cell instanceof ExplicitLink) {
             BasicLink current = (BasicLink) cell;
-            current.invertDirection();
+            invertDirection(current);
 
             return super.addCell(cell, parent, index, target, source);
         }
@@ -894,7 +921,7 @@ public class XcosDiagram extends ScilabGraph {
         // Switch source and target !
         if (target instanceof ImplicitOutputPort && source instanceof ImplicitInputPort && cell instanceof ImplicitLink) {
             BasicLink current = (BasicLink) cell;
-            current.invertDirection();
+            invertDirection(current);
 
             return super.addCell(cell, parent, index, target, source);
         }
@@ -907,7 +934,7 @@ public class XcosDiagram extends ScilabGraph {
         // Switch source and target !
         if (target instanceof ImplicitOutputPort && source instanceof ImplicitOutputPort && cell instanceof ImplicitLink) {
             BasicLink current = (BasicLink) cell;
-            current.invertDirection();
+            invertDirection(current);
 
             return super.addCell(cell, parent, index, target, source);
         }
@@ -926,7 +953,7 @@ public class XcosDiagram extends ScilabGraph {
             final BasicLink current = (BasicLink) cell;
             final SplitBlock split = addSplitEdge(current.getGeometry().getTargetPoint(), (BasicLink) target);
 
-            current.invertDirection();
+            invertDirection(current);
 
             return addCell(cell, parent, index, split.getOut2(), source);
         }
@@ -942,7 +969,7 @@ public class XcosDiagram extends ScilabGraph {
             final BasicLink current = (BasicLink) cell;
             final SplitBlock split = addSplitEdge(current.getGeometry().getTargetPoint(), (BasicLink) target);
 
-            current.invertDirection();
+            invertDirection(current);
 
             return addCell(cell, parent, index, split.getOut2(), source);
         }
@@ -972,7 +999,7 @@ public class XcosDiagram extends ScilabGraph {
             final BasicLink current = (BasicLink) cell;
             final SplitBlock split = addSplitEdge(current.getGeometry().getTargetPoint(), (BasicLink) target);
 
-            current.invertDirection();
+            invertDirection(current);
 
             return addCell(cell, parent, index, split.getOut2(), source);
         }
@@ -984,6 +1011,22 @@ public class XcosDiagram extends ScilabGraph {
             LOG.severe("Adding an untyped edge");
             return super.addCell(cell, parent, index, source, target);
         }
+    }
+
+    /** Invert the source and target of the link (and all geometry points) */
+    void invertDirection(BasicLink link) {
+        mxICell linkSource = link.getSource();
+        mxICell linkTarget = link.getTarget();
+        
+        mxGeometry geometry = (mxGeometry) link.getGeometry().clone();
+        List<mxPoint> points = geometry.getPoints();
+
+        if (points != null) {
+            Collections.reverse(points);
+        }
+        getModel().setGeometry(link, geometry);
+        // reverse the source and target
+        mxGraphModel.setTerminals(getModel(),link, linkTarget, linkSource);
     }
 
     /**
@@ -1604,7 +1647,7 @@ public class XcosDiagram extends ScilabGraph {
     @Override
     public boolean isCellDeletable(final Object cell) {
         final boolean isALockedBLock = cell instanceof BasicBlock && ((BasicBlock) cell).isLocked();
-        
+
         if (isALockedBLock) {
             return false;
         }
@@ -1890,7 +1933,7 @@ public class XcosDiagram extends ScilabGraph {
 
         info(XcosMessages.SAVING_DIAGRAM);
         if (fileName == null) {
-            final FileChooser fc = SaveAsAction.createFileChooser();                
+            final FileChooser fc = SaveAsAction.createFileChooser();
             SaveAsAction.configureFileFilters(fc);
             ConfigurationManager.configureCurrentDirectory(fc);
             if (getSavedFile() != null) {
@@ -1911,14 +1954,14 @@ public class XcosDiagram extends ScilabGraph {
                         escaped = escaped.replace(c, '-');
                     }
                     fc.setInitialFileName(escaped);
-                }             
+                }
             }
             fc.displayAndWait();
             String[] selection = fc.getSelection();
             if (selection.length==0 || selection[0] == "") {
-                return isSuccess;   
+                return isSuccess;
             }
-            writeFile = new File(selection[0]);             
+            writeFile = new File(selection[0]);
         }
 
         /* Extension/format update */
@@ -2006,13 +2049,7 @@ public class XcosDiagram extends ScilabGraph {
         JavaController controller = new JavaController();
         String[] property = {""};
 
-        if (getKind() == Kind.DIAGRAM) {
-            controller.getObjectProperty(getUID(), getKind(), ObjectProperties.NAME, property);
-        } else { // Kind.BLOCK
-            // use the one-line description
-            controller.getObjectProperty(getUID(), getKind(), ObjectProperties.DESCRIPTION, property);
-        }
-
+        controller.getObjectProperty(getUID(), getKind(), ObjectProperties.NAME, property);
         if (property[0].isEmpty()) {
             return super.getTitle();
         } else {
@@ -2320,12 +2357,25 @@ public class XcosDiagram extends ScilabGraph {
             .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
         }
 
+        controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.GEOMETRY, vecValue);
+        result.append(XcosMessages.TOOLTIP_GEOMETRY).append(ScilabGraphConstants.HTML_BEGIN_CODE);
+        appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        for (mxICell parent = o.getParent(); parent instanceof XcosCell; parent = parent.getParent())
+        {
+            XcosCell cellParent = (XcosCell) parent;
+            controller.getObjectProperty(cellParent.getUID(), cellParent.getKind(), ObjectProperties.GEOMETRY, vecValue);
+            result.append(ScilabGraphConstants.HTML_NEWLINE);
+            appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        }
+        result.append(ScilabGraphConstants.HTML_END_CODE);
+
         result.append(ScilabGraphConstants.HTML_END);
         return result.toString();
     }
 
     private String getToolTipForCell(final BasicPort o) {
         JavaController controller = new JavaController();
+        VectorOfDouble vecValue = new VectorOfDouble();
         boolean[] boolValue = {false};
         String[] strValue = {""};
         VectorOfInt intVecValue = new VectorOfInt();
@@ -2357,6 +2407,18 @@ public class XcosDiagram extends ScilabGraph {
         appendReduced(result, strValue[0])
         .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
 
+        controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.GEOMETRY, vecValue);
+        result.append(XcosMessages.TOOLTIP_GEOMETRY).append(ScilabGraphConstants.HTML_BEGIN_CODE);
+        appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        for (mxICell parent = o.getParent(); parent instanceof XcosCell; parent = parent.getParent())
+        {
+            XcosCell cellParent = (XcosCell) parent;
+            controller.getObjectProperty(cellParent.getUID(), cellParent.getKind(), ObjectProperties.GEOMETRY, vecValue);
+            result.append(ScilabGraphConstants.HTML_NEWLINE);
+            appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        }
+        result.append(ScilabGraphConstants.HTML_END_CODE);
+
         result.append(ScilabGraphConstants.HTML_END);
         return result.toString();
     }
@@ -2365,6 +2427,7 @@ public class XcosDiagram extends ScilabGraph {
         JavaController controller = new JavaController();
         long[] longValue = {0l};
         String[] strValue = {""};
+        VectorOfDouble vecValue = new VectorOfDouble();
         VectorOfInt intVecValue = new VectorOfInt();
 
         StringBuilder result = new StringBuilder();
@@ -2399,6 +2462,18 @@ public class XcosDiagram extends ScilabGraph {
         appendReduced(result, strValue[0])
         .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
 
+        controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.GEOMETRY, vecValue);
+        result.append(XcosMessages.TOOLTIP_GEOMETRY).append(ScilabGraphConstants.HTML_BEGIN_CODE);
+        appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        for (mxICell parent = o.getParent(); parent instanceof XcosCell; parent = parent.getParent())
+        {
+            XcosCell cellParent = (XcosCell) parent;
+            controller.getObjectProperty(cellParent.getUID(), cellParent.getKind(), ObjectProperties.GEOMETRY, vecValue);
+            result.append(ScilabGraphConstants.HTML_NEWLINE);
+            appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        }
+        result.append(ScilabGraphConstants.HTML_END_CODE);
+
         result.append(ScilabGraphConstants.HTML_END);
         return result.toString();
     }
@@ -2406,6 +2481,7 @@ public class XcosDiagram extends ScilabGraph {
     private String getToolTipForCell(final XcosCell o) {
         JavaController controller = new JavaController();
         String[] strValue = {""};
+        VectorOfDouble vecValue = new VectorOfDouble();
 
         StringBuilder result = new StringBuilder();
         result.append(ScilabGraphConstants.HTML_BEGIN);
@@ -2413,7 +2489,7 @@ public class XcosDiagram extends ScilabGraph {
         result.append(ScilabGraphConstants.HTML_BEGIN_CODE);
         appendReduced(result, "[ " + o.getUID() + " , " + o.getKind().name() + " ]")
         .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
-        
+
         controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.NAME, strValue);
         result.append(ScilabGraphConstants.HTML_BEGIN_CODE);
         result.append(strValue[0])
@@ -2427,6 +2503,18 @@ public class XcosDiagram extends ScilabGraph {
         result.append(XcosMessages.TOOLTIP_STYLE).append(ScilabGraphConstants.HTML_BEGIN_CODE);
         appendReduced(result, strValue[0])
         .append(ScilabGraphConstants.HTML_END_CODE).append(ScilabGraphConstants.HTML_NEWLINE);
+
+        controller.getObjectProperty(o.getUID(), o.getKind(), ObjectProperties.GEOMETRY, vecValue);
+        result.append(XcosMessages.TOOLTIP_GEOMETRY).append(ScilabGraphConstants.HTML_BEGIN_CODE);
+        appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        for (mxICell parent = o.getParent(); parent instanceof XcosCell; parent = parent.getParent())
+        {
+            XcosCell cellParent = (XcosCell) parent;
+            controller.getObjectProperty(cellParent.getUID(), cellParent.getKind(), ObjectProperties.GEOMETRY, vecValue);
+            result.append(ScilabGraphConstants.HTML_NEWLINE);
+            appendReduced(result, ScilabTypeCoder.toString(vecValue));
+        }
+        result.append(ScilabGraphConstants.HTML_END_CODE);
 
         result.append(ScilabGraphConstants.HTML_END);
         return result.toString();

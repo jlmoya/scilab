@@ -23,39 +23,39 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/BIGSOM_f.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_BIGSOM_f">
+    <refsection xml:id="Contents_BIGSOM_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_BIGSOM_f">Description</xref>
+                <para><link linkend="Description_BIGSOM_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_BIGSOM_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_BIGSOM_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_BIGSOM_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_BIGSOM_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_BIGSOM_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_BIGSOM_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_BIGSOM_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_BIGSOM_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_BIGSOM_f">Exemple</xref>
+                <para><link linkend="Example_BIGSOM_f">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_BIGSOM_f">Voir aussi</xref>
+                <para><link linkend="Seealso_BIGSOM_f">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_BIGSOM_f">
+    <refsection xml:id="Description_BIGSOM_f">
         <title>Description</title>
         <para>
             Ce bloc effectue l'addition ou la soustraction de ses entrées. L'utilisateur peut
@@ -67,10 +67,10 @@
         <para/>
         <informaltable border="1" cellpadding="2">
             <tr>
-                <td align="left" width="18%">
+                <td align="left">
                     <emphasis role="bold">Nombre d'entrées</emphasis>
                 </td>
-                <td align="left" width="22%">
+                <td align="left">
                     <emphasis role="bold">Opération</emphasis>
                 </td>
                 <td align="left">
@@ -96,15 +96,14 @@
             </tr>
         </informaltable>
     </refsection>
-    <refsection id="Dialogbox_BIGSOM_f">
+    <refsection xml:id="Dialogbox_BIGSOM_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/BIGSOM_f_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -115,7 +114,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_BIGSOM_f">
+    <refsection xml:id="Defaultproperties_BIGSOM_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -191,7 +190,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_BIGSOM_f">
+    <refsection xml:id="Interfacingfunction_BIGSOM_f">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -199,7 +198,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_BIGSOM_f">
+    <refsection xml:id="Computationalfunction_BIGSOM_f">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -207,7 +206,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_BIGSOM_f">
+    <refsection xml:id="Example_BIGSOM_f">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/mathoperations_pal/BIGSOM_f_Example.zcos">
@@ -219,14 +218,14 @@
             </link>
         </para>
     </refsection>
-    <refsection id="Seealso_BIGSOM_f" role="see also">
+    <refsection xml:id="Seealso_BIGSOM_f" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="SUMMATION">SUMMATION</link>
+                <para><link linkend="SUMMATION">SUMMATION</link></para>
             </listitem>
             <listitem>
-                <link linkend="SUM_f">SUM_f</link>
+                <para><link linkend="SUM_f">SUM_f</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

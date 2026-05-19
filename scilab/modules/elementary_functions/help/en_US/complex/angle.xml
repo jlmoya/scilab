@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="angle" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="angle" xml:lang="en">
     <refnamediv>
         <refname>angle</refname>
         <refpurpose>
@@ -27,23 +24,25 @@
             A = angle(Z)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>Z</term>
                 <listitem>
-                    Array of real or complex numbers.
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of real or complex numbers.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    Array of real numbers in (-π,π], of size(Z): the arguments (phases) of
-                    respective Z elements, in radians.
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of real numbers in (-π,π], of size(Z): the arguments (phases) of
+                        respective Z elements, in radians.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -56,16 +55,21 @@
             <emphasis role="bold">Special cases</emphasis>:
             <itemizedlist>
                 <listitem>
-                    <literal>angle(0)</literal> is <literal>0</literal>.
+                     <para><literal>angle(0)</literal> is <literal>0</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    For any <varname>Z</varname> element whose real or an imaginary of both parts
-                    is <literal>%nan</literal>, <literal>angle(Z)</literal> is <literal>%nan</literal>.
+                     <para>
+                        For any <varname>Z</varname> element whose real or an imaginary of both parts
+                        is <literal>%nan</literal>, <literal>angle(Z)</literal> is <literal>%nan</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    For any <varname>Z</varname> element whose both real and imaginary parts are
-                    infinite (positive or negative),
-                    <literal>angle(Z)</literal> is <literal>%nan</literal>.
+                     <para>
+                        For any <varname>Z</varname> element whose both real and imaginary parts are
+                        infinite (positive or negative),
+                        <literal>angle(Z)</literal> is <literal>%nan</literal>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -148,7 +152,9 @@ angle(z)
             <revision>
                 <revnumber>2023.1</revnumber>
                 <revdescription>
-                    <literal>angle()</literal> introduced.
+                    <para>
+                        <literal>angle()</literal> introduced.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

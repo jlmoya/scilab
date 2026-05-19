@@ -73,7 +73,7 @@ std::vector<std::wstring> ARKODEManager::getAvailableNonLinSolvers()
 void ARKODEManager::parseMethodAndOrder(types::optional_list &opt)
 {
     char errorMsg[256];
-    std::vector<double> defaultRAtolVect = {m_dblDefaultAtol};
+    std::vector<double> defaultRAtolVect = {};
     std::vector<int> emptyVect = {};
 
     // specific ARKODe options
@@ -339,7 +339,14 @@ bool ARKODEManager::initialize(char *errorMsg)
     ARKodeSetInterpolantDegree(m_prob_mem, m_iInterpolationDegree);
 
     // Absolute residual tolerance (used by ARKODE only)
-    if (m_dblVecRAtol.size() > 0)
+    // Only meaningful when a mass matrix is present.
+    // Without a mass matrix the residual equals the RHS and shares units with the
+    // solution, so rwt must equal ewt (SUNDIALS default when ARKodeResVtolerance is
+    // never called). Calling it unconditionally sets rwt_is_ewt = SUNFALSE with
+    // ratol=1e-6 while atol may be much tighter (e.g. 1e-9), making the
+    // finite-difference Jacobian step 1000× too small at y=0 and causing NaN
+    // columns -> Newton divergence -> random integration failure on Linux.
+    if (m_dblVecRAtol.size() > 0 && m_bHas[MASS] == true)
     {
         m_N_VectorRAtol = N_VClone(m_N_VectorY);
         if (m_odeIsComplex)
@@ -347,15 +354,15 @@ bool ARKODEManager::initialize(char *errorMsg)
             m_dblVecRAtol.resize(m_iNbRealEq);
             for (int i=0; i<m_iNbEq; i++)
             {
-                m_dblVecRAtol[i+m_iNbEq] = m_dblVecRAtol[i];
+               m_dblVecRAtol[i+m_iNbEq] = m_dblVecRAtol[i];
             }
         }
         std::copy(m_dblVecRAtol.begin(), m_dblVecRAtol.end(), N_VGetArrayPointer(m_N_VectorRAtol));
-    }
-    if (ARKodeResVtolerance(m_prob_mem, m_N_VectorRAtol) < 0)
-    {
-        sprintf(errorMsg, "ARKStepResVtolerance error");
-        return true;
+        if (ARKodeResVtolerance(m_prob_mem, m_N_VectorRAtol) < 0)
+        {
+            sprintf(errorMsg, "ARKStepResVtolerance error");
+            return true;
+        }
     }
 
     return false;

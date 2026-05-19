@@ -13,49 +13,46 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATRESH" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATRESH" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATRESH</refname>
         <refpurpose>Remise en forme de matrice</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATRESH.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATRESH">
+    <refsection xml:id="Contents_MATRESH">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATRESH">Description</xref>
+                <para><link linkend="Description_MATRESH">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATRESH">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATRESH">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATRESH">Exemple</link>
+                <para><link linkend="MATRESH">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATRESH">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATRESH">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATRESH">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATRESH">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATRESH">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATRESH">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATRESH">Voir aussi</xref>
+                <para><link linkend="Seealso_MATRESH">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATRESH">
+    <refsection xml:id="Description_MATRESH">
         <title>Description</title>
         <para>
             Le bloc RESHAPE change les dimensions de la matrice ou du vecteur d'entrée vers d'autres
@@ -68,20 +65,20 @@
             La fonction équivalente de ce bloc dans Scilab est <link linkend="matrix">matrix</link>.
         </para>
         <warning>
-            Les deux dimensions de sortie doivent être spécifiées explicitement.
-            La valeur spéciale -1 utilisable avec <link linkend="matrix">matrix</link> n'est pas
-            utilisable pour ce bloc.
+            <para>
+                Les deux dimensions de sortie doivent être spécifiées explicitement.
+                La valeur spéciale -1 utilisable avec <link linkend="matrix">matrix</link> n'est pas
+                utilisable pour ce bloc.
+            </para>
         </warning>
     </refsection>
-    <refsection id="Dialogbox_MATRESH">
+    <refsection xml:id="Dialogbox_MATRESH">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATRESH_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATRESH_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -109,15 +106,15 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATRESH">
+    <refsection xml:id="Example_MATRESH">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             u=[1 2 3 4;5 6 7 8]
             Quand la sortie désirée est [1;6] la sortie est :
             y=[1 2 3 4 5 6]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATRESH">
+    <refsection xml:id="Defaultproperties_MATRESH">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -190,7 +187,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATRESH">
+    <refsection xml:id="Interfacingfunction_MATRESH">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -198,25 +195,29 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATRESH">
+    <refsection xml:id="Computationalfunction_MATRESH">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_reshape.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_reshape.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_reshape.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_reshape.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_MATRESH" role="see also">
+    <refsection xml:id="Seealso_MATRESH" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="EXTRACT">EXTRACT</link>
+                <para><link linkend="EXTRACT">EXTRACT</link></para>
             </listitem>
             <listitem>
-                <link linkend="matrix">matrix (Fonction Scilab)</link>
+                <para><link linkend="matrix">matrix (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="pathsep">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="pathsep">
     <refnamediv>
         <refname>pathsep</refname>
         <refpurpose>предоставляет разделитель путей в переменной среды PATH текущей ОС</refpurpose>
@@ -31,9 +28,10 @@
             <varlistentry>
                 <term>s</term>
                 <listitem>
-                    символ: <literal> ";" </literal> в Windows, или <literal> ":" </literal> в Linux.
-                    <para/>
-                </listitem>
+                     <para>
+                        символ: <literal> ";" </literal> в Windows, или <literal> ":" </literal> в Linux.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -74,4 +72,3 @@ tokens(getenv("PATH"), pathsep())
         </simplelist>
     </refsection>
 </refentry>
-

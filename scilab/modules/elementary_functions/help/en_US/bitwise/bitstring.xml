@@ -11,7 +11,7 @@
     <title>Syntax</title>
     <synopsis>str = bitstring(x)</synopsis>
   </refsynopsisdiv>
-  <refsection>
+  <refsection role="arguments">
     <title>Arguments</title>
     <variablelist>
       <varlistentry>
@@ -78,14 +78,16 @@
   </refsection>
    <refsection>
        <title>References</title>
-Implementation of IEEE Standard for Floating-Point Arithmetic can be found at <ulink url="https://en.wikipedia.org/wiki/IEEE_754">https://en.wikipedia.org/wiki/IEEE_754</ulink>
+       <para>
+          Implementation of IEEE Standard for Floating-Point Arithmetic can be found at <link xlink:href="https://en.wikipedia.org/wiki/IEEE_754">https://en.wikipedia.org/wiki/IEEE_754</link>
+       </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
        <title>History</title>
       <revhistory>
         <revision>
           <revnumber>6.1</revnumber>
-          <revdescription>Function bitstring added</revdescription>
+          <revremark>Function bitstring added</revremark>
         </revision>
       </revhistory>
     </refsection>

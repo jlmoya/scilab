@@ -85,7 +85,7 @@ int CreateBooleanVariable(void* pvApiCtx, int iVar, int integerType, matvar_t* m
         }
         else
         {
-            if ((dblPtr = (double *)MALLOC(sizeof(double) * nbRow * nbCol)) == NULL)
+            if ((dblPtr = (double *)CALLOC(nbRow * nbCol, sizeof(double))) == NULL)
             {
                 Scierror(999, _("%s: No more memory.\n"), "CreateBooleanVariable");
                 return FALSE;

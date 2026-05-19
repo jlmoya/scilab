@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/RICC.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_RICC">
+    <refsection xml:id="Contents_RICC">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_RICC">Description</xref>
+                <para><link linkend="Description_RICC">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_RICC">Paramètres</xref>
+                <para><link linkend="Dialogbox_RICC">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_RICC">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_RICC">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_RICC">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_RICC">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_RICC">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_RICC">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_RICC">Voir aussi</xref>
+                <para><link linkend="Seealso_RICC">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_RICC">
+    <refsection xml:id="Description_RICC">
         <title>Description</title>
         <para>
             Le bloc calcule la solution de l'équation de Riccati en utilisant différentes méthodes et les deux cas
@@ -104,15 +104,14 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_RICC">
+    <refsection xml:id="Dialogbox_RICC">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/RICC_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -137,7 +136,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_RICC">
+    <refsection xml:id="Defaultproperties_RICC">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -216,7 +215,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_RICC">
+    <refsection xml:id="Interfacingfunction_RICC">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -224,7 +223,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_RICC">
+    <refsection xml:id="Computationalfunction_RICC">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -232,14 +231,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_RICC" role="see also">
+    <refsection xml:id="Seealso_RICC" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="ricc">ricc (Fonction Scilab)</link>
+                <para><link linkend="ricc">ricc (Fonction Scilab)</link></para>
             </listitem>
             <listitem>
-                <link linkend="riccati">riccati (Fonction Scilab)</link>
+                <para><link linkend="riccati">riccati (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

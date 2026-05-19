@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="isoview">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="isoview">
     <refnamediv>
         <refname>isoview</refname>
         <refpurpose>tunes isometric rendering of graphical axes
@@ -39,17 +36,19 @@
             <varlistentry>
                 <term>"on" | "off" | &lt;none&gt;</term>
                 <listitem>
-                    Enables or disables or switches the isometric rendering for all considered axes.
-                    <para/>
-                </listitem>
+                     <para>
+                        Enables or disables or switches the isometric rendering for all considered axes.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>idGraphics</term>
                 <listitem>
-                    Vector of graphic handles. All the related axes are processed.
-                    By default, the current axes is processed.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vector of graphic handles. All the related axes are processed.
+                        By default, the current axes is processed.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -78,31 +77,44 @@
             to each graphic object listed in the vector <varname>idGraphics</varname>:
             <itemizedlist>
                 <listitem>
-                    If <varname>idGraphics(i)</varname> is a figure's handle,
-                    all its Axes are considered.
+                     <para>
+                        If <varname>idGraphics(i)</varname> is a figure's handle,
+                        all its Axes are considered.
+                    </para>
                 </listitem>
                 <listitem>
-                    If <varname>idGraphics(i)</varname> is an Axes,
-                    it is considered as is.
+                     <para>
+                        If <varname>idGraphics(i)</varname> is an Axes,
+                        it is considered as is.
+                    </para>
                 </listitem>
                 <listitem>
-                    If <varname>idGraphics(i)</varname> is the handle of a
-                    sub-axes component (such as a polyline, a compound, etc),
-                    its hosting axes is considered.
+                     <para>
+                        If <varname>idGraphics(i)</varname> is the handle of a
+                        sub-axes component (such as a polyline, a compound, etc),
+                        its hosting axes is considered.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
         <note>
-            The current axes graphical entity is still the same after calling <literal>isoview(..)</literal>.
-        </note>
-        <note>To plot some curves directly in isometric mode without calling
-            <function>isoview</function> afterwards, the <literal>plot2d(...,frameflag=4)</literal>
-            option may be used at call time.
-        </note>
-        <refsect3>
-            <title>Rendering according to .isoview and .cube_scaling settings</title>
             <para>
-            <table align="middle">
+                The current axes graphical entity is still the same after calling <literal>isoview(..)</literal>.
+            </para>
+        </note>
+        <note>
+            <para>
+                To plot some curves directly in isometric mode without calling
+                <function>isoview</function> afterwards, the <literal>plot2d(...,frameflag=4)</literal>
+                option may be used at call time.
+            </para>
+        </note>
+
+        <para>
+            <emphasis role="bold">Rendering according to .isoview and .cube_scaling settings</emphasis>
+        </para>
+        <para>
+            <table>
                 <tr>
                     <th>isoview(..)</th><th>gca().isoview</th>
                                        <th>gca().cube_scaling</th>
@@ -119,18 +131,17 @@
                                 <td>independent X, Y and Z scales. In 3D, improved aspect ratios when X/Y/Z ranges are very different.</td>
                 </tr>
                 <tr>
-                    <th></th><td align="center">off</td>
+                    <th/><td align="center">off</td>
                             <td align="center">off</td>
                             <td>Independent X, Y, Z scales. In 3D, rendered X/Y/Z scales ratios are close to the data ones</td>
                 </tr>
                 <tr>
-                    <th></th><td align="center">on</td>
+                    <th/><td align="center">on</td>
                              <td align="center">on</td>
                              <td>Scales are such that the axes looks square or cubic</td>
                 </tr>
             </table>
-            </para>
-        </refsect3>
+        </para>
     </refsection>
     <refsection role="examples">
         <title>Examples</title>
@@ -187,7 +198,7 @@ isoview off
 isoview(gcf(),"off")
 isoview([a1 a2 a3], "on")
              ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             t = [0:0.1:2*%pi]';
             clf
             f = gcf();
@@ -224,7 +235,7 @@ isoview([a1 a2 a3], "on")
             plot3d(xx, yy, zz, alpha=60, flag=[color("green") 8 4])
             zlabel("isoview on", "rotation", -90, "fontsize",4)
             isoview
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Using plot2d(..., frameflag=4) :
 r = linspace(1,10,200);
@@ -238,7 +249,7 @@ subplot(1,2,2)
 plot2d(r.*sin(t),r.*cos(t),frameflag=4)
 xtitle("with frameflag=4")
              ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             r = linspace(1,10,200);
             t = r*3;
             scf();
@@ -249,7 +260,7 @@ xtitle("with frameflag=4")
             subplot(1,2,2)
             plot2d(r.*sin(t),r.*cos(t),frameflag=4)
             xtitle("with frameflag=4")
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -268,26 +279,34 @@ xtitle("with frameflag=4")
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>input flags "on"|"off" added.</listitem>
-                        <listitem>input parameters &lt;none&gt; or idGraphics added.</listitem>
-                        <listitem>
-                            <literal>isoview(xmin, xmax, ymin, ymax)</literal> marked as deprecated.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>input flags "on"|"off" added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>input parameters &lt;none&gt; or idGraphics added.</para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>isoview(xmin, xmax, ymin, ymax)</literal> marked as deprecated.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     "isoview on" now forces .cube_scaling="off", and
                     "isoview off" forces .cube_scaling="on".
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1</revnumber>
                 <revdescription>
-                    The syntax <literal>isoview(xmin, xmax, ymin, ymax)</literal> is no longer available.
+                    <para>
+                        The syntax <literal>isoview(xmin, xmax, ymin, ymax)</literal> is no longer available.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

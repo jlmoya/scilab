@@ -42,4 +42,6 @@ Source: modules\{#HDF5}\etc\{#HDF5}.start; DestDir: {app}\modules\{#HDF5}\etc; C
 Source: modules\{#HDF5}\demos\*.*; DestDir: {app}\modules\{#HDF5}\demos; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#HDF5}\tests\*.*; DestDir: {app}\modules\{#HDF5}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
+;
+Source: modules\{#HDF5}\help\*.*; DestDir: {app}\modules\{#HDF5}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

@@ -48,6 +48,14 @@ format(20);
 f = format();
 assert_checkequal(f, [0 20]);
 
+format("eng", 10);
+f = format();
+assert_checkequal(f, [2 10]);
+
+format(20);
+f = format();
+assert_checkequal(f, [2 20]);
+
 format("e", 10);
 f = format();
 assert_checkequal(f, [0 10]);
@@ -55,6 +63,10 @@ assert_checkequal(f, [0 10]);
 format("v", 10);
 f = format();
 assert_checkequal(f, [1 10]);
+
+format("eng", 10);
+f = format();
+assert_checkequal(f, [2 10]);
 
 format("v");
 f = format();
@@ -64,6 +76,11 @@ format("e");
 f = format();
 assert_checkequal(f, [0 10]);
 
+format("eng");
+f = format();
+assert_checkequal(f, [2 10]);
+
+
 // Test which failed before: https://codereview.scilab.org/#/c/16811/
 format("v", 10);
 16278*12286
@@ -72,3 +89,10 @@ format(11);
 
 format(2);
 1.1
+
+// Compare "e" vs "eng" format
+A = 5.123456789;
+format("e", 8);
+A*10.^-(0:10)'
+format("eng");
+A*10.^-(0:10)'

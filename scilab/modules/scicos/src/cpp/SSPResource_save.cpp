@@ -809,7 +809,6 @@ SSPResource::Result SSPResource::ChildrenCategories::load_children(Controller& c
 }
 SSPResource::Result SSPResource::ChildrenCategories::load_ports(Controller& controller, model::BaseObject* o)
 {
-    Result status = Result::Ok();
     int index = 0;
 
     std::vector<known_t> all_known;
@@ -1120,7 +1119,7 @@ SSPResource::Result SSPResource::writeSystem(xmlTextWriterPtr writer, model::Bas
     auto logger = get_or_allocate_logger();
     if (logger->getLevel() <= LOG_DEBUG)
     {
-        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %ld", o->id()));
+        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %lld", o->id()));
         if (status.error())
         {
             return status;
@@ -1345,7 +1344,7 @@ SSPResource::Result SSPResource::writeConnector(xmlTextWriterPtr writer, const C
     auto logger = get_or_allocate_logger();
     if (logger->getLevel() <= LOG_DEBUG)
     {
-        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %ld", port->id()));
+        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %lld", port->id()));
         if (status.error())
         {
             return status;
@@ -1477,7 +1476,6 @@ SSPResource::Result SSPResource::writeType(xmlTextWriterPtr writer, enum portKin
     }
 
     // write rows
-    bool withinAnnotationBlock = false;
     if (rows > 1 || (rows == 1 && columns > 1))
     {
         // SSP supported dimension, use the Dimension element for rows
@@ -1873,7 +1871,7 @@ SSPResource::Result SSPResource::writeComponent(xmlTextWriterPtr writer, model::
     auto logger = get_or_allocate_logger();
     if (logger->getLevel() <= LOG_DEBUG)
     {
-        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %ld", component->id()));
+        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %lld", component->id()));
         if (status.error())
         {
             return status;
@@ -2340,6 +2338,19 @@ SSPResource::Result SSPResource::writeConnection(xmlTextWriterPtr writer, model:
         return status;
     }
 
+    if (!controller.getObjectProperty(connection, NAME, _strShared))
+    {
+        return Result::Error(connection, NAME);
+    }
+    if (_strShared != "")
+    {
+        status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_id], BAD_CAST(_strShared.c_str())));
+        if (status.error())
+        {
+            return status;
+        }
+    }
+
     if (!controller.getObjectProperty(connection, DESCRIPTION, _strShared))
     {
         return Result::Error(connection, DESCRIPTION);
@@ -2357,7 +2368,7 @@ SSPResource::Result SSPResource::writeConnection(xmlTextWriterPtr writer, model:
     auto logger = get_or_allocate_logger();
     if (logger->getLevel() <= LOG_DEBUG)
     {
-        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %ld : from ScicosID %ld to ScicosID %ld", connection->id(), sourcePort->id(), destinationPort->id()));
+        status = Result::FromXML(xmlTextWriterWriteFormatComment(writer, "ScicosID %lld : from ScicosID %lld to ScicosID %lld", connection->id(), sourcePort->id(), destinationPort->id()));
         if (status.error())
         {
             return status;
@@ -2898,92 +2909,10 @@ SSPResource::Result SSPResource::writeAnnotations(xmlTextWriterPtr writer, model
     // write LABEL : a reference to an Xcos Annotation
     if (o->kind() == BLOCK || o->kind() == LINK)
     {
-        ScicosID label{};
-        if (!controller.getObjectProperty(o, LABEL, label))
+        status = writeAnnotationLabel(writer, o);
+        if (status.error())
         {
-            return Result::Error(o, LABEL);
-        }
-        if (label != ScicosID())
-        {
-            model::BaseObject* labelObj = controller.getBaseObject(label);
-            if (labelObj == nullptr)
-            {
-                return Result::Error(o, LABEL);
-            }
-
-            status = Result::FromXML(xmlTextWriterStartElementNS(writer, rawKnownStr[e_xcos], rawKnownStr[e_label], nullptr));
-            if (status.error())
-            {
-                return status;
-            }
-
-            status = Result::FromXML(xmlTextWriterStartElementNS(writer, rawKnownStr[e_xcos], rawKnownStr[e_geometry], nullptr));
-            if (status.error())
-            {
-                return status;
-            }
-            {
-                if (!controller.getObjectProperty(labelObj, GEOMETRY, _vecDblShared))
-                {
-                    return Result::Error(labelObj, GEOMETRY);
-                }
-                if (_vecDblShared.size() != 4)
-                {
-                    return Result::Error(labelObj, GEOMETRY);
-                }
-
-                status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_x], BAD_CAST(to_string(_vecDblShared[0]).c_str())));
-                if (status.error())
-                {
-                    return status;
-                }
-
-                status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_y], BAD_CAST(to_string(_vecDblShared[1]).c_str())));
-                if (status.error())
-                {
-                    return status;
-                }
-
-                status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_width], BAD_CAST(to_string(_vecDblShared[2]).c_str())));
-                if (status.error())
-                {
-                    return status;
-                }
-
-                status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_height], BAD_CAST(to_string(_vecDblShared[3]).c_str())));
-                if (status.error())
-                {
-                    return status;
-                }
-
-                status = Result::FromXML(xmlTextWriterEndElement(writer));
-                if (status.error())
-                {
-                    return status;
-                }
-            }
-
-            status = writeAnnotationObjectProperty(writer, labelObj, DESCRIPTION, e_description, _strShared);
-            if (status.error())
-            {
-                return status;
-            }
-            status = writeAnnotationObjectProperty(writer, labelObj, FONT, e_font, _strShared);
-            if (status.error())
-            {
-                return status;
-            }
-            status = writeAnnotationObjectProperty(writer, labelObj, FONT_SIZE, e_font_size, _strShared);
-            if (status.error())
-            {
-                return status;
-            }
-
-            status = Result::FromXML(xmlTextWriterEndElement(writer));
-            if (status.error())
-            {
-                return status;
-            }
+            return status;
         }
     }
 
@@ -3089,6 +3018,101 @@ SSPResource::Result SSPResource::writeAnnotations(xmlTextWriterPtr writer, model
     {
         return status;
     }
+    return Result::Ok();
+}
+
+SSPResource::Result SSPResource::writeAnnotationLabel(xmlTextWriterPtr writer, model::BaseObject* o)
+{
+    Result status = Result::Ok();
+
+    ScicosID label{};
+    if (!controller.getObjectProperty(o, LABEL, label))
+    {
+        return Result::Error(o, LABEL);
+    }
+    if (label != ScicosID())
+    {
+        model::BaseObject* labelObj = controller.getBaseObject(label);
+        if (labelObj == nullptr)
+        {
+            return Result::Error(o, LABEL);
+        }
+
+        status = Result::FromXML(xmlTextWriterStartElementNS(writer, rawKnownStr[e_xcos], rawKnownStr[e_label], nullptr));
+        if (status.error())
+        {
+            return status;
+        }
+
+        status = Result::FromXML(xmlTextWriterStartElementNS(writer, rawKnownStr[e_xcos], rawKnownStr[e_geometry], nullptr));
+        if (status.error())
+        {
+            return status;
+        }
+        {
+            if (!controller.getObjectProperty(labelObj, GEOMETRY, _vecDblShared))
+            {
+                return Result::Error(labelObj, GEOMETRY);
+            }
+            if (_vecDblShared.size() != 4)
+            {
+                return Result::Error(labelObj, GEOMETRY);
+            }
+
+            status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_x], BAD_CAST(to_string(_vecDblShared[0]).c_str())));
+            if (status.error())
+            {
+                return status;
+            }
+
+            status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_y], BAD_CAST(to_string(_vecDblShared[1]).c_str())));
+            if (status.error())
+            {
+                return status;
+            }
+
+            status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_width], BAD_CAST(to_string(_vecDblShared[2]).c_str())));
+            if (status.error())
+            {
+                return status;
+            }
+
+            status = Result::FromXML(xmlTextWriterWriteAttribute(writer, rawKnownStr[e_height], BAD_CAST(to_string(_vecDblShared[3]).c_str())));
+            if (status.error())
+            {
+                return status;
+            }
+
+            status = Result::FromXML(xmlTextWriterEndElement(writer));
+            if (status.error())
+            {
+                return status;
+            }
+        }
+
+        status = writeAnnotationObjectProperty(writer, labelObj, DESCRIPTION, e_description, _strShared);
+        if (status.error())
+        {
+            return status;
+        }
+        status = writeAnnotationObjectProperty(writer, labelObj, FONT, e_font, _strShared);
+        if (status.error())
+        {
+            return status;
+        }
+        status = writeAnnotationObjectProperty(writer, labelObj, FONT_SIZE, e_font_size, _strShared);
+        if (status.error())
+        {
+            return status;
+        }
+
+        status = Result::FromXML(xmlTextWriterEndElement(writer));
+        if (status.error())
+        {
+            return status;
+        }
+    }
+
     return Result::Ok();
 }
 
@@ -3209,6 +3233,13 @@ SSPResource::Result SSPResource::writeAnnotations(xmlTextWriterPtr writer, const
         }
     }
     status = Result::FromXML(xmlTextWriterEndElement(writer));
+    if (status.error())
+    {
+        return status;
+    }
+
+    // write block LABEL
+    status = writeAnnotationLabel(writer, all_port_info.block);
     if (status.error())
     {
         return status;

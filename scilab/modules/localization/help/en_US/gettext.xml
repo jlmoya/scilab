@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="https://www.scilab.org"
-        xml:lang="en" xml:id="gettext">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="https://www.scilab.org" xml:lang="en" xml:id="gettext">
     <refnamediv>
         <refname>gettext</refname>
         <refpurpose>indexes or/and translates some indexed english messages</refpurpose>
@@ -33,7 +30,7 @@
             .. gettext(domain, ..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection id="gettext_arguments">
+    <refsection xml:id="gettext_arguments" role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -46,8 +43,10 @@
                         <link linkend="printf_conversion">C-like placeholders</link> starting with "%".
                     </para>
                     <warning>
-                        Only standard ASCII characters can be used. Any other extended ASCII or
-                        UTF-8 characters would make gettext() failing.
+                        <para>
+                            Only standard ASCII characters can be used. Any other extended ASCII or
+                            UTF-8 characters would make gettext() failing.
+                        </para>
                     </warning>
                     <para/>
                 </listitem>
@@ -60,7 +59,9 @@
                         translated, in a variable.
                     </para>
                     <warning>
-                        Only standard ASCII characters can be used.
+                        <para>
+                            Only standard ASCII characters can be used.
+                        </para>
                     </warning>
                     <para/>
                 </listitem>
@@ -75,8 +76,10 @@
                         the same sizes.
                     </para>
                     <note>
-                        These messages are labelled <literal>msgstr</literal> and defined in
-                        the ./locales/*.po files. They can include extended ASCII or UTF-8 characters.
+                        <para>
+                            These messages are labelled <literal>msgstr</literal> and defined in
+                            the ./locales/*.po files. They can include extended ASCII or UTF-8 characters.
+                        </para>
                     </note>
                     <para/>
                 </listitem>
@@ -110,8 +113,10 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <refsect3 id="gettext_processing">
-        <title>Harvesting messages and overall processing</title>
+
+        <para>
+            <emphasis role="bold">Harvesting messages and overall processing</emphasis>
+        </para>
         <para>
             <emphasis role="italic">gettext</emphasis> is a free and open external application
             shipped within Scilab to support multilinguism for messages. This support consists in
@@ -258,11 +263,13 @@ gettext(["item#1" ;
                         </table>
                     </para>
                     <important>
-                        For an external module,
-                        <link linkend="tbx_generate_pofile">tbx_generate_pofile()</link>
-                        harvests only <literal>gettext</literal> occurrences that specify a
-                        <varname>domain</varname>. It ignores any call to <literal>gettext</literal>
-                        with only one input argument.
+                        <para>
+                            For an external module,
+                            <link linkend="tbx_generate_pofile">tbx_generate_pofile()</link>
+                            harvests only <literal>gettext</literal> occurrences that specify a
+                            <varname>domain</varname>. It ignores any call to <literal>gettext</literal>
+                            with only one input argument.
+                        </para>
                         <para>
                             Harvesting does not need to beforehand declare the
                             <varname>domain</varname> with
@@ -327,110 +334,117 @@ gettext(["item#1" ;
             for all calls.
         </para>
         <warning>
-            Limitations: There is no way to translate a message
-            <itemizedlist>
-                <listitem>
-                    <para>
-                    in a language other than the current session's one. If this is really required,
-                    the session's language will have to be temporarily switched to the desired
-                    language, then <literal>gettext()</literal> called, and at last the initial
-                    session's language restored.
-                    </para>
-                </listitem>
-                <listitem>
-                    <para>
-                        from a translated version rather than from the message id in english.
-                    </para>
-                </listitem>
-            </itemizedlist>
-        </warning>
-        </refsect3>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <refsect3 id="gettext_msgid">
-            <title>msgid messages</title>
             <para>
-                To be correctly processed, english messages must comply with a few rules:
+                Limitations: There is no way to translate a message
                 <itemizedlist>
                     <listitem>
                         <para>
-                            Literal harvestable messages may be indifferently delimited with single
-                            or double quotes.
-                        </para>
-                        <warning>
-                            When <literal>gettext()</literal> or <literal>_()</literal> is used in
-                            a XML or XSL file such as in the preferences files of an external module,
-                            the literal domain string and the literal message id must no longer be
-                            delimited.
-                            <para/>
-                            For instance, <literal>_(my_domain, My message)</literal>
-                            will be used instead of <literal>_("my_domain", "My message")</literal>.
-                            <para>
-                                In addition, spaces before and after the messageID are then never
-                                taken into account and never belong to the message. For example,
-                                the actual message ID corresponding to
-                                <literal>_(my_domain, My message:  )</literal> is
-                                <literal>"My message:"</literal>, not
-                                <literal>" My message:  "</literal>.
-                            </para>
-                        </warning>
-                    </listitem>
-                    <listitem>
-                        <para>
-                        Double quotes must be avoided in the body of messages. Please use single quotes.
+                        in a language other than the current session's one. If this is really required,
+                        the session's language will have to be temporarily switched to the desired
+                        language, then <literal>gettext()</literal> called, and at last the initial
+                        session's language restored.
                         </para>
                     </listitem>
                     <listitem>
                         <para>
-                        Inner escaped sequences like "\t" "\n" etc are not interpreted, neither by
-                        the <literal>xgettext</literal> scanner nor by the <literal>gettext</literal>
-                        function. They are collected and stored as is in the messages.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>
-                            msgid messages often include some "%" C-like placeholders
-                            aiming to be replaced with some custom input data through
-                            <literal>msprintf()</literal> at run time.
-                            For instance,
-                            <literal>msprintf("Hi %s, could you come at %s today?", "John", "12:30")</literal>
-                            will return <literal>"Hi John, could you come at 12:30 today?"</literal>.
+                            from a translated version rather than from the message id in english.
                         </para>
                     </listitem>
                 </itemizedlist>
             </para>
-        </refsect3>
+        </warning>
+
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <refsect3 id="gettext_msgstr">
-            <title>msgstr translated messages</title>
-            <para>
-                This section will be mainly useful to persons contributing to messages translation.
-            </para>
-            <para>
-                <emphasis role="bold">Special characters and sequences</emphasis>:
-                <orderedlist>
-                    <listitem>
+        <para>
+            <emphasis role="bold">msgid messages</emphasis>
+        </para>
+        <para>
+            To be correctly processed, english messages must comply with a few rules:
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        Literal harvestable messages may be indifferently delimited with single
+                        or double quotes.
+                    </para>
+                    <warning>
+                        <para>
+                            When <literal>gettext()</literal> or <literal>_()</literal> is used in
+                            a XML or XSL file such as in the preferences files of an external module,
+                            the literal domain string and the literal message id must no longer be
+                            delimited.
+                        </para>
+                        <para>
+                            For instance, <literal>_(my_domain, My message)</literal>
+                            will be used instead of <literal>_("my_domain", "My message")</literal>.
+                        </para>
+                        <para>
+                            In addition, spaces before and after the messageID are then never
+                            taken into account and never belong to the message. For example,
+                            the actual message ID corresponding to
+                            <literal>_(my_domain, My message:  )</literal> is
+                            <literal>"My message:"</literal>, not
+                            <literal>" My message:  "</literal>.
+                        </para>
+                    </warning>
+                </listitem>
+                <listitem>
+                    <para>
+                    Double quotes must be avoided in the body of messages. Please use single quotes.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                    Inner escaped sequences like "\t" "\n" etc are not interpreted, neither by
+                    the <literal>xgettext</literal> scanner nor by the <literal>gettext</literal>
+                    function. They are collected and stored as is in the messages.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        msgid messages often include some "%" C-like placeholders
+                        aiming to be replaced with some custom input data through
+                        <literal>msprintf()</literal> at run time.
+                        For instance,
+                        <literal>msprintf("Hi %s, could you come at %s today?", "John", "12:30")</literal>
+                        will return <literal>"Hi John, could you come at 12:30 today?"</literal>.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <para>
+            <emphasis role="bold">msgstr translated messages</emphasis>
+        </para>
+        <para>
+            This section will be mainly useful to persons contributing to messages translation.
+        </para>
+        <para>
+            <emphasis role="bold">Special characters and sequences</emphasis>:
+            <orderedlist>
+                <listitem>
+                        <para>
                         When a <emphasis role="bold">trailing \n</emphasis> is used in the
                         <literal>msgid</literal>, it must also end the <literal>msgstr</literal>
                         translated message.
-                        <para/>
+                        </para>
                     </listitem>
-                    <listitem>
-                        <emphasis role="bold">' single quotes</emphasis> are regular characters in
+                <listitem>
+                        <para><emphasis role="bold">' single quotes</emphasis> are regular characters in
                         <literal>msgstr</literal> strings. They do NOT need any special care or
                         protection.
-                        <para/>
+                        </para>
                     </listitem>
-                    <listitem>
-                        <emphasis role="bold">" double quotes</emphasis> must be protected with \".
-                        <para/>
+                <listitem>
+                        <para><emphasis role="bold">" double quotes</emphasis> must be protected with \".
+                        </para>
                     </listitem>
-                    <listitem>
-                        <emphasis role="bold">
+                <listitem>
+                        <para><emphasis role="bold">
                         When some C-like placeholders like %s, %d, %f, or some C-like escaped
                         sequences \n, \r, or \t</emphasis> are used in the <literal>msgid</literal>
                         string, this means that later in the code the corresponding
-                        <varname>translated</varname>
-                        <literal>msgstr</literal> string is processed with <literal>msprintf()</literal>
+                        <varname>translated</varname><literal>msgstr</literal> string is processed with <literal>msprintf()</literal>
                         to replace placeholders with actual values, and/or to interpret \n as a
                         new_line character, \r as a carriage-return, \t as a tabulation, etc. 
                         Hence, all the <link linkend="printf_conversion">C-like printf</link> rules
@@ -438,61 +452,61 @@ gettext(["item#1" ;
                         a major care to them.
                         <itemizedlist>
                             <listitem>
-                                <emphasis>All and Only</emphasis> the placeholders used in the
-                                <literal>msgid</literal> must also appear in the <literal>msgstr</literal>.
-                                <para/>
-                            </listitem>
-                            <listitem>
-                                If placeholders are not numbered: they must appear in the same order
-                                in the <varname>translated</varname> <literal>msgstr</literal>
-                                message than in the <varname>msgid</varname> message.
-                                Example (english to french):
-                                <screen>
-msgid  "%s is %d year old.\n"
-msgstr "%s a %d ans.\n"
-// first %s (a string), second %d (a decimal number), in both strings.
-
-Then, from a Scilab session set to french language, we will get
-gettext("%s is %d year old.\n") // => "%s a %d ans.\n"
-// and                                     first v      v second
-t = msprintf(gettext("%s is %d year old.\n"), "Peter", 18)
-// => "Peter a 18 ans."
-</screen>
-                                <para/>
+                                    <para><emphasis>All and Only</emphasis> the placeholders used in the
+                                    <literal>msgid</literal> must also appear in the <literal>msgstr</literal>.
+                                    </para>
                             </listitem>
                             <listitem>
                                 <para>
-                                    Otherwise,
-                                    <emphasis>All</emphasis> placeholders must be numbered in the
-                                    <varname>translated</varname> message. Each numbered placeholder can
-                                    be used only once in the format (Scilab limitation).
-                                    Example (english to japanese):
-                                    <screen>
-msgid "%s: Wrong number of input argument: %d to %d expected.\n"
-msgstr "%1$s: 入力引数で不正な数: %3$d への %2$d を想定します。\n"
-
-Then,
-msprintf(gettext("%s: Wrong number of input argument: %d to %d expected.\n"), "myFun", 2, 5)
-
-will return in a Scilab session set to english
-"myFun: Wrong number of input argument: 2 to 5 expected."
-
-while, in a Scilab session set to japanese
-"myFun: 入力引数で不正な数: 5 への 2 を想定します。"
-</screen>
+                                    If placeholders are not numbered: they must appear in the same order
+                                    in the <varname>translated</varname><literal>msgstr</literal>
+                                    message than in the <varname>msgid</varname> message.
+                                    Example (english to french):
+                                    <screen><![CDATA[
+        msgid  "%s is %d year old.\n"
+        msgstr "%s a %d ans.\n"
+        // first %s (a string), second %d (a decimal number), in both strings.
+        
+        Then, from a Scilab session set to french language, we will get
+        gettext("%s is %d year old.\n") // => "%s a %d ans.\n"
+        // and                                     first v      v second
+        t = msprintf(gettext("%s is %d year old.\n"), "Peter", 18)
+        // => "Peter a 18 ans."
+        ]]></screen>
                                 </para>
                             </listitem>
+                            <listitem>
+                            <para>
+                                Otherwise,
+                                <emphasis>All</emphasis> placeholders must be numbered in the
+                                <varname>translated</varname> message. Each numbered placeholder can
+                                be used only once in the format (Scilab limitation).
+                                Example (english to japanese):
+                                <screen><![CDATA[
+    msgid "%s: Wrong number of input argument: %d to %d expected.\n"
+    msgstr "%1$s: 入力引数で不正な数: %3$d への %2$d を想定します。\n"
+    
+    Then,
+    msprintf(gettext("%s: Wrong number of input argument: %d to %d expected.\n"), "myFun", 2, 5)
+    
+    will return in a Scilab session set to english
+    "myFun: Wrong number of input argument: 2 to 5 expected."
+    
+    while, in a Scilab session set to japanese
+    "myFun: 入力引数で不正な数: 5 への 2 を想定します。"
+                                ]]></screen>
+                            </para>
+                            </listitem>
                         </itemizedlist>
-                    </listitem>
-                    <listitem>
-                        <emphasis role="bold">\n, \r, \t</emphasis> sequences fortuitously appearing
+                    </para>
+                </listitem>
+                <listitem>
+                        <para><emphasis role="bold">\n, \r, \t</emphasis> sequences fortuitously appearing
                         in a <literal>msgid</literal> ending with "\n" should be considered as prone
                         to issues, due to a lack of care from the programmer. This can occur for
                         instance when some literal paths are part of the <literal>msgid</literal>,
                         like in
-                        <para/>
                         <literal>msgid "Please use the file C:\users\you\net\record\time.txt instead.\n"</literal>
-                        <para/>
                         The trailing <literal>\n</literal> suggests that the corresponding
                         <literal>msgstr</literal>
                         will be processed by <literal>msprintf()</literal> or so. Being done,
@@ -502,17 +516,16 @@ while, in a Scilab session set to japanese
                         -- unexpectedly -- interpreted. These <literal>\</literal> will have
                         to be protected in the <literal>msgstr</literal>, even in the reference
                         version (often english):
-                        <para/>
                         <literal>msgstr "Please use the file C:\users\you\\net\\record\\time.txt instead.\n"</literal>:
-                        <para/>
-                    </listitem>
-                </orderedlist>
-            </para>
-        </refsect3>
-    </refsection>
+                        </para>
+                </listitem>
+            </orderedlist>
+        </para>
+
+        </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example" id="gettext_example_1"><![CDATA[
+        <programlisting role="example" xml:id="gettext_example_1"><![CDATA[
 setlanguage("fr");
 
 // Messages ids are case-sensitive:
@@ -549,7 +562,7 @@ _("Sunday")
     <para>
         Using a domain: Here, "tbx" is a predefined domain used to test translation features:
     </para>
-        <programlisting role="example" id="gettext_example_2"><![CDATA[
+        <programlisting role="example" xml:id="gettext_example_2"><![CDATA[
 setlanguage("fr");
 msg = "%s: something not in Scilab.\n";  // unknown in the main native Scilab domain:
 gettext(msg)          // So, it is returned as is.
@@ -597,7 +610,7 @@ msg = "%s: No more memory.\n";
     <para>
         Messages with numbered C-like placeholders:
     </para>
-        <programlisting role="example" id="gettext_example_3"><![CDATA[
+        <programlisting role="example" xml:id="gettext_example_3"><![CDATA[
 in = getlanguage();
 msg = "%s: Unknown value %s for %s option"; // has already some translations
 setlanguage("en");
@@ -660,18 +673,16 @@ setlanguage(in);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>Domain management added.</revdescription>
+                <revremark>Domain management added.</revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
-                    C-like placeholders in messages can now be numbered.
-                </revdescription>
+                <revremark>C-like placeholders in messages can now be numbered.</revremark>
             </revision>
         </revhistory>
     </refsection>

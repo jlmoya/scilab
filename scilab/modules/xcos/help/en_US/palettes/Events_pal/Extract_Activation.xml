@@ -31,29 +31,29 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Extract_Activation.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_Extract_Activation">
+    <refsection xml:id="Contents_Extract_Activation">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Defaultproperties_Extract_Activation">Default properties</xref>
+                <para><link linkend="Defaultproperties_Extract_Activation">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Extract_Activation">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_Extract_Activation">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_Extract_Activation">Example</xref>
+                <para><link linkend="Example_Extract_Activation">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_Extract_Activation">
+    <refsection xml:id="Defaultproperties_Extract_Activation">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -117,7 +117,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Interfacingfunction_Extract_Activation">
+    <refsection xml:id="Interfacingfunction_Extract_Activation">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -125,8 +125,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_Extract_Activation">
+    <refsection xml:id="Example_Extract_Activation">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/Extract_Activation_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -134,5 +135,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

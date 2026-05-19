@@ -28,7 +28,7 @@
             clc(nblines)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -50,11 +50,11 @@
         <para>
             <code>clc(nblines)</code> efface <varname>nblines</varname> au dessus de la ligne courante du curseur et déplace le curseur jusqu'à cette ligne.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Notez que <literal>clc([nblines])</literal> ne peut être utilisé sous Unix/Linux quand Scilab est utilisé en mode sans fenêtre.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Example</title>

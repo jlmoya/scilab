@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) INRIA - Serge Steer
@@ -32,7 +33,7 @@
             clf(figFrameHandle, "reset")
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -56,8 +57,10 @@
             <varlistentry>
                 <term>"reset"</term>
                 <listitem>
-                    Provide this option keyword to reset properties of chosen figures to their
-                    default values, in addition to deleting the figures contents.
+                     <para>
+                        Provide this option keyword to reset properties of chosen figures to their
+                        default values, in addition to deleting the figures contents.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -73,34 +76,10 @@
         <para>
             <orderedlist>
                 <listitem>
-                     The following default actions are always performed:
-                    <para>
-                    <itemizedlist>
-                        <listitem>
-                            All visible and invisible axes of each targeted figure or frame are
-                            deleted.
-                        </listitem>
-                        <listitem>
-                            All menus whose figure.children handles are not hidden are deleted.
-                            It is possible to protect them with
-                            <literal>set(get(0), "ShowHiddenHandles", "off")</literal>.
-                            This then applies to all opened figures and forthcoming ones.
-                            See <link linkend="console_properties">ShowHiddenHandles</link>.
-                        </listitem>
-                        <listitem>
-                            The message in the status bar of each figure is cleared.
-                        </listitem>
-                        <listitem>
-                            The event handler of each figure is disabled, but their references are kept .
-                        </listitem>
-                    </itemizedlist>
-                    </para>
-                    <para>
-                        Values of all <link linkend="figure_properties">figures properties</link>
-                        are unchanged, except <literal>.info_message=""</literal> and
-                        <literal>.event_handler_enable="off"</literal> that are forced.
-                    </para>
-                </listitem>
+                     <para>
+                         The following default actions are always performed:
+                        </para>
+                    </listitem>
                 <listitem>
                     <para>
                         <literal>"reset"</literal>: in addition to default actions,
@@ -111,58 +90,69 @@
                     <warning>
                         <itemizedlist>
                             <listitem>
-                                <emphasis role="italic">Some properties are never reset</emphasis>:
-                                The figure's number <literal>.figure_id</literal> is kept as is.
-                                <literal>.toolbar</literal>,  <literal>.menubar</literal>,
-                                <literal>.layout</literal>,  <literal>.layout_options</literal>,
-                                and <literal>.dockable</literal> can be set only once and so are
-                                never resettable.
+                                 <para><emphasis role="italic">Some properties are never reset</emphasis>:
+                                    The figure's number <literal>.figure_id</literal> is kept as is.
+                                    <literal>.toolbar</literal>,  <literal>.menubar</literal>,
+                                    <literal>.layout</literal>,  <literal>.layout_options</literal>,
+                                    and <literal>.dockable</literal> can be set only once and so are
+                                    never resettable.
+                                </para>
                             </listitem>
                             <listitem>
-                                <emphasis role="italic">For docked figures</emphasis>:
-                                <literal>.figure_position</literal>, <literal>.figure_size</literal>,
-                                and <literal>.axes_size</literal> are unchanged if the parent figure
-                                is docked to the Scilab's desktop or to another Scilab interface.
-                                Changing their value would change the position or size of the whole
-                                block of docked interfaces, not only the targeted figure.
+                                 <para><emphasis role="italic">For docked figures</emphasis>:
+                                    <literal>.figure_position</literal>, <literal>.figure_size</literal>,
+                                    and <literal>.axes_size</literal> are unchanged if the parent figure
+                                    is docked to the Scilab's desktop or to another Scilab interface.
+                                    Changing their value would change the position or size of the whole
+                                    block of docked interfaces, not only the targeted figure.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </warning>
                 </listitem>
             </orderedlist>
         </para>
-        <refsect2>
-            <title>Clearing specific parts of a figure</title>
-            <itemizedlist>
-                <listitem>
-                    <literal>gcf().name = ""</literal> clears the
+
+        <para>
+            <emphasis role="bold">Clearing specific parts of a figure</emphasis>
+        </para>
+        <itemizedlist>
+            <listitem>
+                    <para><literal>gcf().name = ""</literal> clears the
                     name of the window, displayed at its very top left corner.
-                </listitem>
-                <listitem>
-                    <literal>gcf().info_message = ""</literal>
+                </para>
+            </listitem>
+            <listitem>
+                    <para><literal>gcf().info_message = ""</literal>
                     clears the message displayed in the status bar of the current figure.
-                </listitem>
-                <listitem>
-                    <literal>delete(gca())</literal> deletes the current axes in the current window.
+                </para>
+            </listitem>
+            <listitem>
+                    <para><literal>delete(gca())</literal> deletes the current axes in the current window.
                     All other components of the window are kept: other axes (if any), menus,
                     interactive components, figure properties, etc.
-                </listitem>
-                <listitem>
+                </para>
+            </listitem>
+            <listitem>
+                    <para>
                     Deleting only all axes of a figure may be done with
                     <literal>c=gcf().children; delete(c(c.type=="Axes"))</literal>. This keeps all
                     its other components: menus, interactive components, etc.
-                </listitem>
-                <listitem>
+                </para>
+            </listitem>
+            <listitem>
+                    <para>
                     Deleting only menus: <literal>c=gcf().children; delete(c(c.type=="uimenu"))</literal>.
                     This assumes that <literal>get(0).ShowHiddenHandles</literal> is
                     <literal>"on"</literal>.
-                </listitem>
-            </itemizedlist>
-        </refsect2>
+                </para>
+            </listitem>
+        </itemizedlist>
+
     </refsection>
     <refsection>
         <title>Examples</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             f4 = scf(4);  //creates figure with id==4 and makes it the current one
             f4.color_map = jet(64);
             f4.figure_size = [400, 200];
@@ -185,7 +175,7 @@
             a = newaxes(fr);
             plot(1:10);
             clf(fr);
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -225,20 +215,24 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <literal>clf</literal> now clears frames as well.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>clf</literal> now clears frames as well.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <literal>clf('reset')</literal> no longer resizes nor moves docked figures.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>clf('reset')</literal> no longer resizes nor moves docked figures.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

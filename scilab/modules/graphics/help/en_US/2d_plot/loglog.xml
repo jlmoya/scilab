@@ -37,7 +37,7 @@
             loglog(axes_handle,...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -108,7 +108,7 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <para><literal>loglog</literal> plots data using a base 10 logarithmic scale for both x-axis and y-axis. The possible syntaxes and arguments are the same as the <link linkend="plot">plot</link> function besides the condition that values in <term>x</term> and <term>y</term> arguments be strictly positive.
+        <para><literal>loglog</literal> plots data using a base 10 logarithmic scale for both x-axis and y-axis. The possible syntaxes and arguments are the same as the <link linkend="plot">plot</link> function besides the condition that values in <literal>x</literal> and <literal>y</literal> arguments be strictly positive.
         </para>
         <para>If the current axes is not empty and the x-axis or the y-axis has a negative lower bound then its scale will remain linear after the plot.
         </para>
@@ -170,9 +170,9 @@
         <revhistory>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
-                Function loglog added.
-                </revdescription>
+                <revremark>
+                    Function loglog added.
+                </revremark>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="evstr" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="evstr" xml:lang="en">
     <refnamediv>
         <refname>evstr</refname>
         <refpurpose>evaluates Scilab expressions and concatenates their results</refpurpose>
@@ -30,7 +27,7 @@
             [H, ierr] = evstr(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -109,17 +106,22 @@
                 </listitem>
             </itemizedlist>
         </warning>
-        <note>Special aliases:
-            <itemizedlist>
-                <listitem>
-                        <literal>"Nan"</literal> and <literal>"NaN"</literal> are parsed as
-                        <constant>%nan</constant>.
-                </listitem>
-                <listitem>
-                        <literal>"Inf"</literal> and <literal>"INF"</literal> are parsed as
-                        <constant>%inf</constant>.
-                </listitem>
-            </itemizedlist>
+        <note>
+            <para>
+                Special aliases:
+                <itemizedlist>
+                    <listitem>
+                        <para><literal>"Nan"</literal> and <literal>"NaN"</literal> are parsed as
+                                <constant>%nan</constant>.
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para><literal>"Inf"</literal> and <literal>"INF"</literal> are parsed as
+                                <constant>%inf</constant>.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -138,7 +140,7 @@ evstr('NaN'), evstr('Inf')
 [H, ierr] = evstr(Z) // no error
 Z = ['a', 'b', 'c'] ;// the variable c is undefined
 [H, ierr] = evstr(Z) // error 4: Undefined variable: c
-]]>    </programlisting>
+    ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -163,15 +165,19 @@ Z = ['a', 'b', 'c'] ;// the variable c is undefined
             <revision>
                 <revnumber>5.3.0</revnumber>
                 <revdescription>
-                <literal>"Nan"</literal> and <literal>"NaN"</literal> are now parsed as <literal>%nan</literal>.
-                <literal>"Inf"</literal> and <literal>"INF"</literal> are now parsed as <literal>%inf</literal>.
+                    <para>
+                        <literal>"Nan"</literal> and <literal>"NaN"</literal> are now parsed as <literal>%nan</literal>.
+                        <literal>"Inf"</literal> and <literal>"INF"</literal> are now parsed as <literal>%inf</literal>.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
                 <revdescription>
-                  Simple comments are now supported in almost all possible input expressions,
-                  whatever is the shape of <literal>M</literal>.
+                    <para>
+                        Simple comments are now supported in almost all possible input expressions,
+                        whatever is the shape of <literal>M</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

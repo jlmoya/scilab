@@ -124,6 +124,10 @@ BOOL DisposeFFTWLibrary(void)
     if (hinstLib)
     {
         fFreeResult = FreeDynLibrary(hinstLib);
+        if (fFreeResult == 0)
+        {
+            return FALSE;
+        }
         hinstLib = NULL;
     }
 

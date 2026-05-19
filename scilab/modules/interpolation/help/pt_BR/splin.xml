@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="splin" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="splin" xml:lang="pt">
     <refnamediv>
         <refname>splin</refname>
         <refpurpose>interpolação por spline cúbico</refpurpose>
@@ -167,10 +164,14 @@
                     <para>
                         <itemizedlist>
                             <listitem>
-                                If y(i) ≤ y(i+1), s is increasing on <literal>[x(i), x(i+1)]</literal>.
+                                 <para>
+                                    If y(i) ≤ y(i+1), s is increasing on <literal>[x(i), x(i+1)]</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                If y(i) ≥ y(i+1), s is increasing on <literal>[x(i), x(i+1)]</literal>.
+                                 <para>
+                                    If y(i) ≥ y(i+1), s is increasing on <literal>[x(i), x(i+1)]</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>

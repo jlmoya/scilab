@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="covWrite">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="covWrite">
     <refnamediv>
         <refname>covWrite</refname>
         <refpurpose>Exports runtime performance results to HTML and binary files</refpurpose>
@@ -15,36 +12,40 @@
           covWrite("html", binaryFile, dir)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>"html"</term>
                 <listitem>
-                    exports the performance results as HTML files.
-                    <para/>
-                </listitem>
+                     <para>
+                        exports the performance results as HTML files.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>"binary"</term>
                 <listitem>
-                    stores the performance results as binary, for later use.
-                    <para/>
-                </listitem>
+                     <para>
+                        stores the performance results as binary, for later use.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>dir</term>
                 <listitem>
-                  Path of the output directory for HTML files.
-                    <para/>
-                </listitem>
+                     <para>
+                      Path of the output directory for HTML files.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>binaryFile</term>
                 <listitem>
-                    Path and filename of the binary file.
-                    <para/>
-                </listitem>
+                     <para>
+                        Path and filename of the binary file.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -71,15 +72,18 @@
             files.
         </para>
         <note>
-            Paths prefixed with the predefined constants <literal>SCI</literal>,
-            <literal>SCIHOME</literal>, <literal>SCI</literal>.. are  automatically expanded.
+            <para>
+                Paths prefixed with the predefined constants <literal>SCI</literal>,
+                <literal>SCIHOME</literal>, <literal>SCI</literal>.. are  automatically expanded.
+            </para>
         </note>
     </refsection>
     <refsection>
       <title>Examples</title>
-        <refsect3>
-            <title>Basic example</title>
-            <programlisting role="example"><![CDATA[
+        <para>
+            <emphasis role="bold">Basic example</emphasis>
+        </para>
+        <programlisting role="example"><![CDATA[
 covStart(isnan)                        // activate isnan for performance measurement
 for i = 1:1e5; isnan(i); end           // run it
 covWrite("html", "TMPDIR/coverage")    // write runtime performance results to a directory
@@ -97,10 +101,12 @@ browser = uicontrol(fr, ...
     "string", fullfile(TMPDIR, "coverage/isnan.html"), ...
     "tag", "browser"); // Displays results
         ]]></programlisting>
-        </refsect3>
-        <refsect3>
-        <title>Create two binaries, merge them, and export merged results into HTML</title>
-            <programlisting role="example"><![CDATA[
+
+        <para>
+            <emphasis role="bold">Create two binaries, merge them, and export merged results into HTML</emphasis>
+        </para>
+
+        <programlisting role="example"><![CDATA[
 covStart(isnan)
 for i=1:1e5; isnan(i); end
 covWrite("binary", "TMPDIR/isnan1")    // write the 1st binary
@@ -114,7 +120,6 @@ covStop();
 covMerge(["TMPDIR/isnan1" "TMPDIR/isnan2"], "TMPDIR/isnan") // merge them
 covWrite("html", "TMPDIR/isnan", "TMPDIR/coverage") // render the results as HTML
         ]]></programlisting>
-        </refsect3>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -136,7 +141,9 @@ covWrite("html", "TMPDIR/isnan", "TMPDIR/coverage") // render the results as HTM
             <revision>
                 <revnumber>2023.0.0</revnumber>
                 <revdescription>
-                    Formating of <literal>covWrite("html")</literal> results improved.
+                    <para>
+                        Formating of <literal>covWrite("html")</literal> results improved.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

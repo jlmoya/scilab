@@ -26,7 +26,7 @@
             [status, errmsg] = copyfile(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -81,7 +81,9 @@
         <para>
             If <varname>source</varname> is a directory, <varname>destination</varname> can not be a file.
             <warning>
-                <code>copyfile</code> replaces existing files without warning.
+                <para>
+                    <code>copyfile</code> replaces existing files without warning.
+                </para>
             </warning>
         </para>
         <para>
@@ -95,7 +97,7 @@
         </para>
         <para>
             Timestamps and symbolic links are preserved when using the <code>"preserve"</code> option.
-            <warning>On Windows, symbolic links might require special privilege.</warning>
+            <warning><para>On Windows, symbolic links might require special privilege.</para></warning>
         </para>
     </refsection>
     <refsection>

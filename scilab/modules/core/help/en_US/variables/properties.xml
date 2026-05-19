@@ -20,7 +20,7 @@
             props = properties(object)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -45,7 +45,9 @@
                     <para>
                         a string matrix of accessible properties
                         <note>
-                            If <literal>properties</literal> is called without output argument, the function only print list of properties.
+                            <para>
+                                If <literal>properties</literal> is called without output argument, the function only print list of properties.
+                            </para>
                         </note>
                     </para>
                 </listitem>
@@ -100,7 +102,9 @@ l = properties(p)
             <revision>
                 <revnumber>2026.0.0</revnumber>
                 <revdescription>
-                    <literal>properties</literal> introduction.
+                    <para>
+                        <literal>properties</literal> introduction.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

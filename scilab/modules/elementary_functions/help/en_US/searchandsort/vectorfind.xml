@@ -16,10 +16,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="vectorfind" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="vectorfind" xml:lang="en">
     <refnamediv>
         <refname>vectorfind</refname>
         <refpurpose>locates occurences of a (wildcarded) vector in a matrix or hypermatrix</refpurpose>
@@ -34,7 +31,7 @@
             [ind, matching] = vectorfind(haystack, needle, dimAlong, joker, indType)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -60,13 +57,16 @@
                     <note>
                         <itemizedlist>
                             <listitem>
-                                Decimal numbers, complex numbers, and encoded integers are considered
-                                of the same type: numerical.
+                                 <para>
+                                    Decimal numbers, complex numbers, and encoded integers are considered
+                                    of the same type: numerical.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>%nan</literal> values are accepted in the <varname>needle</varname>.
-                                They are processed in a regular way, as other values. They are matched only
-                                by <literal>%nan</literal> in the <varname>haystack</varname>.
+                                 <para><literal>%nan</literal> values are accepted in the <varname>needle</varname>.
+                                    They are processed in a regular way, as other values. They are matched only
+                                    by <literal>%nan</literal> in the <varname>haystack</varname>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </note>
@@ -85,8 +85,10 @@
                     By default, <literal>"r"</literal> is used.
                     </para>
                     <important>
-                        <varname>dimAlong</varname> is mandatory when a <varname>joker</varname>
-                        or <varname>indType</varname> is specified.
+                        <para>
+                            <varname>dimAlong</varname> is mandatory when a <varname>joker</varname>
+                            or <varname>indType</varname> is specified.
+                        </para>
                     </important>
                 </listitem>
             </varlistentry>
@@ -181,7 +183,9 @@
                         </listitem>
                     </itemizedlist>
                     </para>
-                    <note>Returned indices are sorted in increasing order.</note>
+                    <note>
+                        <para>Returned indices are sorted in increasing order.</para>
+                    </note>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -192,8 +196,10 @@
                     The matching range number #i is returned in the row <literal>matching(i,:)</literal>.
                     </para>
                     <note>
-                        When the <varname>haystack</varname> is sparse-encoded,
-                        the <varname>matching</varname> matrix is sparse as well.
+                        <para>
+                            When the <varname>haystack</varname> is sparse-encoded,
+                            the <varname>matching</varname> matrix is sparse as well.
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -226,9 +232,11 @@
             <literal>matching</literal> optional output. Otherwise, <literal>matching</literal>
             is empty (it is a trivial repetition of the needle vector).
         </para>
-        <refsect3>
-            <title>Search in hypermatrices</title>
-            <para>
+
+        <para>
+            <emphasis role="bold">Search in hypermatrices</emphasis>
+        </para>
+        <para>
             Using <literal>vectorfind()</literal> with an hypermatrix haystack deserves some
             special attention:
             <itemizedlist>
@@ -248,25 +256,29 @@
                     The corresponding <literal>dimAlong</literal> values have there some exceptions:
                     <itemizedlist>
                         <listitem>
-                            Searching the needle <emphasis role="italic">as rows</emphasis>
-                            is scanning the array
-                            <emphasis role="italic">accross its columns</emphasis>. Therefore,
-                            the <literal>dimAlong = "r"</literal> value should be equivalent to
-                            <literal>dimAlong = 2</literal> instead of 1!
+                             <para>
+                                Searching the needle <emphasis role="italic">as rows</emphasis>
+                                is scanning the array
+                                <emphasis role="italic">accross its columns</emphasis>. Therefore,
+                                the <literal>dimAlong = "r"</literal> value should be equivalent to
+                                <literal>dimAlong = 2</literal> instead of 1!
+                            </para>
                         </listitem>
                         <listitem>
-                            In the same way, searching the needle
-                            <emphasis role="italic">as columns</emphasis> is scanning the array
-                            <emphasis role="italic">accross its rows</emphasis>: The usual
-                            value
-                            <literal>dimAlong = "c"</literal> should be equivalent to
-                            <literal>dimAlong = 1</literal> instead of 2!
+                             <para>
+                                In the same way, searching the needle
+                                <emphasis role="italic">as columns</emphasis> is scanning the array
+                                <emphasis role="italic">accross its rows</emphasis>: The usual
+                                value
+                                <literal>dimAlong = "c"</literal> should be equivalent to
+                                <literal>dimAlong = 1</literal> instead of 2!
+                            </para>
                         </listitem>
                     </itemizedlist>
                     </para>
                     <para>
-                    In order to not quit the common convention <literal>"r"&lt;=>1</literal>
-                    and <literal>"c"&lt;=>2</literal> used everywhere in Scilab,
+                    In order to not quit the common convention <literal>"r"&lt;=&gt;1</literal>
+                    and <literal>"c"&lt;=&gt;2</literal> used everywhere in Scilab,
                     <literal>vectorfind()</literal> keeps and copes with it. But one should keep in
                     mind the underlying switch, to have a clear understanding of the returned
                     default indices when <literal>"r",1</literal> or <literal>"c",2</literal>
@@ -274,46 +286,16 @@
                     </para>
                 </listitem>
                 <listitem>
-                    <para>
-                    About returned indices of matching rows, columns, "pixels"... when the needle
-                    is as long as the haystack side size and no <literal>indType</literal> option
-                    is used:
+                     <para>
+                        Despite they are easy to understand and use for a simple matrix,
+                        it is somewhat hard to work with these linear indices in the haystack subspace
+                        to actually address the matching ranges in a ND-dimensional array with N&gt;2.
+                        The option <literal>indType = "headN" | "headIJK</literal> will then return
+                        more workable indices refering to the whole <literal>haystack</literal> array.
                     </para>
-                    <para>
-                    Indices of matching ranges are then <emphasis role="italic">linear</emphasis>
-                    indices of components of the following subspaces:
-                    <itemizedlist>
-                        <listitem>
-                            With <literal>dimAlong = "r" = 1</literal>:
-                            in <literal>haystack(:,1,:,:..)</literal>
-                        </listitem>
-                        <listitem>
-                            With <literal>dimAlong = "c" = 2</literal>:
-                            in <literal>haystack(1,:,:,:..)</literal>
-                        </listitem>
-                        <listitem>
-                            With <literal>dimAlong = 3</literal>:
-                            in <literal>haystack(:,:,1,:..)</literal>
-                        </listitem>
-                        <listitem>
-                            With <literal>dimAlong = 4</literal>:
-                            in <literal>haystack(:,:,:,1,:..)</literal>.
-                        </listitem>
-                        <listitem>
-                            etc...
-                        </listitem>
-                    </itemizedlist>
-                    The case of a 3D and of a 4D array is dealt with in the Examples section.
-                    </para>
-                    Despite they are easy to understand and use for a simple matrix,
-                    it is somewhat hard to work with these linear indices in the haystack subspace
-                    to actually address the matching ranges in a ND-dimensional array with N>2.
-                    The option <literal>indType = "headN" | "headIJK</literal> will then return
-                    more workable indices refering to the whole <literal>haystack</literal> array.
                 </listitem>
             </itemizedlist>
-            </para>
-        </refsect3>
+        </para>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -466,35 +448,50 @@ vectorfind(m, ["A" "" "A"],"r","","headIJK")    // => [1 3 1 1 ; 2 2 2 1]
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>vectorfind(H,[])</literal> nows returns <literal>[]</literal>
-                            instead of an error.
+                             <para><literal>vectorfind(H,[])</literal> nows returns <literal>[]</literal>
+                                instead of an error.
+                            </para>
                         </listitem>
                         <listitem>
-                            When the needle is too long, <literal>[]</literal> is now returned
-                            instead of an error.
+                             <para>
+                                When the needle is too long, <literal>[]</literal> is now returned
+                                instead of an error.
+                            </para>
                         </listitem>
                         <listitem>
-                            A needle shorter than the haystack size can now be used.
+                             <para>
+                                A needle shorter than the haystack size can now be used.
+                            </para>
                         </listitem>
                         <listitem>
-                            A wildcard value matched by any value of the haystack can now be specified
-                            and used in the needle. Then, actual matching ranges can be returned:
-                            Options <literal>joker</literal> and <literal>matching</literal> added.
+                             <para>
+                                A wildcard value matched by any value of the haystack can now be specified
+                                and used in the needle. Then, actual matching ranges can be returned:
+                                Options <literal>joker</literal> and <literal>matching</literal> added.
+                            </para>
                         </listitem>
                         <listitem>
-                            Any <literal>%nan</literal> value occuring in the needle is now processed
-                            as any other regular value: It is matched by <literal>%nan</literal> in
-                            the haystack. It could formerly never be matched.
+                             <para>
+                                Any <literal>%nan</literal> value occuring in the needle is now processed
+                                as any other regular value: It is matched by <literal>%nan</literal> in
+                                the haystack. It could formerly never be matched.
+                            </para>
                         </listitem>
                         <listitem>
-                            Hypermatrices can now be processed as haystack.
+                             <para>
+                                Hypermatrices can now be processed as haystack.
+                            </para>
                         </listitem>
                         <listitem>
-                            The probing direction <literal>dimAlong</literal> can now be numerical:
-                            1, 2, ..
+                             <para>
+                                The probing direction <literal>dimAlong</literal> can now be numerical:
+                                1, 2, ..
+                            </para>
                         </listitem>
                         <listitem>
-                            Option <literal>indType</literal> added.
+                             <para>
+                                Option <literal>indType</literal> added.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

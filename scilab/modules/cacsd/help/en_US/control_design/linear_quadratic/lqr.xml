@@ -28,7 +28,7 @@
           [K, X] = lqr(P, Q, R, S)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -122,15 +122,19 @@
             </para>
               <para>
                 <note>
-                    In this case the <emphasis>P.C</emphasis> and <emphasis>P.D</emphasis>
-                    components of the system are ignored.
+                    <para>
+                      In this case the <emphasis>P.C</emphasis> and <emphasis>P.D</emphasis>
+                      components of the system are ignored.
+                    </para>
                 </note>
               </para>
           </listitem>
         </varlistentry>
       </variablelist>
-      <refsect2>
-        <title>Algorithm</title>
+
+      <para>
+          <emphasis role="bold">Algorithm</emphasis>
+      </para>
         <itemizedlist>
           <listitem>
               <para>
@@ -150,26 +154,28 @@
                   <emphasis>K = -R<superscript>-1</superscript>(B'X + S')</emphasis>
               </para>
           </listitem>
-          <listitem><para>
-            For a discrete plant, if <emphasis>X</emphasis> is the stabilizing solution of the
-            Riccati equation:
-          </para>
-          <para>
-            <emphasis>
-              A'.X.A - X - (A'.X.B + S')(B'.X.B + R)<superscript>+</superscript>(B'.X.A + S) + Q = 0
-            </emphasis>
-          </para>
-          <para>
-            the linear optimal LQ full-state gain K is given by
-          </para>
-          <para>
-            <emphasis>K = -(B'.X.B + R)<superscript>+</superscript>(B'.X.A + S)</emphasis>
-          </para>
-          <para>
-            An equivalent form for the equation is
-            <latex style="display"  align="center">(\overline{A}' \text{X}^{-1}+B R^{-1} B') \overline{A}+\overline{Q}-\text{X}=0</latex>
-            with <latex style="display" align="center">\overline{A}=A-B R^{-1} S'\text{ and }\overline{Q}=Q-S R^{-1} S'</latex>
-          </para></listitem>
+          <listitem>
+               <para>
+                For a discrete plant, if <emphasis>X</emphasis> is the stabilizing solution of the
+                Riccati equation:
+              </para>
+              <para>
+                <emphasis>
+                  A'.X.A - X - (A'.X.B + S')(B'.X.B + R)<superscript>+</superscript>(B'.X.A + S) + Q = 0
+                </emphasis>
+              </para>
+              <para>
+                the linear optimal LQ full-state gain K is given by
+              </para>
+              <para>
+                <emphasis>K = -(B'.X.B + R)<superscript>+</superscript>(B'.X.A + S)</emphasis>
+              </para>
+              <para>
+                An equivalent form for the equation is
+                <latex style="display"  align="center">(\overline{A}' \text{X}^{-1}+B R^{-1} B') \overline{A}+\overline{Q}-\text{X}=0</latex>
+                with <latex style="display" align="center">\overline{A}=A-B R^{-1} S'\text{ and }\overline{Q}=Q-S R^{-1} S'</latex>
+              </para>
+          </listitem>
         </itemizedlist>
         <para>
           The gain <literal>K</literal> is such that <literal>A + B.K</literal> is stable.
@@ -178,26 +184,29 @@
           The resolution of the Riccati equation is obtained by  <link linkend="schur">schur</link>
           factorization of the 3-blocks matrix pencils associated with these Riccati equations:
           <itemizedlist>
-            <listitem><para>For a continuous plant
-            <latex style="display"> <![CDATA[s\left[\begin{array}{lll}I&0&0\\0&I&0\\0&0&0\end{array}\right]-\left[\begin{array}{lll}A&0&B\\-Q&-A'&-S'\\S&-B'&R\end{array}\right]]]></latex>
-            </para></listitem>
-            <listitem><para>For a discrete time plant
-            <latex style="display"><![CDATA[z\left[\begin{array}{lll}I&0&0\\0&A'&0\\0&-B'&0\end{array}\right]-\left[\begin{array}{lll}A&0& B\\-Q&I&-S'\\S&0& R\end{array}\right]]]></latex>
-            </para></listitem>
+            <listitem>
+                 <para>For a continuous plant
+                <latex style="display"> <![CDATA[s\left[\begin{array}{lll}I&0&0\\0&I&0\\0&0&0\end{array}\right]-\left[\begin{array}{lll}A&0&B\\-Q&-A'&-S'\\S&-B'&R\end{array}\right]]]></latex>
+                </para>
+            </listitem>
+            <listitem>
+                 <para>For a discrete time plant
+                <latex style="display"><![CDATA[z\left[\begin{array}{lll}I&0&0\\0&A'&0\\0&-B'&0\end{array}\right]-\left[\begin{array}{lll}A&0& B\\-Q&I&-S'\\S&0& R\end{array}\right]]]></latex>
+                </para>
+            </listitem>
           </itemizedlist>
         </para>
-      </refsect2>
-      <warning>
-        <para>
-          It is assumed that matrix <emphasis>R</emphasis> or <emphasis>D'D</emphasis> is non singular.
-        </para>
-      </warning>
-      <note>
-        <para>
-          Remark: If the full state of the system is not available, an estimator can be built using
-          the <link linkend="lqe">lqe</link> or the <link linkend="lqg">lqg</link> function.
-        </para>
-      </note>
+        <warning>
+          <para>
+            It is assumed that matrix <emphasis>R</emphasis> or <emphasis>D'D</emphasis> is non singular.
+          </para>
+        </warning>
+        <note>
+          <para>
+            Remark: If the full state of the system is not available, an estimator can be built using
+            the <link linkend="lqe">lqe</link> or the <link linkend="lqg">lqg</link> function.
+          </para>
+        </note>
   </refsection>
 
   <refsection>
@@ -299,7 +308,7 @@
                 <refsection>
                     <title>Reference</title>
                     <para>
-                        <ulink url="http://www.springer.com/us/book/9780817640095"> Engineering and Scientific Computing with Scilab</ulink>, Claude Gomez and al.,Springer Science+Business Media, LLC,1999, ISNB:978-1-4612-7204-5
+                        <link xlink:href="http://www.springer.com/us/book/9780817640095"> Engineering and Scientific Computing with Scilab</link>, Claude Gomez and al.,Springer Science+Business Media, LLC,1999, ISNB:978-1-4612-7204-5
                     </para>
                 </refsection>
                 <refsection role="see also">

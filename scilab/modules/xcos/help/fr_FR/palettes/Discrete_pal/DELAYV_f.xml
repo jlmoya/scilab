@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/DELAYV_f.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DELAYV_f">
+    <refsection xml:id="Contents_DELAYV_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DELAYV_f">Description</xref>
+                <para><link linkend="Description_DELAYV_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DELAYV_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_DELAYV_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DELAYV_f">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_DELAYV_f">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DELAYV_f">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_DELAYV_f">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DELAYV_f">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_DELAYV_f">Fonction de calcul</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DELAYV_f">
+    <refsection xml:id="Description_DELAYV_f">
         <title>Description</title>
         <para>
             Le bloc Délai variable peut être utilisé pour simuler un délai variable
@@ -73,15 +73,14 @@
             Le délai final est : <literal>τ(t) + "Max delay"/length("Register initial condition")</literal>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DELAYV_f">
+    <refsection xml:id="Dialogbox_DELAYV_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/DELAYV_f_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -106,7 +105,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DELAYV_f">
+    <refsection xml:id="Defaultproperties_DELAYV_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -182,7 +181,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DELAYV_f">
+    <refsection xml:id="Interfacingfunction_DELAYV_f">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -190,7 +189,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DELAYV_f">
+    <refsection xml:id="Computationalfunction_DELAYV_f">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -198,7 +197,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_DELAYV_f">
+    <refsection xml:id="Example_DELAYV_f">
         <title>Exemple de retard variable</title>
         <para>
             Dans cet exemple, la fonction sinus (en noir) est retardée alternativement de 0 et 1 seconde.
@@ -207,13 +206,15 @@
             On voit qu'à chaque fois que GENSQR_f est activé (toutes les 2*π secondes), le délai change :
             tour à tour, les courbes se superposent (délai=0) et sont décalées (délai=1).
         </para>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/discrete_pal/en_US/DELAYV_f_en_US.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/discrete_pal/en_US/DELAYV_f_en_US.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/discrete_pal/en_US/DELAYV_f_en_US.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/discrete_pal/en_US/DELAYV_f_en_US.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
         <para/>
         <scilab:image><![CDATA[
 importXcosDiagram(SCI + "/modules/xcos/examples/discrete_pal/en_US/DELAYV_f_en_US.zcos");

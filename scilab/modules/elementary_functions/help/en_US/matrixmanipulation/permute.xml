@@ -26,7 +26,7 @@
         <title>Syntax</title>
         <synopsis>y = permute(x, dims)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -69,14 +69,18 @@
             Permutes the dimensions of the array according to <varname>dims</varname>.
         </para>
         <important>
-             Any trailing dimension of the result <literal>y</literal> that becomes a singleton
-             (has a new size equal to 1, coming from a formerly non trailing singleton dimension)
-             is automatically ignored (squeezed).
+            <para>
+                 Any trailing dimension of the result <literal>y</literal> that becomes a singleton
+                (has a new size equal to 1, coming from a formerly non trailing singleton dimension)
+                is automatically ignored (squeezed).
+            </para>
          </important>
          <note>
-             <literal>permute()</literal> is mainly interesting when dealing with hypermatrices.
-             To only transpose a matrix (permute its rows into columns and vice-versa), the
-             <literal>.'</literal> or <literal>'</literal> operators should be prefered.
+            <para>
+                <literal>permute()</literal> is mainly interesting when dealing with hypermatrices.
+                To only transpose a matrix (permute its rows into columns and vice-versa), the
+                <literal>.'</literal> or <literal>'</literal> operators should be prefered.
+            </para>
          </note>
     </refsection>
     <refsection>
@@ -167,9 +171,9 @@ y
         <revhistory>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revdescription>
+                <revremark>
                     Extension to rationals
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

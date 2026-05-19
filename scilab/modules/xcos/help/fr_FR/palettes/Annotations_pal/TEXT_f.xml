@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/TEXT_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_TEXT_f">
+    <refsection xml:id="Contents_TEXT_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TEXT_f">Description</xref>
+                <para><link linkend="Description_TEXT_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_TEXT_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_TEXT_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TEXT_f">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_TEXT_f">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_TEXT_f">Exemple</xref>
+                <para><link linkend="Example_TEXT_f">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="See_also">Voir aussi</xref>
+                <para><link linkend="See_also">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_TEXT_f">
+    <refsection xml:id="Description_TEXT_f">
         <title>Description</title>
         <para>
             Ce bloc spécial est utilisé uniquement pour ajouter du texte à n'importe quel endroit du schéma. Il n'a aucun effet sur la simulation.
@@ -67,22 +67,20 @@
             Note : l'interface suivant est aussi utilisé pour modifier le texte de commentaire et l'apparence des autres blocs.
         </para>
     </refsection>
-    <refsection id="Dialogbox_TEXT_f">
+    <refsection xml:id="Dialogbox_TEXT_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/annotations_pal/fr_FR/TEXT_f_text_gui.png"
-                    align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                    align="center"/>
             </imageobject>
-        </inlinemediaobject>
-        <inlinemediaobject>
+        </mediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/annotations_pal/fr_FR/TEXT_f_color_gui.png"
-                    align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                    align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -122,7 +120,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_TEXT_f">
+    <refsection xml:id="Defaultproperties_TEXT_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -179,7 +177,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_TEXT_f">
+    <refsection xml:id="Example_TEXT_f">
         <title>Exemple</title>
         <para>
             La figure ci-dessous montre quelques exemples d'annotations.
@@ -195,9 +193,9 @@
             </imageobject>
         </mediaobject>
     </refsection>
-    <refsection role="see also" id="See_also">
+    <refsection role="see also" xml:id="See_also">
         <title>Voir aussi</title>
-        <simplelist>
+        <simplelist type="inline">
             <member>
                 <link linkend="math_rendering_features_in_graphic">Rendu mathématique</link>
             </member>

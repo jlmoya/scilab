@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) Bruno Pincon
@@ -15,7 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"   xmlns:scilab="http://www.scilab.org"  xml:id="dsearch" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="dsearch" xml:lang="fr">
     <refnamediv>
         <refname>dsearch</refname>
         <refpurpose>
@@ -29,7 +29,7 @@
             [i_bin [,counts [,outside]]] = dsearch(X, bins , pm )
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -48,12 +48,16 @@
                         vecteur ligne ou colonne définissant les catégories, de même type que <varname>X</varname> (Si <varname>X</varname> contient des entiers encodés, <varname>bins</varname> peut être de type décimal).
                         <itemizedlist>
                             <listitem>
-                                Cas discret (pm="d"): <varname>bins</varname> contient les valeurs auxquelles les éléments de <varname>X</varname> doivent être identifiés. Si <varname>X</varname> est numérique (nombres réels ou entiers encodés), <varname>bins</varname> doit être préalablement trié par ordre croissant, et sans doublons.
+                                 <para>
+                                    Cas discret (pm="d"): <varname>bins</varname> contient les valeurs auxquelles les éléments de <varname>X</varname> doivent être identifiés. Si <varname>X</varname> est numérique (nombres réels ou entiers encodés), <varname>bins</varname> doit être préalablement trié par ordre croissant, et sans doublons.
+                                </para>
                             </listitem>
                             <listitem>
-                                Cas continu (par défaut, pm="c"): <varname>bins</varname> contient les bornes d'intervalles <literal>Ik</literal> contigus : <literal>I1 = [bins(1), bins(2)]</literal>, <literal>I2 = (bins(2), bins(3)]</literal>,..., <literal>In = (bins(n), bins(n+1)]</literal>. Noter que <literal>I1</literal> est fermé à gauche, alors que les <literal>I(k>1)</literal> sont semi-ouverts à gauche.
-                                Les bornes <varname>bins</varname> doivent être préalablement triées en ordre strictement croissant : bins(1) &lt; bins(2) &lt; ... &lt; bins(n).
-                                Pour le traitement du texte, l'ordre lexicographique sensible à la casse est considéré.
+                                 <para>
+                                    Cas continu (par défaut, pm="c"): <varname>bins</varname> contient les bornes d'intervalles <literal>Ik</literal> contigus : <literal>I1 = [bins(1), bins(2)]</literal>, <literal>I2 = (bins(2), bins(3)]</literal>,..., <literal>In = (bins(n), bins(n+1)]</literal>. Noter que <literal>I1</literal> est fermé à gauche, alors que les <literal>I(k&gt;1)</literal> sont semi-ouverts à gauche.
+                                    Les bornes <varname>bins</varname> doivent être préalablement triées en ordre strictement croissant : bins(1) &lt; bins(2) &lt; ... &lt; bins(n).
+                                    Pour le traitement du texte, l'ordre lexicographique sensible à la casse est considéré.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -77,14 +81,10 @@
             </varlistentry>
             <varlistentry>
                 <term>counts</term>
-                <listitem>Nombre d'éléments de X dans les catégories respectives.
-                    <para>
-                        Cas continu(pm="c"): counts(i) éléments de <varname>X</varname> appartiennent à l'intervalle <literal>Ik</literal> tel que défini ci-dessus (voir le paramètre <varname>bins</varname>). Les éléments de <varname>X</varname> juste égaux à bins(1) sont comptés dans counts(1). <varname>counts</varname> est un vecteur de même taille que <varname>bins</varname>, - 1.
-                    </para>
-                    <para>
-                        Cas discrêt(pm="d"): <literal>counts(i)</literal> indique le nombre d'éléments de <varname>X</varname> égaux à <literal>bins(i)</literal>
-                    </para>
-                </listitem>
+                <listitem>
+                     <para>Nombre d'éléments de X dans les catégories respectives.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>outside</term>
@@ -132,8 +132,8 @@ s = ascii(grand(1,nC*L,"uin",0,25)+97);
 bins = unique(matrix(strsplit(s, L:L:nC*L-1), 1, nC))
 T
 [i_bin, counts, outside] = dsearch(T, bins)
-    ]]>
-        </programlisting>
+    
+        ]]></programlisting>
 
         <para>
             Dans l'exemple suivant, considérons 3 intervalles <literal>I1 = [5,11]</literal>,
@@ -264,7 +264,7 @@ dsearch   : the array s (arg 2) is not well ordered
             n=10 bornes régulièrement espacées sur [0,1] sont générées et partionnent ce domaine
             en n-1=9 intervalles de largeurs identiques.
             dsearch() classe et dénombre les effectifs de X dans chaque intervalle.
-            La valeur de counts(i)/m attendue (pour m -> inf) vaut 1/(n-1).
+            La valeur de counts(i)/m attendue (pour m -&gt; inf) vaut 1/(n-1).
         </para>
         <programlisting role="example"><![CDATA[
 m = 50000 ;
@@ -279,7 +279,7 @@ plot(bins(1:n-1), e',"r-");
 legend(["Experiment","Expectation"]);
 xtitle("Uniform random numbers","X","P(X)");
  ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             m = 50000 ;
             n = 10;
             X = grand(m,1,"def");
@@ -291,7 +291,7 @@ xtitle("Uniform random numbers","X","P(X)");
             plot(bins(1:n-1), e',"r-");
             legend(["Tirage","Théorie"]);
             xtitle("Distribution uniforme","X","P(X)");
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Dans l'exemple suivant, l'histogramme d'un tirage aléatoire à distribution binomiale
             est comparé avec la fonction de distribution de probabilité binomiale théorique B(N,p),
@@ -313,7 +313,7 @@ plot(bins, Pexa', "r-");
 xtitle("Distribution binomiale B(8,0.5)","X","P(X)");
 legend(["Tirage","Théorie"]);
 ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             N = 8 ;
             p = 0.5;
             m = 50000;
@@ -327,7 +327,7 @@ legend(["Tirage","Théorie"]);
             plot(bins, Pexa',"r-");
             xtitle("Distribution binomiale B(8,0.5)","X","P(X)");
             legend(["Tirage","Théorie"]);
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Autre exemple : utilisons maintenant une série de polynômes de Hermite définis par morceaux pour interpoler un ensemble depoints.
         </para>
@@ -371,7 +371,7 @@ legend(["Tirage","Théorie"]);
       // NOTE : pour vérifier, décommenter et exécuter la ligne suivante
       // YY = interp(X,x,y,d); plot2d(X,YY,3,"000")
       ]]></programlisting>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
 
             function y=Ll(t,k,x)
             y=(t-x(k+1))./(x(k)-x(k+1))
@@ -404,7 +404,7 @@ legend(["Tirage","Théorie"]);
             plot(x,y,"bo")
             xtitle("Polynôme de Hermite par morceaux");
             legend(["Polynôme d''interpolation","Données à interpoler"]);
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
 
     <refsection role="see also">
@@ -421,7 +421,7 @@ legend(["Tirage","Théorie"]);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>

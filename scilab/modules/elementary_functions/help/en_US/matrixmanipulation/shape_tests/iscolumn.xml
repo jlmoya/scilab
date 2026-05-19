@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>t=iscolumn(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -43,16 +43,16 @@
         <title>Description</title>
         <para>
             <literal>
-                iscolumn(<varname>x</varname>)
+                iscolumn(x)
             </literal>
             returns true if <varname>x</varname>
             is a column vector. Scalars are considered as columns.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note that <literal>iscolumn([])</literal> returns false.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -102,7 +102,7 @@ iscolumn(s) // 3D array of structures (with 2 singleton dims)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

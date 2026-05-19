@@ -7,10 +7,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" 
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" 
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" 
-          version="5.0-subset Scilab" xml:id="table" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="table" xml:lang="en">
     <refnamediv>
         <refname>table</refname>
         <refpurpose>create a table from variables</refpurpose>
@@ -25,7 +22,7 @@
             t = table(..., OptionName, Value, ...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -52,10 +49,11 @@
                     <para/>
                 </listitem>
             </varlistentry>
-            <para>
-                Optional pairs <emphasis role="bold">OptionName, Value</emphasis> are:
-            </para>
-            <para/>
+        </variablelist>
+        <para>
+            Optional pairs <emphasis role="bold">OptionName, Value</emphasis> are:
+        </para>
+        <variablelist>
             <varlistentry>
                 <term><emphasis role="bold">"VariableNames"</emphasis>, vector of strings</term>
                 <listitem>
@@ -99,7 +97,7 @@
             neccesary to use {} or table to insert data. If they are of the same type, the [] will preferred.
         </para>
         <para>
-            Use the <link linkend="readtable"></link> function to create a table from a file. If data contains a timestamp, use the <link linkend="timeseries">timeseries</link> function instead.
+            Use the <link linkend="readtable"/> function to create a table from a file. If data contains a timestamp, use the <link linkend="timeseries">timeseries</link> function instead.
         </para>
         <para>
             <emphasis role="bold">t = table(var1, ..., varN)</emphasis> creates a table from the data variables <emphasis role="bold">var1, ..., varN</emphasis>.
@@ -107,11 +105,11 @@
         </para>
         <para>
             <emphasis role="bold">t = table(m)</emphasis> creates a table from a matrix <emphasis role="bold">m</emphasis>.
-            This syntaxe corresponds to <emphasis role="bold">t = <link linkend="matrix2table"></link>(st)</emphasis>.
+            This syntaxe corresponds to <emphasis role="bold">t = <link linkend="matrix2table"/>(st)</emphasis>.
         </para>
         <para>
             <emphasis role="bold">t = table(st)</emphasis> creates a table from a structure <emphasis role="bold">st</emphasis>.
-            This syntaxe corresponds to <emphasis role="bold">t = <link linkend="struct2table"></link>(st)</emphasis>.
+            This syntaxe corresponds to <emphasis role="bold">t = <link linkend="struct2table"/>(st)</emphasis>.
         </para>
         <para>
             <emphasis role="bold">t = table(..., OptionName, Value)</emphasis> can be used to specify the variable names or the row names.
@@ -171,8 +169,8 @@
             LifeExpectancy = [60; 78; 75; %nan; 72; 75; 74]; // in years
 
             t = table(Code, NameContinent, Area, NumberCountry, LifeExpectancy)
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         </para>
         <para><emphasis role="bold">t = table(var1, ..., varN, "VariableNames", Value)</emphasis></para>
         <para>
@@ -196,8 +194,8 @@
             t.Properties.VariableUnits($) = "years"
 
             t.Properties
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 --> t = table(Code, NameContinent, Area, NumberCountry, LifeExpectancy, ...
   >     "VariableNames", ["Code", "NameContinent", "Area", "NumberCountry", "LifeExpectancy"])
@@ -266,8 +264,8 @@
             
             t.Properties.RowNames
             t("NA", ["NameContinent", "NumberCountry"])
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 --> t = table(Code, NameContinent, Area, NumberCountry, LifeExpectancy, ...
   >     "VariableNames", ["Code", "NameContinent", "Area", "NumberCountry", "LifeExpectancy"])
@@ -360,8 +358,8 @@
             id = [1;2;3]
             scores = [50; 89; 65];
             t = table(names, id, scores, "VariableNames", ["names", "id", "scores"])
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 --> t = table(names, id, scores, "VariableNames", ["names", "id", "scores"])
 
@@ -389,8 +387,8 @@
             t([1 3 5], 2)
             t(6,:) = {"d", 2, -2}
             t.x4 = (1:6)'
-        ]]>
-        </programlisting>
+        
+        ]]></programlisting>
         <screen><![CDATA[
 --> t = table(x, x1, x2, "VariableNames", ["x", "x1", "x2"])
 
@@ -485,21 +483,26 @@
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Introduction in Scilab.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>2026.0.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            Support for integers types added.
-                        </listitem>
-                        <listitem>
-                            <literal>table</literal> now accepts cells for variables.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Support for integers types added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para><literal>table</literal> now accepts cells for variables.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

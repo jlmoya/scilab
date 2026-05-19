@@ -22,7 +22,7 @@
         <title>Séquence d'appel</title>
         <synopsis>xcosAddToolsMenu(label, command)</synopsis>
     </refsynopsisdiv>
-    <refsection id="Description_xcosAddToolsMenu">
+    <refsection xml:id="Description_xcosAddToolsMenu">
         <title>Description</title>
         <para>Ajoute un menu à Xcos qui exécute une commande scilab. La commande scilab peut utiliser deux variables définies dans le contexte scilab :</para>
         <itemizedlist>
@@ -53,7 +53,7 @@ xcosAddToolsMenu("met à jour le block", "myUpdateFunction(blk, scs_m)");
 ]]></programlisting>
         </para>
     </refsection>
-    <refsection id="SeeAlso_xcosAddToolsMenu">
+    <refsection xml:id="SeeAlso_xcosAddToolsMenu" role="see also">
         <title>Voir aussi</title>
         <simplelist type="inline">
             <member>

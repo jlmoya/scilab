@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="factorial" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="factorial" xml:lang="en">
     <refnamediv>
         <refname>factorial</refname>
         <refpurpose>factorial function : product of the n first positive integers</refpurpose>
@@ -74,25 +71,33 @@
             Returns the factorial of n, that is the product 1 * 2 * ... * n.
         </para>
         <warning>
-            <varname>f</varname> overflows as soon as n&gt;170 and always returns %inf for any
-            bigger n.
+            <para>
+                <varname>f</varname> overflows as soon as n&gt;170 and always returns %inf for any
+                bigger n.
+            </para>
         </warning>
         <note>
             <itemizedlist>
                 <listitem>
-                    For <literal>n in [22, 170]</literal>, the relative accuracy of
-                    <varname>f</varname> is roughly <literal>%eps ~ 2e-16</literal>.
+                     <para>
+                        For <literal>n in [22, 170]</literal>, the relative accuracy of
+                        <varname>f</varname> is roughly <literal>%eps ~ 2e-16</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    For <literal>n in [171, 1.0x10<superscript>14</superscript>]</literal>, the
-                    power <varname>p</varname> value is exact, and the relative accuracy of the
-                    mantissa <varname>m</varname> goes roughly as
-                    <literal>n*%eps ~ n * 1e-16</literal> (see the last example).
+                     <para>
+                        For <literal>n in [171, 1.0x10<superscript>14</superscript>]</literal>, the
+                        power <varname>p</varname> value is exact, and the relative accuracy of the
+                        mantissa <varname>m</varname> goes roughly as
+                        <literal>n*%eps ~ n * 1e-16</literal> (see the last example).
+                    </para>
                 </listitem>
                 <listitem>
-                    Beyond <literal>n > 10.0<superscript>14</superscript></literal>,
-                    <varname>p</varname> becomes > 1/%eps and gets truncated. It is then no longer
-                    possible to retrieve a reliable mantissa.
+                     <para>
+                        Beyond <literal>n &gt; 10.0<superscript>14</superscript></literal>,
+                        <varname>p</varname> becomes &gt; 1/%eps and gets truncated. It is then no longer
+                        possible to retrieve a reliable mantissa.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
@@ -100,7 +105,7 @@
     </refsection>
     <refsection>
         <title>Graph</title>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = (10^(0:13)).*.(1:9); x(1)=[]; x($)=1e14;
             [f, p, m] = factorial(x);
             plot2d("ll", x, p+log10(m))
@@ -110,7 +115,7 @@
             set(gca(), "sub_ticks",[8 2], "tight_limits","on");
             gca().data_bounds([1 4]) = [1 2e15];
             gcf().axes_size = [840 470];
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="examples">
         <title>Examples</title>
@@ -219,8 +224,10 @@ r_err = m./m0 - 1;
             <revision>
                 <revnumber>6.1</revnumber>
                 <revdescription>
-                    Extension up to n = 10<superscript>14</superscript>. <varname>p</varname>
-                    10-power and <varname>m</varname> mantissa output added.
+                    <para>
+                        Extension up to n = 10<superscript>14</superscript>. <varname>p</varname>
+                        10-power and <varname>m</varname> mantissa output added.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -51,36 +51,74 @@ Object::Object(const Object& obj)
 Object::~Object()
 {
     //sciprint("delete %ls\n", def->getName().data());
-    typed_list in;
-    optional_list opt;
-    typed_list out;
-    IncreaseRef();
-    callMethod(L"delete", in, opt, 0, out, ast::CommentExp(Location(), new std::wstring(L"")));
-    DecreaseRef();
+    try
+    {
+        typed_list in;
+        optional_list opt;
+        typed_list out;
+        IncreaseRef();
+        callMethod(L"delete", in, opt, 0, out, ast::CommentExp(Location(), new std::wstring(L"")));
+        DecreaseRef();
+    }
+    catch (ast::InternalError& ie)
+    {
+        sciprint(_("Warning: 'delete' method of class '%ls' failed: %ls"), def->getName().data(), ie.GetErrorMessage().data());
+    }
+    catch (...)
+    {
+        sciprint(_("Warning: 'delete' method of class '%ls' failed.\n"), def->getName().data());
+    }
+
     for (auto&& prop : properties)
     {
         prop.second->DecreaseRef();
         prop.second->killMe();
     }
+
+    def->removeObject(this);
 }
 
 void Object::loadClassdef(Classdef* def, int level)
 {
-    for (auto&& prop : def->getProperties())
+    def->addObject(this);
+    auto props = def->getProperties();
+
+    //remove properties from previous classdef that not exist in current classdef
+    std::vector<std::wstring> toRemove;
+    for (auto&& prop : properties)
+    {
+        if (props.find(prop.first) == props.end())
+        {
+            properties[prop.first]->DecreaseRef();
+            properties[prop.first]->killMe();
+            toRemove.push_back(prop.first);
+        }
+    }
+
+    for (auto&& r : toRemove)
+    {
+        properties.erase(r);
+    }
+
+
+    for (auto&& prop :props)
     {
         if (std::get<0>(prop.second).isStatic == false)
         {
-            // remove previous instance from superclass
-            if (properties.find(prop.first) != properties.end())
+            //do not replace variable from previous classdef (override of classdef)
+            if (properties.find(prop.first) == properties.end())
             {
-                properties[prop.first]->DecreaseRef();
-                properties[prop.first]->killMe();
+                properties[prop.first] = def->instantiateProperty(prop.first, std::get<0>(prop.second));
+                properties[prop.first]->IncreaseRef();
             }
-
-            properties[prop.first] = def->instantiateProperty(prop.first, std::get<0>(prop.second));
-            properties[prop.first]->IncreaseRef();
         }
     }
+}
+
+void Object::updateClassdef(Classdef* classdef)
+{
+    def = classdef;
+    loadClassdef(classdef);
 }
 
 bool Object::toString(std::wostringstream& ostr)
@@ -128,10 +166,11 @@ bool Object::extract(const std::wstring& name, InternalType*& out)
 
     if (scope.size() > 0)
     {
-        auto methods = def->getMethods();
-        if (methods.find(scope.top()) != methods.end())
+        const auto& methods = def->getMethods();
+        auto it = methods.find(scope.top());
+        if (it != methods.end())
         {
-            ref = std::get<1>(methods[scope.top()]);
+            ref = std::get<1>(it->second);
         }
     }
 
@@ -140,13 +179,10 @@ bool Object::extract(const std::wstring& name, InternalType*& out)
         if (access == AccessModifier::PUBLIC || (scope.size() > 0 && access != AccessModifier::NONE))
         {
             out = getProperty(name);
-            //static
-            /* 
             if (out == nullptr)
             {
                 out = def->getStatic(name);
             }
-            */
             return true;
         }
         else
@@ -161,7 +197,14 @@ bool Object::extract(const std::wstring& name, InternalType*& out)
     {
         if (access == AccessModifier::PUBLIC || (scope.size() > 0 && access != AccessModifier::NONE))
         {
-            out = new ObjectMethod(this, name, def->getMethod(name));
+            if (def->isStaticMethod(name))
+            {
+                out = def->getStatic(name);
+            }
+            else
+            {
+                out = new ObjectMethod(this, name, def->getMethod(name));
+            }
             return true;
         }
         else
@@ -238,9 +281,8 @@ bool Object::setProperty(const std::wstring& prop, InternalType* value)
     AccessModifier access;
     if (def->getAccessProperty(prop, access))
     {
-
         if (access == AccessModifier::PUBLIC ||
-            (symbol::Context::getInstance()->getCurrentObject() == this && access != AccessModifier::NONE))
+            (scope.size() > 0 && access != AccessModifier::NONE))
         {
             if (properties.find(prop) != properties.end())
             {
@@ -250,22 +292,18 @@ bool Object::setProperty(const std::wstring& prop, InternalType* value)
 
                 properties[prop] = value;
                 value->IncreaseRef();
-                return this;
+                return true;
+            }
+            else if (def->setStatic(prop, value))
+            {
+                return true;
             }
             else
             {
-                // static
-                /*
-                if (def->setStatic(field, _pSource))
-                {
-                    return this;
-                }
-                */
+                wchar_t szError[128];
+                os_swprintf(szError, 128, _W("Wrong insertion: property '%ls' does not exist.\n").c_str(), prop.data());
+                throw ast::InternalError(szError);
             }
-
-            wchar_t szError[128];
-            os_swprintf(szError, 128, _W("Wrong insertion: property '%ls' does not exist.\n").c_str(), prop.data());
-            throw ast::InternalError(szError);
         }
         else
         {
@@ -280,6 +318,7 @@ bool Object::setProperty(const std::wstring& prop, InternalType* value)
         os_swprintf(szError, 128, _W("Wrong insertion: property '%ls' does not exist.\n").c_str(), prop.data());
         throw ast::InternalError(szError);
     }
+    return false;
 }
 
 Function::ReturnValue Object::callConstructor(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e)
@@ -349,7 +388,7 @@ Function::ReturnValue Object::callMethod(const std::wstring& method, typed_list&
 
     return callMethod(method, call, in, opt, _iRetCount, out, e);
 }
- 
+
 Function::ReturnValue Object::callMethod(const std::wstring& method, Callable* call, typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e)
 {
     if (call == nullptr)
@@ -493,14 +532,35 @@ bool Object::deserialize(InternalType* data)
     {
         typed_list in, out;
         IncreaseRef();
-        in.push_back(this);
+        data->IncreaseRef();
+        in.push_back(data);
         optional_list opt;
         auto ret = callMethod(L"loadobj", in, opt, 1, out,ast::CommentExp(Location(), new std::wstring(L"")));
+        data->DecreaseRef();
         DecreaseRef();
-        return true;
+        return ret == Function::OK;
     }
 
     return false;
+}
+
+bool Object::getMemory(long long* _piSize, long long* _piSizePlusType)
+{
+    *_piSize = 0;
+    *_piSizePlusType = 0;
+    for (auto&& p : getProperties())
+    {
+        long long s1;
+        long long s2;
+        if (p.second)
+        {
+            p.second->getMemory(&s1, &s2);
+            *_piSize += s1;
+            *_piSizePlusType += s2;
+        }
+    }
+
+    return true;
 }
 
 } // namespace types

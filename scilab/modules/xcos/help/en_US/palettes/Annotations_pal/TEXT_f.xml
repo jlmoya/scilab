@@ -32,33 +32,33 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/TEXT_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_TEXT_f">
+    <refsection xml:id="Contents_TEXT_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TEXT_f">Description</xref>
+                <para><link linkend="Description_TEXT_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_TEXT_f">Parameters</xref>
+                <para><link linkend="Dialogbox_TEXT_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TEXT_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_TEXT_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_TEXT_f">Example</xref>
+                <para><link linkend="Example_TEXT_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="See_also_TEXT_f">See also</xref>
+                <para><link linkend="See_also_TEXT_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_TEXT_f">
+    <refsection xml:id="Description_TEXT_f">
         <title>Description</title>
         <para>
             This special block is only used to add text at any point of the diagram window.
@@ -75,26 +75,26 @@
             This item open the tabbed dialog below where you can set the text parameters.
         </para>
         <note>
+            <para>
             The following GUI is also used to modify comment text and appearance of the blocks and links.
+            </para>
         </note>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_TEXT_f">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_TEXT_f">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/annotations_pal/en_US/TEXT_f_text_gui.png"
-                            align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
-        <inlinemediaobject>
+        </mediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/annotations_pal/en_US/TEXT_f_color_gui.png"
-                        align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                        align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -138,7 +138,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_TEXT_f">
+    <refsection xml:id="Defaultproperties_TEXT_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -195,7 +195,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_TEXT_f">
+    <refsection xml:id="Example_TEXT_f">
         <title>Example</title>
         <para>
             The figure below shows some examples of text annotations. The first shows the result

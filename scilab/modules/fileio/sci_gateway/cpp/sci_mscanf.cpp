@@ -41,7 +41,6 @@ types::Function::ReturnValue sci_mscanf(types::typed_list &in, int _iRetCount, t
     int iNiter                  = 1;
     wchar_t* wcsFormat          = NULL;
     wchar_t* wcsRead            = NULL;
-    int dimsArray[2]            = {1, 1};
 
     int args        = 0;
     int nrow        = 0;

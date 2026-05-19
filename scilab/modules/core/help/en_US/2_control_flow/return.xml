@@ -25,7 +25,7 @@
             [x1,..,xn] = return(a1,..,an)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -64,11 +64,11 @@
         <para>
             The statement <code>resume</code> is equivalent to <code>return</code>.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note: the usage of this feature can complexify the code. Instead, the syntax <code>function b = foo()</code> is recommended.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -109,8 +109,10 @@ assert_checkequal(b,43)
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                  <literal>return</literal> is now protected:
-                  Assignments like <literal>return=1</literal> are no longer possible.
+                    <para>
+                        <literal>return</literal> is now protected:
+                        Assignments like <literal>return=1</literal> are no longer possible.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

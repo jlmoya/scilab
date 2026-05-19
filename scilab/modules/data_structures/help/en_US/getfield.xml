@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>[x,...] = getfield(i,l)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -103,11 +103,15 @@ getfield("b",foo()) // returns 2
             <revision>
                 <revnumber>2026.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            Add management of object.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Add management of object.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

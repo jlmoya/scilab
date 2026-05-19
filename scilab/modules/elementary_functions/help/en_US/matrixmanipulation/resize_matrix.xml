@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="en">
     <refnamediv>
         <refname>resize_matrix</refname>
         <refpurpose>trim or/and extend (and cast) a matrix or hypermatrix</refpurpose>
@@ -38,7 +35,7 @@ xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="en">
             resMat = resize_matrix(mat, newSizes,    ""  , padding)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -250,28 +247,41 @@ resize_matrix(P, [3 3 2], "", %z)
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            Polynomials and Hypermatrices are now accepted.
-                        </listitem>
-                        <listitem>
-                            A custom padding can now be provided.
-                        </listitem>
-                        <listitem>
-                            New sizes can be specified in a vector.
-                        </listitem>
-                        <listitem>
-                            resize_matrix() with no parameters displays examples (demo).
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Polynomials and Hypermatrices are now accepted.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    A custom padding can now be provided.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New sizes can be specified in a vector.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    resize_matrix() with no parameters displays examples (demo).
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revremark>The <literal>resType</literal> option is extended to the new
-                <literal>int64</literal> and <literal>uint64</literal> integer types.
-                </revremark>
+                <revdescription>
+                    <para>
+                        The <literal>resType</literal> option is extended to the new
+                        <literal>int64</literal> and <literal>uint64</literal> integer types.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

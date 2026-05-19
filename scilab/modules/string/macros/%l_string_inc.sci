@@ -1,5 +1,5 @@
 // Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
-// Copyright (C) 2024 - UTC - Stéphane MOTTELET
+// Copyright (C) 2024-2025 - UTC - Stéphane MOTTELET
 //
 // This file is hereby licensed under the terms of the GNU GPL v2.0,
 // pursuant to article 5.3.4 of the CeCILL v.2.1.
@@ -91,6 +91,8 @@ function [head,str]=%l_field_format(x,i,level,maxlevel)
         end
     elseif or(type(value) == [13 130])
         head = "function";
+    elseif type(value) == 21
+        head = typeof(value)+" object";
     end
     if isempty(head)
         [head,err] = evstr("%"+typeof(value)+"_outline(value,0)")

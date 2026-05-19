@@ -11,10 +11,7 @@
  * https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="plotimplicit">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="plotimplicit">
     <refnamediv>
         <refname>plotimplicit</refname>
         <refpurpose>Plots the (x,y) lines solving an implicit equation or Function(x,y)=0</refpurpose>
@@ -29,7 +26,7 @@
             h = plotimplicit(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -39,22 +36,28 @@
                         It may be one of the following:
                         <itemizedlist>
                             <listitem>
-                                A single Scilab-executable string expression of literal scalar
-                                variables "x" and "y" representing two scalar real numbers.
-                                Examples: <literal>"x^3 + 3*y^2 = 1/(2+x*y)"</literal>,
-                                <literal>"(x-y)*(sin(x)-sin(y))"</literal> (implicitly = 0).
+                                 <para>
+                                    A single Scilab-executable string expression of literal scalar
+                                    variables "x" and "y" representing two scalar real numbers.
+                                    Examples: <literal>"x^3 + 3*y^2 = 1/(2+x*y)"</literal>,
+                                    <literal>"(x-y)*(sin(x)-sin(y))"</literal> (implicitly = 0).
+                                </para>
                             </listitem>
                             <listitem>
-                                The identifier of an existing function of two variables x and y.
-                                Example: <literal>besselj</literal> (not <literal>"besselj"</literal>).
+                                 <para>
+                                    The identifier of an existing function of two variables x and y.
+                                    Example: <literal>besselj</literal> (not <literal>"besselj"</literal>).
+                                </para>
                             </listitem>
                             <listitem>
-                                A list, gathering a Scilab or built-in function identifier,
-                                followed by the series of its parameters.
-                                Example: After
-                                <literal>function r = test(x,y,a), r = x.*(y-a), endfunction</literal>,
-                                <varname>fun</varname> can be <literal>list(test, 3.5)</literal>
-                                to consider and compute <literal>test(x, y, 3.5)</literal>.
+                                 <para>
+                                    A list, gathering a Scilab or built-in function identifier,
+                                    followed by the series of its parameters.
+                                    Example: After
+                                    <literal>function r = test(x,y,a), r = x.*(y-a), endfunction</literal>,
+                                    <varname>fun</varname> can be <literal>list(test, 3.5)</literal>
+                                    to consider and compute <literal>test(x, y, 3.5)</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -78,46 +81,58 @@
                         can be specified as follow:
                         <itemizedlist>
                             <listitem>
-                                A vector of 2 real numbers = bounds of the x or y domain. Example:
-                                <literal>[-2, 3.5]</literal>. Then the given interval is sampled
-                                with 201 points.
+                                 <para>
+                                    A vector of 2 real numbers = bounds of the x or y domain. Example:
+                                    <literal>[-2, 3.5]</literal>. Then the given interval is sampled
+                                    with 201 points.
+                                </para>
                             </listitem>
                             <listitem>
-                                A vector of more than 2 real numbers = values where the function
-                                is computed. Example: <literal>-1:0.1:2</literal>.
+                                 <para>
+                                    A vector of more than 2 real numbers = values where the function
+                                    is computed. Example: <literal>-1:0.1:2</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                The colon <literal>:</literal>. Then the considered interval
-                                is given by the data bounds of the current or default axes.
-                                This allows to overplot solutions of multiple equations on a shared
-                                (x,y) domain, with as many call to <literal>plotimplicit(..)</literal>
-                                as required.
+                                 <para>
+                                    The colon <literal>:</literal>. Then the considered interval
+                                    is given by the data bounds of the current or default axes.
+                                    This allows to overplot solutions of multiple equations on a shared
+                                    (x,y) domain, with as many call to <literal>plotimplicit(..)</literal>
+                                    as required.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
-                    <para>
-                        <warning>
+                    <warning>
+                        <para>
                             The bounds of the 1st plot drawn by <literal>plotimplicit(..)</literal>
                             are set according to the bounds <emphasis>of the solutions of
                             <varname>fun</varname></emphasis>. Most often they are (much) narrower
                             than <varname>x_grid</varname> and <varname>y_grid</varname> bounds.
-                        </warning>
-                    </para>
+                        </para>
+                    </warning>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>plotOptions</term>
                 <listitem>
-                        List of <link linkend="plot">plot()</link> line-styling options used when
-                        plotting the solutions curves.
-                    <para/>
-                </listitem>
+                     <para>
+                            List of <link linkend="plot">plot()</link> line-styling options used when
+                            plotting the solutions curves.
+                        </para>
+                    </listitem>
             </varlistentry>
-            <para>This optional output is a vector containing the handles of
-              the created Polyline objects. Use <literal>h</literal> to modify properties
-              of a specific or all Polyline objects after they are created. For a list of
-              properties, see <link linkend="polyline_properties">polyline_properties</link>.
-            </para>
+            <varlistentry>
+                <term>h</term>
+                <listitem>
+                    <para>This optional output is a vector containing the handles of
+                    the created Polyline objects. Use <literal>h</literal> to modify properties
+                    of a specific or all Polyline objects after they are created. For a list of
+                    properties, see <link linkend="polyline_properties">polyline_properties</link>.
+                    </para>
+                    </listitem>
+            </varlistentry>
         </variablelist>
     </refsection>
     <refsection>
@@ -135,15 +150,15 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    <literal>plotimplicit(..)</literal> can be used in a subplot.
-                    <para/>
-                </listitem>
+                     <para><literal>plotimplicit(..)</literal> can be used in a subplot.
+                        </para>
+                    </listitem>
                 <listitem>
-                    <literal>plotimplicit(..)</literal> can be called several times for the same
-                    axes, to overplot the solutions of several implicit equations (and show their
-                    possible intersections).
-                    <para/>
-                </listitem>
+                     <para><literal>plotimplicit(..)</literal> can be called several times for the same
+                        axes, to overplot the solutions of several implicit equations (and show their
+                        possible intersections).
+                        </para>
+                    </listitem>
             </itemizedlist>
         </note>
     </refsection>
@@ -161,12 +176,12 @@
             xgrid(color("grey"),1,7)
             isoview
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             plotimplicit "x^2 + y^2 = 1"
             xgrid(color("grey"),1,7)
             isoview
             gcf().axes_size = [420 420];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">With the identifier of the function</emphasis> whose root lines
@@ -193,7 +208,7 @@
             title("$\text{built-in:  } besselj(x,y) = 0$", "fontsize",4)
             xgrid(color("grey"),1,7)
     ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             clf
             // 1) With a function in Scilab language (macro)
             function z = F(x, y)
@@ -215,7 +230,7 @@
             xgrid(color("grey"),1,7)
 
             gcf().axes_size = [800 420];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">
@@ -233,7 +248,7 @@
             title("$3x^2 e^x - x y^2 +  {{e^y}\over{(y^2 + 1)}} - 1 = 0$", "fontsize",4)
             xgrid(color("grey"),1,7)
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             expression = "3*x^2*exp(x) - x*y^2 +  exp(y)/(y^2 + 1) = 1"
             h = plotimplicit(expression, , -10:0.1:10, "r--")
 
@@ -244,7 +259,7 @@
             title("$3x^2 e^x - x y^2 +  {{e^y}\over{(y^2 + 1)}} - 1 = 0$", "fontsize",4)
             xgrid(color("grey"),1,7)
             gcf().axes_size = [600 440];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">
@@ -266,7 +281,7 @@ hl = legend([h1(1) h2(1)],[t1 t2]);
 hl.font_size = 3;
 xgrid(color("grey"),1,7)
     ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             clf
             h1 = plotimplicit("x*sin(x) = y^2*cos(y)", [-2,2])
 
@@ -280,7 +295,7 @@ xgrid(color("grey"),1,7)
             hl = legend([h1(1) h2(1)],[t1 t2]);
             hl.font_size = 3;
             xgrid(color("grey"),1,7)
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See Also</title>
@@ -313,9 +328,9 @@ xgrid(color("grey"),1,7)
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function introduced.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="bloc2ss" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bloc2ss" xml:lang="pt">
     <refnamediv>
         <refname>bloc2ss</refname>
         <refpurpose>conversão de diagrama de blocos para espaço de estados
@@ -107,21 +104,29 @@ list('link','nome_do_link', [número_de_caixa_de_fluxo_superior,porta_da_caixa_d
             Há 4 links :
             <itemizedlist>
                 <listitem>
-                  O primeiro (de nome <literal>'U'</literal>) liga a entrada (porta 0 de bloco
-                  fictício -1, omitido) à porta 1 do adicionador.
+                     <para>
+                      O primeiro (de nome <literal>'U'</literal>) liga a entrada (porta 0 de bloco
+                      fictício -1, omitido) à porta 1 do adicionador.
+                  </para>
               </listitem>
               <listitem>
-                Os segundo liga a porta (de saída) 1 do  adicionador à porta (de entrada) 1 do
-                sistema <literal>S1</literal>.
+                   <para>
+                    Os segundo liga a porta (de saída) 1 do  adicionador à porta (de entrada) 1 do
+                    sistema <literal>S1</literal>.
+                  </para>
               </listitem>
               <listitem>
-                Os terceiro liga a porta (de saída)  1 de <literal>S1</literal> à porta
-                (de entrada) 1 de <literal>S2</literal>.
+                   <para>
+                    Os terceiro liga a porta (de saída)  1 de <literal>S1</literal> à porta
+                    (de entrada) 1 de <literal>S2</literal>.
+                  </para>
               </listitem>
               <listitem>
-                O quarto link (de nome <literal>'Y'</literal>) liga  a porta (de saída) 1 de
-                <literal>S2</literal> à saída (porta 0 do bloco fictício -1, omitido) e à porta
-                (de entrada) 2 do adicionador.
+                   <para>
+                    O quarto link (de nome <literal>'Y'</literal>) liga  a porta (de saída) 1 de
+                    <literal>S2</literal> à saída (porta 0 do bloco fictício -1, omitido) e à porta
+                    (de entrada) 2 do adicionador.
+                  </para>
               </listitem>
            </itemizedlist>
         </para>

@@ -79,7 +79,6 @@ sci_gateway/cpp/sci_scicos_debug_count.cpp \
 sci_gateway/cpp/sci_scicos_log.cpp \
 sci_gateway/cpp/sci_buildouttb.cpp \
 sci_gateway/cpp/sci_ctree2.cpp \
-sci_gateway/cpp/sci_ctree3.cpp \
 sci_gateway/cpp/sci_ctree4.cpp \
 sci_gateway/cpp/sci_coserror.cpp \
 sci_gateway/cpp/sci_curblock.cpp \

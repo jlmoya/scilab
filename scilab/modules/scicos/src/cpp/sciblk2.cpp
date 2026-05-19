@@ -42,6 +42,7 @@ extern "C"
 #include "import.h" /* getscicosvarsfromimport */
 #include "scicos.h" /* set_block_error(), get_block_number() */
 #include "Scierror.h"
+#include "scicos_internal.h" /* COSDEBUG_struct */
 }
 
 static double toDouble(const int i)
@@ -134,7 +135,7 @@ void sciblk2(int* flag, int* nevprt, double* t, double xd[], double x[], int* nx
     /***********************
     * Call Scilab function *
     ***********************/
-    types::Callable* pCall = static_cast<types::Callable*>(scsptr);
+    types::Callable* pCall = reinterpret_cast<types::Callable*>(scsptr);
 
     if(!ConfigVariable::increaseRecursion())
         throw ast::RecursionException();
@@ -148,26 +149,42 @@ void sciblk2(int* flag, int* nevprt, double* t, double xd[], double x[], int* nx
     try
     {
         Ret = pCall->call(in, opt, 5, out);
+        ConfigVariable::where_end();
+        ConfigVariable::decreaseRecursion();
 
         if (Ret != types::Function::OK)
         {
-            // there has been a Scilab error, it will be reported through the lasterror()
-            setErrAndFree(out);
+            set_block_error(-1);
             return;
         }
-
-        if (out.size() != 5)
+    }
+    catch (const ast::InternalError &ie)
+    {
+        if (C2F(cosdebug).cosd >= 1)
         {
-            throw ast::InternalError(reportError(_("User-defined function of Block #%d - \"%s\" did not output 5 values.\n")));
+            std::wostringstream ostr;
+            ConfigVariable::whereErrorToString(ostr);
+            ostr << ConfigVariable::getLastErrorMessage();
+
+            bool oldSilentError = ConfigVariable::isSilentError();
+            ConfigVariable::setSilentError(false);
+            scilabErrorW(ostr.str().c_str());
+            ConfigVariable::setSilentError(oldSilentError);
+            ConfigVariable::resetWhereError();
         }
 
         ConfigVariable::where_end();
         ConfigVariable::decreaseRecursion();
-    }
-    catch (const ast::InternalError &)
-    {
-        setErrAndFree(out);
+
+        set_block_error(-1);
         throw;
+    }
+
+    if (out.size() != 5)
+    {
+        set_block_error(-1);
+        throw ast::InternalError(reportError(_("User-defined function of Block #%d - \"%s\" did not output 5 values.\n")));
+        return;
     }
 
     if (*flag == 0)

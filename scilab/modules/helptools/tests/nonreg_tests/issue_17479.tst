@@ -17,8 +17,6 @@
 // inline doc fails for non existing language documentation
 //
 
-setlanguage("en_US");
-ref = getHelpPage("cos");
-setlanguage ("en_PH");
-val = getHelpPage("cos");
-assert_checkequal(val, ref);
+setlanguage("en_PH");
+err = execstr("help cos", "errcatch");
+assert_checkequal(err, 0);

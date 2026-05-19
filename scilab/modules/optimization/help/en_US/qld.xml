@@ -10,7 +10,7 @@
             [x [,lagr [,info]]] = qld(Q, p, C, b, ci, cs, me [,tol])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -109,26 +109,26 @@
                 <listitem>
                     <para>
                         vector of Lagrange multipliers.
-                        <para>
-                            If lower and upper-bounds
-                            <literal>ci, cs</literal> are provided, <literal>lagr</literal> has
-                            <literal>me + md + 2* n</literal> components. The components <literal>lagr(1:me + md)</literal>
-                            are associated with
-                            the linear constraints and <literal>
-                                lagr (me + md + 1 : 2 * n)
-                            </literal>
-                            are associated with the lower and upper bounds constraints.
-                        </para>
-                        <para>
-                            If an upper-bound (resp. lower-bound) constraint
-                            <literal>i</literal> is active <literal>lagr(i)</literal> is &gt; 0
-                            (resp. &lt;0). If no bounds are provided, <literal>lagr</literal>
-                            has only <literal>me + md</literal> components.
-                        </para>
-                        <para>
-                            On successful termination, all values of <literal>lagr</literal> with respect to inequalities
-                            and bounds should be greater or equal to zero.
-                        </para>
+                    </para>
+                    <para>
+                        If lower and upper-bounds
+                        <literal>ci, cs</literal> are provided, <literal>lagr</literal> has
+                        <literal>me + md + 2* n</literal> components. The components <literal>lagr(1:me + md)</literal>
+                        are associated with
+                        the linear constraints and <literal>
+                            lagr (me + md + 1 : 2 * n)
+                        </literal>
+                        are associated with the lower and upper bounds constraints.
+                    </para>
+                    <para>
+                        If an upper-bound (resp. lower-bound) constraint
+                        <literal>i</literal> is active <literal>lagr(i)</literal> is &gt; 0
+                        (resp. &lt;0). If no bounds are provided, <literal>lagr</literal>
+                        has only <literal>me + md</literal> components.
+                    </para>
+                    <para>
+                        On successful termination, all values of <literal>lagr</literal> with respect to inequalities
+                        and bounds should be greater or equal to zero.
                     </para>
                 </listitem>
             </varlistentry>

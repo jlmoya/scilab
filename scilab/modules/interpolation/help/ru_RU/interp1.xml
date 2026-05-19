@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="interp1" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="interp1" xml:lang="ru">
     <refnamediv>
         <refname>interp1</refname>
         <refpurpose>одномерная интерполяция в режиме nearest, linear или spline</refpurpose>
@@ -36,182 +33,200 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    вектор по меньшей мере из двух вещественных чисел: ось абсцисс известных узлов
-                    интерполяции, без повторов. По умолчанию
-                    <itemizedlist>
-                        <listitem>
-                            если <varname>y</varname> является вектором: <literal>x=1:length(y)</literal>.
-                        </listitem>
-                        <listitem>
-                            если <varname>y</varname> является матрицей или гиперматрицей:
-                            <literal>x=1:size(y,1)</literal>.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        вектор по меньшей мере из двух вещественных чисел: ось абсцисс известных узлов
+                        интерполяции, без повторов. По умолчанию
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    если <varname>y</varname> является вектором: <literal>x=1:length(y)</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    если <varname>y</varname> является матрицей или гиперматрицей:
+                                    <literal>x=1:size(y,1)</literal>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    вектор, матрица или гиперматрица вещественных или комплексных
-                    чисел: значения в узлах интерполяции в соответствующих значениях
-                    оси абсцисс <varname>x</varname>.
-                    <itemizedlist>
-                        <listitem>
-                            если <varname>y</varname> является вектором, то <varname>x</varname>
-                            и <varname>y</varname> должны быть одной длины.
-                        </listitem>
-                        <listitem>
-                            если <varname>y</varname> является матрицей или гиперматрицей, то мы
-                            должны иметь <literal>length(x)==size(y,1)</literal>. Каждый столбец
-                            <varname>y</varname> тогда интерполирован в зависимости от тех же
-                            значений оси абсцисс <varname>x</varname>, для указанного
-                            <varname>xp</varname>.
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        вектор, матрица или гиперматрица вещественных или комплексных
+                        чисел: значения в узлах интерполяции в соответствующих значениях
+                        оси абсцисс <varname>x</varname>.
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    если <varname>y</varname> является вектором, то <varname>x</varname>
+                                    и <varname>y</varname> должны быть одной длины.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    если <varname>y</varname> является матрицей или гиперматрицей, то мы
+                                    должны иметь <literal>length(x)==size(y,1)</literal>. Каждый столбец
+                                    <varname>y</varname> тогда интерполирован в зависимости от тех же
+                                    значений оси абсцисс <varname>x</varname>, для указанного
+                                    <varname>xp</varname>.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>xp</term>
                 <listitem>
-                    скаляр, вектор, матрица или гиперматрица десятичных чисел:
-                    ось абсцисс точек, чьи значения <varname>yp</varname> должны быть
-                    вычислены в соответствии с данными узлов интерполяции.
-                    <para/>
-                </listitem>
+                     <para>
+                        скаляр, вектор, матрица или гиперматрица десятичных чисел:
+                        ось абсцисс точек, чьи значения <varname>yp</varname> должны быть
+                        вычислены в соответствии с данными узлов интерполяции.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>yp</term>
                 <listitem>
-                    вектор, матрица или гиперматрица чисел: интерполированные значения
-                    <varname>y</varname> в указанном <varname>xp</varname>.
-                    <itemizedlist>
-                        <listitem>
-                            если <varname>y</varname> является вектором:
-                            <varname>yp</varname> имеет размер <varname>xp</varname>.
-                            <para/>
-                        </listitem>
-                        <listitem>
-                            если <varname>y</varname> является матрицей или гиперматрицей:
-                            <itemizedlist>
-                                <listitem>
-                                    если <varname>xp</varname> является скаляром или вектором:
-                                    <literal>size(yp)</literal> равен
-                                    <literal>[length(xp) size(y)(2:$)]</literal>
+                     <para>
+                        вектор, матрица или гиперматрица чисел: интерполированные значения
+                        <varname>y</varname> в указанном <varname>xp</varname>.
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    если <varname>y</varname> является вектором:
+                                    <varname>yp</varname> имеет размер <varname>xp</varname>.
+                                    </para>
                                 </listitem>
-                                <listitem>
-                                    если <varname>xp</varname> является матрицей или
-                                    гиперматрицей: <literal>size(yp)</literal> равен
-                                    <literal>[size(xp) size(y)(2:$)]</literal>
+                            <listitem>
+                                 <para>
+                                    если <varname>y</varname> является матрицей или гиперматрицей:
+                                    <itemizedlist>
+                                        <listitem>
+                                             <para>
+                                                если <varname>xp</varname> является скаляром или вектором:
+                                                <literal>size(yp)</literal> равен
+                                                <literal>[length(xp) size(y)(2:$)]</literal>
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                             <para>
+                                                если <varname>xp</varname> является матрицей или
+                                                гиперматрицей: <literal>size(yp)</literal> равен
+                                                <literal>[size(xp) size(y)(2:$)]</literal>
+                                            </para>
+                                        </listitem>
+                                      </itemizedlist>
+                                    </para>
                                 </listitem>
-                            </itemizedlist>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>method</term>
                 <listitem>
-                    строковое значение, определяющее метод интерполяции. Возможными
-                    значениями и обработкой являются:
-                    <para/>
-                    <table>
-                        <tr>
-                            <td><emphasis role="bold">"linear"</emphasis>:</td>
-                            <td>
-                                линейная интерполяция между последовательными узлами, используется
-                                по умолчанию.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"spline"</emphasis>:</td>
-                            <td>
-                                интерполяция кубическими сплайнами
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"nearest"</emphasis>:</td>
-                            <td>
-                                <para>
-                                    для каждого значения <literal>xp(j)</literal> <literal>yp(j)</literal>
-                                    принимает значение <literal>y(i)</literal>, соответствующее
-                                    <literal>x(i)</literal>, ближайшего соседа
-                                    <literal>xp(j)</literal>
-                                </para>
-                            </td>
-                        </tr>
-                    </table>
-                    <para/>
-                </listitem>
+                     <para>
+                        строковое значение, определяющее метод интерполяции. Возможными
+                        значениями и обработкой являются:
+                        <table>
+                            <tr>
+                                <td><emphasis role="bold">"linear"</emphasis>:</td>
+                                <td>
+                                    линейная интерполяция между последовательными узлами, используется
+                                    по умолчанию.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"spline"</emphasis>:</td>
+                                <td>
+                                    интерполяция кубическими сплайнами
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"nearest"</emphasis>:</td>
+                                <td>
+                                    <para>
+                                        для каждого значения <literal>xp(j)</literal> <literal>yp(j)</literal>
+                                        принимает значение <literal>y(i)</literal>, соответствующее
+                                        <literal>x(i)</literal>, ближайшего соседа
+                                        <literal>xp(j)</literal>
+                                    </para>
+                                </td>
+                            </tr>
+                        </table></para>
+                            </listitem>
             </varlistentry>
             <varlistentry>
                 <term>extrapolation</term>
                 <listitem>
-                    строковое значение или число, определяющее элементы <literal>yp(j)</literal>
-                    для значений <literal>xp(j)</literal> за пределами интервала
-                    <literal>[x(1)=min(x),x($)=max(x)]</literal>. Мы полагаем здесь и далее,
-                    что <varname>x</varname> и <varname>y</varname> уже соответственно
-                    отсортированы.
-                    <para/>
-                    <table>
-                        <tr>
-                            <td><emphasis role="bold">"extrap"</emphasis>:</td>
-                            <td>
-                                <literal>interp1(x,y,xp, method, "extrap")</literal> эквивалентен
-                                <literal>interp1(x,y,xp, method, method)</literal>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"linear"</emphasis>:</td>
-                            <td>
-                                Может использоваться с методами интерполяции
-                                <literal>"spline"</literal> (и, очевидно,
-                                <literal>"linear"</literal>).
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"periodic"</emphasis>:</td>
-                            <td>
-                                Этот тип экстраполяции может использоваться с методами
-                                интерполяции <literal>"linear"</literal> или
-                                <literal>"spline"</literal>. Тогда: если <varname>y</varname>
-                                является вектором, то требуется, чтобы
-                                <literal>y(1)==y($)</literal>; в противном случае требуется,
-                                чтобы <literal>y(1,:)==y($,:)</literal>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">"edgevalue"</emphasis>:</td>
-                            <td>
-                                Тогда <literal>yp(i)=y(1)</literal> для каждого
-                                <literal>xp(i)&lt;x(1)</literal>, и
-                                <literal>yp(i)=y($)</literal> для каждого
-                                <literal>xp(i)>x($)</literal>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">padding</emphasis>:</td>
-                            <td>
-                                <varname>padding</varname> является десятичным или
-                                комплексным числом, используемым для установки
-                                <literal>yp(i)=padding</literal> для каждого
-                                <literal>xp(i) ∉ [min(x),max(x)]</literal>. Например:
-                                <literal>yi=interp1(x,y,xp,method, 0)</literal>.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><emphasis role="bold">(none)</emphasis>:</td>
-                            <td>
-                                По умолчанию экстраполяция выполняется сплайнами, когда
-                                сплайны используются для интерполяции и дополнением
-                                значениями <literal>%nan</literal>, если интерполяция
-                                линейна или по "ближайшему" узлу.
-                            </td>
-                        </tr>
-                    </table>
-                </listitem>
+                     <para>
+                        строковое значение или число, определяющее элементы <literal>yp(j)</literal>
+                        для значений <literal>xp(j)</literal> за пределами интервала
+                        <literal>[x(1)=min(x),x($)=max(x)]</literal>. Мы полагаем здесь и далее,
+                        что <varname>x</varname> и <varname>y</varname> уже соответственно
+                        отсортированы.
+                        <table>
+                            <tr>
+                                <td><emphasis role="bold">"extrap"</emphasis>:</td>
+                                <td>
+                                    <literal>interp1(x,y,xp, method, "extrap")</literal> эквивалентен
+                                    <literal>interp1(x,y,xp, method, method)</literal>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"linear"</emphasis>:</td>
+                                <td>
+                                    Может использоваться с методами интерполяции
+                                    <literal>"spline"</literal> (и, очевидно,
+                                    <literal>"linear"</literal>).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"periodic"</emphasis>:</td>
+                                <td>
+                                    Этот тип экстраполяции может использоваться с методами
+                                    интерполяции <literal>"linear"</literal> или
+                                    <literal>"spline"</literal>. Тогда: если <varname>y</varname>
+                                    является вектором, то требуется, чтобы
+                                    <literal>y(1)==y($)</literal>; в противном случае требуется,
+                                    чтобы <literal>y(1,:)==y($,:)</literal>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">"edgevalue"</emphasis>:</td>
+                                <td>
+                                    Тогда <literal>yp(i)=y(1)</literal> для каждого
+                                    <literal>xp(i)&lt;x(1)</literal>, и
+                                    <literal>yp(i)=y($)</literal> для каждого
+                                    <literal>xp(i)&gt;x($)</literal>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">padding</emphasis>:</td>
+                                <td>
+                                    <varname>padding</varname> является десятичным или
+                                    комплексным числом, используемым для установки
+                                    <literal>yp(i)=padding</literal> для каждого
+                                    <literal>xp(i) ∉ [min(x),max(x)]</literal>. Например:
+                                    <literal>yi=interp1(x,y,xp,method, 0)</literal>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><emphasis role="bold">(none)</emphasis>:</td>
+                                <td>
+                                    По умолчанию экстраполяция выполняется сплайнами, когда
+                                    сплайны используются для интерполяции и дополнением
+                                    значениями <literal>%nan</literal>, если интерполяция
+                                    линейна или по "ближайшему" узлу.
+                                </td>
+                            </tr>
+                        </table></para>
+                            </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -288,7 +303,7 @@ h(1).mark_size = 8;
 title "Interpolation of a poorly sampled sin() function" fontsize 3
 legend(['nearest','linear','spline','nodes'], "in_lower_left");
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = linspace(0, 10, 11)';
             y = sin(x);
             xx = linspace(0,10,1000)';
@@ -301,7 +316,7 @@ legend(['nearest','linear','spline','nodes'], "in_lower_left");
             title "Interpolation of a poorly sampled sin() function" fontsize 3
             legend(['nearest','linear','spline','nodes'], "in_lower_left");
             gcf().axes_size = [600 400];
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>Смотрите также</title>
@@ -325,28 +340,38 @@ legend(['nearest','linear','spline','nodes'], "in_lower_left");
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Для комплексных значений <varname>y</varname>,
-                            <literal>imag(y)</literal> более не игнорируется:
-                            <literal>real(y)</literal> и <literal>imag(y)</literal>
-                            части интерполируются раздельно.
+                             <para>
+                                Для комплексных значений <varname>y</varname>,
+                                <literal>imag(y)</literal> более не игнорируется:
+                                <literal>real(y)</literal> и <literal>imag(y)</literal>
+                                части интерполируются раздельно.
+                            </para>
                         </listitem>
                         <listitem>
-                            Экстраполяция <literal>"periodic"</literal> добавлена для
-                            линейной и сплайновой интерполяций.
+                             <para>
+                                Экстраполяция <literal>"periodic"</literal> добавлена для
+                                линейной и сплайновой интерполяций.
+                            </para>
                         </listitem>
                         <listitem>
-                            Экстраполяция <literal>"edgevalue"</literal> добавлена для
-                            всех интерполяций ближайшего соседа, линейной и сплайновой.
+                             <para>
+                                Экстраполяция <literal>"edgevalue"</literal> добавлена для
+                                всех интерполяций ближайшего соседа, линейной и сплайновой.
+                            </para>
                         </listitem>
                         <listitem>
-                            Экстраполяция <literal>"linear"</literal> добавлена для
-                            сплайновой интерполяции.
+                             <para>
+                                Экстраполяция <literal>"linear"</literal> добавлена для
+                                сплайновой интерполяции.
+                            </para>
                         </listitem>
                         <listitem>
-                            Когда <varname>xp</varname> является гиперматрицей и
-                            <literal>size(xp,1)==1</literal>, <literal>size(yp)</literal>
-                            теперь всегда <literal>[size(xp) size(y)(2,$)</literal> вместо
-                            <literal>[size(xp,2:$), size(y)(2,$)</literal>.
+                             <para>
+                                Когда <varname>xp</varname> является гиперматрицей и
+                                <literal>size(xp,1)==1</literal>, <literal>size(yp)</literal>
+                                теперь всегда <literal>[size(xp) size(y)(2,$)</literal> вместо
+                                <literal>[size(xp,2:$), size(y)(2,$)</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

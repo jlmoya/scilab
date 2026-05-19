@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="ieee" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="ieee" xml:lang="ja">
     <refnamediv>
         <refname>ieee</refname>
         <refpurpose>浮動小数点例外モードを設定</refpurpose>
@@ -63,13 +60,17 @@
             <varlistentry>
                 <term>1</term>
                 <listitem>
-                    浮動小数点例外は警告を発生.
+                     <para>
+                        浮動小数点例外は警告を発生.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>2</term>
                 <listitem>
-                    浮動小数点例外は無限大(Inf)またはNaNを発生.
+                     <para>
+                        浮動小数点例外は無限大(Inf)またはNaNを発生.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -82,17 +83,20 @@
             The default initial mode is 2. This default value may be set in any of the following ways:
             <itemizedlist>
                 <listitem>
-                  Through the Preferences GUI: <code>preferences</code>, in the section
-                  <emphasis role="italic">General => Environment => ieee</emphasis>.
+                     <para>
+                      Through the Preferences GUI: <code>preferences</code>, in the section
+                      <emphasis role="italic">General =&gt; Environment =&gt; ieee</emphasis>.
+                    </para>
                 </listitem>
                 <listitem>
-                  Equivalently, using <code>xmlSetValues</code> as follows (to set the mode to 1) :
-                  <para>
-                  <literal>xmlSetValues("//general/body/environment", ["fpe";"1"])</literal>
-                  </para>
-                </listitem>
+                     <para>
+                      Equivalently, using <code>xmlSetValues</code> as follows (to set the mode to 1) :
+                      </para>
+                  </listitem>
                 <listitem>
-                    Or by using <literal>ieee(mod)</literal> in your startup file.
+                     <para>
+                        Or by using <literal>ieee(mod)</literal> in your startup file.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>

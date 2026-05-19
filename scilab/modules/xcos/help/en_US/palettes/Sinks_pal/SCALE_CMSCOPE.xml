@@ -37,7 +37,7 @@
             </inlinemediaobject>
         </para>
     </refsection>
-    <refsection id="Contents_SCALE_CMSCOPE">
+    <refsection xml:id="Contents_SCALE_CMSCOPE">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
@@ -48,40 +48,28 @@
             <listitem>
                 <itemizedlist>
                     <listitem>
-                        <para>
-                            <xref linkend="Palette_SCALE_CMSCOPE">Palette</xref>
-                        </para>
+                        <para><link linkend="Palette_SCALE_CMSCOPE">Palette</link></para>
                     </listitem>
                     <listitem>
-                        <para>
-                            <xref linkend="Description_SCALE_CMSCOPE">Description</xref>
-                        </para>
+                        <para><link linkend="Description_SCALE_CMSCOPE">Description</link></para>
                     </listitem>
                     <listitem>
-                        <para>
-                            <xref linkend="Dialogbox_SCALE_CMSCOPE">Dialog box</xref>
-                        </para>
+                        <para><link linkend="Dialogbox_SCALE_CMSCOPE">Dialog box</link></para>
                     </listitem>
                     <listitem>
-                        <para>
-                            <xref linkend="Defaultproperties_SCALE_CMSCOPE">Default properties</xref>
-                        </para>
+                        <para><link linkend="Defaultproperties_SCALE_CMSCOPE">Default properties</link></para>
                     </listitem>
                     <listitem>
-                        <para>
-                            <xref linkend="Interfacingfunction_SCALE_CMSCOPE">Interfacing function</xref>
-                        </para>
+                        <para><link linkend="Interfacingfunction_SCALE_CMSCOPE">Interfacing function</link></para>
                     </listitem>
                     <listitem>
-                        <para>
-                            <xref linkend="Computationalfunction_SCALE_CMSCOPE">Computational function</xref>
-                        </para>
+                        <para><link linkend="Computationalfunction_SCALE_CMSCOPE">Computational function</link></para>
                     </listitem>
                 </itemizedlist>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Palette_SCALE_CMSCOPE">
+    <refsection xml:id="Palette_SCALE_CMSCOPE">
         <title>Palette</title>
         <itemizedlist>
             <listitem>
@@ -91,7 +79,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_SCALE_CMSCOPE">
+    <refsection xml:id="Description_SCALE_CMSCOPE">
         <title>Description</title>
         <para>
             When you start a simulation, Xcos open Scope windows.  The Scope
@@ -102,7 +90,7 @@
 
         </para>
     </refsection>
-    <refsection id="Dialogbox_SCALE_CMSCOPE">
+    <refsection xml:id="Dialogbox_SCALE_CMSCOPE">
         <title>Dialog box</title>
         <para>
             <inlinemediaobject>
@@ -211,7 +199,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_SCALE_CMSCOPE">
+    <refsection xml:id="Defaultproperties_SCALE_CMSCOPE">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -278,7 +266,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Interfacingfunction_SCALE_CMSCOPE">
+    <refsection xml:id="Interfacingfunction_SCALE_CMSCOPE">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -286,7 +274,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SCALE_CMSCOPE">
+    <refsection xml:id="Computationalfunction_SCALE_CMSCOPE">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -294,8 +282,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_SCALE_CMSCOPE">
+    <refsection xml:id="Example_SCALE_CMSCOPE">
         <title>Multi display scope example with autoscale graph</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/en_US/SCALE_CMSCOPE_en_US.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -303,6 +292,7 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
     <refsection xml:id="Seealso_SCALE_CMSCOPE" role="see also">
         <title>See also</title>

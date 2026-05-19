@@ -451,31 +451,56 @@ static inline std::string to_string_link(Controller& controller, ScicosID uid, k
     return ss.str();
 };
 
+template<> inline
+std::to_chars_result to_chars(char* first, char* last, std::string t)
+{
+    char* c = t.data();
+    // .data() output a null terminated string
+    while(*c != '\0' && first < last)
+    {
+        *first++ = *c++;
+    }
+    return {first, {}};
+}
+template<> inline
+std::to_chars_result to_chars(char* first, char* last, double t)
+{
+    return std::to_chars(first, last, (int) t);
+}
+template<> inline
+std::to_chars_result to_chars(char* first, char* last, ScicosID t)
+{
+    return std::to_chars(first, last, (int) t);
+}
+template<typename T> inline
+std::to_chars_result to_chars(char* first, char* last, std::vector<T> t)
+{
+    to_chars_t io(first, last);
+    io = io + "[";
+    if (t.size() > 0) {
+        io = io + " " + t[0];
+    }
+    for (size_t i = 1; i < t.size(); ++i)
+    {
+        io = io + ", " + t[i];
+    }
+    io = io + "]";
+    return io;
+}
+
 void LoggerView::propertyUpdated(const ScicosID& uid, kind_t k, object_properties_t p, update_status_t u)
 {
     auto to_chars_fun = [=](char* first, char* last) -> std::to_chars_result {
         to_chars_t io(first, last);
-        
+
         io = io + "propertyUpdated( " + id(uid) + " , " + k + " , " + p + " ) : " + u;
 
-        // DEBUG Controller controller;
+        Controller controller;
         // DEBUG if (p == CHILDREN || p == INPUTS || p == OUTPUTS || p == EVENT_INPUTS || p == EVENT_OUTPUTS || p == CONNECTED_SIGNALS)
         // DEBUG {
         // DEBUG     std::vector<ScicosID> end;
         // DEBUG     controller.getObjectProperty(uid, k, p, end);
-        // DEBUG     if (end.size() > 0)
-        // DEBUG     {
-        // DEBUG         io = io + " [ " + id(end[0]);
-        // DEBUG         for (auto it = end.begin() + 1; it != end.end(); ++it)
-        // DEBUG         {
-        // DEBUG             io = io + " , " + id(*it);
-        // DEBUG         }
-        // DEBUG         io = io + " ]";
-        // DEBUG     }
-        // DEBUG     else
-        // DEBUG     {
-        // DEBUG         io = io + " []";
-        // DEBUG     }
+        // DEBUG     io = io + end;
         // DEBUG }
         // DEBUG if (p == SOURCE_PORT || p == DESTINATION_PORT || p == SOURCE_BLOCK)
         // DEBUG {
@@ -483,6 +508,13 @@ void LoggerView::propertyUpdated(const ScicosID& uid, kind_t k, object_propertie
         // DEBUG     controller.getObjectProperty(uid, k, p, end);
         // DEBUG     io = io + " " + id(end);
         // DEBUG }
+
+        // if (p == DESCRIPTION || p == NAME)
+        // {
+        //     std::string v;
+        //    controller.getObjectProperty(uid, k, p, v);
+        //     io = io + " " + v;
+        // }
 
         return io + "\n";
     };
@@ -495,6 +527,45 @@ void LoggerView::propertyUpdated(const ScicosID& uid, kind_t k, object_propertie
     {
         log(LOG_DEBUG, to_chars_fun);
     }
+
+    // DEBUG if (u == SUCCESS && p == NAME)
+    // DEBUG {
+    // DEBUG     log(LOG_INFO, [=](char* first, char* last) -> std::to_chars_result {;
+    // DEBUG         to_chars_t io(first, last);
+    // DEBUG         Controller controller;
+    // DEBUG         std::string name;
+    // DEBUG         controller.getObjectProperty(uid, k, p, name);
+    // DEBUG         io = io + "propertyUpdated( " + id(uid) + " , " + k + " , " + p + " ) :";
+    // DEBUG         io = io + " " + name;
+    // DEBUG         return io + "\n";
+    // DEBUG     });
+    // DEBUG }
+    // DEBUG
+    // DEBUG if (u == SUCCESS && p == DESCRIPTION)
+    // DEBUG {
+    // DEBUG     log(LOG_INFO, [=](char* first, char* last) -> std::to_chars_result {;
+    // DEBUG         to_chars_t io(first, last);
+    // DEBUG         Controller controller;
+    // DEBUG         std::string name;
+    // DEBUG         controller.getObjectProperty(uid, k, p, name);
+    // DEBUG         io = io + "propertyUpdated( " + id(uid) + " , " + k + " , " + p + " ) :";
+    // DEBUG         io = io + " " + name;
+    // DEBUG         return io + "\n";
+    // DEBUG     });
+    // DEBUG }
+    // DEBUG
+    // DEBUG if (u == SUCCESS && p == GEOMETRY)
+    // DEBUG {
+    // DEBUG     log(LOG_INFO, [=](char* first, char* last) -> std::to_chars_result {;
+    // DEBUG         to_chars_t io(first, last);
+    // DEBUG         Controller controller;
+    // DEBUG         std::vector<double> geom;
+    // DEBUG         controller.getObjectProperty(uid, k, p, geom);
+    // DEBUG         io = io + "propertyUpdated( " + id(uid) + " , " + k + " , " + p + " ) :";
+    // DEBUG         io = io + " " + geom;
+    // DEBUG         return io + "\n";
+    // DEBUG     });
+    // DEBUG }
 }
 
 } /* namespace org_scilab_modules_scicos */

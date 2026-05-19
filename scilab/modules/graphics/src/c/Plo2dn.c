@@ -103,18 +103,13 @@ int plot2dn(int ptype, char *logflags, double *x, double *y, int *n1, int *n2, i
             BOOL flagNax, int lstr1, int lstr2)
 {
     int iSubwinUID = 0;
-    int iCurFigureUID = 0;
     int closeflag = 0;
     int jj = 0;
-    long hdl = 0;
     int *pObj = NULL;
     int cmpt = 0;
     int with_leg = 0;
     double drect[6] = {0};
     char dataflag = 0;
-
-    BOOL bounds_changed = FALSE;
-    BOOL axes_properties_changed = FALSE;
 
     double rotationAngles[2];
     int clipState = 0;
@@ -224,17 +219,12 @@ int plot2dn(int ptype, char *logflags, double *x, double *y, int *n1, int *n2, i
 
         if (strflag[1] != '0')
         {
-            bounds_changed = update_specification_bounds(iSubwinUID, drect, 2);
+            update_specification_bounds(iSubwinUID, drect, 2);
         }
     }
 
-    if (firstPlot)
-    {
-        bounds_changed = TRUE;
-    }
-
     /* Adapted to the MVC */
-    axes_properties_changed = strflag2axes_properties(iSubwinUID, strflag);
+    strflag2axes_properties(iSubwinUID, strflag);
 
     /* just after strflag2axes_properties */
     newFirstPlot = 0;
@@ -483,8 +473,6 @@ int plot2dn(int ptype, char *logflags, double *x, double *y, int *n1, int *n2, i
         /*---- construct Compound ----*/
         if (cmpt > 0)
         {
-            int parentVisible = 0;
-            int *piParentVisible = &parentVisible;
             int iCompoundUID = createCompound(iSubwinUID, pObj, cmpt);
             setCurrentObject(iCompoundUID);
         }

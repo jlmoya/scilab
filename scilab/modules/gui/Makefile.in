@@ -599,6 +599,9 @@ ANT = @ANT@
 ANTLR = @ANTLR@
 AR = @AR@
 ARPACK_LIBS = @ARPACK_LIBS@
+ARROW_CFLAGS = @ARROW_CFLAGS@
+ARROW_LDFLAGS = @ARROW_LDFLAGS@
+ARROW_LIBS = @ARROW_LIBS@
 ASM3 = @ASM3@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
@@ -741,6 +744,9 @@ LIBM = @LIBM@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
+LIBXSLT_CFLAGS = @LIBXSLT_CFLAGS@
+LIBXSLT_LDFLAGS = @LIBXSLT_LDFLAGS@
+LIBXSLT_LIBS = @LIBXSLT_LIBS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LOGGING_LEVEL = @LOGGING_LEVEL@
@@ -796,6 +802,9 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
+PARQUET_CFLAGS = @PARQUET_CFLAGS@
+PARQUET_LDFLAGS = @PARQUET_LDFLAGS@
+PARQUET_LIBS = @PARQUET_LIBS@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PCRE2_CFLAGS = @PCRE2_CFLAGS@
 PCRE2_LDFLAGS = @PCRE2_LDFLAGS@
@@ -845,6 +854,9 @@ XCOS_ENABLE = @XCOS_ENABLE@
 XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XGETTEXT_EXTRA_OPTIONS = @XGETTEXT_EXTRA_OPTIONS@
+XLNT_CFLAGS = @XLNT_CFLAGS@
+XLNT_LDFLAGS = @XLNT_LDFLAGS@
+XLNT_LIBS = @XLNT_LIBS@
 XMKMF = @XMKMF@
 XMLGRAPHICS_COMMONS = @XMLGRAPHICS_COMMONS@
 XMLRESOLVER = @XMLRESOLVER@
@@ -1251,6 +1263,7 @@ images/icons/16x16/actions/zoom-out.png \
 images/icons/16x16/actions/data_modify.png \
 images/icons/16x16/animations/process-working.png \
 images/icons/16x16/apps/accessories-text-editor.png \
+images/icons/16x16/apps/atoms-green.png \
 images/icons/16x16/apps/datatips.png \
 images/icons/16x16/apps/help-browser.png \
 images/icons/16x16/apps/rrze_table.png \
@@ -1314,8 +1327,12 @@ images/icons/256x256/apps/system-search.png \
 images/icons/256x256/apps/utilities-system-monitor.png \
 images/icons/aboutscilab.png \
 images/icons/check-icon.png \
+images/icons/close-icon-black.png \
+images/icons/close-icon-white.png \
 images/icons/close-tab-on.png \
 images/icons/close-tab.png \
+images/icons/doc-icon-black.png \
+images/icons/doc-icon-white.png \
 images/icons/dock_help_active.png \
 images/icons/dock_help_default.png \
 images/icons/puff.png \
@@ -1324,6 +1341,8 @@ images/icons/scilab_close_active.png \
 images/icons/scilab_close_default.png \
 images/icons/undock_active.png \
 images/icons/undock_default.png \
+images/icons/undock-icon-black.png \
+images/icons/undock-icon-white.png \
 images/icons/openBrace.png \
 images/icons/openBracket.png \
 images/icons/openParen.png \
@@ -1405,8 +1424,6 @@ JARDIR = jar/
 JARMASK = *.jar
 # Chapter file 
 HELP_CHAPTERDIR = help/
-HELP_CHAPTERFILE = addchapter.sce
-HELP_CHAPTERLANG = en_US fr_FR pt_BR
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -3895,35 +3912,6 @@ all-local: $(TARGETS_ALL)
 	fi )
 
 install-html-local:
-
-install-data-local-local:
-# Mainly for javasci
-	@if test -d $(srcdir)/javadoc; then \
-		cp -R $(srcdir)/javadoc $(DESTDIR)/$(mydatadir)/; \
-	fi
-# If the user wants the help sources to be installed
-@INSTALL_HELP_XML_TRUE@	@echo "-------- Install of XML sources of help files --------"; \
-@INSTALL_HELP_XML_TRUE@	for lang in $(ALL_LINGUAS); do \
-@INSTALL_HELP_XML_TRUE@	 if test -d $(srcdir)/help/$$lang; then \
-@INSTALL_HELP_XML_TRUE@	  $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/help/$$lang && \
-@INSTALL_HELP_XML_TRUE@		if ls -lLd $(srcdir)/help/$$lang/$(DOCMASKXML) >/dev/null 2>&1; then \
-@INSTALL_HELP_XML_TRUE@		  for file in $(srcdir)/help/$$lang/$(DOCMASKXML) ; do \
-@INSTALL_HELP_XML_TRUE@		    echo "$(INSTALL_DATA) $$file $(DESTDIR)$(pkgdocdir)/help/$$lang" ; \
-@INSTALL_HELP_XML_TRUE@	    	$(INSTALL_DATA) "$$file" $(DESTDIR)$(pkgdocdir)/help/$$lang ; \
-@INSTALL_HELP_XML_TRUE@		  done ; \
-@INSTALL_HELP_XML_TRUE@		fi; \
-@INSTALL_HELP_XML_TRUE@	 fi; \
-@INSTALL_HELP_XML_TRUE@	done; \
-@INSTALL_HELP_XML_TRUE@	@echo "-------- Install of MathML sources --------"; \
-@INSTALL_HELP_XML_TRUE@	 if test -d $(srcdir)/help/mml/; then \
-@INSTALL_HELP_XML_TRUE@	  $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/help/mml/ && \
-@INSTALL_HELP_XML_TRUE@		if ls -lLd $(srcdir)/help/mml/$(DOCMASKMML) >/dev/null 2>&1; then \
-@INSTALL_HELP_XML_TRUE@		  for file in $(srcdir)/help/mml/$(DOCMASKMML) ; do \
-@INSTALL_HELP_XML_TRUE@		    echo "$(INSTALL_DATA) $$file $(DESTDIR)$(pkgdocdir)/help/mml" ; \
-@INSTALL_HELP_XML_TRUE@	    	$(INSTALL_DATA) "$$file" $(DESTDIR)$(pkgdocdir)/help/mml ; \
-@INSTALL_HELP_XML_TRUE@		  done ; \
-@INSTALL_HELP_XML_TRUE@		fi; \
-@INSTALL_HELP_XML_TRUE@	fi
 install-data-local:
 # Install the tests
 	@echo "-------- Install tests (if any) --------"; \
@@ -3942,17 +3930,15 @@ install-data-local:
 		  done; \
 	  fi; \
 	done
-# Install the help chapter
-	@echo "-------- Install the help chapter (if any) --------"; \
-	for lang in $(HELP_CHAPTERLANG); do \
-		HELPFILE=$(srcdir)/$(HELP_CHAPTERDIR)$$lang/$(HELP_CHAPTERFILE); \
-		if test -f $$HELPFILE; then \
-			echo $(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)/$$lang/; \
-			$(mkinstalldirs) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)/$$lang/; \
-			echo $(INSTALL_DATA) $$HELPFILE $(DESTDIR)$(pkgdocdir)/$$HELPFILE; \
-			$(INSTALL_DATA) $$HELPFILE $(DESTDIR)$(pkgdocdir)/$$HELPFILE; \
-		fi; \
-	done
+# Install help files (addchapter.sce, *.xml, subdirectories, ...)
+	@echo "-------- Install help source files (if any) --------"; \
+	$(mkinstalldirs) $(DESTDIR)$(pkgdocdir) && \
+	  if test -d $(srcdir)/$(HELP_CHAPTERDIR); then \
+		if test ! -d $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); then \
+		  echo "cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR)"; \
+		  cp -R $(srcdir)/$(HELP_CHAPTERDIR) $(DESTDIR)$(pkgdocdir)/$(HELP_CHAPTERDIR); \
+		fi \
+	  fi
 # Install the demos & examples
 	@echo "-------- Install demos & examples (if any) --------"; \
 	for dir in $(DEMOS_DIR) $(DEMOS_DIREXT) $(EXAMPLES_DIR) $(EXAMPLES_DIREXT) ; do \

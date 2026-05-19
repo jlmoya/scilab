@@ -21,7 +21,7 @@
         <synopsis>[err, stdout, stderr] = scilab(code, file, mode, quit, args)</synopsis>
         <synopsis>scilab(..., background)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -137,7 +137,11 @@
         <revhistory>
             <revision>
                 <revnumber>2024.1.0</revnumber>
-                <revremark><literal>scilab</literal> function introduced</revremark>
+                <revdescription>
+                    <para>
+                        <literal>scilab</literal> function introduced
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

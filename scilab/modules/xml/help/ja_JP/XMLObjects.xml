@@ -80,13 +80,13 @@
             </itemizedlist>
         </para>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
-    doc.root = doc.root.children(1);
-    xmlDump(doc)
-    doc.url = TMPDIR+"/foo.xml";
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    xdoc.root = xdoc.root.children(1);
+    xmlDump(xdoc)
+    xdoc.url = TMPDIR+"/foo.xml";
     doc
-    xmlWrite(doc);
-    xmlDelete(doc);
+    xmlWrite(xdoc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection id="XMLElement">
@@ -146,8 +146,8 @@
     s = "<root xmlns:bar=""http://www.scilab.org/"">"+..
         "<bar:a att=""foo"" rib=""bar"">"+..
         "<b>Hello</b><c> world</c></bar:a></root>"
-    doc = xmlReadStr(s);
-    first = doc.root.children(1);
+    xdoc = xmlReadStr(s);
+    first = xdoc.root.children(1);
     b = first.children(1);
     // "new_attribute"という名前の属性を新規に追加
     first.attributes.new_attribute = "value";
@@ -164,7 +164,7 @@
     // firstの子が上の行で定義されています...
     b.line
     xmlDump(first)
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
         </para>
     </refsection>
@@ -179,8 +179,8 @@
     s = "<root xmlns:bar=""http://www.scilab.org/"">"+..
         "<bar:a att=""foo"" rib=""bar"">"+..
         "<b>Hello</b><c> world</c></bar:a></root>"
-    doc = xmlReadStr(s);
-    first = doc.root.children(1);
+    xdoc = xmlReadStr(s);
+    first = xdoc.root.children(1);
     // 属性を読み込みます
     first.attributes.att
     // 空の属性を設定します
@@ -191,7 +191,7 @@
     first.attributes(1) = "Bonjour";
     first.attributes(1)
     xmlDump(first)
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection id="XMLNamespace">
@@ -215,11 +215,11 @@
     s = "<root xmlns:bar=""http://www.scilab.org/"">"+..
         "<bar:a att=""foo"" rib=""bar"">"+..
         "<b>Hello</b><c> world</c></bar:a></root>"
-    doc = xmlReadStr(s);
-    ns = doc.root.children(1).namespace;
+    xdoc = xmlReadStr(s);
+    ns = xdoc.root.children(1).namespace;
     ns.href
     ns.prefix
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection id="XMLNodeList">
@@ -238,8 +238,8 @@
             により取得できます.
         </para>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a>Hello</a><b> world</b></root>");
-    c = doc.root.children;
+    xdoc = xmlReadStr("<root><a>Hello</a><b> world</b></root>");
+    c = xdoc.root.children;
     // 2つの要素があることが確認できます
     c.size
     // 最初の要素を読み込みます
@@ -256,7 +256,7 @@
     c.name
     // ノードの内容を取得します
     c.content
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection id="XMLNodeSet">
@@ -270,14 +270,14 @@
             このセットの大きさは'size'フィールドにより取得できます.
         </para>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a><b>Hello</b></a><a>World</a></root>");
-    s = xmlXPath(doc, "//a")
+    xdoc = xmlReadStr("<root><a><b>Hello</b></a><a>World</a></root>");
+    s = xmlXPath(xdoc, "//a")
     s.size
     s(1).content
     s(2).content
     // または ...
     s.content
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection id="XMLValid">
@@ -286,14 +286,14 @@
             DTD, Relax NGまたは schemaにより検証できます.
         </para>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
+    xdoc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
     dtd = xmlDTD("SCI/modules/xml/tests/unit_tests/library.dtd");
     schema = xmlSchema("SCI/modules/xml/tests/unit_tests/library.xsd");
     rng = xmlRelaxNG("SCI/modules/xml/tests/unit_tests/library.rng");
     // 検証
-    xmlValidate(doc, dtd);
-    xmlValidate(doc, rng);
-    xmlValidate(doc, schema);
+    xmlValidate(xdoc, dtd);
+    xmlValidate(xdoc, rng);
+    xmlValidate(xdoc, schema);
     xmlDelete("all");
     ]]></programlisting>
     </refsection>

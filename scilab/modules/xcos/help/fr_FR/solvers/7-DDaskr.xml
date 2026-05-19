@@ -34,16 +34,16 @@
             </latex>
         </para>
         <para>
+            Avant de résoudre le problème, <emphasis>DDaskr</emphasis> lance une routine interne pour trouver des valeurs consistantes à
+            <emphasis>
+                y<subscript>0</subscript>
+            </emphasis>
+            et
+            <emphasis>
+                yPrime<subscript>0</subscript>
+            </emphasis>
+            .
         </para>
-        Avant de résoudre le problème, <emphasis>DDaskr</emphasis> lance une routine interne pour trouver des valeurs consistantes à
-        <emphasis>
-            y<subscript>0</subscript>
-        </emphasis>
-        et
-        <emphasis>
-            yPrime<subscript>0</subscript>
-        </emphasis>
-        .
         <para>
             Partant alors de ces
             <emphasis>
@@ -65,25 +65,25 @@
                 \sum_{i=0}^{q} \alpha_{n,i} y_{n-i} = h_n\dot{y}_{n}
                 \end{eqnarray}
             </latex>
-            <para>
-                avec, comme dans <link linkend="CVode">CVode</link>,
-                <emphasis>
-                    y<subscript>n</subscript>
-                </emphasis>
-                l'approximation de
-                <emphasis>
-                    y(t<subscript>n</subscript>)
-                </emphasis>
-                ,
-                <emphasis>
-                    h<subscript>n</subscript>
-                </emphasis>
-                =
-                <emphasis>
-                    t<subscript>n</subscript> - t<subscript>n-1</subscript>
-                </emphasis>
-                la taille du pas, et les coefficients fixés, déterminés uniformément par le type de méthode, son ordre <emphasis>q</emphasis> allant de 1 à 5 et l'histoire des pas de temps.
-            </para>
+        </para>
+        <para>
+            avec, comme dans <link linkend="CVode">CVode</link>,
+            <emphasis>
+                y<subscript>n</subscript>
+            </emphasis>
+            l'approximation de
+            <emphasis>
+                y(t<subscript>n</subscript>)
+            </emphasis>
+            ,
+            <emphasis>
+                h<subscript>n</subscript>
+            </emphasis>
+            =
+            <emphasis>
+                t<subscript>n</subscript> - t<subscript>n-1</subscript>
+            </emphasis>
+            la taille du pas, et les coefficients fixés, déterminés uniformément par le type de méthode, son ordre <emphasis>q</emphasis> allant de 1 à 5 et l'histoire des pas de temps.
         </para>
         <para>
             Injecter cette formule dans <emphasis>(1)</emphasis> fournit le système :
@@ -157,7 +157,7 @@
             Pour l'instant, <emphasis>DDaskr</emphasis> ne peut être appliqué qu'à des systèmes où les fonctions dont on cherche à détecter les traversées de zéro sont poncutellement nulles, et non nulles sur un segment.
         </para>
     </refsection>
-    <refsection id="Exemple_DDaskr">
+    <refsection xml:id="Exemple_DDaskr">
         <title>Exemple</title>
         <para>
             Le bloc 'Modelica Generic' retourne ses états continus, on peut les évaluer avec <emphasis>DDaskr</emphasis> en lançant l'exemple:
@@ -231,10 +231,10 @@ try xcos_simulate(scs_m, 4); catch disp(lasterror()); end
     <refsection>
         <title>Bibliographie</title>
         <para>
-            <ulink url="http://www.netlib.org/ode/">Netlib</ulink>, documentation à l'intérieur du code.
+            <link xlink:href="http://www.netlib.org/ode/">Netlib</link>, documentation à l'intérieur du code.
         </para>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</link>
         </para>
     </refsection>
     <refsection>
@@ -242,7 +242,7 @@ try xcos_simulate(scs_m, 4); catch disp(lasterror()); end
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>DDaskr ajouté</revdescription>
+                <revremark>DDaskr ajouté</revremark>
             </revision>
         </revhistory>
     </refsection>

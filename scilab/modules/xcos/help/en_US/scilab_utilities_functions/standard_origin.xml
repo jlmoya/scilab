@@ -9,7 +9,7 @@
         <synopsis>[x,y] = standard_origin(block)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -38,12 +38,12 @@
             This Scilab function was used by the Scicos blocks interfacing functions
             to get the origin position (<varname>x</varname>, <varname>y</varname>) of a Xcos block.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 This function is not useful for Xcos block interfacing functions anymore.
                 The Xcos interfacing functions are not called with <literal>job="getinputs"</literal> anymore.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Example</title>

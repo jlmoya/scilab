@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="tokens">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="tokens">
     <refnamediv>
         <refname>tokens</refname>
         <refpurpose>Делит текст, используя разделители и выдаёт его части.</refpurpose>
@@ -33,24 +31,27 @@
             <varlistentry>
                 <term>text</term>
                 <listitem>
-                    Единый текст для разделения. Он может включать в себя расширенные международные символы UTF-8.
-                    <para/>
-                </listitem>
+                     <para>
+                        Единый текст для разделения. Он может включать в себя расширенные международные символы UTF-8.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>separators</term>
                 <listitem>
-                    Вектор символов. По умолчанию значение равно
-                    <literal>[" ", ascii(9)]</literal>, ascii(9) - это горизонтальная табуляция.
-                    <para/>
-                </listitem>
+                     <para>
+                        Вектор символов. По умолчанию значение равно
+                        <literal>[" ", ascii(9)]</literal>, ascii(9) - это горизонтальная табуляция.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Chunks</term>
                 <listitem>
-                    Вектор-столбец: части разделённого текста.
-                    <para/>
-                </listitem>
+                     <para>
+                        Вектор-столбец: части разделённого текста.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.Formatter;
+import java.util.IllegalFormatException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -149,7 +150,7 @@ public final class AfficheBlock extends BasicBlock {
     }
 
     @Override
-    protected void updateStyle(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
+    public void updateStyle(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
         final StyleMap styleMap = new StyleMap(modifiedBlock.getStyle());
 
         VectorOfInt ipar = new VectorOfInt();
@@ -172,7 +173,7 @@ public final class AfficheBlock extends BasicBlock {
     }
 
     @Override
-    protected void updateValue(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
+    public void updateValue(JavaController controller, XcosDiagram parent, BasicBlock modifiedBlock) {
 
         VectorOfInt ipar = new VectorOfInt();
         controller.getObjectProperty(getUID(), Kind.BLOCK, ObjectProperties.IPAR, ipar);
@@ -181,26 +182,46 @@ public final class AfficheBlock extends BasicBlock {
         controller.getObjectProperty(getUID(), Kind.BLOCK, ObjectProperties.DSTATE, dstate);
 
         // nt
-        final int width = ipar.get(3);
+        int width = ipar.get(3);
+        if (width <= 3) {
+            width = 3;
+        }
+        if (width > 20) {
+            width = 20;
+        }
 
         // nd
-        final int rational = ipar.get(4);
+        int rational = ipar.get(4);
+        if (rational < 0) {
+            rational = 0;
+        }
 
         // in(1,1)
         final int rows = ipar.get(5);
         final int cols = (dstate.size() - 6) / rows;
 
-        final String format = "%" + Integer.toString(width) + "." + Integer.toString(rational) + "f";
         final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                sb.append(new Formatter(Locale.US).format(format, 0.0).toString());
-                sb.append(SPACE);
+        final String format = "%" + Integer.toString(width) + "." + Integer.toString(rational) + "f";
+        try (Formatter formatter = new Formatter(sb, Locale.US))
+        {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    try {
+                        formatter.format(format, 0.0);
+                    } catch (IllegalFormatException e) {
+                        // juste append a default value, the format is not valid and will be reported at simulation time with proper error
+                        sb.append("0.0");
+                    }
+                    sb.append(SPACE);
+                }
+                if (i < rows - 1) {
+                    sb.append(NEW_LINE);
+                }
             }
-            sb.append(NEW_LINE);
         }
 
-        parent.getModel().setValue(this, sb.toString());
+        String str = sb.toString();
+        parent.getModel().setValue(this, str);
     }
 
     /**

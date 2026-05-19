@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="complex" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="complex" xml:lang="ru">
     <refnamediv>
         <refname>complex</refname>
         <refpurpose>Построение массива комплексных чисел по их частям</refpurpose>
@@ -34,23 +31,25 @@
             <varlistentry>
                 <term>u, a, b</term>
                 <listitem>
-                    скаляры, векторы, матрицы и гиперматрицы вещественных чисел.
-                    Если оба <varname>a</varname> и <varname>b</varname> не скаляры,
-                    то они должны быть одинакового размера.
-                    <para/>
-                </listitem>
+                     <para>
+                        скаляры, векторы, матрицы и гиперматрицы вещественных чисел.
+                        Если оба <varname>a</varname> и <varname>b</varname> не скаляры,
+                        то они должны быть одинакового размера.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>c</term>
                 <listitem>
-                    Массив комплексных чисел того же размера, что и <varname>u</varname> или
-                    <varname>a</varname> и <varname>b</varname>.
-                    Если <varname>u</varname> является разрежённой, либо если <varname>a</varname> и
-                    <varname>b</varname> имеют одинаковые размеры и обе являются разрежёнными,
-                    то <varname>c</varname> является также разрежённой.
-                    В противном случае <varname>c</varname> является плотной.
-                    <para/>
-                </listitem>
+                     <para>
+                        Массив комплексных чисел того же размера, что и <varname>u</varname> или
+                        <varname>a</varname> и <varname>b</varname>.
+                        Если <varname>u</varname> является разрежённой, либо если <varname>a</varname> и
+                        <varname>b</varname> имеют одинаковые размеры и обе являются разрежёнными,
+                        то <varname>c</varname> является также разрежённой.
+                        В противном случае <varname>c</varname> является плотной.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

@@ -31,5 +31,7 @@ Source: modules\{#PARALLEL}\macros\buildmacros.bat; DestDir: {app}\modules\{#PAR
 Source: modules\{#PARALLEL}\macros\cleanmacros.bat; DestDir: {app}\modules\{#PARALLEL}\macros; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#PARALLEL}\tests\*.*; DestDir: {app}\modules\{#PARALLEL}\tests; Flags: recursesubdirs; Components: {#COMPN_TESTS} and {#COMPN_SCILAB}
+;
+Source: modules\{#PARALLEL}\help\*.*; DestDir: {app}\modules\{#PARALLEL}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 #endif
 ;--------------------------------------------------------------------------------------------------------------

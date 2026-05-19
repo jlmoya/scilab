@@ -10,7 +10,7 @@
             [canvasused] = usecanvas([usecanvasfordisplay]);
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -157,68 +157,68 @@ EndSection
         <itemizedlist>
             <listitem>
                 <para>
-                    For <literal>ATI cards</literal>: <ulink url="http://ati.amd.com/support/driver.html">http://ati.amd.com/support/driver.html</ulink>
+                    For <literal>ATI cards</literal>: <link xlink:href="http://ati.amd.com/support/driver.html">http://ati.amd.com/support/driver.html</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    For <literal>Intel cards</literal>: <ulink url="http://www.intel.com/support/graphics/">http://www.intel.com/support/graphics/</ulink>
+                    For <literal>Intel cards</literal>: <link xlink:href="http://www.intel.com/support/graphics/">http://www.intel.com/support/graphics/</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    For <literal>Matrox cards</literal>: <ulink url="http://www.matrox.com/graphics/en/support/drivers/">http://www.matrox.com/graphics/en/support/drivers/</ulink>
+                    For <literal>Matrox cards</literal>: <link xlink:href="http://www.matrox.com/graphics/en/support/drivers/">http://www.matrox.com/graphics/en/support/drivers/</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    For <literal>NVIDIA cards</literal>: <ulink url="http://www.nvidia.com/content/drivers/drivers.asp">http://www.nvidia.com/content/drivers/drivers.asp</ulink>
+                    For <literal>NVIDIA cards</literal>: <link xlink:href="http://www.nvidia.com/content/drivers/drivers.asp">http://www.nvidia.com/content/drivers/drivers.asp</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    For <literal>S3 cards</literal>: <ulink url="http://www.s3graphics.com/en/resources/drivers/index.jsp">http://www.s3graphics.com/en/resources/drivers/index.jsp</ulink>
+                    For <literal>S3 cards</literal>: <link xlink:href="http://www.s3graphics.com/en/resources/drivers/index.jsp">http://www.s3graphics.com/en/resources/drivers/index.jsp</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    For <literal>SiS cards</literal>: <ulink url="http://www.sis.com/download/">http://www.sis.com/download/</ulink>
+                    For <literal>SiS cards</literal>: <link xlink:href="http://www.sis.com/download/">http://www.sis.com/download/</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    For <literal>VIA cards</literal>: <ulink url="http://www.viaarena.com/default.aspx?PageID=2">http://www.viaarena.com/default.aspx?PageID=2</ulink>
+                    For <literal>VIA cards</literal>: <link xlink:href="http://www.viaarena.com/default.aspx?PageID=2">http://www.viaarena.com/default.aspx?PageID=2</link>
                 </para>
             </listitem>
         </itemizedlist>
         <para>Some troubles can also occur when using Windows 2000 (video drivers are no more updated and no more supported).</para>
         <para>
             In the cases where pBuffer create a problem, waiting for a working <literal>pbuffer</literal> is not a solution indeed:
-            <ulink url="https://jogl.dev.java.net/issues/show_bug.cgi?id=163">
+            <link xlink:href="https://jogl.dev.java.net/issues/show_bug.cgi?id=163">
                 <emphasis role="italic">The OpenGL community is moving away from pbuffers and toward the frame buffer object extension, which is a more portable and higher-performance solution for offscreen rendering than pbuffers.</emphasis>
-            </ulink>
+            </link>
             .The JOGL team is working to fix this issue.
         </para>
         <para>For more information about this problem, please refer to: </para>
         <itemizedlist>
             <listitem>
                 <para>
-                    <literal>JoGL</literal> bug database: <ulink url="https://jogl.dev.java.net/issues/show_bug.cgi?id=366">Bug #366</ulink>
+                    <literal>JoGL</literal> bug database: <link xlink:href="https://jogl.dev.java.net/issues/show_bug.cgi?id=366">Bug #366</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    <literal>Scilab</literal> bug database: <ulink url="https://gitlab.com/scilab/scilab/-/issues/3525">Bug #3525</ulink>
+                    <literal>Scilab</literal> bug database: <link xlink:href="https://gitlab.com/scilab/scilab/-/issues/3525">Bug #3525</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    <literal>Debian</literal> bug database: <ulink url="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=501799">Bug #501799</ulink>
+                    <literal>Debian</literal> bug database: <link xlink:href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=501799">Bug #501799</link>
                 </para>
             </listitem>
             <listitem>
                 <para>
-                    <literal>Freedesktop</literal> bug database: <ulink url="https://bugs.freedesktop.org/show_bug.cgi?id=17603">Bug #17603</ulink>
+                    <literal>Freedesktop</literal> bug database: <link xlink:href="https://bugs.freedesktop.org/show_bug.cgi?id=17603">Bug #17603</link>
                 </para>
             </listitem>
         </itemizedlist>

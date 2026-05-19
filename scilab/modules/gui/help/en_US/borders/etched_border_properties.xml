@@ -13,7 +13,7 @@
             etchedBorder = createBorder("etched", type, hl, shadow)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -68,14 +68,16 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    Function <function>createBorder</function> introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function <function>createBorder</function> introduced.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

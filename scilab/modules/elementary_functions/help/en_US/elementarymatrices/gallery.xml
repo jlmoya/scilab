@@ -28,7 +28,8 @@
                 <term>name</term>
                 <listitem>
                     <para>
-                        matrix name available in the following list: <literal>"cauchy"</literal>, <literal>"circul"</literal> and <literal>"ris</literal>
+                        matrix name available in the following list: <literal>"cauchy"</literal>, <literal>"circul"</literal>, 
+                        <literal>"minij"</literal>, <literal>moler</literal> and <literal>"ris</literal>
                     </para>
                 </listitem>
             </varlistentry>
@@ -95,9 +96,23 @@
         </para>
     </refsection>
     <refsection>
+        <title>Minij matrix</title>
+            <para>
+                <emphasis role="bold">g = gallery("minij", n)</emphasis> creates a n-by-n Minij matrix. This matrix is symmetric positive definite matrix with 
+                <literal>g(i,j) = min(i,j)</literal>.
+            </para> 
+    </refsection> 
+    <refsection>
+        <title>Moler matrix</title>
+            <para>
+                <emphasis role="bold">g = gallery("moler", n)</emphasis> creates a n-by-n Moler matrix. This matrix is symmetric positive definite matrix with 
+                <literal>g(i,j) = min(i,j)- 2</literal> and <literal>g(i,i) = i</literal>.
+            </para> 
+    </refsection>  
+    <refsection>
         <title>Ris matrix</title>
             <para>
-                <emphasis role="bold">g = gallery("ris", n)</emphasis> creates a n-by-n Ris matrix. This matrix is symectric n-by-n Hankel matrix with 
+                <emphasis role="bold">g = gallery("ris", n)</emphasis> creates a n-by-n Ris matrix. This matrix is symmetric n-by-n Hankel matrix with 
                 <literal>g(i,j) = 0.5/(n - i - j + 1.5)</literal>. Its eigenvalues have the property of clustering near +/- pi/2.
             </para> 
     </refsection>   
@@ -111,6 +126,23 @@
                 g = gallery("cauchy", 3)
                 g = gallery("cauchy", 1:3, 2:4)
             ]]></programlisting>
+            <screen><![CDATA[
+--> g = gallery("cauchy", 3)
+
+ g = [3x3 double]
+
+   0.5         0.3333333   0.25     
+   0.3333333   0.25        0.2      
+   0.25        0.2         0.1666667
+
+--> g = gallery("cauchy", 1:3, 2:4)
+
+ g = [3x3 double]
+
+   0.3333333   0.25        0.2      
+   0.25        0.2         0.1666667
+   0.2         0.1666667   0.1428571
+   ]]></screen>
         </para>
         <para>
             <emphasis role="bold">Circulant matrix</emphasis>
@@ -120,6 +152,63 @@
                 g = gallery("circul", 5)
                 g = gallery("circul", [4 8 -1])
             ]]></programlisting>
+            <screen><![CDATA[
+--> g = gallery("circul", 5)
+
+ g = [5x5 double]
+
+   1.   2.   3.   4.   5.
+   5.   1.   2.   3.   4.
+   4.   5.   1.   2.   3.
+   3.   4.   5.   1.   2.
+   2.   3.   4.   5.   1.
+
+--> g = gallery("circul", [4 8 -1])
+
+ g = [3x3 double]
+
+   4.   8.  -1.
+  -1.   4.   8.
+   8.  -1.   4.
+              ]]></screen>  
+        </para>
+        <para>
+            <emphasis role="bold">Minij matrix</emphasis>
+        </para>
+        <para>
+            <programlisting role="example"><![CDATA[
+                g = gallery("minij", 5)
+            ]]></programlisting>
+            <screen><![CDATA[
+--> g = gallery("minij", 5)
+
+ g = [5x5 double]
+
+   1.   1.   1.   1.   1.
+   1.   2.   2.   2.   2.
+   1.   2.   3.   3.   3.
+   1.   2.   3.   4.   4.
+   1.   2.   3.   4.   5.
+              ]]></screen>  
+        </para>
+        <para>
+            <emphasis role="bold">Moler matrix</emphasis>
+        </para>
+        <para>
+            <programlisting role="example"><![CDATA[
+                g = gallery("moler", 5)
+            ]]></programlisting>
+            <screen><![CDATA[
+--> gallery("moler", 5)
+
+ ans = [5x5 double]
+
+   1.  -1.  -1.  -1.  -1.
+  -1.   2.   0.   0.   0.
+  -1.   0.   3.   1.   1.
+  -1.   0.   1.   4.   2.
+  -1.   0.   1.   2.   5.
+              ]]></screen>  
         </para>
         <para>
             <emphasis role="bold">Ris matrix</emphasis>
@@ -128,6 +217,15 @@
             <programlisting role="example"><![CDATA[
                 g = gallery("ris", 3)
             ]]></programlisting>
+            <screen><![CDATA[
+--> g = gallery("ris", 3)
+
+ g = [3x3 double]
+
+   0.2         0.3333333   1.       
+   0.3333333   1.         -1.       
+   1.         -1.         -0.3333333
+              ]]></screen>  
         </para>
     </refsection>
     <refsection role="see also">
@@ -159,12 +257,18 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>2026.0.0</revnumber>
                 <revremark>Function added.</revremark>
+            </revision>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revdescription>
+                    <para>Minij and Moler matrices added.</para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

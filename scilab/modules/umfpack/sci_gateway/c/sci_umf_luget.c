@@ -56,7 +56,7 @@ int sci_umf_luget(char* fname, void* pvApiCtx)
     int lnz = 0, unz = 0, n_row = 0, n_col = 0, n = 0, nz_udiag = 0, i = 0, stat = 0, do_recip = 0, it_flag = 0;
     int *L_mnel = NULL, *L_icol = NULL, *L_ptrow = NULL, *U_mnel = NULL, *U_icol = NULL, *U_ptrow = NULL, *V_irow = NULL, *V_ptcol = NULL;
     double *L_R = NULL, *L_I = NULL, *U_R = NULL, *U_I = NULL, *V_R = NULL, *V_I = NULL, *Rs = NULL;
-    int *p = NULL, *q = NULL, pl_miss = 0, error_flag = 0 ;
+    int *p = NULL, *q = NULL, error_flag = 0 ;
 
     int* piAddr1 = NULL;
     int iType1   = 0;

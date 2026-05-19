@@ -27,7 +27,7 @@
             [S, s] = lft(P, p, R)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -170,10 +170,11 @@ lft(W,[1,1],K)
     </refsection>
     <refsection>
         <title>References</title>
-        <ulink
-      url="http://www.cds.caltech.edu/~doyle/wiki/images/7/70/CDC1991.pdf">"Review
-            of LFTs, LMIs, and μ",John Doyle, Andy Packard and Kemin Zhou, CDC december 1991
-        </ulink>
+        <para>
+            <link xlink:href="http://www.cds.caltech.edu/~doyle/wiki/images/7/70/CDC1991.pdf">"Review
+                of LFTs, LMIs, and μ",John Doyle, Andy Packard and Kemin Zhou, CDC december 1991
+            </link>
+        </para>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -192,14 +193,16 @@ lft(W,[1,1],K)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revremark>
-                    <literal>lft(P, p, R, r)</literal> removed.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>lft(P, p, R, r)</literal> removed.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

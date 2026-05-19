@@ -31,26 +31,28 @@
         <title>Syntax</title>
         <synopsis>vec = var2vec(var)</synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_var2vec">
+    <refsection xml:id="Parameters_var2vec" role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>var</term>
                 <listitem>
-                    Can be a Double, Integer, Boolean, String or List <link linkend="typeof">Scilab object</link>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Can be a Double, Integer, Boolean, String or List <link linkend="typeof">Scilab object</link>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>vec</term>
                 <listitem>
-                    A vector of real numbers.
-                    <para/>
-                </listitem>
+                     <para>
+                        A vector of real numbers.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="Description_var2vec">
+    <refsection xml:id="Description_var2vec">
         <title>Description</title>
         <para>
             var2vec / vec2var functions are used inside the interfacing functions of Scilab blocks
@@ -60,15 +62,15 @@
         <para>
             These functions are also used internally for some fields in blocks (odstate, opar, etc...).
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 The serialized data are supposed to be accessible by the simulation function.
                 For complex Scilab objects (struct, handle, file content, etc...), you could store
                 identifiers or global variables as strings and resolve them on your simulation function.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
-    <refsection id="Example_var2vec">
+    <refsection xml:id="Example_var2vec">
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 a = list("cos", [1.1 2])

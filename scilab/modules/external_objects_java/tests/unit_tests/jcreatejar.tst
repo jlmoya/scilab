@@ -49,7 +49,7 @@ function fileContent = extractFileContent(zipInputStream)
     if n > 0 then
         fileContent = junwrap(buffer);
         fileContent = fileContent(find(fileContent <> 0));
-        fileContent = char(fileContent);
+        fileContent = char(uint8(fileContent));
     else
         fileContent = [];
     end

@@ -8,7 +8,7 @@
         <title>Séquence d'appel</title>
         <synopsis>[num]=x_choose(items,title [,button])</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -46,11 +46,11 @@
         <para>
             Renvoie dans <literal>num</literal> le numéro de l'article choisi.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 ATTENTION: la boîte de dialogue n'était pas modale avant Scilab 5.0, il vaudrait mieux utiliser x_choose_modeless pour la compatibilité ascendante.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Exemples</title>

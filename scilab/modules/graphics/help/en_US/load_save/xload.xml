@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="xload">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="xload">
     <refnamediv>
         <refname>xload</refname>
         <refpurpose>
@@ -30,7 +27,7 @@
             xload(file_name, win_num)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -64,10 +61,14 @@
             only if
             <itemizedlist>
                 <listitem>
-                    the target window is clear,
+                     <para>
+                        the target window is clear,
+                    </para>
                 </listitem>
                 <listitem>
-                    and the forthcoming figure is the first graphical component to be loaded.
+                     <para>
+                        and the forthcoming figure is the first graphical component to be loaded.
+                    </para>
                 </listitem>
             </itemizedlist>
             Otherwise, the target window keeps its properties.
@@ -81,7 +82,7 @@
         <para>
             <table border="1">
                 <tr>
-                    <th></th>
+                    <th/>
                     <th>load() behavior</th>
                     <th>xload() behavior</th>
                 </tr>
@@ -171,12 +172,11 @@ subplot(1,2,1), plot3d() // => The figure is no longer clear => its properties a
 xload(graypolar)         // This new figure does not impose its properties: too late!
 gcf().axes_size = [700 350];
  ]]></programlisting>
-        <para/>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/xload_70p.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
     <refsection role="see also">
@@ -202,9 +202,9 @@ gcf().axes_size = [700 350];
         <revhistory>
             <revision>
                 <revnumber>5.0</revnumber>
-                <revdescription>
+                <revremark>
                     Saved uimenus and uicontrols are now restored as well.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

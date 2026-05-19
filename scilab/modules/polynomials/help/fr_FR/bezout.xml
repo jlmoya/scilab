@@ -14,7 +14,7 @@
           [pgcd, U] = bezout(p1,p2)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -129,9 +129,9 @@ lcm(V)
         <revhistory>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revdescription>
+                <revremark>
                     Le second résulat U est désormais optionnel.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

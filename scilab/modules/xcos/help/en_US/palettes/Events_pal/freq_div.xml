@@ -31,48 +31,47 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/freq_div.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_freq_div">
+    <refsection xml:id="Contents_freq_div">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_freq_div">Description</xref>
+                <para><link linkend="Description_freq_div">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_freq_div">Parameters</xref>
+                <para><link linkend="Dialogbox_freq_div">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_freq_div">Default properties</xref>
+                <para><link linkend="Defaultproperties_freq_div">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_freq_div">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_freq_div">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_freq_div">Example</xref>
+                <para><link linkend="Example_freq_div">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_freq_div">
+    <refsection xml:id="Description_freq_div">
         <title>Description</title>
         <para>
             This block is a Super Block. The input event is directed once every n
             times to output. The input is  driven by an event clock.
         </para>
     </refsection>
-    <refsection id="Dialogbox_freq_div">
-        <title>Parameters</title>
+    <refsection xml:id="Dialogbox_freq_div">
+        <title>Arguments</title>
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../../../../images/gui/freq_div_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    <imagedata fileref="../../../../images/gui/freq_div_gui.gif" align="center"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
@@ -93,7 +92,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_freq_div">
+    <refsection xml:id="Defaultproperties_freq_div">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -149,7 +148,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Interfacingfunction_freq_div">
+    <refsection xml:id="Interfacingfunction_freq_div">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -157,7 +156,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_freq_div">
+    <refsection xml:id="Example_freq_div">
         <title>Example</title>
         <para>
             The following example divides a frequency per three.

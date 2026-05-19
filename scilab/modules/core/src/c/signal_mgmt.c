@@ -396,6 +396,13 @@ static void sig_fatal(int signum, siginfo_t * info, void *p)
                 break;
             }
 #endif
+            case SIGTERM:
+            {
+                // kill all processes of the scilab group (PGID)
+                // ie: fork created by host() (spawncommand)
+                kill(-getpgrp(), SIGTERM);
+                break;
+            }
         }
     }
     else
@@ -429,6 +436,9 @@ void base_error_init(void)
     struct sigaction ToContinue;
     int signals[] =
     {
+#ifdef SIGTERM
+        SIGTERM,
+#endif
 #ifdef SIGABRT
         SIGABRT,
 #endif

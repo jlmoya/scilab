@@ -33,38 +33,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CLOCK_c.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_CLOCK_c">
+    <refsection xml:id="Contents_CLOCK_c">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CLOCK_c">Description</xref>
+                <para><link linkend="Description_CLOCK_c">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CLOCK_c">Parameters</xref>
+                <para><link linkend="Dialogbox_CLOCK_c">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CLOCK_c">Default properties</xref>
+                <para><link linkend="Defaultproperties_CLOCK_c">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CLOCK_c">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CLOCK_c">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CLOCK_c">Example</xref>
+                <para><link linkend="Example_CLOCK_c">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CLOCK_c">See also</xref>
+                <para><link linkend="Seealso_CLOCK_c">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_CLOCK_c">
+    <refsection xml:id="Description_CLOCK_c">
         <title>Description</title>
         <para>
             The unique output of this block generates a regular train of events that are scheduled by
@@ -73,15 +73,14 @@
             parameter.
         </para>
     </refsection>
-    <refsection id="Dialogbox_CLOCK_c">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_CLOCK_c">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/sources_pal/en_US/CLOCK_c_gui.png"
-                        align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                        align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -104,7 +103,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_CLOCK_c">
+    <refsection xml:id="Defaultproperties_CLOCK_c">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +161,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_CLOCK_c">
+    <refsection xml:id="Example_CLOCK_c">
         <title>Example</title>
         <para>
             A simple example of CLOCK_c block event output.
@@ -182,7 +181,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_CLOCK_c">
+    <refsection xml:id="Interfacingfunction_CLOCK_c">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

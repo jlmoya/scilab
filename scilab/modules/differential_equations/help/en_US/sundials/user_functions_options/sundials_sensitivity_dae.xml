@@ -20,7 +20,7 @@
             sol = ida( ... , sensPar = pvalue, options)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -45,7 +45,7 @@
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    <para>array of solution at time values in <term>t</term></para>
+                    <para>array of solution at time values in <literal>t</literal></para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -68,7 +68,7 @@
         <title>Description</title>
 
         <para>While integrating a DAE where residual F(t,y,y',p) depends on a vector p of parameters, ida can compute simultaneously the
-            solution vectors y, y' at given time points and also <latex style="inline">S={\partial y}/{\partial p</latex>, <latex style="inline">S'={\partial y'}/{\partial p</latex> the derivatives of y and y' with 
+            solution vectors y, y' at given time points and also <latex>S={\partial y}/{\partial p</latex>, <latex>S'={\partial y'}/{\partial p</latex> the derivatives of y and y' with 
             respect to p, i.e. the sensitivity matrix and its time derivative. 
             This amounts to augment the original DAE with the sensitivity residual, which is obtained by formal derivation of the original DAE residual
             with respect to p:
@@ -107,7 +107,7 @@
                 </programlisting>
             </para>
             <para>
-                where the sensitivity of the solution and its derivative are retrieved in the "s" and "sp" fields of either the <term>info</term> or <term>sol</term> output argument. 
+                where the sensitivity of the solution and its derivative are retrieved in the "s" and "sp" fields of either the <literal>info</literal> or <literal>sol</literal> output argument. 
                 When the residual of the DAE is yielded by a Scilab function, the prototype of <literal>res</literal> must include a formal
                 input argument after the usual (t,y,yp) triplet (denoted p below), which will contain the parameter values. Additionnal user parameters
                 must be given as explained in the <link linkend="sundials_user_functions">User functions</link> help page :
@@ -121,8 +121,8 @@
                 parameters can be precised by using the <code>sensParIndex</code> (see below).
             </para>
             <para>
-               The sensitivity related output arguments <term>s,sp</term> and <term>se</term> (when events occur) can be recovered in 
-                the solution output as complimentary fields.  Note that the yielded <term>info.s,info.sp</term> arrays have dimensions (length(y0), length(p), length(t)) but singleton dimension is squeezed when
+               The sensitivity related output arguments <literal>s,sp</literal> and <literal>se</literal> (when events occur) can be recovered in 
+                the solution output as complimentary fields.  Note that the yielded <literal>info.s,info.sp</literal> arrays have dimensions (length(y0), length(p), length(t)) but singleton dimension is squeezed when
                 p is a scalar. 
             </para>
     </refsection>

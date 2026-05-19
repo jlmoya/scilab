@@ -28,43 +28,48 @@
             rat = factors(rat, flag)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>pol  </term>
                 <listitem>
-                    polynôme réel.
-                    <para/>
-                </listitem>
+                     <para>
+                        polynôme réel.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rat  </term>
                 <listitem>
-                    fraction rationnelle (<literal>rat=pol1/pol2</literal>).
-                    <para/>
-                </listitem>
+                     <para>
+                        fraction rationnelle (<literal>rat=pol1/pol2</literal>).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>lnum, lden  </term>
                 <listitem>
-                    listes de polynômes (de degrés 1 ou 2).
-                    <para/>
-                </listitem>
+                     <para>
+                        listes de polynômes (de degrés 1 ou 2).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>gain  </term>
                 <listitem>
-                    nombre réel.
-                    <para/>
-                </listitem>
+                     <para>
+                        nombre réel.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>flag  </term>
                 <listitem>
-                    chaîne de caractères, <literal>'c'</literal> ou <literal>'d'</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        chaîne de caractères, <literal>'c'</literal> ou <literal>'d'</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

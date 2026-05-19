@@ -58,4 +58,5 @@ Source: modules\{#RENDERER}\macros\cleanmacros.bat; DestDir: {app}\modules\{#REN
 ;
 Source: modules\{#RENDERER}\tests\*.*; DestDir: {app}\modules\{#RENDERER}\tests; Flags: recursesubdirs; Components: {#COMPN_GRAPHICS} and {#COMPN_TESTS}
 ;
+Source: modules\{#RENDERER}\help\*.*; DestDir: {app}\modules\{#RENDERER}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="uicontrol" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="uicontrol" xml:lang="en">
     <refnamediv>
         <refname>uicontrol</refname>
         <refpurpose>create a Graphic User Interface object</refpurpose>
@@ -236,19 +233,25 @@ matrix(ut.string,size(table))
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
+                <revdescription>
                     <para>
                         New styles added:
                     </para>
                     <itemizedlist>
-                        <listitem>Tab</listitem>
-                        <listitem>Spinner</listitem>
-                        <listitem>Layer</listitem>
+                        <listitem>
+                             <para>Tab</para>
+                        </listitem>
+                        <listitem>
+                            <para>Spinner</para>
+                        </listitem>
+                        <listitem>
+                            <para>Layer</para>
+                        </listitem>
                     </itemizedlist>
                     <para>
                         Uicontrols rendering is now based on operating system look and feel (See <link linkend="console_properties">console properties</link>).
@@ -256,13 +259,13 @@ matrix(ut.string,size(table))
                     <para>
                         Uicontrols handles display is now limited to properties used by Java rendering (See <link linkend="console_properties">console properties</link>).
                     </para>
-                </revremark>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.1.0</revnumber>
-                <revremark>
-                    Uicontrol "Browser" added.
-                </revremark>
+                    <revremark>
+                        Uicontrol "Browser" added.
+                    </revremark>
             </revision>
         </revhistory>
     </refsection>

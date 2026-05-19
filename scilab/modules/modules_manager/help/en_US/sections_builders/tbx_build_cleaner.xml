@@ -29,7 +29,7 @@
             tbx_build_cleaner(toolbox_name, toolbox_path)  // obsolete
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -58,14 +58,16 @@ tbx_build_cleaner(get_absolute_file_path('builder.sce'))
  ]]></programlisting>
     </refsection>
 
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    Syntaxes using <literal>toolbox_name</literal> are obsolete.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Syntaxes using <literal>toolbox_name</literal> are obsolete.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

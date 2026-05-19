@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>D = degree(M)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -76,9 +76,9 @@ degree(p) // should return 42
         <revhistory>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     For any null polynomial, degree() now returns -%inf instead of 0.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

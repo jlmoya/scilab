@@ -46,4 +46,5 @@ Source: modules\{#MODULE_CALL_SCILAB}\macros\cleanmacros.bat; DestDir: {app}\mod
 ;
 Source: modules\{#MODULE_CALL_SCILAB}\tests\*.*; DestDir: {app}\modules\{#MODULE_CALL_SCILAB}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#MODULE_CALL_SCILAB}\help\*.*; DestDir: {app}\modules\{#MODULE_CALL_SCILAB}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

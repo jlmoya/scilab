@@ -27,7 +27,7 @@
             b = and(A, n)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -45,15 +45,20 @@
                         s'il vaut 0 ou 0+0i. Sinon (%nan inclus), il est identifé
                         à <literal>%T</literal> (vrai).
                     </para>
-                    <note>Valeurs particulières de <varname>A</varname> :
-                        <itemizedlist>
-                            <listitem>
-                                <literal>and([])</literal> vaut <literal>%T</literal>.
-                            </listitem>
-                            <listitem>
-                                <literal>and(%nan)</literal> vaut <literal>%T</literal>.
-                            </listitem>
-                        </itemizedlist>
+                    <note>
+                        <para>
+                            Valeurs particulières de <varname>A</varname> :
+                            <itemizedlist>
+                                <listitem>
+                                    <para><literal>and([])</literal> vaut <literal>%T</literal>.
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                    <para><literal>and(%nan)</literal> vaut <literal>%T</literal>.
+                                    </para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -66,12 +71,16 @@
                         <varname>b</varname> vaut alors
                         <itemizedlist>
                             <listitem>
-                                %F, si au moins un des éléments de <varname>A</varname>
-                                est %F ou zéro.
+                                 <para>
+                                    %F, si au moins un des éléments de <varname>A</varname>
+                                    est %F ou zéro.
+                                </para>
                             </listitem>
                             <listitem>
-                                %T, sinon : tous les éléments de <varname>A</varname>
-                                sont %T ou non nuls ou %nan.
+                                 <para>
+                                    %T, sinon : tous les éléments de <varname>A</varname>
+                                    sont %T ou non nuls ou %nan.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -96,34 +105,33 @@
                         <varname>A</varname>. Sinon :
                         <itemizedlist>
                             <listitem>
-                                n = 1 | "r" : <function>and()</function> est
-                                appliqué entre les lignes de <varname>A</varname>.
-                                Si <varname>A</varname> est une matrice,
-                                <varname>b</varname> est alors une
-                                ligne, avec
-                                <literal>b(j) = and(A(:,j))</literal>
-                            </listitem>
-                            <listitem>
-                                n = 2 | "c" :
-                                <function>and()</function> est appliqué entre les
-                                colonnes de <varname>A</varname>.
-                                Si <varname>A</varname> est une matrice,
-                                <varname>b</varname> est alors une
-                                <emphasis role="bold">c</emphasis>olonne, avec
-                                <literal>b(i) = and(A(i,:))</literal>.
-                            </listitem>
-                            <listitem>
-                                n > 2 : Si <varname>A</varname> est une hypermatrice
-                                <function>and()</function> est appliqué selon
-                                sa n<superscript>ème</superscript> dimension.
-                                <para>
-                                    Exemple: Si <literal>ndims(A)==3</literal>
-                                    et <literal>n=3</literal>,
-                                    <varname>b</varname> sera une matrice booléenne
-                                    de tailles <literal>size(A)([1 2])</literal>, avec
-                                    <literal>b(i,j) = and(A(i,j,:))</literal>.
+                                 <para>
+                                    n = 1 | "r" : <function>and()</function> est
+                                    appliqué entre les lignes de <varname>A</varname>.
+                                    Si <varname>A</varname> est une matrice,
+                                    <varname>b</varname> est alors une
+                                    ligne, avec
+                                    <literal>b(j) = and(A(:,j))</literal>
                                 </para>
                             </listitem>
+                            <listitem>
+                                 <para>
+                                    n = 2 | "c" :
+                                    <function>and()</function> est appliqué entre les
+                                    colonnes de <varname>A</varname>.
+                                    Si <varname>A</varname> est une matrice,
+                                    <varname>b</varname> est alors une
+                                    <emphasis role="bold">c</emphasis>olonne, avec
+                                    <literal>b(i) = and(A(i,:))</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    n &gt; 2 : Si <varname>A</varname> est une hypermatrice
+                                    <function>and()</function> est appliqué selon
+                                    sa n<superscript>ème</superscript> dimension.
+                                    </para>
+                                </listitem>
                         </itemizedlist>
                     </para>
                 </listitem>
@@ -303,9 +311,9 @@ and(A, "c")
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Les nombres complexes sont désormais acceptés.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

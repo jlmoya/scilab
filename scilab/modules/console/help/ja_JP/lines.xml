@@ -14,10 +14,7 @@
  * along with this program.
     *
     -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="lines">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="lines">
     <refnamediv>
         <refname>lines</refname>
         <refpurpose>表示に使用される行および列</refpurpose>
@@ -148,13 +145,17 @@ rand(2,8)
                 <revnumber>5.4.0</revnumber>
                 <revdescription>
                     <itemizedlist>
-                        <listitem>lines はデフォルトで 0に設定されます.
-                            引数 -1 が追加されます.
-                            詳細については, SEP #67 を参照ください.
+                        <listitem>
+                             <para>lines はデフォルトで 0に設定されます.
+                                引数 -1 が追加されます.
+                                詳細については, SEP #67 を参照ください.
+                            </para>
                         </listitem>
                         <listitem>
-                            lines は,
-                            入力引数として 1x2 ベクトル [nc, nl] を管理します.
+                             <para>
+                                lines は,
+                                入力引数として 1x2 ベクトル [nc, nl] を管理します.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

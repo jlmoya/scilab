@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="scatter">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="scatter">
     <refnamediv>
         <refname>scatter</refname>
         <refpurpose>2D scatter plot</refpurpose>
@@ -31,12 +28,12 @@
             scatter(.., "fill")
             scatter(.., "smallOnTop")
             scatter(.., marker)
-            scatter(..., &lt;marker_property, value>)
+            scatter(..., &lt;marker_property, value&gt;)
             scatter(axes, ..)
             polyline = scatter(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -51,17 +48,19 @@
             <varlistentry>
                 <term>axes</term>
                 <listitem>
-                    Handle of the graphical axes in which the scatter plot must be drawn.
-                    By default, the current axes is targeted.
-                    <para/>
-                </listitem>
+                     <para>
+                        Handle of the graphical axes in which the scatter plot must be drawn.
+                        By default, the current axes is targeted.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>polyline</term>
                 <listitem>
-                    Handle of the created polyline.
-                    <para/>
-                </listitem>
+                     <para>
+                        Handle of the created polyline.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>msizes</term>
@@ -93,18 +92,26 @@
                         A color can be specified by one of the following:
                         <itemizedlist>
                             <listitem>
-                                Its name, among the predefined names colors
-                                (see the <link linkend="color_list">color_list</link>).
+                                 <para>
+                                    Its name, among the predefined names colors
+                                    (see the <link linkend="color_list">color_list</link>).
+                                </para>
                             </listitem>
                             <listitem>
-                                Its standard hexadecimal RGB code as a string, like "#A532FB".
+                                 <para>
+                                    Its standard hexadecimal RGB code as a string, like "#A532FB".
+                                </para>
                             </listitem>
                             <listitem>
-                                A matrix of RGB values with 3 columns and n rows, with Red Green and
-                                Blue intensities in [0,1].
+                                 <para>
+                                    A matrix of RGB values with 3 columns and n rows, with Red Green and
+                                    Blue intensities in [0,1].
+                                </para>
                             </listitem>
                             <listitem>
-                                Its index in the current color map
+                                 <para>
+                                    Its index in the current color map
+                                </para>
                             </listitem>
                         </itemizedlist>
                         The default color is "blue".
@@ -115,7 +122,7 @@
                 <term>"fill"</term>
                 <listitem>
                     <para>
-                        By default, only the edge of markers is drawn, unless this keyword or the
+                        By default, only the edge of markers is drawn (except for "point" and "filled diamond" markers), unless this keyword or the
                         <varname>"markerFaceColor"</varname> or
                         <varname>"markerBackgroundColor"</varname> properties are set.
                     </para>
@@ -219,7 +226,7 @@
                             </tr>
                             <tr>
                                 <td>12</td>
-                                <td><literal>">"</literal></td>
+                                <td><literal>"&gt;"</literal></td>
                                 <td>Right-pointing centered triangle</td>
                             </tr>
                             <tr>
@@ -244,7 +251,7 @@
                             </tr>
                             <tr>
                                 <td>17</td>
-                                <td><literal>">."</literal></td>
+                                <td><literal>"&gt;."</literal></td>
                                 <td>Right-pointing triangle</td>
                             </tr>
                             <tr>
@@ -267,14 +274,15 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-        <refsect3>
-            <title>Property Name, Value pairs</title>
-            <para>
-                A series of property &lt;Name,Value> pairs can be used to specify
-                the filling color of markers body, the color and thickness of the markers edges,
-                or the points on which a datatip must be created.
-            </para>
-        </refsect3>
+
+        <para>
+            <emphasis role="bold">Property Name, Value pairs</emphasis>
+        </para>
+        <para>
+            A series of property &lt;Name,Value&gt; pairs can be used to specify
+            the filling color of markers body, the color and thickness of the markers edges,
+            or the points on which a datatip must be created.
+        </para>
         <variablelist>
             <varlistentry>
                 <term>"marker",value  or  "markerStyle",value</term>
@@ -330,6 +338,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
+
     </refsection>
     <refsection>
         <title>Description</title>
@@ -347,8 +356,10 @@
             For more details see the description of the arguments and the examples.
         </para>
         <note>
-          To skip an argument, just .. skip it, or replace it with <literal>[]</literal>, like in
-          <literal>scatter3d(x,y, , mcolors)</literal> or <literal>scatter3d(x,y,[], mcolors)</literal>.
+            <para>
+                To skip an argument, just .. skip it, or replace it with <literal>[]</literal>, like in
+                <literal>scatter3d(x,y, , mcolors)</literal> or <literal>scatter3d(x,y,[], mcolors)</literal>.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -424,7 +435,7 @@ scatter(x, y, mAreas, "markerBackground", "yellow")
 tit = "scatter(x, y, mAreas,""markerBackground"", ""yellow"")";
 title(tit, "fontsize",1)
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             n = 130;
             x = rand(1,n);
             y = rand(1,n);
@@ -459,7 +470,7 @@ title(tit, "fontsize",1)
             title(tit, "fontsize",1)
 
             gcf().axes_size = [750 500];
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             <emphasis role="bold">Option "smallOnTop"</emphasis>, avoiding intermasking effects:
         </para>
@@ -478,7 +489,7 @@ subplot(1,2,2)
 scatter(x, y, mAreas, "wheat", "fill", "smallOnTop", "markerEdgeColor", "red")
 title("""SmallOnTop"" option", "fontsize",3)
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             n = 170;
             x = rand(1,n);
             y = rand(1,n);
@@ -494,7 +505,7 @@ title("""SmallOnTop"" option", "fontsize",3)
             title("""SmallOnTop"" option", "fontsize",3)
 
             gcf().axes_size = [600 270];
-        </scilab:image>
+        ]]></scilab:image>
 
         <para>
             Vary marker size and color
@@ -513,7 +524,7 @@ scatter(x, y, s, c);    // create 2D scatter plot
 subplot(1,2,2)
 scatter(x, y, s, c, "fill");
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = linspace(0, 2, 200);
             y = exp(-x).*cos(10*x) + 0.2*rand(1,length(x));
 
@@ -527,7 +538,7 @@ scatter(x, y, s, c, "fill");
             subplot(1,2,2)
             scatter(x, y, s, c, "fill");
             gcf().axes_size = [700 350];
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Specify the marker
         </para>
@@ -549,7 +560,7 @@ scatter(x, y, 60, "red", "+");  // Marker's symbol
 subplot(2,2,4)
 scatter(x, y, 60, "green", 14); // Marker's index
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = rand(1, 200);
             y = rand(1, 200);
 
@@ -568,7 +579,7 @@ scatter(x, y, 60, "green", 14); // Marker's index
             scatter(x, y, 60, "green", 14); // Marker's index
 
             gcf().axes_size = [600 500];
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Post-processing a scatter plot:
         </para>
@@ -628,7 +639,7 @@ p.mark_background = bg;
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -639,18 +650,24 @@ p.mark_background = bg;
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            Colors can be specified as well with their "#RRGGBB" hexadecimal
-                            standard code, or their index in the color map.
-                        </listitem>
-                        <listitem>
-                            Options <emphasis>SmallOnTop</emphasis> and
-                            <emphasis>"datatips"</emphasis> added.
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Colors can be specified as well with their "#RRGGBB" hexadecimal
+                                    standard code, or their index in the color map.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Options <emphasis>SmallOnTop</emphasis> and
+                                    <emphasis>"datatips"</emphasis> added.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

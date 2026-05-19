@@ -31,34 +31,34 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SineVoltage.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_SineVoltage">
+    <refsection xml:id="Contents_SineVoltage">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SineVoltage">Description</xref>
+                <para><link linkend="Description_SineVoltage">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SineVoltage">Parameters</xref>
+                <para><link linkend="Dialogbox_SineVoltage">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SineVoltage">Default properties</xref>
+                <para><link linkend="Defaultproperties_SineVoltage">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SineVoltage">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_SineVoltage">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="SineVoltage">Modelica model</xref>
+                <para><link linkend="SineVoltage">Modelica model</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_SineVoltage">
+    <refsection xml:id="Description_SineVoltage">
         <title>Description</title>
         <para>
             This Modelica block a general sine voltage source. The internal ohmic resistance is zero.
@@ -66,14 +66,13 @@
         <para>
         </para>
     </refsection>
-    <refsection id="Dialogbox_SineVoltage">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_SineVoltage">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/SineVoltage_gui.gif" align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/SineVoltage_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -113,7 +112,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_SineVoltage">
+    <refsection xml:id="Defaultproperties_SineVoltage">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -216,7 +215,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_SineVoltage">
+    <refsection xml:id="Interfacingfunction_SineVoltage">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -224,7 +223,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_SineVoltage">
+    <refsection xml:id="Modelicamodel_SineVoltage">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

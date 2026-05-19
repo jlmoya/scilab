@@ -26,51 +26,51 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
         xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:id="LOGIC" xmln.mml="http://www.w3.org/1998/Math/MathML" xml:lang="en_US">
+        xml:id="LOGIC" xmlns:mml="http://www.w3.org/1998/Math/MathML" xml:lang="en_US">
     <refnamediv>
         <refname>LOGIC</refname>
         <refpurpose>Combinatorial Logic</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/LOGIC.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_LOGIC">
+    <refsection xml:id="Contents_LOGIC">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_LOGIC">Description</xref>
+                <para><link linkend="Description_LOGIC">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_LOGIC">Data types</xref>
+                <para><link linkend="Data_Type_LOGIC">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_LOGIC">Parameters</xref>
+                <para><link linkend="Dialogbox_LOGIC">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_LOGIC">Default properties</xref>
+                <para><link linkend="Defaultproperties_LOGIC">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_LOGIC">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_LOGIC">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_LOGIC">Computational function</xref>
+                <para><link linkend="Computationalfunction_LOGIC">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Examples_LOGIC">Examples</xref>
+                <para><link linkend="Examples_LOGIC">Examples</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_LOGIC">See also</xref>
+                <para><link linkend="Seealso_LOGIC">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_LOGIC">
+    <refsection xml:id="Description_LOGIC">
         <title>Description</title>
         <para>
             This block implements a standard truth table for modeling programming array, digital circuit and any other boolean expressions.
@@ -105,7 +105,7 @@
             from the regular input (parameter <emphasis role="bold">Accepts Inherited Events</emphasis>).
         </para>
     </refsection>
-    <refsection id="Data_Type_LOGIC">
+    <refsection xml:id="Data_Type_LOGIC">
         <title>Data types</title>
         <para>
             The block supports the following types :
@@ -127,14 +127,13 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Dialogbox_LOGIC">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_LOGIC">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/integer_pal/en_US/LOGIC_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/integer_pal/en_US/LOGIC_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -154,7 +153,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_LOGIC">
+    <refsection xml:id="Defaultproperties_LOGIC">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -231,88 +230,92 @@
         <para/>
     </refsection>
 
-    <refsection id="Examples_LOGIC">
+    <refsection xml:id="Examples_LOGIC">
         <title>Examples</title>
-        <refsect3 id="Example_1_LOGIC">
-            <title>Example 1</title>
-            <para>
-                The easiest example to consider is the OR example.In this case we have two inputs
-                and only one output. The truth table for this example is :
+
+        <para>
+            <emphasis role="bold">Example 1</emphasis>
+        </para>
+        <para>
+            The easiest example to consider is the OR example.In this case we have two inputs
+            and only one output. The truth table for this example is :
+        </para>
+        <informaltable border="1" cellpadding="3">
+            <tr>
+                <td><emphasis role="bold">input 1</emphasis></td>
+                <td><emphasis role="bold">input 2</emphasis></td>
+                <td><emphasis role="bold">output</emphasis></td>
+            </tr>
+            <tr><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>1</td></tr>
+        </informaltable>
+        <para>
+            and the <emphasis role="bold">Truth Table</emphasis> parameter is writing
+            <literal>[0 ; 1 ; 1 ; 1]</literal>.
+        </para>
+
+        <para>
+            <emphasis role="bold">Example 2</emphasis>
+        </para>
+
+        <para>
+            This example shows the use of LOGIC bloc as a demultiplexer. The goal is to send
+            the true constant input on one of the four outputs according to the state of the
+            two selection inputs:
+            <emphasis><literal>a</literal></emphasis> and <emphasis><literal>b</literal></emphasis>.
+            The truth table is the following:
+        </para>
+        <informaltable border="1" cellpadding="3">
+            <tr>
+            <td><emphasis role="bold">Constant</emphasis></td>
+            <td><emphasis role="bold">a</emphasis></td>
+            <td><emphasis role="bold">b</emphasis></td>
+            <td><emphasis role="bold">Q0</emphasis></td>
+            <td><emphasis role="bold">Q1</emphasis></td>
+            <td><emphasis role="bold">Q2</emphasis></td>
+            <td><emphasis role="bold">Q3</emphasis></td>
+            </tr>
+            <tr><td>0</td><td>X</td><td>X</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+        </informaltable>
+        <para>where <emphasis><literal>X</literal></emphasis> stands for "indifferent".</para>
+        <para>
+            To set this table in the <emphasis role="bold">Truth Table</emphasis> parameter, we can
+            simply write:
             </para>
-            <informaltable border="1" cellpadding="3">
-                <tr>
-                    <td><emphasis role="bold">input 1</emphasis></td>
-                    <td><emphasis role="bold">input 2</emphasis></td>
-                    <td><emphasis role="bold">output</emphasis></td>
-                </tr>
-                <tr><td>0</td><td>0</td><td>0</td></tr>
-                <tr><td>0</td><td>1</td><td>1</td></tr>
-                <tr><td>1</td><td>0</td><td>1</td></tr>
-                <tr><td>1</td><td>1</td><td>1</td></tr>
-            </informaltable>
-            <para>
-                and the <emphasis role="bold">Truth Table</emphasis> parameter is writing
-                <literal>[0 ; 1 ; 1 ; 1]</literal>.
-            </para>
-        </refsect3>
-        <refsect3 id="Example_2_LOGIC">
-            <title>Example 2</title>
-            <para>
-                This example shows the use of LOGIC bloc as a demultiplexer. The goal is to send
-                the true constant input on one of the four outputs according to the state of the
-                two selection inputs:
-                <emphasis><literal>a</literal></emphasis> and <emphasis><literal>b</literal></emphasis>.
-                The truth table is the following:
-            </para>
-            <informaltable border="1" cellpadding="3">
-              <tr>
-                <td><emphasis role="bold">Constant</emphasis></td>
-                <td><emphasis role="bold">a</emphasis></td>
-                <td><emphasis role="bold">b</emphasis></td>
-                <td><emphasis role="bold">Q0</emphasis></td>
-                <td><emphasis role="bold">Q1</emphasis></td>
-                <td><emphasis role="bold">Q2</emphasis></td>
-                <td><emphasis role="bold">Q3</emphasis></td>
-              </tr>
-              <tr><td>0</td><td>X</td><td>X</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
-              <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
-              <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
-            </informaltable>
-            <para>where <emphasis><literal>X</literal></emphasis> stands for "indifferent".</para>
-            <para>
-                To set this table in the <emphasis role="bold">Truth Table</emphasis> parameter, we can
-                simply write:
-              </para>
-            <programlisting role="example"><![CDATA[
-                  [zeros(4,4) ; eye(4,4)]
-                ]]></programlisting>
-                    <para>
-                        The following figure shows the resulting outputs
-                        <emphasis><literal>Q<subscript>0</subscript></literal></emphasis> to
-                        <emphasis><literal>Q<subscript>3</subscript></literal></emphasis>
-                        during the simulation when the selection
-                        inputs <emphasis><literal>a</literal></emphasis> and
-                        <emphasis><literal>b</literal></emphasis> are  generated by a binary counter.
-                    </para>
-                    <para>
-                        <link type="scilab" linkend="scilab.xcos/xcos/examples/integer_pal/en_US/LOGIC_en_US.zcos">
-                            <inlinemediaobject>
-                                <imageobject>
-                                    <imagedata fileref="../../../../examples/integer_pal/en_US/LOGIC_en_US.zcos" align="center"/>
-                                </imageobject>
-                            </inlinemediaobject>
-                        </link>
-                    </para>
-                    <scilab:image><![CDATA[
+        <programlisting role="example"><![CDATA[
+                [zeros(4,4) ; eye(4,4)]
+        ]]></programlisting>
+        <para>
+            The following figure shows the resulting outputs
+            <emphasis><literal>Q<subscript>0</subscript></literal></emphasis> to
+            <emphasis><literal>Q<subscript>3</subscript></literal></emphasis>
+            during the simulation when the selection
+            inputs <emphasis><literal>a</literal></emphasis> and
+            <emphasis><literal>b</literal></emphasis> are  generated by a binary counter.
+        </para>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/integer_pal/en_US/LOGIC_en_US.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../../../../examples/integer_pal/en_US/LOGIC_en_US.zcos" align="center"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
+        <scilab:image><![CDATA[
 importXcosDiagram(SCI + "/modules/xcos/examples/integer_pal/en_US/LOGIC_en_US.zcos");
 xcos_simulate(scs_m, 4);
         ]]></scilab:image>
-        </refsect3>
-    </refsection>
 
-    <refsection id="Interfacingfunction_LOGIC">
+</refsection>
+
+    <refsection xml:id="Interfacingfunction_LOGIC">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -323,7 +326,7 @@ xcos_simulate(scs_m, 4);
         </itemizedlist>
     </refsection>
 
-    <refsection id="Computationalfunction_LOGIC">
+    <refsection xml:id="Computationalfunction_LOGIC">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

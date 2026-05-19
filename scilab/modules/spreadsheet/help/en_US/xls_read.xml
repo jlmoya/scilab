@@ -23,7 +23,7 @@
         <title>Syntax</title>
         <synopsis>[Value,TextInd] = xls_read(fd,Sheetpos)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -74,11 +74,11 @@
             The <link linkend="readxls">readxls</link> function can be used to read all an Excel file
             in one function with a single function call.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Only BIFF8 Excel files (last Excel file version (2003)) are handled.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -105,7 +105,7 @@ mclose(fd)
     <refsection>
         <title>Bibliography</title>
         <para>This function is based on Excel
-            stream description from OpenOffice (<ulink url="http://sc.openoffice.org/spreadsheetfileformat.pdf">http://sc.openoffice.org/spreadsheetfileformat.pdf</ulink>).
+            stream description from OpenOffice (<link xlink:href="http://sc.openoffice.org/spreadsheetfileformat.pdf">http://sc.openoffice.org/spreadsheetfileformat.pdf</link>).
         </para>
     </refsection>
     <refsection>
@@ -116,4 +116,3 @@ mclose(fd)
         </para>
     </refsection>
 </refentry>
-

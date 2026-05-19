@@ -25,7 +25,7 @@
             hdl = xrect(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -50,8 +50,8 @@
             <literal>xrect</literal> draws a rectangle defined by <literal>[x,y,w,h]</literal>
             (upper-left point, width, height) in user coordinates.
         </para>
-        <warning>Please note that height is positive downwards.</warning>
-        <warning>Created rectangle inherits the clip property from the current axes.</warning>
+        <warning><para>Please note that height is positive downwards.</para></warning>
+        <warning><para>Created rectangle inherits the clip property from the current axes.</para></warning>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -83,9 +83,9 @@ e.foreground = color("red");
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

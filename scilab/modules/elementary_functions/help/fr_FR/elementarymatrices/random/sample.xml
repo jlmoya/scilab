@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="sample">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="sample">
     <refnamediv>
         <refname>sample</refname>
         <refpurpose>Tirage aléatoire avec remise</refpurpose>
@@ -26,7 +23,7 @@
         <title>Séquence d'appel</title>
         <synopsis>s = sample(n, X, orient)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -51,16 +48,19 @@
                         Forme des échantillons :
                         <itemizedlist>
                             <listitem>
-                                <literal>'*'</literal> (par défaut): les éléments de <varname>X</varname>
-                                sont tirés aléatoirement.
+                                 <para><literal>'*'</literal> (par défaut): les éléments de <varname>X</varname>
+                                    sont tirés aléatoirement.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>1</literal> ou <literal>'r'</literal>: les rangées de
-                                <varname>X</varname> sont tirées aléatoirement.
+                                 <para><literal>1</literal> ou <literal>'r'</literal>: les rangées de
+                                    <varname>X</varname> sont tirées aléatoirement.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>2</literal> ou <literal>'c'</literal>: les colonnes de
-                                <varname>X</varname> sont tirées aléatoirement.
+                                 <para><literal>2</literal> ou <literal>'c'</literal>: les colonnes de
+                                    <varname>X</varname> sont tirées aléatoirement.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -105,20 +105,22 @@
              initialisées en utilisant <code>grand("setsd", seed)</code>.
              <itemizedlist>
                 <listitem>
-                    Pour obtenir des tirages aléatoires répétables, utiliser une graine initial
-					quelconque mais invariable, par exemple
-                    <programlisting role="example"><![CDATA[
-grand("setsd", 1234);
-                 ]]></programlisting>
-                </listitem>
+                     <para>
+                        Pour obtenir des tirages aléatoires répétables, utiliser une graine initial
+    					quelconque mais invariable, par exemple
+                        <programlisting role="example"><![CDATA[
+    grand("setsd", 1234);
+                     ]]></programlisting></para>
+                                     </listitem>
                 <listitem>
-                    À l'opposé, pour être certain d'obtenir des séquences aléatoires non répétables,
-                    utiliser une graine non répétable, par exemple fondé sur la date courante :
-                    <programlisting role="example"><![CDATA[
-grand("setsd", getdate("s"));
-                        ]]>
-                    </programlisting>
-                </listitem>
+                     <para>
+                        À l'opposé, pour être certain d'obtenir des séquences aléatoires non répétables,
+                        utiliser une graine non répétable, par exemple fondé sur la date courante :
+                        <programlisting role="example"><![CDATA[
+    grand("setsd", getdate("s"));
+                            
+                        ]]></programlisting></para>
+                                        </listitem>
              </itemizedlist>
         </para>
     </refsection>
@@ -254,4 +256,3 @@ sample(3, data, "c")
         </simplelist>
     </refsection>
 </refentry>
-

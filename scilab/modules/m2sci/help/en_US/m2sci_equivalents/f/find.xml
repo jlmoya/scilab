@@ -48,14 +48,14 @@ find
         <para>
             Matlab function can work with complex values what is not possible in Scilab, however, using <emphasis role="bold">abs</emphasis> it is very easy to have the same results.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note that Scilab function can only return two output values and Matlab one can return a third value that can be computed according to the first two output matrices as explained in Matlab help.
-            </note>
-        </para>
-        <para>
-            For example, in <emphasis role="bold">[i,j,v]=find(X)</emphasis>, <emphasis role="bold">v</emphasis> is equal to: <emphasis role="bold">X(i+(j-1))*size(X,1)</emphasis>.
-        </para>
+            </para>
+            <para>
+                For example, in <emphasis role="bold">[i,j,v]=find(X)</emphasis>, <emphasis role="bold">v</emphasis> is equal to: <emphasis role="bold">X(i+(j-1))*size(X,1)</emphasis>.
+            </para>
+        </note>
         <para>
             Another difference between Scilab and Matlab is that Matlab returns column vectors of indices when X is a column vector or a matrix but Scilab always returns row vectors. For this kind of input, use matrix to get the same output value...what is done mtlb_find()
         </para>

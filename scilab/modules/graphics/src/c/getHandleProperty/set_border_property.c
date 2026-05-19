@@ -595,7 +595,6 @@ int createTitledBorder(void* _pvCtx, int* _piAddrList, int _iObjUID)
     int iPosition = 0;
     char* pstPosition = NULL;
     int* piAddr6 = NULL;
-    int* piFont = NULL;
     int* piAddr7 = NULL;
     char* pstColor = NULL;
 

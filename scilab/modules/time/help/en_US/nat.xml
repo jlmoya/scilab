@@ -21,7 +21,7 @@
             dt = NaT(..., "OutputFormat", str)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -59,9 +59,9 @@
         <para> NaT() returns an empty datetime, i.e datetime("") returns a NaT.
         The NaT function can be used to allocate matrix of datetime.</para>
         <para><literal>NaT()</literal> is equivalent to <literal>NaT(1,1)</literal> and returns a NaT (datetime value).</para>
-        <para><literal>NaT(<varname>x</varname>)</literal> returns a NaT matrix with the same size as <varname>x</varname>.</para>
-        <para><literal>NaT(<varname>m, n</varname>)</literal> creates a <varname>m x n</varname> NaT matrix.</para>
-        <para><literal>NaT(..., <varname>"OutputFormat", str</varname>)</literal> creates a datetime matrix of NaT values where the display format is specified.</para>
+        <para><literal>NaT(x)</literal> returns a NaT matrix with the same size as <varname>x</varname>.</para>
+        <para><literal>NaT(m, n)</literal> creates a <varname>m x n</varname> NaT matrix.</para>
+        <para><literal>NaT(..., "OutputFormat", str)</literal> creates a datetime matrix of NaT values where the display format is specified.</para>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -93,9 +93,9 @@ dt2([1 4]) = datetime("2022-12-31")
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Introduction in Scilab.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

@@ -117,6 +117,7 @@
         <add as="verticalAlign" value="middle"/>
         <add as="strokeColor" value="black"/>
         <add as="perimeter" value="null"/>
+        <add as="noLabel" value="1"/>
     </add>
     <add as="CommandControlLink" extend="defaultEdge">
         <add as="strokeColor" value="red"/>
@@ -421,6 +422,7 @@
     </add>
     <!-- MODELICA -->
     <add as="MBLOCK" extend="blockWithLabel">
+        <!-- overriden by block interface to render the Modelica function name -->
         <add as="displayedLabel" value="Modelica&lt;BR&gt; generic"/>
     </add>
     <add as="FROMMO" extend="blockWithLabel">

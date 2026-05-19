@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="isequal" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="isequal" xml:lang="en">
     <refnamediv>
         <refname>isequal</refname>
         <refpurpose>
@@ -29,7 +26,7 @@
             t = isequal(a, b, ...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -59,31 +56,43 @@
             2 objects <varname>a</varname> and <varname>b</varname> are equal
             whether they fulfill ALL the following conditions:
             <itemizedlist>
-                <listitem>they must have the same type of containers: both are
-                    matrices
-                    or hypermatrices with the same data types, or lists,
-                    or cells arrays, or structures arrays,
-                    or any mlists or tlists of same types.
+                <listitem>
+                     <para>they must have the same type of containers: both are
+                        matrices
+                        or hypermatrices with the same data types, or lists,
+                        or cells arrays, or structures arrays,
+                        or any mlists or tlists of same types.
+                    </para>
                 </listitem>
-                <listitem>they must have the same sizes.
+                <listitem>
+                     <para>they must have the same sizes.
+                    </para>
                 </listitem>
-                <listitem>they must have the same encoding: boolean, int8, uint8,
-                    int16, uint16, int32, uint32, int64, uint64, decimal,
-                    complex, sparse
+                <listitem>
+                     <para>they must have the same encoding: boolean, int8, uint8,
+                        int16, uint16, int32, uint32, int64, uint64, decimal,
+                        complex, sparse
+                    </para>
                 </listitem>
-                <listitem>If they are mlists or tlists such as structures,
-                    they must have the same fields in the same order.
+                <listitem>
+                     <para>If they are mlists or tlists such as structures,
+                        they must have the same fields in the same order.
+                    </para>
                 </listitem>
-                <listitem>They must have the same contents, the same values
-                    at the same places.
-                    <warning>
-                        <literal>1/%z == -1/(-%z)</literal> returns
-                        <literal>%T</literal>, while
-                        <literal>1/%z == 2/(2*%z)</literal>,
-                        <literal>isequal(1/%z, -1/(-%z))</literal> and
-                        <literal>isequal(1/%z, 2/(2*%z))</literal>
-                        are <literal>%F</literal>.
-                    </warning>
+                <listitem>
+                    <para>They must have the same contents, the same values
+                        at the same places.
+                        <warning>
+                            <para>
+                                <literal>1/%z == -1/(-%z)</literal> returns
+                                <literal>%T</literal>, while
+                                <literal>1/%z == 2/(2*%z)</literal>,
+                                <literal>isequal(1/%z, -1/(-%z))</literal> and
+                                <literal>isequal(1/%z, 2/(2*%z))</literal>
+                                are <literal>%F</literal>.
+                            </para>
+                        </warning>
+                    </para>
                 </listitem>
             </itemizedlist>
             If at least one of these conditions is not fulfilled, the objects
@@ -94,12 +103,15 @@
             cells, etc, comparisons are performed recursively.
         </para>
         <important>
-            With <function>isequal</function>, 2 compared NaN values are always
-            considered not equal, according to the IEEE rule.
-            <para/>
-            Comparing two objects including NaN values and considering that all NaN
-            are equal can be done with
-            <literal>[ans,msg]=<link linkend="assert_checkequal">assert_checkequal(…)</link></literal>.
+            <para>
+                With <function>isequal</function>, 2 compared NaN values are always
+                considered not equal, according to the IEEE rule.
+            </para>
+            <para>
+                Comparing two objects including NaN values and considering that all NaN
+                are equal can be done with
+                <literal>[ans,msg]=<link linkend="assert_checkequal">assert_checkequal(…)</link></literal>.
+            </para>
         </important>
     </refsection>
     <refsection role="examples">
@@ -202,8 +214,10 @@ assert_checkequal(L, L)               // %T
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    <literal>isequalbitwise(…)</literal> removed.
-                    <literal>[ans,msg]=assert_checkequal(a,b)</literal> may be used instead.
+                    <para>
+                        <literal>isequalbitwise(…)</literal> removed.
+                        <literal>[ans,msg]=assert_checkequal(a,b)</literal> may be used instead.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

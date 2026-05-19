@@ -40,10 +40,6 @@ int sci_zrankqr(char *fname, void* pvApiCtx)
     double* ptrRWORK    = NULL;
 
     int* piAddrptrA     = NULL;
-    int* piAddrptrTAU   = NULL;
-    int* piAddrptrR     = NULL;
-    int* piAddrptrQ     = NULL;
-    int* piAddrptrDWORK = NULL;
 
     doublecomplex* ptrA             = NULL;
     const doublecomplex* ptrTAU     = NULL;

@@ -11,13 +11,7 @@
 * along with this program.
 *
 -->
-<refentry xml:id="mex_data_types" xml:lang="en"
-    xmlns="http://docbook.org/ns/docbook"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg"
-    xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML"
-    xmlns:db="http://docbook.org/ns/docbook">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xml:id="mex_data_types" xml:lang="en">
 
     <refnamediv>
         <refname>Data Types</refname>
@@ -28,38 +22,62 @@
         <variablelist>
             <varlistentry>
                 <term>These are the different functions present in the mexlib module of Scilab</term>
-                <itemizedlist>
-                    <listitem>mxArray</listitem>
-                    <listitem>mwSize</listitem>
-                    <listitem>mwIndex</listitem>
-                    <listitem>mwSignedIndex</listitem>
-                    <listitem>mxChar</listitem>
-                    <listitem>mxLogical</listitem>
-                    <listitem>mxClassID</listitem>
-                    <listitem>mxComplexity</listitem>
-                    <listitem>mxGetEps</listitem>
-                    <listitem>mxGetInf</listitem>
-                    <listitem>mxGetNaN</listitem>
-                </itemizedlist>
+                <listitem>
+                    <itemizedlist>
+                        <listitem>
+                            <para>mxArray</para>
+                        </listitem>
+                        <listitem>
+                            <para>mwSize</para>
+                        </listitem>
+                        <listitem>
+                            <para>mwIndex</para>
+                        </listitem>
+                        <listitem>
+                            <para>mwSignedIndex</para>
+                        </listitem>
+                        <listitem>
+                            <para>mxChar</para>
+                        </listitem>
+                        <listitem>
+                            <para>mxLogical</para>
+                        </listitem>
+                        <listitem>
+                            <para>mxClassID</para>
+                        </listitem>
+                        <listitem>
+                            <para>mxComplexity</para>
+                        </listitem>
+                        <listitem>
+                            <para>mxGetEps</para>
+                        </listitem>
+                        <listitem>
+                            <para>mxGetInf</para>
+                        </listitem>
+                        <listitem>
+                            <para>mxGetNaN</para>
+                        </listitem>
+                    </itemizedlist>
+                </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
-
+                                            
     <refsection role="see also">
         <title>See also</title>
 
         <simplelist type="inline">
             <member>
-                <link linkend="mex_create_or_delete"></link>
+                <link linkend="mex_create_or_delete"/>
             </member>
             <member>
-                <link linkend="mex_validate_data"></link>
+                <link linkend="mex_validate_data"/>
             </member>
             <member>
-                <link linkend="mex_access_data"></link>
+                <link linkend="mex_access_data"/>
             </member>
             <member>
-                <link linkend="mex_create_or_delete"></link>
+                <link linkend="mex_create_or_delete"/>
             </member>
             <member>
                 <link xlink:href="https://www.mathworks.com/help/matlab/cc-matrix-library-api.html">Matlab C Matrix Library API</link>

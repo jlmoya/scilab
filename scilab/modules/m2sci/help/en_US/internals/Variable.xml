@@ -27,7 +27,7 @@
         <title>Syntax</title>
         <synopsis>var = Variable(name, infer)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -57,9 +57,11 @@
             All input parameters values are verified to be compatible with "M2SCI tlists".
         </para>
         <note>
-            <emphasis role="bold">Colon</emphasis> is a predefined Variable containing the
-            pseudo-code representing a colon. It can be used as is as a "ALL" index, for instance
-            in insertion or extraction operations.
+            <para>
+                <emphasis role="bold">Colon</emphasis> is a predefined Variable containing the
+                pseudo-code representing a colon. It can be used as is as a "ALL" index, for instance
+                in insertion or extraction operations.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -122,7 +124,9 @@
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    Predefined variable <literal>Colon</literal> added.
+                    <para>
+                        Predefined variable <literal>Colon</literal> added.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

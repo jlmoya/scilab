@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="prettyprint" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="prettyprint" xml:lang="en">
     <refnamediv>
         <refname>prettyprint</refname>
         <refpurpose>
@@ -33,7 +30,7 @@
             str = prettyprint(a, exportFormat, delimiter, processByElement, isWrapped)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -42,14 +39,18 @@
                     <para>a Scilab object.
                         <itemizedlist>
                             <listitem>
-                                Supported types: booleans, encoded integers, real or complex numbers,
-                                polynomials and rationals with real or complex coefficients, strings,
-                                cells, linear dynamical systems (as generated with syslin()),
-                                other Tlists.
+                                 <para>
+                                    Supported types: booleans, encoded integers, real or complex numbers,
+                                    polynomials and rationals with real or complex coefficients, strings,
+                                    cells, linear dynamical systems (as generated with syslin()),
+                                    other Tlists.
+                                </para>
                             </listitem>
                             <listitem>
-                                Supported sizes: scalar, vector, matrix. Hypermatrices are not
-                                supported (only the first page is processed.)
+                                 <para>
+                                    Supported sizes: scalar, vector, matrix. Hypermatrices are not
+                                    supported (only the first page is processed.)
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -76,16 +77,16 @@
                         In HTML, the '_' delimiter value can be used to format the input matrix
                         without delimiter but with cells borders.
                     </para>
-                    <para>
-                        <warning>
+                    <warning>
+                        <para>
                             Delimiters used for the components defining a linear dynamical system
                             are always "(" and ")", even with <varname>delimiter</varname>="",
                             unless <varname>exportFormat</varname>="html4" is used: Then, "|"
                             is imposed as inner syslin delimiter. This is useful when the result
                             must be rendered in a Scilab GUI like <literal>messagebox()</literal>,
                             that supports only a restricted version of HTML.4
-                        </warning>
-                    </para>
+                        </para>
+                    </warning>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -107,27 +108,35 @@
                         The delimiters depend on the export format. It is
                         <itemizedlist>
                             <listitem>
-                                '$' for latex and tex
+                                 <para>
+                                    '$' for latex and tex
+                                </para>
                             </listitem>
                             <listitem>
-                                nothing for mathml
+                                 <para>
+                                    nothing for mathml
+                                </para>
                             </listitem>
                             <listitem>
                                 <para>
                                     for HTML:
                                     <itemizedlist>
                                         <listitem>
-                                            nothing if <varname>processByElement</varname> is
-                                            <literal>%T</literal> ;
+                                             <para>
+                                                nothing if <varname>processByElement</varname> is
+                                                <literal>%T</literal> ;
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            or the opening tag
-                                            <literal>&lt;table valign="middle" cellspacing="0" cellpadding="3" ..></literal>
-                                            otherwise. Note that the "&lt;/table>"
-                                            closure is then always included, even if
-                                            <varname>isWrapped</varname> is <literal>%F</literal>.
-                                            This allows to fully customize the table style and attributes,
-                                            instead of using the default ones.
+                                             <para>
+                                                or the opening tag
+                                                <literal>&lt;table valign="middle" cellspacing="0" cellpadding="3" ..&gt;</literal>
+                                                otherwise. Note that the "&lt;/table&gt;"
+                                                closure is then always included, even if
+                                                <varname>isWrapped</varname> is <literal>%F</literal>.
+                                                This allows to fully customize the table style and attributes,
+                                                instead of using the default ones.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                 </para>
@@ -163,8 +172,10 @@
             'html4' must be used to display linear dynamical systems in a Scilab GUI like messagebox().
         </para>
         <warning>
-            When an array of cells includes some matrices or other arrays, the same chosen delimiters
-            are used for the cells array and for its elements that are also arrays.
+            <para>
+                When an array of cells includes some matrices or other arrays, the same chosen delimiters
+                are used for the cells array and for its elements that are also arrays.
+            </para>
         </warning>
         <note>
             <para>
@@ -172,42 +183,48 @@
             <literal>format()</literal> function.
             </para>
         </note>
-        <refsect3>
-            <title>Rendering some MathML or/and LaTeX codes in a HTML page:</title>
-            <para>
-                Only the Firefox web browser supports natively the &lt;math> MathML tag,
-                that can embed some mathML code, and renders it.
-            </para>
-            <para>
-                To render MathML code in <emphasis>any</emphasis> web browser,
-                <itemizedlist>
-                    <listitem>
+
+        <para>
+            <emphasis role="bold">Rendering some MathML or/and LaTeX codes in a HTML page:</emphasis>
+        </para>
+        <para>
+            Only the Firefox web browser supports natively the &lt;math&gt; MathML tag,
+            that can embed some mathML code, and renders it.
+        </para>
+        <para>
+            To render MathML code in <emphasis>any</emphasis> web browser,
+            <itemizedlist>
+                <listitem>
+                        <para>
                         put the following HTML instruction only once before the first use of
-                        <literal>&lt;math></literal>:
-                        &lt;script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async/>.
-                        This is typically done in the <literal>&lt;head>..&lt;/head></literal>
+                        <literal>&lt;math&gt;</literal>:
+                        &lt;script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async/&gt;.
+                        This is typically done in the <literal>&lt;head&gt;..&lt;/head&gt;</literal>
                         section of the HTML page.
-                    </listitem>
-                    <listitem>
-                        put every set of MathML instructions between <literal>&lt;math>..&lt;/math></literal>.
-                    </listitem>
-                </itemizedlist>
+                    </para>
+                </listitem>
+                <listitem>
+                        <para>
+                        put every set of MathML instructions between <literal>&lt;math&gt;..&lt;/math&gt;</literal>.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <note>
+            <para>
+                The same <literal>&lt;script..&gt;</literal> instruction declaring the
+                <emphasis>MathJax</emphasis> package can be used to parse and render
+                LaTeX expressions directly written in the HTML code, embedded between
+                <literal>\[ ..\]</literal> brackets instead of
+                <literal>&lt;math&gt;..&lt;/math&gt;</literal>.
             </para>
-            <note>
-                <para>
-                    The same <literal>&lt;script..></literal> instruction declaring the
-                    <emphasis>MathJax</emphasis> package can be used to parse and render
-                    LaTeX expressions directly written in the HTML code, embedded between
-                    <literal>\[ ..\]</literal> brackets instead of
-                    <literal>&lt;math>..&lt;/math></literal>.
-                </para>
-                <para>
-                    Hence, the HTML code of a page can mix some LaTeX and MathML instructions
-                    that will be parsed and rendered accordingly.
-                </para>
-           </note>
-            <para>Please see examples provided in the dedicated section below.</para>
-        </refsect3>
+            <para>
+                Hence, the HTML code of a page can mix some LaTeX and MathML instructions
+                that will be parsed and rendered accordingly.
+            </para>
+        </note>
+        <para>Please see examples provided in the dedicated section below.</para>
+
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -470,16 +487,16 @@ winopen(File)  // Display the page in your browser
         Please note that for string input, the protection needed for some special LaTeX characters
         is displayed as is by MathJax:
     </para>
-    <inlinemediaobject>
+    <mediaobject>
         <imageobject>
             <imagedata fileref="../images/prettyprint_LaTeX_MathJax.png"/>
         </imageobject>
-    </inlinemediaobject>
+    </mediaobject>
     <para/>
     <para/>
     <para>
         <emphasis role="bold">MathML:</emphasis> Exporting Scilab objects into MathML, and
-        rendering them in a HTML page using the &lt;math> tag.
+        rendering them in a HTML page using the &lt;math&gt; tag.
         We still use <emphasis>MathJax</emphasis> to render the code in any web browser:
     </para>
     <programlisting role="example"><![CDATA[
@@ -515,11 +532,11 @@ mputl(html, File);
 editor(File)   // See the HTML and MathML code
 winopen(File)  // Render the page in your browser
  ]]></programlisting>
-    <inlinemediaobject>
+    <mediaobject>
         <imageobject>
             <imagedata fileref="../images/prettyprint_MathML.png"/>
         </imageobject>
-    </inlinemediaobject>
+    </mediaobject>
     <para/>
     <para/>
     <para>
@@ -554,11 +571,11 @@ messagebox(html, "prettyprint() test => messagebox(HTML.4)");
  ]]></programlisting>
     <para/>
     <para>Rendering in a messagebox():</para>
-    <inlinemediaobject>
+    <mediaobject>
         <imageobject>
             <imagedata fileref="../images/prettyprint_HTML4_GUI.png"/>
         </imageobject>
-    </inlinemediaobject>
+    </mediaobject>
     <para/>
     <para>
         Still in HTML, using "_" to get table borders:
@@ -569,11 +586,11 @@ messagebox(html, "prettyprint() test => messagebox(HTML.4)");
 messagebox(["The table is:" ; "<br>" ; prettyprint(i16,"html","_")])
  ]]></programlisting>
     <para/>
-    <inlinemediaobject>
+    <mediaobject>
         <imageobject>
             <imagedata fileref="../images/prettyprint_HTML_table_borders.png"/>
         </imageobject>
-    </inlinemediaobject>
+    </mediaobject>
 
     </refsection>
     <refsection role="see also">
@@ -616,15 +633,15 @@ messagebox(["The table is:" ; "<br>" ; prettyprint(i16,"html","_")])
         <revhistory>
             <revision>
                 <revnumber>5.2.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function introduced.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Export to HTML added.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

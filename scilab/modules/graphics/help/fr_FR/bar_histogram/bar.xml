@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="bar">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="bar">
     <refnamediv>
         <refname>bar</refname>
         <refpurpose>histogramme de barres</refpurpose>
@@ -18,7 +15,7 @@
             hdl = bar(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -35,11 +32,15 @@
                        réels ou d'entiers encodés, avec
                       <itemizedlist>
                         <listitem>
-                          N : nombre de groupes de barres. Chaque groupe est rassemblé à (proximité
-                          de) la position x dédiée.
+                             <para>
+                              N : nombre de groupes de barres. Chaque groupe est rassemblé à (proximité
+                              de) la position x dédiée.
+                            </para>
                         </listitem>
                         <listitem>
-                          M : nombre de catégories = nombre de barres dans chaque groupe.
+                             <para>
+                              M : nombre de catégories = nombre de barres dans chaque groupe.
+                            </para>
                         </listitem>
                       </itemizedlist>
                     </para>
@@ -51,11 +52,15 @@
                     <para>scalaire, ou vecteur de taille N. Par défaut,
                       <itemizedlist>
                         <listitem>
-                          Si <varname>y</varname> est un vecteur : <literal>x=1:length(y)</literal>
-                        </listitem>
+                             <para>
+                              Si <varname>y</varname> est un vecteur : <literal>x=1:length(y)</literal>
+                                                                   </para>
+                                                               </listitem>
                         <listitem>
-                          Si <varname>y</varname> est une matrice : <literal>x=1:size(y,"r")</literal>
-                        </listitem>
+                             <para>
+                              Si <varname>y</varname> est une matrice : <literal>x=1:size(y,"r")</literal>
+                                                                    </para>
+                                                                </listitem>
                       </itemizedlist>
                     </para>
                 </listitem>
@@ -150,21 +155,21 @@ y=[1 -3 5];
 bar(y,0.5,'yellow');
  ]]></programlisting>
 
-        <scilab:image>
+        <scilab:image><![CDATA[
             y=[1 -3 5];
             bar(y,0.5,'yellow');
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Deuxième exemple : par défaut style='grouped'
 scf(1);
 x=[1 2 5]; y=[1  -5 6;3 -2 7;4  -3 8];
 bar(x,y);
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[1 2 5];
             y=[1  -5 6;3 -2 7;4  -3 8];
             bar(x,y);
-        </scilab:image>
+        ]]></scilab:image>
 
         <programlisting role="example"><![CDATA[
 // Troisième exemple : dessine 3 bars (nombre de colonnes de y) style='stacked'.
@@ -174,22 +179,22 @@ bar(x,y,'stacked');
  ]]></programlisting>
 
 
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[1 2 5];
             y=[1 4 7;2 5 8;3 6  9];
             bar(x,y,'stacked');
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Quatrième exemple; width=0.2;colors='green'; par défaut style='grouped'
 scf(3);
 x=[1 2 5]; y=[1 4 7;2 5 8;3 6 9];
 bar(x,y,0.2,'green');
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[1 2 5];
             y=[1 4 7;2 5 8;3 6 9];
             bar(x,y,0.2,'green');
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>Voir aussi</title>
@@ -225,26 +230,32 @@ bar(x,y,0.2,'green');
                 <revdescription>
                     <itemizedlist>
                       <listitem>
-                        Un vecteur de M couleurs peut désormais être fourni, une couleur pour
-                        chaque catégorie.
+                           <para>
+                            Un vecteur de M couleurs peut désormais être fourni, une couleur pour
+                            chaque catégorie.
+                          </para>
                       </listitem>
                       <listitem>
-                        Les couleurs utilisables ne sont plus restreintes à la liste des 10 couleurs
-                        majeures utilisées par plot(). Toutes les couleurs nommées prédéfinies
-                        dans Scilab sont utilisables.
+                           <para>
+                            Les couleurs utilisables ne sont plus restreintes à la liste des 10 couleurs
+                            majeures utilisées par plot(). Toutes les couleurs nommées prédéfinies
+                            dans Scilab sont utilisables.
+                          </para>
                       </listitem>
                       <listitem>
-                        Les couleurs peuvent désormais être indiquées également par leur code
-                        hexadécimal "#RRGGBB".
+                           <para>
+                            Les couleurs peuvent désormais être indiquées également par leur code
+                            hexadécimal "#RRGGBB".
+                          </para>
                       </listitem>
                     </itemizedlist>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     La fonction renvoie le(s) handle(s) créé(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

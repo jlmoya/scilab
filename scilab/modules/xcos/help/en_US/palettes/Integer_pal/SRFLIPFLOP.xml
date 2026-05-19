@@ -26,48 +26,48 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
         xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xmln.mml="http://www.w3.org/1998/Math/MathML" xml:id="SRFLIPFLOP" xml:lang="en_US">
+        xmlns:mml="http://www.w3.org/1998/Math/MathML" xml:id="SRFLIPFLOP" xml:lang="en_US">
     <refnamediv>
         <refname>SRFLIPFLOP</refname>
         <refpurpose>SR flip-flop</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SRFLIPFLOP.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_SRFLIPFLOP">
+    <refsection xml:id="Contents_SRFLIPFLOP">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SRFLIPFLOP">Description</xref>
+                <para><link linkend="Description_SRFLIPFLOP">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_BITCLEAR">Data types</xref>
+                <para><link linkend="Data_Type_BITCLEAR">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SRFLIPFLOP">Parameters</xref>
+                <para><link linkend="Dialogbox_SRFLIPFLOP">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SRFLIPFLOP">Default properties</xref>
+                <para><link linkend="Defaultproperties_SRFLIPFLOP">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SRFLIPFLOP">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_SRFLIPFLOP">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_SRFLIPFLOP">Example</xref>
+                <para><link linkend="Example_SRFLIPFLOP">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_SRFLIPFLOP">See also</xref>
+                <para><link linkend="Seealso_SRFLIPFLOP">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_SRFLIPFLOP">
+    <refsection xml:id="Description_SRFLIPFLOP">
         <title>Description</title>
         <para>
             This block describes the simplest and the most fundamental latch the SR flip flop. The
@@ -159,7 +159,7 @@
             stands for "Unknown".
         </para>
     </refsection>
-    <refsection id="Data_Type_SRFLIPFLOP">
+    <refsection xml:id="Data_Type_SRFLIPFLOP">
         <title>Data types</title>
         <para>
             The block supports the following types :
@@ -193,14 +193,13 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Dialogbox_SRFLIPFLOP">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_SRFLIPFLOP">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/integer_pal/en_US/SRFLIPFLOP_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/integer_pal/en_US/SRFLIPFLOP_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -211,7 +210,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_SRFLIPFLOP">
+    <refsection xml:id="Defaultproperties_SRFLIPFLOP">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -291,7 +290,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_SRFLIPFLOP">
+    <refsection xml:id="Example_SRFLIPFLOP">
         <title>Example</title>
         <para>
             The following example presents a typical anti-bouncing application of the SR flipflop. The
@@ -312,7 +311,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_SRFLIPFLOP">
+    <refsection xml:id="Interfacingfunction_SRFLIPFLOP">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

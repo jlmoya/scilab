@@ -225,7 +225,6 @@ int CdfBase(char const * const fname, void* pvApiCtx, int inarg, int oarg, int s
 
     for (i = 0; i < inarg; ++i)
     {
-        int j = 0;
         getVarAddressFromPosition(pvApiCtx, i + 2, &p);
         getMatrixOfDouble(pvApiCtx, p, &rows[i], &cols[i], &data[i]);
     }

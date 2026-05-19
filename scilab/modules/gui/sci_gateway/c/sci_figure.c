@@ -52,7 +52,6 @@ int sci_figure(char * fname, void* pvApiCtx)
     int iPos = 0;
     int i = 0;
     int iAxes = 0;
-    int iPropertyOffset = 0;
     BOOL bDoCreation = TRUE;
     BOOL bVisible = TRUE; // Create a visible figure by default
     BOOL bDockable = TRUE; // Create a dockable figure by default
@@ -69,7 +68,6 @@ int sci_figure(char * fname, void* pvApiCtx)
     int iToolbarType = 1; // Create a 'figure' toolbar by default
     int iAntiAliasing = 3; // 8x by default
     double dblId = 0;
-    BOOL status = FALSE;
 
     //figure(num) -> scf(num)
     //figure() -> scf()
@@ -753,11 +751,9 @@ int setDefaultProperties(int _iFig, BOOL _bDefaultAxes)
 {
     //get figure axes
     int iAxes = -1;
-    int iDrawing = 0;
     int iColorIndex = 0;
     int iFilled = 0;
     int iAxesVisible = 0;
-    int* piAxesSize = NULL;
     double pdblNewColor[COLOR_COMPONENT] = {0.8, 0.8, 0.8};
 
     iColorIndex = addColor(_iFig, pdblNewColor);

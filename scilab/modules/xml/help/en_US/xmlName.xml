@@ -24,7 +24,7 @@
             names = xmlName(obj)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -48,18 +48,18 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-doc = xmlReadStr("<root><foo a=""123"" b=""456"" c=""789""/></root>")
+xdoc = xmlReadStr("<root><foo a=""123"" b=""456"" c=""789""/></root>")
 
 // Retrieve the name of a single element
-xmlName(doc.root.children(1))
+xmlName(xdoc.root.children(1))
 
 // Retrieve the names of an attributes list
-xmlName(doc.root.children(1).attributes)
+xmlName(xdoc.root.children(1).attributes)
 
 // Retrieve the names of the result of a XPath query
-xmlName(xmlXPath(doc,"//foo/@*"))
+xmlName(xmlXPath(xdoc,"//foo/@*"))
 
-xmlDelete(doc);
+xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -76,7 +76,7 @@ xmlDelete(doc);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

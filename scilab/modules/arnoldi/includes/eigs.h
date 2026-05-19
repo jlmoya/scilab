@@ -53,7 +53,7 @@ ARNOLDI_IMPEXP int eigs(double* AR, doublecomplex* AC, int N, int Acomplex, int 
          double* B,  doublecomplex* BC, int Bcomplex, int matB, int nev,
          doublecomplex SIGMA, char* which, double* maxiter, double* tol,
          double* NCV, double* RESID, doublecomplex* RESIDC, int* INFO,
-         double* cholB, int INFO_EUPD, double* eigenvalue, double* eigenvector,
+         double* cholB, int* INFO_EUPD, double* eigenvalue, double* eigenvector,
          doublecomplex* eigenvalueC, doublecomplex* eigenvectorC, int RVEC);
 
 #endif /* __EIGS_H__ */

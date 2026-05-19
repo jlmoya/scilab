@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="error">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="error">
     <refnamediv>
         <refname>error</refname>
         <refpurpose>signale une erreur d'éxécution</refpurpose>
@@ -29,7 +26,7 @@
             error(n, message)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -46,7 +43,7 @@
                 <term>n</term>
                 <listitem>
                     <para>
-                        entier > 0: identifiant numérique à attribuer à l'erreur. Par défaut = 10000.
+                        entier &gt; 0: identifiant numérique à attribuer à l'erreur. Par défaut = 10000.
                         Alors que le message apparaît le plus souvent traduit dans la langue
                         de la session, <varname>n</varname> permet d'identifier et de tester l'erreur
                         indépendamment de la langue.
@@ -62,16 +59,24 @@
             <literal>error</literal>
             <itemizedlist>
                 <listitem>
-                    stoppe l'éxécution en cours,
+                     <para>
+                        stoppe l'éxécution en cours,
+                    </para>
                 </listitem>
                 <listitem>
-                    affiche dans la console la liste des appels imbriqués ayant mené à l'erreur,
+                     <para>
+                        affiche dans la console la liste des appels imbriqués ayant mené à l'erreur,
+                    </para>
                 </listitem>
                 <listitem>
-                    affiche dans la console le <varname>message</varname> d'erreur donné,
+                     <para>
+                        affiche dans la console le <varname>message</varname> d'erreur donné,
+                    </para>
                 </listitem>
                 <listitem>
-                    et revient au niveau d'exécution initial.
+                     <para>
+                        et revient au niveau d'exécution initial.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -169,14 +174,16 @@ test : Nombre erroné d'arguments d'entrée : 1 attendus.
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.0.0</revnumber>
-                <revremark>
-                    Syntaxe <literal>error(n, message)</literal> introduite.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Syntaxe <literal>error(n, message)</literal> introduite.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>5.4.0</revnumber>
@@ -186,11 +193,13 @@ test : Nombre erroné d'arguments d'entrée : 1 attendus.
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    Syntaxes <literal>error(n)</literal> et <literal>error(n, pos)</literal>
-                    supprimées : un message d'erreur explicite doit désormais être obligatoirement
-                    indiqué. Il n'y a désormais plus d'identifiant d'erreur absolu.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Syntaxes <literal>error(n)</literal> et <literal>error(n, pos)</literal>
+                        supprimées : un message d'erreur explicite doit désormais être obligatoirement
+                        indiqué. Il n'y a désormais plus d'identifiant d'erreur absolu.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

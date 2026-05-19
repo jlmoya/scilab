@@ -24,7 +24,7 @@
         D = sgolaydiff(X, order, C)
     </synopsis>
   </refsynopsisdiv>
-  <refsection>
+  <refsection role="arguments">
     <title>Arguments</title>
     <variablelist>
       <varlistentry>
@@ -85,10 +85,10 @@
   <refsection>
     <title>Description</title>
     <para>
-      <para>This function computes numerical derivatives using the FIR
+      This function computes numerical derivatives using the FIR
       Savitzky-Golay smoothing Filter. This is achieved by fitting
       successive sub-sets of adjacent data points with a low-degree
-      polynomial by the method of linear least squares.</para>
+      polynomial by the method of linear least squares.
     </para>
     <caution>
         <para>order must be less than k</para>
@@ -151,8 +151,8 @@ title("Second order differentiation")
         Analytical Chemistry, vol. 8, no 36,‎ 1964, p. 1627–1639 (DOI
         10.1021/ac60214a047)</para>
     <para>
-        <ulink url="http://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter">
-        http://en.wikipedia.org/wiki/Savitzky-Golay_filter</ulink>.
+        <link xlink:href="http://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter">
+        http://en.wikipedia.org/wiki/Savitzky-Golay_filter</link>.
     </para>
   </refsection>
   <refsection role="see also">
@@ -169,12 +169,12 @@ title("Second order differentiation")
       </member>
     </simplelist>
   </refsection>
-    <refsection>
+    <refsection role="history">
        <title>History</title>
       <revhistory>
         <revision>
           <revnumber>6.1.1</revnumber>
-          <revdescription>Function added. Courtesy of Serge Steer, INRIA</revdescription>
+          <revremark>Function added. Courtesy of Serge Steer, INRIA</revremark>
         </revision>
       </revhistory>
     </refsection>

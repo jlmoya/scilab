@@ -31,49 +31,49 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/TCLSS.png" align="center" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_TCLSS">
+    <refsection xml:id="Contents_TCLSS">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TCLSS">Description</xref>
+                <para><link linkend="Description_TCLSS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_TCLSS">Parameters</xref>
+                <para><link linkend="Dialogbox_TCLSS">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TCLSS">Default properties</xref>
+                <para><link linkend="Defaultproperties_TCLSS">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_TCLSS">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_TCLSS">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_TCLSS">Computational function</xref>
+                <para><link linkend="Computationalfunction_TCLSS">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_TCLSS">Example</xref>
+                <para><link linkend="Example_TCLSS">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_TCLSS">
+    <refsection xml:id="Description_TCLSS">
         <title>Description</title>
         <para>
             This block realizes a continuous-time linear state-space system with the possibility of jumps in the state. The number of inputs to this block is two. The first input is the regular input of the linear system, the second carries the new value of the state which is copied into the state when an event arrives at the unique event input port of this block. That means the state of the system jumps to the value present on the second input (of size equal to that of the state). The system is defined by the <literal>(A,B,C,D)</literal> matrices and the initial state <literal>x_0</literal>. The dimensions must be compatible. The sizes of inputs and outputs are adjusted automatically.
         </para>
     </refsection>
-    <refsection id="Dialogbox_TCLSS">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_TCLSS">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/TCLSS_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/TCLSS_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -121,7 +121,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_TCLSS">
+    <refsection xml:id="Defaultproperties_TCLSS">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -197,7 +197,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_TCLSS">
+    <refsection xml:id="Interfacingfunction_TCLSS">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -205,7 +205,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_TCLSS">
+    <refsection xml:id="Computationalfunction_TCLSS">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -213,8 +213,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_TCLSS">
+    <refsection xml:id="Example_TCLSS">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/TCLSS_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -222,5 +223,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

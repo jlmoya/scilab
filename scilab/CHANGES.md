@@ -1,7 +1,7 @@
-Welcome to Scilab 2026.0.0
+Welcome to Scilab 2026.1.0
 ==========================
 
-This file details the changes between Scilab 2026.0.0 (this version) and the previous 2025.1.0 stable release.
+This file details the changes between Scilab 2026.1.0 (this version) and the previous 2025.1.0 stable release.
 
 For changelogs of earlier releases, please see [Scilab 2025.1.0][1].
 
@@ -25,7 +25,44 @@ New features
 
 For a high-level description of the main new features in this release, please consult the homepage of the embedded documentation, available by simply typing `doc` in the Scilab console.
 
-### New functions
+### Scilab 2026.1.0
+
+#### New functions
+
+- `check_help()`: Validate Scilab XML help files against the Scilab Relax NG schema.
+- `help()`: Display an inline summary of a documentation page in Scilab console.
+- `ishermitian()`: Check whether a matrix is hermitian.
+- `issymmetric()`: Check whether a matrix is symmetric.
+- `parquetRead()`: Read a Parquet or Arrow file and return a table.
+- `parquetWrite()`: Write a table in a Parquet or Arrow file.
+- `pdist()`: Pairwise distances between observations.
+- `pdist2()`: Pairwise distances between two sets of observations.
+- `squareform()`: Conversion between a distance vector and a symmetric distance matrix.
+- `summary()`: Summary of `table` or `timeseries` variables (properties, statistics...).
+- `xcosDiagramExport()`: Export an Xcos diagram to an image.
+- `xlsxInfo()`: Get information about an Excel file.
+- `xlsxRead()`: Read data from an Excel file and return a matrix or cell.
+- `xlsxSheet()`: Manage sheets in an Excel file.
+- `xlsxWrite()`: Write data (matrix or cell) to an Excel file.
+
+#### Features improvements
+
+- New web-based GUIs for ATOMS & Scilab Demonstration using "browser" uicontrols.
+- Objects defined using `classdef` now support static properties and methods.
+- `csvTextScan()` now manages a "substitute" option as `csvRead()` to enable replacement of particular strings in the read file.
+- `dbscan()` now accepts two more input arguments to specify metric distances and parameters.
+- `dbscan()`, `kmeans()` and `meanshift()` now use `pdist2()` for better performances.
+- `format()` now supports engineering notation (similar to exponential notation but with an exponent value divisible by three).
+- `gallery()` can now generate "minij" (Symmetric positive definite matrix) and "moler" (Moler symmetric positive definite matrix) test matrices.
+- "use_vectorized" parameter is now available for `optim_ga()`, `optim_moga()`, `optim_nsga()`, `optim_nsga2()` to indicate that the cost function is vectorized (called with the whole population at once).
+
+#### Language evolutions
+
+- Arithmetic operators now perform **automatic expansion** with no memory overhead: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using `.*.` or `repmat()`) unnecessary for most case. See `doc operator_expand`.
+
+### Scilab 2026.0.0
+
+#### New functions
 
 - `cdftnc()`: Cumulative distribution function of the non-central student's T distribution.
 - `dbscan()`: Density-based clustering.
@@ -40,9 +77,9 @@ For a high-level description of the main new features in this release, please co
 - `sortrows()` : Sort rows of a vector, matrix, table, or timeseries.
 - `spset()`: Set non-zero entries of a sparse matrix.
 
-### Features improvements
+#### Features improvements
 
-- `host()` has been rewritten and is now used as backend for all other functions that perform system calls (`dos()`, `unix()`, `unix_g()`, `unix_s()`, `unix_w()`, and `unix_x()`) which are now obsolete.
+- `host()` has been rewritten and is now used as a backend for all other functions that perform system calls (`dos()`, `unix()`, `unix_g()`, `unix_s()`, `unix_w()`, and `unix_x()`) which are now obsolete.
 - `intersect()` now manages `duration`, `datetime`, `table`, and `timeseries` types.
 - `lib()` can now load a library without exposing its symbols (default behavior remains unchanged).
 - `setdiff()` now manages `duration`, `datetime`, `table`, and `timeseries` types.
@@ -50,16 +87,16 @@ For a high-level description of the main new features in this release, please co
 - `union()` now manages `duration`, `datetime`, `table`, and `timeseries` types.
 - Options names are now case-insensitive for `duration()`, `calendarDuration()`, `datetime()`, `timeseries()`, and `table()` functions.
 
-### Language
+#### Language evolutions
 
 - Classes/Objects can now be defined and used in Scilab based on the new `classdef`, `enumeration`, `properties` & `methods` keywords.
-- `end` keyword can now be used to specify the last row/column index of an array, similarly to `$`.
+- The `end` keyword can now be used to specify the last row/column index of an array, similarly to `$`.
 
-### Graphics
+#### Graphics
 
 - Axes handles can now have their own colormap. If not provided, then the parent figure colormap is used (as in previous versions).
 
-### Xcos
+#### Xcos
 
 - Diagrams are saved as [SSP](https://ssp-standard.org/) (System Structure and Parametrization) files by default. This setting can be edited in user preferences.
 - Users are now enabled to save their diagrams as COSF files.
@@ -68,6 +105,14 @@ For a high-level description of the main new features in this release, please co
 
 Obsolete functions or features
 ------------------------------
+
+### Scilab 2026.1.0
+
+All these functions and features will be removed in Scilab 2027.0.0 (October 2026):
+
+- `readmps()`: Please use `quapro` toolbox instead.
+
+### Scilab 2026.0.0
 
 All these functions and features will be removed in Scilab 2026.1.0 (May 2026):
 
@@ -91,6 +136,21 @@ All these functions and features will be removed in Scilab 2027.0.0 (October 202
 Removed Functions
 -----------------
 
+### Scilab 2026.1.0
+
+The following functions have been removed:
+
+- `check_modules_xml()`: not used and undocumented.
+- `demo_begin()`: obsolete since 2026.0.0, please use `exec()` instead.
+- `demo_choose()`: obsolete since 2026.0.0, please use `x_choose()` instead.
+- `demo_compiler()`: obsolete since 2026.0.0, please use `haveacompiler()` instead.
+- `demo_end()`: obsolete since 2026.0.0, please use `exec()` instead.
+- `demo_file_choice()`: obsolete since 2026.0.0, please use `x_choose()` instead.
+- `demo_function_choice()`: obsolete since 2026.0.0, please use `x_choose()` instead.
+- `demo_run()`: obsolete since 2026.0.0, please use `exec()` instead.
+
+### Scilab 2026.0.0
+
 The following functions have been removed:
 
 - `demo_folder_choice()`: undocumented and not used, replaced by `x_choose()`.
@@ -113,11 +173,31 @@ The following functions have been removed:
 Known incompatibilities
 -----------------------
 
+### Scilab 2026.1.0
+
+- `readtable()` & `readtimeseries()` now also return empty columns (columns with missing or undefined names).
+- In toolboxes, when using custom "builder_<lang>.sce" files in "src" folder, `tbx_build_src_clean()` must be called to be sure "cleaner<lang>.sce" files are generated.
+
+### Scilab 2026.0.0
+
 - `genlib()` no more loads generated library (see [#15918](https://gitlab.com/scilab/scilab/-/issues/15918)). `lib()` function must be called to load the generated library.
 - `host()` function now returns `0` (success) instead of `1` (error) when called with an empty character string as input.
 
 Compilation
 -----------
+
+### Scilab 2026.1.0
+
+- Windows ARM64 support added (no official binaries available).
+- Under Linux/macOS, installation of documentation (.xml files) was optional before this version (using a dedicated configure option). This option has been removed as .xml files are now mandatory for the `help()` function.
+
+If you are familiar with building Scilab from sources, these dependencies have been updated:
+
+- New dependency: libxslt >= 1.1.35 (used by `help()`).
+- New dependency: XLNT >= 1.6.1 (used by `xlsxInfo()`, `xlsxRead()`, `xlsxSheet()` & `xlsxWrite()`).
+- New dependency: Apache Arrow 19.0.0 with Parquet format & ZLIB support (used by `parquetRead()` & `parquetWrite()`).
+
+### Scilab 2026.0.0
 
 - Windows: Migration to Intel® oneAPI HPC Toolkit 2025.2.
 - Linux: GCC 15 is now supported.
@@ -146,6 +226,53 @@ Packaging & Supported Operating Systems
 
 Issue Fixes
 -----------
+
+### Scilab 2026.1.0
+
+- [#9985](https://gitlab.com/scilab/scilab/-/issues/9985): `lsqrsolve()` produced weird messages when the objective function was complex.
+- [#14387](https://gitlab.com/scilab/scilab/-/issues/14387): `string(cell_array)` returned wrong results (wrong sizes, wrong type, wrong contents).
+- [#14776](https://gitlab.com/scilab/scilab/-/issues/14776): Scilab crashed when an `AFFICH_m` block had a wrong input size.
+- [#15101](https://gitlab.com/scilab/scilab/-/issues/15101): `ascii()` returned inconsistent results for `0` value.
+- [#15773](https://gitlab.com/scilab/scilab/-/issues/15773): `eigs()` could not compute all eigenvalues of singular matrices.
+- [#16501](https://gitlab.com/scilab/scilab/-/issues/16501): UID of a Xcos block did not update after pasting a block into another super block.
+- [#16739](https://gitlab.com/scilab/scilab/-/issues/16739): Xcos labels boxes were corrupted in Xcos diagram coming from Scilab 5.5.2.
+- [#16744](https://gitlab.com/scilab/scilab/-/issues/16744): `SUPER_f` destroyed port names in a duplicated diagram.
+- [#17334](https://gitlab.com/scilab/scilab/-/issues/17334): `loadToolboxInlineHelp()` (new in Scilab 2025.0.0) was not documented and broke compatibility with Scilab 2024.1.0 (`loader.sce`, ...).
+- [#17359](https://gitlab.com/scilab/scilab/-/issues/17359): A copy-paste of the `SELF_SWITCH` component generated an empty square in Xcos diagram.
+- [#17394](https://gitlab.com/scilab/scilab/-/issues/17394): `loadToolboxInlineHelp()` could not find file containing links.
+- [#17451](https://gitlab.com/scilab/scilab/-/issues/17451): Accessing `.content` field of `xmlXPath()` output (and the `XMLSet` datatype) could lead to 0-sized datatypes.
+- [#17483](https://gitlab.com/scilab/scilab/-/issues/17483): Xcos diagram saved to SSP format did not keep `IN_f`/`OUT_f` labels.
+- [#17485](https://gitlab.com/scilab/scilab/-/issues/17485): Compiling against `mex.h` generated an error when using C++23.
+- [#17486](https://gitlab.com/scilab/scilab/-/issues/17486): All example is `xml` module documentation overwrote the `doc` command.
+- [#17487](https://gitlab.com/scilab/scilab/-/issues/17487): macOS arm64 version needed Rosetta at runtime.
+- [#17489](https://gitlab.com/scilab/scilab/-/issues/17489): Display of structs with objects generated warnings.
+- [#17494](https://gitlab.com/scilab/scilab/-/issues/17494): The first step of `arkode` was incorrect for Euler method.
+- [#17495](https://gitlab.com/scilab/scilab/-/issues/17495): `getVsWhereInformation()` failed when `vswhere` command returned `[]`.
+- [#17499](https://gitlab.com/scilab/scilab/-/issues/17499): Line value of XML elements was wrong for bug XML files.
+- [#17501](https://gitlab.com/scilab/scilab/-/issues/17501): `strsplit()` was broken in some cases in Scilab 2026.0.0.
+- [#17504](https://gitlab.com/scilab/scilab/-/issues/17504): Hypermatrix display was wrong when the number of lines was 100 or more.
+- [#17505](https://gitlab.com/scilab/scilab/-/issues/17505): It was not possible to modify data Xcos boxes since Scilab 2025.0.
+- [#17506](https://gitlab.com/scilab/scilab/-/issues/17506): `scatterplot()` always displayed black marks when using `0` as marker type.
+- [#17509](https://gitlab.com/scilab/scilab/-/issues/17509): An error in the methods of `classdef` object returned an empty function name.
+- [#17510](https://gitlab.com/scilab/scilab/-/issues/17510): `classdef` properties were not shown correctly.
+- [#17512](https://gitlab.com/scilab/scilab/-/issues/17512): `NaT` was not always consistent with comparison operators.
+- [#17514](https://gitlab.com/scilab/scilab/-/issues/17514): Xcos electrical block parameter values did not update the icon.
+- [#17522](https://gitlab.com/scilab/scilab/-/issues/17522): `csvRead()`, `csvTextscan()` were not able to handle a mix of whitespaces and semi-column separators.
+- [#17525](https://gitlab.com/scilab/scilab/-/issues/17525): There was a mistake on `TEXT_f` block help page.
+- [#17526](https://gitlab.com/scilab/scilab/-/issues/17526): Scilab failed when reading "DATASPACE SCALAR" attribute or dataset in HDF5 file.
+- [#17528](https://gitlab.com/scilab/scilab/-/issues/17528): `csim()` could give incorrect results when called with initial conditions.
+- [#17530](https://gitlab.com/scilab/scilab/-/issues/17530): `ESELECT_f` documentation did not explain which output value was selected according to the input value.
+- [#17532](https://gitlab.com/scilab/scilab/-/issues/17532): `LOGICAL_OP` block symbol did not change according to settings.
+- [#17533](https://gitlab.com/scilab/scilab/-/issues/17533): Vertices of connections may exchange their position when reloading an Xcos diagram.
+- [#17535](https://gitlab.com/scilab/scilab/-/issues/17535): `cvode()` did not honor `maxSteps` in some cases.
+- [#17538](https://gitlab.com/scilab/scilab/-/issues/17538): Error was signalled on original superblock (instead of copy) when doing a copy in Xcos.
+- [#17539](https://gitlab.com/scilab/scilab/-/issues/17539): `readtable()` did not return columns whose names were empty.
+- [#17540](https://gitlab.com/scilab/scilab/-/issues/17540): `cvode()` froze Scilab when the time span was specified as a two-element vector.
+- [#17541](https://gitlab.com/scilab/scilab/-/issues/17541): Documentation of `arguments` was confusing in some cases.
+- [#17542](https://gitlab.com/scilab/scilab/-/issues/17542): Depending on operations, `classdef` objects behaved differently with other types.
+- [#17543](https://gitlab.com/scilab/scilab/-/issues/17543): `slint()` shew copyright/advertising notice.
+- [#17548](https://gitlab.com/scilab/scilab/-/issues/17548): There was a mispelling in the figure menus when translated into French.
+- [#17550](https://gitlab.com/scilab/scilab/-/issues/17550): `tbx_build_src()` changed the order of files at compile time, which could lead to compilation errors when dealing with Fortran 90 files.
 
 ### Scilab 2026.0.0
 

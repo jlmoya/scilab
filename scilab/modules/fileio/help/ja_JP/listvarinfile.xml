@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="ja" xml:id="listvarinfile">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="listvarinfile">
     <refnamediv>
         <refname>listvarinfile</refname>
         <refpurpose>保存されたデータファイルの中の変数の一覧を得る</refpurpose>
@@ -171,23 +168,33 @@ t                        string         2 by 2          40
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Hypermatrices are now listed with the type of their content, instead of
-                            "mlist" and type 17. Their sizes are now the actual ones, instead of 3.
+                             <para>
+                                Hypermatrices are now listed with the type of their content, instead of
+                                "mlist" and type 17. Their sizes are now the actual ones, instead of 3.
+                            </para>
                         </listitem>
                         <listitem>
-                            Cells and Structures arrays now appear as "cell" and "struct" instead
-                            of "mlist". Their sizes are now the actual ones, instead of 3.
+                             <para>
+                                Cells and Structures arrays now appear as "cell" and "struct" instead
+                                of "mlist". Their sizes are now the actual ones, instead of 3.
+                            </para>
                         </listitem>
                         <listitem>
-                            Arrays of graphic handles now appear as "handle" and type 9,
-                            instead of "tlist" and type 16.
-                            Their sizes are now the actual ones, instead of 3.
+                             <para>
+                                Arrays of graphic handles now appear as "handle" and type 9,
+                                instead of "tlist" and type 16.
+                                Their sizes are now the actual ones, instead of 3.
+                            </para>
                         </listitem>
                         <listitem>
-                            Macros now appear as "macro" and type 13, instead of "tlist" and type 16.
+                             <para>
+                                Macros now appear as "macro" and type 13, instead of "tlist" and type 16.
+                            </para>
                         </listitem>
                         <listitem>
-                            Real and complex numbers now appear as "double" instead of "constant".
+                             <para>
+                                Real and complex numbers now appear as "double" instead of "constant".
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

@@ -19,6 +19,7 @@ void OdeManager::solve()
 {
     solverReturnCode iFlag;
     int iStep = 0;
+    int iMaxSteps = INT_MAX;
     int iNbSteps = 0;
     int iFirstStep = 0;
     solverTaskCode ODE_MODE;
@@ -43,6 +44,7 @@ void OdeManager::solve()
         // a solution structure with a pointer to the OdeManager instance for further custom evaluation by interpolation
         // or time extension.
         ODE_MODE = ODE_ONE_STEP;
+        iMaxSteps = m_iMaxNumSteps == 0 ? INT_MAX : m_iMaxNumSteps;
     }
     else
     {
@@ -88,7 +90,7 @@ void OdeManager::solve()
     dblFinalTime = m_pDblTSpan->get(m_pDblTSpan->getSize()-1);
     setStopTime(m_prob_mem,dblFinalTime);
 
-    for (; m_dblT0 != dblFinalTime; iStep++)
+    for (; (dblTime != dblFinalTime) && (iStep < iMaxSteps); iStep++)
     {
         // Solver internal step
         double dblPrevTime = dblTime;
@@ -108,16 +110,25 @@ void OdeManager::solve()
             }
             if (m_iRetCount > 0)
             {
-                // Refine by interpolation if requested and [t,y,...] output
-                double dblStepRef = (dblTime - dblPrevTime)/((double)m_iNRefine+1.0);
-                double dblRefTime = m_iNRefine == 0 ? dblTime : dblPrevTime + dblStepRef;
-                for (int i=0; i<m_iNRefine+1; i++)
+                // Refine by interpolation if requested
+                if (m_iNRefine>0)
                 {
-                    getDky(m_prob_mem, dblRefTime, 0, m_N_VectorYTemp);
-                    m_vecYOut.push_back(std::vector<double>(N_VGetArrayPointer(m_N_VectorYTemp), N_VGetArrayPointer(m_N_VectorYTemp) + m_iNbRealEq));
-                    m_dblVecTOut.push_back(dblRefTime);
-                    saveAdditionalStates(dblRefTime);
-                    dblRefTime += dblStepRef;
+                    double dblStepRef = (dblTime - dblPrevTime)/((double)m_iNRefine+1.0);
+                    double dblRefTime = m_iNRefine == 0 ? dblTime : dblPrevTime + dblStepRef;
+                    for (int i=0; i<m_iNRefine+1; i++)
+                    {
+                        getDky(m_prob_mem, dblRefTime, 0, m_N_VectorYTemp);
+                        m_vecYOut.push_back(std::vector<double>(N_VGetArrayPointer(m_N_VectorYTemp), N_VGetArrayPointer(m_N_VectorYTemp) + m_iNbRealEq));
+                        m_dblVecTOut.push_back(dblRefTime);
+                        saveAdditionalStates(dblRefTime);
+                        dblRefTime += dblStepRef;
+                    }                    
+                }
+                else
+                {
+                    m_vecYOut.push_back(std::vector<double>(N_VGetArrayPointer(m_N_VectorY), N_VGetArrayPointer(m_N_VectorY) + m_iNbRealEq));
+                    m_dblVecTOut.push_back(dblTime);
+                    saveAdditionalStates(dblTime);                    
                 }
                 // dblCurrTime is solver time (can be greater than user requested dblTime)
                 getCurrentTime(m_prob_mem,&dblCurrTime);
@@ -152,9 +163,7 @@ void OdeManager::solve()
                 saveInterpBasisVectors();
             }
             if (bTerminalEvent == true
-                || (iFlag == ODE_TSTOP_RETURN && m_bHas[PROJ] == false) 
-                || (m_bHas[INTCB] && intermediateCallback(dblTime, iFlag == ODE_ROOT_RETURN ? 1 : 0, m_N_VectorY, m_N_VectorYp))
-                || (ODE_MODE == ODE_NORMAL && dblNextTime == dblFinalTime))
+                || (m_bHas[INTCB] && intermediateCallback(dblTime, iFlag == ODE_ROOT_RETURN ? 1 : 0, m_N_VectorY, m_N_VectorYp)))
             {
                 break;
             }
@@ -164,7 +173,13 @@ void OdeManager::solve()
             // Errors/Warnings not trapped by SUNDIALS ErrorFunc
             solverErrHandler(fromODEReturn[iFlag], NULL);
             break;
-        }            
+        }
+    }
+
+    if (iStep == iMaxSteps && dblTime != dblFinalTime)
+    {
+      sprintf(errorMsg,"At t = %.15g, mxstep steps taken before reaching tout.", dblTime);
+      solverErrHandler(fromODEReturn[ODE_TOO_MUCH_WORK], errorMsg);
     }
 
     if (m_iRetCount == 1) // Solution structure output

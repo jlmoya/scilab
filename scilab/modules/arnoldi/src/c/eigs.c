@@ -85,7 +85,7 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
          double* B, doublecomplex* BC, int Bcomplex, int matB, int nev,
          doublecomplex SIGMA, char* which, double* maxiter, double* tol,
          double* NCV, double* RESID, doublecomplex* RESIDC, int* INFO,
-         double* cholB, int INFO_EUPD, double* eigenvalue,
+         double* cholB, int* INFO_EUPD, double* eigenvalue,
          double* eigenvector, doublecomplex* eigenvalueC,
          doublecomplex* eigenvectorC, int RVEC)
 
@@ -94,8 +94,6 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
     // GENERAL VARIABLES
     int i			= 0;
     int j			= 0;
-    int	k			= 0;
-    int	l			= 0;
     int INFO_CHOL	= 0;
     int INFO_LU		= 0;
     int INFO_INV    = 0;
@@ -158,7 +156,7 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
     // END VARIABLES
 
     // MODE
-    if (!strcmp(which, "SM") || (SIGMA.r != 0 || SIGMA.i != 0))
+    if (!strcmp(which, "SIGMA"))
     {
         IPARAM[6] = 3;
         which = "LM";
@@ -285,7 +283,7 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
             // LU decomposition
             IPVT = (int*) calloc(N, sizeof(int));
             C2F(dgetrf)(&N, &N, AMSB, &N, IPVT, &INFO_LU);
-            if (INFO_LU > 0)
+            if (INFO_LU < 0)
             {
                 free(IPVT);
                 free(AMSB);
@@ -395,7 +393,7 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
                     {
                         if (matB == 0) // B = [] -> standard eigenvalue problem
                         {
-                            if (IDO == 2)
+                            if (IDO == 2 || IDO == -1)
                             {
                                 // y = B*x where B = I so workd[ipntr[1]-1:ipntr[1]+N-1] = workd[ipntr[0]-1:ipntr[0]+N-1]
                                 memcpy(WORKD + IPNTR[1] - 1, WORKD + IPNTR[0] - 1, N * sizeof(double));
@@ -466,9 +464,9 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
         {
             C2F(dseupd) (&RVEC, HOWMNY, SELECT, eigenvalue, eigenvector, &LDV,
                          &SIGMA.r, bmat, &N, which, &nev, tol, RESID, &ncv, V,
-                         &LDV, IPARAM, IPNTR, WORKD, WORKL, &LWORKL, &INFO_EUPD);
+                         &LDV, IPARAM, IPNTR, WORKD, WORKL, &LWORKL, INFO_EUPD);
 
-            if (INFO_EUPD != 0)
+            if (*INFO_EUPD != 0)
             {
                 if (R != B)
                 {
@@ -509,9 +507,9 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
 
             C2F(dneupd) (&RVEC, HOWMNY, SELECT, DR, DI, Z, &LDV, &SIGMA.r,
                          &SIGMA.i, WORKEV, bmat, &N, which, &nev, tol, RESID,
-                         &ncv, V, &LDV, IPARAM, IPNTR, WORKD, WORKL, &LWORKL, &INFO_EUPD);
+                         &ncv, V, &LDV, IPARAM, IPNTR, WORKD, WORKL, &LWORKL, INFO_EUPD);
 
-            if (INFO_EUPD != 0)
+            if (*INFO_EUPD != 0)
             {
                 if (R != B)
                 {
@@ -596,7 +594,7 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
             // LU decomposition
             IPVT = (int*) calloc(N, sizeof(int));
             C2F(zgetrf) (&N, &N, AMSBC, &N, IPVT, &INFO_LU);
-            if (INFO_LU > 0)
+            if (INFO_LU < 0)
             {
                 free(IPVT);
                 free(AMSBC);
@@ -741,9 +739,9 @@ int eigs(double *AR, doublecomplex *AC, int N, int Acomplex, int Asym,
 
         C2F(zneupd) (&RVEC, HOWMNY, SELECT, eigenvalueC, eigenvectorC, &LDV, &SIGMA, WORKEVC, bmat, &N,
                      which, &nev, tol, RESIDC, &ncv, VC, &LDV, IPARAM, IPNTR, WORKDC,
-                     WORKLC, &LWORKL, RWORK, &INFO_EUPD);
+                     WORKLC, &LWORKL, RWORK, INFO_EUPD);
 
-        if (INFO_EUPD != 0)
+        if (*INFO_EUPD != 0)
         {
             if (RC != BC)
             {

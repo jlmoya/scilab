@@ -33,7 +33,13 @@ extern "C" {
 
 
 #ifndef __cplusplus
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+// C99 or later
+#include <stdbool.h>
+#else
+// Pre-C99 versions: use a custom typedef
 typedef int bool;
+#endif
 #endif
 
 typedef struct __MXARRAY__ {
@@ -244,3 +250,6 @@ double mxGetEps(void);
 #ifdef __cplusplus
 }
 #endif
+
+
+

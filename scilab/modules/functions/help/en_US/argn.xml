@@ -56,8 +56,10 @@
             It gives the number of actual inputs arguments (<varname>rhs</varname>) and output arguments (<varname>lhs</varname>) passed to the function when the function is called. It is usually used in function definitions to deal with optional arguments.
         </para>
         <warning>
-            Testing the existence of a named input argument with <literal>isdef(..,"l")</literal>
-            is more robust that with <literal>argn()</literal>. Please see examples.
+            <para>
+                Testing the existence of a named input argument with <literal>isdef(..,"l")</literal>
+                is more robust that with <literal>argn()</literal>. Please see examples.
+            </para>
         </warning>
         <para>
             When the caller function has either no output argument or only <varname>varargout</varname>, the (<varname>lhs</varname>) is set to <code>0</code>. Otherwise, the number of expected arguments is set.
@@ -174,8 +176,17 @@ endfunction
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
 	    <title>History</title>
-	    <revhistory><revision><revnumber>6.1.0</revnumber><revremark>The <code>lhs</code> argument is set to zero when the caller function has no output assignement.</revremark></revision></revhistory>
+	    <revhistory>
+            <revision>
+                <revnumber>6.1.0</revnumber>
+                <revdescription>
+                    <para>
+                        The <code>lhs</code> argument is set to zero when the caller function has no output assignement.
+                    </para>
+                </revdescription>
+            </revision>
+        </revhistory>
     </refsection>
 </refentry>

@@ -14,10 +14,7 @@
  *
  -->
 <!--  module: integer  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="fr" xml:id="int8">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="int8">
     <refnamediv>
         <refname>int8 </refname>
         <refpurpose>conversion en entier sur 1 octet</refpurpose>
@@ -63,8 +60,8 @@
             y = uint64(X)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>X  </term>
@@ -94,7 +91,7 @@
         <warning>
             <para>
                 Lorsque des éléments de <varname>X</varname> ont une partie décimale non nulle,
-                celle-ci est toujours tronquée (arrondie vers 0).<table></table>
+                celle-ci est toujours tronquée (arrondie vers 0).
                 Exemple:
                 <literal>int8([-3.6, -2.5, -1.4, 1.3, 3.5, 6.7]) // = [-3, -2, -1, 1, 3, 6]</literal>.
             </para>
@@ -103,10 +100,12 @@
                 (non saturées). Exemples:
                 <itemizedlist>
                     <listitem>
-                        <literal>int8([127 128 129 130])  // = [127 -128 -127 -126]</literal>.
+                         <para><literal>int8([127 128 129 130])  // = [127 -128 -127 -126]</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                        <literal>uint8([254 255 256 257]) // = [254 255 0 1]</literal>.
+                         <para><literal>uint8([254 255 256 257]) // = [254 255 0 1]</literal>.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </para>
@@ -142,8 +141,10 @@
             </para>
         </warning>
         <warning>
-            La conversion de <literal>[]</literal> ne change rien : son type 1 est toujours
-            conservé (type numérique décimal).
+            <para>
+                La conversion de <literal>[]</literal> ne change rien : son type 1 est toujours
+                conservé (type numérique décimal).
+            </para>
         </warning>
         <para>
             <table>
@@ -375,21 +376,27 @@ typeof(i)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            int64() et uint64() ajoutées à Scilab.
+                             <para>
+                                int64() et uint64() ajoutées à Scilab.
+                            </para>
                         </listitem>
                         <listitem>
-                            Les nombres complexes sont désormais acceptés.
+                             <para>
+                                Les nombres complexes sont désormais acceptés.
+                            </para>
                         </listitem>
                         <listitem>
-                            <table>
-                                <tr><th>Ceci</th>               <th>vaut désormais</th><th>au lieu de</th></tr>
-                                <tr><td>int8([-%inf, %inf])</td><td>[-128, 127]</td><td>[0, 0]</td></tr>
-                                <tr><td>int16([-%inf, %inf])</td><td>[-32768, 32767]</td><td>[0, 0]</td></tr>
-                                <tr><td>int32(%inf)</td>        <td>2147483647</td> <td>-2147483648</td></tr>
-                                <tr><td>uint8(%inf)</td>        <td>255</td>        <td>0</td></tr>
-                                <tr><td>uint16(%inf)</td>       <td>65535</td>      <td>0</td></tr>
-                                <tr><td>uint32(%inf)</td>       <td>4294967295</td> <td>0</td></tr>
-                            </table>
+                            <para>
+                                <table>
+                                    <tr><th>Ceci</th>               <th>vaut désormais</th><th>au lieu de</th></tr>
+                                    <tr><td>int8([-%inf, %inf])</td><td>[-128, 127]</td><td>[0, 0]</td></tr>
+                                    <tr><td>int16([-%inf, %inf])</td><td>[-32768, 32767]</td><td>[0, 0]</td></tr>
+                                    <tr><td>int32(%inf)</td>        <td>2147483647</td> <td>-2147483648</td></tr>
+                                    <tr><td>uint8(%inf)</td>        <td>255</td>        <td>0</td></tr>
+                                    <tr><td>uint16(%inf)</td>       <td>65535</td>      <td>0</td></tr>
+                                    <tr><td>uint32(%inf)</td>       <td>4294967295</td> <td>0</td></tr>
+                                </table>
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -397,9 +404,11 @@ typeof(i)
             <revision>
                 <revnumber>6.1.2</revnumber>
                 <revdescription>
-                    <literal>int64</literal> et <literal>uint64</literal> acceptent des strings
-                    représentant des entiers litéraux pouvant être > 2<superscript>53</superscript>,
-                    et les interprètent sans effet de troncature.
+                    <para>
+                        <literal>int64</literal> et <literal>uint64</literal> acceptent des strings
+                        représentant des entiers litéraux pouvant être &gt; 2<superscript>53</superscript>,
+                        et les interprètent sans effet de troncature.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -26,36 +26,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/MAXMIN.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MAXMIN">
+    <refsection xml:id="Contents_MAXMIN">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MAXMIN">Description</xref>
+                <para><link linkend="Description_MAXMIN">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MAXMIN">Paramètres</xref>
+                <para><link linkend="Dialogbox_MAXMIN">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MAXMIN">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MAXMIN">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MAXMIN">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MAXMIN">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MAXMIN">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MAXMIN">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MAXMIN">Voir aussi</xref>
+                <para><link linkend="Seealso_MAXMIN">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MAXMIN">
+    <refsection xml:id="Description_MAXMIN">
         <title>Description</title>
         <para>
             Le bloc calcule le minimum/maximum (paramètre <emphasis role="bold">Min or Max</emphasis>)
@@ -104,15 +104,14 @@
         </informaltable>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MAXMIN">
+    <refsection xml:id="Dialogbox_MAXMIN">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/MAXMIN_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -137,7 +136,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MAXMIN">
+    <refsection xml:id="Defaultproperties_MAXMIN">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -210,7 +209,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MAXMIN">
+    <refsection xml:id="Interfacingfunction_MAXMIN">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -218,7 +217,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MAXMIN">
+    <refsection xml:id="Computationalfunction_MAXMIN">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -226,14 +225,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_MAXMIN" role="see also">
+    <refsection xml:id="Seealso_MAXMIN" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MIN_f">MIN_f</link>
+                <para><link linkend="MIN_f">MIN_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="MAX_f">MAX_f</link>
+                <para><link linkend="MAX_f">MAX_f</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

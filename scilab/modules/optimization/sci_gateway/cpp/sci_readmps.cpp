@@ -19,6 +19,7 @@
 #include "string.hxx"
 #include "tlist.hxx"
 #include "numericconstants.hxx"
+#include "sciprint.h"
 
 extern "C"
 {
@@ -27,19 +28,25 @@ extern "C"
 #include "elem_common.h"
 #include "sci_malloc.h"
 
-    void C2F(rdmpsz)(int*, int*, int*, int*, int*, char*, int*);
+    void C2F(rdmpsz)(int*, int*, int*, int*, int*, char*, int*, unsigned long int);
     int  C2F(clunit)(int*, char*, int*, int);
     void C2F(rdmps1)(int*, char*, int*, int*, int*, int*, int*, int*, int*,
                      double*, double*, double*, char*, char*, char*, char*,
                      char*, int*, char*, char*, int*, int*, int*, int*, int*,
                      int*, int*, int*, int*, double*, double*, double*,
-                     double*, double*, double*, int, int, int, int, int, int);
+                     double*, double*, double*, unsigned long int,
+                     unsigned long int, unsigned long int, unsigned long int,
+                     unsigned long int, unsigned long int, unsigned long int,
+                     unsigned long int);
 }
 /*--------------------------------------------------------------------------*/
 static int openMPSFile(types::String* pStrFilename, int* piMode, int* lunit);
 /*--------------------------------------------------------------------------*/
 types::Function::ReturnValue sci_readmps(types::typed_list &in, int _iRetCount, types::typed_list &out)
 {
+    sciprint(_("%s: %s is obsolete and will be removed from Scilab %s\n"), _("Warning"), "readmps", "2027.0.0");
+    sciprint(_("%s: Please use %s instead.\n"), _("Warning"), "'quapro' toolbox");
+
     types::String* pStrFileName = NULL;
 
     double dLowBnd  = 0;
@@ -145,7 +152,7 @@ types::Function::ReturnValue sci_readmps(types::typed_list &in, int _iRetCount, 
             return types::Function::Error;
         }
 
-        C2F(rdmpsz)(&lunit, &iMaxM, &iMaxN, &iMaxNza, &ierr, typrow, &line);
+        C2F(rdmpsz)(&lunit, &iMaxM, &iMaxN, &iMaxNza, &ierr, typrow, &line, 2L);
         mlunit = -lunit;
         C2F(clunit)(&mlunit, NULL, piMode, 0);
 
@@ -213,7 +220,7 @@ types::Function::ReturnValue sci_readmps(types::typed_list &in, int _iRetCount, 
                 piRwnmbs, piClpnts, piRow,
                 pDblCoef->get(), pDblRhsb->get(), pDblRanges->get(),
                 pDblBnds->get() + iN, pDblBnds->get(), pdblRelt,
-                bsiz, 8L, 8L, 8L, 8L, 8L);
+                bsiz, 8L, 8L, 8L, 8L, 8L, 8L, 8L);
 
     delete[] piRow;
     delete[] pdblRelt;

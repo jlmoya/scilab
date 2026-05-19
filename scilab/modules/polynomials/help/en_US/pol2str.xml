@@ -23,7 +23,7 @@
         <title>Syntax</title>
         <synopsis>strP = pol2str(P)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -45,11 +45,11 @@
         <para>
             converts each polynomial of <varname>P</varname> to character string (utility function).
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 The output format of coefficients is set through  <link linkend="format">format(..)</link>.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
 
     <refsection>
@@ -79,15 +79,15 @@ pol2str(p)
             </member>
         </simplelist>
     </refsection>
-    <refsection role="history tag">
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revdescription>
+                <revremark>
                     pol2str() extended to polynomials with complex coefficients and to hypermatrix.
                     Array processing vectorized.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

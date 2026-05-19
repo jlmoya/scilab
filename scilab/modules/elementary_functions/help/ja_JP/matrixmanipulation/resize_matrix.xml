@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="resize_matrix" xml:lang="ja">
     <refnamediv>
         <refname>resize_matrix</refname>
         <refpurpose>
@@ -249,16 +246,24 @@ resize_matrix(P, [3 3 2], "", %z)
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            多項式とハイパー行列を利用可能になりました.
+                             <para>
+                                多項式とハイパー行列を利用可能になりました.
+                            </para>
                         </listitem>
                         <listitem>
-                            カスタムパディングを指定可能となりました.
+                             <para>
+                                カスタムパディングを指定可能となりました.
+                            </para>
                         </listitem>
                         <listitem>
-                            新しい大きさをベクトルとして指定できます.
+                             <para>
+                                新しい大きさをベクトルとして指定できます.
+                            </para>
                         </listitem>
                         <listitem>
-                            resize_matrix() に引数を付けない場合, 例(デモ)を表示します.
+                             <para>
+                                resize_matrix() に引数を付けない場合, 例(デモ)を表示します.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

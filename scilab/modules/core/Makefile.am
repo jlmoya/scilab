@@ -26,7 +26,6 @@ CORE_C_SOURCES = \
     src/c/freeArrayOfString.c \
     src/c/getstaticdebuginfo.c \
     src/c/getdynamicdebuginfo.c \
-    src/c/dynamic_gateways.c \
     src/c/setPrecisionFPU.c \
     src/c/getos.c \
     src/c/transposeMatrix.c \
@@ -37,8 +36,6 @@ CORE_C_SOURCES = \
     src/c/saveCWDInPreferences.c \
     src/c/getmaxMALLOC.c \
     src/c/sci_mem_alloc.c \
-    src/c/hashtable/hashtable.c \
-    src/c/hashtable/hashtable_utility.c \
     src/c/InitializePreferences.c \
     src/c/hasHandleType.c \
     src/c/hasUIControlStyle.c
@@ -58,7 +55,8 @@ CORE_CPP_SOURCES = \
     src/cpp/md5_file.cpp \
     src/cpp/parsecommand.cpp \
     src/cpp/pause.cpp \
-    src/cpp/setformat.cpp
+    src/cpp/setformat.cpp \
+    src/cpp/inlinehelp.cpp
 
 HASH_CPP_SOURCES = \
     src/cpp/hash/md5.cpp \
@@ -114,14 +112,14 @@ GATEWAY_CPP_SOURCES = \
 	sci_gateway/cpp/sci_ieee.cpp \
 	sci_gateway/cpp/sci_insert.cpp \
 	sci_gateway/cpp/sci_intppty.cpp \
-    sci_gateway/cpp/sci_isa.cpp \
+	sci_gateway/cpp/sci_isa.cpp \
 	sci_gateway/cpp/sci_isfield.cpp \
 	sci_gateway/cpp/sci_isglobal.cpp \
 	sci_gateway/cpp/sci_lasterror.cpp \
 	sci_gateway/cpp/sci_list.cpp \
 	sci_gateway/cpp/sci_macr2tree.cpp \
 	sci_gateway/cpp/sci_makecell.cpp \
-    sci_gateway/cpp/sci_methods.cpp \
+	sci_gateway/cpp/sci_methods.cpp \
 	sci_gateway/cpp/sci_mlist.cpp \
 	sci_gateway/cpp/sci_mode.cpp \
 	sci_gateway/cpp/sci_newfun.cpp \
@@ -129,11 +127,11 @@ GATEWAY_CPP_SOURCES = \
 	sci_gateway/cpp/sci_oldEmptyBehaviour.cpp \
 	sci_gateway/cpp/sci_pause.cpp \
 	sci_gateway/cpp/sci_predef.cpp \
-    sci_gateway/cpp/sci_properties.cpp \
+	sci_gateway/cpp/sci_properties.cpp \
 	sci_gateway/cpp/sci_quit.cpp \
 	sci_gateway/cpp/sci_recursionlimit.cpp \
 	sci_gateway/cpp/sci_sciargs.cpp \
-    sci_gateway/cpp/sci_show_vtable.cpp \
+	sci_gateway/cpp/sci_show_vtable.cpp \
 	sci_gateway/cpp/sci_skipArguments.cpp \
 	sci_gateway/cpp/sci_struct.cpp \
 	sci_gateway/cpp/sci_tlist.cpp \
@@ -145,7 +143,10 @@ GATEWAY_CPP_SOURCES = \
 	sci_gateway/cpp/sci_where.cpp \
 	sci_gateway/cpp/sci_who.cpp \
 	sci_gateway/cpp/sci_getdeprecated.cpp \
-	sci_gateway/cpp/sci_with_module.cpp
+	sci_gateway/cpp/sci_with_module.cpp \
+	sci_gateway/cpp/sci_generate_inline_links.cpp \
+	sci_gateway/cpp/sci_loadToolboxInlineHelp.cpp \
+	sci_gateway/cpp/sci_percent_help.cpp
 
 if ENABLE_DEBUG
 GATEWAY_CPP_SOURCES += \
@@ -196,8 +197,10 @@ libscicore_la_CPPFLAGS = \
     -I$(top_srcdir)/modules/fftw/includes/ \
     -I$(top_srcdir)/modules/ui_data/includes/ \
     -I$(top_srcdir)/modules/slint/includes/ \
+    -I$(top_srcdir)/modules/webtools/includes/ \
     $(HDF5_CFLAGS) \
     $(XML_FLAGS) \
+    $(LIBXSLT_CFLAGS) \
     $(AM_CPPFLAGS)
 
 # Used by sci_getdebuginfo:
@@ -226,7 +229,7 @@ libscicore_la_SOURCES = $(GATEWAY_C_SOURCES) $(GATEWAY_CPP_SOURCES)
 libscicore_algo_la_CPPFLAGS = $(libscicore_la_CPPFLAGS)
 
 # Commented because it is easier to comment first the core module
-libscicore_la_LIBADD = libscicore-algo.la $(XML_LIBS) $(FLIBS)
+libscicore_la_LIBADD = libscicore-algo.la $(XML_LIBS) $(LIBXSLT_LIBS) $(FLIBS)
 
 #### Target ######
 modulename=core
@@ -235,10 +238,13 @@ modulename=core
 libscicore_la_rootdir = $(mydatadir)
 libscicore_la_root_DATA =  license.txt
 
-
 #### core : init scripts ####
 libscicore_la_etcdir = $(mydatadir)/etc
 libscicore_la_etc_DATA = etc/core.quit etc/core.start
+
+#### core : xsl files ####
+libscicore_la_xsldir = $(mydatadir)/etc
+libscicore_la_xsl_DATA = etc/help_text.xsl
 
 #### core :  dtd files ####
 libscicore_la_xmldir = $(mydatadir)/xml
@@ -257,8 +263,6 @@ includes/getcommandlineargs.h \
 includes/getmemory.h \
 includes/getos.h \
 includes/getversion.h \
-includes/hashtable.h \
-includes/hashtable_utility.h \
 includes/machine.h \
 includes/PATH_MAX.h \
 includes/scilabDefaults.h \
@@ -274,7 +278,8 @@ includes/parsecommand.h \
 includes/getfunctionsname.h \
 includes/getmacrosname.h \
 includes/getvariablesname.h \
-includes/commandwords.h
+includes/commandwords.h \
+includes/inlinehelp.hxx
 
 
 if GUI

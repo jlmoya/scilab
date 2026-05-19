@@ -27,7 +27,7 @@
           n = h2norm(Sl, tol)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -65,21 +65,25 @@
     h2norm(h)
     ]]></programlisting>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revremark>
-                    <literal>Sl</literal> is now checked for non-discrete (continuous or undefined)
-                    time linear dynamical system.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>Sl</literal> is now checked for non-discrete (continuous or undefined)
+                        time linear dynamical system.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revremark>
-                    <literal>h2norm(Sl [,tol])</literal> with <literal>Sl</literal> a matrix of doubles is no more supported.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>h2norm(Sl [,tol])</literal> with <literal>Sl</literal> a matrix of doubles is no more supported.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

@@ -141,7 +141,7 @@ void TransposeMatrix(double A[], int ma, int na, double At[])
 
 int SciSparseToCcsSparse(SciSparse *A, CcsSparse *B)
 {
-    int one = 1, nel = A->nel, m = A->m, n = A->n, it = A->it;
+    int nel = A->nel, m = A->m, n = A->n, it = A->it;
     int k, kb, i, j, count;
 
     B->m = m;
@@ -259,7 +259,7 @@ int spd_sci_sparse_to_taucs_sparse(SciSparse *A, taucs_ccs_matrix *B)
      *
      *  The scilab sparse may be only upper triangular
      */
-    int one = 1, B_nel, n = A->n;
+    int B_nel, n = A->n;
     int i, k, l, p, nnz;
 
     B->values = NULL;

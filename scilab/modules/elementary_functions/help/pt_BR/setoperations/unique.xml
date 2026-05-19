@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="unique" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="unique" xml:lang="pt">
     <refnamediv>
         <refname>unique</refname>
         <refpurpose>remover todos os componentes duplicados de um vetor ou uma matriz
@@ -54,66 +51,55 @@
             <varlistentry>
                 <term>U</term>
                 <listitem>
-                    <para>
-                      <itemizedlist>
-                        <listitem>
-                            <para>
-                              If <varname>orient</varname> is not used: Vector of extracted
-                              <varname>M</varname> components sorted in ascending order.
-                            If <varname>M</varname> is a row vector, <varname>U</varname> is also
-                            a row vector. In all other <varname>M</varname> cases,
-                            <varname>U</varname> is a column vector.
-                            </para>
-                        </listitem>
-                        <listitem>
-                          If <varname>orient</varname> is used: Matrix of extracted
-                          <varname>M</varname> rows or columns, sorted in lexicographic ascending order.
-                        </listitem>
-                      </itemizedlist>
-                    </para>
-                    If <varname>M</varname> is sparse, then <varname>U</varname> is always sparse.
-                    <para/>
-                </listitem>
+                     <para>
+                        If <varname>M</varname> is sparse, then <varname>U</varname> is always sparse.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>km</term>
                 <listitem>
-                    Vector of indices of first encountered occurrences, such that
-                    <literal>U = M(km)</literal> or <literal>U = M(km,:)</literal>
-                    or <literal>U = M(:,km)</literal>.
-                    <para/>
-                    <varname>km</varname> is a row if <varname>M</varname> is a row or if
-                    <literal>orient="c"</literal> is used. Otherwise it's a column.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vector of indices of first encountered occurrences, such that
+                        <literal>U = M(km)</literal> or <literal>U = M(km,:)</literal>
+                        or <literal>U = M(:,km)</literal>.
+                        <varname>km</varname> is a row if <varname>M</varname> is a row or if
+                        <literal>orient="c"</literal> is used. Otherwise it's a column.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>ku</term>
                 <listitem>
-                    Array of indices in U, such that, according to the <varname>orient</varname> option
-                    <itemizedlist>
-                        <listitem>
-                            "*": <varname>ku</varname> is of size size(M), and <literal>U(ku) = M</literal>
-                        </listitem>
-                        <listitem>
-                            "r": <varname>ku</varname> is of size [size(M,1), 1], and <literal>U(ku,:) = M</literal>
-                        </listitem>
-                        <listitem>
-                            "c": <varname>ku</varname> is of size [1, size(M,2)], and <literal>U(:,ku) = M</literal>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                    <warning>
-                        <varname>ku</varname> is dense, even when <varname>M</varname> is sparse and the
-                        overall "*" mode is used.
-                    </warning>
-                </listitem>
+                     <para>
+                        Array of indices in U, such that, according to the <varname>orient</varname> option
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    "*": <varname>ku</varname> is of size size(M), and <literal>U(ku) = M</literal>
+                                                                                   </para>
+                                                                               </listitem>
+                            <listitem>
+                                 <para>
+                                    "r": <varname>ku</varname> is of size [size(M,1), 1], and <literal>U(ku,:) = M</literal>
+                                                                                          </para>
+                                                                                      </listitem>
+                            <listitem>
+                                 <para>
+                                    "c": <varname>ku</varname> is of size [1, size(M,2)], and <literal>U(:,ku) = M</literal>
+                                                                                          </para>
+                                                                                      </listitem>
+                        </itemizedlist><warning>
+                            <varname>ku</varname> is dense, even when <varname>M</varname> is sparse and the
+                            overall "*" mode is used.
+                        </warning></para>
+                              </listitem>
             </varlistentry>
             <varlistentry>
                 <term>nb</term>
                 <listitem>
                     <para>
-                      Vector of integers > 0, with the same <varname>k</varname> shape:
+                      Vector of integers &gt; 0, with the same <varname>k</varname> shape:
                       Numbers of occurences in <varname>M</varname> of respective unduplicated
                       entities (components, rows, columns) returned in <varname>U</varname>.
                     </para>
@@ -145,7 +131,7 @@
         <para>
             <literal>unique(M,.. "uniqueNan")</literal> considers all Nan values as the same one,
             and unduplicates them. By default, any Nan is different
-            from any other Nan, including itself: <literal>%nan&lt;>%nan</literal> is true, unless
+            from any other Nan, including itself: <literal>%nan&lt;&gt;%nan</literal> is true, unless
             <literal>"uniqueNan"</literal> is used. Specifying
             <literal>"uniqueNan"</literal> is case-insensitive.
         </para>
@@ -371,13 +357,19 @@ unique(M, "c")
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Extension to booleans.
+                             <para>
+                                Extension to booleans.
+                            </para>
                         </listitem>
                         <listitem>
-                            "keepOrder" and "uniqueNan" options introduced.
+                             <para>
+                                "keepOrder" and "uniqueNan" options introduced.
+                            </para>
                         </listitem>
                         <listitem>
-                            Fourth output argument <literal>nb</literal> introduced.
+                             <para>
+                                Fourth output argument <literal>nb</literal> introduced.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

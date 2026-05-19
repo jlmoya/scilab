@@ -201,7 +201,6 @@ int sci_sorder(char *fname, void* pvApiCtx)
     int iLDY = 0;
     int iLDU = 1;
     int iLDR = 0;
-    int iLIWORK = 1;
     int iLDWORK = 0;
     int iLDWMIN = 0;
 
@@ -510,15 +509,6 @@ int sci_sorder(char *fname, void* pvApiCtx)
     if (iMeth == 1 && iJobd == 1)
     {
         iLDR = Max(iNR, 3 * iM * iNOBR);
-    }
-
-    if (iMeth == 2)
-    {
-        iLIWORK = (iM + iL) * iNOBR;
-    }
-    else if (iAlg == 2)
-    {
-        iLIWORK = iM + iL;
     }
 
 

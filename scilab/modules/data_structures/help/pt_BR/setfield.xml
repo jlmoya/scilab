@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="setfield" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="setfield" xml:lang="pt">
     <refnamediv>
         <refname>setfield</refname>
         <refpurpose>altera o valor de um elemento de uma mlist, tlist ou list</refpurpose>
@@ -31,34 +28,38 @@
             <varlistentry>
                 <term>L</term>
                 <listitem>
-                    lista do tipo <literal>list</literal>, <literal>tlist</literal> ou
-                    <literal>mlist</literal> : a lista cujo componente deve ser alterado.
-                    <para/>
-                </listitem>
+                     <para>
+                        lista do tipo <literal>list</literal>, <literal>tlist</literal> ou
+                        <literal>mlist</literal> : a lista cujo componente deve ser alterado.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a</term>
                 <listitem>
-                    Endereço do componente a ser alterado. Pode ser o nome do campo
-                    especificado como uma sequência, ou o índice especificado como
-                    um número inteiro positivo. Veja <link linkend="insertion">insertion</link>
-                    para mais detalhes.
-                    <para/>
-                </listitem>
+                     <para>
+                        Endereço do componente a ser alterado. Pode ser o nome do campo
+                        especificado como uma sequência, ou o índice especificado como
+                        um número inteiro positivo. Veja <link linkend="insertion">insertion</link>
+                        para mais detalhes.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    Qualquer objeto Scilab : o valor a ser atribuído.
-                    <para/>
-                </listitem>
+                     <para>
+                        Qualquer objeto Scilab : o valor a ser atribuído.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>uL</term>
                 <listitem>
-                    A lista atualizada.
-                    <para/>
-                </listitem>
+                     <para>
+                        A lista atualizada.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -162,10 +163,14 @@ Function not defined for given argument type(s),
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            The updated list is now returned, instead of being changed "in place".
+                             <para>
+                                The updated list is now returned, instead of being changed "in place".
+                            </para>
                         </listitem>
                         <listitem>
-                            setfield() can no longer be used for cells arrays.
+                             <para>
+                                setfield() can no longer be used for cells arrays.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

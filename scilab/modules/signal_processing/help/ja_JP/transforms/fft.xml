@@ -14,9 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="fft">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="fft">
     <refnamediv>
         <refname>fft</refname>
         <refpurpose>高速フーリエ変換</refpurpose>
@@ -41,91 +39,99 @@
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    実数または複素数ベクトル,
-                    実数または複素数配列(ベクトル, 行列またはN-D配列).
-                    <para/>
-                </listitem>
+                     <para>
+                        実数または複素数ベクトル,
+                        実数または複素数配列(ベクトル, 行列またはN-D配列).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>X</term>
                 <listitem>
-                    <varname>A</varname>と同じ形状の実数または複素数配列
-                    <para/>
-                </listitem>
+                     <para><varname>A</varname>と同じ形状の実数または複素数配列
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>sign</term>
                 <listitem>
-                    -1 or 1 : sign of the ±2iπ factor in the exponential term inside the
-                    transform formula, setting the direct or inverse transform. The default
-                    value is <literal>-1</literal> = Direct transform.
-                    <para/>
-                </listitem>
+                     <para>
+                        -1 or 1 : sign of the ±2iπ factor in the exponential term inside the
+                        transform formula, setting the direct or inverse transform. The default
+                        value is <literal>-1</literal> = Direct transform.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>directions</term>
                 <listitem>
-                    a vector containing indices of <varname>A</varname> dimensions (in [1, ndims(A)])
-                    along which the (multidirectional) FFT must be computed.
-                    Default directions=1:ndims(A): The "cumulated" FFT is computed for all directions.
-                    See the Description section.
-                    <para/>
-                </listitem>
+                     <para>
+                        a vector containing indices of <varname>A</varname> dimensions (in [1, ndims(A)])
+                        along which the (multidirectional) FFT must be computed.
+                        Default directions=1:ndims(A): The "cumulated" FFT is computed for all directions.
+                        See the Description section.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>symmetry</term>
                 <listitem>
-                    optional character string, helping fft() to choose the best algorithm:
-                    <itemizedlist>
-                        <listitem>
-                            <emphasis role="bold">"symmetric"</emphasis>: forces to consider
-                            <varname>A</varname> or all its "slices" as conjugate symmetric.
-                            This is useful when an exact symmetry of <varname>A</varname>
-                            or its "slices" is possibly altered only by round-off errors.
-                            <para/>
-                            A N-D array <literal>B</literal> of sizes <literal>[s1,s2,..,sN]</literal>
-                            is conjugate symmetric for the FFT if and only if
-                            <literal>B==conj(B([1 s1:-1:2],[1 s2:-1:2],...,[1 sN:-1:2]))</literal>.
-                            In such a case, the result <literal>X</literal> is real, and an
-                            efficient specific algorithm can be used to compute it.
-                            <para/>
-                        </listitem>
-                        <listitem>
-                            <emphasis role="bold">"nonsymmetric"</emphasis>: Then fft() does
-                            not take care of any symmetry.
-                            <para/>
-                        </listitem>
-                        <listitem>
-                            not specified: Then an automatic determination of symmetry is performed.
-                            <para/>
-                        </listitem>
-                    </itemizedlist>
-                </listitem>
+                     <para>
+                        optional character string, helping fft() to choose the best algorithm:
+                        <itemizedlist>
+                            <listitem>
+                                 <para><emphasis role="bold">"symmetric"</emphasis>: forces to consider
+                                    <varname>A</varname> or all its "slices" as conjugate symmetric.
+                                    This is useful when an exact symmetry of <varname>A</varname>
+                                    or its "slices" is possibly altered only by round-off errors.
+                                    
+                                    A N-D array <literal>B</literal> of sizes <literal>[s1,s2,..,sN]</literal>
+                                    is conjugate symmetric for the FFT if and only if
+                                    <literal>B==conj(B([1 s1:-1:2],[1 s2:-1:2],...,[1 sN:-1:2]))</literal>.
+                                    In such a case, the result <literal>X</literal> is real, and an
+                                    efficient specific algorithm can be used to compute it.
+                                    </para>
+                                </listitem>
+                            <listitem>
+                                 <para><emphasis role="bold">"nonsymmetric"</emphasis>: Then fft() does
+                                    not take care of any symmetry.
+                                    </para>
+                                </listitem>
+                            <listitem>
+                                 <para>
+                                    not specified: Then an automatic determination of symmetry is performed.
+                                    </para>
+                                </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
                 <para/>
             </varlistentry>
             <varlistentry>
                 <term>dims</term>
                 <listitem>
-                    整数値を有する正の数のベクトルまたは正の整数値のベクトル.
-                    詳細は説明のパートを参照ください.
-                    各要素は<varname>A</varname>の要素の総数の約数とする
-                    必要があります.
-                    要素の積は<varname>A</varname>の全要素数より
-                    少ない必要があります.
-                    <para/>
-                </listitem>
+                     <para>
+                        整数値を有する正の数のベクトルまたは正の整数値のベクトル.
+                        詳細は説明のパートを参照ください.
+                        各要素は<varname>A</varname>の要素の総数の約数とする
+                        必要があります.
+                        要素の積は<varname>A</varname>の全要素数より
+                        少ない必要があります.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>incr</term>
                 <listitem>
-                    整数値を有する正の数のベクトルまたは正の整数値のベクトル.
-                    詳細は説明のパートを参照ください.
-                    <literal>incr</literal> は,
-                    <literal>dims</literal>と同じ要素数とする必要があります.
-                    各要素は <varname>A</varname>の全要素数の約数とする必要があります.
-                    <literal>incr</literal>要素は厳密に昇順とする必要があります.
-                    <para/>
-                </listitem>
+                     <para>
+                        整数値を有する正の数のベクトルまたは正の整数値のベクトル.
+                        詳細は説明のパートを参照ください.
+                        <literal>incr</literal> は,
+                        <literal>dims</literal>と同じ要素数とする必要があります.
+                        各要素は <varname>A</varname>の全要素数の約数とする必要があります.
+                        <literal>incr</literal>要素は厳密に昇順とする必要があります.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -145,23 +151,21 @@
                     <varlistentry>
                         <term>単一変量</term>
                         <listitem>
-                            <varname>a=A</varname> が単一変量のベクトルの場合,
-                            次のように直接FFTが計算されます:
-                            <para/>
-                            <latex alt="x(k)=∑_m=1…n a(m).exp(-2iπ.(k-1)(m-1)/n)">
-                                x(k) = \sum_{m=1}^n
-                                {a(m) \exp\left(-2 i\pi\frac{(m-1)}{n} (k-1)\right)}
-                            </latex>
-                            <para/>
-                        </listitem>
+                             <para><varname>a=A</varname> が単一変量のベクトルの場合,
+                                次のように直接FFTが計算されます:
+                                <latex alt="x(k)=∑_m=1…n a(m).exp(-2iπ.(k-1)(m-1)/n)">
+                                    x(k) = \sum_{m=1}^n
+                                    {a(m) \exp\left(-2 i\pi\frac{(m-1)}{n} (k-1)\right)}
+                                </latex></para>
+                                    </listitem>
                     </varlistentry>
                     <varlistentry>
                         <term>多変量</term>
                         <listitem>
-                            <varname>A</varname>が行列または多次元配列の場合,
-                            多変量直接FFTが行われます.
-                            <para/>
-                        </listitem>
+                             <para><varname>A</varname>が行列または多次元配列の場合,
+                                多変量直接FFTが行われます.
+                                </para>
+                            </listitem>
                     </varlistentry>
                 </variablelist>
             </para>
@@ -175,23 +179,21 @@
                     <varlistentry>
                         <term>単一変量</term>
                         <listitem>
-                            <varname>a=A</varname> がベクトルの場合,
-                            単一変量逆FFTが実行されます
-                            <para/>
-                            <latex alt="x(k)=(1/n).∑_m=1…n a(m).exp(+2iπ.(k-1)(m-1)/n)">
-                                $x(k) = \frac{1}{n}\sum_{m=1}^n
-                                {a(m) \exp\left(+2 i\pi\frac{(m-1)}{n} (k-1)\right)}$
-                            </latex>
-                            <para/>
-                        </listitem>
+                             <para><varname>a=A</varname> がベクトルの場合,
+                                単一変量逆FFTが実行されます
+                                <latex alt="x(k)=(1/n).∑_m=1…n a(m).exp(+2iπ.(k-1)(m-1)/n)">
+                                    $x(k) = \frac{1}{n}\sum_{m=1}^n
+                                    {a(m) \exp\left(+2 i\pi\frac{(m-1)}{n} (k-1)\right)}$
+                                </latex></para>
+                                    </listitem>
                     </varlistentry>
                     <varlistentry>
                         <term>多変量</term>
                         <listitem>
-                            <varname>A</varname>が行列または多次元配列の場合,
-                            多変量逆FFTが実行されます.
-                            <para/>
-                        </listitem>
+                             <para><varname>A</varname>が行列または多次元配列の場合,
+                                多変量逆FFTが実行されます.
+                                </para>
+                            </listitem>
                     </varlistentry>
                 </variablelist>
             </para>

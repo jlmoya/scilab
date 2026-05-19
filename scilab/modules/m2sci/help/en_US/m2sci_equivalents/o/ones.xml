@@ -59,12 +59,12 @@ ones(A)  // only size(A) is considered
     </refsection>
     <refsection>
         <title>Particular cases</title>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note that in Matlab, <emphasis role="strong">A</emphasis> can contain complex values (in these cases, only real part of
                 <emphasis role="strong">A</emphasis> is taken in account), what Scilab function do not tolerate.
-            </note>
-        </para>
+            </para>
+        </note>
         <programlisting role="no-scilab-exec"><![CDATA[
 // Scilab version
 B=ones(A)

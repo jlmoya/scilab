@@ -12,14 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org"
-          xml:lang="en"
-          xml:id="whereis">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="whereis">
     <refnamediv>
         <refname>whereis</refname>
         <refpurpose>Returns the name of the loaded library/module a given function belongs to</refpurpose>
@@ -45,19 +38,27 @@
                     <para>If <literal>function</literal> points to
                         <itemizedlist>
                             <listitem>
-                                a function written in Scilab language and registered with
-                                <link linkend="genlib">genlib</link> in some loaded library:
-                                <literal>libmod</literal> returns the name of the library.
+                                 <para>
+                                    a function written in Scilab language and registered with
+                                    <link linkend="genlib">genlib</link> in some loaded library:
+                                    <literal>libmod</literal> returns the name of the library.
+                                </para>
                             </listitem>
                             <listitem>
-                                an unregistered user-defined function written in Scilab language:
-                                <literal>libmod</literal> returns <literal>"script"</literal>.
+                                 <para>
+                                    an unregistered user-defined function written in Scilab language:
+                                    <literal>libmod</literal> returns <literal>"script"</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                a builtin function (so-called Scilab primitive): the name of the
-                                module the <literal>function</literal> belongs to is returned.
+                                 <para>
+                                    a builtin function (so-called Scilab primitive): the name of the
+                                    module the <literal>function</literal> belongs to is returned.
+                                </para>
                             </listitem>
-                            <listitem>Otherwise: <literal>libmod</literal> returns <literal>[]</literal>.
+                            <listitem>
+                                 <para>Otherwise: <literal>libmod</literal> returns <literal>[]</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -91,22 +92,26 @@
                         <warning>
                             <itemizedlist>
                                 <listitem>
-                                    Since Scilab 6.0: When, in the mymacro.sci file defining a public
-                                    macro mymacro() registered in a library, some additional functions
-                                    are defined after mymacro(), these additional functions are NOT
-                                    registered in the library.
-                                    So, <literal>whereis</literal> ignores them and will return
-                                    <literal>[]</literal> for them. See the Examples section.
+                                     <para>
+                                        Since Scilab 6.0: When, in the mymacro.sci file defining a public
+                                        macro mymacro() registered in a library, some additional functions
+                                        are defined after mymacro(), these additional functions are NOT
+                                        registered in the library.
+                                        So, <literal>whereis</literal> ignores them and will return
+                                        <literal>[]</literal> for them. See the Examples section.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    When a module like <literal>xcos</literal> has sublibraries,
-                                    these ones are often loaded in Scilab only after the first call
-                                    to the main function (like <literal>xcos()</literal>).
-                                    As a consequence,
-                                    <literal>whereis(..)</literal> querried for a function of such a
-                                    sublibrary will return <literal>[]</literal>, until the main
-                                    function -- like <literal>xcos()</literal> -- is called a first time.
-                                    See the Examples section.
+                                     <para>
+                                        When a module like <literal>xcos</literal> has sublibraries,
+                                        these ones are often loaded in Scilab only after the first call
+                                        to the main function (like <literal>xcos()</literal>).
+                                        As a consequence,
+                                        <literal>whereis(..)</literal> querried for a function of such a
+                                        sublibrary will return <literal>[]</literal>, until the main
+                                        function -- like <literal>xcos()</literal> -- is called a first time.
+                                        See the Examples section.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </warning>
@@ -119,13 +124,17 @@
                             but defined
                             <itemizedlist>
                                 <listitem>
-                                    directly in the console by <literal>deff(..)</literal> or by
-                                    <literal>function ... endfunction</literal>, or
+                                     <para>
+                                        directly in the console by <literal>deff(..)</literal> or by
+                                        <literal>function ... endfunction</literal>, or
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    in a file loaded in the Scilab session with
-                                    <literal>exec(functionfile.sci)</literal> or with
-                                    <literal>getd(..)</literal>,
+                                     <para>
+                                        in a file loaded in the Scilab session with
+                                        <literal>exec(functionfile.sci)</literal> or with
+                                        <literal>getd(..)</literal>,
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </para>
@@ -231,16 +240,21 @@ whereis CLR          // => "Linearlib" non-empty answer, now
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>whereis</literal> now supports builtin functions.
+                             <para><literal>whereis</literal> now supports builtin functions.
+                            </para>
                         </listitem>
                         <listitem>
-                            When the same function name is registered in several libraries,
-                            <literal>whereis</literal> now returns all of them instead of only the
-                            last loaded one.
+                             <para>
+                                When the same function name is registered in several libraries,
+                                <literal>whereis</literal> now returns all of them instead of only the
+                                last loaded one.
+                            </para>
                         </listitem>
                         <listitem>
-                            For unregistered user-defined macros, <literal>whereis</literal>
-                            now returns <literal>"script"</literal> instead of <literal>[]</literal>.
+                             <para>
+                                For unregistered user-defined macros, <literal>whereis</literal>
+                                now returns <literal>"script"</literal> instead of <literal>[]</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -250,7 +264,8 @@ whereis CLR          // => "Linearlib" non-empty answer, now
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>whereis("function")</literal> now returns several libraries names.
+                             <para><literal>whereis("function")</literal> now returns several libraries names.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

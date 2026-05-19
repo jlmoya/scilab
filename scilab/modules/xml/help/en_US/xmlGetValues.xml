@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="xmlGetValues" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="xmlGetValues" xml:lang="en">
     <refnamediv>
         <refname>xmlGetValues</refname>
         <refpurpose>Parses and gets values of chosen tags attributes in a XML file</refpurpose>
@@ -29,7 +26,7 @@
             Values = xmlGetValues(path2tag, attributes, XMLsource)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -53,10 +50,14 @@
                         <note>
                             <itemizedlist>
                                 <listitem>
-                                    Attributes names are case-sensitive.
+                                     <para>
+                                        Attributes names are case-sensitive.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    If needed, the name of a given attribute may be specified several times.
+                                     <para>
+                                        If needed, the name of a given attribute may be specified several times.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </note>
@@ -71,13 +72,17 @@
                         can be one of the following:
                         <itemizedlist>
                             <listitem>
-                                unique string: path to the XML source file. By default, the main
-                                preferences file
-                                <literal>SCIHOME+'/XConfiguration.xml'</literal> is considered.
+                                 <para>
+                                    unique string: path to the XML source file. By default, the main
+                                    preferences file
+                                    <literal>SCIHOME+'/XConfiguration.xml'</literal> is considered.
+                                </para>
                             </listitem>
                             <listitem>
-                                XML handle of type <literal>XMLdoc</literal>, as returned by a
-                                prior <code>xmlRead(XMLsource)</code> external instruction.
+                                 <para>
+                                    XML handle of type <literal>XMLdoc</literal>, as returned by a
+                                    prior <code>xmlRead(XMLsource)</code> external instruction.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -90,23 +95,27 @@
                         matrix of strings: Values of the chosen attributes of the chosen tag:
                         <itemizedlist>
                             <listitem>
-                                If the set of chosen <varname>attributes</varname> is provided as a
-                                matrix with several rows, then only the first occurrence of the chosen
-                                tag is considered, and <varname>Values(i,j)</varname> is the value of
-                                its <varname>attributes(i,j)</varname>.
+                                 <para>
+                                    If the set of chosen <varname>attributes</varname> is provided as a
+                                    matrix with several rows, then only the first occurrence of the chosen
+                                    tag is considered, and <varname>Values(i,j)</varname> is the value of
+                                    its <varname>attributes(i,j)</varname>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Otherwise, if the names of <varname>attributes</varname> are
-                                provided in a row vector, then
-                                <emphasis role="italic">all occurrences</emphasis> of the chosen tag
-                                are considered: Results are returned with one row per occurrence,
-                                and one column per attribute. Thus, <varname>Values(i,j)</varname>
-                                is the value of the <varname>attributes(j)</varname> for the
-                                <literal>
-                                    i<superscript>th</superscript>
-                                </literal>
-                                occurrence of the
-                                tag in the document.
+                                 <para>
+                                    Otherwise, if the names of <varname>attributes</varname> are
+                                    provided in a row vector, then
+                                    <emphasis role="italic">all occurrences</emphasis> of the chosen tag
+                                    are considered: Results are returned with one row per occurrence,
+                                    and one column per attribute. Thus, <varname>Values(i,j)</varname>
+                                    is the value of the <varname>attributes(j)</varname> for the
+                                    <literal>
+                                        i<superscript>th</superscript>
+                                    </literal>
+                                    occurrence of the
+                                    tag in the document.
+                                </para>
                             </listitem>
                         </itemizedlist>
                         If some final values are expected to be numeric rather than literal (text),
@@ -136,14 +145,16 @@
         </para>
         <para>
             The <varname>path2tag</varname> argument must be a valid "XPath" according to the
-            <ulink url="https://www.w3.org/TR/1999/REC-xpath-19991116/">W3C recommendations</ulink>.
+            <link xlink:href="https://www.w3.org/TR/1999/REC-xpath-19991116/">W3C recommendations</link>.
             Examples are given herebelow. If the path uses a intermediate or a final tag that does
             not exist, or if one of the queried attributes does not exist, an error is yielded.
         </para>
     </refsection>
     <refsection>
         <title>Examples</title>
-        <emphasis role="bold">Example 1:</emphasis>
+        <para>
+            <emphasis role="bold">Example 1:</emphasis>
+        </para>
         <para>
             Your web and proxy settings for Scilab are stored in the default
             <literal>SCIHOME+'/XConfiguration.xml'</literal> preferences file. Let's consider the
@@ -248,8 +259,7 @@ C:\Path\to\another\working\dir2\clf.sci
         <revhistory>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>xmlGetValues() introduced, was formerly getPreferencesValue().
-                </revdescription>
+                <revremark>xmlGetValues() introduced, was formerly getPreferencesValue().</revremark>
             </revision>
         </revhistory>
     </refsection>

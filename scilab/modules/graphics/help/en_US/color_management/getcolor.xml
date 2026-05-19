@@ -29,7 +29,7 @@
             c = getcolor(title, cini)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -72,12 +72,11 @@ c = getcolor("Title foo", color("red")); // preselects the red
 
 c = getcolor("Please choose a color");
      ]]></programlisting>
-        <para/>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/getcolor.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <para/>
         <screen><![CDATA[
 --> c = getcolor("Please choose a color")

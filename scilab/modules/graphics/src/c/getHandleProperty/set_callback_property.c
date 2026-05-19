@@ -41,7 +41,6 @@ int set_callback_property(void* _pvCtx, int iObjUID, void* _pvData, int valueTyp
     char * cbString = NULL;
     int cbType = 0;
 
-    int strNbRow = 0, strNbCol = 0;
     int iRows = 0, iCols = 0;
     double* pdblData = NULL;
 

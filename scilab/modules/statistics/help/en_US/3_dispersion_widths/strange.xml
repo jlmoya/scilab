@@ -24,7 +24,7 @@
             r = strange(x, orientation)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -41,11 +41,15 @@
                     </para>
                     <itemizedlist>
                         <listitem>
-                            a character <literal>"*"</literal> (default), <literal>"r"</literal> or
-                          <literal>"c"</literal>
-                        </listitem>
+                             <para>
+                                a character <literal>"*"</literal> (default), <literal>"r"</literal> or
+                              <literal>"c"</literal>
+                          </para>
+                      </listitem>
                         <listitem>
-                            a positive integer: 1 or 2. 1 is equivalent to "r" and 2 is equivalent to "c".
+                             <para>
+                                a positive integer: 1 or 2. 1 is equivalent to "r" and 2 is equivalent to "c".
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </listitem>

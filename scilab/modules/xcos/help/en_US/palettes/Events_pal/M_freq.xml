@@ -31,41 +31,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/M_freq.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_M_freq">
+    <refsection xml:id="Contents_M_freq">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_M_freq">Description</xref>
+                <para><link linkend="Description_M_freq">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_M_freq">Parameters</xref>
+                <para><link linkend="Dialogbox_M_freq">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_M_freq">Default properties</xref>
+                <para><link linkend="Defaultproperties_M_freq">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_M_freq">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_M_freq">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_M_freq">Computational function</xref>
+                <para><link linkend="Computationalfunction_M_freq">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_M_freq">Examples</xref>
+                <para><link linkend="Example_M_freq">Examples</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_M_freq">See also</xref>
+                <para><link linkend="Seealso_M_freq">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_M_freq">
+    <refsection xml:id="Description_M_freq">
         <title>Description</title>
         <para>
             This blocks generates events at specific sample time of the simulation time. The sample time is given in the "Sample Time" field and the offset is given in the "Offset" field. This block has one event input, the number of event outputs depends on the number of different sample time. For example if the vector of sample time is [1 1 2] and the vector of offset is [0 .5 0] then the block has 7 outputs.
@@ -124,13 +124,12 @@
         <para>
         </para>
     </refsection>
-    <refsection id="Dialogbox_M_freq">
-        <title>Parameters</title>
+    <refsection xml:id="Dialogbox_M_freq">
+        <title>Arguments</title>
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../../../../images/gui/M_freq_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    <imagedata fileref="../../../../images/gui/M_freq_gui.gif" align="center"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
@@ -151,7 +150,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_M_freq">
+    <refsection xml:id="Defaultproperties_M_freq">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -209,7 +208,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_M_freq">
+    <refsection xml:id="Example_M_freq">
         <title>Examples</title>
         <screen><![CDATA[
 Let us take the example where the sample time is equal to [1 1 2] and the
@@ -222,6 +221,7 @@ When t=1.5, the second output is activated (010).
 When t=2  , we loop back to 0.
 ]]></screen>
         <para>Other example:</para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/M_freq_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -229,9 +229,10 @@ When t=2  , we loop back to 0.
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_M_freq">
+    <refsection xml:id="Interfacingfunction_M_freq">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -239,7 +240,7 @@ When t=2  , we loop back to 0.
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_M_freq">
+    <refsection xml:id="Computationalfunction_M_freq">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

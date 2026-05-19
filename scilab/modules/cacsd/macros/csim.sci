@@ -125,7 +125,21 @@ function [y,x]=csim(u,dt,sl,x0,tol)
     //apply left transformation
     v=diag(1 ./diag(v));b=v*b(k,:);x0=v*x0(k)
 
-    [a,v2,bs]=bdiag(a,1);b=v2\b;c=c*v2;x0=v2\x0;
+    [Ab,v2,bs]=bdiag(a,1);
+    if rcond(v2) < 1e-6 then
+        // Bad conditioning
+        // Ignore block diagonalization optimization & use original system matrices
+        warning(msprintf(_("%s: Bad conditioning.\n"),"csim"));
+        v2=eye(a); // no basis change
+        bs=ma; // one block = rows number of a
+    else
+        // Use block diagonalization optimization
+        a=Ab;
+        b=v2\b;
+        c=c*v2;
+        x0=v2\x0;
+    end
+    
     //form the differential equation function
     if type(u)==1 then
         //form a continuous time interpolation of the given data

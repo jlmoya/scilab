@@ -11,15 +11,6 @@ function [C, centers] = kmeans(X, k)
         k (1,1) {mustBeA(k, "double"), mustBeInteger, mustBePositive}
     end
 
-    function D = euclidianDist(X, Y)
-		m = size(X, 1); 
-		n = size(Y, 1);
-		idx = (1:m) .*. ones(n, 1);
-		idy = (1:n)' .*.ones(1, m);
-		D = sum((X(idx(:), :) - Y(idy(:), :)) .^ 2, 2);
-		D = matrix(sqrt(D), n, m)'
-	endfunction
-
 	if k > size(X, 1) then
 		error(msprintf(_("%s: Wrong value for input argument #%d: Must be less than or equal to %d.\n"), "kmeans", 2, size(X, 1)));
 	end
@@ -42,7 +33,7 @@ function [C, centers] = kmeans(X, k)
 
 	while (cv > eps && t <= maxiter)
 		// assignment step
-		D = euclidianDist(X, centers);
+		D = pdist2(X, centers);
 		[tmp, C] = min(D, "c");
 
 		// step "recalage" (re-computation of centers)
@@ -50,7 +41,7 @@ function [C, centers] = kmeans(X, k)
 			newcenters(kk, :) = mean(X(C == kk, :), 1);
 		end
 
-		D = euclidianDist(X, newcenters);
+		D = pdist2(X, newcenters);
 		[tmp, C] = min(D, "c");
 
 		t = t + 1;

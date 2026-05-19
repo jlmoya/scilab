@@ -36,7 +36,7 @@
             h = surf(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -713,19 +713,22 @@ surf(axfig10,Z,'ydat',[100:109],'marker','d','markerfac','green','markeredg','ye
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    The "Foreground", "markForeground", and "markBackground" global properties
-                    colors can now be specified as named colors chosen in the full predefined
-                    colors list, or by their "#RRGGBB" hexadecimal codes, or by their colormap
-                    indices.
-                    <para/>
-                    surf(X,Y,fun..) and  surf(X,Y,list(fun, params)) syntaxes added.
+                    <para>
+                        The "Foreground", "markForeground", and "markBackground" global properties
+                        colors can now be specified as named colors chosen in the full predefined
+                        colors list, or by their "#RRGGBB" hexadecimal codes, or by their colormap
+                        indices.
+                    </para>
+                    <para>
+                        surf(X,Y,fun..) and  surf(X,Y,list(fun, params)) syntaxes added.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

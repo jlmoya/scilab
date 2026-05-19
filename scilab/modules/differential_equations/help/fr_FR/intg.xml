@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="intg" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intg" xml:lang="fr">
     <refnamediv>
         <refname>intg</refname>
         <refpurpose>intégration numérique adaptative</refpurpose>
@@ -31,54 +28,60 @@
             [v, err, ierr] = intg(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                    nombres réels finis : bornes de l'intégrale.
-                    <para/>
-                </listitem>
+                     <para>
+                        nombres réels finis : bornes de l'intégrale.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>f</term>
                 <listitem>
-                    fonction à intégrer, spécifiée soit par son nom litéral (ex: "sind"),
-                    soit par son identifiant (ex : sind), soit par une liste (si la fonction
-                    attend en outre des paramètres).
-                      <para/>
-                </listitem>
+                     <para>
+                        fonction à intégrer, spécifiée soit par son nom litéral (ex: "sind"),
+                        soit par son identifiant (ex : sind), soit par une liste (si la fonction
+                        attend en outre des paramètres).
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>atol</term>
                 <listitem>
-                      nombre réel positif : erreur absolue maximale tolérée sur le résultat
-                      (1.d-13 par défaut).
-                      <para/>
-                </listitem>
+                     <para>
+                          nombre réel positif : erreur absolue maximale tolérée sur le résultat
+                          (1.d-13 par défaut).
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rtol</term>
                 <listitem>
-                      nombre réel positif : erreur relative maximale tolérée sur le résultat
-                      (1.d-8 par défaut).
-                      <para/>
-                </listitem>
+                     <para>
+                          nombre réel positif : erreur relative maximale tolérée sur le résultat
+                          (1.d-8 par défaut).
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>err</term>
                 <listitem>
-                      estimation de l'erreur absolue sur le résultat.
-                      <para/>
-                </listitem>
+                     <para>
+                          estimation de l'erreur absolue sur le résultat.
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>ierr</term>
                 <listitem>
-                      numéro d'erreur (= 0 si absence d'erreur).
-                      <para/>
-                </listitem>
+                     <para>
+                          numéro d'erreur (= 0 si absence d'erreur).
+                          </para>
+                      </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -155,7 +158,7 @@
         <para>
             Les graphes suivants illustrent ce phénomène :
         </para>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             x = 0:.1:22;
             y = zeros(1,221); y(1) = 3; y(96) = 1;
             subplot(1,2,1)
@@ -171,16 +174,18 @@
             xlabel(_("Indices of integration points, as seen by intg()"))
 
             gcf().axes_size = [700 350];
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             Sur le graphe de gauche, le pic réside entre les points d'intégration n° 9 et 10.
             Il n'est pas détecté. <literal>intg</literal> considère la fonction comme plate.
             À droite, le pic est suffisamment large pour être échantillonné par intg().
         </para>
         <note>
-            Si l'utilisateur veut afficher la solution même si le solveur a rencontré une erreur,
-            il doit ajouter le troisième argument de sortie <literal>ierr</literal>, ce qui transformera
-            les erreurs en warnings. Ceci est surtout utilisé dans les cas d'erreurs d'arrondi.
+            <para>
+                Si l'utilisateur veut afficher la solution même si le solveur a rencontré une erreur,
+                il doit ajouter le troisième argument de sortie <literal>ierr</literal>, ce qui transformera
+                les erreurs en warnings. Ceci est surtout utilisé dans les cas d'erreurs d'arrondi.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -266,8 +271,10 @@ abs(exact - I)
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    La valeur par défaut atol de l'erreur absolue passe de
-                    10<superscript>-14</superscript> à 10<superscript>-13</superscript>.
+                    <para>
+                        La valeur par défaut atol de l'erreur absolue passe de
+                        10<superscript>-14</superscript> à 10<superscript>-13</superscript>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

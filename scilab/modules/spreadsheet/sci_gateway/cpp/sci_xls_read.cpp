@@ -110,7 +110,7 @@ types::Function::ReturnValue sci_xls_read(types::typed_list &in, int _iRetCount,
             break;
     }
 
-    if (rows * cols)
+    if (rows * cols > 0)
     {
         types::Double* pDblData = new types::Double(rows, cols);
         pDblData->set(data);

@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="cond">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="cond">
     <refnamediv>
         <refname>cond</refname>
         <refpurpose>condition number of a matrix</refpurpose>
@@ -30,7 +27,7 @@
             c = cond(X, p)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -134,27 +131,33 @@ cond(A, 'fro')
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            cond(X) now accepts non square matrix.
-                        </listitem>
-                        <listitem>
-                            New input argument p introduced.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    cond(X) now accepts non square matrix.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New input argument p introduced.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     cond([]) now returns 0 instead of 1.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

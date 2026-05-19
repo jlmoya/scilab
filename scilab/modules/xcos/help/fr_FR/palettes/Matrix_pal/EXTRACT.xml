@@ -13,52 +13,49 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="EXTRACT" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="EXTRACT" xml:lang="fr_FR">
     <refnamediv>
         <refname>EXTRACT</refname>
         <refpurpose>Extraction de matrice</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/EXTRACT.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_EXTRACT">
+    <refsection xml:id="Contents_EXTRACT">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_EXTRACT">Description</xref>
+                <para><link linkend="Description_EXTRACT">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_EXTRACT">Paramètres</xref>
+                <para><link linkend="Dialogbox_EXTRACT">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="EXTRACT">Exemple</link>
+                <para><link linkend="EXTRACT">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_EXTRACT">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_EXTRACT">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_EXTRACT">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_EXTRACT">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_EXTRACT">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_EXTRACT">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_EXTRACT">Exemple</xref>
+                <para><link linkend="Example_EXTRACT">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_EXTRACT">Voir aussi</xref>
+                <para><link linkend="Seealso_EXTRACT">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_EXTRACT">
+    <refsection xml:id="Description_EXTRACT">
         <title>Description</title>
         <para>
             Le bloc EXTRACT extrait des éléments de la matrice d'entrée. Les dimensions de la sortie dépendent
@@ -76,15 +73,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_EXTRACT">
+    <refsection xml:id="Dialogbox_EXTRACT">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/EXTRACT_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/EXTRACT_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -112,15 +107,15 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_EXTRACT">
+    <refsection xml:id="Example_EXTRACT">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A=[1 2 3;4 5 6;7 8 9]
             Si "Lines to extract" est [1 2] et "Column to extract" est [1 3] alors la sortie est
             B=[1 3;4 6]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_EXTRACT">
+    <refsection xml:id="Defaultproperties_EXTRACT">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -193,7 +188,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_EXTRACT">
+    <refsection xml:id="Interfacingfunction_EXTRACT">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -201,18 +196,22 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_EXTRACT">
+    <refsection xml:id="Computationalfunction_EXTRACT">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/extract.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/extract.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/extractz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/extractz.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_EXTRACT2">
+    <refsection xml:id="Example_EXTRACT2">
         <title>Exemple</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/EXTRACT_Example.zcos">
@@ -224,11 +223,11 @@
             </link>
         </para>
     </refsection>
-    <refsection id="Seealso_EXTRACT" role="see also">
+    <refsection xml:id="Seealso_EXTRACT" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="EXTTRI">EXTTRI - Extraction triangulaire ou diagonale (Bloc Xcos)</link>
+                <para><link linkend="EXTTRI">EXTTRI - Extraction triangulaire ou diagonale (Bloc Xcos)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -32,8 +32,10 @@ import org.cef.misc.EventFlags;
 import com.google.gson.Gson;
 
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,9 +49,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 
 import org.scilab.modules.gui.SwingViewObject;
 import org.scilab.modules.gui.events.callback.CommonCallBack;
@@ -62,6 +62,7 @@ import org.scilab.modules.gui.widget.Widget;
 import org.scilab.modules.gui.SwingViewWidget;
 import org.scilab.modules.gui.utils.PositionConverter;
 import org.scilab.modules.gui.utils.ScilabBrowser;
+import org.scilab.modules.gui.utils.ScilabSwingUtilities;
 import org.scilab.modules.graphic_objects.graphicModel.GraphicModel;
 import org.scilab.modules.graphic_objects.graphicObject.CallBack;
 
@@ -132,6 +133,20 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
         });
 
         client_.addLifeSpanHandler(new CefLifeSpanHandlerAdapter() {
+            @Override
+            public boolean onBeforePopup(CefBrowser browser, CefFrame frame, String target_url, String target_frame_name) {
+                // Open external links in the user's default system browser
+                if (browser == browser_ && target_url != null && !target_url.isEmpty()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI(target_url));
+                    } catch (Exception e) {
+                        // ignore
+                    }
+                    return true; // cancel the popup in JCEF
+                }
+                return false;
+            }
+
             @Override
             public void onAfterCreated(CefBrowser browser) {
                 if (browser == browser_ && url != "") {
@@ -316,7 +331,17 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
 
     @Override
     public void destroy() {
-        throw new UnsupportedOperationException("Unimplemented method 'destroy'");
+        ScilabSwingUtilities.removeFromParent(this);
+
+        if (devToolsOpened == true) {
+            browser_.closeDevTools();
+            devToolsOpened = false;
+        }
+        if (browser_ != null) {
+            browser_.close(true); // Must use true here to avoid issues with docked instances
+        }
+
+        ScilabBrowser.release(client_);
     }
 
     @Override
@@ -368,7 +393,13 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
                 String data = (String)value;
                 if (data.equals("")) return; //ignore empty data (used to clean previous value)
 
+                // Escape for JS double-quoted string literal:
+                // backslashes first, then double quotes, then newlines/tabs
+                data = data.replace("\\", "\\\\");
                 data = data.replace("\"", "\\\"");
+                data = data.replace("\n", "\\n");
+                data = data.replace("\r", "\\r");
+                data = data.replace("\t", "\\t");
                 String code = String.format("fromScilabInternal(\"%s\")", data);
                 browser_.executeJavaScript(code, "localhost", 1);
                 break;
@@ -386,21 +417,6 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
                 break;
             }
         }
-    }
-
-    @Override
-    public void removeNotify() {
-        if (devToolsOpened == true) {
-            browser_.closeDevTools();
-            devToolsOpened = false;
-        }
-
-        if (browser_ != null) {
-            browser_.close(false);
-        }
-
-        ScilabBrowser.release(client_);
-        super.removeNotify();
     }
 
     public void openDebug(boolean toggle) {
@@ -425,10 +441,16 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
     private int ExecuteCallBack(String msg, long queryId) {
         if (callback != null && callback.equals("") == false) {
             String data = msg.replace("\"", "\"\"");
+            data = data.replace("\'", "\'\'");
+            // The browser fires events asynchronously. If the uicontrol was
+            // destroyed before the queued command runs, the callback target
+            // is no longer valid — skip invoking the user callback.
             String str = "if exists(\"gcbo\") then %oldgcbo = gcbo; end;"
                     + "gcbo = getcallbackobject(" + uid + ");"
-                    + "%cb = #(data) -> (u = gcbo;u.data = struct(\"scilabcallbackID\", " + queryId + ", \"data\", data););"
+                    + "if ~isempty(gcbo) && is_handle_valid(gcbo) then "
+                    + "clear %cb;%cb = #(data) -> (u = gcbo;u.data = struct(\"scilabcallbackID\", " + queryId + ", \"data\", data););"
                     + callback + "(fromJSON(\"" + data + "\"), %cb);"
+                    + "end;"
                     + "if exists(\"%oldgcbo\") then gcbo = %oldgcbo; else clear gcbo; end;"
                     + "clear %cb;";
 

@@ -14,10 +14,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="mtlb_uint16">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="mtlb_uint16">
     <refnamediv>
         <refname>mtlb_uint16</refname>
         <refpurpose>Fonction d'émulation de la fonction Matlab uint16()</refpurpose>
@@ -29,20 +26,24 @@
             résultats le plus souvent différents :
             <itemizedlist>
                 <listitem>
-                    Hors des bornes de l'intervalle de travail principal, la version Scilab de
-                    <literal>uint16()</literal> travaille en congruence su rl'intervalle
-                    ("modulo"), alors que
-                    la version Matlab <literal>mtlb_uint16()</literal> sature et reste constante.
+                     <para>
+                        Hors des bornes de l'intervalle de travail principal, la version Scilab de
+                        <literal>uint16()</literal> travaille en congruence su rl'intervalle
+                        ("modulo"), alors que
+                        la version Matlab <literal>mtlb_uint16()</literal> sature et reste constante.
+                    </para>
                 </listitem>
                 <listitem>
-                    Pour les valeurs non entières, la version Scilab <literal>uint16()</literal>
-                    tronque la partie fractionnaire, alors que la version Matlab
-                    <literal>mtlb_uint16()</literal> arrondit à l'entier le plus proche.
+                     <para>
+                        Pour les valeurs non entières, la version Scilab <literal>uint16()</literal>
+                        tronque la partie fractionnaire, alors que la version Matlab
+                        <literal>mtlb_uint16()</literal> arrondit à l'entier le plus proche.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
         <para>
-        <table border="1" align="center">
+        <table border="1">
             <tr><th>x</th><th>uint16(x)</th><th>mtlb_uint16(x)</th></tr>
             <tr><td align="center">%nan</td><td align="center">0</td><td align="center">0</td></tr>
             <tr><td align="center">-%inf</td><td align="center">0</td><td align="center">0</td></tr>

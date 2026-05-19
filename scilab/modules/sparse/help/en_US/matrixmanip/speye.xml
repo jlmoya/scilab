@@ -28,7 +28,7 @@
             Isp = speye(nrows, ncols)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -71,8 +71,10 @@
             <literal>[m,n]=size(A)</literal>, <literal>speye(A)</literal> is equal to
             <literal>speye(m,n)</literal>.
             <warning>
-                Hence, <literal>speye(3)</literal> is equal to <literal>speye(1,1)</literal>, NOT
-                to <literal>speye(3,3)</literal>.
+                <para>
+                    Hence, <literal>speye(3)</literal> is equal to <literal>speye(1,1)</literal>, NOT
+                    to <literal>speye(3,3)</literal>.
+                </para>
             </warning>
         </para>
     </refsection>

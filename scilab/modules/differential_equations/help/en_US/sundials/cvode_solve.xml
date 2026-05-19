@@ -24,7 +24,7 @@
         </synopsis>
     </refsynopsisdiv>
 
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -60,7 +60,7 @@
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    <para>array of solution at time values in <term>t</term></para>
+                    <para>array of solution at time values in <literal>t</literal></para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -94,7 +94,7 @@
             <latex style="display">y' = f(t,y),\,y(t_0)=y_0</latex>
         </para>
         <para> 
-            It is an interface to the cvodes solver of SUNDIALS library with default ADAMS method (BDF method can be chosen in <term>options</term>). 
+            It is an interface to the cvodes solver of SUNDIALS library with default ADAMS method (BDF method can be chosen in <literal>options</literal>). 
             The solver has a specific feature which allows to compute the sensitivity with respect to a vector of parameters present in the
             initial condition and/or the right hand side (see the <link linkend="cvodes">ODE Sensitivity</link> dedicated help page).
         </para>
@@ -119,7 +119,7 @@
             initial condition, <literal>t0, tf</literal> are the initial and final time, <literal>y</literal> is the
             array of solution values <literal>[y(t(1)),y(t(2)),...]</literal> at time values in t, where concatenation is done on
             next dimension if <literal>y0</literal> is not a column vector (e.g. a matrix with at least 2 columns). The time values in <literal>t</literal>
-            are those used by the solver to meet default relative and absolute estimated local error (which can be changed in <term>options</term>). 
+            are those used by the solver to meet default relative and absolute estimated local error (which can be changed in <literal>options</literal>). 
             In the simplest case the right hand side is computed by a Scilab function with two arguments, for example for the ode <latex>y' = -y+t</latex>
             the right hand side is coded as
         </para>
@@ -262,7 +262,7 @@
             </para>
             <para>
                 <programlisting role="no-scilab-exec"><![CDATA[
-                    int sunProj(realtype t, N_Vector X, N_Vector Corr, realtype epsProj, N_Vector Err, 
+                    int sunProj(sunrealtype t, N_Vector X, N_Vector Corr, sunrealtype epsProj, N_Vector Err, 
                     void *user_data)
                     ]]>
                 </programlisting>
@@ -277,7 +277,7 @@
                     code=[
                     "#include <math.h>"
                     "#include <nvector/nvector_serial.h>"
-                    "int sunRhs(realtype t, N_Vector X, N_Vector Xd, void *user_data)"
+                    "int sunRhs(sunrealtype t, N_Vector X, N_Vector Xd, void *user_data)"
                     "{"
                     "double *x = NV_DATA_S(X);"
                     "double *xd = NV_DATA_S(Xd);"
@@ -286,7 +286,7 @@
                     "xd[1] = alpha[0]*x[0];"
                     "return 0;"
                     "}"
-                    "int sunProj(realtype t, N_Vector X, N_Vector Corr, realtype epsProj, N_Vector Err, "
+                    "int sunProj(sunrealtype t, N_Vector X, N_Vector Corr, sunrealtype epsProj, N_Vector Err, "
                     "            void *user_data)"
                     "{"
                     "double *x = NV_DATA_S(X);"
@@ -319,7 +319,7 @@
                 </latex>
             </para>
             <para>
-                where the sensitivity function is  <latex style="inline">s={\partial y}/{\partial p</latex>. The right hand side of the sensitivity equation can be provided
+                where the sensitivity function is  <latex>s={\partial y}/{\partial p</latex>. The right hand side of the sensitivity equation can be provided
                 by the user (see the <code>sensRhs</code> option in the <link linkend="cvodes">ODE Sensitivtiy</link> help page) but by default the directional
                 derivatives are approximated by finite differences. The call to cvode takes the form
             </para>
@@ -380,7 +380,7 @@
         <para>
             A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, D. E. Shumaker, and C. S. Woodward, "SUNDIALS: Suite of Nonlinear and Differential/Algebraic Equation Solvers," ACM Transactions on Mathematical Software, 31(3), pp. 363-396, 2005. Also available as LLNL technical report UCRL-JP-200037.
         </para>
-        <para>Alan C. Hindmarsh, Radu Serban, Cody J. Balos, David J. Gardner, Daniel R. Reynolds, and Carol S. Woodward, "User Documentation for cvodeS", 2021, v6.1.1, available online at <ulink url="https://sundials.readthedocs.io/en/latest/cvodes/index.html">https://sundials.readthedocs.io/en/latest/cvodes</ulink>.
+        <para>Alan C. Hindmarsh, Radu Serban, Cody J. Balos, David J. Gardner, Daniel R. Reynolds, and Carol S. Woodward, "User Documentation for cvodeS", 2021, v6.1.1, available online at <link xlink:href="https://sundials.readthedocs.io/en/latest/cvodes/index.html">https://sundials.readthedocs.io/en/latest/cvodes</link>.
         </para>
     </refsection>
 </refentry>

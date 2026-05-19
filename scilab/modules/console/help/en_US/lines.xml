@@ -14,10 +14,7 @@
  * along with this program.
     *
     -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="lines" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="lines" xml:lang="en">
     <refnamediv>
         <refname>lines</refname>
         <refpurpose>sets and queries the display width and pagination for the console</refpurpose>
@@ -31,7 +28,7 @@
             ncl = lines()
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -148,19 +145,24 @@ rand(2,8)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>lines is set by default to 0. Argument -1 added. See SEP #67 for more information.</listitem>
-                        <listitem>lines manages a 1x2 vector [nc, nl] as input argument
-                        </listitem>
-                    </itemizedlist>
-                </revdescription>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>lines is set by default to 0. Argument -1 added. See SEP #67 for more information.</para>
+                            </listitem>
+                            <listitem>
+                                <para>lines manages a 1x2 vector [nc, nl] as input argument</para>
+                            </listitem>
+                            </itemizedlist>
+                        </para>
+                    </revdescription>
+                </revision>
+            </revhistory>
+        </refsection>
+    </refentry>

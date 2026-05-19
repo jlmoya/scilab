@@ -32,41 +32,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SAWTOOTH_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_SAWTOOTH_f">
+    <refsection xml:id="Contents_SAWTOOTH_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SAWTOOTH_f">Description</xref>
+                <para><link linkend="Description_SAWTOOTH_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatype_SAWTOOTH_f">Data types</xref>
+                <para><link linkend="Datatype_SAWTOOTH_f">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SAWTOOTH_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_SAWTOOTH_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SAWTOOTH_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_SAWTOOTH_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_SAWTOOTH_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_SAWTOOTH_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_SAWTOOTH_f">Example</xref>
+                <para><link linkend="Example_SAWTOOTH_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_SAWTOOTH_f">See also</xref>
+                <para><link linkend="Seealso_SAWTOOTH_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_SAWTOOTH_f">
+    <refsection xml:id="Description_SAWTOOTH_f">
         <title>Description</title>
         <para>
             This block is a sawtooth wave generator. The output of the block is described by the equation:
@@ -89,7 +89,7 @@
         </para>
     </refsection>
 
-    <refsection id="Datatype_SAWTOOTH_f">
+    <refsection xml:id="Datatype_SAWTOOTH_f">
         <title>Data types</title>
         <itemizedlist>
             <listitem>
@@ -100,7 +100,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_SAWTOOTH_f">
+    <refsection xml:id="Defaultproperties_SAWTOOTH_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -166,7 +166,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_SAWTOOTH_f">
+    <refsection xml:id="Example_SAWTOOTH_f">
         <title>Example</title>
         <para>
             This diagram shows the output of the SAWTOOTH_f block with an event period of 2
@@ -187,7 +187,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_SAWTOOTH_f">
+    <refsection xml:id="Interfacingfunction_SAWTOOTH_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -197,7 +197,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SAWTOOTH_f">
+    <refsection xml:id="Computationalfunction_SAWTOOTH_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

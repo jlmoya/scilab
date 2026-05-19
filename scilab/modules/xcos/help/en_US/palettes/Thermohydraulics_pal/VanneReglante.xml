@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/VanneReglante.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_VanneReglante">
+    <refsection xml:id="Contents_VanneReglante">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_VanneReglante">Description</xref>
+                <para><link linkend="Description_VanneReglante">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_VanneReglante">Parameters</xref>
+                <para><link linkend="Dialogbox_VanneReglante">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_VanneReglante">Default properties</xref>
+                <para><link linkend="Defaultproperties_VanneReglante">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_VanneReglante">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_VanneReglante">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="VanneReglante">Modelica model</xref>
+                <para><link linkend="VanneReglante">Modelica model</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_VanneReglante">
+    <refsection xml:id="Description_VanneReglante">
         <title>Description</title>
         <para>
             The <emphasis role="bold">VanneReglante</emphasis> block represents
@@ -74,14 +74,13 @@
             constant depending on the valve geometry and mass density of fluid.
         </para>
     </refsection>
-    <refsection id="Dialogbox_VanneReglante">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_VanneReglante">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/VanneReglante_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/VanneReglante_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -99,7 +98,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_VanneReglante">
+    <refsection xml:id="Defaultproperties_VanneReglante">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -178,7 +177,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_VanneReglante">
+    <refsection xml:id="Interfacingfunction_VanneReglante">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -186,7 +185,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_VanneReglante">
+    <refsection xml:id="Modelicamodel_VanneReglante">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

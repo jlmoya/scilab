@@ -17,14 +17,10 @@
 #include "csvDefault.h"
 #include "sci_malloc.h"
 #include "os_string.h"
+#include "fprintfMat.h"
 #include "checkCsvWriteFormat.h"
 // =============================================================================
-#define NB_FORMAT_SUPPORTED 7
-static const char *supportedFormat[NB_FORMAT_SUPPORTED] =
-{"lf", "lg", "d", "i", "e", "f", "g"};
-// =============================================================================
 static char *replaceInFormat(const char *format);
-static char *getCleanedFormat(const char *format);
 // =============================================================================
 int checkCsvWriteFormat(const char *format)
 {
@@ -34,7 +30,7 @@ int checkCsvWriteFormat(const char *format)
         char *tokenPercent2 = strrchr((char*)format, '%');
         if ((tokenPercent2 && tokenPercent1) && (tokenPercent1 == tokenPercent2))
         {
-            char *cleanedFormat = getCleanedFormat(format);
+            char *cleanedFormat = fprintfMat_getCleanedFormat(format);
             if (cleanedFormat)
             {
                 FREE(cleanedFormat);
@@ -50,7 +46,7 @@ static char *replaceInFormat(const char *format)
 {
     if (format)
     {
-        char *cleanedFormat = getCleanedFormat(format);
+        char *cleanedFormat = fprintfMat_getCleanedFormat(format);
         if (cleanedFormat)
         {
             FREE(cleanedFormat);
@@ -60,41 +56,5 @@ static char *replaceInFormat(const char *format)
     }
 
     return NULL;
-}
-// =============================================================================
-static char *getCleanedFormat(const char *format)
-{
-    char *cleanedFormat = NULL;
-    if (format)
-    {
-        char *percent = strchr((char*)format, '%');
-        if (percent)
-        {
-            int i = 0;
-            for (i = 0; i < NB_FORMAT_SUPPORTED; i++)
-            {
-                char *token = strstr(percent, supportedFormat[i]);
-                if (token)
-                {
-                    size_t nbcharacters = strlen(percent) - strlen(token);
-                    cleanedFormat = os_strdup(percent);
-                    cleanedFormat[nbcharacters] = 0;
-                    if ( ((nbcharacters - 1 > 0) && (isdigit(cleanedFormat[nbcharacters - 1])) ||
-                            (cleanedFormat[nbcharacters - 1]) == '.') ||
-                            (cleanedFormat[nbcharacters - 1]) == '%')
-                    {
-                        strcat(cleanedFormat, supportedFormat[i]);
-                        return cleanedFormat;
-                    }
-                    else
-                    {
-                        FREE(cleanedFormat);
-                        cleanedFormat = NULL;
-                    }
-                }
-            }
-        }
-    }
-    return cleanedFormat;
 }
 // =============================================================================

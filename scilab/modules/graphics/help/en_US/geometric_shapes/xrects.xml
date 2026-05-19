@@ -25,7 +25,7 @@
           hdl = xrects(...)
       </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -75,8 +75,8 @@
             if <literal>fill(i)=0</literal>, rectangle <literal>i</literal> is drawn using the current
             line style (or color).
         </para>
-        <warning>Please note that height is positive downwards.</warning>
-        <warning>Created rectangles inherits the clip property from the current axes.</warning>
+        <warning><para>Please note that height is positive downwards.</para></warning>
+        <warning><para>Created rectangles inherits the clip property from the current axes.</para></warning>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -114,9 +114,9 @@ xnumb(x,15*ones(x),cols)
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

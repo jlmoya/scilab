@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Diode.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_Diode">
+    <refsection xml:id="Contents_Diode">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_Diode">Description</xref>
+                <para><link linkend="Description_Diode">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_Diode">Paramètres</xref>
+                <para><link linkend="Dialogbox_Diode">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_Diode">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_Diode">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Diode">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_Diode">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <link linkend="Diode">Modèle Modelica</link>
+                <para><link linkend="Diode">Modèle Modelica</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_Diode">
+    <refsection xml:id="Description_Diode">
         <title>Description</title>
         <para>
             Ce composant est constitué d'une diode simple en parallèle avec une résistance
@@ -72,15 +72,14 @@
             de la diode devient linéaire afin d'éviter un débordement de capacité numérique.
         </para>
     </refsection>
-    <refsection id="Dialogbox_Diode">
+    <refsection xml:id="Dialogbox_Diode">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/Diode_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -112,7 +111,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_Diode">
+    <refsection xml:id="Defaultproperties_Diode">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -204,7 +203,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_Diode">
+    <refsection xml:id="Interfacingfunction_Diode">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -212,7 +211,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_Diode">
+    <refsection xml:id="Modelicamodel_Diode">
         <title>Modèle Modelica</title>
         <itemizedlist>
             <listitem>

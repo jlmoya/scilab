@@ -105,6 +105,8 @@ int ElemFuncModule::Load()
     symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"vander", &sci_vander, MODULE_NAME));
     symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"isempty", &sci_isempty, MODULE_NAME));
     symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"%_gallery", &sci_percent_gallery, MODULE_NAME));
+    symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"ishermitian", &sci_ishermitian, MODULE_NAME));
+    symbol::Context::getInstance()->addFunction(types::Function::createFunction(L"issymmetric", &sci_issymmetric, MODULE_NAME));
     return 1;
 }
 

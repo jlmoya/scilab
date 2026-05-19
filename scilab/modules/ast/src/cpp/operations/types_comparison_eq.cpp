@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  *  Copyright (C) 2012 - Scilab Enterprises - Antoine ELIAS
  *  Copyright (C) 2015 - Scilab Enterprises - Sylvain GENIN
@@ -3446,10 +3446,9 @@ types::InternalType* compequal_M_M<GraphicHandle, GraphicHandle, Bool>(GraphicHa
     }
 
     /* check dimension*/
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        return new Bool(false);
     }
 
     Bool* pOut = new Bool(_pL->getDims(), _pL->getDimsArray());

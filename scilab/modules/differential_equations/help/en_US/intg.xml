@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="intg" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intg" xml:lang="en">
     <refnamediv>
         <refname>intg</refname>
         <refpurpose>definite integral</refpurpose>
@@ -31,54 +28,60 @@
             [v, err, ierr] = intg(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                      Finite real numbers : bounds of the integral.
-                      <para/>
-                </listitem>
+                     <para>
+                          Finite real numbers : bounds of the integral.
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>f</term>
                 <listitem>
-                      function to be integrated, specified either by its literal name (ex:
-                      "sind") or by its identifier (ex: sind), or by a list (in case of function
-                      parameters).
-                      <para/>
-                </listitem>
+                     <para>
+                          function to be integrated, specified either by its literal name (ex:
+                          "sind") or by its identifier (ex: sind), or by a list (in case of function
+                          parameters).
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>atol</term>
                 <listitem>
-                       real number: tolerance on the absolute error accepted on the result.
-                       Default value: 1.d-13.
-                      <para/>
-                </listitem>
+                     <para>
+                           real number: tolerance on the absolute error accepted on the result.
+                           Default value: 1.d-13.
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rtol</term>
                 <listitem>
-                        real number: tolerance on the relative error accepted on the result.
-                        Default value: 1.d-8.
-                      <para/>
-                </listitem>
+                     <para>
+                            real number: tolerance on the relative error accepted on the result.
+                            Default value: 1.d-8.
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>err</term>
                 <listitem>
-                      estimated absolute error on the result.
-                      <para/>
-                </listitem>
+                     <para>
+                          estimated absolute error on the result.
+                          </para>
+                      </listitem>
             </varlistentry>
             <varlistentry>
                 <term>ierr</term>
                 <listitem>
-                      error flag number (= 0 if no error occurred).
-                      <para/>
-                </listitem>
+                     <para>
+                          error flag number (= 0 if no error occurred).
+                          </para>
+                      </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -148,7 +151,7 @@
         <para>
             The following graphs illustrate that phenomenon:
         </para>
-        <scilab:image localized="true">
+        <scilab:image localized="true"><![CDATA[
             x = 0:.1:22;
             y = zeros(1,221); y(1) = 3; y(96) = 1;
             subplot(1,2,1)
@@ -164,16 +167,18 @@
             xlabel(_("Indices of integration points, as seen by intg()"))
 
             gcf().axes_size = [700 350];
-        </scilab:image>
+        ]]></scilab:image>
         <para>
             On the left image, the spike lays between the 9th and 10th integration points,
             and is not detected. <literal>intg</literal> considers the function flat.
             On the right, the spike is large enough to be covered by the integration points.
         </para>
         <note>
-            When we want to display the computed solution even if the solver has encountered an error,
-            we should add the third output argument <literal>ierr</literal>. Then errors become
-            simple warnings. This is mostly used in the case of rounding errors.
+            <para>
+                When we want to display the computed solution even if the solver has encountered an error,
+                we should add the third output argument <literal>ierr</literal>. Then errors become
+                simple warnings. This is mostly used in the case of rounding errors.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -259,8 +264,10 @@ abs(exact - I)
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    The default value atol of the absolute tolerance is increased from
-                    10<superscript>-14</superscript> to 10<superscript>-13</superscript>.
+                    <para>
+                        The default value atol of the absolute tolerance is increased from
+                        10<superscript>-14</superscript> to 10<superscript>-13</superscript>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

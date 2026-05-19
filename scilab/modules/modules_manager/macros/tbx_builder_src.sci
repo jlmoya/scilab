@@ -38,7 +38,7 @@ function tbx_builder_src(module)
         error(msprintf(gettext("%s: The directory ''%s'' doesn''t exist or is not read accessible.\n"),"tbx_builder_src",module));
     end
 
-    // check there is a builder file is  present and if so execute it with tbx_builder
+    // check there is a builder file is present and if so execute it with tbx_builder
     builder_src_dir = module + "/src/";
     if isdir(builder_src_dir)
         mprintf(gettext("Building sources...\n"));
@@ -63,8 +63,7 @@ function tbx_builder_src(module)
         else
             // Default mode look in directories to find builder files and execute them
             tbx_builder_src_lang(languages, builder_src_dir);
+            tbx_build_src_clean(languages, builder_src_dir);
         end
-        
-        tbx_build_src_clean(languages, builder_src_dir);
     end
 endfunction

@@ -65,6 +65,23 @@ int spawncommand(const std::wstring& _pstCommand, int _iOutputs, types::String**
     sa.lpSecurityDescriptor = NULL;
     sa.bInheritHandle = TRUE;
 
+    // create a Job object to handle Scilab kill or closing before the child process
+    HANDLE hJob = CreateJobObjectW(NULL, NULL);
+    if (!hJob)
+    {
+        setEmptyOutputs(_iOutputs, _pStrOut, _pStrErr);
+        return -1;
+    }
+
+    JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli = {0};
+    jeli.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+    if (!SetInformationJobObject(hJob, JobObjectExtendedLimitInformation, &jeli, sizeof(jeli)))
+    {
+        setEmptyOutputs(_iOutputs, _pStrOut, _pStrErr);
+        CloseHandle(hJob);
+        return -1;
+    }
+
     if (needsStdOut)
     {
         /* create a non-inheritible pipe. */
@@ -119,6 +136,14 @@ int spawncommand(const std::wstring& _pstCommand, int _iOutputs, types::String**
     if (!ok)
     {
         setEmptyOutputs(_iOutputs, _pStrOut, _pStrErr);
+        return -1;
+    }
+
+    if (!AssignProcessToJobObject(hJob, pi.hProcess))
+    {
+        setEmptyOutputs(_iOutputs, _pStrOut, _pStrErr);
+        TerminateProcess(pi.hProcess, 1);
+        CloseHandle(hJob);
         return -1;
     }
 
@@ -208,8 +233,8 @@ int spawncommand(const std::wstring& _pstCommand, int _iOutputs, types::String**
         pipeSpawnOut.pipe = pipeOut[0];
         if (needsStdErr)
         {
-            pipeSpawnErr.pipe = pipeErr[0];
             close(pipeErr[1]);
+            pipeSpawnErr.pipe = pipeErr[0];
         }
     }
 #endif

@@ -24,7 +24,7 @@
             schema = xmlRelaxNG(path)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -48,15 +48,15 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
+    xdoc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
     rng = xmlRelaxNG("SCI/modules/xml/tests/unit_tests/library.rng");
 
     // We test if the document is valid
     // If no error the file is valid
 
-    xmlValidate(doc, rng);
+    xmlValidate(xdoc, rng);
 
-    xmlDelete(doc, rng);
+    xmlDelete(xdoc, rng);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -67,7 +67,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>bOK=haveacompiler()</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -38,7 +38,9 @@
         <para>Detect if a C compiler is available on the system.</para>
         <para>
             <note>
-                Please note that due to the multi vendors aspect in the Unix world (Mac OS X, Unix or various GNU/Linux distributions), this function always returns True for these operating system.
+                <para>
+                    Please note that due to the multi vendors aspect in the Unix world (Mac OS X, Unix or various GNU/Linux distributions), this function always returns True for these operating system.
+                </para>
             </note>
         </para>
     </refsection>

@@ -11,10 +11,7 @@ and continues to be available under such terms.
 For more information, see the COPYING file which you should have received
 along with this program.
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="xcorr" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="xcorr" xml:lang="en">
     <refnamediv>
         <refname>xcorr</refname>
         <refpurpose>Computes discrete auto or cross correlation</refpurpose>
@@ -28,8 +25,8 @@ along with this program.
           [c, lagindex] = xcorr(.., maxlags, scaling)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
@@ -87,33 +84,25 @@ along with this program.
         <title>Description</title>
         <itemizedlist>
             <listitem>
-                <literal>c=xcorr(x)</literal>
-
-                computes the un-normalized discrete auto correlation:
-                <para>
-                  <latex>{\begin{matrix}C_k = \sum_{i=1}^{n-k}
-                      {x_{i+k}*x^{*}_i}, k \geq 0 \\ C_k = C^{*}_{-k}, k \leq
-                      -1\end{matrix}.$
-                  </latex>
-                </para>
-                and return in <literal>c</literal> the sequence of auto correlation lags
-                C<subscript>k=-n:n</subscript>
-                where <literal>n</literal> is the length of <literal>x</literal>
-            </listitem>
+                 <para><literal>c=xcorr(x)</literal>
+    
+                    computes the un-normalized discrete auto correlation:
+                    
+                    and return in <literal>c</literal> the sequence of auto correlation lags
+                    C<subscript>k=-n:n</subscript>
+                    where <literal>n</literal> is the length of <literal>x</literal>
+                      </para>
+                  </listitem>
             <listitem>
-                <literal>xcorr(x,y)</literal>
-
-                computes the un-normalized discrete cross correlation:
-                <para>
-                  <latex>{\begin{matrix}C_k = \sum_{i=1}^{n-k}
-                      {x_{i+k}*y^{*}_i}, k \geq 0 \\ C_k = C^{*}_{-k}, k \leq
-                      -1\end{matrix}}.$
-                  </latex>
+                 <para><literal>xcorr(x,y)</literal>
+    
+                    computes the un-normalized discrete cross correlation:
+                    
+                    and return in  <literal>c</literal> the sequence of auto correlation lags
+                    C<subscript>k=-n:n</subscript>
+                    where <literal>n</literal> is the maximum of <literal>x</literal> and
+                    <literal>y</literal> lengths.
                 </para>
-                and return in  <literal>c</literal> the sequence of auto correlation lags
-                C<subscript>k=-n:n</subscript>
-                where <literal>n</literal> is the maximum of <literal>x</literal> and
-                <literal>y</literal> lengths.
             </listitem>
         </itemizedlist>
         <para>
@@ -129,13 +118,16 @@ along with this program.
             <literal>c</literal>:
             <itemizedlist>
                 <listitem>
-                    <term>"biased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/n</literal>.
+                     <para><literal>"biased"</literal>: <literal>c=</literal><emphasis>C</emphasis><literal>/n</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    <term>"unbiased"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>./(n-(-maxlags:maxlags))</literal>.
+                     <para><literal>"unbiased"</literal>: <literal>c=</literal><emphasis>C</emphasis><literal>./(n-(-maxlags:maxlags))</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    <term>"coeff"</term>: <literal>c=</literal><emphasis>C</emphasis><literal>/(norm(x)*norm(y))</literal>.
+                     <para><literal>"coeff"</literal>: <literal>c=</literal><emphasis>C</emphasis><literal>/(norm(x)*norm(y))</literal>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -160,12 +152,12 @@ along with this program.
             [c, ind] = xcorr(y, "biased");
             plot(ind, c)
             ]]></programlisting>
-          <scilab:image>
+          <scilab:image><![CDATA[
             t = linspace(0, 100, 2000);
             y = 0.8 * sin(t) + 0.8 * sin(2 * t);
             [c, ind] = xcorr(y, "biased");
             plot(ind, c)
-          </scilab:image>
+          ]]></scilab:image>
       </refsection>
       <refsection role="see also">
           <title>See also</title>
@@ -181,7 +173,7 @@ along with this program.
             </member>
           </simplelist>
       </refsection>
-      <refsection>
+      <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

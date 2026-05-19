@@ -29,7 +29,7 @@
             r = routh_t(h, k, normalized)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -105,8 +105,10 @@
         </para>
         <para>
             <note>
-                Hint: If <literal>h=1/p</literal>, then <literal>routh_t(h, kp)</literal> is equivalent to
-                <literal>routh_t(p+kp)</literal> .
+                <para>
+                    Hint: If <literal>h=1/p</literal>, then <literal>routh_t(h, kp)</literal> is equivalent to
+                    <literal>routh_t(p+kp)</literal> .
+                </para>
             </note>
         </para>
     </refsection>
@@ -166,16 +168,16 @@ end
     <refsection>
         <title>Bibliography</title>
         <para>
-            <ulink url="http://controls.engin.umich.edu/wiki/index.php/RouthStability">http://controls.engin.umich.edu/wiki/index.php/RouthStability</ulink>
+            <link xlink:href="http://controls.engin.umich.edu/wiki/index.php/RouthStability">http://controls.engin.umich.edu/wiki/index.php/RouthStability</link>
         </para>
         <para>
-            <ulink url="http://www.jdotec.net/s3i/TD_Info/Routh/Routh.pdf">http://www.jdotec.net/s3i/TD_Info/Routh/Routh.pdf</ulink>
+            <link xlink:href="http://www.jdotec.net/s3i/TD_Info/Routh/Routh.pdf">http://www.jdotec.net/s3i/TD_Info/Routh/Routh.pdf</link>
         </para>
         <para>Comments on the Routh-Hurwitz criterion, Shamash, Y.,Automatic
             Control, IEEE T.A.C Volume 25, Issue 1, Feb 1980 Page(s): 132 - 133
         </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

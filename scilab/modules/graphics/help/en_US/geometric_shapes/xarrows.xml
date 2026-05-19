@@ -25,7 +25,7 @@
           h = xarrows(...)
       </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -134,7 +134,7 @@ xarrows([xi;xf],[yi;yf],[zi;zf],0.7, 32*rand(1,N))
             xarrows([xi;xf],[yi;yf],[zi;zf],0.7, 32*rand(1,N))
         </scilab:image>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -143,9 +143,9 @@ xarrows([xi;xf],[yi;yf],[zi;zf],0.7, 32*rand(1,N))
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

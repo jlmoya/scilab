@@ -31,8 +31,6 @@ int sci_chdir(char *fname, void* pvApiCtx)
     int *piAddressVarOne = NULL;
     wchar_t *pStVarOne = NULL;
     int iType1	= 0;
-    int lenStVarOne = 0;
-    int m1 = 0, n1 = 0;
 
     wchar_t *expandedPath = NULL;
 

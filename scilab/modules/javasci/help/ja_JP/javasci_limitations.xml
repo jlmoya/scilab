@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2008 - INRIA - Allan CORNET
@@ -14,9 +13,7 @@
  * along with this program.
  *
  -->
-
 <!-- This document was created with Syntext Serna Free. -->
-
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="javasci_v1_limitations" scilab:needs-examples="no" xml:lang="ja">
 
     <refnamediv>
@@ -36,69 +33,85 @@
         <itemizedlist>
 
             <listitem>
-
-                Scilab言語か任意の変数を取得するためには,
-
-                事前に変数の型を知ることが必要でした.
-
+                 <para>
+    
+                    Scilab言語か任意の変数を取得するためには,
+    
+                    事前に変数の型を知ることが必要でした.
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                インターフェイスにより管理されるのは小数の型のみでした
-
-                (論理値, double, 複素数および文字列).
-
+                 <para>
+    
+                    インターフェイスにより管理されるのは小数の型のみでした
+    
+                    (論理値, double, 複素数および文字列).
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                ScilabとJavaの間で整合性を欠いていました.
-
-                例えば, Scilab では,スカラー ([1,1]の行列)は行列です.
-
-                Javaインターフェイスでは, 異なる2種類のデータ型
-
-                (例: SciDouble および SciDoubleArray)となります.
-
+                 <para>
+    
+                    ScilabとJavaの間で整合性を欠いていました.
+    
+                    例えば, Scilab では,スカラー ([1,1]の行列)は行列です.
+    
+                    Javaインターフェイスでは, 異なる2種類のデータ型
+    
+                    (例: SciDouble および SciDoubleArray)となります.
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                多くのデータ型ではシリアル化ができませんでした.
-
+                 <para>
+    
+                    多くのデータ型ではシリアル化ができませんでした.
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                Scilab関数のコールはExecメソッドでのみ可能で,
-
-                複数の出力引数を取得する場合に複雑になっていました.
-
+                 <para>
+    
+                    Scilab関数のコールはExecメソッドでのみ可能で,
+    
+                    複数の出力引数を取得する場合に複雑になっていました.
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                パッケージ名はScilabおよびScilab Java checkstyleの
-
-                パッケージ名命名規則に従っていませんでした.
-
+                 <para>
+    
+                    パッケージ名はScilabおよびScilab Java checkstyleの
+    
+                    パッケージ名命名規則に従っていませんでした.
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                グラフィックウインドウの管理が大変でした
-
-                (この問題はJavasci v2でもまだ未解決です).
-
+                 <para>
+    
+                    グラフィックウインドウの管理が大変でした
+    
+                    (この問題はJavasci v2でもまだ未解決です).
+    
+                </para>
             </listitem>
 
             <listitem>
-
-                イベントループとの連携がありません
-
-                (この問題はJavasci v2でもまだ未解決です).
-
+                 <para>
+    
+                    イベントループとの連携がありません
+    
+                    (この問題はJavasci v2でもまだ未解決です).
+    
+                </para>
             </listitem>
 
         </itemizedlist>
@@ -156,4 +169,3 @@
     </refsection>
 
 </refentry>
-

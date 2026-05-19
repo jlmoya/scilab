@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/PRODUCT.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_PRODUCT">
+    <refsection xml:id="Contents_PRODUCT">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_PRODUCT">Description</xref>
+                <para><link linkend="Description_PRODUCT">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_PRODUCT">Parameters</xref>
+                <para><link linkend="Dialogbox_PRODUCT">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_PRODUCT">Default properties</xref>
+                <para><link linkend="Defaultproperties_PRODUCT">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_PRODUCT">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_PRODUCT">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_PRODUCT">Computational function</xref>
+                <para><link linkend="Computationalfunction_PRODUCT">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_PRODUCT">See also</xref>
+                <para><link linkend="Seealso_PRODUCT">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_PRODUCT">
+    <refsection xml:id="Description_PRODUCT">
         <title>Description</title>
         <para>
             That bloc computes element-wise multiplication or division of its vector inputs.
@@ -83,14 +83,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_PRODUCT">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_PRODUCT">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/PRODUCT_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/PRODUCT_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -108,7 +107,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_PRODUCT">
+    <refsection xml:id="Defaultproperties_PRODUCT">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -184,7 +183,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_PRODUCT">
+    <refsection xml:id="Interfacingfunction_PRODUCT">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -192,7 +191,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_PRODUCT">
+    <refsection xml:id="Computationalfunction_PRODUCT">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

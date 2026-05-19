@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2001 - 2002 - INRIA - Mathieu Philipe
  * Copyright (C) 2002 - 2004 - INRIA - Djalel Abdemouche
@@ -34,7 +34,7 @@
 
 #define NUMCOLORS_SCI 32
 
-GRAPHICS_IMPEXP int C2F(graphicsmodels) (void);
+GRAPHICS_IMPEXP int InitGraphicModel(void);
 
 GRAPHICS_IMPEXP int sciInitGraphicMode (int iObjUID);
 

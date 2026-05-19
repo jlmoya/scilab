@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="surface_properties">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="surface_properties">
     <refnamediv>
         <refname>surface properties</refname>
         <refpurpose>description of the 3D entities
@@ -62,12 +59,14 @@
                     <para>
                         <itemizedlist>
                             <listitem>
-                                <emphasis role="bold">"on"</emphasis> (default): The surface is
-                                displayed, possibly with its mesh and markers.
+                                 <para><emphasis role="bold">"on"</emphasis> (default): The surface is
+                                    displayed, possibly with its mesh and markers.
+                                </para>
                             </listitem>
                             <listitem>
-                                <emphasis role="bold">"off"</emphasis> : The surface and its mesh
-                                and markers are hidden.
+                                 <para><emphasis role="bold">"off"</emphasis> : The surface and its mesh
+                                    and markers are hidden.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -79,13 +78,15 @@
                     <para>
                         <itemizedlist>
                             <listitem>
-                                <emphasis role="bold">"on"</emphasis> (default): facets (body and
-                                edges) are drawn.
+                                 <para><emphasis role="bold">"on"</emphasis> (default): facets (body and
+                                    edges) are drawn.
+                                </para>
                             </listitem>
                             <listitem>
-                                <emphasis role="bold">"off"</emphasis> : facets (body and edges)
-                                are hidden. But markers -- if any -- are still displayed
-                                (provided that <literal>.mark_mode = "on"</literal>).
+                                 <para><emphasis role="bold">"off"</emphasis> : facets (body and edges)
+                                    are hidden. But markers -- if any -- are still displayed
+                                    (provided that <literal>.mark_mode = "on"</literal>).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -212,31 +213,34 @@
                 <listitem>
                     <para>
                         color index in <literal>[-size(colormap), size(colormap)]</literal>
-                        <para>
-                            If <emphasis role="italic">color_flag == 0</emphasis> :
-                            The uniform color of the whole upward surface is set to the index
-                            <literal>abs(color_mode)</literal>.
-                        </para>
-                        <para>
-                            In addition, whatever is <literal>color_flag</literal>,
-                            <itemizedlist>
-                                <listitem>
-                                    <literal>color_mode = 0</literal> makes facets hollow and displays
+                    </para>
+                    <para>
+                        If <emphasis role="italic">color_flag == 0</emphasis> :
+                        The uniform color of the whole upward surface is set to the index
+                        <literal>abs(color_mode)</literal>.
+                    </para>
+                    <para>
+                        In addition, whatever is <literal>color_flag</literal>,
+                        <itemizedlist>
+                            <listitem>
+                                    <para><literal>color_mode = 0</literal> makes facets hollow and displays
                                     only the surface's mesh.
-                                </listitem>
-                                <listitem>
-                                    <literal>color_mode > 0</literal> displays facets bodies and
+                                </para>
+                            </listitem>
+                            <listitem>
+                                    <para><literal>color_mode &gt; 0</literal> displays facets bodies and
                                     edges.
-                                </listitem>
-                                <listitem>
-                                    <literal>color_mode &lt; 0</literal> hides the mesh and displays
+                                </para>
+                            </listitem>
+                            <listitem>
+                                    <para><literal>color_mode &lt; 0</literal> hides the mesh and displays
                                     only facets bodies.
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                        <para>
-                            When it is displayed, the mesh color is set to <varname>foreground</varname>.
-                        </para>
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                    <para>
+                        When it is displayed, the mesh color is set to <varname>foreground</varname>.
                     </para>
                 </listitem>
             </varlistentry>
@@ -250,16 +254,19 @@
                         In addition,
                         <itemizedlist>
                             <listitem>
-                                <varname>color_mode</varname> rules the display of the mesh
-                                (facets edges) and/or body of facets.
+                                 <para><varname>color_mode</varname> rules the display of the mesh
+                                    (facets edges) and/or body of facets.
+                                </para>
                             </listitem>
                             <listitem>
-                                <varname>foreground</varname> and <varname>thickness</varname> rules
-                                the line color and thickness of the mesh.
+                                 <para><varname>foreground</varname> and <varname>thickness</varname> rules
+                                    the line color and thickness of the mesh.
+                                </para>
                             </listitem>
                             <listitem>
-                                <varname>hiddencolor</varname> rules the color of the backward facets
-                                face.
+                                 <para><varname>hiddencolor</varname> rules the color of the backward facets
+                                    face.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -267,12 +274,14 @@
                         Here below,
                         <itemizedlist>
                             <listitem>
-                                <emphasis role="bold">nf</emphasis> stands for the number of facets
-                                of the surface.
+                                 <para><emphasis role="bold">nf</emphasis> stands for the number of facets
+                                    of the surface.
+                                </para>
                             </listitem>
                             <listitem>
-                                <emphasis role="bold">n</emphasis> stands for the number of
-                                vertices of each facet. All facets have the same number of vertices.
+                                 <para><emphasis role="bold">n</emphasis> stands for the number of
+                                    vertices of each facet. All facets have the same number of vertices.
+                                </para>
                             </listitem>
                         </itemizedlist>
                         Then we have:
@@ -280,7 +289,7 @@
                     <itemizedlist>
                         <listitem>
                             <para>
-                                <term>color_flag = 0</term> <emphasis role="bold">(uniform color)</emphasis> :
+                                <literal>color_flag = 0</literal> <emphasis role="bold">(uniform color)</emphasis> :
                             </para>
                             <para>All facets are painted using the same color index and method
                                 defined by <literal>color_mode</literal> (see above).
@@ -288,7 +297,7 @@
                         </listitem>
                         <listitem>
                             <para>
-                                <term>color_flag = 1</term>
+                                <literal>color_flag = 1</literal>
                                 <emphasis role="bold">(uniform color on each facet, mapping Z)</emphasis> :
                             </para>
                             <para>
@@ -310,7 +319,7 @@
                     <itemizedlist>
                         <listitem>
                             <para>
-                                <term>color_flag = 2</term> <emphasis role="bold">('flat' shading)</emphasis> :
+                                <literal>color_flag = 2</literal> <emphasis role="bold">('flat' shading)</emphasis> :
                             </para>
                             <para>All facets are painted using the color index given in the
                                 <literal>data.color</literal> property (one color per facet is
@@ -325,13 +334,15 @@
                                         facet <literal>#i</literal> :
                                         <itemizedlist>
                                             <listitem>
-                                                <literal>color(i)>0</literal>: the boundary of the facet
-                                                is drawn with current line style and color.
+                                                 <para><literal>color(i)&gt;0</literal>: the boundary of the facet
+                                                    is drawn with current line style and color.
+                                                </para>
                                             </listitem>
                                             <listitem>
-                                                <literal>color(i)&lt;0</literal>: the facet's
-                                                boundary is not drawn, and <literal>-color(i)</literal>
-                                                is used as facet's color.
+                                                 <para><literal>color(i)&lt;0</literal>: the facet's
+                                                    boundary is not drawn, and <literal>-color(i)</literal>
+                                                    is used as facet's color.
+                                                </para>
                                             </listitem>
                                         </itemizedlist>
                                     </para>
@@ -347,7 +358,7 @@
                         </listitem>
                         <listitem>
                             <para>
-                                <term>color_flag = 3</term>
+                                <literal>color_flag = 3</literal>
                                 <emphasis role="bold">(interpolated shading on each facet)</emphasis> :
                             </para>
                             <para>
@@ -373,17 +384,19 @@
                                         colors of its vertices.
                                     </para>
                                     <note>
-                                        If the Z coordinate of vertices has been assigned to
-                                        <literal>data.color</literal>, this mode allows to map local Z
-                                        with colors, down to the facet scale. See also the
-                                        <literal>.cdata_mapping</literal> property.
+                                        <para>
+                                            If the Z coordinate of vertices has been assigned to
+                                            <literal>data.color</literal>, this mode allows to map local Z
+                                            with colors, down to the facet scale. See also the
+                                            <literal>.cdata_mapping</literal> property.
+                                        </para>
                                     </note>
                                 </listitem>
                             </orderedlist>
                         </listitem>
                         <listitem>
                             <para>
-                                <term> color_flag = 4</term>
+                                <literal> color_flag = 4</literal>
                                 <emphasis role="bold">(Matlab-like 'flat' shading)</emphasis> :
                             </para>
                             <para>
@@ -416,7 +429,7 @@
                             <listitem>
                                 <para><emphasis>"scaled"</emphasis>: <literal>data.color</literal>
                                     values are mapped to indices in the current colormap depending on the
-                                    <term>cdata_bounds</term> and <term>color_range</term> properties defined below.
+                                    <literal>cdata_bounds</literal> and <literal>color_range</literal> properties defined below.
                                 </para>
                             </listitem>
                         </itemizedlist>
@@ -429,7 +442,7 @@
                     <para>
                         This vector of size 2, <literal>[cmin,cmax]</literal>, gives the <literal>data.color</literal> interval of values mapped to indices 
                         <literal>1:size(gcf().color_map,1)</literal> of the current
-                        colormap or to an eventual subset defined by the <term>color_range</term> property.
+                        colormap or to an eventual subset defined by the <literal>color_range</literal> property.
                         Values of <literal>data.color</literal> outside <literal>[cmin,cmax]</literal> are mapped respectively to the first and the last element of the colormap.
                         By default, the <literal>cdata_bounds</literal> property is <literal>[0,0]</literal> which means
                         that <literal>cmin</literal> and <literal>cmax</literal> are automatically set to the minimum and maximum of <literal>data.color</literal> property.
@@ -625,8 +638,8 @@ e.color_flag= 3; // interpolated shading mode (based on blue default color becau
         h.color_range = [1 nc];
         h.cdata_bounds = [-1 -0.5];
         ]]></programlisting>
-        <scilab:image>
-            <![CDATA[
+        <scilab:image><![CDATA[
+            
             clf;
             subplot(2,2,1);
             nc = 128;
@@ -685,14 +698,16 @@ e.color_flag= 3; // interpolated shading mode (based on blue default color becau
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revremark>
-                    <literal>cdata_bounds</literal> and <literal>color_range</literal>properties added.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>cdata_bounds</literal> and <literal>color_range</literal>properties added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

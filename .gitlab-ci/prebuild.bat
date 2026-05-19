@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 
 set ARCH=x64
 set LOGDIR="%SCI_VERSION_STRING%"
@@ -25,7 +25,7 @@ if exist "%LOGDIR%" (
 rem ################################
 rem ##### DEPENDENCIES VERSION #####
 rem ################################
-set SVN_REVISION=30150
+set SVN_REVISION=30158
 
 rem ###############################
 rem ##### ARGUMENT MANAGEMENT #####

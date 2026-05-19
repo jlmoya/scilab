@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="sum" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="sum" xml:lang="ru">
     <refnamediv>
         <refname>sum</refname>
         <refpurpose>сумма элементов массива</refpurpose>
@@ -36,44 +33,50 @@
             <varlistentry>
                 <term>x</term>
                 <listitem>
-                    Массив логических (плотных или разреженных), закодированных целых чисел,
-                    действительных или комплексных чисел (плотных или разреженных),
-                    полиномов или рациональных чисел.
-                    <para/>
-                </listitem>
+                     <para>
+                        Массив логических (плотных или разреженных), закодированных целых чисел,
+                        действительных или комплексных чисел (плотных или разреженных),
+                        полиномов или рациональных чисел.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>orientation</term>
                 <listitem>
-                    (ориентация) может быть или
-                    <itemizedlist>
-                        <listitem>
-                            строкой с возможными значениями <literal>"*"</literal> ("естественное"),
-                            <literal>"r"</literal>, <literal>"c"</literal> или  <literal>"m"</literal>
-                            <para/>
-                        </listitem>
-                        <listitem>
-                            или целым положительным числом
-                            <para/>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        (ориентация) может быть или
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    строкой с возможными значениями <literal>"*"</literal> ("естественное"),
+                                    <literal>"r"</literal>, <literal>"c"</literal> или  <literal>"m"</literal>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    или целым положительным числом
+                                    </para>
+                                </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>outtype</term>
                 <listitem>
-                    строка с возможными значениями <literal>"native"</literal> ("естественное")
-                    или <literal>"double"</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        строка с возможными значениями <literal>"native"</literal> ("естественное")
+                        или <literal>"double"</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    скаляр или массив
-                    <para/>
-                </listitem>
+                     <para>
+                        скаляр или массив
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -93,11 +96,11 @@
                     если <literal>orientation</literal> равна 1 или "r", то
                 </para>
                 <para>
-                    <latex><![CDATA[{ y(\mathbf{1},j) = \sum_{\mathbf{i}} x(\mathbf{i},j)}]]></latex>
+                    <latex>{ y(\mathbf{1},j) = \sum_{\mathbf{i}} x(\mathbf{i},j)}</latex>
                 </para>
                 <para>или </para>
                 <para>
-                    <latex><![CDATA[ y(\mathbf{1},j,k,\ldots) = \sum_{\mathbf{i}} x(\mathbf{i},j,k,\ldots)]]></latex>
+                    <latex> y(\mathbf{1},j,k,\ldots) = \sum_{\mathbf{i}} x(\mathbf{i},j,k,\ldots)</latex>
                 </para>
             </listitem>
             <listitem>
@@ -105,11 +108,11 @@
                     если <literal>orientation</literal> равна 2 или "c", то:
                 </para>
                 <para>
-                    <latex><![CDATA[ y(i,\mathbf{1}) = \sum_{\mathbf{j}} x(i,\mathbf{j})]]></latex>
+                    <latex> y(i,\mathbf{1}) = \sum_{\mathbf{j}} x(i,\mathbf{j})</latex>
                 </para>
                 <para>или </para>
                 <para>
-                    <latex><![CDATA[ y(i,\mathbf{1},k,\ldots) = \sum_{j} x(i,\mathbf{j},k,\ldots)]]></latex>
+                    <latex> y(i,\mathbf{1},k,\ldots) = \sum_{j} x(i,\mathbf{j},k,\ldots)</latex>
                 </para>
             </listitem>
             <listitem>
@@ -117,7 +120,7 @@
                     если <literal>orientation</literal> равна n, то
                 </para>
                 <para>
-                    <latex><![CDATA[ y(i_1,\ldots,i_{n-1},\mathbf{1},i_{n+1},\ldots) = \sum_{\mathbf{i_n}} x(i_1,\ldots,i_{n-1},\mathbf{i_n},i_{n+1},\ldots)]]></latex>
+                    <latex> y(i_1,\ldots,i_{n-1},\mathbf{1},i_{n+1},\ldots) = \sum_{\mathbf{i_n}} x(i_1,\ldots,i_{n-1},\mathbf{i_n},i_{n+1},\ldots)</latex>
                 </para>
             </listitem>
             <listitem>

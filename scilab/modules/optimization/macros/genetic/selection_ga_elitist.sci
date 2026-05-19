@@ -35,6 +35,9 @@ function [Pop_out,FObj_Pop_out,Efficiency,MO_Total_FObj_out] = selection_ga_elit
     Efficiency = (1 - pressure) * (FObj_Pop_Max - Total_FObj)/max([FObj_Pop_Max - FObj_Pop_Min, %eps]) + pressure;
     [Efficiency, Index_sort] = gsort(Efficiency);
     Efficiency = Efficiency(1:pop_size);
+    if or(isnan(Efficiency)) then
+        pause
+    end
 
     // Extraction and selection of the phenotype
     Total_FObj   = Total_FObj(Index_sort);

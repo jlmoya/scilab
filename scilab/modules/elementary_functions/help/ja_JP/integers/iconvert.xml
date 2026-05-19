@@ -15,10 +15,7 @@
  *
  -->
 <!--  module: integer  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-    xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-    xml:lang="ja" xml:id="iconvert">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="iconvert">
     <refnamediv>
         <refname>iconvert</refname>
         <refpurpose>1または8バイト整数表現に変換する</refpurpose>
@@ -53,7 +50,7 @@
         <para>
             <table>
                 <tr><th>itype</th><th>y typeof</th> <th>range</th></tr>
-                <tr><th>0</th>  <td>(reals)</td>    <td></td></tr>
+                <tr><th>0</th>  <td>(reals)</td>    <td/></tr>
                 <tr><th>1</th>  <td>int8</td>   <td>[-128, 127]</td></tr>
                 <tr><th>2</th>  <td>int16</td>  <td>[-32768, 32767]</td></tr>
                 <tr><th>4</th>  <td>int32</td>  <td>[-2147483648, 2147483647]</td></tr>
@@ -143,18 +140,22 @@ iconvert(-1, 18)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Support to int64 and uint64 encodings added.
+                             <para>
+                                Support to int64 and uint64 encodings added.
+                            </para>
                         </listitem>
                         <listitem>
-                            <table>
-                                <tr><th>This</th>              <th>is now</th>     <th>instead of</th></tr>
-                                <tr><td>iconvert([-%inf,%inf], 1)</td><td>[-128, 127]</td><td>[0, 0]</td></tr>
-                                <tr><td>iconvert([-%inf,%inf], 2)</td><td>[-32768, 32767]</td><td>[0, 0]</td></tr>
-                                <tr><td>iconvert(%inf, 4)</td>  <td>2147483647</td> <td>-2147483648</td></tr>
-                                <tr><td>iconvert(%inf, 11)</td> <td>255</td>        <td>0</td></tr>
-                                <tr><td>iconvert(%inf, 12)</td> <td>65535</td>      <td>0</td></tr>
-                                <tr><td>iconvert(%inf, 14)</td> <td>4294967295</td> <td>0</td></tr>
-                            </table>
+                            <para>
+                                <table>
+                                    <tr><th>This</th>              <th>is now</th>     <th>instead of</th></tr>
+                                    <tr><td>iconvert([-%inf,%inf], 1)</td><td>[-128, 127]</td><td>[0, 0]</td></tr>
+                                    <tr><td>iconvert([-%inf,%inf], 2)</td><td>[-32768, 32767]</td><td>[0, 0]</td></tr>
+                                    <tr><td>iconvert(%inf, 4)</td>  <td>2147483647</td> <td>-2147483648</td></tr>
+                                    <tr><td>iconvert(%inf, 11)</td> <td>255</td>        <td>0</td></tr>
+                                    <tr><td>iconvert(%inf, 12)</td> <td>65535</td>      <td>0</td></tr>
+                                    <tr><td>iconvert(%inf, 14)</td> <td>4294967295</td> <td>0</td></tr>
+                                </table>
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

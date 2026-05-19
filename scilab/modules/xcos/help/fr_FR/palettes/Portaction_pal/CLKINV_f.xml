@@ -23,53 +23,53 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CLKINV_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CLKINV_f">
+    <refsection xml:id="Contents_CLKINV_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Palette_CLKINV_f">Palettes</xref>
+                <para><link linkend="Palette_CLKINV_f">Palettes</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Description_CLKINV_f">Description</xref>
+                <para><link linkend="Description_CLKINV_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CLKINV_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_CLKINV_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CLKINV_f">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_CLKINV_f">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CLKINV_f">Exemple</xref>
+                <para><link linkend="Example_CLKINV_f">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CLKINV_f">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_CLKINV_f">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CLKINV_f">Voir aussi</xref>
+                <para><link linkend="Seealso_CLKINV_f">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Palette_CLKINV_f">
+    <refsection xml:id="Palette_CLKINV_f">
         <title>Palettes</title>
         <itemizedlist>
             <listitem>
-                <link linkend="Portaction_pal">Palette Ports &amp; Sous-systèmes</link>
+                <para><link linkend="Portaction_pal">Palette Ports &amp; Sous-systèmes</link></para>
             </listitem>
             <listitem>
-                <link linkend="Sources_pal">Palette Sources</link>
+                <para><link linkend="Sources_pal">Palette Sources</link></para>
             </listitem>
             <listitem>
-                <link linkend="Events_pal">Palette Gestion d'événements</link>
+                <para><link linkend="Events_pal">Palette Gestion d'événements</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_CLKINV_f">
+    <refsection xml:id="Description_CLKINV_f">
         <title>Description</title>
         <para>
             Ce bloc représente une port d'entrée d'évènement. Il doit être utilisé uniquement à l'intérieur d'un Super bloc Xcos et être
@@ -81,15 +81,14 @@
             être unique et défini avec le paramètre <emphasis role="bold">Port number</emphasis>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_CLKINV_f">
+    <refsection xml:id="Dialogbox_CLKINV_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/portaction_pal/fr_FR/CLKINV_f_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -100,7 +99,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_CLKINV_f">
+    <refsection xml:id="Defaultproperties_CLKINV_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -157,7 +156,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_CLKINV_f">
+    <refsection xml:id="Example_CLKINV_f">
         <title>Exemple</title>
         <para>
             Dans cet exemple nous créons un genérateur d'onde carrée avec deux sorties inverses l'une de l'autre.
@@ -181,7 +180,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/portaction_pal/fr_FR/CLKINV_f_fr
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_CLKINV_f">
+    <refsection xml:id="Interfacingfunction_CLKINV_f">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -191,14 +190,14 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection role="see also" id="Seealso_CLKINV_f">
+    <refsection role="see also" xml:id="Seealso_CLKINV_f">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="CLKOUTV_f">CLKOUTV_f</link>
+                <para><link linkend="CLKOUTV_f">CLKOUTV_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="SUPER_f">SUPER_f</link>
+                <para><link linkend="SUPER_f">SUPER_f</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -31,26 +31,28 @@
         <title>Syntax</title>
         <synopsis>var = vec2var(vec)</synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_vec2var">
+    <refsection xml:id="Parameters_vec2var" role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>vec</term>
                 <listitem>
-                    A vector of real numbers.
-                    <para/>
-                </listitem>
+                     <para>
+                        A vector of real numbers.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>var</term>
                 <listitem>
-                    Can be a Double, Integer, Boolean, String or List <link linkend="typeof">Scilab object</link>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Can be a Double, Integer, Boolean, String or List <link linkend="typeof">Scilab object</link>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
-    <refsection id="Description_vec2var">
+    <refsection xml:id="Description_vec2var">
         <title>Description</title>
         <para>
             var2vec / vec2var functions are used inside the interfacing functions of Scilab blocks
@@ -58,7 +60,7 @@
             parameters (rpar) and with the discrete state register (z).
         </para>
     </refsection>
-    <refsection id="Example_vec2var">
+    <refsection xml:id="Example_vec2var">
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 a = list("cos", [1.1 2])

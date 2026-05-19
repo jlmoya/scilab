@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="modulo" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="modulo" xml:lang="ru">
     <refnamediv>
         <refname>modulo</refname>
         <refpurpose>симметричный арифметический остаток от деления по модулю m</refpurpose>
@@ -29,7 +26,7 @@
     <refsynopsisdiv>
         <title>Синтаксис</title>
         <synopsis>i = modulo(n,m)</synopsis>
-        <para></para>
+        <para/>
         <synopsis>i = pmodulo(n,m)</synopsis>
     </refsynopsisdiv>
     <refsection>
@@ -80,19 +77,13 @@
             Для чисел,
             <itemizedlist>
                 <listitem>
-                    <para>
-                        <literal>modulo()</literal> вычисляет <literal>i = n - m. * int (n ./ m)</literal>.
-                        Результат отрицательный (или нулевой), когда <varname>n</varname>
-                        отрицательный, и в противном случае.
-                    </para>
-                </listitem>
+                     <para>
+                    </para>
+                </listitem>
                 <listitem>
-                    <para>
-                        <literal>pmodulo()</literal> вычисляет
-                        <literal>i = n - | m | . * floor (n ./ | m |)</literal>,
-                        ответ является положительным либо равным причинам.
-                    </para>
-                </listitem>
+                     <para>
+                    </para>
+                </listitem>
             </itemizedlist>
         </para>
         <para>
@@ -145,7 +136,7 @@ modulo( %z^2+1, %z)
 pmodulo(%z^2+1, %z)
  ]]></programlisting>
     </refsection>
-    <refsection role= "see also">
+    <refsection role="see also">
         <title>Смотрите также</title>
         <simplelist type="inline">
             <member>

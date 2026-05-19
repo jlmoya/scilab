@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="colon">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="colon">
     <refnamediv>
         <refname>colon (:)</refname>
         <refpurpose>Générateur de séries. Adresse tous les éléments d'une liste ou d'un tableau</refpurpose>
@@ -130,10 +127,12 @@
             Merci de noter que même si <literal>i</literal>, <literal>j</literal>,
             <literal>k</literal> ou <literal>d</literal> ont une partie décimale, seule la partie entière sera utilisée.
         </para>
-       <note>
-          <literal>type(:)</literal> est 129.
-          <literal>typeof(:)</literal> est <literal>"implicitlist"</literal>.
-       </note>
+        <note>
+            <para>
+                <literal>type(:)</literal> est 129.
+                <literal>typeof(:)</literal> est <literal>"implicitlist"</literal>.
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Exemples</title>
@@ -192,16 +191,19 @@ A(i)
                 <revdescription>
                   <itemizedlist>
                     <listitem>
-                        <literal>type(:)</literal> vaut 129 (comme pour <literal>1:$</literal>)
-                        au lieu de 1. <literal>size(:)</literal> est indéfinie
-                        (au lieu de <literal>[-1,-1]</literal>).
+                         <para><literal>type(:)</literal> vaut 129 (comme pour <literal>1:$</literal>)
+                            au lieu de 1. <literal>size(:)</literal> est indéfinie
+                            (au lieu de <literal>[-1,-1]</literal>).
+                        </para>
                     </listitem>
                     <listitem>
-                        <literal>typeof(:)</literal> est désormais <literal>"implicitlist"</literal>,
-                        comme pour <literal>1:$</literal>.
+                         <para><literal>typeof(:)</literal> est désormais <literal>"implicitlist"</literal>,
+                            comme pour <literal>1:$</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                        <literal>%i:10</literal>  produit désormais une erreur.
+                         <para><literal>%i:10</literal>  produit désormais une erreur.
+                        </para>
                     </listitem>
                   </itemizedlist>
                 </revdescription>

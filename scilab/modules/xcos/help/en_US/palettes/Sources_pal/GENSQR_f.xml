@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/GENSQR_f.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_GENSQR_f">
+    <refsection xml:id="Contents_GENSQR_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_GENSQR_f">Description</xref>
+                <para><link linkend="Description_GENSQR_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_GENSQR_f">Parameters</xref>
+                <para><link linkend="Dialogbox_GENSQR_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_GENSQR_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_GENSQR_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_GENSQR_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_GENSQR_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_GENSQR_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_GENSQR_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_GENSQR_f">Example</xref>
+                <para><link linkend="Example_GENSQR_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_GENSQR_f">
+    <refsection xml:id="Description_GENSQR_f">
         <title>Description</title>
         <para>
             This block is a square wave generator: output takes values <emphasis>-M</emphasis>
@@ -80,15 +80,14 @@ v(k)=\begin{cases}-M\\+M\end{cases}\ \ \mbox{,switch on activation}
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_GENSQR_f">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_GENSQR_f">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/sources_pal/en_US/GENSQR_f_gui.png"
-                    align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -102,7 +101,7 @@ v(k)=\begin{cases}-M\\+M\end{cases}\ \ \mbox{,switch on activation}
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_GENSQR_f">
+    <refsection xml:id="Defaultproperties_GENSQR_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -168,7 +167,7 @@ v(k)=\begin{cases}-M\\+M\end{cases}\ \ \mbox{,switch on activation}
         <para/>
     </refsection>
 
-    <refsection id="Example_GENSQR_f">
+    <refsection xml:id="Example_GENSQR_f">
         <title>Example</title>
         <para>
             This is a typical use of this block in context. This example should also alert
@@ -212,7 +211,7 @@ xcos_simulate(scs_m, 4);
         </para>
     </refsection>
 
-    <refsection id="Interfacingfunction_GENSQR_f">
+    <refsection xml:id="Interfacingfunction_GENSQR_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -222,7 +221,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_GENSQR_f">
+    <refsection xml:id="Computationalfunction_GENSQR_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

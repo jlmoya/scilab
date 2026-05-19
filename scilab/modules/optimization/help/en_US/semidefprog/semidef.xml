@@ -28,7 +28,7 @@
             [x,Z,ul,info]=semidef(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -273,137 +273,142 @@
                         <literal>info=5</literal> if target value is not achievable;
                     </para>
                 </listitem>
-                <listitem><para>
-                        negative values indicate errors.
-                    </para>
-                </listitem>
-            </itemizedlist>
-        </para>
-        <para>
-            Convergence criterion is based on the following conditions that is, the
-            algorithm stops if one of the following conditions is true:
-            <itemizedlist>
-                <listitem><para>
-                        maxiters is exceeded
-                    </para>
-                </listitem>
-                <listitem><para>
-                        duality gap is less than abstol
-                    </para>
-                </listitem>
-                <listitem><para>
-                        primal and dual objective are both positive and
-                        duality gap is less than (<literal>reltol</literal> * dual objective)
-                        or primal and dual objective are both negative and
-                        duality gap is less than (<literal>reltol</literal> * minus the primal objective)
-                    </para>
-                </listitem>
-                <listitem><para>
-                        reltol is negative and
-                        primal objective is less than tv or dual objective is greater
-                        than <literal>tv</literal>.
-                    </para>
-                </listitem>
-            </itemizedlist>
-        </para>
-    </refsection>
-    <refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-// 1. Define the initial guess
-x0=[0;0];
-//
-// 2. Create a compressed representation of F
-// Define 3 symmetric block-diagonal matrices: F0, F1, F2
-F0=[2,1,0,0;
-    1,2,0,0;
-    0,0,3,1;
-    0,0,1,3]
-F1=[1,2,0,0;
-    2,1,0,0;
-    0,0,1,3;
-    0,0,3,1]
-F2=[2,2,0,0;
-    2,2,0,0;
-    0,0,3,4;
-    0,0,4,4]
-// Define the size of the two blocks:
-// the first block has size 2,
-// the second block has size 2.
-blocksizes=[2,2];
-// Extract the two blocks of the matrices.
-F01=F0(1:2,1:2);
-F02=F0(3:4,3:4);
-F11=F1(1:2,1:2);
-F12=F1(3:4,3:4);
-F21=F2(1:2,1:2);
-F22=F2(3:4,3:4);
-// Create 3 column vectors, containing nonzero entries
-// in F0, F1, F2.
-F0nnz = list2vec(list(F01,F02));
-F1nnz = list2vec(list(F11,F12));
-F2nnz = list2vec(list(F21,F22));
-// Create a 16-by-3 matrix, representing the
-// nonzero entries of the 3 matrices F0, F1, F2.
-FF=[F0nnz,F1nnz,F2nnz]
-// Compress FF
-CFF = pack(FF,blocksizes);
-//
-// 3. Create a compressed representation of Z
-// Create the matrix Z0
-Z0=2*F0;
-// Extract the two blocks of the matrix
-Z01=Z0(1:2,1:2);
-Z02=Z0(3:4,3:4);
-// Create 2 column vectors, containing nonzero entries
-// in Z0.
-ZZ0 = [Z01(:);Z02(:)];
-// Compress ZZO
-CZZ0 = pack(ZZ0,blocksizes);
-//
-// 4. Create the linear vector c
-c=[trace(F1*Z0);trace(F2*Z0)];
-//
-// 5. Define the algorithm options
-options=[10,1.d-10,1.d-10,0,50];
-// 6. Solve the problem
-[x,CZ,ul,info]=semidef(x0,CZZ0,CFF,blocksizes,c,options)
-//
-// 7. Check the output
-// Unpack CZ
-Z=unpack(CZ,blocksizes);
-w=vec2list(Z,[blocksizes;blocksizes]);
-Z=blockdiag(w(1),w(2))
-
-c'*x+trace(F0*Z)
-// Check that the eigenvalues of the matrix are positive
-spec(F0+F1*x(1)+F2*x(2))
-trace(F1*Z)-c(1)
-trace(F2*Z)-c(2)
- ]]></programlisting>
-    </refsection>
-    <refsection>
-        <title>Implementation notes</title>
-        <para>
-            This function is based on L. Vandenberghe and S. Boyd sp.c program.
-        </para>
-    </refsection>
-    <refsection>
-        <title>References</title>
-        <para>
-            L. Vandenberghe and S. Boyd, " Semidefinite Programming,"
-            Informations Systems Laboratory, Stanford University, 1994.
-        </para>
-        <para>
-            Ju. E. Nesterov and M. J. Todd, "Self-Scaled Cones and
-            Interior-Point Methods in Nonlinear Programming," Working Paper, CORE,
-            Catholic University of Louvain, Louvain-la-Neuve, Belgium, April
-            1994.
-        </para>
-        <para>
-            SP: Software for Semidefinite Programming, User's Guide, Beta Version, November 1994,
-            L. Vandenberghe and S. Boyd, 1994
-            <ulink url="http://www.ee.ucla.edu/~vandenbe/sp.html">http://www.ee.ucla.edu/~vandenbe/sp.html</ulink>
-        </para>
-    </refsection>
-</refentry>
+                <listitem>
+                     <para>
+                            negative values indicate errors.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>
+                Convergence criterion is based on the following conditions that is, the
+                algorithm stops if one of the following conditions is true:
+                <itemizedlist>
+                    <listitem>
+                         <para>
+                                maxiters is exceeded
+                            </para>
+                        </listitem>
+                        <listitem>
+                             <para>
+                                    duality gap is less than abstol
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                        primal and dual objective are both positive and
+                                        duality gap is less than (<literal>reltol</literal> * dual objective)
+                                        or primal and dual objective are both negative and
+                                        duality gap is less than (<literal>reltol</literal> * minus the primal objective)
+                                    </para>
+                                </listitem>
+                                <listitem>
+                                     <para>
+                                            reltol is negative and
+                                            primal objective is less than tv or dual objective is greater
+                                            than <literal>tv</literal>.
+                                        </para>
+                                    </listitem>
+                                </itemizedlist>
+                            </para>
+                        </refsection>
+                        <refsection>
+                            <title>Examples</title>
+                            <programlisting role="example"><![CDATA[
+                    // 1. Define the initial guess
+                    x0=[0;0];
+                    //
+                    // 2. Create a compressed representation of F
+                    // Define 3 symmetric block-diagonal matrices: F0, F1, F2
+                    F0=[2,1,0,0;
+                        1,2,0,0;
+                        0,0,3,1;
+                        0,0,1,3]
+                    F1=[1,2,0,0;
+                        2,1,0,0;
+                        0,0,1,3;
+                        0,0,3,1]
+                    F2=[2,2,0,0;
+                        2,2,0,0;
+                        0,0,3,4;
+                        0,0,4,4]
+                    // Define the size of the two blocks:
+                    // the first block has size 2,
+                    // the second block has size 2.
+                    blocksizes=[2,2];
+                    // Extract the two blocks of the matrices.
+                    F01=F0(1:2,1:2);
+                    F02=F0(3:4,3:4);
+                    F11=F1(1:2,1:2);
+                    F12=F1(3:4,3:4);
+                    F21=F2(1:2,1:2);
+                    F22=F2(3:4,3:4);
+                    // Create 3 column vectors, containing nonzero entries
+                    // in F0, F1, F2.
+                    F0nnz = list2vec(list(F01,F02));
+                    F1nnz = list2vec(list(F11,F12));
+                    F2nnz = list2vec(list(F21,F22));
+                    // Create a 16-by-3 matrix, representing the
+                    // nonzero entries of the 3 matrices F0, F1, F2.
+                    FF=[F0nnz,F1nnz,F2nnz]
+                    // Compress FF
+                    CFF = pack(FF,blocksizes);
+                    //
+                    // 3. Create a compressed representation of Z
+                    // Create the matrix Z0
+                    Z0=2*F0;
+                    // Extract the two blocks of the matrix
+                    Z01=Z0(1:2,1:2);
+                    Z02=Z0(3:4,3:4);
+                    // Create 2 column vectors, containing nonzero entries
+                    // in Z0.
+                    ZZ0 = [Z01(:);Z02(:)];
+                    // Compress ZZO
+                    CZZ0 = pack(ZZ0,blocksizes);
+                    //
+                    // 4. Create the linear vector c
+                    c=[trace(F1*Z0);trace(F2*Z0)];
+                    //
+                    // 5. Define the algorithm options
+                    options=[10,1.d-10,1.d-10,0,50];
+                    // 6. Solve the problem
+                    [x,CZ,ul,info]=semidef(x0,CZZ0,CFF,blocksizes,c,options)
+                    //
+                    // 7. Check the output
+                    // Unpack CZ
+                    Z=unpack(CZ,blocksizes);
+                    w=vec2list(Z,[blocksizes;blocksizes]);
+                    Z=blockdiag(w(1),w(2))
+                    
+                    c'*x+trace(F0*Z)
+                    // Check that the eigenvalues of the matrix are positive
+                    spec(F0+F1*x(1)+F2*x(2))
+                    trace(F1*Z)-c(1)
+                    trace(F2*Z)-c(2)
+                     ]]></programlisting>
+                        </refsection>
+                        <refsection>
+                            <title>Implementation notes</title>
+                            <para>
+                                This function is based on L. Vandenberghe and S. Boyd sp.c program.
+                            </para>
+                        </refsection>
+                        <refsection>
+                            <title>References</title>
+                            <para>
+                                L. Vandenberghe and S. Boyd, " Semidefinite Programming,"
+                                Informations Systems Laboratory, Stanford University, 1994.
+                            </para>
+                            <para>
+                                Ju. E. Nesterov and M. J. Todd, "Self-Scaled Cones and
+                                Interior-Point Methods in Nonlinear Programming," Working Paper, CORE,
+                                Catholic University of Louvain, Louvain-la-Neuve, Belgium, April
+                                1994.
+                            </para>
+                            <para>
+                                SP: Software for Semidefinite Programming, User's Guide, Beta Version, November 1994,
+                                L. Vandenberghe and S. Boyd, 1994
+                                <link xlink:href="http://www.ee.ucla.edu/~vandenbe/sp.html">http://www.ee.ucla.edu/~vandenbe/sp.html</link>
+                            </para>
+                        </refsection>
+                    </refentry>

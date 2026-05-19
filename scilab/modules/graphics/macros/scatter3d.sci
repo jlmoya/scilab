@@ -411,7 +411,9 @@ function varargout = scatter3d(varargin)
         if mcolors <> [] & fill
             mBGcolors = mcolors
         else
-            if ~fill
+            // Dot and filled diamond have a single display color rendered via mark_background
+            isSolid = or(markers == [0 4]);
+            if ~fill & ~isSolid
                 mBGcolors = 0   // Transparent
             elseif mcolors <> []
                 mBGcolors = mcolors

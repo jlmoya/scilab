@@ -24,8 +24,8 @@
         <title>Syntax</title>
         <synopsis>[fmin, fmax] = nyquistfrequencybounds(H, bounds)</synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>H</term>
@@ -71,15 +71,16 @@
         </variablelist>
     </refsection>
     <refsection>
-        <title>Description</title><para>
+        <title>Description</title>
+        <para>
             Given a C plane rectangle,
             <literal>nyquistfrequencybounds</literal> Computes the lowest
             frequency for which the nyquist locus enters the rectangle and
             the highest frequency for which the nyquist locus leaves the
             rectangle.
         </para>
-        This function is useful for high definition zoom of a nyquist locus.
         <para>
+            This function is useful for high definition zoom of a nyquist locus.
         </para>
     </refsection>
     <refsection>

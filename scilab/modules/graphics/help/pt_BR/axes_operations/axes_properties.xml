@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="axes_properties" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="axes_properties" xml:lang="pt">
     <refnamediv>
         <refname>axes_properties</refname>
         <refpurpose>descrição das propriedades de entidades Axes (de eixos)
@@ -284,63 +281,62 @@
                                         <varlistentry>
                                             <term>Locations</term>
                                             <listitem>
-                                                é um vetor de reais contendo os locais de grandes formaturas junto e de acordo com a escala de dados dos dados x ou eixo y ou z.
-                                                Quando o número de grandes formaturas não tem que ser mudado, a sua localização pode ser definida ou alterada através
-                                                a sintaxe (por exemplo, ao longo de x) <literal>Haxes.x_ticks.locations = Locations</literal>, onde
-                                                <literal>Haxes = gca ();</literal> e <literal>Locations</literal> é o vetor completo de posições atualizados formaturas.
-                                                Para alterar apenas a localização om, basta usar: <literal>Haxes.x_ticks.locations(i) = newLoc</literal>
-                                            </listitem>
+                                                 <para>
+                                                    é um vetor de reais contendo os locais de grandes formaturas junto e de acordo com a escala de dados dos dados x ou eixo y ou z.
+                                                    Quando o número de grandes formaturas não tem que ser mudado, a sua localização pode ser definida ou alterada através
+                                                    a sintaxe (por exemplo, ao longo de x) <literal>Haxes.x_ticks.locations = Locations</literal>, onde
+                                                    <literal>Haxes = gca ();</literal> e <literal>Locations</literal> é o vetor completo de posições atualizados formaturas.
+                                                    Para alterar apenas a localização om, basta usar: <literal>Haxes.x_ticks.locations(i) = newLoc</literal>
+                                                                                                  </para>
+                                                                                              </listitem>
                                         </varlistentry>
                                         <varlistentry>
                                             <term>Labels</term>
                                             <listitem>
-                                                é um vetor de textos contendo as etiquetas a serem exibidos na frente de cada um dos principais graduação relacionados. Quanto aos locais de formaturas, Locations podem ser tratadas com (por exemplo, ao longo de y)
-                                                <literal>Haxes.y_ticks.labels = Labels</literal> ou <literal>Haxes.y_ticks.labels(j) = newLabelJ</literal>
-                                                <para>
-                                                    Vertical or tilted ticks labels can be yielded
-                                                    using LaTeX formating with
-                                                    <literal>\rotatebox{angle}{text}</literal>.
-                                                    See the
-                                                    <link linkend="axes_properties_vertical_xticks">example</link>
-                                                    below.
+                                                 <para>
+                                                    é um vetor de textos contendo as etiquetas a serem exibidos na frente de cada um dos principais graduação relacionados. Quanto aos locais de formaturas, Locations podem ser tratadas com (por exemplo, ao longo de y)
+                                                    <literal>Haxes.y_ticks.labels = Labels</literal> ou <literal>Haxes.y_ticks.labels(j) = newLabelJ</literal>
                                                 </para>
                                             </listitem>
                                         </varlistentry>
                                         <varlistentry>
                                             <term>Interpreters</term>
                                             <listitem>
-                                                is a text vector containing the interpreters to be used to render the strings.
-                                                 As for Locations of ticks, Interperters can be addressed with (e.g. along y)
-                                                <literal>Haxes.y_ticks.interpreters = Interpreters</literal> or
-                                                <literal>Haxes.y_ticks.interpreters(j) = newInterpretersJ</literal>.
-                                                <para>
-                                                Allowed values: <literal>"auto"</literal> (the default), <literal>"latex"</literal>, 
-                                                <literal>"mathml"</literal>, <literal>"none"</literal>. 
-                                                See <link linkend="math_rendering_features_in_graphic">LaTeX expressions</link>.
-                                                </para>
-                                            </listitem>
+                                                 <para>
+                                                    is a text vector containing the interpreters to be used to render the strings.
+                                                     As for Locations of ticks, Interperters can be addressed with (e.g. along y)
+                                                    <literal>Haxes.y_ticks.interpreters = Interpreters</literal> or
+                                                    <literal>Haxes.y_ticks.interpreters(j) = newInterpretersJ</literal>.
+                                                    </para>
+                                                </listitem>
                                         </varlistentry>
                                     </variablelist>
                                     <warning>
                                         <itemizedlist>
                                         <listitem>
-                                            For an axis, <literal>Locations</literal>,
-                                            <literal>Labels</literal> and <literal>Interpreters</literal> 
-                                            vectors must have the same number of components.
+                                             <para>
+                                                For an axis, <literal>Locations</literal>,
+                                                <literal>Labels</literal> and <literal>Interpreters</literal> 
+                                                vectors must have the same number of components.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            When the number of ticks must be changed, their positions, labels and interpreters 
-                                            must be changed at once, in order to avoid
-                                            any mismatch: The syntax (e.g. along x)
-                                            <literal>Haxes.x_ticks = tlist(["ticks" "locations", "labels", "interpreters"], newLocations, newLabels, newInterpreters)</literal>
-                                            must then be used. If "interpreters" is not specified in the tlist, the "interpreters" field is automatically set to "auto".
+                                             <para>
+                                                When the number of ticks must be changed, their positions, labels and interpreters 
+                                                must be changed at once, in order to avoid
+                                                any mismatch: The syntax (e.g. along x)
+                                                <literal>Haxes.x_ticks = tlist(["ticks" "locations", "labels", "interpreters"], newLocations, newLabels, newInterpreters)</literal>
+                                                must then be used. If "interpreters" is not specified in the tlist, the "interpreters" field is automatically set to "auto".
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            Changing by hand the <literal>Locations</literal> or/and
-                                            <literal>Labels</literal> of an axis automatically sets
-                                            its <literal>.auto_ticks</literal> status to
-                                            <literal>"off"</literal>. This cancels its
-                                            auto-regraduation under resizing of the figure.
+                                             <para>
+                                                Changing by hand the <literal>Locations</literal> or/and
+                                                <literal>Labels</literal> of an axis automatically sets
+                                                its <literal>.auto_ticks</literal> status to
+                                                <literal>"off"</literal>. This cancels its
+                                                auto-regraduation under resizing of the figure.
+                                            </para>
                                         </listitem>
                                       </itemizedlist>
                                     </warning>
@@ -573,66 +569,64 @@
                                     <literal>[polAngle, azimuth]</literal> de obsevação (em graus):
                                     <itemizedlist>
                                         <listitem>
-                                            <emphasis role="bold">theta</emphasis>: azimuth angle
-                                            in the (x,y) plane. Particular angles, for (x,y) seen
-                                            from (O,z):
-                                            <table>
-                                                <tr><td>270 </td><td>: (O,x) to right</td></tr>
-                                                <tr><td>0 </td><td>: (O,x) to bottom</td></tr>
-                                                <tr><td>90 </td><td>: (O,x) to left</td></tr>
-                                                <tr><td>180 </td><td>: (O,x) to top</td></tr>
-                                            </table>
-                                            <scilab:image><![CDATA[
-                                            // gca().rotation_angles:
-                                            // Azimuth:
-                                            // --------
-                                            x = linspace(0,30,100);
-                                            y = exp(-x/7).*sin(x);
-                                            scf(1);
-                                            clf
-                                            i = 1;
-                                            for a = [270 315 0 90 180]
-                                                subplot(1,5,i)
-                                                plot(x, y, "b")
-                                                gca().rotation_angles(2) = a;
-                                                gca().margins = [0.17 0.17 0.25 0.15];
-                                                gca().box = "on";
-                                                gca().cube_scaling = "on";
-                                                title(msprintf("theta = %d\n\r", a), "fontsize",3, "color",color("magenta3"))
-                                                i = i + 1;
-                                            end
-                                            gcf().axes_size = [810 200];
-                                            ]]></scilab:image>
-                                        </listitem>
+                                             <para><emphasis role="bold">theta</emphasis>: azimuth angle
+                                                in the (x,y) plane. Particular angles, for (x,y) seen
+                                                from (O,z):
+                                                <table>
+                                                    <tr><td>270 </td><td>: (O,x) to right</td></tr>
+                                                    <tr><td>0 </td><td>: (O,x) to bottom</td></tr>
+                                                    <tr><td>90 </td><td>: (O,x) to left</td></tr>
+                                                    <tr><td>180 </td><td>: (O,x) to top</td></tr>
+                                                </table><scilab:image><![CDATA[
+                                                // gca().rotation_angles:
+                                                // Azimuth:
+                                                // --------
+                                                x = linspace(0,30,100);
+                                                y = exp(-x/7).*sin(x);
+                                                scf(1);
+                                                clf
+                                                i = 1;
+                                                for a = [270 315 0 90 180]
+                                                    subplot(1,5,i)
+                                                    plot(x, y, "b")
+                                                    gca().rotation_angles(2) = a;
+                                                    gca().margins = [0.17 0.17 0.25 0.15];
+                                                    gca().box = "on";
+                                                    gca().cube_scaling = "on";
+                                                    title(msprintf("theta = %d\n\r", a), "fontsize",3, "color",color("magenta3"))
+                                                    i = i + 1;
+                                                end
+                                                gcf().axes_size = [810 200];
+                                                ]]></scilab:image></para>
+                                                              </listitem>
                                         <listitem>
-                                            <emphasis role="bold">alpha</emphasis>: polar angle from
-                                            (Oz), in planes orthogonal to (x,y). Particular values:
-                                            <table>
-                                                <tr><td>0</td><td>= North pole (O,z)</td><td> view from above</td></tr>
-                                                <tr><td>90</td><td>= Equator (x,y)</td><td> view from side</td></tr>
-                                                <tr><td>180</td><td>= South pole (O,-z)</td><td> view from below</td></tr>
-                                            </table>
-                                            <scilab:image><![CDATA[
-                                            // gca().rotation_angles:
-                                            // polar angle
-                                            // -----------
-                                            scf(2);
-                                            clf
-                                            i = 1
-                                            for a = [0 30 60 90 120]
-                                                subplot(1,5,i)
-                                                plot3d()
-                                                gce().color_mode = -2;
-                                                gca().rotation_angles = [a 300];
-                                            //    gca().margins = [0.17 0.17 0.25 0.15];
-                                            //    gca().box = "on";
-                                                gca().cube_scaling = "on";
-                                                title(msprintf("alpha = %d\n", a), "fontsize",3, "color",color("magenta3"))
-                                                i = i + 1;
-                                            end
-                                            gcf().axes_size = [810 220];
-                                            ]]></scilab:image>
-                                        </listitem>
+                                             <para><emphasis role="bold">alpha</emphasis>: polar angle from
+                                                (Oz), in planes orthogonal to (x,y). Particular values:
+                                                <table>
+                                                    <tr><td>0</td><td>= North pole (O,z)</td><td> view from above</td></tr>
+                                                    <tr><td>90</td><td>= Equator (x,y)</td><td> view from side</td></tr>
+                                                    <tr><td>180</td><td>= South pole (O,-z)</td><td> view from below</td></tr>
+                                                </table><scilab:image><![CDATA[
+                                                // gca().rotation_angles:
+                                                // polar angle
+                                                // -----------
+                                                scf(2);
+                                                clf
+                                                i = 1
+                                                for a = [0 30 60 90 120]
+                                                    subplot(1,5,i)
+                                                    plot3d()
+                                                    gce().color_mode = -2;
+                                                    gca().rotation_angles = [a 300];
+                                                //    gca().margins = [0.17 0.17 0.25 0.15];
+                                                //    gca().box = "on";
+                                                    gca().cube_scaling = "on";
+                                                    title(msprintf("alpha = %d\n", a), "fontsize",3, "color",color("magenta3"))
+                                                    i = i + 1;
+                                                end
+                                                gcf().axes_size = [810 220];
+                                                ]]></scilab:image></para>
+                                                              </listitem>
                                     </itemizedlist>
                                 </para>
                             </listitem>
@@ -730,15 +724,17 @@
                                     or frame used by this axes:
                                     <itemizedlist>
                                         <listitem>
-                                            <literal>x_left</literal> and <literal>y_top</literal>
-                                            set the position of the top-left corner of the axes area,
-                                            with respect to the top-left corner of the embedding
-                                            figure or frame.
+                                             <para><literal>x_left</literal> and <literal>y_top</literal>
+                                                set the position of the top-left corner of the axes area,
+                                                with respect to the top-left corner of the embedding
+                                                figure or frame.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            <literal>width</literal> and <literal>height</literal>
-                                            set the dimensions of the axes area. 1 stands for the
-                                            full width or height of the embedding figure or frame.
+                                             <para><literal>width</literal> and <literal>height</literal>
+                                                set the dimensions of the axes area. 1 stands for the
+                                                full width or height of the embedding figure or frame.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                 </para>
@@ -790,14 +786,20 @@
                                     targeting the axes
                                     <itemizedlist>
                                         <listitem>
-                                            erases all children of the axes,
+                                             <para>
+                                                erases all children of the axes,
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            resets its <literal>.log_flags</literal> and
-                                            <literal>.data_bounds</literal> properties to their default value
+                                             <para>
+                                                resets its <literal>.log_flags</literal> and
+                                                <literal>.data_bounds</literal> properties to their default value
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            keeps its other properties
+                                             <para>
+                                                keeps its other properties
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                     before performing the drawing.
@@ -1186,7 +1188,7 @@ ylabel("[mm]")
 gca().x_ticks.labels = "$\rotatebox{90}{\mathsf{"+months'+"}}$";
 set(gca(), "tight_limits", "on", "font_size", 2);
 ]]></programlisting>
-    <scilab:image localized="true">
+    <scilab:image localized="true"><![CDATA[
 rain_Nice  = [51  45  39 69 45 34 12 18 73 133 104 93 ];
 months = _(["January" "February" "March" "April" "May" "June" "July" ..
             "August" "September" "October" "November" "December"]);
@@ -1197,7 +1199,7 @@ ylabel("[mm]");
 gca().x_ticks.labels = "$\rotatebox{90}{\mathsf{"+months'+"}}$";
 set(gca(), "tight_limits", "on", "font_size", 2);
 gcf().axes_size = [420 320];
-    </scilab:image>
+    ]]></scilab:image>
     </refsection>
     <refsection>
         <title>Ver Também </title>
@@ -1242,46 +1244,55 @@ gcf().axes_size = [420 320];
                 <revnumber>5.5.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>.grid_style and .grid_thickness properties added.</listitem>
                         <listitem>
-                            .line_style values 9 and 10 can be used to have respectively longblank
-                            dot and bigblank dot styles.
-                        </listitem>
-                        <listitem>
-                            .auto_margins property added to allow automatic computation of the margins.
-                        </listitem>
-                        <listitem>
-                            .ticks_format and .ticks_st properties added to improve ticks labels
-                            display.
-                        </listitem>
-                        <listitem>
-                            For an axes drawn in a uicontrol frame, .axes_bounds now refers to
-                            the frame area instead of the figure area.
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
-            </revision>
-            <revision>
-                <revnumber>5.5.2</revnumber>
-                <revremark>.tight_limits property can now manage X, Y and Z axis separately.</revremark>
-            </revision>
-            <revision>
-                <revnumber>6.1.0</revnumber>
-                <revremark>Default .grid_style is now [7 7] instead of [3 3].</revremark>
-            </revision>
-            <revision>
-                <revnumber>6.1.1</revnumber>
-                <revremark>
-                    Default .x|y|z_label.font_size=2, instead of 1.
-                    Default .title.font_size=3, instead of 1.
-                </revremark>
-            </revision>
-            <revision>
-                <revnumber>2023.0.0</revnumber>
-                <revremark>
-                    <literal>.auto_stretch</literal> property added.
-                </revremark>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                             <para>.grid_style and .grid_thickness properties added.</para></listitem>
+                            <listitem>
+                                 <para>
+                                    .line_style values 9 and 10 can be used to have respectively longblank
+                                    dot and bigblank dot styles.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    .auto_margins property added to allow automatic computation of the margins.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    .ticks_format and .ticks_st properties added to improve ticks labels
+                                    display.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    For an axes drawn in a uicontrol frame, .axes_bounds now refers to
+                                    the frame area instead of the figure area.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </revremark>
+                </revision>
+                <revision>
+                    <revnumber>5.5.2</revnumber>
+                    <revremark>.tight_limits property can now manage X, Y and Z axis separately.</revremark>
+                </revision>
+                <revision>
+                    <revnumber>6.1.0</revnumber>
+                    <revremark>Default .grid_style is now [7 7] instead of [3 3].</revremark>
+                </revision>
+                <revision>
+                    <revnumber>6.1.1</revnumber>
+                    <revremark>
+                        Default .x|y|z_label.font_size=2, instead of 1.
+                        Default .title.font_size=3, instead of 1.
+                    </revremark>
+                </revision>
+                <revision>
+                    <revnumber>2023.0.0</revnumber>
+                    <revremark>
+                        <literal>.auto_stretch</literal> property added.
+                    </revremark>
+                </revision>
+            </revhistory>
+        </refsection>
+    </refentry>

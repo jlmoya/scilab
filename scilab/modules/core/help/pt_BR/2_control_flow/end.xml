@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="end" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="end" xml:lang="pt">
     <refnamediv>
         <refname>end</refname>
         <refpurpose>Palavra-chave end (significa "fim")</refpurpose>
@@ -98,17 +95,20 @@ a(end, end)
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>end</literal> can no longer be followed by an inline instruction
-                            without <literal>,</literal> or <literal>;</literal> separator
-                            (as in <literal>if %t, a=1; end b=2</literal>).
+                             <para><literal>end</literal> can no longer be followed by an inline instruction
+                                without <literal>,</literal> or <literal>;</literal> separator
+                                (as in <literal>if %t, a=1; end b=2</literal>).
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>end</literal> can now close a <literal>function</literal> block
-                            instead of <literal>endfunction</literal> (that still should be prefered).
+                             <para><literal>end</literal> can now close a <literal>function</literal> block
+                                instead of <literal>endfunction</literal> (that still should be prefered).
+                            </para>
                         </listitem>
                         <listitem>
-                            <literal>end</literal> is now protected:
-                            Assignments like <literal>end=1</literal> are no longer possible.
+                             <para><literal>end</literal> is now protected:
+                                Assignments like <literal>end=1</literal> are no longer possible.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

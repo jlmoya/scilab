@@ -37,6 +37,7 @@ extern "C"
 #include "sciblk4.h"
 #include "scicos.h"
 #include "import.h"
+#include "scicos_internal.h" /* COSDEBUG_struct */
 }
 
 #include "createblklist.hxx"
@@ -277,6 +278,26 @@ static bool getOpaquePointer(types::InternalType* p, void** dest)
     }
 };
 
+static std::string reportError(const char* err)
+{
+    // resolve current block
+    int kfun = get_block_number();
+
+    // resolve uid
+    char emptyChar = '0';
+    char* uid = &emptyChar;
+    char** allUID = nullptr;
+    int n_uid = 1, m_uid = 1;
+    if(getscicosvarsfromimport("uid", (void**) &allUID, &n_uid, &m_uid) && n_uid >= kfun)
+    {
+        uid = allUID[kfun - 1];
+    }
+
+    std::string message;
+    message.resize(BUFSIZ);
+    snprintf((char *) message.data(), BUFSIZ - 1, err, kfun, uid);
+    return message;
+};
 /*--------------------------------------------------------------------------*/
 void sciblk4(scicos_block* blk, const int flag)
 {
@@ -329,7 +350,7 @@ void sciblk4(scicos_block* blk, const int flag)
     /***********************
     * Call Scilab function *
     ***********************/
-    types::Callable* pCall = static_cast<types::Callable*>(blk->scsptr);
+    types::Callable* pCall = reinterpret_cast<types::Callable*>(blk->scsptr);
 
     ConfigVariable::where_begin(1, pCall);
     types::Callable::ReturnValue Ret;
@@ -345,29 +366,34 @@ void sciblk4(scicos_block* blk, const int flag)
             set_block_error(-1);
             return;
         }
-
-        if (out.size() != 1)
-        {
-            set_block_error(-1);
-            return;
-        }
     }
     catch (const ast::InternalError &)
     {
-        std::wostringstream ostr;
-        ConfigVariable::whereErrorToString(ostr);
+        if (C2F(cosdebug).cosd >= 1)
+        {
+            std::wostringstream ostr;
+            ConfigVariable::whereErrorToString(ostr);
+            ostr << ConfigVariable::getLastErrorMessage();
 
-        bool oldSilentError = ConfigVariable::isSilentError();
-        ConfigVariable::setSilentError(false);
-        scilabErrorW(ostr.str().c_str());
-        ConfigVariable::setSilentError(oldSilentError);
-        ConfigVariable::resetWhereError();
+            bool oldSilentError = ConfigVariable::isSilentError();
+            ConfigVariable::setSilentError(false);
+            scilabErrorW(ostr.str().c_str());
+            ConfigVariable::setSilentError(oldSilentError);
+            ConfigVariable::resetWhereError();
+        }
 
         ConfigVariable::where_end();
         ConfigVariable::decreaseRecursion();
 
         set_block_error(-1);
         throw;
+    }
+    
+    if (out.size() != 1)
+    {
+        set_block_error(-1);
+        throw ast::InternalError(reportError(_("User-defined function of Block #%d - \"%s\" did not output 5 values.\n")));
+        return;
     }
 
     types::InternalType* pITout = out[0];

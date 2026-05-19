@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/INTEGRAL_m.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_INTEGRAL_m">
+    <refsection xml:id="Contents_INTEGRAL_m">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_INTEGRAL_m">Description</xref>
+                <para><link linkend="Description_INTEGRAL_m">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_INTEGRAL_m">Paramètres</xref>
+                <para><link linkend="Dialogbox_INTEGRAL_m">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_INTEGRAL_m">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_INTEGRAL_m">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_INTEGRAL_m">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_INTEGRAL_m">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_INTEGRAL_m">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_INTEGRAL_m">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Examples_INTEGRAL_m">Exemples</xref>
+                <para><link linkend="Examples_INTEGRAL_m">Exemples</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_INTEGRAL_m">
+    <refsection xml:id="Description_INTEGRAL_m">
         <title>Description</title>
         <para>
             Ce bloc est un intégrateur. La sortie y est l'intégrale de l'entrée u à l'instant courant t.
@@ -62,10 +62,12 @@
                 y(t)=y_0 + \int_{t_0}^t\! u(\tau)\,d\tau
             </latex>
         </para>
-        où y<subscript>0</subscript> est une condition initiale et t<subscript>0</subscript> est
-        le temps correspondant à cette condition.
+        <para>
+            où y<subscript>0</subscript> est une condition initiale et t<subscript>0</subscript> est
+            le temps correspondant à cette condition.
+        </para>
     </refsection>
-    <refsection id="Dialogbox_INTEGRAL_m">
+    <refsection xml:id="Dialogbox_INTEGRAL_m">
         <title>Paramètres</title>
         <para>La boîte de dialogue des paramètres vous permet de définir :</para>
         <itemizedlist>
@@ -83,13 +85,12 @@
         </para>
         <para>Dans ce cas, la valeur du signal de réinitialisation dépend d'un signal extèrieur.</para>
         <para/>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/INTEGRAL_m_gui.gif"
-                           align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                           align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -136,7 +137,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_INTEGRAL_m">
+    <refsection xml:id="Defaultproperties_INTEGRAL_m">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -208,7 +209,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Interfacingfunction_INTEGRAL_m">
+    <refsection xml:id="Interfacingfunction_INTEGRAL_m">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -216,7 +217,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_INTEGRAL_m">
+    <refsection xml:id="Computationalfunction_INTEGRAL_m">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
@@ -227,41 +228,44 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Examples_INTEGRAL_m">
+    <refsection xml:id="Examples_INTEGRAL_m">
         <title>Exemples</title>
-        <refsect3 id="Example_INTEGRAL_m_1">
-            <title>Exemple 1</title>
-            <para>Cet exemple de modèle montre comment utiliser le port d'état de l'intégrateur.</para>
-            <para>Le paramètre de ré-initialisation est mis à 1, La limite haute à 1 et la limite basse à -1.</para>
-            <para>
-                <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/INTEGRAL_m_1_Example.zcos">
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata align="center" fileref="../../../../examples/continuous_pal/INTEGRAL_m_1_Example.zcos" valign="middle"/>
-                        </imageobject>
-                    </inlinemediaobject>
-                </link>
-            </para>
-            <scilab:image><![CDATA[
+
+        <para>
+            <emphasis role="bold">Exemple 1</emphasis>
+        </para>
+        <para>Cet exemple de modèle montre comment utiliser le port d'état de l'intégrateur.</para>
+        <para>Le paramètre de ré-initialisation est mis à 1, La limite haute à 1 et la limite basse à -1.</para>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/INTEGRAL_m_1_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/continuous_pal/INTEGRAL_m_1_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
+        <scilab:image><![CDATA[
 importXcosDiagram(SCI + "/modules/xcos/examples/continuous_pal/INTEGRAL_m_1_Example.zcos");
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
-        </refsect3>
-        <refsect3 id="Example_INTEGRAL_m_2">
-            <title>Exemple 2</title>
-            <para>
-                <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/INTEGRAL_m_2_Example.zcos">
-                    <inlinemediaobject>
-                        <imageobject>
-                            <imagedata align="center" fileref="../../../../examples/continuous_pal/INTEGRAL_m_2_Example.zcos" valign="middle"/>
-                        </imageobject>
-                    </inlinemediaobject>
-                </link>
-            </para>
-            <scilab:image><![CDATA[
+
+        <para>
+            <emphasis role="bold">Exemple 2</emphasis>
+        </para>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/continuous_pal/INTEGRAL_m_2_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/continuous_pal/INTEGRAL_m_2_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
+        <scilab:image><![CDATA[
 importXcosDiagram(SCI + "/modules/xcos/examples/continuous_pal/INTEGRAL_m_2_Example.zcos");
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
-        </refsect3>
+
     </refsection>
 </refentry>

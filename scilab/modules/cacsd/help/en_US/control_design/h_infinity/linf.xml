@@ -28,7 +28,7 @@
             linf(g, eps, tol)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -74,14 +74,16 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revremark>
-                    <literal>linf(g [,eps, tol])</literal> with <literal>g</literal> a matrix of doubles is no more supported.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>linf(g [,eps, tol])</literal> with <literal>g</literal> a matrix of doubles is no more supported.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

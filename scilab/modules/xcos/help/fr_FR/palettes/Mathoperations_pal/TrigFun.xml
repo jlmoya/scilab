@@ -23,49 +23,37 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
 				<imagedata fileref="../../../../images/palettes/TrigFun.png" align="center"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
     </refsection>
-    <refsection id="Contents_TrigFun">
+    <refsection xml:id="Contents_TrigFun">
         <title>Contenu</title>
 			<itemizedlist>
 				<listitem>
-					<para>
-						<xref linkend="Description_TrigFun">Description</xref>
-					</para>
+                    <para><link linkend="Description_TrigFun">Description</link></para>
 				</listitem>
 				<listitem>
-					<para>
-						<xref linkend="Dialogbox_TrigFun">Paramètres</xref>
-					</para>
+                    <para><link linkend="Dialogbox_TrigFun">Paramètres</link></para>
 				</listitem>
 				<listitem>
-					<para>
-						<xref linkend="Defaultproperties_TrigFun">Propriétés par défaut</xref>
-					</para>
+                    <para><link linkend="Defaultproperties_TrigFun">Propriétés par défaut</link></para>
 				</listitem>
 				<listitem>
-					<para>
-						<xref linkend="Interfacingfunction_TrigFun">Fonction d'interfaçage</xref>
-					</para>
+                    <para><link linkend="Interfacingfunction_TrigFun">Fonction d'interfaçage</link></para>
 				</listitem>
 				<listitem>
-					<para>
-						<xref linkend="Computationalfunction_TrigFun">Fonction de calcul</xref>
-					</para>
+                    <para><link linkend="Computationalfunction_TrigFun">Fonction de calcul</link></para>
 				</listitem>
 				<listitem>
-					<para>
-						<xref linkend="Seealso_TrigFun">Voir aussi</xref>
-					</para>
+                    <para><link linkend="Seealso_TrigFun">Voir aussi</link></para>
 				</listitem>
 			</itemizedlist>
 			<para/>
     </refsection>
-    <refsection id="Description_TrigFun">
+    <refsection xml:id="Description_TrigFun">
         <title>Description</title>
         <para>
             Le bloc Trigonometric Function exécute de nombreuses fonctions trigonométriques communes.
@@ -134,15 +122,14 @@
             La sortie du bloc est le résultat de la fonction appliquée sur l'entrée scalaire ou sur les éléments du vecteur d'entrée.
         </para>
     </refsection>
-    <refsection id="Dialogbox_TrigFun">
+    <refsection xml:id="Dialogbox_TrigFun">
         <title>Paramètres</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
 				<imagedata fileref="../../../../images/gui/TrigFun_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -153,7 +140,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_TrigFun">
+    <refsection xml:id="Defaultproperties_TrigFun">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -226,7 +213,7 @@
         </itemizedlist>
 		<para/>
     </refsection>
-    <refsection id="Interfacingfunction_TrigFun">
+    <refsection xml:id="Interfacingfunction_TrigFun">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -234,7 +221,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_TrigFun">
+    <refsection xml:id="Computationalfunction_TrigFun">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -242,7 +229,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_TrigFun" role="see also">
+    <refsection xml:id="Seealso_TrigFun" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>

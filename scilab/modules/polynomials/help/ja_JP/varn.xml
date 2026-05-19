@@ -13,10 +13,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="ja" xml:id="varn">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="varn">
     <refnamediv>
         <refname>varn</refname>
         <refpurpose>多項式または有理分数のシンボリック変数</refpurpose>
@@ -169,11 +166,15 @@ fx == f
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            シンボリック変数の名前はもはや4文字に制限されていません。
-                            拡張されたUTF-8文字を追加できるようになりました。
+                             <para>
+                                シンボリック変数の名前はもはや4文字に制限されていません。
+                                拡張されたUTF-8文字を追加できるようになりました。
+                            </para>
                         </listitem>
                         <listitem>
-                            varn([]) now returns [] instead of routing to %s_varn().
+                             <para>
+                                varn([]) now returns [] instead of routing to %s_varn().
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

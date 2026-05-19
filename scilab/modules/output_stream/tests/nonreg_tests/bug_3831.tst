@@ -32,6 +32,8 @@ if refSTRING2 <> res then pause,end
 refASCIICODE3 = [84  114  97  110  115  0  105  115  115  105  111  110];
 refSTRING3 = "Trans" + ascii(0);
 // no ; to display result
+warning("off"); // Avoid warning message about 0 value
 res = ascii(refASCIICODE3)
+warning("on");
 if length(res) <> length(refSTRING3) then pause,end
 if refSTRING3 <> res then pause,end

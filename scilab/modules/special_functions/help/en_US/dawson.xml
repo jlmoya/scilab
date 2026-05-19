@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-		  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-		  xmlns:scilab="http://www.scilab.org" xml:id="dawson" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="dawson" xml:lang="en">
     <refnamediv>
         <refname>dawson</refname>
         <refpurpose>Compute the Dawson (scaled imaginary error) function.</refpurpose>
@@ -25,19 +22,23 @@
         <title>Syntax</title>
         <synopsis>y = dawson(z)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>z</term>
                 <listitem>
-                    vector or matrix of real or complex numbers
+                     <para>
+                        vector or matrix of real or complex numbers
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    vector or matrix of real or complex numbers (of same size than x).
+                     <para>
+                        vector or matrix of real or complex numbers (of same size than x).
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -95,7 +96,7 @@ xlabel x fontsize 3
 title imag(dawson(x.i)) fontsize 3.5
 xgrid(color("grey60"))
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             clf
             subplot(1,2,1)
             x = logspace(-20,20,100);
@@ -114,12 +115,12 @@ xgrid(color("grey60"))
             xgrid(color("grey60"))
 
             gcf().axes_size = [700 380];
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection>
         <title>Algorithms</title>
         <para>
-            This function is based on the <ulink url="http://ab-initio.mit.edu/Faddeeva">Faddeeva package</ulink> library.
+            This function is based on the <link xlink:href="http://ab-initio.mit.edu/Faddeeva">Faddeeva package</link> library.
         </para>
     </refsection>
     <refsection role="see also">
@@ -136,7 +137,7 @@ xgrid(color("grey60"))
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

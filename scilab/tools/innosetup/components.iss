@@ -38,14 +38,14 @@ Name: {#COMPN_JRE}; Description: {cm:DescriptionJVM} ({#javaUsed}); Types: full;
 #define COMPN_ATLAS_CPU_LIBRARY 'CPU_OPTIMIZATION\ATLAS'
 #define COMPN_MKL_CPU_LIBRARY 'CPU_OPTIMIZATION\MKL'
 Name: {#COMPN_CPU_OPTIMIZATION}; Description:{cm:DescriptionCPUOptimization}; Types: full custom cli; Flags: fixed;
-#ifdef SCILAB_ARM64 
+#ifdef SCILAB_ARM64
 Name: {#COMPN_REF_CPU_LIBRARY}; Description:{cm:DescriptionRefBlasLibrary}; Flags: exclusive
 #else
-Name: {#COMPN_REF_CPU_LIBRARY}; Description:{cm:DescriptionRefBlasLibrary}; Flags: exclusive
 Name: {#COMPN_MKL_CPU_LIBRARY}; Description:{cm:DescriptionMKLLibrary}; Flags: exclusive
 #if !defined(SCILAB_X64) && !defined(SCILAB_ARM64)
 Name: {#COMPN_ATLAS_CPU_LIBRARY}; Description:{cm:DescriptionATLASLibrary}; Flags: exclusive
 #endif
+Name: {#COMPN_REF_CPU_LIBRARY}; Description:{cm:DescriptionRefBlasLibrary}; Flags: exclusive
 #endif
 
 #define COMPN_FFTW 'FFTW'

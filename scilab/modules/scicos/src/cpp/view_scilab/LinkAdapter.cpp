@@ -187,7 +187,7 @@ struct id
         model::Link* adaptee = adaptor.getAdaptee();
 
         std::string id;
-        controller.getObjectProperty(adaptee, DESCRIPTION, id);
+        controller.getObjectProperty(adaptee, NAME, id);
 
         types::String* o = new types::String(id.data());
         return o;
@@ -214,7 +214,7 @@ struct id
         std::string description(c_str);
         FREE(c_str);
 
-        controller.setObjectProperty(adaptee, DESCRIPTION, description);
+        controller.setObjectProperty(adaptee, NAME, description);
         return true;
     }
 };

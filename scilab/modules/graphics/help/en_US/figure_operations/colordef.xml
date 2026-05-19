@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="colordef">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="colordef">
     <refnamediv>
         <refname>colordef</refname>
         <refpurpose>Set the color look-and-feel of a given or of all forthcoming graphic figures</refpurpose>
@@ -31,7 +28,7 @@
             colordef default
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -94,36 +91,36 @@
                 colordef("black")
                 plot()
                  ]]></programlisting>
-                <scilab:image>
+                <scilab:image><![CDATA[
                 colordef("black")
                 plot()
                 title("colordef(""black"")")
                 gcf().figure_size = [350 400];
-                </scilab:image>
+                ]]></scilab:image>
             </td>
             <td>
                 <programlisting role="example"><![CDATA[
                 colordef("white")
                 plot()
                  ]]></programlisting>
-                <scilab:image>
+                <scilab:image><![CDATA[
                 colordef("white")
                 plot()
                 title("colordef(""white"")")
                 gcf().figure_size = [350 400];
-                </scilab:image>
+                ]]></scilab:image>
             </td>
             <td>
                 <programlisting role="example"><![CDATA[
                 colordef("default")
                 plot()
                  ]]></programlisting>
-                <scilab:image>
+                <scilab:image><![CDATA[
                 colordef("default")
                 plot()
                 title("colordef(""default"")")
                 gcf().figure_size = [350 400];
-                </scilab:image>
+                ]]></scilab:image>
             </td>
         </tr>
         </table>
@@ -159,10 +156,14 @@
                 <revdescription>
                     <itemizedlist>
                       <listitem>
-                         "default" color_scheme introduced.
+                           <para>
+                             "default" color_scheme introduced.
+                          </para>
                       </listitem>
                       <listitem>
-                         With "black" and "none" color shemes, titles and axes labels are now drawn in white.
+                           <para>
+                             With "black" and "none" color shemes, titles and axes labels are now drawn in white.
+                          </para>
                       </listitem>
                   </itemizedlist>
                 </revdescription>

@@ -12,7 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="ImpRK">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="ImpRK">
     <refnamediv>
         <refname>Implicit Runge-Kutta 4(5)</refname>
         <refpurpose>
@@ -72,25 +72,27 @@
             plus la moyenne pondérée de trois increments, où chaque incrément est le produit du pas, <emphasis>h</emphasis>, et une estimation de la pente spécifiée par la fonction <emphasis>f(t,y)</emphasis>. Ils sont distribués de manière à peu près égale sur l'intervalle.
             <itemizedlist>
                 <listitem>
-                    <emphasis>k1</emphasis> est l'incrément basé sur la pente au début de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript>+ a11*h*k1,
-                    </emphasis>
-                    ,
+                     <para><emphasis>k1</emphasis> est l'incrément basé sur la pente au début de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript>+ a11*h*k1,
+                        </emphasis>
+                        ,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k2</emphasis> est l'incrément basé sur la pente près du milieu de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript> + a21*h*k1 + a22*h*k2,
-                    </emphasis>
-                    ,
+                     <para><emphasis>k2</emphasis> est l'incrément basé sur la pente près du milieu de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript> + a21*h*k1 + a22*h*k2,
+                        </emphasis>
+                        ,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k3</emphasis> est l'incrément basé sur la pente trois quarts de l'intervalle, utilisant
-                    <emphasis>
-                        y<subscript>n</subscript> + a31*h*k1 + a32*h*k2 + a33*h*k3.
-                    </emphasis>
-                </listitem>
+                     <para><emphasis>k3</emphasis> est l'incrément basé sur la pente trois quarts de l'intervalle, utilisant
+                        <emphasis>
+                            y<subscript>n</subscript> + a31*h*k1 + a32*h*k2 + a33*h*k3.
+                        </emphasis></para>
+                               </listitem>
             </itemizedlist>
         </para>
         <para>
@@ -233,7 +235,7 @@ Temps pour Runge-Kutta implicite :
         </para>
         <para>
             Maintenant, dans le script suivant, on compare la différence de temps entre <emphasis>RK implicite</emphasis> et <emphasis>CVode</emphasis> en lançant l'exemple avec les cinq solveurs tour à tour :
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integImpRK.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integImpRK.sce">
                 Ouverture du script
             </link>
         </para>
@@ -303,10 +305,10 @@ Temps pour Runge-Kutta implicite :
     <refsection>
         <title>Bibliographie</title>
         <para>
-            Journal of Computational Physics, Volume 233, Janvier 2013, Pages 315-323 <ulink url="http://dl.acm.org/citation.cfm?id=2397727.2397975&amp;coll=DL&amp;dl=GUIDE&amp;CFID=295003167&amp;CFTOKEN=37159263">A low-dispersion and low-dissipation implicit Runge-Kutta scheme</ulink>
+            Journal of Computational Physics, Volume 233, Janvier 2013, Pages 315-323 <link xlink:href="http://dl.acm.org/citation.cfm?id=2397727.2397975&amp;coll=DL&amp;dl=GUIDE&amp;CFID=295003167&amp;CFTOKEN=37159263">A low-dispersion and low-dissipation implicit Runge-Kutta scheme</link>
         </para>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</link>
         </para>
     </refsection>
     <refsection>
@@ -314,7 +316,7 @@ Temps pour Runge-Kutta implicite :
         <revhistory>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revdescription>Runge-Kutta Implicite 4(5) ajouté</revdescription>
+                <revremark>Runge-Kutta Implicite 4(5) ajouté</revremark>
             </revision>
         </revhistory>
     </refsection>

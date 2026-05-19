@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-    xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-    xml:lang="ru" xml:id="type">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="type">
     <refnamediv>
         <refname>type</refname>
         <refpurpose>возвращает тип переменной</refpurpose>
@@ -52,116 +49,149 @@
             <varlistentry>
                 <term>1</term>
                 <listitem>
-                    матрица вещественных или комплексных значений удвоенной точности (double).
+                     <para>
+                        матрица вещественных или комплексных значений удвоенной точности (double).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>2</term>
                 <listitem>
-                    матрица <link linkend="poly">полиномов</link>.
+                     <para>
+                        матрица <link linkend="poly">полиномов</link>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>4</term>
                 <listitem>
-                    матрица <link linkend="matrices">логических</link> значений.
+                     <para>
+                        матрица <link linkend="matrices">логических</link> значений.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>5</term>
                 <listitem>
-                    <link linkend="sparse">разрежённая</link> матрица.
+                     <para><link linkend="sparse">разрежённая</link> матрица.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>6</term>
                 <listitem>
-                    <link linkend="sparse">разрежённая</link> матрица логических значений.
+                     <para><link linkend="sparse">разрежённая</link> матрица логических значений.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>7</term>
                 <listitem>
-                    разрежённая матрица Matlab'а.
+                     <para>
+                        разрежённая матрица Matlab'а.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>8</term>
                 <listitem>
-                    матрица <link linkend="int8">целочисленных</link> значений, хранимых в 1
-                    (<literal>int8</literal>), 2 (<literal>int16</literal>) ,
-                    4 (<literal>int32</literal>) или 8 (<literal>int64</literal>) байтах.
+                     <para>
+                        матрица <link linkend="int8">целочисленных</link> значений, хранимых в 1
+                        (<literal>int8</literal>), 2 (<literal>int16</literal>) ,
+                        4 (<literal>int32</literal>) или 8 (<literal>int64</literal>) байтах.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>9</term>
                 <listitem>
-                    матрица <link linkend="graphics_entities">графических дескрипторов</link>.
+                     <para>
+                        матрица <link linkend="graphics_entities">графических дескрипторов</link>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>10</term>
                 <listitem>
-                    матрица <link linkend="strings">символьных строк</link>.
+                     <para>
+                        матрица <link linkend="strings">символьных строк</link>.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>13</term>
                 <listitem>
-                    компилированная <link linkend="function">функция</link> (Scilab code).
+                     <para>
+                        компилированная <link linkend="function">функция</link> (Scilab code).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>14</term>
                 <listitem>
-                    <link linkend="library">библиотека</link> функций.
+                     <para><link linkend="library">библиотека</link> функций.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>15</term>
                 <listitem>
-                    список (<link linkend="list">list</link>).
+                     <para>
+                        список (<link linkend="list">list</link>).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>16</term>
                 <listitem>
-                    типизированный список (<link linkend="tlist">tlist</link>).
+                     <para>
+                        типизированный список (<link linkend="tlist">tlist</link>).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>17</term>
                 <listitem>
-                    матричноориентированный типизированный список (<link linkend="mlist">mlist</link>).
+                     <para>
+                        матричноориентированный типизированный список (<link linkend="mlist">mlist</link>).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>128</term>
                 <listitem>
-                    идентификатор блока Xcos, результата <link linkend="lufact">lufact</link>() и т. д.
+                     <para>
+                        идентификатор блока Xcos, результата <link linkend="lufact">lufact</link>() и т. д.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>129</term>
                 <listitem>
-                    размер неявного многочлена, используемый для индексации.
+                     <para>
+                        размер неявного многочлена, используемый для индексации.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>130</term>
                 <listitem>
-                    встроенная функция Scilab'а, называемая также <emphasis role="italic">шлюзом</emphasis> (код C, C++ или Fortran).
+                     <para>
+                        встроенная функция Scilab'а, называемая также <emphasis role="italic">шлюзом</emphasis> (код C, C++ или Fortran).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>0</term>
                 <listitem>
-                    Неопределённый компонент  простого списка. Такой компонент может быть в качестве
-                    опущенного входного аргумента при вызове Scilab-функции, как, например, в <literal>foo(a,,b)</literal>:
-                    внутри функции отсутствующий аргумент определён, но он нулевого типа. Определение
-                    <literal>L=list(%pi,,%i,,,%z)</literal> создаёт <literal>L(2)</literal> типа 0, и т.д.
-                    Для этих объектов <code>isdef()</code> возвращает <literal>%T</literal>, но
-                    их нулевой тип может быть проверен с помощью <literal>type()</literal>.
+                     <para>
+                        Неопределённый компонент  простого списка. Такой компонент может быть в качестве
+                        опущенного входного аргумента при вызове Scilab-функции, как, например, в <literal>foo(a,,b)</literal>:
+                        внутри функции отсутствующий аргумент определён, но он нулевого типа. Определение
+                        <literal>L=list(%pi,,%i,,,%z)</literal> создаёт <literal>L(2)</literal> типа 0, и т.д.
+                        Для этих объектов <code>isdef()</code> возвращает <literal>%T</literal>, но
+                        их нулевой тип может быть проверен с помощью <literal>type()</literal>.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -309,4 +339,3 @@ type(r)                     // рациональные дроби
         </revhistory>
     </refsection>
 </refentry>
-

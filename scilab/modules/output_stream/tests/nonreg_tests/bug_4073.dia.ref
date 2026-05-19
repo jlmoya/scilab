@@ -23,8 +23,8 @@ tab_ref = [
 'àéùç'];
 // =============================================================================
 for i = 1 : size(tab_ref,'*')
-  if tab_ref(i) <> sprintf(tab_ref(i)) then bugmes();quit;end
-  if tab_ref(i) <> sprintf('%s',tab_ref(i)) then bugmes();quit;end
+  assert_checkequal(tab_ref(i), sprintf(tab_ref(i)));
+  assert_checkequal(tab_ref(i), sprintf('%s',tab_ref(i)));
 end
 // =============================================================================
 for i = 1 : size(tab_ref,'*')

@@ -114,11 +114,11 @@ exit /B 0
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)$(Configuration)\</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l en_US -f SCI/modules/helptools/data/configuration/regen_list.sce
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l en_US -e xmltoinline([],[],'en_US');
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l fr_FR -e xmltoinline([],[],'fr_FR');
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l pt_BR -e xmltoinline([],[],'pt_BR');
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l ja_JP -e xmltoinline([],[],'ja_JP');
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l ru_RU -e xmltoinline([],[],'ru_RU');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l en_US -e generate_inline_links('en_US');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l fr_FR -e generate_inline_links('fr_FR');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l pt_BR -e generate_inline_links('pt_BR');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l ja_JP -e generate_inline_links('ja_JP');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l ru_RU -e generate_inline_links('ru_RU');
 exit /B 0
 </NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l en_US -e xmltoinline([],[],'en_US');exit(0)
@@ -175,11 +175,11 @@ exit /B 0
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)$(Configuration)\</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l en_US -f SCI/modules/helptools/data/configuration/regen_list.sce
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l en_US -e xmltoinline([],[],'en_US');
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l fr_FR -e xmltoinline([],[],'fr_FR');
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l pt_BR -e xmltoinline([],[],'pt_BR');
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l ja_JP -e xmltoinline([],[],'ja_JP');
-"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l ru_RU -e xmltoinline([],[],'ru_RU');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l en_US -e generate_inline_links('en_US');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l fr_FR -e generate_inline_links('fr_FR');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l pt_BR -e generate_inline_links('pt_BR');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l ja_JP -e generate_inline_links('ja_JP');
+"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l ru_RU -e generate_inline_links('ru_RU');
 exit /B 0
 </NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(SolutionDir)bin\Scilex.exe" -nb -nouserstartup -noatomsautoload -l en_US -e xmltoinline([],[],'en_US');exit(0)

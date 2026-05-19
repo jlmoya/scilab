@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="library">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="library">
     <refnamediv>
         <refname>library</refname>
         <refpurpose>тип данных библиотеки</refpurpose>
@@ -31,40 +29,45 @@
             Такая библиотека сделана из директории, содержащей
             <itemizedlist>
                 <listitem>
-                    редактируемый XML-файл, который всегда называется <literal>lib</literal>.
-                    Этот файл содержит
-                    <orderedlist>
-                        <listitem>
-                            имя библиотеки;
-                        </listitem>
-                        <listitem>
-                            список имён публичных функций, принадлежащих библиотеке.
-                        </listitem>
-                    </orderedlist>
-                    Этот файл сгенерирован с помощью <literal>genlib(..)</literal>.
-                    Его нельзя сделать вручную.
-                    <para/>
-                </listitem>
+                     <para>
+                        редактируемый XML-файл, который всегда называется <literal>lib</literal>.
+                        Этот файл содержит
+                        <orderedlist>
+                            <listitem>
+                                 <para>
+                                    имя библиотеки;
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    список имён публичных функций, принадлежащих библиотеке.
+                                </para>
+                            </listitem>
+                        </orderedlist>
+                        Этот файл сгенерирован с помощью <literal>genlib(..)</literal>.
+                        Его нельзя сделать вручную.
+                        </para>
+                    </listitem>
                 <listitem>
-                    набор двоичных файлов с расширением <literal>.bin</literal>,
-                    чьи основные имена являются именами функций возможно зарегистрированных
-                    в файле <literal>lib</literal>,
-                    <para/>
-                </listitem>
+                     <para>
+                        набор двоичных файлов с расширением <literal>.bin</literal>,
+                        чьи основные имена являются именами функций возможно зарегистрированных
+                        в файле <literal>lib</literal>,
+                        </para>
+                    </listitem>
                 <listitem>
-                    и возможно -- но это необязательно для загрузки и использования
-                    библиотеки --, <literal>.sci</literal>-файлы исходников, написанные
-                    на языке Scilab, чья компиляция с помощью <code>genlib(..)</code>
-                    генерирует файлы <literal>lib</literal> и <literal>.bin</literal>.
-                    <para/>
-                    <warning>
-                        Если файл-исходник <literal>foo.sci</literal> функции
-                        <literal>foo()</literal> не предоставлен в директории библиотеки,
-                        то <literal>edit foo</literal> не может править его Scilab-код
-                        и откроет пустой файл с нуля.
-                    </warning>
-                    <para/>
-                </listitem>
+                     <para>
+                        и возможно -- но это необязательно для загрузки и использования
+                        библиотеки --, <literal>.sci</literal>-файлы исходников, написанные
+                        на языке Scilab, чья компиляция с помощью <code>genlib(..)</code>
+                        генерирует файлы <literal>lib</literal> и <literal>.bin</literal>.
+                        <warning>
+                            Если файл-исходник <literal>foo.sci</literal> функции
+                            <literal>foo()</literal> не предоставлен в директории библиотеки,
+                            то <literal>edit foo</literal> не может править его Scilab-код
+                            и откроет пустой файл с нуля.
+                        </warning></para>
+                              </listitem>
             </itemizedlist>
         </para>
         <para>
@@ -80,10 +83,14 @@
             соответствует <literal>"library"</literal>. Этот дескриптор библиотеки содержит
             <itemizedlist>
                 <listitem>
-                    путь к корневой директории библиотеки;
+                     <para>
+                        путь к корневой директории библиотеки;
+                    </para>
                 </listitem>
                 <listitem>
-                    список имён публичных функций, принадлежащих библиотеке.
+                     <para>
+                        список имён публичных функций, принадлежащих библиотеке.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -93,7 +100,7 @@
         </para>
         <para>
             Пример: <literal>interpolationlib</literal> является родной библиотекой Scilab:
-            <screen>
+            <screen><![CDATA[
 --> interpolationlib
  interpolationlib  =
 
@@ -125,7 +132,7 @@ interp1  mesh2d  interpln  smooth
 
  libpath  =
   "SCI\modules\interpolation\macros\"
-</screen>
+]]></screen>
         </para>
         <para>
             <emphasis role="bold">Автозагрузка при первом вызове функции</emphasis>:
@@ -135,27 +142,30 @@ interp1  mesh2d  interpln  smooth
             библиотеке, вызвана в сессии, то Scilab делает следующее:
             <orderedlist>
                 <listitem>
-                    Является ли <literal>foo</literal> именем встроенной функции?
-                    Если так, то эта встроенная функция вызывается. В противном
-                    случае,
-                    <para/>
-                </listitem>
+                     <para>
+                        Является ли <literal>foo</literal> именем встроенной функции?
+                        Если так, то эта встроенная функция вызывается. В противном
+                        случае,
+                        </para>
+                    </listitem>
                 <listitem>
-                    Является ли <literal>foo</literal> именем локальной переменной,
-                    возможно требуемой <literal>foo()</literal> (предполагая, что
-                    она уже была вызвана)? Если так, то используется эта переменная.
-                    В противном случае,
-                    <para/>
-                </listitem>
+                     <para>
+                        Является ли <literal>foo</literal> именем локальной переменной,
+                        возможно требуемой <literal>foo()</literal> (предполагая, что
+                        она уже была вызвана)? Если так, то используется эта переменная.
+                        В противном случае,
+                        </para>
+                    </listitem>
                 <listitem>
-                    Сканируются все загруженные библиотеки -- в обратном алфавитному порядку имён
-                    библиотек -- для поиска <literal>foo()</literal>. Первая найденная
-                    "загружается" из её <literal>.bin</literal>-файла и, наконец, вызывается.
-                    Следующие вызовы <literal>foo()</literal> будут переходить к шагу №2,
-                    который будет успешным, пока дескриптор <literal>foo</literal> не
-                    будет удалён по ходу дела.
-                    <para/>
-                </listitem>
+                     <para>
+                        Сканируются все загруженные библиотеки -- в обратном алфавитному порядку имён
+                        библиотек -- для поиска <literal>foo()</literal>. Первая найденная
+                        "загружается" из её <literal>.bin</literal>-файла и, наконец, вызывается.
+                        Следующие вызовы <literal>foo()</literal> будут переходить к шагу №2,
+                        который будет успешным, пока дескриптор <literal>foo</literal> не
+                        будет удалён по ходу дела.
+                        </para>
+                    </listitem>
             </orderedlist>
         </para>
         <para>
@@ -305,17 +315,23 @@ blanks(3)        // следующий вызов по умолчанию string
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Библиотека теперь содержать только функции, а не переменные
-                            любого типа.
+                             <para>
+                                Библиотека теперь содержать только функции, а не переменные
+                                любого типа.
+                            </para>
                         </listitem>
                         <listitem>
-                            Файл lib теперь является редактируемым XML-файлом, а не бинарным.
+                             <para>
+                                Файл lib теперь является редактируемым XML-файлом, а не бинарным.
+                            </para>
                         </listitem>
                         <listitem>
-                            Если файл исходного кода foo.sci содержит несколько последовательных
-                            блоков function/endfunction, то только определённая foo() теперь
-                            записывается в библиотеку. Остальные определённые функции теперь
-                            являются приватными и известными только из foo().
+                             <para>
+                                Если файл исходного кода foo.sci содержит несколько последовательных
+                                блоков function/endfunction, то только определённая foo() теперь
+                                записывается в библиотеку. Остальные определённые функции теперь
+                                являются приватными и известными только из foo().
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

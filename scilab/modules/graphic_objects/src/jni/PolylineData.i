@@ -318,7 +318,6 @@ BOOL insertPoint(int uid, int index, double x, double y, double z)
 {
     double *curData, *newData;
 	int size = getDataSize_(uid);
-	BOOL result;
 	int i ,j, n[2];
 
 	// -1 = inset before the first element
@@ -353,7 +352,7 @@ BOOL insertPoint(int uid, int index, double x, double y, double z)
 
 	n[0] = 1; n[1] = size+1;
 	
-	result = setGraphicObjectProperty(uid, __GO_DATA_MODEL_NUM_ELEMENTS_ARRAY__, &n, jni_int_vector, 2);
+	setGraphicObjectProperty(uid, __GO_DATA_MODEL_NUM_ELEMENTS_ARRAY__, &n, jni_int_vector, 2);
 	setGraphicObjectProperty(uid, __GO_DATA_MODEL_COORDINATES__, newData, jni_double_vector, size+1);
 
 	FREE(newData);
@@ -364,7 +363,6 @@ BOOL removePoint(int uid, int index)
 {
 	double *curData, *newData;
 	int size = getDataSize_(uid);
-	BOOL result;
 	int i ,j, n[2];
 
 	if (index >= size || index < 0) return FALSE;
@@ -390,7 +388,7 @@ BOOL removePoint(int uid, int index)
 	}
 
 	n[0] = 1; n[1] = size-1;
-	result = setGraphicObjectProperty(uid, __GO_DATA_MODEL_NUM_ELEMENTS_ARRAY__, &n, jni_int_vector, 2);
+	setGraphicObjectProperty(uid, __GO_DATA_MODEL_NUM_ELEMENTS_ARRAY__, &n, jni_int_vector, 2);
 	setGraphicObjectProperty(uid, __GO_DATA_MODEL_COORDINATES__, newData, jni_double_vector, size-1);
 
 	FREE(newData);

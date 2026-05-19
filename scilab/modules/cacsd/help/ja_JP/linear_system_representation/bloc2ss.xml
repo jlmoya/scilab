@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="bloc2ss" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bloc2ss" xml:lang="ja">
     <refnamediv>
         <refname>bloc2ss</refname>
         <refpurpose>ブロック図を状態空間表現に変換</refpurpose>
@@ -108,19 +105,25 @@ list('link','name_of_link',
             リンクは 4 つあります :
             <itemizedlist>
               <listitem>
-                最初のリンク (名前は <literal>'U'</literal>) 入力 を加算器のポート1に結合します.
+                   <para>
+                    最初のリンク (名前は <literal>'U'</literal>) 入力 を加算器のポート1に結合します.
+                  </para>
               </listitem>
               <listitem>
-                2番目と3番目のリンクはそれぞれ,
-                加算器の(出力)ポート1をシステム<literal>S1</literal>の(入力)ポート1,
-                <literal>S1</literal>の(出力)ポート1を<literal>S2</literal>の(入力)ポート1
-                に結合します.
+                   <para>
+                    2番目と3番目のリンクはそれぞれ,
+                    加算器の(出力)ポート1をシステム<literal>S1</literal>の(入力)ポート1,
+                    <literal>S1</literal>の(出力)ポート1を<literal>S2</literal>の(入力)ポート1
+                    に結合します.
+                  </para>
               </listitem>
               <listitem>
-                (<literal>'Y'</literal>という名前の)4番目のリンクは,
-                <literal>S2</literal>の出力ポート1を出力
-                (仮想的なブロック -1 のポート0, 省略されている)
-                および加算器の(入力)ポート2に結合します.
+                   <para>
+                    (<literal>'Y'</literal>という名前の)4番目のリンクは,
+                    <literal>S2</literal>の出力ポート1を出力
+                    (仮想的なブロック -1 のポート0, 省略されている)
+                    および加算器の(入力)ポート2に結合します.
+                  </para>
               </listitem>
           </itemizedlist>
         </para>

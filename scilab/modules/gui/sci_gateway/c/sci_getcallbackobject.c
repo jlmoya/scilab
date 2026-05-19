@@ -28,8 +28,6 @@ int sci_getcallbackobject(char *fname, void* pvApiCtx)
     SciErr sciErr;
 
     int* piAddrpObjUID = NULL;
-    int nbRow = 0;
-    int nbCol = 0;
     double ObjUID = 0;
     unsigned long graphicHandle = 0;
 

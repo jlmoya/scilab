@@ -154,8 +154,7 @@ types::Double *OdeManager::parseInitialCondition(types::typed_list &in, bool bIs
     {
         OdeManager *prevManager = getPreviousManager();
         // by default, extend solution with Y0 resp. Yp0 = final value of previous Y resp. Yp
-        int iNbEq = prevManager->m_iNbEq;
-     
+        
         pdblPrevYFinal = bIsDerivative ? N_VGetArrayPointer(prevManager->m_N_VectorYp) : N_VGetArrayPointer(prevManager->m_N_VectorY);
 
         pDblY = prevManager->m_pDblY0->clone(); // Just for the size and dimensions
@@ -459,7 +458,7 @@ void OdeManager::parseOptions(types::optional_list &opt)
     getDoubleInPlist(getSolverName().c_str(),opt, L"h0", &m_dblInitialStep,
         m_odeIsExtension ? prevManager->m_dblInitialStep : 0, {0, std::numeric_limits<double>::infinity()});
     getIntInPlist(getSolverName().c_str(),opt, L"maxSteps", &m_iMaxNumSteps,
-        m_odeIsExtension ? prevManager->m_iMaxNumSteps : 0, {0, INT_MAX});
+        m_odeIsExtension ? prevManager->m_iMaxNumSteps : 500, {0, INT_MAX});
     getDoubleInPlist(getSolverName().c_str(),opt, L"hMax", &m_dblMaxStep,
         m_odeIsExtension ? prevManager->m_dblMaxStep : 0, {0, std::numeric_limits<double>::infinity()});
     getDoubleInPlist(getSolverName().c_str(),opt, L"hMin", &m_dblMinStep,

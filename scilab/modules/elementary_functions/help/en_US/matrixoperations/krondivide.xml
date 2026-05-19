@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="krondivide" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="krondivide" xml:lang="en">
     <refnamediv>
         <refname>kron .\. ./.</refname>
         <refpurpose>Kronecker left and right divisions</refpurpose>
@@ -27,27 +24,33 @@
             X = B ./. A       // while B = X .*. A
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>X</term>
                 <listitem>
-                    Array of decimal or complex numbers, of size (x1,x2,..).
+                     <para>
+                        Array of decimal or complex numbers, of size (x1,x2,..).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    Array of decimal or complex numbers, of size (a1,a2,..), with any number
-                    of dimensions.
+                     <para>
+                        Array of decimal or complex numbers, of size (a1,a2,..), with any number
+                        of dimensions.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>B</term>
                 <listitem>
-                    Array of decimal or complex numbers, of size (a1*x1, a2*x2,..), with any number
-                    of dimensions.
+                     <para>
+                        Array of decimal or complex numbers, of size (a1*x1, a2*x2,..), with any number
+                        of dimensions.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -228,7 +231,7 @@ M .\. P
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

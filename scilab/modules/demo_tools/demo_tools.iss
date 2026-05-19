@@ -35,10 +35,13 @@ Source: modules\{#DEMO_TOOLS}\macros\lib; DestDir: {app}\modules\{#DEMO_TOOLS}\m
 Source: modules\{#DEMO_TOOLS}\macros\*.sci; DestDir: {app}\modules\{#DEMO_TOOLS}\macros; Components: {#COMPN_SCILAB}
 Source: modules\{#DEMO_TOOLS}\macros\*.bin; DestDir: {app}\modules\{#DEMO_TOOLS}\macros; Components: {#COMPN_SCILAB}
 ;
-Source: modules\{#DEMO_TOOLS}\gui\*.xml; DestDir: {app}\modules\{#DEMO_TOOLS}\gui; Components: {#COMPN_SCILAB}
+Source: modules\{#DEMO_TOOLS}\gui\*.html; DestDir: {app}\modules\{#DEMO_TOOLS}\gui; Components: {#COMPN_SCILAB}
+Source: modules\{#DEMO_TOOLS}\gui\*.css; DestDir: {app}\modules\{#DEMO_TOOLS}\gui; Components: {#COMPN_SCILAB}
+Source: modules\{#DEMO_TOOLS}\gui\*.js; DestDir: {app}\modules\{#DEMO_TOOLS}\gui; Components: {#COMPN_SCILAB}
 ;
 ;Source: modules\{#DEMO_TOOLS}\examples\*.*; DestDir: {app}\modules\{#DEMO_TOOLS}\examples; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#DEMO_TOOLS}\tests\*.*; DestDir: {app}\modules\{#DEMO_TOOLS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#DEMO_TOOLS}\help\*.*; DestDir: {app}\modules\{#DEMO_TOOLS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

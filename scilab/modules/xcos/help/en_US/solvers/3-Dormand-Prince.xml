@@ -12,7 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="DoPri">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="DoPri">
     <refnamediv>
         <refname>Dormand-Prince 4(5)</refname>
         <refpurpose>
@@ -61,17 +61,20 @@
             plus the weighted average of six increments, where each increment is the product of the size of the interval, <emphasis>h</emphasis>, and an estimated slope specified by the function <emphasis>f(t,y)</emphasis>:
             <itemizedlist>
                 <listitem>
-                    <emphasis>k1</emphasis> is the increment based on the slope at the beginning of the interval, using
-                    <emphasis>
-                        y<subscript>n</subscript>
-                    </emphasis>
-                    (Euler's method),
+                     <para><emphasis>k1</emphasis> is the increment based on the slope at the beginning of the interval, using
+                        <emphasis>
+                            y<subscript>n</subscript>
+                        </emphasis>
+                        (Euler's method),
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k2, k3, k4</emphasis> and <emphasis>k5</emphasis> are the increments based on the slope at respectively <emphasis>0.2, 0.3, 0.8</emphasis> and <emphasis>0.9</emphasis> of the interval, using combinations of each other,
+                     <para><emphasis>k2, k3, k4</emphasis> and <emphasis>k5</emphasis> are the increments based on the slope at respectively <emphasis>0.2, 0.3, 0.8</emphasis> and <emphasis>0.9</emphasis> of the interval, using combinations of each other,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k6</emphasis> is the increment based on the slope at the end, also using combinations of the other <emphasis>ki</emphasis>.
+                     <para><emphasis>k6</emphasis> is the increment based on the slope at the end, also using combinations of the other <emphasis>ki</emphasis>.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -170,7 +173,7 @@ Time for Dormand-Prince:
         </para>
         <para>
             Now, in the following script, we compare the time difference between <emphasis>Dormand-Prince</emphasis> and <emphasis>CVode</emphasis> by running the example with the five solvers in turn:
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integDoPri.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integDoPri.sce">
                 Open the script
             </link>
         </para>
@@ -246,18 +249,18 @@ Time for Dormand-Prince:
     <refsection>
         <title>Bibliography</title>
         <para>
-            Journal of Computational and Applied Mathematics, Volume 15, Issue 2, 2 June 1986, Pages 203-211 <ulink url="http://dl.acm.org/citation.cfm?id=9958.9963&amp;coll=DL&amp;dl=GUIDE">Dormand-Prince Method</ulink>
+            Journal of Computational and Applied Mathematics, Volume 15, Issue 2, 2 June 1986, Pages 203-211 <link xlink:href="http://dl.acm.org/citation.cfm?id=9958.9963&amp;coll=DL&amp;dl=GUIDE">Dormand-Prince Method</link>
         </para>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Sundials Documentation</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Sundials Documentation</link>
         </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revdescription>Dormand-Prince 4(5) solver added</revdescription>
+                <revremark>Dormand-Prince 4(5) solver added</revremark>
             </revision>
         </revhistory>
     </refsection>

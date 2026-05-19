@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/BACKLASH.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_BACKLASH">
+    <refsection xml:id="Contents_BACKLASH">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_BACKLASH">Description</xref>
+                <para><link linkend="Description_BACKLASH">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_BACKLASH">Parameters</xref>
+                <para><link linkend="Dialogbox_BACKLASH">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_BACKLASH">Default properties</xref>
+                <para><link linkend="Defaultproperties_BACKLASH">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_BACKLASH">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_BACKLASH">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_BACKLASH">Computational function</xref>
+                <para><link linkend="Computationalfunction_BACKLASH">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_BACKLASH">Example</xref>
+                <para><link linkend="Example_BACKLASH">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_BACKLASH">
+    <refsection xml:id="Description_BACKLASH">
         <title>Description</title>
         <para>
             The block Backlash allows the representation of a system presenting a mechanical
@@ -76,14 +76,13 @@
             the next change of direction of the input.
         </para>
     </refsection>
-    <refsection id="Dialogbox_BACKLASH">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_BACKLASH">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/BACKLASH_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/BACKLASH_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -109,7 +108,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_BACKLASH">
+    <refsection xml:id="Defaultproperties_BACKLASH">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -182,7 +181,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_BACKLASH">
+    <refsection xml:id="Interfacingfunction_BACKLASH">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -190,7 +189,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_BACKLASH">
+    <refsection xml:id="Computationalfunction_BACKLASH">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -198,7 +197,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_BACKLASH">
+    <refsection xml:id="Example_BACKLASH">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/discontinuities_pal/BACKLASH_Example.zcos">

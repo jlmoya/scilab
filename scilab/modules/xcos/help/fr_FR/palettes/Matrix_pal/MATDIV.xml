@@ -13,49 +13,46 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="MATDIV" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATDIV" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATDIV</refname>
         <refpurpose>Division matricielle</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATDIV.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_MATDIV">
+    <refsection xml:id="Contents_MATDIV">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATDIV">Description</xref>
+                <para><link linkend="Description_MATDIV">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATDIV">Paramètres</xref>
+                <para><link linkend="Dialogbox_MATDIV">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATDIV">Exemple</link>
+                <para><link linkend="MATDIV">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATDIV">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_MATDIV">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATDIV">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_MATDIV">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATDIV">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_MATDIV">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATDIV">Voir aussi</xref>
+                <para><link linkend="Seealso_MATDIV">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_MATDIV">
+    <refsection xml:id="Description_MATDIV">
         <title>Description</title>
         <para>
             Le bloc MATDIV sort la division matricielle à droite. C'est une solution de x*B=A.
@@ -70,15 +67,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATDIV">
+    <refsection xml:id="Dialogbox_MATDIV">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATDIV_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATDIV_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -92,16 +87,16 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATDIV">
+    <refsection xml:id="Example_MATDIV">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A = [1 7 3 ; 23 32 29]
             B = [21 18 34 ; 13 10 19 ; 11 54 36]
             alors de résultat de l'équation x*B = A est (A/B) :
             x = [-0.475 0.712 0.156 ; -4.350 8.381 0.491]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATDIV">
+    <refsection xml:id="Defaultproperties_MATDIV">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -177,7 +172,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATDIV">
+    <refsection xml:id="Interfacingfunction_MATDIV">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -185,35 +180,41 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATDIV">
+    <refsection xml:id="Computationalfunction_MATDIV">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_div.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_div.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_div.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_div.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATDIV2">
+    <refsection xml:id="Example_MATDIV2">
         <title>Exemple de division : [t sin(t)]/[0 1; 1 0] = [sin(t) t]</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDIV_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATDIV_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATDIV_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATDIV_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATDIV" role="see also">
+    <refsection xml:id="Seealso_MATDIV" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATBKSL">MATBKSL</link>
+                <para><link linkend="MATBKSL">MATBKSL</link></para>
             </listitem>
             <listitem>
-                <link linkend="MATMUL">MATMUL</link>
+                <para><link linkend="MATMUL">MATMUL</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -13,49 +13,46 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" 
-		  xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" 
-		  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" 
-		  xmlns:scilab="http://www.scilab.org" xml:id="MATCATH" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATCATH" xml:lang="fr_FR">
     <refnamediv>
         <refname>MATCATH</refname>
         <refpurpose>Concaténation horizontale</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
 				<imagedata align="center" fileref="../../../../images/palettes/MATCATH.png"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
     </refsection>
-    <refsection id="Contents_MATCATH">
+    <refsection xml:id="Contents_MATCATH">
         <title>Contenu</title>
 		<itemizedlist>
 			<listitem>
-				<xref linkend="Description_MATCATH">Description</xref>
+				<para><link linkend="Description_MATCATH">Description</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Dialogbox_MATCATH">Paramètres</xref>
+				<para><link linkend="Dialogbox_MATCATH">Paramètres</link></para>
 			</listitem>
 			<listitem>
-				<link linkend="MATCATH">Exemple</link>
+				<para><link linkend="MATCATH">Exemple</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Defaultproperties_MATCATH">Propriétés par défaut</xref>
+				<para><link linkend="Defaultproperties_MATCATH">Propriétés par défaut</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Interfacingfunction_MATCATH">Fonction d'interfaçage</xref>
+				<para><link linkend="Interfacingfunction_MATCATH">Fonction d'interfaçage</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Computationalfunction_MATCATH">Fonction de calcul</xref>
+				<para><link linkend="Computationalfunction_MATCATH">Fonction de calcul</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Seealso_MATCATH">Voir aussi</xref>
+				<para><link linkend="Seealso_MATCATH">Voir aussi</link></para>
 			</listitem>
 		</itemizedlist>
     </refsection>
-    <refsection id="Description_MATCATH">
+    <refsection xml:id="Description_MATCATH">
         <title>Description</title>
         <para>
             Le bloc MATCATH sort la concaténation horizontale de plusieurs matrices. Cette opération est
@@ -70,15 +67,13 @@
         <para>L'équivalent de MATCATH dans Scilab est y=[U1 U2 ... Un].</para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_MATCATH">
+    <refsection xml:id="Dialogbox_MATCATH">
         <title>Paramètres</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
-				<imagedata fileref="../../../../images/gui/MATCATH_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+				<imagedata fileref="../../../../images/gui/MATCATH_gui.gif" align="center"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -91,16 +86,16 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATCATH">
+    <refsection xml:id="Example_MATCATH">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A = [1 2 3; 4 5 6]
             B = [7 8; 9 10]
             Le résultat de la concaténation horizontale est :
             C = [1 2 3 7 8; 4 5 6 9 10]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_MATCATH">
+    <refsection xml:id="Defaultproperties_MATCATH">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -176,7 +171,7 @@
         </itemizedlist>
 		<para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATCATH">
+    <refsection xml:id="Interfacingfunction_MATCATH">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -184,32 +179,38 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATCATH">
+    <refsection xml:id="Computationalfunction_MATCATH">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_cath.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_cath.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_cath.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_cath.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MATCATH2">
+    <refsection xml:id="Example_MATCATH2">
         <title>Example de Concaténation horizontale</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATCATH_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/MATCATH_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/MATCATH_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/MATCATH_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_MATCATH" role="see also">
+    <refsection xml:id="Seealso_MATCATH" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="MATCATV">MATCATV</link>
+                <para><link linkend="MATCATV">MATCATV</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

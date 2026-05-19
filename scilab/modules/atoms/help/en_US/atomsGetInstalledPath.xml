@@ -9,10 +9,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="atomsGetInstalledPath" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="atomsGetInstalledPath" xml:lang="en">
     <refnamediv>
         <refname>atomsGetInstalledPath</refname>
         <refpurpose>Gets the install path of some installed external modules</refpurpose>
@@ -24,7 +21,7 @@
             paths = atomsGetInstalledPath(modules, section)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -124,15 +121,21 @@ atomsRemove("toolbox_7V6");
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            The technical name can now be case-insensitive, or a case-insensitive
-                            fragment of the full true technical name of each searched module.
-                        </listitem>
-                        <listitem>
-                            The version is now optional (use "" to accept any version).
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The technical name can now be case-insensitive, or a case-insensitive
+                                    fragment of the full true technical name of each searched module.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The version is now optional (use "" to accept any version).
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

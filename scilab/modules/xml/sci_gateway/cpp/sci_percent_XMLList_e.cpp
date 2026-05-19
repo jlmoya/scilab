@@ -114,16 +114,23 @@ int sci_percent_XMLList_e(char *fname, void* pvApiCtx)
         }
         else if (!strcmp(field, "content"))
         {
-            pstStrings = list->getContentFromList();
-
-            err = createMatrixOfString(pvApiCtx, Rhs + 1, 1, list->getSize(), const_cast < const char * const *>(pstStrings));
-
-            // contents are created with xmlGetNodeContent which requires that the user free the himself the memory
-            for (int i = 0; i < list->getSize(); i++)
+            if (list->getSize() == 0)
             {
-                xmlFree(const_cast < char *>(pstStrings[i]));
+                createEmptyMatrix(pvApiCtx, Rhs + 1);
             }
-            delete[]pstStrings;
+            else
+            {
+                pstStrings = list->getContentFromList();
+
+                err = createMatrixOfString(pvApiCtx, Rhs + 1, 1, list->getSize(), const_cast < const char * const *>(pstStrings));
+
+                // contents are created with xmlGetNodeContent which requires that the user free the himself the memory
+                for (int i = 0; i < list->getSize(); i++)
+                {
+                    xmlFree(const_cast < char *>(pstStrings[i]));
+                }
+                delete[]pstStrings;
+            }
             if (err.iErr)
             {
                 printError(&err, 0);
@@ -137,11 +144,16 @@ int sci_percent_XMLList_e(char *fname, void* pvApiCtx)
         }
         else if (!strcmp(field, "name"))
         {
-            pstStrings = list->getNameFromList();
-
-            err = createMatrixOfString(pvApiCtx, Rhs + 1, 1, list->getSize(), const_cast < const char * const *>(pstStrings));
-
-            delete[]pstStrings;
+            if (list->getSize() == 0)
+            {
+                createEmptyMatrix(pvApiCtx, Rhs + 1);
+            }
+            else
+            {
+                pstStrings = list->getNameFromList();
+                err = createMatrixOfString(pvApiCtx, Rhs + 1, 1, list->getSize(), const_cast < const char * const *>(pstStrings));
+                delete[]pstStrings;
+            }
             if (err.iErr)
             {
                 printError(&err, 0);

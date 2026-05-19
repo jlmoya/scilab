@@ -31,56 +31,55 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/scifunc_block_m.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_scifunc_block_m">
+    <refsection xml:id="Contents_scifunc_block_m">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_scifunc_block_m">Description</xref>
+                <para><link linkend="Description_scifunc_block_m">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_scifunc_block_m">Parameters</xref>
+                <para><link linkend="Dialogbox_scifunc_block_m">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_scifunc_block_m">Default properties</xref>
+                <para><link linkend="Functions_scifunc_block_m">User-defined functions</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_scifunc_block_m">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_scifunc_block_m">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_scifunc_block_m">Computational function</xref>
+                <para><link linkend="Computationalfunction_scifunc_block_m">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_scifunc_block_m">Example</xref>
+                <para><link linkend="Example_scifunc_block_m">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_scifunc_block_m">
+    <refsection xml:id="Description_scifunc_block_m">
         <title>Description</title>
         <para>
             This block can realize any type of Scicos block. The function of the
             block is defined interactively using dialogue boxes and in Scilab
             language. During simulation, these instructions are interpreted by
             Scilab; the simulation of diagrams that include these types of blocks
-            is slower. For more information see Scicos reference manual.
+            is slower.
         </para>
     </refsection>
-    <refsection id="Dialogbox_scifunc_block_m">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_scifunc_block_m">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/scifunc_block_m_gui.gif"
-                            align="center" style="float:right" />
-                    <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -175,81 +174,81 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_scifunc_block_m">
-        <title>Default properties</title>
-        <itemizedlist>
-            <listitem>
-                <para>
-                    <emphasis role="bold">always active:</emphasis> no
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">direct-feedthrough:</emphasis> yes
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">zero-crossing:</emphasis> no
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">mode:</emphasis> no
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">regular inputs:</emphasis>
-                </para>
-                <para>
-                    <emphasis role="bold">- port 1 : size [1,1] / type 1</emphasis>
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">regular outputs:</emphasis>
-                </para>
-                <para>
-                    <emphasis role="bold">- port 1 : size [1,1] / type 1</emphasis>
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">number/sizes of activation inputs:</emphasis> 0
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">number/sizes of activation outputs:</emphasis> 0
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">continuous-time state:</emphasis> no
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">discrete-time state:</emphasis> no
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">object discrete-time state:</emphasis> no
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    <emphasis role="bold">name of computational function:</emphasis>
-                    <emphasis role="italic">scifunc</emphasis>
-                </para>
-            </listitem>
-        </itemizedlist>
-        <para/>
+    <refsection xml:id="Functions_scifunc_block_m">
+        <title>User-defined functions</title>
+        <para>The behavior of the Scilab function block is defined by user-written Scilab instructions. Each instruction set must be defined depending on the block configuration (and should match their count and size). The variables used are:</para>
+        <variablelist>
+        <varlistentry><term><code>y1, y2, ..., yN</code></term> <listitem><para>the values of the output signals</para></listitem></varlistentry>
+        <varlistentry><term><code>t</code></term> <listitem><para>the current time</para></listitem></varlistentry>
+        <varlistentry><term><code>x</code></term> <listitem><para>the continuous state</para></listitem></varlistentry>
+        <varlistentry><term><code>xd</code></term> <listitem><para>the continuous derivative</para></listitem></varlistentry>
+        <varlistentry><term><code>z</code></term> <listitem><para>the discrete state</para></listitem></varlistentry>
+        <varlistentry><term><code>u1, u2, ..., uM</code></term> <listitem><para>the input signals</para></listitem></varlistentry>
+        <varlistentry><term><code>n_evi</code></term> <listitem><para>the event triggering the computation</para></listitem></varlistentry>
+        <varlistentry><term><code>t_evo</code></term> <listitem><para>the next time events</para></listitem></varlistentry>
+        <varlistentry><term><code>rpar</code></term> <listitem><para>the real parameters</para></listitem></varlistentry>
+    </variablelist>
+        <variablelist>
+            <varlistentry>
+                <term>Compute the output</term>
+                <listitem>
+                    <para>If the block output values, the user should define : <code>y1, y2, ..., yN</code></para>
+                    <para>from <code>t, x, z, u1, u2, ..., uM, n_evi, rpar</code> variables.</para>
+                    <para>This is the most common instructions to define and they will be called at each time step.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Compute the continuous state derivative</term>
+                <listitem>
+                    <para>If the block has continuous state, the user should define: <code>xd</code></para>
+                    <para>from <code>t, x, z, u1, u2, ..., uM, rpar</code> variables.</para>
+                    <para>The instructions will be for derivative evaluation in case of continuous state.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Compute the state values</term>
+                <listitem>
+                    <para>If the block has continuous or discrete state, the user should define: <code>x, z</code></para>
+                    <para>from <code>t, x, z, u1, u2, ..., uM, n_evi, rpar</code> variables.</para>
+                    <para>The instructions will update the internal state of the block.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Setup next event time</term>
+                <listitem>
+                    <para>If the block generate events, the user should define : <code>t_evo</code></para>
+                    <para>from <code>t, x, z, u1, u2, ..., uM, n_evi, rpar</code> variables.</para>
+                    <para>The instructions will setup the next event times on the corresponding output event port.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Re-initialize states</term>
+                <listitem>
+                    <para>If the block has states, the user should define : <code>x, z</code></para>
+                    <para>from <code>x, z, rpar</code> variables.</para>
+                    <para>The instructions will be called at the beginning of the simulation to initialize the states.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Final values</term>
+                <listitem>
+                    <para>The user can define: <code>x, z</code></para>
+                    <para>from <code>x, z, rpar</code> variables.</para>
+                    <para>At the end of the simulation this will compute final state values.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>Imposing constraints</term>
+                <listitem>
+                    <para>The user can define : <code>y1, y2, ..., yN</code></para>
+                    <para>from <code>x, z, u1, u2, ..., uM, n_evi, rpar</code> variables.</para>
+                    <para>At the start of the simulation the instructions may be called multiple times to compute constraints.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
     </refsection>
 
-    <refsection id="Example_scifunc_block_m">
+    <refsection xml:id="Example_scifunc_block_m">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/userdefinedfunctions_pal/en_US/scifunc_block_m_en_US.zcos">
@@ -266,7 +265,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_scifunc_block_m">
+    <refsection xml:id="Interfacingfunction_scifunc_block_m">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -274,7 +273,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_scifunc_block_m">
+    <refsection xml:id="Computationalfunction_scifunc_block_m">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

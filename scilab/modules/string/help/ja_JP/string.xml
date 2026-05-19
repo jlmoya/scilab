@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="string">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="string">
     <refnamediv>
         <refname>string</refname>
         <refpurpose>文字列に変換</refpurpose>
@@ -61,13 +58,16 @@
             3つの文字列ベクトルを返します:
             <itemizedlist>
                 <listitem>
-                    <varname>out</varname> は出力変数のベクトル,
+                     <para><varname>out</varname> は出力変数のベクトル,
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>in</varname> は入力変数のベクトル, そして
+                     <para><varname>in</varname> は入力変数のベクトル, そして
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>text</varname> は関数のソースコードの(列)ベクトルです.
+                     <para><varname>text</varname> は関数のソースコードの(列)ベクトルです.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

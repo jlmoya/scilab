@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="spec">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="spec">
     <refnamediv>
         <refname>spec</refname>
         <refpurpose>
@@ -35,64 +32,71 @@
             [alpha, beta, Q, Z] = spec(A, B)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>A, B</term>
                 <listitem>
-                    Matrices carrées réelles ou complexes, de mêmes tailles.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrices carrées réelles ou complexes, de mêmes tailles.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>evals</term>
                 <listitem>
-                    Vecteur réel ou complexe
-                    <para/>
-                </listitem>
+                     <para>
+                        Vecteur réel ou complexe
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>diagevals</term>
                 <listitem>
-                    Matrice carrée diagonale réelle ou complexe : les éléments diagonaux sont
-                    les valeurs propres.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrice carrée diagonale réelle ou complexe : les éléments diagonaux sont
+                        les valeurs propres.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>R</term>
                 <listitem>
-                    Matrice carrée inversible réelle ou complexe des vecteurs propres à droite.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrice carrée inversible réelle ou complexe des vecteurs propres à droite.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>alpha, beta</term>
                 <listitem>
-                    Vecteurs de mêmes tailles: valeurs propres généralisées du faisceau
-                    de matrices <literal>A - s.B</literal>.
-                    alpha./beta donne les valeurs propres.
-                    <varname>alpha</varname> est à valeurs réelles ou complexes.
-                    <varname>beta</varname> est à valeurs réelles.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vecteurs de mêmes tailles: valeurs propres généralisées du faisceau
+                        de matrices <literal>A - s.B</literal>.
+                        alpha./beta donne les valeurs propres.
+                        <varname>alpha</varname> est à valeurs réelles ou complexes.
+                        <varname>beta</varname> est à valeurs réelles.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Q</term>
                 <listitem>
-                    Matrice carrée inversible réelle ou complexe des vecteurs propres
-                    généralisés à gauche.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrice carrée inversible réelle ou complexe des vecteurs propres
+                        généralisés à gauche.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Z</term>
                 <listitem>
-                    Matrice carrée inversible réelle ou complexe des vecteurs propres
-                    généralisés à droite.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrice carrée inversible réelle ou complexe des vecteurs propres
+                        généralisés à droite.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -129,44 +133,45 @@
         <para>
             Une matrice complexe hermitienne est égale à sa transposée conjuguée.
         </para>
-        <refsect3>
-            <title>Faisceau matriciel A - s.B</title>
-            <para>
-                <emphasis role="bold">evals = spec(A, B)</emphasis> retourne le  spectre du faisceau
-                <literal>A - s.B</literal>, c'est à dire les racines du déterminant de la matrice de
-                polynômes <literal>A - s.B</literal>.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta] = spec(A, B)</emphasis>
-                retourne les valeurs propres généralisées <varname>alpha</varname> et
-                <varname>beta</varname> du faisceau, telles que <literal>alpha./beta</literal>
-                sont les valeurs propres usuelles, c'est à dire les racines du déterminant de
-                la matrice de polynômes <literal>s E - A</literal>.
-                La matrice <literal>A - alpha./beta × B</literal> est alors singulière.
-                Si <literal>beta(i) = 0</literal>, la i<superscript>ème</superscript>
-                valeur propre est infinie.
-            </para>
-            <para>
-                Pour <literal>B = eye(A)</literal>, <literal>alpha./beta</literal> est
-                égal à <literal>spec(A)</literal>.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta, Z] = spec(A, B)</emphasis>
-                produit en outre la matrice <literal>Z</literal> des vecteurs propres
-                généralisés à droite.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta, Q, Z] = spec(A, B)</emphasis>
-                permet finalement d'obtenir la matrice <literal>Q</literal> des vecteurs
-                propres généralisés à gauche.
-            </para>
-        </refsect3>
+
         <para>
-            <note>
+            <emphasis role="bold">Faisceau matriciel A - s.B</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">evals = spec(A, B)</emphasis> retourne le  spectre du faisceau
+            <literal>A - s.B</literal>, c'est à dire les racines du déterminant de la matrice de
+            polynômes <literal>A - s.B</literal>.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta] = spec(A, B)</emphasis>
+            retourne les valeurs propres généralisées <varname>alpha</varname> et
+            <varname>beta</varname> du faisceau, telles que <literal>alpha./beta</literal>
+            sont les valeurs propres usuelles, c'est à dire les racines du déterminant de
+            la matrice de polynômes <literal>s E - A</literal>.
+            La matrice <literal>A - alpha./beta × B</literal> est alors singulière.
+            Si <literal>beta(i) = 0</literal>, la i<superscript>ème</superscript>
+            valeur propre est infinie.
+        </para>
+        <para>
+            Pour <literal>B = eye(A)</literal>, <literal>alpha./beta</literal> est
+            égal à <literal>spec(A)</literal>.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta, Z] = spec(A, B)</emphasis>
+            produit en outre la matrice <literal>Z</literal> des vecteurs propres
+            généralisés à droite.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta, Q, Z] = spec(A, B)</emphasis>
+            permet finalement d'obtenir la matrice <literal>Q</literal> des vecteurs
+            propres généralisés à gauche.
+        </para>
+        <note>
+            <para>
                 Pour les matrices denses ou creuses de grande taille, la fonction
                 <link linkend="eigs">eigs</link> peut être utilisée.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Fonctions utilisées</title>

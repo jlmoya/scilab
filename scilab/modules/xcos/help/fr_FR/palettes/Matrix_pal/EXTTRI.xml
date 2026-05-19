@@ -13,49 +13,46 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="EXTTRI" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="EXTTRI" xml:lang="fr_FR">
     <refnamediv>
         <refname>EXTTRI</refname>
         <refpurpose>Extraction triangulaire ou diagonale</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/EXTTRI.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_EXTTRI">
+    <refsection xml:id="Contents_EXTTRI">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_EXTTRI">Description</xref>
+                <para><link linkend="Description_EXTTRI">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_EXTTRI">Paramètres</xref>
+                <para><link linkend="Dialogbox_EXTTRI">Paramètres</link></para>
             </listitem>
             <listitem>
-                <link linkend="EXTTRI">Exemple</link>
+                <para><link linkend="EXTTRI">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_EXTTRI">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_EXTTRI">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_EXTTRI">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_EXTTRI">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_EXTTRI">Fonctions de calcul</xref>
+                <para><link linkend="Computationalfunction_EXTTRI">Fonctions de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_EXTTRI">Voir aussi</xref>
+                <para><link linkend="Seealso_EXTTRI">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_EXTTRI">
+    <refsection xml:id="Description_EXTTRI">
         <title>Description</title>
         <para>
             Le bloc EXTTRI extrait des éléments de la matrice d'entrée u. Les dimensions de la matrice de sortie sont les mêmes que celles de la matrice d'entrée.
@@ -91,15 +88,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_EXTTRI">
+    <refsection xml:id="Dialogbox_EXTTRI">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/EXTTRI_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/EXTTRI_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -123,15 +118,15 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_EXTTRI">
+    <refsection xml:id="Example_EXTTRI">
         <title>Exemple</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             A=[1 2 3;4 5 6;7 8 9;10 11 12]
             Si le type d'extraction est 2 alors la sortie est
             B=[1 0 0;4 5 0;7 8 9;10 11 12]
-        </programlisting>
+        ]]></programlisting>
     </refsection>
-    <refsection id="Defaultproperties_EXTTRI">
+    <refsection xml:id="Defaultproperties_EXTTRI">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -204,7 +199,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_EXTTRI">
+    <refsection xml:id="Interfacingfunction_EXTTRI">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -212,53 +207,67 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_EXTTRI">
+    <refsection xml:id="Computationalfunction_EXTTRI">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttril.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttril.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttriu.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttriu.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/extdiag.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/extdiag.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttrilz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttrilz.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/exttriuz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/exttriuz.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/extdiagz.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/extdiagz.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_EXTTRI2">
+    <refsection xml:id="Example_EXTTRI2">
         <title>Exemple d'extraction diagonale</title>
-        <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/EXTTRI_Example.zcos">
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../../examples/matrix_pal/EXTTRI_Example.zcos" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </link>
+        <para>
+            <link type="scilab" linkend="scilab.xcos/xcos/examples/matrix_pal/EXTTRI_Example.zcos">
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="../../../../examples/matrix_pal/EXTTRI_Example.zcos" valign="middle"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </link>
+        </para>
     </refsection>
-    <refsection id="Seealso_EXTTRI" role="see also">
+    <refsection xml:id="Seealso_EXTTRI" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="EXTRACT">EXTRACT</link>
+                <para><link linkend="EXTRACT">EXTRACT</link></para>
             </listitem>
             <listitem>
-                <link linkend="triu">triu (Fonction Scilab)</link>
+                <para><link linkend="triu">triu (Fonction Scilab)</link></para>
             </listitem>
             <listitem>
-                <link linkend="tril">tril (Fonction Scilab)</link>
+                <para><link linkend="tril">tril (Fonction Scilab)</link></para>
             </listitem>
             <listitem>
-                <link linkend="diag">diag (Fonction Scilab)</link>
+                <para><link linkend="diag">diag (Fonction Scilab)</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

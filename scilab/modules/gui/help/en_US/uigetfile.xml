@@ -20,10 +20,12 @@
           [PathFileName, Path, FilterIndex] = uigetfile(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
-        <refsect3>
-        <title>Input parameters</title>
+
+        <para>
+            <emphasis role="bold">Input parameters</emphasis>
+        </para>
         <variablelist>
             <varlistentry>
                 <term>file_mask</term>
@@ -64,9 +66,10 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-      </refsect3>
-      <refsect3>
-        <title>Output parameters</title>
+
+        <para>
+            <emphasis role="bold">Output parameters</emphasis>
+        </para>
         <variablelist>
             <varlistentry>
                 <term>PathFileName</term>
@@ -96,7 +99,7 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-      </refsect3>
+
     </refsection>
     <refsection>
         <title>Description</title>

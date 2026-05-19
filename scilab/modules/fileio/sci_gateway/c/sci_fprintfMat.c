@@ -30,13 +30,10 @@ int sci_fprintfMat(char *fname, void* pvApiCtx)
 {
     SciErr sciErr;
     int *piAddressVarOne = NULL;
-    int m1 = 0, n1 = 0;
-    int iType1 = 0;
-
+    
     int *piAddressVarTwo = NULL;
     int m2 = 0, n2 = 0;
-    int iType2 = 0;
-
+    
     fprintfMatError ierr = FPRINTFMAT_ERROR;
 
     char *filename = NULL;
@@ -46,7 +43,6 @@ int sci_fprintfMat(char *fname, void* pvApiCtx)
     double *dValues = NULL;
     char *separator = NULL;
     int m4n4 = 0;
-    int i = 0;
 
     CheckRhs(2, 5);
     CheckLhs(0, 1);

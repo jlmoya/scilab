@@ -76,6 +76,11 @@ class LinkHandler implements ScilabHandler {
         /*
          * Set the attributes
          */
+        String description = atts.getValue("description");
+        if (description != null)
+        {
+            saxHandler.controller.setObjectProperty(uid, Kind.LINK, ObjectProperties.DESCRIPTION, description);
+        }
 
         saxHandler.controller.setObjectProperty(uid, Kind.LINK, ObjectProperties.KIND, linkKind);
 

@@ -16,10 +16,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="vectorfind" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="vectorfind" xml:lang="ru">
     <refnamediv>
         <refname>vectorfind</refname>
         <refpurpose>ищет расположение вектора (отмеченный символом групповой подстановки) в матрице или гиперматрице</refpurpose>
@@ -60,13 +57,17 @@
                     <note>
                         <itemizedlist>
                             <listitem>
-                                Десятичные числа, комплексные числа и кодированные целые числа считаются
-                одним типом: числовым.
+                                 <para>
+                                    Десятичные числа, комплексные числа и кодированные целые числа считаются
+                    одним типом: числовым.
+                                </para>
                             </listitem>
                             <listitem>
-                                Значения <literal>%nan</literal> принимаются в <varname>needle</varname>.
-                Они обрабатываются обычным способом, как и другие значения. Они совпадают
-                только с <literal>%nan</literal> в <varname>haystack</varname>.
+                                 <para>
+                                    Значения <literal>%nan</literal> принимаются в <varname>needle</varname>.
+                    Они обрабатываются обычным способом, как и другие значения. Они совпадают
+                    только с <literal>%nan</literal> в <varname>haystack</varname>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </note>
@@ -245,64 +246,39 @@
               <literal>dimAlong</literal> имеют некоторые исключения:
                     <itemizedlist>
                         <listitem>
-                Поиск иглы <emphasis role="italic">как строки</emphasis> сканирует массив
-                <emphasis role="italic">сквозь его столбцы</emphasis>. Следовательно,
-                значение <literal>dimAlong = "r"</literal> должно быть эквивалентно значению
-                <literal>dimAlong = 2</literal> вместо 1!
+                             <para>
+                    Поиск иглы <emphasis role="italic">как строки</emphasis> сканирует массив
+                    <emphasis role="italic">сквозь его столбцы</emphasis>. Следовательно,
+                    значение <literal>dimAlong = "r"</literal> должно быть эквивалентно значению
+                    <literal>dimAlong = 2</literal> вместо 1!
+                            </para>
                         </listitem>
                         <listitem>
-                            Аналогично поиск иглы <emphasis role="italic">как столбцы</emphasis> сканирует массив
-                <emphasis role="italic">сквозь его строки</emphasis>: Обычное значение
-                            <literal>dimAlong = "c"</literal> должно быть эквивалентно значению
-                            <literal>dimAlong = 1</literal> вместо 2!
+                             <para>
+                                Аналогично поиск иглы <emphasis role="italic">как столбцы</emphasis> сканирует массив
+                    <emphasis role="italic">сквозь его строки</emphasis>: Обычное значение
+                                <literal>dimAlong = "c"</literal> должно быть эквивалентно значению
+                                <literal>dimAlong = 1</literal> вместо 2!
+                            </para>
                         </listitem>
                     </itemizedlist>
                     </para>
                     <para>
-              Для того, чтобы не нарушать общую договорённость, о том что  <literal>"r"&lt;=>1</literal> и
-              <literal>"c"&lt;=>2</literal> используется везде в Scilab, <literal>vectorfind()</literal>
+              Для того, чтобы не нарушать общую договорённость, о том что  <literal>"r"&lt;=&gt;1</literal> и
+              <literal>"c"&lt;=&gt;2</literal> используется везде в Scilab, <literal>vectorfind()</literal>
               придерживается и справляется с ним. Но нужно иметь в виду лежащий в основе переключатель, чтобы
               иметь чёткое понимание возвращаемых по умолчанию индексов, когда используются <literal>"r",1</literal>
               или <literal>"c",2</literal>.
                     </para>
                 </listitem>
                 <listitem>
-                    <para>
-              О возвращаемых индексах совпадающих строк, столбцов, "пикселей"... когда игла <varname>needle</varname>
-              такой же длины, как размер стороны стога сена <varname>haystack</varname> и опция
-              <literal>indType</literal> не используется:
+                     <para>
+                Несмотря на то, что легко понять и использовать для простых матриц, несколько трудно
+                работать с этими линейными индексами в подпространстве <literal>haystack</literal>,
+                чтобы фактически обращаться к совпадающим диапазонам в ND-мерном массиве с N&gt;2.
+                        Необязательный параметр <literal>indType = "headN" | "headIJK</literal> затем вернёт
+                более удобные в работе индексы, обращающиеся ко всему массиву <literal>haystack</literal>.
                     </para>
-                    <para>
-              Индексы совпадающих диапазонов являются <emphasis role="italic">линейными</emphasis>
-              индексами компонентов следующих подпространств:
-                    <itemizedlist>
-                        <listitem>
-                            С <literal>dimAlong = "r" = 1</literal>:
-                            в <literal>haystack(:,1,:,:..)</literal>
-                        </listitem>
-                        <listitem>
-                            С <literal>dimAlong = "c" = 2</literal>:
-                            в <literal>haystack(1,:,:,:..)</literal>
-                        </listitem>
-                        <listitem>
-                            С <literal>dimAlong = 3</literal>:
-                            в <literal>haystack(:,:,1,:..)</literal>
-                        </listitem>
-                        <listitem>
-                            С <literal>dimAlong = 4</literal>:
-                            в <literal>haystack(:,:,:,1,:..)</literal>.
-                        </listitem>
-                        <listitem>
-                            и др...
-                        </listitem>
-                    </itemizedlist>
-                    Случай трёх- и четырёхмерных массивов рассмотрен в разделе примеров.
-                    </para>
-            Несмотря на то, что легко понять и использовать для простых матриц, несколько трудно
-            работать с этими линейными индексами в подпространстве <literal>haystack</literal>,
-            чтобы фактически обращаться к совпадающим диапазонам в ND-мерном массиве с N>2.
-                    Необязательный параметр <literal>indType = "headN" | "headIJK</literal> затем вернёт
-            более удобные в работе индексы, обращающиеся ко всему массиву <literal>haystack</literal>.
                 </listitem>
             </itemizedlist>
             </para>
@@ -448,34 +424,49 @@ vectorfind(m, ["A" "" "A"],"r","","headIJK")    // => [1 3 1 1 ; 2 2 2 1]
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>vectorfind(H,[])</literal> теперь возвращает <literal>[]</literal>
-                            вместо ошибки.
+                             <para><literal>vectorfind(H,[])</literal> теперь возвращает <literal>[]</literal>
+                                вместо ошибки.
+                            </para>
                         </listitem>
                         <listitem>
-                            Когда игла слишком длинная, теперь вместо ошибки возвращается <literal>[]</literal>.
+                             <para>
+                                Когда игла слишком длинная, теперь вместо ошибки возвращается <literal>[]</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            Теперь может быть использована игла, короче, чем размер стога сена.
+                             <para>
+                                Теперь может быть использована игла, короче, чем размер стога сена.
+                            </para>
                         </listitem>
                         <listitem>
-                Значение символа универсальной подстановки, совпавшее с любым значением стога сена теперь может быть
-                определён и использован в качестве иглы. Затем могут быть возвращены фактически совпадающие диапазоны:
-                добавлены необязательные параметры <literal>joker</literal> и <literal>matching</literal>.
+                             <para>
+                    Значение символа универсальной подстановки, совпавшее с любым значением стога сена теперь может быть
+                    определён и использован в качестве иглы. Затем могут быть возвращены фактически совпадающие диапазоны:
+                    добавлены необязательные параметры <literal>joker</literal> и <literal>matching</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            Любое значение <literal>%nan</literal>, встреченное в игле, теперь обрабатывается
-                как любое иное регулярное значение: оно соответствует значению <literal>%nan</literal>
-                в стоге сена. Оно ранее никогда не соответствовало.
+                             <para>
+                                Любое значение <literal>%nan</literal>, встреченное в игле, теперь обрабатывается
+                    как любое иное регулярное значение: оно соответствует значению <literal>%nan</literal>
+                    в стоге сена. Оно ранее никогда не соответствовало.
+                            </para>
                         </listitem>
                         <listitem>
-                            Гиперматрицы могут теперь обрабатываться в качестве стога сена.
+                             <para>
+                                Гиперматрицы могут теперь обрабатываться в качестве стога сена.
+                            </para>
                         </listitem>
                         <listitem>
-                            Исследуемое направление <literal>dimAlong</literal> теперь может быть числовым:
-                            1, 2, ..
+                             <para>
+                                Исследуемое направление <literal>dimAlong</literal> теперь может быть числовым:
+                                1, 2, ..
+                            </para>
                         </listitem>
                         <listitem>
-                            Добавлен необязательный параметр <literal>indType</literal>.
+                             <para>
+                                Добавлен необязательный параметр <literal>indType</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

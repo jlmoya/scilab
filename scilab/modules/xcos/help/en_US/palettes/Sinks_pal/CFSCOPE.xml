@@ -32,41 +32,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CFSCOPE.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_CFSCOPE">
+    <refsection xml:id="Contents_CFSCOPE">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CFSCOPE">Description</xref>
+                <para><link linkend="Description_CFSCOPE">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_CFSCOPE">Parameters</xref>
+                <para><link linkend="Dialogbox_CFSCOPE">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CFSCOPE">Default properties</xref>
+                <para><link linkend="Defaultproperties_CFSCOPE">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CFSCOPE">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CFSCOPE">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CFSCOPE">Computational function</xref>
+                <para><link linkend="Computationalfunction_CFSCOPE">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CFSCOPE">Example</xref>
+                <para><link linkend="Example_CFSCOPE">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_CFSCOPE">See also</xref>
+                <para><link linkend="Seealso_CFSCOPE">See also</link></para>
             </listitem>
         </itemizedlist>
         <para/>
     </refsection>
 
-    <refsection id="Description_CFSCOPE">
+    <refsection xml:id="Description_CFSCOPE">
         <title>Description</title>
         <para>
             This is a floating scope block.
@@ -74,14 +74,14 @@
         <para/>
     </refsection>
 
-    <refsection id="Dialogbox_CFSCOPE">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_CFSCOPE">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/CFSCOPE_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/CFSCOPE_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -167,7 +167,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Defaultproperties_CFSCOPE">
+    <refsection xml:id="Defaultproperties_CFSCOPE">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -225,7 +225,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_CFSCOPE">
+    <refsection xml:id="Interfacingfunction_CFSCOPE">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -233,7 +233,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CFSCOPE">
+    <refsection xml:id="Computationalfunction_CFSCOPE">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -243,8 +243,9 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_CFSCOPE">
+    <refsection xml:id="Example_CFSCOPE">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/tests/unit_tests/cfscope.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -252,6 +253,7 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
     <refsection xml:id="Seealso_CFSCOPE" role="see also">
         <title>See also</title>

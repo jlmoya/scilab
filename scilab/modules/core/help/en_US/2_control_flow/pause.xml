@@ -46,7 +46,9 @@
             Enter <code>abort</code> to definitively stop the execution and return to the main level.
         </para>
         <note>
-            The <function>pause</function> is very useful for debugging purposes.
+            <para>
+                The <function>pause</function> is very useful for debugging purposes.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -114,8 +116,10 @@ Type 'resume' or 'abort' to return to standard level prompt.
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    The new values of local variables changed during a pause are now taken
-                    into account when resuming the execution with <literal>resume</literal>.
+                   <para>
+                        The new values of local variables changed during a pause are now taken
+                        into account when resuming the execution with <literal>resume</literal>.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

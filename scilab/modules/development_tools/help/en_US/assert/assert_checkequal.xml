@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="assert_checkequal" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="assert_checkequal" xml:lang="en">
     <refnamediv>
         <refname>assert_checkequal</refname>
         <refpurpose>Check that computed and expected are equal.</refpurpose>
@@ -30,8 +27,8 @@
             [flag,errmsg] = assert_checkequal ( computed , expected )
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>computed:</term>
@@ -174,42 +171,51 @@ assert_checkequal: Assertion failed: expected= lib@SCI\modules\core\macros\  whi
         <title>Bibliography</title>
         <para>"Automated Software Testing for Matlab", Steven Eddins, 2009</para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>Function introduced
-                </revdescription>
+                <revremark>Function introduced</revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                      <listitem>
-                          The comparison of two implicit lists, Scilab functions, Scilab libraries,
-                          built-in functions or graphic handles is now always possible and properly
-                          done.
-                      </listitem>
-                      <listitem>
-                          In two lists, void and Nan elements are now supported, and matching ones
-                          are considered as equal.
-                      </listitem>
-                      <listitem>
-                          Nan are now supported in input sparse matrices and are considered as equal.
-                      </listitem>
-                      <listitem>
-                          When the test fails while inputs are arrays, the message now indicates
-                          the index of the first mismatching element.
-                      </listitem>
-                  </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The comparison of two implicit lists, Scilab functions, Scilab libraries,
+                                    built-in functions or graphic handles is now always possible and properly
+                                    done.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    In two lists, void and Nan elements are now supported, and matching ones
+                                    are considered as equal.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Nan are now supported in input sparse matrices and are considered as equal.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    When the test fails while inputs are arrays, the message now indicates
+                                    the index of the first mismatching element.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     Matching NaN or void elements in simple or nested containers are now considered equal.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

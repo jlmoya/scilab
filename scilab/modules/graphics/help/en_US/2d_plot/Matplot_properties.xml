@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="Matplot_properties">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="Matplot_properties">
     <refnamediv>
         <refname>Matplot properties</refname>
         <refpurpose>
@@ -83,10 +80,14 @@
                         is scaled accordingly to fill the <varname>rect</varname> shape:
                         <itemizedlist>
                             <listitem>
-                                Its <literal>m</literal> rows cover the <literal>[ymin, ymax]</literal> interval.
+                                 <para>
+                                    Its <literal>m</literal> rows cover the <literal>[ymin, ymax]</literal> interval.
+                                </para>
                             </listitem>
                             <listitem>
-                                Its <literal>n</literal> columns cover the <literal>[xmin, xmax]</literal> interval.
+                                 <para>
+                                    Its <literal>n</literal> columns cover the <literal>[xmin, xmax]</literal> interval.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -118,7 +119,8 @@
                         <varlistentry>
                             <term>"index"</term>
                             <listitem>
-                                  <varname>data</varname> are colors indices in the colormap.
+                                 <para><varname>data</varname> are colors indices in the colormap.
+                                </para>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
@@ -126,13 +128,16 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int8 or uint8 provides Gray level color (R-G-B=GRAY-GRAY-GRAY).
+                                         <para><varname>data</varname> as a matrix of int8 or uint8 provides Gray level color (R-G-B=GRAY-GRAY-GRAY).
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        Otherwise, <varname>data</varname> is considered as RGB levels and converted into gray colors (0.299*R+0.587*G+0.114*B).
+                                         <para>
+                                            Otherwise, <varname>data</varname> is considered as RGB levels and converted into gray colors (0.299*R+0.587*G+0.114*B).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
-                                <para></para>
+                                <para/>
                             </listitem>
                         </varlistentry>
                         <varlistentry>
@@ -140,19 +145,24 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as an hypermatrix of int8 or uint8 provides the RGB components ;
+                                         <para><varname>data</varname> as an hypermatrix of int8 or uint8 provides the RGB components ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as an hypermatrix of doubles provides normalized RGB components (values between 0 and 1) ;
+                                         <para><varname>data</varname> as an hypermatrix of doubles provides normalized RGB components (values between 0 and 1) ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int8 or uint8 with a number of rows multiple of 3 provides the RGB components ;
+                                         <para><varname>data</varname> as a matrix of int8 or uint8 with a number of rows multiple of 3 provides the RGB components ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int32 provides RGB colors ;
+                                         <para><varname>data</varname> as a matrix of int32 provides RGB colors ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of uint32 provides RGBA colors where the alpha channel will be set to 0xFF.
+                                         <para><varname>data</varname> as a matrix of uint32 provides RGBA colors where the alpha channel will be set to 0xFF.
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -162,16 +172,20 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as an hypermatrix of int8 or uint8 provides the RGBA components ;
+                                         <para><varname>data</varname> as an hypermatrix of int8 or uint8 provides the RGBA components ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as an hypermatrix of doubles provides normalized RGBA components (values between 0 and 1) ;
+                                         <para><varname>data</varname> as an hypermatrix of doubles provides normalized RGBA components (values between 0 and 1) ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int8 or uint8 with a number of rows multiple of 4 provides the RGBA components ;
+                                         <para><varname>data</varname> as a matrix of int8 or uint8 with a number of rows multiple of 4 provides the RGBA components ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int32 or uint32 provides RGBA colors.
+                                         <para><varname>data</varname> as a matrix of int32 or uint32 provides RGBA colors.
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -181,16 +195,20 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as an hypermatrix of int8 or uint8 provides the ARGB components ;
+                                         <para><varname>data</varname> as an hypermatrix of int8 or uint8 provides the ARGB components ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as an hypermatrix of doubles provides normalized ARGB components (values between 0 and 1) ;
+                                         <para><varname>data</varname> as an hypermatrix of doubles provides normalized ARGB components (values between 0 and 1) ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int8 or uint8 with a number of rows multiple of 4 provides the ARGB components ;
+                                         <para><varname>data</varname> as a matrix of int8 or uint8 with a number of rows multiple of 4 provides the ARGB components ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int32 or uint32 provides ARGB colors.
+                                         <para><varname>data</varname> as a matrix of int32 or uint32 provides ARGB colors.
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -200,10 +218,12 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int8 or uint8 provides Red level color (R-G-B=RED-00-00).
+                                         <para><varname>data</varname> as a matrix of int8 or uint8 provides Red level color (R-G-B=RED-00-00).
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> of another type is considered as RGB intensities. They are then converted into red levels (a mask is applied to keep the Red component).
+                                         <para><varname>data</varname> of another type is considered as RGB intensities. They are then converted into red levels (a mask is applied to keep the Red component).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -213,10 +233,12 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int8 or uint8 provides Green level color (R-G-B=00-GREEN-00).
+                                         <para><varname>data</varname> as a matrix of int8 or uint8 provides Green level color (R-G-B=00-GREEN-00).
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> of another type is considered as RGB intensities. They are then converted into green levels (a mask is applied to keep the Green component).
+                                         <para><varname>data</varname> of another type is considered as RGB intensities. They are then converted into green levels (a mask is applied to keep the Green component).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -226,10 +248,12 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int8 or uint8 provides Blue level color (R-G-B=00-00-BLUE) ;
+                                         <para><varname>data</varname> as a matrix of int8 or uint8 provides Blue level color (R-G-B=00-00-BLUE) ;
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        <varname>data</varname> of another type is considered as RGB intensities. They are then converted into blue levels (a mask is applied to keep the Blue component).
+                                         <para><varname>data</varname> of another type is considered as RGB intensities. They are then converted into blue levels (a mask is applied to keep the Blue component).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -239,10 +263,13 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int8 or uint8 provides RGB colors where R component is wrote on 3 bits, G component on 3 bits and B component on 2 bits.
+                                         <para><varname>data</varname> as a matrix of int8 or uint8 provides RGB colors where R component is wrote on 3 bits, G component on 3 bits and B component on 2 bits.
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        For other <varname>data</varname> types, RGB (8-8-8) data are converted into RGB (3-3-2).
+                                         <para>
+                                            For other <varname>data</varname> types, RGB (8-8-8) data are converted into RGB (3-3-2).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -252,10 +279,13 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int16 or uint16 provides RGB colors where each components is wrote on 4 bits.
+                                         <para><varname>data</varname> as a matrix of int16 or uint16 provides RGB colors where each components is wrote on 4 bits.
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        For other <varname>data</varname> types, RGB (8-8-8) data are converted into RGB (4-4-4).
+                                         <para>
+                                            For other <varname>data</varname> types, RGB (8-8-8) data are converted into RGB (4-4-4).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -265,10 +295,13 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int16 or uint16 provides RGB colors where each components is wrote on 5 bits.
+                                         <para><varname>data</varname> as a matrix of int16 or uint16 provides RGB colors where each components is wrote on 5 bits.
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        For other <varname>data</varname> types, RGB (8-8-8) data are converted into RGB (5-5-5).
+                                         <para>
+                                            For other <varname>data</varname> types, RGB (8-8-8) data are converted into RGB (5-5-5).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -278,10 +311,13 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int16 or uint16 provides RGBA colors where each components is wrote on 4 bits.
+                                         <para><varname>data</varname> as a matrix of int16 or uint16 provides RGBA colors where each components is wrote on 4 bits.
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        For other <varname>data</varname> types, RGBA (8-8-8-8) data are converted into RGBA (4-4-4-4).
+                                         <para>
+                                            For other <varname>data</varname> types, RGBA (8-8-8-8) data are converted into RGBA (4-4-4-4).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -291,10 +327,13 @@
                             <listitem>
                                 <itemizedlist>
                                     <listitem>
-                                        <varname>data</varname> as a matrix of int16 or uint16 provides RGBA colors where each non-alpha components is wrote on 5 bits and the alpha component on 1 bit.
+                                         <para><varname>data</varname> as a matrix of int16 or uint16 provides RGBA colors where each non-alpha components is wrote on 5 bits and the alpha component on 1 bit.
+                                        </para>
                                     </listitem>
                                     <listitem>
-                                        For other <varname>data</varname> types, RGBA (8-8-8-8) data are converted into RGBA (5-5-5-1).
+                                         <para>
+                                            For other <varname>data</varname> types, RGBA (8-8-8-8) data are converted into RGBA (5-5-5-1).
+                                        </para>
                                     </listitem>
                                 </itemizedlist>
                             </listitem>
@@ -311,18 +350,21 @@
                     </para>
                     <itemizedlist>
                         <listitem>
-                                <literal>"off"</literal>: The Matplot patch is not clipped.
-                                Setting <literal>.clip_state = "off"</literal>
-                                automatically resets <literal>.clip_box = []</literal>.
+                             <para><literal>"off"</literal>: The Matplot patch is not clipped.
+                                    Setting <literal>.clip_state = "off"</literal>
+                                    automatically resets <literal>.clip_box = []</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                                <literal>"clipgrf"</literal>: The Matplot patch is clipped outside
-                              its parent axes. Setting <literal>.clip_state = "clipgrf"</literal>
-                              automatically resets <literal>.clip_box = []</literal>.
+                             <para><literal>"clipgrf"</literal>: The Matplot patch is clipped outside
+                                  its parent axes. Setting <literal>.clip_state = "clipgrf"</literal>
+                                  automatically resets <literal>.clip_box = []</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                                <literal>"on"</literal>: The Matplot patch is clipped outside the
-                                rectangle defined by the <varname>clip_box</varname> property.
+                             <para><literal>"on"</literal>: The Matplot patch is clipped outside the
+                                    rectangle defined by the <varname>clip_box</varname> property.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </listitem>
@@ -366,11 +408,11 @@ nbcolors = size(gcf().color_map, 1);
 h = Matplot(1:nbcolors)
 h.data = h.data($:-1:1) // reverse order
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             nbcolors = size(gcf().color_map, 1);
             h = Matplot(1:nbcolors)
             h.data = h.data($:-1:1);
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -400,16 +442,22 @@ h.data = h.data($:-1:1) // reverse order
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            Property <literal>image_type</literal> introduced.
-                        </listitem>
-                        <listitem>
-                            Property <literal>rect</literal> introduced.
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Property <literal>image_type</literal> introduced.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Property <literal>rect</literal> introduced.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>

@@ -14,10 +14,7 @@
  * along with this program.
  *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="savematfile">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="savematfile">
     <refnamediv>
         <refname>savematfile</refname>
         <refpurpose>saves some Scilab variables in a Matlab MAT-file (binary or ASCII)</refpurpose>
@@ -34,7 +31,7 @@
             savematfile(..., format)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -161,10 +158,14 @@
                     <emphasis role="bold">ASCII</emphasis>:
                         <itemizedlist>
                             <listitem>
-                                The imaginary part of complex numbers is ignored (dense and sparse).
+                                 <para>
+                                    The imaginary part of complex numbers is ignored (dense and sparse).
+                                </para>
                             </listitem>
                             <listitem>
-                                Booleans are stored as 0.|1. (dense and sparse).
+                                 <para>
+                                    Booleans are stored as 0.|1. (dense and sparse).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -177,19 +178,20 @@
                 <th>Comments</th></tr>
             <tr valign="top">
                 <td>boolean</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td>
-                <td></td>
+                <td/>
             </tr>
             <tr valign="top">
                 <td>integer</td><td>X</td><td>X</td><td>X</td><td>X</td><td>no</td>
-                <td>int8 are stored as uint8 if they are all > 0, or as int16 otherwise.<table/>
-                    uint32 are stored as int32 if they are all &lt; 2<superscript>31</superscript>-1,
-                    or as decimal numbers otherwise.<table/>
-                    int64 and uint64 are stored as decimal numbers.
+                <td>
+                    <para>int8 are stored as uint8 if they are all &gt; 0, or as int16 otherwise.</para>
+                    <para>uint32 are stored as int32 if they are all &lt; 2<superscript>31</superscript>-1,
+                    or as decimal numbers otherwise.</para>
+                    <para>int64 and uint64 are stored as decimal numbers.</para>
                 </td>
             </tr>
             <tr valign="top">
                 <td>real</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td>
-                <td></td>
+                <td/>
             </tr>
             <tr valign="top">
                 <td>complex</td><td>X</td><td>X</td><td>X</td><td>X</td><td>X</td>
@@ -198,10 +200,15 @@
             <tr valign="top">
                 <td>sparse</td>
                     <td>X</td><td>X</td> <td>X</td> <td>X</td> <td>X</td>
-                <td>Octave 4.4 loads correctly any real or complex sparse array saved from Scilab 6.0.<table/>
-                    But loadmatfile()
-                    <ulink url="https://gitlab.com/scilab/scilab/-/issues/15731">crashes Scilab</ulink> for
-                    any sparse saved with -v4, and any complex sparse saved with -v6 -v7 or -v7.3.
+                <td>
+                    <para>
+                        Octave 4.4 loads correctly any real or complex sparse array saved from Scilab 6.0.
+                    </para>
+                    <para>
+                        But loadmatfile()
+                        <link xlink:href="https://gitlab.com/scilab/scilab/-/issues/15731">crashes Scilab</link> for
+                        any sparse saved with -v4, and any complex sparse saved with -v6 -v7 or -v7.3.
+                    </para>
                 </td>
             </tr>
             <tr valign="top">
@@ -209,14 +216,14 @@
                 <td>v4: Saved as sparse decimal 0|1. Well read from Octave 4.4</td>
             </tr>
             <tr valign="top">
-                <td>character string</td><td>X</td><td></td><td></td><td></td><td>?</td>
+                <td>character string</td><td>X</td><td/><td/><td/><td>?</td>
                 <td>v4: Any array is saved as a column of character strings right-padded with spaces to all
                     have the same lengths.
                 </td>
             </tr>
             <tr valign="top">
-                <td>struct</td><td>no</td><td></td><td>X</td><td>X</td><td>no</td>
-                <td></td>
+                <td>struct</td><td>no</td><td/><td>X</td><td>X</td><td>no</td>
+                <td/>
             </tr>
             <tr valign="top">
                 <td>cell</td><td>no</td><td>X</td><td>X</td><td>X</td><td>no</td>
@@ -313,7 +320,7 @@ for v = varnames, execstr("mprintf(""\n %s ="",v); disp("+v+")"), end
         <para>This function has been developed following the "MAT-File Format"
             description:
             <literal>
-                <ulink url="http://www.mathworks.com/access/helpdesk/help/pdf_doc/matlab/matfile_format.pdf">Mat-File Format</ulink>
+                <link xlink:href="http://www.mathworks.com/access/helpdesk/help/pdf_doc/matlab/matfile_format.pdf">Mat-File Format</link>
             </literal>
         </para>
     </refsection>

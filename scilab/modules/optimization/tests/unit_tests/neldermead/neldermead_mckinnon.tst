@@ -16,7 +16,7 @@
 // <-- ENGLISH IMPOSED -->
 
 // There is a Warning message in the .dia of this test,
-// with respect to the conditionning of the direction matrix.
+// with respect to the conditioning of the direction matrix.
 // This is an expected message, because the simplex is degenerated
 // after the first optimization, which has failed.
 // The restart allows to compute a new simplex and makes the 

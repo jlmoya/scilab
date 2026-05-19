@@ -1295,14 +1295,16 @@ static types::InternalType* import_object(hid_t dataset)
     types::Classdef* def = symbol::Context::getInstance()->getClassdef(type);
     if (def != nullptr)
     {
-        types::Object* obj = def->createEmptyInstance()->getAs<types::Object>();
+        types::Object* obj = def->createEmptyInstance();
         if (obj->deserialize(data))
         {
+            delete it;
             return obj;
         }
 
         obj->killMe();
     }
 
+    delete it;
     return nullptr;
 }

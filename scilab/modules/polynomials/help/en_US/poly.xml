@@ -14,10 +14,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="poly">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="poly">
     <refnamediv>
         <refname>poly</refname>
         <refpurpose>Polynomial definition from given roots or coefficients, or characteristic to a square matrix.</refpurpose>
@@ -30,7 +27,7 @@
             Pc = poly(matNN, vname)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -106,20 +103,23 @@
                                 <note>
                                     <itemizedlist>
                                         <listitem>
-                                            <literal>degree(p)==length(vec)</literal>
+                                            <para><literal>degree(p)==length(vec)</literal></para>
                                         </listitem>
                                         <listitem>
-                                            <literal>poly()</literal> and
-                                            <literal>roots()</literal> are then inverse functions
-                                            of each other.
+                                             <para><literal>poly()</literal> and
+                                                <literal>roots()</literal> are then inverse functions
+                                                of each other.
+                                            </para>
                                         </listitem>
                                         <listitem>
-                                            Infinite roots give null highest degree coefficients.
-                                            In this case, the actual degree of <varname>p</varname>
-                                            is smaller than <literal>length(vec)</literal>.
-                                            For instance,
-                                            <literal>poly([-%inf -1 2 %inf ], "x")</literal>
-                                            yields <literal>(x-2)(x+1)</literal> whose degree is 2.
+                                             <para>
+                                                Infinite roots give null highest degree coefficients.
+                                                In this case, the actual degree of <varname>p</varname>
+                                                is smaller than <literal>length(vec)</literal>.
+                                                For instance,
+                                                <literal>poly([-%inf -1 2 %inf ], "x")</literal>
+                                                yields <literal>(x-2)(x+1)</literal> whose degree is 2.
+                                            </para>
                                         </listitem>
                                     </itemizedlist>
                                 </note>
@@ -130,10 +130,12 @@
                                 usual operators +, -, *, / and simple functions like
                                 <literal>sum()</literal>.
                                 <note>
-                                    Scilab provides 3 predefined elementary polynomials
-                                    <literal>%s</literal>, <literal>%z</literal>, and
-                                    <literal>$</literal>. The last one is mainly used as symbolic
-                                    value of last index (of a range).
+                                    <para>
+                                        Scilab provides 3 predefined elementary polynomials
+                                        <literal>%s</literal>, <literal>%z</literal>, and
+                                        <literal>$</literal>. The last one is mainly used as symbolic
+                                        value of last index (of a range).
+                                    </para>
                                 </note>
                             </para>
                         </listitem>
@@ -147,8 +149,10 @@
                                 <literal>vec</literal>) are ignored.
                             </para>
                             <note>
-                                Conversely, <literal>coeff(p)</literal> returns the coefficients
-                                of a given polynomial.
+                                <para>
+                                    Conversely, <literal>coeff(p)</literal> returns the coefficients
+                                    of a given polynomial.
+                                </para>
                             </note>
                         </listitem>
                     </itemizedlist>
@@ -275,7 +279,7 @@ poly(A, "x")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

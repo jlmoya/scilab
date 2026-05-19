@@ -27,7 +27,7 @@
             y = ifftshift(x, along)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -69,10 +69,12 @@
             moitiés de <literal>x</literal> selon la dimension n° <literal>n</literal>.
         </para>
         <note>
-            <literal>ifftshift()</literal> est conçue telle que quel que soit <literal>x</literal>
-            de tailles paires et/ou impaires,
-            <literal>ifftshift(fftshift(x))</literal> et <literal>fftshift(ifftshift(x))</literal>
-            sont toujours égaux à <literal>x</literal>.
+            <para>
+                <literal>ifftshift()</literal> est conçue telle que quel que soit <literal>x</literal>
+                de tailles paires et/ou impaires,
+                <literal>ifftshift(fftshift(x))</literal> et <literal>fftshift(ifftshift(x))</literal>
+                sont toujours égaux à <literal>x</literal>.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -175,7 +177,9 @@ and(y == invShift)
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                    Option <literal>along</literal> ajoutée.
+                    <para>
+                        Option <literal>along</literal> ajoutée.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

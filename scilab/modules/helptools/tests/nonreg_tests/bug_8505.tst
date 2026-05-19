@@ -5,11 +5,7 @@
 //  This file is distributed under the same license as the Scilab package.
 // =============================================================================
 //
-// <-- JVM MANDATORY -->
-//
-// <-- ENGLISH IMPOSED -->
-//
-// <-- NO CHECK ERROR OUTPUT --> 
+// <-- NO CHECK REF -->
 //
 // <-- Non-regression test for bug 8505 -->
 //
@@ -24,11 +20,10 @@ function a = bug_8505(b, c, d)
 endfunction
 
 dir_with_space = "directory with space";
-pathDest = TMPDIR + filesep() + dir_with_space + filesep();
-mkdir(TMPDIR, dir_with_space);
+pathDest = fullfile(TMPDIR, dir_with_space, "help", getlanguage());
+mkdir(pathDest);
 
-mputl(help_skeleton("bug_8505"), pathDest + "bug_8505.xml");
+mputl(help_skeleton("bug_8505"), fullfile(pathDest, "bug_8505.xml"));
 
 r = xmltojar(pathDest, "bug help");
-if ~isfile(r) then pause, end
-
+assert_checktrue(isfile(r));

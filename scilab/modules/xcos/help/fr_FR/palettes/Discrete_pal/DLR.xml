@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DLR.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DLR">
+    <refsection xml:id="Contents_DLR">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DLR">Description</xref>
+                <para><link linkend="Description_DLR">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DLR">Paramètres</xref>
+                <para><link linkend="Dialogbox_DLR">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DLR">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_DLR">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DLR">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_DLR">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DLR">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_DLR">Fonction de calcul</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DLR">
+    <refsection xml:id="Description_DLR">
         <title>Description</title>
         <para>
             Ce bloc réalise un système linéaire SISO représenté par sa fonction de transfert
@@ -57,15 +57,14 @@
             La fonction rationnelle doit être propre.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DLR">
+    <refsection xml:id="Dialogbox_DLR">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/DLR_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -77,20 +76,24 @@
                 </para>
                 <para> Propriétés : Type 'pol' de taille 1. </para>
                 <warning>
-                    Dans l'expression fournie, toute sous-expression représentant un exposant
-                    libélé soit par une variable (du contexte) dont le nom fait au moins 2
-                    caractères, soit par une expression (autre qu'un entier literal), doit se
-                    terminer par un espace (utilisé comme terminateur d'exposant). Dans le cas
-                    contraire, l'expression sera incorrectement affichée sur l'icône du bloc.
-                    <para/>
-                    Cette contrainte n'a cependant aucun effet sur la validité computationnelle
-                    de l'expression.
-                    <para/>
-                    Exemples: "z^12+1", "z^ +12+1", "z^+ 12+1" sont toutes affichées pour "z^{12}+1",
-                    alors que "1+z^ab+z^2" sera affichée comme "1+z^{ab+z^2}"
-                    (mais sera calculée comme <literal>1 + z^ab + z^2</literal>).
-                    Pour un affichage correct, "1+z^ab + z^2" devra être saisie.
-                    De même, "z^(ab+1) + 2" devra être saisie, au lieu de "z^(ab+1)+2".
+                    <para>
+                        Dans l'expression fournie, toute sous-expression représentant un exposant
+                        libélé soit par une variable (du contexte) dont le nom fait au moins 2
+                        caractères, soit par une expression (autre qu'un entier literal), doit se
+                        terminer par un espace (utilisé comme terminateur d'exposant). Dans le cas
+                        contraire, l'expression sera incorrectement affichée sur l'icône du bloc.
+                    </para>
+                    <para>
+                        Cette contrainte n'a cependant aucun effet sur la validité computationnelle
+                        de l'expression.
+                    </para>
+                    <para>
+                        Exemples: "z^12+1", "z^ +12+1", "z^+ 12+1" sont toutes affichées pour "z^{12}+1",
+                        alors que "1+z^ab+z^2" sera affichée comme "1+z^{ab+z^2}"
+                        (mais sera calculée comme <literal>1 + z^ab + z^2</literal>).
+                        Pour un affichage correct, "1+z^ab + z^2" devra être saisie.
+                        De même, "z^(ab+1) + 2" devra être saisie, au lieu de "z^(ab+1)+2".
+                    </para>
                 </warning>
             </listitem>
             <listitem>
@@ -106,7 +109,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DLR">
+    <refsection xml:id="Defaultproperties_DLR">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -179,7 +182,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DLR">
+    <refsection xml:id="Interfacingfunction_DLR">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -187,7 +190,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DLR">
+    <refsection xml:id="Computationalfunction_DLR">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>

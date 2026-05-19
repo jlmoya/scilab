@@ -6,6 +6,7 @@
 // =============================================================================
 
 // <-- CLI SHELL MODE -->
+// <-- NO CHECK REF -->
 
 // <-- Non-regression test for bug 871 -->
 //
@@ -34,17 +35,15 @@
 //
 //        0.7560439
 
-SCIFILE=TMPDIR+"/bug871.dia";
+dia_file = fullfile(TMPDIR,"bug871.dia");
 
-diary(SCIFILE);
+diary(dia_file);
 rand;
-diary(0);
+diary(dia_file, "close");
 
-SCIFILECONTENTS=mgetl(SCIFILE);
+expected = ["";
+			prompt()+"rand;";
+			"";
+			prompt()+"diary(dia_file, ""close"");"];
 
-REFCONTENTS=[" ";
-			"-->rand;";
-			" ";
-			"-->diary(0);"];
-
-if or(REFCONTENTS<>SCIFILECONTENTS) then pause,end
+assert_checkequal(mgetl(dia_file), expected);

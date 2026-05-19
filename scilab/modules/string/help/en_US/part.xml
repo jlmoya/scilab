@@ -26,7 +26,7 @@
         <title>Syntax</title>
         <synopsis>strings_out = part(strings_in, v)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -131,14 +131,16 @@ part("Hello", [ 1 $-1:$ $ ])       // =>  error
         </simplelist>
     </refsection>
 
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
-                <revremark>
-                    <literal>$</literal> standing for length(input_strings) is now accepted in indices of selected characters
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>$</literal> standing for length(input_strings) is now accepted in indices of selected characters
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

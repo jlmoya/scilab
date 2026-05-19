@@ -50,7 +50,7 @@
 
 %typemap(in) (CTYPE ** data, int nbRow, int nbCol, int * nbCoef) {
 // Convert the CTYPE[][] => CTYPE *
-    int i = 0, j = 0, k = 0;
+    int i = 0, j = 0;
       $2 = (*jenv)->GetArrayLength(jenv, $input);
       $3 = 0;
       $1 = NULL;

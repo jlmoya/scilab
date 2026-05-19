@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="bar">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="bar">
     <refnamediv>
         <refname>bar</refname>
         <refpurpose>bar histogram</refpurpose>
@@ -31,7 +28,7 @@
             hdl = bar(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -48,10 +45,14 @@
                       with
                       <itemizedlist>
                         <listitem>
-                          N : number of groups (each group of bars gathered on/around an x position)
+                             <para>
+                              N : number of groups (each group of bars gathered on/around an x position)
+                            </para>
                         </listitem>
                         <listitem>
-                          M : number of categories in each group
+                             <para>
+                              M : number of categories in each group
+                            </para>
                         </listitem>
                       </itemizedlist>
                     </para>
@@ -63,11 +64,15 @@
                     <para>a real scalar or a vector of size N. By default,
                       <itemizedlist>
                         <listitem>
-                          If <varname>y</varname> is a vector: <literal>x=1:length(y)</literal>
-                        </listitem>
+                             <para>
+                              If <varname>y</varname> is a vector: <literal>x=1:length(y)</literal>
+                                                               </para>
+                                                           </listitem>
                         <listitem>
-                          If <varname>y</varname> is a matrix: <literal>x=1:size(y,"r")</literal>
-                        </listitem>
+                             <para>
+                              If <varname>y</varname> is a matrix: <literal>x=1:size(y,"r")</literal>
+                                                               </para>
+                                                           </listitem>
                       </itemizedlist>
                     </para>
                 </listitem>
@@ -116,7 +121,9 @@
             If y is a matrix N*M, bar() draws M polylines (type 6), versus x=1:size(y,1).
             Each polyline represents a category, with a specific color.
             <warning>
-                <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> (case below) and not as <literal>bar(y, width, ...)</literal> (this case).
+                <para>
+                    <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> (case below) and not as <literal>bar(y, width, ...)</literal> (this case).
+                </para>
             </warning>
         </para>
         <para>
@@ -126,7 +133,9 @@
             have the type 6. Each polyline corresponds to a column of y versus vector
             x.
             <warning>
-                <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> (this case) and not as <literal>bar(y, width, ...)</literal> (case above).
+                <para>
+                    <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> (this case) and not as <literal>bar(y, width, ...)</literal> (case above).
+                </para>
             </warning>
         </para>
         <para>
@@ -163,10 +172,10 @@ scf(0);
 y=[1 -3 5];
 bar(y,0.5,'yellow');
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             y=[1 -3 5];
             bar(y,0.5,'yellow');
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 
 // Second example: draw 3 bars (i.e 3 polylines with polyline_style type =6),default style='grouped'
@@ -175,11 +184,11 @@ x=[1 2 5];
 y=[1  -5 6;3 -2 7;4  -3 8];
 bar(x,y);
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[1 2 5];
             y=[1  -5 6;3 -2 7;4  -3 8];
             bar(x,y);
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Third example : style='stacked'.
 scf(2);
@@ -187,11 +196,11 @@ x=[1 2 5];
 y=[1 4 7;2 5 8;3 6  9];
 bar(x,y,'stacked');
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[1 2 5];
             y=[1 4 7;2 5 8;3 6  9];
             bar(x,y,'stacked');
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Fourth example: width=0.2;colors='green'; default style='grouped'
 scf(3);
@@ -199,11 +208,11 @@ x=[1 2 5];
 y=[1 4 7;2 5 8;3 6 9];
 bar(x,y,0.2,'green');
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[1 2 5];
             y=[1 4 7;2 5 8;3 6 9];
             bar(x,y,0.2,'green');
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -239,14 +248,20 @@ bar(x,y,0.2,'green');
                 <revdescription>
                     <itemizedlist>
                       <listitem>
-                        A vector of M colors can now be provided, one for each category.
+                           <para>
+                            A vector of M colors can now be provided, one for each category.
+                          </para>
                       </listitem>
                       <listitem>
-                        Available colors are no longer restricted to the 10 major colors. All the
-                        predefined colors names can now be used.
+                           <para>
+                            Available colors are no longer restricted to the 10 major colors. All the
+                            predefined colors names can now be used.
+                          </para>
                       </listitem>
                       <listitem>
-                        Colors can now be specified also by their "#RRGGBB" hexadecimal codes.
+                           <para>
+                            Colors can now be specified also by their "#RRGGBB" hexadecimal codes.
+                          </para>
                       </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -256,10 +271,13 @@ bar(x,y,0.2,'green');
                 <revdescription>
                     <itemizedlist>
                       <listitem>
-                        <literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> and no more as <literal>bar(y, width, ...)</literal>.
+                           <para><literal>bar(a, b, ...)</literal> where a and b are scalars is interpreted as <literal>bar(x, y, ...)</literal> and no more as <literal>bar(y, width, ...)</literal>.
+                          </para>
                       </listitem>
                         <listitem>
-                            Function returns the created handle(s).
+                             <para>
+                                Function returns the created handle(s).
+                            </para>
                         </listitem>
                       </itemizedlist>
                 </revdescription>

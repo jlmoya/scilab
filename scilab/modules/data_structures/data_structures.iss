@@ -41,4 +41,5 @@ Source: modules\{#DATASTRUCT}\macros\cleanmacros.bat; DestDir: {app}\modules\{#D
 ;
 Source: modules\{#DATASTRUCT}\tests\*.*; DestDir: {app}\modules\{#DATASTRUCT}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#DATASTRUCT}\help\*.*; DestDir: {app}\modules\{#DATASTRUCT}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

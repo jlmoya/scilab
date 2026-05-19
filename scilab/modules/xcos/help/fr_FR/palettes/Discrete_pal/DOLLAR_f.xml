@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/DOLLAR_f.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DOLLAR_f">
+    <refsection xml:id="Contents_DOLLAR_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DOLLAR_f">Description</xref>
+                <para><link linkend="Description_DOLLAR_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DOLLAR_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_DOLLAR_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DOLLAR_f">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_DOLLAR_f">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DOLLAR_f">Exemple</xref>
+                <para><link linkend="Example_DOLLAR_f">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DOLLAR_f">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_DOLLAR_f">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DOLLAR_f">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_DOLLAR_f">Fonction de calcul</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DOLLAR_f">
+    <refsection xml:id="Description_DOLLAR_f">
         <title>Description</title>
         <para>Le bloc Retard unitaire retarde son entrée de la période d'échantillonage spécifiée.
             Ce bloc est équivalent à l'opérateur discret 1/z. Le bloc accepte une entrée et génére une sortie,
@@ -60,15 +60,14 @@
             retardés de la même période d'échantillonage.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DOLLAR_f">
+    <refsection xml:id="Dialogbox_DOLLAR_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/DOLLAR_f_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -88,7 +87,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DOLLAR_f">
+    <refsection xml:id="Defaultproperties_DOLLAR_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -161,7 +160,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_DOLLAR_f">
+    <refsection xml:id="Example_DOLLAR_f">
         <title>Exemple</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/discrete_pal/en_US/DELAY_f_2_en_US.zcos">
@@ -179,7 +178,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_DOLLAR_f">
+    <refsection xml:id="Interfacingfunction_DOLLAR_f">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -187,7 +186,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DOLLAR_f">
+    <refsection xml:id="Computationalfunction_DOLLAR_f">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>

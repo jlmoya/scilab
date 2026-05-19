@@ -51,11 +51,19 @@ public:
 
     bool toString(std::wostringstream& ostr) override
     {
-        ostr << L"ObjectMethod: " << object->getClassdef()->getName() << "." << name;
-        return true;
+        return callable->toString(ostr);
+    }
+
+    Callable* getCallable()
+    {
+        return callable;
     }
 
     virtual ReturnValue call(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out);
+    virtual bool invoke(typed_list & in, optional_list & opt, int _iRetCount, typed_list & out, const ast::Exp & e);
+
+private:
+    void setParent();
 
 private:
     Object* object;

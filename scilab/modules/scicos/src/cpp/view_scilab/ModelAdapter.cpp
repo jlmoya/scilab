@@ -928,14 +928,17 @@ struct label
         std::string name(c_str);
         FREE(c_str);
 
-        if (!isValidCIdentifier(name))
+        if (isValidCIdentifier(name))
         {
             //FIXME: is this DESCRIPTION an identifier ?
         //    get_or_allocate_logger()->log(LOG_ERROR, _("Wrong value for field %s.%s : valid C identifier expected.\n"), "model", "label");
         //    return false;
         }
-        controller.setObjectProperty(adaptee, NAME, name);
-        return true;
+        else
+        {
+            name = "";
+        }
+        return controller.setObjectProperty(adaptee, NAME, name) != FAIL;
     }
 };
 

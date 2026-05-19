@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="strsplit" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="strsplit" xml:lang="ru">
     <refnamediv>
         <refname>strsplit</refname>
         <refpurpose>
@@ -41,66 +38,73 @@
             <varlistentry>
                 <term>string</term>
                 <listitem>
-                    единая символьная строка, которую нужно разделить. Поддерживаются
-                    расширенные символы UTF8.
-                    <para/>
-                </listitem>
+                     <para>
+                        единая символьная строка, которую нужно разделить. Поддерживаются
+                        расширенные символы UTF8.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>indices</term>
                 <listitem>
-                    вектор индексов в порядке возрастания в интервале
-                    <literal>[1, length(string)-1]</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        вектор индексов в порядке возрастания в интервале
+                        <literal>[1, length(string)-1]</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>separators</term>
                 <listitem>
-                    матрица строк, искомых в <varname>string</varname> и используемых
-                    в качестве ножниц. Поддерживаются расширенные символы UTF8.
-                    <para/>
-                </listitem>
+                     <para>
+                        матрица строк, искомых в <varname>string</varname> и используемых
+                        в качестве ножниц. Поддерживаются расширенные символы UTF8.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>regexp</term>
                 <listitem>
-                    единая строка, начинающаяся и оканчивающаяся символом "/"
-                    и определяющая шаблон регулярного выражения, чувствительного к регистру,
-                    используемая в качестве разделителя разделения. Опция
-                    <varname>regexp</varname> может не использоваться после завершающего
-                    разделителя "/". Регулярное выражение может включать в себя расширенные
-                    символы UTF8. Символы "/" и "\", используемые в теле <varname>regexp</varname>
-                    должны быть защищены как "\/" и "\\".
-                    Например: <literal>"/k.{2}o/"</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        единая строка, начинающаяся и оканчивающаяся символом "/"
+                        и определяющая шаблон регулярного выражения, чувствительного к регистру,
+                        используемая в качестве разделителя разделения. Опция
+                        <varname>regexp</varname> может не использоваться после завершающего
+                        разделителя "/". Регулярное выражение может включать в себя расширенные
+                        символы UTF8. Символы "/" и "\", используемые в теле <varname>regexp</varname>
+                        должны быть защищены как "\/" и "\\".
+                        Например: <literal>"/k.{2}o/"</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>chunks</term>
                 <listitem>
-                    столбец строк с <literal>length(indices)+1</literal> элементов,
-                    соответствующим разделённым кусочкам.
-                    <para/>
-                </listitem>
+                     <para>
+                        столбец строк с <literal>length(indices)+1</literal> элементов,
+                        соответствующим разделённым кусочкам.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>matched_separators</term>
                 <listitem>
-                    столбец строк размером <literal>size(chunks,1)-1</literal> :
-                    совпавшие разделители или шаблоны выражений.
-                    <para/>
-                </listitem>
+                     <para>
+                        столбец строк размером <literal>size(chunks,1)-1</literal> :
+                        совпавшие разделители или шаблоны выражений.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>limit</term>
                 <listitem>
-                    целое число > 0: максимальное число найденных и использованных
-                    разделителей в <varname>string</varname>. Если она включает в себя больше
-                    случаев обнаружений разделителей, то её неразделённый остаток возвращается в
-                    последнем кусочке в <literal>chunks($)</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        целое число &gt; 0: максимальное число найденных и использованных
+                        разделителей в <varname>string</varname>. Если она включает в себя больше
+                        случаев обнаружений разделителей, то её неразделённый остаток возвращается в
+                        последнем кусочке в <literal>chunks($)</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

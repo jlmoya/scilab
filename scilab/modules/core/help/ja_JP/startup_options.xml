@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="ja">
     <refnamediv>
         <refname>scilab</refname>
         <refpurpose>
@@ -88,13 +85,21 @@ Developer Debug arguments:
                     <para>
                         This option allows to send some data to the Scilab session:
                         <itemizedlist>
-                            <listitem>Consecutive data are separated by one or several spaces.
+                            <listitem>
+                                 <para>Consecutive data are separated by one or several spaces.
+                                </para>
                             </listitem>
-                            <listitem>An expression between double-quotes is a single data.
+                            <listitem>
+                                 <para>An expression between double-quotes is a single data.
+                                </para>
                             </listitem>
-                            <listitem>To include a double-quote in a data, write <literal>\"</literal> instead of <literal>"</literal>.
+                            <listitem>
+                                 <para>To include a double-quote in a data, write <literal>\"</literal> instead of <literal>"</literal>.
+                                </para>
                             </listitem>
-                            <listitem>The single quote <literal>'</literal> is a regular character. It has no special meaning.
+                            <listitem>
+                                 <para>The single quote <literal>'</literal> is a regular character. It has no special meaning.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -142,7 +147,7 @@ evstr(a(i+2))*2
 ]]></screen>
                      </para>
                     <para>
-                      Note here that <literal>> scilab -nw</literal> has been translated into
+                      Note here that <literal>&gt; scilab -nw</literal> has been translated into
                       <literal>Wscilex-cli.exe</literal> by the <literal>scilab</literal> batch file,
                       in such a way that the "-nw" option is not returned by <literal>sciargs()</literal>
                       (see further below).
@@ -300,11 +305,15 @@ evstr(a(i+2))*2
                         Scilab のディストリビューションには, <literal>-nw</literal>と同様のバイナリを提供します:
                         <itemizedlist>
                             <listitem>
-                                Windows: <literal>WScilex-cli.exe</literal>.
+                                 <para>
+                                    Windows: <literal>WScilex-cli.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                on Linux and MacOS: <literal>scilab-adv-cli</literal>
-                                (Scilab Advanced Command Line Interpreter).
+                                 <para>
+                                    on Linux and MacOS: <literal>scilab-adv-cli</literal>
+                                    (Scilab Advanced Command Line Interpreter).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -328,10 +337,14 @@ evstr(a(i+2))*2
                         <literal>-nwni</literal>と同じ専用バイナリが提供されています
                         <itemizedlist>
                             <listitem>
-                                Windows: <literal>Scilex.exe</literal>.
+                                 <para>
+                                    Windows: <literal>Scilex.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Others: <literal>scilab-cli</literal> (Scilab Command Line Interpreter).
+                                 <para>
+                                    Others: <literal>scilab-cli</literal> (Scilab Command Line Interpreter).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -547,7 +560,7 @@ echo "handle SIGSEGV nostop" > debug.txt
 export SCILAB_GDB_OPT="--command=debug.txt"
 # Start Scilab in debug mode
 scilab -debug ]]></screen>
-        <para></para>
+        <para/>
         <screen><![CDATA[
 # Under GNU/Linux, Mac OS X or Unix:
 $ echo "disp(%pi)" | scilab-cli
@@ -619,47 +632,56 @@ echo $? ]]></screen>
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            User options:
-                            <itemizedlist>
-                                <listitem>
-                                    Added: <literal>--help</literal>, <literal>-quit</literal>
-                                </listitem>
-                                <listitem>
-                                    Removed: <literal>-mem</literal>
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
+                             <para>
+                                User options:
+                                <itemizedlist>
+                                    <listitem>
+                                         <para>
+                                            Added: <literal>--help</literal>, <literal>-quit</literal>
+                                               </para>
+                                           </listitem>
+                                    <listitem>
+                                         <para>
+                                            Removed: <literal>-mem</literal>
+                                                 </para>
+                                             </listitem>
+                                  </itemizedlist>
+                                </para>
+                            </listitem>
                         <listitem>
-                            Developer options added:
-                            <itemizedlist>
-                                <listitem>
-                                    <literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
-                                    <literal>--pretty-print</literal>
+                             <para>
+                                Developer options added:
+                                <itemizedlist>
+                                    <listitem>
+                                         <para><literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
+                                            <literal>--pretty-print</literal>
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para><literal>--AST-timed</literal>, <literal>--timed</literal></para></listitem>
+                                        <listitem>
+                                             <para><literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
+                                                <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
+                                            </para>
+                                        </listitem>
+                                      </itemizedlist>
+                                    </para>
                                 </listitem>
-                                <listitem>
-                                    <literal>--AST-timed</literal>, <literal>--timed</literal>
-                                </listitem>
-                                <listitem>
-                                    <literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
-                                    <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
-            </revision>
-            <revision>
-                <revnumber>6.0.1</revnumber>
-                <revremark>
-                    <literal>-scihome</literal> option added.
-                </revremark>
-            </revision>
-        </revhistory>
-    </refsection>
-    <!--add some kewywords -->
-    <refnamediv xml:id="wscilex"></refnamediv>
-    <refnamediv xml:id="wscilex-cli"></refnamediv>
-    <refnamediv xml:id="scilex"></refnamediv>
-    <refnamediv xml:id="scilab-cli"></refnamediv>
-    <refnamediv xml:id="scilab-adv-cli"></refnamediv>
-</refentry>
+                        </itemizedlist>
+                    </revremark>
+                </revision>
+                <revision>
+                    <revnumber>6.0.1</revnumber>
+                    <revremark>
+                        <literal>-scihome</literal> option added.
+                    </revremark>
+                </revision>
+            </revhistory>
+        </refsection>
+        <!--add some kewywords -->
+        <refnamediv xml:id="wscilex"/>
+        <refnamediv xml:id="wscilex-cli"/>
+        <refnamediv xml:id="scilex"/>
+        <refnamediv xml:id="scilab-cli"/>
+        <refnamediv xml:id="scilab-adv-cli"/>
+    </refentry>

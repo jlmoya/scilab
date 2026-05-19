@@ -27,7 +27,7 @@
         <para>This fonction is provided in call_scilab. This function execute a command by the Scilab engine.</para>
         <para>In case of error, it can fill buffers to get error message and/or callstack information.</para>
     </refsection>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -35,11 +35,15 @@
                 <listitem>
                     <para>a standard C char* containing the Scilab commands</para>
                 </listitem>
+            </varlistentry>
+            <varlistentry>
                 <term>msg</term>
                 <listitem>
                     <para>in case of error during execution and if <literal>msg</literal> != NULL, engine will fill buffer with error message</para>
                     <para><literal>msg</literal> must be free.</para>
                 </listitem>
+            </varlistentry>
+            <varlistentry>
                 <term>stack</term>
                 <listitem>
                     <para>in case of error during execution and if <literal>stack</literal> != NULL, engine will fill buffer with callstack information</para>

@@ -29,7 +29,7 @@ typedef long long ScicosID;
 
 %inline %{
 inline int save(const char* uri, ScicosID id) {
-    if (SSPResource(id).save(uri).Ok())
+    if (SSPResource(id).save(uri).ok())
     {
         return 0;
     }

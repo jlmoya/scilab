@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="setfield">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="setfield">
     <refnamediv>
         <refname>setfield</refname>
         <refpurpose>mlist, tlist, またはlistの要素の値を変更する</refpurpose>
@@ -30,33 +28,36 @@
             <varlistentry>
                 <term>L</term>
                 <listitem>
-                    <literal>list</literal>, <literal>tlist</literal>,
-                    または<literal>mlist</literal>リスト：コンポーネントを変更する必要があるリスト.
-                    <para/>
-                </listitem>
+                     <para><literal>list</literal>, <literal>tlist</literal>,
+                        または<literal>mlist</literal>リスト：コンポーネントを変更する必要があるリスト.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a</term>
                 <listitem>
-                    変更するコンポーネントのアドレス. 文字列として指定されたフィールド名,
-                    または正の整数として指定されたインデックスのいずれかになります.
-                    詳細については, <link linkend="insertion">insertion</link>をご覧ください.
-                    <para/>
-                </listitem>
+                     <para>
+                        変更するコンポーネントのアドレス. 文字列として指定されたフィールド名,
+                        または正の整数として指定されたインデックスのいずれかになります.
+                        詳細については, <link linkend="insertion">insertion</link>をご覧ください.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    任意のScilabオブジェクト：割り当てる値
-                    <para/>
-                </listitem>
+                     <para>
+                        任意のScilabオブジェクト：割り当てる値
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>uL</term>
                 <listitem>
-                    更新されたリスト
-                    <para/>
-                </listitem>
+                     <para>
+                        更新されたリスト
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -160,10 +161,14 @@ Function not defined for given argument type(s),
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            The updated list is now returned, instead of being changed "in place".
+                             <para>
+                                The updated list is now returned, instead of being changed "in place".
+                            </para>
                         </listitem>
                         <listitem>
-                            setfield() can no longer be used for cells arrays.
+                             <para>
+                                setfield() can no longer be used for cells arrays.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

@@ -259,7 +259,6 @@ int iRightDivisionOfRealMatrix(
 {
     int iReturn = 0;
 
-    int iIndex  = 0;
     char cNorm  = 0;
     int iExit   = 0;
 
@@ -402,9 +401,6 @@ int iRightDivisionOfComplexMatrix(
     double *_pdblReal2,     double *_pdblImg2,      int _iRows2,    int _iCols2,
     double *_pdblRealOut,   double *_pdblImgOut,    int _iRowsOut,  int _iColsOut,  double *_pdblRcond)
 {
-    int iReturn     = 0;
-    int iIndex1     = 0;
-    int iIndex2     = 0;
     char cNorm      = 0;
     int iExit       = 0;
 
@@ -496,7 +492,6 @@ int iRightDivisionOfComplexMatrix(
         {
             //how to extract that ? Oo
             *_pdblRcond = dblRcond;
-            iReturn = -1;
         }
     }
 
@@ -515,7 +510,6 @@ int iRightDivisionOfComplexMatrix(
             if ( _iRows2 != _iCols2 && pRank[0] < Min(_iRows2, _iCols2))
             {
                 //how to extract that ? Oo
-                iReturn = -2;
                 *_pdblRcond = pRank[0];
             }
 
@@ -562,8 +556,6 @@ int iLeftDivisionOfRealMatrix(
     double *_pdblReal2,     int _iRows2,    int _iCols2,
     double *_pdblRealOut,   int _iRowsOut,  int _iColsOut,  double *_pdblRcond)
 {
-    int iReturn = 0;
-    int iIndex  = 0;
     char cNorm  = 0;
     int iExit   = 0;
     int iLower = 0;
@@ -660,7 +652,6 @@ int iLeftDivisionOfRealMatrix(
         if (iExit == 0)
         {
             *_pdblRcond = dblRcond;
-            iReturn = -1;
         }
     }
 
@@ -684,7 +675,6 @@ int iLeftDivisionOfRealMatrix(
         {
             if ( _iRows1 != _iCols1 && pRank[0] < Min(_iRows1, _iCols1))
             {
-                iReturn = -2;
                 *_pdblRcond = pRank[0];
             }
 
@@ -710,8 +700,6 @@ int iLeftDivisionOfComplexMatrix(
     double *_pdblReal2,     double *_pdblImg2,      int _iRows2,    int _iCols2,
     double *_pdblRealOut,   double *_pdblImgOut,    int _iRowsOut,  int _iColsOut,  double *_pdblRcond)
 {
-    int iReturn = 0;
-    int iIndex  = 0;
     char cNorm  = 0;
     int iExit   = 0;
     int iLower = 0;
@@ -728,12 +716,10 @@ int iLeftDivisionOfComplexMatrix(
     double dblAnorm     = 0;
     doublecomplex dblCplxOne = {1,0};
 
-    doublecomplex *pAf      = NULL;
     doublecomplex *pXb      = NULL;
     doublecomplex *pDwork   = NULL;
     doublecomplex *poVar1   = NULL;
     doublecomplex *poVar2   = NULL;
-    doublecomplex *poOut    = NULL;
 
     double *pRwork  = NULL;
 
@@ -775,7 +761,6 @@ int iLeftDivisionOfComplexMatrix(
             else
             {
                 //how to extract that ? Oo
-                iReturn = -1;
                 *_pdblRcond = dblRcond;
             }
         }
@@ -795,7 +780,6 @@ int iLeftDivisionOfComplexMatrix(
                 else
                 {
                     //how to extract that ? Oo
-                    iReturn = -1;
                     *_pdblRcond = dblRcond;
                 }
             }
@@ -828,7 +812,6 @@ int iLeftDivisionOfComplexMatrix(
             if ( _iRows1 != _iCols1 && iRank < Min(_iRows1, _iCols1))
             {
                 //how to extract that ? Oo
-                iReturn = -2;
                 *_pdblRcond = (double)iRank;
             }
 

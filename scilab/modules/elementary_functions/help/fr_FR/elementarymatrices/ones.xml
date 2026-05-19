@@ -14,7 +14,7 @@
             y=ones()
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -39,7 +39,7 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <para>Renvoie une matrice dont tous les termes valent 1. Par défaut la matrice renvoyée est de type flottant à double précision mais un type donné peut être précisé dans l'argument <term>type</term>.
+        <para>Renvoie une matrice dont tous les termes valent 1. Par défaut la matrice renvoyée est de type flottant à double précision mais un type donné peut être précisé dans l'argument <literal>type</literal>.
         </para>
         <variablelist>
             <varlistentry>
@@ -109,8 +109,10 @@
             </listitem>
         </itemizedlist>
         <note>
-           <literal>repmat(1, sizes)</literal> peut être utilisé pour créer un tableau de uns dont
-           les dimensions sont données dans un vecteur <literal>sizes=[m1 m2 ..]</literal>.
+            <para>
+                <literal>repmat(1, sizes)</literal> peut être utilisé pour créer un tableau de uns dont
+                les dimensions sont données dans un vecteur <literal>sizes=[m1 m2 ..]</literal>.
+            </para>
         </note>
     </refsection>
     <refsection>

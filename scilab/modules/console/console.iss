@@ -54,4 +54,5 @@ Source: modules\{#CONSOLE}\macros\*.bin; DestDir: {app}\modules\{#CONSOLE}\macro
 ;
 Source: modules\{#CONSOLE}\tests\*.*; DestDir: {app}\modules\{#CONSOLE}\tests; Flags: recursesubdirs; Components:  {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#CONSOLE}\help\*.*; DestDir: {app}\modules\{#CONSOLE}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

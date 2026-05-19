@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="norm" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="norm" xml:lang="fr">
     <refnamediv>
         <refname>norm</refname>
         <refpurpose>normes d'un vecteur ou d'une matrice</refpurpose>
@@ -28,7 +25,7 @@
         y = norm(x, normType)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -41,24 +38,9 @@
             <varlistentry>
                 <term>normType</term>
                 <listitem>
-                    <para>
-                        <itemizedlist>
-                            <listitem>
-                                Matrice <literal>x</literal>: un nombre parmi
-                                <literal>1, 2, %inf, -%inf</literal>, ou un mot parmi
-                                <literal>"inf"</literal> (ou <literal>"i"</literal>) ou
-                                <literal>"fro"</literal> (ou <literal>"f"</literal>).
-                            </listitem>
-                            <listitem>
-                                Vecteur <literal>x</literal>: un nombre réel quelconque ou
-                                <literal>%inf</literal>,
-                                <literal>-%inf</literal>; ou mot <literal>"inf"</literal>
-                                (<literal>"i"</literal>), <literal>"fro"</literal>
-                                (<literal>"f"</literal>).
-                            </listitem>
-                        </itemizedlist>
+                     <para>
+                        Valeur par défaut : 2.
                     </para>
-                    Valeur par défaut : 2.
                 </listitem>
             </varlistentry>
             <varlistentry>

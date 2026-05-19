@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  *  Copyright (C) 2014 - Scilab Enterprises - Antoine ELIAS
  *  Copyright (C) 2014 - Scilab Enterprises - Sylvain GENIN
@@ -850,23 +850,23 @@ InternalType *GenericDotRDivide(InternalType *_pLeftOperand, InternalType *_pRig
 template<class T, class U, class O>
 InternalType* dotdiv_M_M(T *_pL, U *_pR)
 {
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto o = pOut->get();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            dotdiv(l[iL], r[iR], o + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray());
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray());
     int iSize = pOut->getSize();
 
     dotdiv(_pL->get(), iSize, _pR->get(), pOut->get());
@@ -876,23 +876,25 @@ InternalType* dotdiv_M_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* dotdiv_M_MC(T *_pL, U *_pR)
 {
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto r = _pR->get();
+        auto ri = _pR->getImg();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            dotdiv(l[iL], 0, r[iR], ri[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
     int iSize = pOut->getSize();
 
     dotdiv(_pL->get(), iSize, _pR->get(), _pR->getImg(), pOut->get(), pOut->getImg());
@@ -943,23 +945,25 @@ InternalType* dotdiv_E_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* dotdiv_MC_M(T *_pL, U *_pR)
 {
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto li = _pL->getImg();
+        auto r = _pR->get();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            dotdiv(l[iL], li[iL], 0, r[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
     int iSize = pOut->getSize();
 
     dotdiv(_pL->get(), _pL->getImg(), iSize, _pR->get(), pOut->get(), pOut->getImg());
@@ -969,23 +973,26 @@ InternalType* dotdiv_MC_M(T *_pL, U *_pR)
 template<class T, class U, class O>
 InternalType* dotdiv_MC_MC(T *_pL, U *_pR)
 {
-    //check dims
-    int iDimsL = _pL->getDims();
-    int iDimsR = _pR->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call overload
-        return nullptr;
+        O* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+
+        auto l = _pL->get();
+        auto li = _pL->getImg();
+        auto r = _pR->get();
+        auto ri = _pR->getImg();
+        auto o = pOut->get();
+        auto oi = pOut->getImg();
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            dotdiv(l[iL], li[iL], 0, r[iR], ri[iR], o + iO, oi + iO);
+        });
+
+        return pOut;
     }
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
-    }
-
-    O* pOut = new O(iDimsL, _pL->getDimsArray(), true);
+    O* pOut = new O(_pL->getDims(), _pL->getDimsArray(), true);
     int iSize = pOut->getSize();
 
     dotdiv(_pL->get(), _pL->getImg(), iSize, _pR->get(), _pR->getImg(), pOut->get(), pOut->getImg());
@@ -1248,10 +1255,9 @@ InternalType* dotdiv_M_M<Sparse, Sparse, Sparse>(Sparse* _pL, Sparse* _pR)
     }
 
     //check dimensions
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pL, _pR, op));
     }
 
     Sparse* pSparseOut = _pL->dotDivide(*_pR);
@@ -1780,20 +1786,53 @@ InternalType* dotdiv_M_M<Polynom, Double, Polynom>(Polynom* _pL, Double* _pR)
 
     }
 
-    //check dims
-    int iDimsL = _pR->getDims();
-    int iDimsR = _pL->getDims();
-
-    if (iDimsL != iDimsR)
+    if (checkSameSize(_pL, _pR) == false)
     {
-        // call avoerload
-        return nullptr;
-    }
+        Polynom* pOut = nullptr;
+        auto plan = makeExpandPlan(_pL, _pR, pOut, op);
+        pOut->setVariableName(_pL->getVariableName());
+        pOut->setComplex(isComplexOut);
 
-    std::wstring error = checkSameSize(_pL, _pR, op);
-    if (error.empty() == false)
-    {
-        throw ast::InternalError(error);
+        auto pSPR = _pL->get();
+        auto pdblR = _pR->get();
+        double* pdblI = isComplexL ? _pR->getImg() : NULL;
+
+        expandApply(plan, [&](int iL, int iR, int iO) {
+            SinglePoly* pPoly = (SinglePoly*)pSPR[iL]->clone();
+            int iSPSize = pPoly->getSize();
+            pPoly->setComplex(isComplexOut);
+
+            double* pdblOutR = pPoly->get();
+            double* pdblOutI = pPoly->getImg();
+
+            if (isComplexL)
+            {
+                if (isComplexR)
+                {
+                    dotdiv(pSPR[iL]->get(), pSPR[iL]->getImg(), (size_t)iSPSize, pdblR[iR], pdblI[iR], pdblOutR, pdblOutI);
+                }
+                else
+                {
+                    dotdiv(pSPR[iL]->get(), (size_t)iSPSize, pdblR[iR], pdblI[iR], pdblOutR, pdblOutI);
+                }
+            }
+            else
+            {
+                if (isComplexR)
+                {
+                    dotdiv(pSPR[iL]->get(), pSPR[iL]->getImg(), (size_t)iSPSize, pdblR[iR], pdblOutR, pdblOutI);
+                }
+                else
+                {
+                    dotdiv(pSPR[iL]->get(), (size_t)iSPSize, pdblR[iR], pdblOutR);
+                }
+            }
+
+            pOut->set(iO, pPoly);
+        });
+
+        pOut->updateRank();
+        return pOut;
     }
 
     pOut = (Polynom*)_pL->clone();

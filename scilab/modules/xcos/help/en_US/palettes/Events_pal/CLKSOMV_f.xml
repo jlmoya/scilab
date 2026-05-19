@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/CLKSOMV_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_CLKSOMV_f">
+    <refsection xml:id="Contents_CLKSOMV_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_CLKSOMV_f">Description</xref>
+                <para><link linkend="Description_CLKSOMV_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_CLKSOMV_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_CLKSOMV_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_CLKSOMV_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_CLKSOMV_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_CLKSOMV_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_CLKSOMV_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_CLKSOMV_f">Example</xref>
+                <para><link linkend="Example_CLKSOMV_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_CLKSOMV_f">
+    <refsection xml:id="Description_CLKSOMV_f">
         <title>Description</title>
         <para>
             This block is an event addition block with up to three inputs. The output reproduces
@@ -68,7 +68,7 @@
             are synchronized.
         </para>
     </refsection>
-    <refsection id="Defaultproperties_CLKSOMV_f">
+    <refsection xml:id="Defaultproperties_CLKSOMV_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -126,7 +126,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_CLKSOMV_f">
+    <refsection xml:id="Interfacingfunction_CLKSOMV_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -134,7 +134,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_CLKSOMV_f">
+    <refsection xml:id="Computationalfunction_CLKSOMV_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -142,8 +142,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_CLKSOMV_f">
+    <refsection xml:id="Example_CLKSOMV_f">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/CLKSOMV_f_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -151,5 +152,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

@@ -16,43 +16,43 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" 
 		  xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" 
 		  xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" 
-		  xml:id="DLATCH" xml:lang="fr_FR" xml.mml="http://www.w3.org/1998/Math/MathML">
+		  xml:id="DLATCH" xml:lang="fr_FR" xmlns:mml="http://www.w3.org/1998/Math/MathML">
     <refnamediv>
         <refname>DLATCH</refname>
         <refpurpose>Bascule D transparente</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
 				<imagedata fileref="../../../../images/palettes/DLATCH.png" align="center"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
     </refsection>
-    <refsection id="Contents_DLATCH">
+    <refsection xml:id="Contents_DLATCH">
         <title>Contenu</title>
 		<itemizedlist>
 			<listitem>
-				<xref linkend="Description_DLATCH">Description</xref>
+				<para><link linkend="Description_DLATCH">Description</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Data_Type_DLATCH">Types de données</xref>
+				<para><link linkend="Data_Type_DLATCH">Types de données</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Defaultproperties_DLATCH">Propriétés par défaut</xref>
+				<para><link linkend="Defaultproperties_DLATCH">Propriétés par défaut</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Example_DLATCH">Exemple</xref>
+				<para><link linkend="Example_DLATCH">Exemple</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Interfacingfunction_DLATCH">Fonction d'interfaçage</xref>
+				<para><link linkend="Interfacingfunction_DLATCH">Fonction d'interfaçage</link></para>
 			</listitem>
 			<listitem>
-				<xref linkend="Seealso_DLATCH">Voir aussi</xref>
+				<para><link linkend="Seealso_DLATCH">Voir aussi</link></para>
 			</listitem>
 		</itemizedlist>
     </refsection>
-    <refsection id="Description_DLATCH">
+    <refsection xml:id="Description_DLATCH">
         <title>Description</title>
         <para>
             Ce bloc copie son état d'entrée (<emphasis role="bold">D</emphasis>) sur la sortie
@@ -100,7 +100,7 @@
             <emphasis><literal>Q<subscript>n</subscript></literal></emphasis>.
         </para>
     </refsection>
-    <refsection id="Data_Type_DLATCH">
+    <refsection xml:id="Data_Type_DLATCH">
         <title>Types de données</title>
         <para>
             Le bloc supporte les types suivants :
@@ -133,7 +133,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DLATCH">
+    <refsection xml:id="Defaultproperties_DLATCH">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -212,7 +212,7 @@
         </itemizedlist>
 		<para/>
     </refsection>
-    <refsection id="Example_DLATCH">
+    <refsection xml:id="Example_DLATCH">
         <title>Exemple</title>
         <para>
             La figure suivante montre un cas simple d'utilisation du bloc DLATCH avec
@@ -237,7 +237,7 @@ importXcosDiagram(SCI + "/modules/xcos/examples/integer_pal/fr_FR/DLATCH_fr_FR.z
 xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
-    <refsection id="Interfacingfunction_DLATCH">
+    <refsection xml:id="Interfacingfunction_DLATCH">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -247,17 +247,17 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection role="see also" id="Seealso_DLATCH">
+    <refsection role="see also" xml:id="Seealso_DLATCH">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="DFLIPFLOP">DFLIPFLOP</link>
+                <para><link linkend="DFLIPFLOP">DFLIPFLOP</link></para>
             </listitem>
             <listitem>
-                <link linkend="SRFLIPFLOP">SRFLIPFLOP</link>
+                <para><link linkend="SRFLIPFLOP">SRFLIPFLOP</link></para>
             </listitem>
             <listitem>
-                <link linkend="JKFLIPFLOP">JKFLIPFLOP</link>
+                <para><link linkend="JKFLIPFLOP">JKFLIPFLOP</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

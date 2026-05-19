@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>[Ar, U, rk] = htrianr(A)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -64,11 +64,11 @@
         <para>
             <literal>Ar=A*U</literal>
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Warning: there is an elimination of "small" terms (see function code).
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>

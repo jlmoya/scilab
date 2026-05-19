@@ -137,11 +137,9 @@ int sci_sident(char *fname, void* pvApiCtx)
     char cJOBCK = 'N';
     int iMA = 0;
     int iNA = 0;
-    int iSizeA = 0;
     double* pdblA = NULL;
     double* pdblC = NULL;
     int iPRINTW = 0;
-    BOOL bPRINTW = FALSE;
 
     int iMNOBR = 0;
     int iLNOBR = 0;
@@ -157,7 +155,6 @@ int sci_sident(char *fname, void* pvApiCtx)
     int iLDB = 0;
     int iLDC = 0;
     int iLDD = 0;
-    int iLDO = 0;
     int iLDR = 0;
 
     int iLDK = 0;
@@ -366,7 +363,6 @@ int sci_sident(char *fname, void* pvApiCtx)
         }
 
         getMatrixOfDouble(pvApiCtx, piAddr, &iMA, &iNA, &pdblA);
-        iSizeA = iMA * iNA;
 
         if (iMA != iN || iNA != iN)
         {
@@ -384,7 +380,6 @@ int sci_sident(char *fname, void* pvApiCtx)
         }
 
         getMatrixOfDouble(pvApiCtx, piAddr, &iMA, &iNA, &pdblC);
-        iSizeA = iMA * iNA;
 
         if (iMA != iL)
         {
@@ -402,21 +397,13 @@ int sci_sident(char *fname, void* pvApiCtx)
     // printw
     if (iRhs >= 11)
     {
-        int iPrintw = 0;
         CHECK_PARAM(pvApiCtx, 11);
         iPRINTW = getIntegerValue(pvApiCtx, 11);
 
-        switch (iPRINTW)
+        if (iPRINTW != 0 && iPRINTW != 1)
         {
-            case 1 :
-                bPRINTW = TRUE;
-                break;
-            case 0 :
-                bPRINTW = FALSE;
-                break;
-            default :
-                Scierror(999, _("%s: Wrong value for input argument #%d: '%s' or '%s' expected.\n"), fname, 11, "0", "1");
-                return 0;
+            Scierror(999, _("%s: Wrong value for input argument #%d: '%s' or '%s' expected.\n"), fname, 11, "0", "1");
+            return 0;
         }
     }
 
@@ -438,7 +425,6 @@ int sci_sident(char *fname, void* pvApiCtx)
     iLDB = iLDA;
     iLDC = Max(1, iL);
     iLDD = iLDC;
-    iLDO = iLNOBR;
     iLDR = iNR;
     if (iNSMPL != 0)
     {

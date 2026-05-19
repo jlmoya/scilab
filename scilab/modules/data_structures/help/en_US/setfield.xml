@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="setfield">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="setfield">
     <refnamediv>
         <refname>setfield</refname>
         <refpurpose>change the value of an element of a mlist, tlist or list</refpurpose>
@@ -24,39 +22,43 @@
         <title>Syntax</title>
         <synopsis>uL = setfield(a, v, L)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>L</term>
                 <listitem>
-                    a <literal>list</literal>, <literal>tlist</literal> or <literal>mlist</literal>
-                    list: the list whose component must be changed.
-                    <para/>
-                </listitem>
+                     <para>
+                        a <literal>list</literal>, <literal>tlist</literal> or <literal>mlist</literal>
+                        list: the list whose component must be changed.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a</term>
                 <listitem>
-                    Address of the component to change. It can be either its field name
-                    specified as a string, or its index specified as a positive integer.
-                    See <link linkend="insertion">insertion</link> for more details.
-                    <para/>
-                </listitem>
+                     <para>
+                        Address of the component to change. It can be either its field name
+                        specified as a string, or its index specified as a positive integer.
+                        See <link linkend="insertion">insertion</link> for more details.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    Any Scilab object: the value to assign.
-                    <para/>
-                </listitem>
+                     <para>
+                        Any Scilab object: the value to assign.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>uL</term>
                 <listitem>
-                    The updated list.
-                    <para/>
-                </listitem>
+                     <para>
+                        The updated list.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -152,20 +154,26 @@ Function not defined for given argument type(s),
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            The updated list is now returned, instead of being changed "in place".
-                        </listitem>
-                        <listitem>
-                            setfield() can no longer be used for cells arrays.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The updated list is now returned, instead of being changed "in place".
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    setfield() can no longer be used for cells arrays.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

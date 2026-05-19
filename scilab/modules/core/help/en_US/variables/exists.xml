@@ -11,7 +11,7 @@
             ve = exists(name, where)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -64,12 +64,12 @@
             in any level of the calling environment (including the Scilab shell main level) of the current function and
             <literal>0</literal> otherwise.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Warning: the <literal>exists</literal> function does not check if a variable exists in
                 the <link linkend="global">global</link> namespace.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>

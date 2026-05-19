@@ -44,4 +44,5 @@ Source: modules\{#WEBTOOLS}\demos\*.*; DestDir: {app}\modules\{#WEBTOOLS}\demos;
 ;
 Source: modules\{#WEBTOOLS}\tests\*.*; DestDir: {app}\modules\{#WEBTOOLS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#WEBTOOLS}\help\*.*; DestDir: {app}\modules\{#WEBTOOLS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

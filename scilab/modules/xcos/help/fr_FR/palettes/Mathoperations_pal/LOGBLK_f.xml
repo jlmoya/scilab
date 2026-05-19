@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/LOGBLK_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_LOGBLK_f">
+    <refsection xml:id="Contents_LOGBLK_f">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_LOGBLK_f">Description</xref>
+                <para><link linkend="Description_LOGBLK_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_LOGBLK_f">Paramètres</xref>
+                <para><link linkend="Dialogbox_LOGBLK_f">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_LOGBLK_f">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_LOGBLK_f">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_LOGBLK_f">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_LOGBLK_f">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_LOGBLK_f">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_LOGBLK_f">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_LOGBLK_f">Voir aussi</xref>
+                <para><link linkend="Seealso_LOGBLK_f">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_LOGBLK_f">
+    <refsection xml:id="Description_LOGBLK_f">
         <title>Description</title>
         <para>
             Ce bloc calcule le logarithme des éléments de son vecteur d'entrée. L'utilisateur peut fixer la base avec
@@ -60,15 +60,14 @@
             Les dimensions des ports d'entrée et de sortie sont déterminés par le contexte.
         </para>
     </refsection>
-    <refsection id="Dialogbox_LOGBLK_f">
+    <refsection xml:id="Dialogbox_LOGBLK_f">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/LOGBLK_f_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -79,7 +78,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_LOGBLK_f">
+    <refsection xml:id="Defaultproperties_LOGBLK_f">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -152,7 +151,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_LOGBLK_f">
+    <refsection xml:id="Interfacingfunction_LOGBLK_f">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -160,7 +159,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_LOGBLK_f">
+    <refsection xml:id="Computationalfunction_LOGBLK_f">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -168,17 +167,17 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_LOGBLK_f" role="see also">
+    <refsection xml:id="Seealso_LOGBLK_f" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="POWBLK_f">POWBLK_f</link>
+                <para><link linkend="POWBLK_f">POWBLK_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="EXPBLK_m">EXPBLK_m</link>
+                <para><link linkend="EXPBLK_m">EXPBLK_m</link></para>
             </listitem>
             <listitem>
-                <link linkend="SQRT">SQRT</link>
+                <para><link linkend="SQRT">SQRT</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="tokens" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="tokens" xml:lang="pt">
     <refnamediv>
         <refname>tokens</refname>
         <refpurpose>
@@ -36,25 +33,28 @@
             <varlistentry>
                 <term>text</term>
                 <listitem>
-                    Um único texto a ser dividido. Pode incluir caracteres internacionais UTF-8
-                    estendidos.
-                    <para/>
-                </listitem>
+                     <para>
+                        Um único texto a ser dividido. Pode incluir caracteres internacionais UTF-8
+                        estendidos.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>separators</term>
                 <listitem>
-                    Vetor de caracteres. Valor padrão = <literal>[" ",ascii(9)]</literal>,
-                    ascii(9) sendo a tabulação horizontal.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vetor de caracteres. Valor padrão = <literal>[" ",ascii(9)]</literal>,
+                        ascii(9) sendo a tabulação horizontal.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Chunks</term>
                 <listitem>
-                    Vetor da coluna: partes do texto dividido.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vetor da coluna: partes do texto dividido.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

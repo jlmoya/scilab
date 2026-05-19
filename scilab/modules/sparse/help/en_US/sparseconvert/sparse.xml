@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="sparse">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="sparse">
     <refnamediv>
         <refname>sparse</refname>
         <refpurpose>sparse matrix definition</refpurpose>
@@ -29,7 +26,7 @@
             sp = sparse(ij, v, mn)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -86,17 +83,22 @@
         <warning>
             <itemizedlist>
               <listitem>
-                  For the building syntaxes, if several values are given for a same
-                  <varname>ij</varname> position, the sum of theses values is assigned.
+                   <para>
+                      For the building syntaxes, if several values are given for a same
+                      <varname>ij</varname> position, the sum of theses values is assigned.
+                  </para>
               </listitem>
               <listitem>
-                <literal>sparse([],[])</literal> yields the <literal>(0, 0) zero sparse matrix</literal>,
-                with <literal>sparse([],[]) ~= []</literal>.
+                   <para><literal>sparse([],[])</literal> yields the <literal>(0, 0) zero sparse matrix</literal>,
+                    with <literal>sparse([],[]) ~= []</literal>.
+                  </para>
               </listitem>
             </itemizedlist>
         </warning>
-      <refsect3>
-        <title>Operating sparse matrices</title>
+
+        <para>
+            <emphasis role="bold">Operating sparse matrices</emphasis>
+        </para>
         <para>
             Operations (concatenation, addition, etc,) with sparse matrices are
             made using the same syntax as for full matrices.
@@ -123,7 +125,7 @@
               <literal>sp=sparse(ij, v, mn)</literal> call for write access.
           </para>
         </note>
-      </refsect3>
+
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -185,9 +187,9 @@ sp = sparse(dense)
         <revhistory>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     sparse([],[]) now yields the "(0,0) zero sparse matrix" instead of [].
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

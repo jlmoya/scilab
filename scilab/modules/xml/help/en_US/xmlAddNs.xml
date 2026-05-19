@@ -24,7 +24,7 @@
             xmlAddNs(elem, [, ns1 [, ns2, ...]])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -48,19 +48,19 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlDocument("TMPDIR/foo.xml");
-    doc.root = xmlElement(doc, "root");
-    a = xmlElement(doc, "a");
-    b = xmlElement(doc, "b");
+    xdoc = xmlDocument("TMPDIR/foo.xml");
+    xdoc.root = xmlElement(xdoc, "root");
+    a = xmlElement(xdoc, "a");
+    b = xmlElement(xdoc, "b");
     ns_scilab = xmlNs(a, "scilab", "https://www.scilab.org");
     ns_balics = xmlNs(a, "balics", "http://gro.balics.www");
     xmlAddNs(b, ns_scilab, ns_balics);
 
-    doc.root.children(1) = a;
-    doc.root.children(2) = b;
-    xmlDump(doc)
+    xdoc.root.children(1) = a;
+    xdoc.root.children(2) = b;
+    xmlDump(xdoc)
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -86,7 +86,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

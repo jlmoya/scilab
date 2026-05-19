@@ -21,15 +21,15 @@
     <refsynopsisdiv>
         <title>呼び出し手順</title>
         <synopsis>
-            xmlWrite(doc [, filename] [, indent])
-            xmlWrite(doc [, indent])
+            xmlWrite(xdoc [, filename] [, indent])
+            xmlWrite(xdoc [, indent])
         </synopsis>
     </refsynopsisdiv>
     <refsection>
         <title>引数</title>
         <variablelist>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>doc, XMLDoc型のmlist</para>
                 </listitem>
@@ -60,12 +60,12 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
-    xmlWrite(doc, TMPDIR+"/foo.xml", %f);
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    xmlWrite(xdoc, TMPDIR+"/foo.xml", %f);
     // 前のファイルをオープンし,修正,保存します
     doc1 = xmlRead(TMPDIR+"/foo.xml");
     doc1.root.children(1).name = "newName";
-    xmlWrite(doc1);
+    xmlWrite(xdoc1);
     // 修正が行われたかどうかを調べます
     doc2 = xmlRead(TMPDIR+"/foo.xml");
     doc2.root.children(1).name

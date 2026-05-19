@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="example_run" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="example_run" xml:lang="en">
     <refnamediv>
         <refname>example_run</refname>
         <refpurpose>Launch the examples found in help pages.</refpurpose>
@@ -31,7 +28,7 @@
             example_run(moduleNames, functionNames, language, testrunOptions, testrunExportToFile)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -42,12 +39,16 @@
                         Each reference can be either of
                         <itemizedlist>
                             <listitem>
-                                the technical name of a Scilab internal module, that is the name
-                                of the root directory of the module.
+                                 <para>
+                                    the technical name of a Scilab internal module, that is the name
+                                    of the root directory of the module.
+                                </para>
                             </listitem>
                             <listitem>
-                                the relative or absolute path of the root directory of the module.
-                                This must be used for installed ATOMS modules or other external modules.
+                                 <para>
+                                    the relative or absolute path of the root directory of the module.
+                                    This must be used for installed ATOMS modules or other external modules.
+                                </para>
                             </listitem>
                         </itemizedlist>
                         By default, all Scilab internal modules are considered, as returned by
@@ -59,9 +60,9 @@
                         help pages where examples to test are provided, gathered by languages as
                         in the source package of any standard module.
                         Example of the template toolbox_skeleton module:
-                        <programlisting role="example">
+                        <programlisting role="example"><![CDATA[
 unix_w("dir /b /s """ + WSCI + "/contrib/toolbox_skeleton/help""")
-                      </programlisting>
+                      ]]></programlisting>
                     </para>
                 </listitem>
             </varlistentry>
@@ -104,13 +105,13 @@ unix_w("dir /b /s """ + WSCI + "/contrib/toolbox_skeleton/help""")
             This function extracts the examples given in help pages and run them using
             <link linkend="test_run">test_run</link>.
         </para>
-        <para>
-           <warning>
+        <warning>
+            <para>
                When testing examples of any external module, it is mandatory to autoload the module
                at Scilab startup. This can be achieved either by setting the ATOMS module as
                autoloaded, or by loading the module through the user's startup file.
-           </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Example</title>
@@ -140,7 +141,7 @@ end
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

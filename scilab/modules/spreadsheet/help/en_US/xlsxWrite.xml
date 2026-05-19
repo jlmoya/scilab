@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is released under the 3-clause BSD license. See COPYING-BSD.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="xlsxWrite" xml:lang="en">
+    <refnamediv>
+        <refname>xlsxWrite</refname>
+        <refpurpose>
+            Write data (matrix or cell) to an Excel file.
+        </refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+            xlsxWrite(data, filename, option1, value1, option2, value2, ...)
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>data</term>
+                <listitem>
+                    <para>A double matrix, string matrix, or cell containing the data to write.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>filename</term>
+                <listitem>
+                    <para>A string specifying the path to the Excel (.xlsx) file to write.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"sheet", sheet_value</term>
+                <listitem>
+                    <para>A string (sheet name) or positive integer (sheet index, 1-based) specifying which sheet to write to.</para>
+                    <itemizedlist>
+                        <listitem><para>If string: the sheet name must already exist. Writes to existing sheet with that name.</para></listitem>
+                        <listitem><para>If integer: the sheet at that index must already exist, otherwise an error occurs.</para></listitem>
+                    </itemizedlist>
+                    <para>Default: 1 (first sheet). Optional.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"range", range_value</term>
+                <listitem>
+                    <para>A string or 2x2 matrix specifying where to start writing data.</para>
+                    <para>String formats: "A1:C10" (cell range), "A:C" (column range), "1:3" (row range), "B5" (first cell), "B" (first column), "3" (first row).</para>
+                    <para>Matrix format: [row1 col1; row2 col2] where all values are positive integers >= 1.</para>
+                    <para>Default: "". Optional.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"writemode", writemode_value</term>
+                <listitem>
+                    <para>A string specifying the write mode:</para>
+                    <itemizedlist>
+                        <listitem><para>"overwrite": Clears the sheet before writing data.</para></listitem>
+                        <listitem><para>"append": Keeps existing data and adds new data at the specified range.</para></listitem>
+                    </itemizedlist>
+                    <para>Default: data is written without clearing (preserves other cells). Optional.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"title", title_value</term>
+                <listitem>
+                    <para>A string specifying the document title metadata embedded in Excel file properties. Optional.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"subject", subject_value</term>
+                <listitem>
+                    <para>A string specifying the document subject metadata embedded in Excel file properties. Optional.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"description", description_value</term>
+                <listitem>
+                    <para>A string specifying the document description metadata embedded in Excel file properties. Optional.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>Write data to an Excel (.xlsx) file. Accepts matrices or cells. 
+            To write table and timeseries to an Excel file, use <link linkend="readtable">readtable</link> and <link linkend="readtimeseries">readtimeseries</link> functions.</para>
+        <para>The function uses key-value pairs to specify options. All parameters except data and filename are optional and can be combined in any order.</para>
+        <para><emphasis role="bold">File and sheet handling:</emphasis></para>
+        <itemizedlist>
+            <listitem><para>If the file exists, data is written to the specified sheet.</para></listitem>
+            <listitem><para>Sheet names (strings) must reference existing sheets, otherwise an error occurs.</para></listitem>
+            <listitem><para>Sheet indices (integers) must reference existing sheets, otherwise an error occurs.</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">Data types:</emphasis></para>
+        <itemizedlist>
+            <listitem><para><emphasis role="bold">Matrix</emphasis>: Values are written in Excel.</para></listitem>
+            <listitem><para><emphasis role="bold">cell</emphasis>: Heterogen values are written in Excel.</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">Range specification:</emphasis></para>
+        <para>Ranges can be specified as strings (Excel notation "A1:B6") or as a 2x2 scilab matrix [start_row start_col; end_row end_col].</para>
+        <para>The range defines the starting position for writing.</para>
+        <para><emphasis role="bold">Write modes:</emphasis></para>
+        <itemizedlist>
+            <listitem><para>Default (no writemode): Writes data at specified range, preserving other cells in the sheet.</para></listitem>
+            <listitem><para>"overwrite": Clears entire sheet before writing.</para></listitem>
+            <listitem><para>"append": Explicitly preserves existing data, writes at specified range.</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">Metadata:</emphasis></para>
+        <para>Title, subject, and description options set Excel document properties (visible in File > Properties in Excel).</para>
+    </refsection>
+    <refsection>
+        <title>Return values</title>
+        <para>This function does not return a value. It writes the data to the specified Excel file.</para>
+        <para>If an error occurs during writing, an error message is raised with details about the failure.</para>
+        <para><emphasis role="bold">Potential errors:</emphasis></para>
+        <itemizedlist>
+            <listitem><para>Invalid parameters: Wrong argument types or invalid option keys</para></listitem>
+            <listitem><para>Data type error: Data must be double matrix, string matrix, or cell</para></listitem>
+            <listitem><para>Sheet index error: Specified sheet index doesn't exist in file</para></listitem>
+            <listitem><para>Range format error: Invalid range specification</para></listitem>
+            <listitem><para>File access error: Insufficient permissions, disk full, or file locked by another process</para></listitem>
+            <listitem><para>XLNT library error: Excel format or compatibility issues</para></listitem>
+        </itemizedlist>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+        // Create example data
+        data = [1 2 3; 4 5 6; 7 8 9];
+        test_file = TMPDIR + "/test_write.xlsx";
+
+        // Write numeric matrix to default sheet starting at A1
+        xlsxWrite(data, test_file);
+
+        // Write to specific sheet by name
+        xlsxWrite(data, test_file, "sheet", "Sheet1");
+
+        // Write to specific sheet by index (must exist)
+        xlsxWrite(data, test_file, "sheet", 1);
+
+        // Write starting at specific position
+        xlsxWrite(data, test_file, "range", "B5");
+
+        // Write using matrix range notation [row col]
+        xlsxWrite(data, test_file, "range", [5 2; 13 4]);  // B5:D13
+
+        // Clear sheet before writing (overwrite mode)
+        xlsxWrite(data, test_file, "sheet", 1, "writemode", "overwrite");
+
+        // Append data preserving existing content
+        xlsxWrite(data, test_file, "sheet", 1, "writemode", "append", "range", "A10");
+
+        // Write with document metadata
+        xlsxWrite(data, test_file, "title", "My Report", "subject", "Data Analysis", ..
+                  "description", "Quarterly analysis results");
+
+        // Write string matrix
+        text_data = ["Name" "Age" "City"; "Alice" "25" "Paris"; "Bob" "30" "London"];
+        people_file = TMPDIR + "/people.xlsx";
+        xlsxWrite(text_data, people_file, "sheet", 1);
+
+        // Write cell
+        c = {1, "A"; 2, "B"; 3, "C"}
+        cell_file = TMPDIR + "/cell_data.xlsx";
+        xlsxWrite(c, cell_file);
+
+        // Complete example combining all options
+        report_file = TMPDIR + "/report.xlsx";
+        xlsxWrite(data, report_file, "sheet", 1, "range", "B2", ..
+                  "writemode", "overwrite", "title", "Q1 Report", ..
+                  "subject", "Sales Data", "description", "First quarter sales figures");
+
+        ret = xlsxRead(report_file)
+        ]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="xlsxRead">xlsxRead</link>
+            </member>
+            <member>
+                <link linkend="xlsxSheet">xlsxSheet</link>
+            </member>
+            <member>
+                <link linkend="xlsxInfo">xlsxInfo</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>
+                    Introduction in Scilab.
+                </revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

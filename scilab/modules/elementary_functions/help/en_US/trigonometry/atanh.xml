@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org"  xml:id="atanh" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="atanh" xml:lang="en">
     <refnamediv>
         <refname>atanh</refname>
         <refpurpose>hyperbolic tangent inverse</refpurpose>
@@ -25,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>t = atanh(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -116,11 +113,14 @@ atanh(x.')
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>atanh(-1)</literal> is now always <literal>-Inf</literal>, and
-                            <literal>atanh(1)</literal> always <literal>Inf</literal>.
+                             <para><literal>atanh(-1)</literal> is now always <literal>-Inf</literal>, and
+                                <literal>atanh(1)</literal> always <literal>Inf</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            For any real x>1, imag(atanh(x)) is now > 0.
+                             <para>
+                                For any real x&gt;1, imag(atanh(x)) is now &gt; 0.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

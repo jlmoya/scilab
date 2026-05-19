@@ -24,7 +24,7 @@
     </synopsis>
     </refsynopsisdiv>
 
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -60,7 +60,7 @@
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    <para>array of solution at time values in <term>t</term></para>
+                    <para>array of solution at time values in <literal>t</literal></para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -241,7 +241,7 @@
             </listitem>
             <listitem>
                 <para>a string giving the name of a SUNDIALS DLL entrypoint with C prototype </para> 
-                <para><programlisting role="no-scilab-exec"><![CDATA[int sunMass(realtype t, SUNMatrix M, void* user_data, N_Vector tmp1, 
+                <para><programlisting role="no-scilab-exec"><![CDATA[int sunMass(sunrealtype t, SUNMatrix M, void* user_data, N_Vector tmp1, 
                                       N_Vector tmp2, N_Vector tmp3)]]>
         </programlisting></para>
                 <para>
@@ -249,7 +249,7 @@
                     code=[
                         "#include <nvector/nvector_serial.h>"
                         "#include <sunmatrix/sunmatrix_dense.h>"
-                        "int sunRhs(realtype t, N_Vector Y, N_Vector Yd, void *user_data)"    
+                        "int sunRhs(sunrealtype t, N_Vector Y, N_Vector Yd, void *user_data)"    
                         "{"
                         "double *y = NV_DATA_S(Y);"
                         "double *ydot = NV_DATA_S(Yd);"
@@ -257,7 +257,7 @@
                         "ydot[1] = (1-y[0]*y[0])*y[1]-y[0];"
                         "return 0;"
                         "}"
-                        "int sunMass(realtype t, SUNMatrix M, void* user_data, N_Vector tmp1,"
+                        "int sunMass(sunrealtype t, SUNMatrix M, void* user_data, N_Vector tmp1,"
                         "            N_Vector tmp2, N_Vector tmp3)"
                         "{"
                         "double *mass = SM_DATA_D(M);"
@@ -585,7 +585,7 @@
         <para>
 A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, D. E. Shumaker, and C. S. Woodward, "SUNDIALS: Suite of Nonlinear and Differential/Algebraic Equation Solvers," ACM Transactions on Mathematical Software, 31(3), pp. 363-396, 2005. Also available as LLNL technical report UCRL-JP-200037.
  </para>
- <para>Daniel R. Reynolds and David J. Gardner and Carol S. Woodward and Cody J. Balos, "User Documentation for arkode", 2021, v5.1.1, available online at <ulink url="https://sundials.readthedocs.io/en/latest/arkode/index.html">https://sundials.readthedocs.io/en/latest/arkode</ulink>.
+ <para>Daniel R. Reynolds and David J. Gardner and Carol S. Woodward and Cody J. Balos, "User Documentation for arkode", 2021, v5.1.1, available online at <link xlink:href="https://sundials.readthedocs.io/en/latest/arkode/index.html">https://sundials.readthedocs.io/en/latest/arkode</link>.
  </para>
  <para>
      P.J. Prince and J. R. Dormand, High order embedded Runge-Kutta formulae,

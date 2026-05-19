@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="pathsep">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="pathsep">
     <refnamediv>
         <refname>pathsep</refname>
         <refpurpose>
@@ -27,16 +24,17 @@
         <title>Syntax</title>
         <synopsis>s = pathsep()</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>s</term>
                 <listitem>
-                    a character: <literal>";"</literal> on Windows,
-                    or <literal>":"</literal> on Linux.
-                    <para/>
-                </listitem>
+                     <para>
+                        a character: <literal>";"</literal> on Windows,
+                        or <literal>":"</literal> on Linux.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

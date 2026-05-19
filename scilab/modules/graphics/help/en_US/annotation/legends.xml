@@ -25,7 +25,7 @@
           h = legends(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -140,9 +140,6 @@
         </para>
     </refsection>
     <refsection>
-        <title>Sample</title>
-    </refsection>
-    <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 // Example 1
@@ -239,9 +236,9 @@ legends(['cos(t)';'cos(2*t)';'cos(3*t)'],[-1,2 3], opt=2, font_size=1 )
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

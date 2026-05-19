@@ -114,14 +114,47 @@ function varargout = synchronize(varargin)
         listTs(i) = gsort(varargin(i), "g", "i");
     end
 
-    timeStart = listTs(1).vars(1).data(1);
-    timeEnd = listTs(1).vars(1).data($);
-    for k = 2:length(listTs)
-        if timeStart > listTs(k).vars(1).data(1) then
-            timeStart = listTs(k).vars(1).data(1);
+    // check missing values in rowtimes
+    // NaT for datetime
+    // NaN for duration
+    rowtimes = listTs(1).vars(1).data;
+    err_rowtimes = %f;
+    if isdatetime(rowtimes) then
+        if or(isnat(rowtimes)) then
+            err_rowtimes = %t;
         end
-        if timeEnd < listTs(k).vars(1).data($) then
-            timeEnd = listTs(k).vars(1).data($);
+    else
+        if or(isnan(rowtimes)) then
+            err_rowtimes = %t;
+        end
+    end
+    if err_rowtimes then
+        error(msprintf(_("%s: New time vector cannot contain missing times.\n"), fname));
+    end
+
+    timeStart = rowtimes(1);
+    timeEnd = rowtimes($);
+    for k = 2:length(listTs)
+        rowtimes = listTs(k).vars(1).data;
+        err_rowtimes = %f;
+        if isdatetime(rowtimes) then
+            if or(isnat(rowtimes)) then
+                err_rowtimes = %t;
+            end
+        else
+            if or(isnan(rowtimes)) then
+                err_rowtimes = %t;
+            end
+        end
+        if err_rowtimes then
+            error(msprintf(_("%s: New time vector cannot contain missing times.\n"), fname));
+        end
+
+        if timeStart > rowtimes(1) then
+            timeStart = rowtimes(1);
+        end
+        if timeEnd < rowtimes($) then
+            timeEnd = rowtimes($);
         end
     end
 

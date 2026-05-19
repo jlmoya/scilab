@@ -76,11 +76,15 @@ class BlockHandler implements ScilabHandler {
             validCIdentifier = Pattern.compile("[a-zA-Z_][a-zA-Z0-9_]*");
         }
         if (value != null && validCIdentifier.matcher(value).matches()) {
-            saxHandler.controller.setObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, value);
+            saxHandler.controller.setObjectProperty(uid, kind, ObjectProperties.NAME, value);
         }
         if (value != null) {
             // escape any html style / head
             value = mxUtils.getBodyMarkup(value, false);
+        }
+        String description = atts.getValue("description");
+        if (description != null) {
+            saxHandler.controller.setObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, description);
         }
 
         String style = atts.getValue("style");

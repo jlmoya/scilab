@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="complex" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="complex" xml:lang="ja">
     <refnamediv>
         <refname>complex</refname>
         <refpurpose>複素数を計算する</refpurpose>
@@ -34,23 +31,25 @@
             <varlistentry>
                 <term>u, a, b</term>
                 <listitem>
-                    scalars, vectors, matrices or hypermatrices of real numbers.
-                    If both <varname>a</varname> and <varname>b</varname> are not
-                    scalars, they must have the same sizes.
-                    <para/>
-                </listitem>
+                     <para>
+                        scalars, vectors, matrices or hypermatrices of real numbers.
+                        If both <varname>a</varname> and <varname>b</varname> are not
+                        scalars, they must have the same sizes.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>c</term>
                 <listitem>
-                    array of complex numbers, of the size of <varname>u</varname> or of
-                    <varname>a</varname> and <varname>b</varname>.
-                    If <varname>u</varname> is sparse, or if <varname>a</varname> and
-                    <varname>b</varname> have the same sizes and both are sparse,
-                    then <varname>c</varname> is also sparse.
-                    Otherwise <varname>c</varname> is dense-encoded.
-                    <para/>
-                </listitem>
+                     <para>
+                        array of complex numbers, of the size of <varname>u</varname> or of
+                        <varname>a</varname> and <varname>b</varname>.
+                        If <varname>u</varname> is sparse, or if <varname>a</varname> and
+                        <varname>b</varname> have the same sizes and both are sparse,
+                        then <varname>c</varname> is also sparse.
+                        Otherwise <varname>c</varname> is dense-encoded.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

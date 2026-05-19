@@ -11,7 +11,7 @@
             ve = isdef(name, where)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -48,12 +48,12 @@
             si la variable nommée <varname>name</varname> existe et
             <constant>%F</constant> (faux) sinon.
         </para>
-        <para>
-            <caution>
+        <caution>
+            <para>
                 Mise en garde : une fonction utilisant <function>isdef</function> peut
                 renvoyer un résultat dépendant de l'environnement courant !
-            </caution>
-        </para>
+            </para>
+        </caution>
         <para>
             <code>isdef(name, 'l')</code> renvoie <constant>%T</constant>
             si la variable nommée <varname>name</varname> existe dans l'environnement
@@ -65,11 +65,11 @@
             dans l'environnement appelant (y compris le niveau global) de la fonction
             courante et <constant>%F</constant> sinon.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Remarque : seule la première lettre de l'option <varname>where</varname> est prise en compte.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Exemples</title>

@@ -136,7 +136,7 @@ cd ..
 set LIST_OBJ=
 for /f %%f in ('dir /A-D /S /B *.c *.cpp *.f') do if exist %PWD%\$(ConfigurationName)\%%~nf.obj set LIST_OBJ=!LIST_OBJ! %PWD%\$(ConfigurationName)\%%~nf.obj
 cd %PWD%\$(ConfigurationName)
-"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj 
+"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-daskr.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
 copy $(ProjectName).def ..\$(ProjectName).def &gt;nul
 del *.def &gt;nul
 cd ..
@@ -184,7 +184,7 @@ cd ..
 set LIST_OBJ=
 for /f %%f in ('dir /A-D /S /B *.c *.cpp *.f') do if exist %PWD%\$(ConfigurationName)\%%~nf.obj set LIST_OBJ=!LIST_OBJ! %%~nf.obj
 cd %PWD%\$(ConfigurationName)
-"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
+"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-daskr.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
 copy $(ProjectName).def ..\$(ProjectName).def &gt;nul
 del *.def &gt;nul
 cd ..
@@ -232,7 +232,7 @@ cd ..
 set LIST_OBJ=
 for /f %%f in ('dir /A-D /S /B *.c *.cpp *.f') do if exist %PWD%\$(ConfigurationName)\%%~nf.obj set LIST_OBJ=!LIST_OBJ! %%~nf.obj
 cd %PWD%\$(ConfigurationName)
-"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
+"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-daskr.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
 copy $(ProjectName).def ..\$(ProjectName).def &gt;nul
 del *.def &gt;nul
 cd ..
@@ -278,7 +278,7 @@ cd ..
 set LIST_OBJ=
 for /f %%f in ('dir /A-D /S /B *.c *.cpp *.f') do if exist %PWD%\$(ConfigurationName)\%%~nf.obj set LIST_OBJ=!LIST_OBJ! %PWD%\$(ConfigurationName)\%%~nf.obj
 cd %PWD%\$(ConfigurationName)
-"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
+"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-daskr.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
 copy $(ProjectName).def ..\$(ProjectName).def &gt;nul
 del *.def &gt;nul
 cd ..
@@ -329,7 +329,7 @@ cd ..
 set LIST_OBJ=
 for /f %%f in ('dir /A-D /S /B *.c *.cpp *.f') do if exist %PWD%\$(ConfigurationName)\%%~nf.obj set LIST_OBJ=!LIST_OBJ! %%~nf.obj
 cd %PWD%\$(ConfigurationName)
-"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
+"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-daskr.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
 copy $(ProjectName).def ..\$(ProjectName).def &gt;nul
 del *.def &gt;nul
 cd ..
@@ -380,7 +380,7 @@ cd ..
 set LIST_OBJ=
 for /f %%f in ('dir /A-D /S /B *.c *.cpp *.f') do if exist %PWD%\$(ConfigurationName)\%%~nf.obj set LIST_OBJ=!LIST_OBJ! %%~nf.obj
 cd %PWD%\$(ConfigurationName)
-"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
+"$(SolutionDir)bin\dumpexts" -o $(ProjectName).def $(ProjectName).dll %LIST_OBJ% Ex-bvode.obj Ex-daskr.obj Ex-dasrt.obj Ex-dassl.obj Ex-impl.obj Ex-int2d.obj Ex-int3d.obj Ex-intg.obj
 copy $(ProjectName).def ..\$(ProjectName).def &gt;nul
 del *.def &gt;nul
 cd ..
@@ -420,6 +420,7 @@ cd ..
     <ClCompile Include="dqelg.c" />
     <ClCompile Include="ewset.c" />
     <ClCompile Include="..\..\sci_gateway\fortran\Ex-bvode.c" />
+    <ClCompile Include="..\..\sci_gateway\fortran\Ex-daskr.c" />
     <ClCompile Include="..\..\sci_gateway\fortran\Ex-dasrt.c" />
     <ClCompile Include="..\..\sci_gateway\fortran\Ex-dassl.c" />
     <ClCompile Include="..\..\sci_gateway\fortran\Ex-impl.c" />
@@ -487,6 +488,7 @@ cd ..
     <f2c_rule Include="dqelg.f" />
     <f2c_rule Include="ewset.f" />
     <f2c_rule Include="..\..\sci_gateway\fortran\Ex-bvode.f" />
+    <f2c_rule Include="..\..\sci_gateway\fortran\Ex-daskr.f" />
     <f2c_rule Include="..\..\sci_gateway\fortran\Ex-dasrt.f" />
     <f2c_rule Include="..\..\sci_gateway\fortran\Ex-dassl.f" />
     <f2c_rule Include="..\..\sci_gateway\fortran\Ex-impl.f" />

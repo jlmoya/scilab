@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2001-2002 - INRIA - Mathieu Philipe
  * Copyright (C) 2002-2004 - INRIA - Djalel Abdemouche
@@ -182,7 +182,7 @@ void InitFigureModel(int iFiguremdlUID)
 }
 
 /* DJ.A 08/01/04 */
-int C2F(graphicsmodels) (void)
+int InitGraphicModel(void)
 {
     double margins[4];
     double clipRegion[4];
@@ -249,10 +249,6 @@ int C2F(graphicsmodels) (void)
      */
     firstPlot = 1;
     setGraphicObjectProperty(iAxesmdlUID, __GO_FIRST_PLOT__, &firstPlot, jni_bool, 1);
-
-#if 0
-    ppaxesmdl->FirstPlot = TRUE;
-#endif
 
     return 1;
 }

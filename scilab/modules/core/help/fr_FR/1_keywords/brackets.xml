@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="brackets">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="brackets">
     <refnamediv>
         <refname>brackets [,;]</refname>
         <refpurpose>Concaténation. Récipients d'une affectation. Résultats d'une function</refpurpose>
@@ -33,8 +30,8 @@
             [r1, r2,.., rN] = S.field([i1 i2.. iN])
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>m11, m12,...  </term>
@@ -46,29 +43,40 @@
                     une même famille, mais pas entre familles :
                     <itemizedlist>
                         <listitem>
-                            Matrices de booléens, nombres décimaux, nombres complexes, polynômes,
-                            fractions rationnelles : le type de l'objet résultant est le type de
-                            l'élément le plus complexe, des booléens (le moins complexe) aux
-                            fractions rationelles à coefficients complexes
-                            (voir les règles de <link linkend="brackets_Types_conversions">
-                            <emphasis role="italic">transtypages</emphasis></link>).
-                        </listitem>
-                        <listitem>Matrices d'entiers encodés de type entier
-                            <link linkend="inttype">inttype</link> quelconque.
-                            <warning>
-                            Des entiers de types différents ne peuvent pas être concaténés entre eux.
-                            </warning>
+                             <para>
+                                Matrices de booléens, nombres décimaux, nombres complexes, polynômes,
+                                fractions rationnelles : le type de l'objet résultant est le type de
+                                l'élément le plus complexe, des booléens (le moins complexe) aux
+                                fractions rationelles à coefficients complexes
+                                (voir les règles de <link linkend="brackets_Types_conversions">
+                                <emphasis role="italic">transtypages</emphasis></link>).
+                            </para>
                         </listitem>
                         <listitem>
-                            Tableaux de cellules.
+                             <para>Matrices d'entiers encodés de type entier
+                                <link linkend="inttype">inttype</link> quelconque.
+                                <warning>
+                                    <para>
+                                        Des entiers de types différents ne peuvent pas être concaténés entre eux.
+                                    </para>
+                                </warning>
+                            </para>
                         </listitem>
                         <listitem>
-                            Tableaux de structures ayant les mêmes champs. Les champs peuvent être
-                            dans des ordres différents d'un tableau à l'autre.
+                             <para>
+                                Tableaux de cellules.
+                            </para>
                         </listitem>
                         <listitem>
-                            Listes de type <link linkend="syslin">syslin</link>
+                             <para>
+                                Tableaux de structures ayant les mêmes champs. Les champs peuvent être
+                                dans des ordres différents d'un tableau à l'autre.
+                            </para>
                         </listitem>
+                        <listitem>
+                             <para>
+                                Listes de type <link linkend="syslin">syslin</link></para>
+                                                                               </listitem>
                     </itemizedlist>
                     </para>
                 </listitem>
@@ -133,67 +141,83 @@
                         pour former un vecteur, une matrice ou une hypermatrice
                         homogène.
                     </para>
-                    <note>La concaténation horizontale ou verticale de N éléments
-                        est un opérateur binaire itératif : la concaténation
-                        est réalisée de proche en proche entre 2 élements consécutifs,
-                        de la gauche vers la droite, et de haut en bas. Ainsi,
-                        <literal>[1 3 5 7]</literal> est effectuée par
-                        <literal>[[[1 3] 5] 7]</literal>.
+                    <note>
+                        <para>
+                            La concaténation horizontale ou verticale de N éléments
+                            est un opérateur binaire itératif : la concaténation
+                            est réalisée de proche en proche entre 2 élements consécutifs,
+                            de la gauche vers la droite, et de haut en bas. Ainsi,
+                            <literal>[1 3 5 7]</literal> est effectuée par
+                            <literal>[[[1 3] 5] 7]</literal>.
+                        </para>
                     </note>
                     <para>Dans les crochets,
                         <itemizedlist>
                             <listitem>
-                                les espaces (blancs ou tabulations) ou les virgules servent de
-                                séparateurs.
-                                <note>
-                                Il est préférable d'utiliser des virgules, en particulier lorsque
-                                des nombres complexes ou des polynômes sont fournis en expressions
-                                litérales. Par exemple, <literal>[2 1 +%i]</literal> sera interprété
-                                comme <literal>[2, 1, %i]</literal>, alors que
-                                <literal>[2 1 + %i]</literal> sera compris comme
-                                <literal>[2, 1+%i]</literal>.
-                                </note>
+                                 <para>
+                                    les espaces (blancs ou tabulations) ou les virgules servent de
+                                    séparateurs.
+                                    <note>
+                                        <para>
+                                            Il est préférable d'utiliser des virgules, en particulier lorsque
+                                            des nombres complexes ou des polynômes sont fournis en expressions
+                                            litérales. Par exemple, <literal>[2 1 +%i]</literal> sera interprété
+                                            comme <literal>[2, 1, %i]</literal>, alors que
+                                            <literal>[2 1 + %i]</literal> sera compris comme
+                                            <literal>[2, 1+%i]</literal>.
+                                        </para>
+                                    </note>
+                                </para>
                             </listitem>
                             <listitem>
-                                les points-virgules ou les changements de lignes sont utilisés comme
-                                séparateurs de lignes. Pour peu que la ligne courante soit complète,
-                                le passage à la ligne ne pré-requiert pas les points de
-                                poursuite-à-la-ligne <literal>..</literal>.
+                                 <para>
+                                    les points-virgules ou les changements de lignes sont utilisés comme
+                                    séparateurs de lignes. Pour peu que la ligne courante soit complète,
+                                    le passage à la ligne ne pré-requiert pas les points de
+                                    poursuite-à-la-ligne <literal>..</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
-                    <refsect3 id="brackets_Types_conversions">
-                        <title>Transtypages</title>
-                        <para>
-                            Avec quelques restrictions, les crochets peuvent être utilisés sur une
-                            série de valeurs ayant des types distincts mais compatibles.
-                            Des valeurs sont alors converties de proche en proche dans le type de
-                            données dominant. Les principales règles de conversion implicite sont
-                            les suivantes :
-                            <orderedlist>
-                                <listitem>
+                    <para>    
+                        <anchor xml:id="brackets_Types_conversions"></anchor>
+                        <emphasis role="bold">Transtypages</emphasis>
+                    </para>
+                    <para>
+                        Avec quelques restrictions, les crochets peuvent être utilisés sur une
+                        série de valeurs ayant des types distincts mais compatibles.
+                        Des valeurs sont alors converties de proche en proche dans le type de
+                        données dominant. Les principales règles de conversion implicite sont
+                        les suivantes :
+                        <orderedlist>
+                            <listitem>
+                                    <para>
                                     booléen &lt; entier encodé &lt; nombre décimal &lt; nombre complexe
-                                </listitem>
-                                <listitem>décimal &lt; polynôme &lt; fraction rationelle
+                                </para>
+                            </listitem>
+                            <listitem>
+                                    <para>décimal &lt; polynôme &lt; fraction rationelle
                                     <warning>
-                                        Les booléens et les polynômes ne sont pas compatibles entre
-                                        eux :
+                                        <para>Les booléens et les polynômes ne sont pas compatibles entre eux :</para>
                                         <itemizedlist>
                                             <listitem>
-                                                <literal>[%t 2. %z]</literal> est accepté, car :
-                                                <literal>[%t 2.]</literal> est d'abord converti en
-                                                <literal>[1. 2.]</literal>, puis
-                                                <literal>[[1. 2.] %z]</literal> est accepté.
+                                                    <para><literal>[%t 2. %z]</literal> est accepté, car :
+                                                    <literal>[%t 2.]</literal> est d'abord converti en
+                                                    <literal>[1. 2.]</literal>, puis
+                                                    <literal>[[1. 2.] %z]</literal> est accepté.
+                                                </para>
                                             </listitem>
                                             <listitem>
-                                                <literal>[%z %t 2.]</literal> est refusé et produit
-                                                une erreur. En effet, <literal>[%z %t]</literal>
-                                                n'est pas permis et bloque la suite.
+                                                    <para><literal>[%z %t 2.]</literal> est refusé et produit
+                                                    une erreur. En effet, <literal>[%z %t]</literal>
+                                                    n'est pas permis et bloque la suite.
+                                                </para>
                                             </listitem>
                                         </itemizedlist>
-                                    </warning>
-                                </listitem>
-                                <listitem>
+                                    </warning></para>
+                                            </listitem>
+                            <listitem>
+                                    <para>
                                     Tout entier encodé peut être concaténé uniquement avec des
                                     booléens, des nombres réels ou complexes, ou d'autres entiers
                                     du même type entier
@@ -204,64 +228,74 @@
                                     <literal>[int8(2), sparse(7)]</literal>, ou
                                     <literal>[int8(2), sparse(%t)]</literal>
                                     produiront toutes une erreur.
-                                </listitem>
-                                <listitem>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                    <para>
                                     Le résultat est encodé en valeurs complexes (avec parties
                                     imaginaires éventuellement nulles) dés qu'un élément
                                     -- valeur, polynôme, ou fraction rationnelle -- à valeur
                                     complexe est rencontré.
-                                    <para>
-                                        De même, le résultat est encodé sous forme creuse dés qu'un
-                                        élément encodé creux est rencontré.
                                     </para>
                                 </listitem>
-                                <listitem>
+                            <listitem>
+                                    <para>
                                     Des polynômes et/ou des fractions rationnelles à concaténer doivent
                                     avoir la même variable symbolique.
-                                </listitem>
-                                <listitem>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                    <para>
                                     Les éléments de texte (type "string") peuvent être concaténés
                                     (au sens ensembliste, avec les crochets) uniquement entre eux
                                     ou avec la matrice vide
                                 <literal>[]</literal>.
-                                </listitem>
-                            </orderedlist>
-                        </para>
-                    </refsect3>
-                    <refsect3 id="brackets_overloading">
-                        <title>Surcharge</title>
-                        <para>
-                            <itemizedlist>
-                                <listitem>[,]: concaténation horizontale : cet opérateur n-aire
+                                </para>
+                            </listitem>
+                        </orderedlist>
+                    </para>
+                    <para>
+                        <anchor xml:id="brackets_overloading"></anchor>
+                        <emphasis role="bold">Surcharge</emphasis>
+                    </para>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                    <para>[,]: concaténation horizontale : cet opérateur n-aire
                                     (pouvant être appliqué à un nombre arbitraire n de données)
                                     est en fait un opérateur binaire automatiquement itéré de la
                                     gauche vers la droite. Son code de surcharge est
                                     <literal>"c"</literal>.
-                                </listitem>
-                                <listitem>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                    <para>
                                     [;]: la concaténation verticale est également un opérateur
                                     binaire, itéré du haut vers le bas. Son code de surcharge est
                                     <literal>"f"</literal>.
-                                </listitem>
-                            </itemizedlist>
-                        </para>
-                    </refsect3>
-                    <para/>
-                    <refsect3>
-                        <title>Extensions</title>
-                        <para>
-                          <itemizedlist>
-                            <listitem>
-                              Pour concaténer des listes simples, utiliser <link linkend="lstcat">lstcat</link>.
+                                </para>
                             </listitem>
-                            <listitem>
-                              Pour assembler des vecteurs ou matrices ou hypermatrices ou autres
-                              tableaux selon une dimension > 2 et construire un hypertableau à N
-                              dimensions, utiliser <link linkend="cat">cat</link>.
-                            </listitem>
-                          </itemizedlist>
-                        </para>
-                    </refsect3>
+                        </itemizedlist>
+                    </para>
+                    <para>
+                        <emphasis role="bold">Extensions</emphasis>
+                    </para>
+                    <para>
+                        <itemizedlist>
+                        <listitem>
+                                <para>
+                                Pour concaténer des listes simples, utiliser <link linkend="lstcat">lstcat</link>.
+                            </para>
+                        </listitem>
+                        <listitem>
+                                <para>
+                                Pour assembler des vecteurs ou matrices ou hypermatrices ou autres
+                                tableaux selon une dimension &gt; 2 et construire un hypertableau à N
+                                dimensions, utiliser <link linkend="cat">cat</link>.
+                            </para>
+                        </listitem>
+                        </itemizedlist>
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -274,33 +308,40 @@
                     <para>
                         <itemizedlist>
                             <listitem>
-                                Les termes entre crochets doivent alors impérativement être des
-                                variables. Les expressions litérales ou symboliques sont rejetées.
+                                 <para>
+                                    Les termes entre crochets doivent alors impérativement être des
+                                    variables. Les expressions litérales ou symboliques sont rejetées.
+                                </para>
                             </listitem>
                             <listitem>
-                                Les variables sont séparées par des virgules ou des espaces.
-                                Lorsqu'il s'agit de la liste des arguments de sortie d'une function,
-                                les virgules sont obligatoires.
+                                 <para>
+                                    Les variables sont séparées par des virgules ou des espaces.
+                                    Lorsqu'il s'agit de la liste des arguments de sortie d'une function,
+                                    les virgules sont obligatoires.
+                                </para>
                             </listitem>
-                            <listitem>Dans une affectation distributive, il doit
-                                y avoir <emphasis role="italic">au plus</emphasis>
-                                autant de récipients que de sources de données provenant du terme de
-                                droite, pas plus. S'il y moins de récipients à gauche que de sources
-                                à droite, les sources non collectées sont ignorées. Exemples :
-                                <simplelist>
-                                    <member><literal>[a,b] = (%pi,"Hi", %z)</literal>
-                                        est correct, mais <literal>%z</literal>
-                                        sera ignoré.
-                                    </member>
-                                    <member><literal>[a,b,c] = (%pi,"Hi")</literal>
-                                        produit une erreur, car <literal>c</literal>
-                                        attend du contenu.
-                                    </member>
-                                </simplelist>                            </listitem>
                             <listitem>
-                                <literal>[a,b,a] = (%pi, %z, "Allo")</literal> réalise les
-                                affectations de la gauche vers la droite, de sorte que finalement
-                                <literal>a = "Allo"</literal>.
+                                 <para>Dans une affectation distributive, il doit
+                                    y avoir <emphasis role="italic">au plus</emphasis>
+                                    autant de récipients que de sources de données provenant du terme de
+                                    droite, pas plus. S'il y moins de récipients à gauche que de sources
+                                    à droite, les sources non collectées sont ignorées. Exemples :
+                                    <simplelist>
+                                        <member><literal>[a,b] = (%pi,"Hi", %z)</literal>
+                                            est correct, mais <literal>%z</literal>
+                                            sera ignoré.
+                                        </member>
+                                        <member><literal>[a,b,c] = (%pi,"Hi")</literal>
+                                            produit une erreur, car <literal>c</literal>
+                                            attend du contenu.
+                                        </member>
+                                    </simplelist></para>
+                                             </listitem>
+                            <listitem>
+                                 <para><literal>[a,b,a] = (%pi, %z, "Allo")</literal> réalise les
+                                    affectations de la gauche vers la droite, de sorte que finalement
+                                    <literal>a = "Allo"</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -360,7 +401,7 @@ v = [10 1/%z], typeof(v)
 [%pi int16(-1000.84) uint8(87)]
      ]]></programlisting>
         <para>
-            Concaténations hétérogènes d'objets de types incompatibles => ERREURS
+            Concaténations hétérogènes d'objets de types incompatibles =&gt; ERREURS
         </para>
         <programlisting role="example"><![CDATA[
 [%F %z]
@@ -462,8 +503,10 @@ s.r([2 4 6])
             <revision>
                 <revnumber>6.0</revnumber>
                 <revdescription>
-                    Crochets <literal>[..]</literal> et accolades <literal>{..}</literal> ont
-                    désormais des fonctions distinctes.
+                    <para>
+                        Crochets <literal>[..]</literal> et accolades <literal>{..}</literal> ont
+                        désormais des fonctions distinctes.
+                    </para>
                 </revdescription>
             </revision>
             <revision>
@@ -471,12 +514,16 @@ s.r([2 4 6])
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Booléens et entiers encodés peuvent désormais être concaténés ensemble,
-                            comme dans [%t, int8(-5)].
+                             <para>
+                                Booléens et entiers encodés peuvent désormais être concaténés ensemble,
+                                comme dans [%t, int8(-5)].
+                            </para>
                         </listitem>
                         <listitem>
-                            [a, b, ..] = (A, B,..) réalise désormais les affectations de la gauche
-                            vers la droite.
+                             <para>
+                                [a, b, ..] = (A, B,..) réalise désormais les affectations de la gauche
+                                vers la droite.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>
@@ -486,12 +533,16 @@ s.r([2 4 6])
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Concaténer des entiers encodés avec des réels ou complexes
-                            est désormais possible.
+                             <para>
+                                Concaténer des entiers encodés avec des réels ou complexes
+                                est désormais possible.
+                            </para>
                         </listitem>
                         <listitem>
-                            Des polynômes et/ou fractions rationnelles à concaténer doivent avoir la
-                            même variable symbolique.
+                             <para>
+                                Des polynômes et/ou fractions rationnelles à concaténer doivent avoir la
+                                même variable symbolique.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

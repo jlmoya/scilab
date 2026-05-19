@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="gsort" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="gsort" xml:lang="en">
     <refnamediv>
         <refname>gsort</refname>
         <refpurpose>sorts boolean, numerical and string arrays</refpurpose>
@@ -31,196 +28,184 @@
             [B, k] = gsort(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    Scalar, vector, matrix or hypermatrix of booleans, integers, real or
-                    complex numbers, or strings. Sparse matrices of real numbers,
-                    of complex numbers, or of booleans can also be sorted.
-                    <note>
-                        Overloading for unhandled types is allowed.
-                    </note>
-                    <para/>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>method</term>
-                <listitem>
-                    A keyword or index > 0: The sorting method:
-                    <informaltable>
-                        <tr valign="top">
-                            <td><emphasis role="bold">'g'</emphasis></td><td>:</td>
-                            <td>General sorting: All elements of <literal>A</literal> are sorted
-                                (default method).
-                            </td>
-                        </tr>
-                        <tr valign="top">
-                            <td style="white-space:nowrap">
-                                <emphasis role="bold">'r'</emphasis> or
-                                <emphasis role="bold">1</emphasis></td>
-                            <td>:</td>
-                            <td>Rows of each column of <literal>A</literal> are sorted.</td>
-                        </tr>
-                        <tr valign="top">
-                            <td style="white-space:nowrap">
-                                <emphasis role="bold">'c'</emphasis> or
-                                <emphasis role="bold">2</emphasis></td>
-                            <td>:</td>
-                            <td>Columns of each row of <literal>A</literal> are sorted.</td>
-                        </tr>
-                        <tr valign="top">
-                            <td><emphasis role="bold">3 ≤ m ≤ ndims(A)</emphasis></td>
-                            <td>:</td>
-                            <td>Elements of each vector along the dimension #m are sorted.</td>
-                        </tr>
-                        <tr valign="top"><td><emphasis role="bold">'lr'</emphasis></td><td>:</td>
-                            <td>lexicographic sort of the rows of <literal>A</literal>:
-                                Sorts rows according to values in the first column. If a group of
-                                sorted rows have the same value in column #1, resorts the group
-                                according to values in column #2. etc.
-                                Not applicable to hypermatrices.
-                            </td>
-                        </tr>
-                        <tr valign="top"><td><emphasis role="bold">'lc'</emphasis></td><td>:</td>
-                            <td>lexicographic sort of the columns of <literal>A</literal>
-                                (not for hypermatrices).
-                            </td>
-                        </tr>
-                    </informaltable>
-                    <para/>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>direction</term>
-                <listitem>
-                    "d" for <emphasis role="bold">d</emphasis>ecreasing order (default), or
-                    "i" for <emphasis role="bold">i</emphasis>ncreasing one.
-                    <para/>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>directions</term>
-                <listitem>
-                    vector of "i" and "d" characters, with as many elements than
-                    <varname>rankFuncs</varname> has.
-                    <literal>directions(k)</literal> is used for <varname>rankFuncs(k)</varname>.
-                    <para/>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>rankFuncs</term>
-                <listitem>
-                    list() whose elements are among the following type:
-                    <itemizedlist>
-                        <listitem>
-                            identifier <literal>fun</literal> of a function in Scilab language
-                            or of a builtin function.
-                        </listitem>
-                        <listitem>
-                            : colon. It stands for a <literal>fun</literal> such that
-                            <literal>fun(A)</literal> returns <literal>A</literal>.
-                        </listitem>
-                        <listitem>
-                            a <literal>list(fun, param1, param2,..)</literal> where
-                            <itemizedlist>
-                                <listitem>
-                                    <literal>fun</literal> is the identifier of a Scilab or
-                                    builtin function.
-                                </listitem>
-                                <listitem>
-                                    <literal>param1, param2,..</literal> are parameters.
-                                </listitem>
-                            </itemizedlist>
-                            such that <literal>fun(A, param1, param2, ..)</literal> will be called.
-                        </listitem>
-                    </itemizedlist>
-                    <para>
-                        The functions <literal>fun</literal> must fullfill the following conditions:
-                        <itemizedlist>
-                            <listitem>
-                                <literal>R=fun(A)</literal> or <literal>R=fun(A, param1, param2,..)</literal>
-                                must be supported.
-                            </listitem>
-                            <listitem>
-                                <literal>fun</literal> must work in an element-wise way, meaning:
-                                <literal>size(R)==size(A)</literal>, and <literal>R(k)</literal>
-                                is about only <literal>A(k)</literal>
-                            </listitem>
-                            <listitem>
-                                <literal>R</literal> must be of simple sortable type: boolean,
-                                integer, real, string.
-                            </listitem>
-                        </itemizedlist>
-                    </para>
-                    <para>
+                     <para>
+                        Scalar, vector, matrix or hypermatrix of booleans, integers, real or
+                        complex numbers, or strings. Sparse matrices of real numbers,
+                        of complex numbers, or of booleans can also be sorted.
                         <note>
-                            When <literal>A</literal> are complex numbers, the usual functions
-                            <literal>real, imag, abs, atan</literal> can be specified. Then,
-                            <literal>atan(imag(A),real(A))</literal> will be called instead of
-                            <literal>atan(A)</literal>.
+                            <para>Overloading for unhandled types is allowed.</para>
                         </note>
                     </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
+                <term>method</term>
+                <listitem>
+                     <para>
+                        A keyword or index &gt; 0: The sorting method:
+                        <informaltable>
+                            <tr valign="top">
+                                <td><emphasis role="bold">'g'</emphasis></td><td>:</td>
+                                <td>General sorting: All elements of <literal>A</literal> are sorted
+                                    (default method).
+                                </td>
+                            </tr>
+                            <tr valign="top">
+                                <td style="white-space:nowrap">
+                                    <emphasis role="bold">'r'</emphasis> or
+                                    <emphasis role="bold">1</emphasis></td>
+                                <td>:</td>
+                                <td>Rows of each column of <literal>A</literal> are sorted.</td>
+                            </tr>
+                            <tr valign="top">
+                                <td style="white-space:nowrap">
+                                    <emphasis role="bold">'c'</emphasis> or
+                                    <emphasis role="bold">2</emphasis></td>
+                                <td>:</td>
+                                <td>Columns of each row of <literal>A</literal> are sorted.</td>
+                            </tr>
+                            <tr valign="top">
+                                <td><emphasis role="bold">3 ≤ m ≤ ndims(A)</emphasis></td>
+                                <td>:</td>
+                                <td>Elements of each vector along the dimension #m are sorted.</td>
+                            </tr>
+                            <tr valign="top"><td><emphasis role="bold">'lr'</emphasis></td><td>:</td>
+                                <td>lexicographic sort of the rows of <literal>A</literal>:
+                                    Sorts rows according to values in the first column. If a group of
+                                    sorted rows have the same value in column #1, resorts the group
+                                    according to values in column #2. etc.
+                                    Not applicable to hypermatrices.
+                                </td>
+                            </tr>
+                            <tr valign="top"><td><emphasis role="bold">'lc'</emphasis></td><td>:</td>
+                                <td>lexicographic sort of the columns of <literal>A</literal>
+                                    (not for hypermatrices).
+                                </td>
+                            </tr>
+                        </informaltable></para>
+                                    </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>direction</term>
+                <listitem>
+                     <para>
+                        "d" for <emphasis role="bold">d</emphasis>ecreasing order (default), or
+                        "i" for <emphasis role="bold">i</emphasis>ncreasing one.
+                        </para>
+                    </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>directions</term>
+                <listitem>
+                     <para>
+                        vector of "i" and "d" characters, with as many elements than
+                        <varname>rankFuncs</varname> has.
+                        <literal>directions(k)</literal> is used for <varname>rankFuncs(k)</varname>.
+                        </para>
+                    </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>rankFuncs</term>
+                <listitem>
+                     <para>
+                        list() whose elements are among the following type:
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    identifier <literal>fun</literal> of a function in Scilab language
+                                    or of a builtin function.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    : colon. It stands for a <literal>fun</literal> such that
+                                    <literal>fun(A)</literal> returns <literal>A</literal>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    a <literal>list(fun, param1, param2,..)</literal> where
+                                    <itemizedlist>
+                                        <listitem>
+                                             <para><literal>fun</literal> is the identifier of a Scilab or
+                                                builtin function.
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                             <para><literal>param1, param2,..</literal> are parameters.
+                                            </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                    such that <literal>fun(A, param1, param2, ..)</literal> will be called.
+                                </para>
+                            </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
+            </varlistentry>
+            <varlistentry>
                 <term>B</term>
                 <listitem>
-                    The sorted array, with  <literal>A</literal>'s data type, encoding, and sizes.
-                    <para/>
-                </listitem>
+                     <para>
+                        The sorted array, with  <literal>A</literal>'s data type, encoding, and sizes.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>k</term>
                 <listitem>
-                    Array of decimal integers, of size <literal>size(A)</literal>:
-                    Initial indices of <literal>B</literal> elements, in <literal>A</literal>.
-                    If <literal>A</literal> is a matrix, according to the chosen method,
-                    <table>
-                    <tr>
-                        <th valign="top">"g"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> is a matrix of size(A): <literal>k(i)</literal>
-                            is the linear index
-                            of <literal>B(i)</literal> in <literal>A</literal>, such that
-                            <literal>B(:) = A(k)</literal>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">"r"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> is a matrix of size(A): <literal>k(i,j)</literal>
-                            is the <literal>1 ≤ index ≤ size(A,1)</literal>
-                            of <literal>B(i,j)</literal> in the column <literal>A(:,j)</literal>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">"c"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> is a matrix of size(A): <literal>k(i,j)</literal>
-                            is the <literal>1 ≤ index ≤ size(A,2)</literal>
-                            of <literal>B(i,j)</literal> in the row <literal>A(i,:)</literal>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">"lr"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> is a column of size(A,1), such that
-                            <literal>B = A(k,:)</literal>.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">"lc"</th><td>:</td>
-                        <td>
-                            <literal>k</literal> is a row of size(A,2), such that
-                            <literal>B = A(:,k)</literal>.
-                        </td>
-                    </tr>
-                    </table>
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of decimal integers, of size <literal>size(A)</literal>:
+                        Initial indices of <literal>B</literal> elements, in <literal>A</literal>.
+                        If <literal>A</literal> is a matrix, according to the chosen method,
+                        <table>
+                        <tr>
+                            <th valign="top">"g"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> is a matrix of size(A): <literal>k(i)</literal>
+                                is the linear index
+                                of <literal>B(i)</literal> in <literal>A</literal>, such that
+                                <literal>B(:) = A(k)</literal>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">"r"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> is a matrix of size(A): <literal>k(i,j)</literal>
+                                is the <literal>1 ≤ index ≤ size(A,1)</literal>
+                                of <literal>B(i,j)</literal> in the column <literal>A(:,j)</literal>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">"c"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> is a matrix of size(A): <literal>k(i,j)</literal>
+                                is the <literal>1 ≤ index ≤ size(A,2)</literal>
+                                of <literal>B(i,j)</literal> in the row <literal>A(i,:)</literal>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">"lr"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> is a column of size(A,1), such that
+                                <literal>B = A(k,:)</literal>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">"lc"</th><td>:</td>
+                            <td>
+                                <literal>k</literal> is a row of size(A,2), such that
+                                <literal>B = A(:,k)</literal>.
+                            </td>
+                        </tr>
+                        </table></para>
+                            </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -240,7 +225,7 @@
             Example:
         </para>
         <para>
-            <literal>M = gsort(C, "g", ["i" "d"], list(real, imag))</literal><para/>
+            <literal>M = gsort(C, "g", ["i" "d"], list(real, imag))</literal>
             will sort the array C, first by increasing real parts, and for elements
             of equal real parts, second by decreasing imaginary parts.
             The multilevel mode is described with details in a dedicated subsection below.
@@ -255,105 +240,111 @@
         </para>
         <para>
             <note>
-                Whatever is the chosen method, <emphasis role="bold">the algorithm preserves the
-                relative order of elements with equal values.
-            </emphasis>
+                <para>
+                    Whatever is the chosen method, <emphasis role="bold">the algorithm preserves the
+                    relative order of elements with equal values.</emphasis>
+                </para>
             </note>
         </para>
-        <refsect3>
-            <title>Sorting methods</title>
-            <para>
-                <emphasis role="bold">B = gsort(A,'g', ..)</emphasis> sorts all elements of
-                <varname>A</varname>, and stores sorted elements in the first column from top to
-                bottom, then in the second column, etc.
-            </para>
-            <para>
-                <emphasis role="bold">B = gsort(A,'c', ..)</emphasis> sorts each row of A.
-                Each sorted element is on the same row as in A, but possibly on another column
-                corresponding to its sorting rank on the row.
-            </para>
-            <para>
-                <emphasis role="bold">B = gsort(A,'r', ..)</emphasis> sorts each column of A.
-                Each sorted element is on the same column as in A, but possibly on another row
-                corresponding to its sorting rank.
-            </para>
-            <para>
-                <emphasis role="bold">B = gsort(A,'lr', ..)</emphasis> sorts rows of A, as a whole,
-                in a lexical way. Two rows are compared and sorted in the following way:
-                The elements of their first column are compared. If their ranks are not equal,
-                both rows are sorted accordingly. Otherwise, the elements of their second column
-                are compared. etc... up to the last column if it is required.
-            </para>
-            <para>
-                <emphasis role="bold">B = gsort(A,'lc', ..)</emphasis> sorts columns of A,
-                as a whole, in a lexical way (see above).
-            </para>
-        </refsect3>
-        <refsect3>
-            <title>Multilevel sorting</title>
-            <para>
-                As noted above, when two compared elements have equal ranks, their initial relative
-                order in <literal>A</literal> is preserved in the result <literal>B</literal> .
-            </para>
-            <para>
-                However, in many cases, going beyond through a multi-level sorting can be useful
-                and required:
-                After the first sort performed according to a first criterion and sorting
-                direction, it is possible to define a second criterion and sorting
-                direction and apply them to 1st-rank-equal elements gathered by the first sort.
-            </para>
-            <para>
-                If after the two first sorting some elements have still the same ranks, it is
-                possible to define and use a 3rd sorting level, etc.
-            </para>
-            <para>
-                <emphasis role="bold">Applied examples</emphasis> (see also the Examples section):
-                <orderedlist>
-                    <listitem>
+
+        <para>
+            <emphasis role="bold">Sorting methods</emphasis>
+        </para>
+        <para>
+            <emphasis role="bold">B = gsort(A,'g', ..)</emphasis> sorts all elements of
+            <varname>A</varname>, and stores sorted elements in the first column from top to
+            bottom, then in the second column, etc.
+        </para>
+        <para>
+            <emphasis role="bold">B = gsort(A,'c', ..)</emphasis> sorts each row of A.
+            Each sorted element is on the same row as in A, but possibly on another column
+            corresponding to its sorting rank on the row.
+        </para>
+        <para>
+            <emphasis role="bold">B = gsort(A,'r', ..)</emphasis> sorts each column of A.
+            Each sorted element is on the same column as in A, but possibly on another row
+            corresponding to its sorting rank.
+        </para>
+        <para>
+            <emphasis role="bold">B = gsort(A,'lr', ..)</emphasis> sorts rows of A, as a whole,
+            in a lexical way. Two rows are compared and sorted in the following way:
+            The elements of their first column are compared. If their ranks are not equal,
+            both rows are sorted accordingly. Otherwise, the elements of their second column
+            are compared. etc... up to the last column if it is required.
+        </para>
+        <para>
+            <emphasis role="bold">B = gsort(A,'lc', ..)</emphasis> sorts columns of A,
+            as a whole, in a lexical way (see above).
+        </para>
+
+        <para>
+            <emphasis role="bold">Multilevel sorting</emphasis>
+        </para>
+        <para>
+            As noted above, when two compared elements have equal ranks, their initial relative
+            order in <literal>A</literal> is preserved in the result <literal>B</literal> .
+        </para>
+        <para>
+            However, in many cases, going beyond through a multi-level sorting can be useful
+            and required:
+            After the first sort performed according to a first criterion and sorting
+            direction, it is possible to define a second criterion and sorting
+            direction and apply them to 1st-rank-equal elements gathered by the first sort.
+        </para>
+        <para>
+            If after the two first sorting some elements have still the same ranks, it is
+            possible to define and use a 3rd sorting level, etc.
+        </para>
+        <para>
+            <emphasis role="bold">Applied examples</emphasis> (see also the Examples section):
+            <orderedlist>
+                <listitem>
+                    <para>
                         <emphasis>Sorting a matrix C of complex numbers,
                         first: by increasing modulus, second: by increasing phase</emphasis>:
-                        <para/>
                         <literal>gsort(C, "g", ["i" "i"], list(abs, atan))</literal>
-                        <para/>
-                    </listitem>
-                    <listitem>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
                         <emphasis>Sorting the columns of a matrix T of strings,
                         first: by increasing length, second: in anti-alphabetical order</emphasis>:
-                        <para/>
                         <literal>gsort(T, "c", ["i" "d"], list(length, :))</literal>
-                        <para/>
-                    </listitem>
-                    <listitem>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
                         <emphasis>Sorting a matrix P of polynomials,
                         first: by increasing degree, second: by decreasing value of the constant
                         0-degree coefficient</emphasis>:
-                        <screen>
+                        <screen><![CDATA[
 function c = get_coef(p, i)
     // i: degree of the coeff to return
     c = matrix(coeff(p(:))(:,i+1), size(p))
 endfunction
 
 gsort(P, "c", ["i" "d"], list(degree, list(get_coef,0)))
-</screen>
+]]></screen>
                         In this example, the second ranking function allows to specify the degree i
                         of the coefficient to be considered as secondary sorting value.
-                        <para/>
-                    </listitem>
-                    <listitem>
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
                         <emphasis>Sorting a matrix D of decimal numbers,
                         first: by increasing integer parts, second: by decreasing fractional parts</emphasis>:
-                        <screen>
+                        <screen><![CDATA[
 function r = get_frac(numbers)
     r = numbers - int(numbers)
 endfunction
 
 gsort(D, "g", ["i" "d"], list(int, get_frac))
-</screen>
-                    </listitem>
-                    <para/>
-                </orderedlist>
-            </para>
-        </refsect3>
+]]></screen>
+                    </para>
+                </listitem>
+            </orderedlist>
+        </para>
+
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -367,7 +358,7 @@ m = [ 0.  2.  1.  2.  1.  0.
       2.  3   3.  2.  1.  1. ];
 
 [s, k] = gsort(m, "c")
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> [s, k] = gsort(m, "c")
  s  =
@@ -394,7 +385,7 @@ v = ['Scilab' '3.1'
      'Scilab' '4.0'];
 
 [s, k] = gsort(v,'lr','i'); s, k'
-]]>     </programlisting>
+     ]]></programlisting>
             <screen><![CDATA[
 --> [s, k] = gsort(v,'lr','i'); s, k'
  s  =
@@ -419,7 +410,7 @@ m  = [ 0 1 0 1 1 1 0 1
        0 0 1 1 0 0 0 0 ]==1;
 m
 [s, k] = gsort(m, "lc")  // sorting columns in decreasing order
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> m
  m  =
@@ -437,8 +428,10 @@ m
    4.   5.   6.   2.   8.   3.   1.   7.
 ]]></screen>
         </para>
-    <refsect3>
-        <title>Multilevel sorting</title>
+
+        <para>
+            <emphasis role="bold">Multilevel sorting</emphasis>
+        </para>
         <para>
             <emphasis role="bold">With some decimal numbers</emphasis>:
             Sorting first: by increasing integer parts,
@@ -461,7 +454,7 @@ d = [
   ];
 // Sorting
 [r, k] = gsort(d, "g", ["i" "d"], list(int, get_frac))
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
  r  =
    0.3   0.1   0.1   1.2   1.1   2.2
@@ -490,7 +483,7 @@ s = "complex([0,0,-1,-1;0,-1,1,1;1,1,0,0]," + ..
             "[%inf,2,%nan,1;-1,0,-1,%nan;1,-%inf,1,%nan])";
 c = evstr(s)
 [r, k] = gsort(c, "g", ["i" "i"], list(real, imag))
-]]>     </programlisting>
+     ]]></programlisting>
     <screen><![CDATA[
 --> c = evstr(s)
  c  =
@@ -525,7 +518,7 @@ t = [
   ];
 
 [r, k] = gsort(t, "r", ["i" "i"], list(length, :))
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> [r, k] = gsort(t, "r", ["i" "i"], list(length, :))
  r  =
@@ -573,7 +566,7 @@ x = varn(%s,"x");
 P = evstr(P)
 
 [r, k] = gsort(P, "g", ["d" "i"], list(list(get_coef, 0), degree))
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> P = evstr(P)
  P  =
@@ -592,11 +585,11 @@ P = evstr(P)
    7.    2.   14.   15.   5.    9.
    12.   4.   1.    17.   16.   3.
 ]]></screen>
-        </para>
-    </refsect3>
+    </para>
 
-    <refsect3>
-        <title>With an hypermatrix</title>
+        <para>
+            <emphasis role="bold">With an hypermatrix</emphasis>
+        </para>
         <para>
             <emphasis role="bold">Sorting columns in each row:</emphasis>
         </para>
@@ -604,7 +597,7 @@ P = evstr(P)
         <programlisting role="example"><![CDATA[
 h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
 [s, k] = gsort(h, "c", "i")
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
  h  =
@@ -640,7 +633,7 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
         <programlisting role="example"><![CDATA[
 h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
 [s, k] = gsort(h, 3, "i")   // along the 3rd dimension = hypermat 'thickness'
-]]>     </programlisting>
+     ]]></programlisting>
         <screen><![CDATA[
 --> h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
  h  =
@@ -669,7 +662,6 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
    2.   2.   1.   1.
 ]]></screen>
         </para>
-    </refsect3>
 
     </refsection>
     <refsection role="see also">
@@ -696,7 +688,7 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
             23(11):1249-1265
         </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -707,33 +699,45 @@ h = matrix([9,7,9,0,2,9,4,2,0,9,5,8,5,2,0,0], [2,4,2])
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            Booleans can now be sorted.
-                        </listitem>
-                        <listitem>
-                            Multilevel sorting added with the rankFuncs option.
-                            Complete sorting of complex numbers is now possible.
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    Booleans can now be sorted.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Multilevel sorting added with the rankFuncs option.
+                                    Complete sorting of complex numbers is now possible.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            For a sparse input, gsort() was limited to numerical vectors,
-                            and only to the `g` method. It is now fully enabled for vectors
-                            and 2D matrices of sparse booleans, real or complex numbers,
-                            in all `g, r, c, lr, lc` methods, including in multi-level mode.
-                        </listitem>
-                        <listitem>
-                            Sorting along a dimension > 2 is now possible.
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    For a sparse input, gsort() was limited to numerical vectors,
+                                    and only to the `g` method. It is now fully enabled for vectors
+                                    and 2D matrices of sparse booleans, real or complex numbers,
+                                    in all `g, r, c, lr, lc` methods, including in multi-level mode.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Sorting along a dimension &gt; 2 is now possible.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

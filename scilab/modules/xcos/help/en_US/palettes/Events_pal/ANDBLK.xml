@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/ANDBLK.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_ANDBLK">
+    <refsection xml:id="Contents_ANDBLK">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_ANDBLK">Description</xref>
+                <para><link linkend="Description_ANDBLK">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_ANDBLK">Default properties</xref>
+                <para><link linkend="Defaultproperties_ANDBLK">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_ANDBLK">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_ANDBLK">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_ANDBLK">Example</xref>
+                <para><link linkend="Example_ANDBLK">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_ANDBLK">
+    <refsection xml:id="Description_ANDBLK">
         <title>Description</title>
         <para>
             The ANDBLK is a logical AND operator applied to signals. It will generate an event if both inputs are synchronuous ; have events at the same time and coming from the same source block.
         </para>
     </refsection>
-    <refsection id="Defaultproperties_ANDBLK">
+    <refsection xml:id="Defaultproperties_ANDBLK">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -118,7 +118,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Interfacingfunction_ANDBLK">
+    <refsection xml:id="Interfacingfunction_ANDBLK">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -126,8 +126,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_ANDBLK">
+    <refsection xml:id="Example_ANDBLK">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/ANDBLK_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -135,5 +136,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

@@ -32,41 +32,41 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/BARXY.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_BARXY">
+    <refsection xml:id="Contents_BARXY">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                    <xref linkend="Description_BARXY">Description</xref>
+                    <para><link linkend="Description_BARXY">Description</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Dialogbox_BARXY">Parameters</xref>
+                    <para><link linkend="Dialogbox_BARXY">Parameters</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Defaultproperties_BARXY">Default properties</xref>
+                    <para><link linkend="Defaultproperties_BARXY">Default properties</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Interfacingfunction_BARXY">Interfacing function</xref>
+                    <para><link linkend="Interfacingfunction_BARXY">Interfacing function</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Computationalfunction_BARXY">Computational function</xref>
+                    <para><link linkend="Computationalfunction_BARXY">Computational function</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Example_BARXY">Example</xref>
+                    <para><link linkend="Example_BARXY">Example</link></para>
             </listitem>
             <listitem>
-                    <xref linkend="Seealso_BARXY">See also</xref>
+                    <para><link linkend="Seealso_BARXY">See also</link></para>
             </listitem>
         </itemizedlist>
 		<para/>
     </refsection>
 
-    <refsection id="Description_BARXY">
+    <refsection xml:id="Description_BARXY">
         <title>Description</title>
         <para>
             This block realizes the visualization of the evolution of the two regular input
@@ -74,14 +74,14 @@
             coordinates.
         </para>
     </refsection>
-    <refsection id="Dialogbox_BARXY">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_BARXY">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/BARXY_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/BARXY_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -122,7 +122,7 @@
 		<para/>
     </refsection>
 
-    <refsection id="Defaultproperties_BARXY">
+    <refsection xml:id="Defaultproperties_BARXY">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -191,7 +191,7 @@
 		<para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_BARXY">
+    <refsection xml:id="Interfacingfunction_BARXY">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -199,7 +199,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_BARXY">
+    <refsection xml:id="Computationalfunction_BARXY">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -209,8 +209,9 @@
 		<para/>
     </refsection>
 
-    <refsection id="Example_BARXY">
+    <refsection xml:id="Example_BARXY">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/BARXY_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -218,6 +219,7 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
     <refsection xml:id="Seealso_BARXY" role="see also">
         <title>See also</title>

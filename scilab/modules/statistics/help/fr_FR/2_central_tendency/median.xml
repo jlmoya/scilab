@@ -29,7 +29,7 @@
             y=median(x,dim)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -81,11 +81,11 @@
     </refsection>
     <refsection>
         <title>Remarque</title>
-        <para>
-            <note>
+        <note>
+            <para>
                 Si <varname>x</varname> contient des NANs, le résultat correspondra au résultat obtenu avec des Inf.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Exemples</title>

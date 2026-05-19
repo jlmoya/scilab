@@ -132,7 +132,6 @@ function [ f , c , index ] = largesmallpolygon ( x , index )
     r = x(1:nv)
     t = x(nv+1:2*nv)
     //polygon_draw(r ,t , nv);
-    //pause
     if ( index == 2 | index == 6 ) then
         f = polygon_area(r ,t , nv)
         f = -f

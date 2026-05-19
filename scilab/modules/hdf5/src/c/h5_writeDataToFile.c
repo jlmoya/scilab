@@ -502,7 +502,6 @@ int writeDoubleMatrix(hid_t _iFile, char *_pstDatasetName, int _iDims, int* _piD
     hsize_t *piDims = NULL;
     hid_t iCompress = 0;
     hid_t dprop = 0;
-    int i = 0;
     int iSize = 0;
 
     piDims = convertDims(&_iDims, _piDims, &iSize);
@@ -2094,7 +2093,6 @@ hid_t writeDoubleMatrix6(hid_t parent, const char* name, int dims, int* pdims, d
     herr_t status = 0;
     hsize_t *piDims = NULL;
     hid_t iCompress = 0;
-    int i = 0;
     int iSize = 0;
     hid_t dprop = 0;
 
@@ -2570,7 +2568,6 @@ hid_t writeStructField6(hid_t parent, const char* name, int dims, int* pdims, ho
     hsize_t *piDims = NULL;
     hid_t iCompress = 0;
     hid_t dprop = 0;
-    int i = 0;
     int iSize = 0;
 
     piDims = convertDims(&dims, pdims, &iSize);

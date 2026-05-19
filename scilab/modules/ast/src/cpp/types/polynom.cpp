@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 *  Copyright (C) 2008-2008 - DIGITEO - Antoine ELIAS
 *
@@ -28,6 +28,11 @@ Polynom::Polynom()
 #ifndef NDEBUG
     Inspector::addItem(this);
 #endif
+}
+
+Polynom::Polynom(int _iDims, const int* _piDims)
+{
+    createPoly(L"s", _iDims, _piDims, NULL);
 }
 
 Polynom::Polynom(const std::wstring& _szVarName, int _iRows, int _iCols)

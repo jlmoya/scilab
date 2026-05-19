@@ -156,8 +156,6 @@ int MatPlotDecomposer::fillTextureData(int id, unsigned char* buffer, int buffer
     getGraphicObjectProperty(id, __GO_DATA_MODEL_Z__, jni_double_vector, (void**) &value);
     if (width * height * 4 == bufferLength)
     {
-        int parentFigure = 0;
-        int * piParentFigure = &parentFigure;
         double* colormap = NULL;
         int colormapSize = 0;
 

@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/MATZREIM.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATZREIM">
+    <refsection xml:id="Contents_MATZREIM">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATZREIM">Description</xref>
+                <para><link linkend="Description_MATZREIM">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATZREIM">Parameters</xref>
+                <para><link linkend="Dialogbox_MATZREIM">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATZREIM">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATZREIM">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATZREIM">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATZREIM">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATZREIM">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATZREIM">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATZREIM">See also</xref>
+                <para><link linkend="Seealso_MATZREIM">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATZREIM">
+    <refsection xml:id="Description_MATZREIM">
         <title>Description</title>
         <para>
             This block decomposes a matrix of complex numbers by separating the real and imaginary
@@ -72,13 +72,13 @@
         </para>
         <informaltable border="1" cellpadding="2">
             <tr>
-                <td align="left" width="18%">
+                <td align="left">
                     <emphasis role="bold">Decomposition type</emphasis>
                 </td>
-                <td align="left" width="20%">
+                <td align="left">
                     <emphasis role="bold">Inputs</emphasis>
                 </td>
-                <td align="left" width="20%">
+                <td align="left">
                     <emphasis role="bold">Outputs</emphasis>
                 </td>
                 <td align="left">
@@ -109,14 +109,13 @@
             </tr>
         </informaltable>
     </refsection>
-    <refsection id="Dialogbox_MATZREIM">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_MATZREIM">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATZREIM_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATZREIM_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -127,7 +126,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATZREIM">
+    <refsection xml:id="Defaultproperties_MATZREIM">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -203,7 +202,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATZREIM">
+    <refsection xml:id="Interfacingfunction_MATZREIM">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -211,7 +210,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATZREIM">
+    <refsection xml:id="Computationalfunction_MATZREIM">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

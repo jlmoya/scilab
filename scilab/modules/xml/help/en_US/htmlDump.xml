@@ -24,7 +24,7 @@
             str = htmlDump(xmlDoc [, indent])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -54,7 +54,7 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = htmlReadStr(["<!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01//EN""";
+    xdoc = htmlReadStr(["<!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01//EN""";
                        """http://www.w3.org/TR/html4/strict.dtd"">";
                        "<html lang=""en"">";
                        "  <head>";
@@ -68,13 +68,13 @@
                        "</html>"]);
 
     // Dump a HTML document
-    htmlDump(doc)
+    htmlDump(xdoc)
 
     // Dump a HTML document without indentation
-    htmlDump(doc, %f)
+    htmlDump(xdoc, %f)
 
     // Free the resources associated with the document
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -85,7 +85,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

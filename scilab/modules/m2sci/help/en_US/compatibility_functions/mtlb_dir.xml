@@ -38,10 +38,10 @@
             data can not be extracted like in Matlab. For example, Scilab equivalent for Matlab
             <literal>L=dir;file_name=L(1).name;</literal> is <literal>L=dir();file_name=L.name(1);</literal>.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Caution: <literal>mtlb_dir</literal> has not to be used for hand coded functions.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
 </refentry>

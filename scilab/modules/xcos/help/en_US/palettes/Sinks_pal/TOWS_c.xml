@@ -32,37 +32,37 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/TOWS_c.png" valign="middle"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_TOWS_c">
+    <refsection xml:id="Contents_TOWS_c">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_TOWS_c">Description</xref>
+                <para><link linkend="Description_TOWS_c">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_TOWS_c">Parameters</xref>
+                <para><link linkend="Dialogbox_TOWS_c">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_TOWS_c">Default properties</xref>
+                <para><link linkend="Defaultproperties_TOWS_c">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_TOWS_c">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_TOWS_c">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_TOWS_c">Computational function</xref>
+                <para><link linkend="Computationalfunction_TOWS_c">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_TOWS_c">Example</xref>
+                <para><link linkend="Example_TOWS_c">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_TOWS_c">
+    <refsection xml:id="Description_TOWS_c">
         <title>Description</title>
         <para>
             That block is used to put simulated data in the scilab workspace.
@@ -77,14 +77,14 @@
             <emphasis role="bold">Scilab variable name</emphasis> field.
         </para>
     </refsection>
-    <refsection id="Dialogbox_TOWS_c">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_TOWS_c">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/TOWS_c_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/TOWS_c_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -120,7 +120,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_TOWS_c">
+    <refsection xml:id="Defaultproperties_TOWS_c">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -185,7 +185,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_TOWS_c">
+    <refsection xml:id="Interfacingfunction_TOWS_c">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -193,7 +193,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_TOWS_c">
+    <refsection xml:id="Computationalfunction_TOWS_c">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -203,7 +203,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_TOWS_c">
+    <refsection xml:id="Example_TOWS_c">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/sinks_pal/TOWS_c_Example.zcos">

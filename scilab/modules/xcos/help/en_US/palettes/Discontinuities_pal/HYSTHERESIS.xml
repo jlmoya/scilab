@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/HYSTHERESIS.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_HYSTHERESIS">
+    <refsection xml:id="Contents_HYSTHERESIS">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_HYSTHERESIS">Description</xref>
+                <para><link linkend="Description_HYSTHERESIS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_HYSTHERESIS">Parameters</xref>
+                <para><link linkend="Dialogbox_HYSTHERESIS">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_HYSTHERESIS">Default properties</xref>
+                <para><link linkend="Defaultproperties_HYSTHERESIS">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_HYSTHERESIS">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_HYSTHERESIS">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_HYSTHERESIS">Computational function</xref>
+                <para><link linkend="Computationalfunction_HYSTHERESIS">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_HYSTHERESIS">Example</xref>
+                <para><link linkend="Example_HYSTHERESIS">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_HYSTHERESIS">
+    <refsection xml:id="Description_HYSTHERESIS">
         <title>Description</title>
         <para>
             Switch output between two constants.The Relay block allows its output
@@ -72,14 +72,14 @@
 
         </para>
     </refsection>
-    <refsection id="Dialogbox_HYSTHERESIS">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_HYSTHERESIS">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/HYSTHERESIS_gui.gif" align="center" style="float:right"/>
+                <imagedata fileref="../../../../images/gui/HYSTHERESIS_gui.gif" align="center"/>
                 <!-- align => Javahelp, style => Online -->
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -124,7 +124,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_HYSTHERESIS">
+    <refsection xml:id="Defaultproperties_HYSTHERESIS">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -197,7 +197,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_HYSTHERESIS">
+    <refsection xml:id="Interfacingfunction_HYSTHERESIS">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -205,7 +205,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_HYSTHERESIS">
+    <refsection xml:id="Computationalfunction_HYSTHERESIS">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -213,8 +213,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_HYSTHERESIS">
+    <refsection xml:id="Example_HYSTHERESIS">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/discontinuities_pal/HYSTERESIS_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -222,5 +223,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

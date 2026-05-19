@@ -21,48 +21,45 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:id="MATSUM" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATSUM" xml:lang="en_US">
     <refnamediv>
         <refname>MATSUM</refname>
         <refpurpose>Sum of Matrix's Elements</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/MATSUM.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATSUM">
+    <refsection xml:id="Contents_MATSUM">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATSUM">Description</xref>
+                <para><link linkend="Description_MATSUM">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATSUM">Parameters</xref>
+                <para><link linkend="Dialogbox_MATSUM">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATSUM">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATSUM">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATSUM">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATSUM">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATSUM">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATSUM">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATSUM">See also</xref>
+                <para><link linkend="Seealso_MATSUM">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATSUM">
+    <refsection xml:id="Description_MATSUM">
         <title>Description</title>
         <para>
             The MATSUM block returns the sum of the element of an input matrix/vector.
@@ -95,14 +92,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_MATSUM">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_MATSUM">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/MATSUM_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/MATSUM_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -123,7 +119,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATSUM">
+    <refsection xml:id="Defaultproperties_MATSUM">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -196,7 +192,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATSUM">
+    <refsection xml:id="Interfacingfunction_MATSUM">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -204,26 +200,38 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATSUM">
+    <refsection xml:id="Computationalfunction_MATSUM">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/mat_sum.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/mat_sum.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/mat_suml.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/mat_suml.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/mat_sumc.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/mat_sumc.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/matz_sum.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/matz_sum.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/matz_suml.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/matz_suml.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/matz_sumc.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/matz_sumc.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

@@ -35,7 +35,9 @@
             the default values of their properties.
         </para>
         <warning>
-            Label entities cannot be directly deleted.
+            <para>
+                Label entities cannot be directly deleted.
+            </para>
         </warning>
         <para>
             Their properties are the following:
@@ -73,7 +75,7 @@
                 <term>interpreter: </term>
                 <listitem>
                     <para>the interpreter to be used to render the strings, given as a matrix
-                        of the same size and dimensions as the <term>text</term> property, with elements
+                        of the same size and dimensions as the <literal>text</literal> property, with elements
                         chosen among <literal>"auto"</literal> (the default), <literal>"latex"</literal>, 
                         <literal>"mathml"</literal>, <literal>"none"</literal>. See <link linkend="math_rendering_features_in_graphic">LaTeX expressions</link>.
                     </para>
@@ -268,9 +270,9 @@ x_label.text="<mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac
         <revhistory>
             <revision>
                 <revnumber>5.2</revnumber>
-                <revdescription>
+                <revremark>
                     LaTeX expressions delimited with "$..$" are now supported
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

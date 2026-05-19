@@ -77,7 +77,6 @@ void champg(char *name, int colored, double *x, double *y, double *fx, double *f
     int firstPlot = 0;
     int* piFirstPlot = &firstPlot;
     int logFlags[3];
-    int flag, type = 1;
     double arsize1 = 0.;
     int *style = NULL;
 
@@ -86,8 +85,6 @@ void champg(char *name, int colored, double *x, double *y, double *fx, double *f
 
     int i = 0;
     double drect[6];
-    BOOL bounds_changed = FALSE;
-    BOOL axes_properties_changed = FALSE;
 
     /* champ with color inherited from subwin */
     int typeofchamp = (colored == 0 ? 0 : 1);
@@ -100,7 +97,6 @@ void champg(char *name, int colored, double *x, double *y, double *fx, double *f
         return;
     }
 
-    flag = 1; /* je le mets � 1 pour voir F.Leray 19.02.04*/
     arsize1 = *arfact;
 
     iSubwinUID = getCurrentSubWin();
@@ -216,17 +212,12 @@ void champg(char *name, int colored, double *x, double *y, double *fx, double *f
 
         if (strflag[1] != '0')
         {
-            bounds_changed = update_specification_bounds(iSubwinUID, drect, 2);
+            update_specification_bounds(iSubwinUID, drect, 2);
         }
 
     }
 
-    if (firstPlot)
-    {
-        bounds_changed = TRUE;
-    }
-
-    axes_properties_changed = strflag2axes_properties(iSubwinUID, strflag);
+    strflag2axes_properties(iSubwinUID, strflag);
 
     /* just after strflag2axes_properties */
     firstPlot = 0;

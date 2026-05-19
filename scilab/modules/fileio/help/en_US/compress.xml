@@ -21,7 +21,7 @@
         <title>Syntax</title>
         <synopsis>files = compress(archivename, inputs, &lt;opt_args&gt;)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -86,7 +86,9 @@
                                 <para>
                                     The password string is used to encrypt the archive.
                                     <warning>
-                                        This option is only available for ZIP files.
+                                        <para>
+                                            This option is only available for ZIP files.
+                                        </para>
                                     </warning>
                                 </para>
                             </listitem>
@@ -102,8 +104,6 @@
             <function>compress</function> creates a compressed archive that contains the given files and folders.
             It uses the archive extension to apply default format and compression when no options are given.
         </para>
-    </refsection>
-    <refsection>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -132,8 +132,6 @@ disp("size of rand100.tar.xz: " + string(l0size))
 disp("size of rand100l9.tar.xz: " + string(l9size))
 
     ]]></programlisting>
-    </refsection>
-    <refsection>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

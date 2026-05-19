@@ -21,7 +21,7 @@
     <refsynopsisdiv>
         <title>呼び出し手順</title>
         <synopsis>
-            doc = xmlReadStr(string [, validateDTD])
+            xdoc = xmlReadStr(string [, validateDTD])
         </synopsis>
     </refsynopsisdiv>
     <refsection>
@@ -40,7 +40,7 @@
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>XMLDoc型のmlist</para>
                 </listitem>
@@ -65,19 +65,19 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
-    e = doc.root.children(1).children(1)
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    e = xdoc.root.children(1).children(1)
     e.name
     e.content
     xmlDump(e)
-    doc.root.children(1).attributes.att
-    doc.root.children(1).attributes.rib
+    xdoc.root.children(1).attributes.att
+    xdoc.root.children(1).attributes.rib
     // 属性を修正
-    doc.root.children(1).attributes.att = "truc"
-    doc.root.children(1).attributes.rib = "machin"
-    xmlDump(doc.root.children(1))
+    xdoc.root.children(1).attributes.att = "truc"
+    xdoc.root.children(1).attributes.rib = "machin"
+    xmlDump(xdoc.root.children(1))
     // 文書を削除します
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

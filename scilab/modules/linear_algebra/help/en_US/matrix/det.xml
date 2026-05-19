@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="det">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="det">
     <refnamediv>
         <refname>det</refname>
         <refpurpose>determinant of a square matrix</refpurpose>
@@ -28,43 +25,47 @@
             [e,m] = det(X)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>X</term>
                 <listitem>
-                    square matrix of real or complex numbers, polynomials, or rationals.
-                    Sparse-encoded matrices accepted.
-                    <para/>
-                </listitem>
+                     <para>
+                        square matrix of real or complex numbers, polynomials, or rationals.
+                        Sparse-encoded matrices accepted.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>d</term>
                 <listitem>
-                    Scalar of the <varname>X</varname>'s type: the determinant of
-                    <varname>X</varname>. If <varname>X</varname> is sparse-encoded,
-                    <varname>d</varname> is dense.
-                    <para/>
-                </listitem>
+                     <para>
+                        Scalar of the <varname>X</varname>'s type: the determinant of
+                        <varname>X</varname>. If <varname>X</varname> is sparse-encoded,
+                        <varname>d</varname> is dense.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>m</term>
                 <listitem>
-                    real or complex number: the determinant base 10 mantissa, with
-                    <literal>abs(m) ∈ [1,10)</literal>. Not supported for <varname>X</varname>
-                    polynomial or rational.
-                    <para/>
-                </listitem>
+                     <para>
+                        real or complex number: the determinant base 10 mantissa, with
+                        <literal>abs(m) ∈ [1,10)</literal>. Not supported for <varname>X</varname>
+                        polynomial or rational.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>e</term>
                 <listitem>
-                    integer: the determinant base 10 exponent, such that
-                    <literal>d = m * 10<superscript>e</superscript></literal>.
-                    Not supported for <varname>X</varname> polynomial or rational.
-                    <para/>
-                </listitem>
+                     <para>
+                        integer: the determinant base 10 exponent, such that
+                        <literal>d = m * 10<superscript>e</superscript></literal>.
+                        Not supported for <varname>X</varname> polynomial or rational.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -250,9 +251,9 @@ roots(det(systmat(w))),trzeros(w)   //zeros of linear system
         <revhistory>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     [e,m]=det(X) syntax extended to sparse matrices.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

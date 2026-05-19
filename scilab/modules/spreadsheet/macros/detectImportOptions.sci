@@ -10,172 +10,121 @@
 // along with this program.
 
 function opts = detectImportOptions(filename, varargin)
-    opts = struct();
+    arguments
+        filename {mustBeA(filename, "string"), mustBeScalar}
+        varargin
+    end
+
     fname = "detectImportOptions";
-    delim = "";
-    decimal = [];
-    numHeaderLines = [];
 
-    if nargin == 0 then
-        error(msprintf(_("%s: Wrong number of input arguments: At least %d expected.\n"), fname, 1));
+    if ~isfile(filename) then
+        error(msprintf(_("%s: Wrong value for input argument #%d: File ""%s"" does not exist.\n"), fname, 1, filename));
     end
 
-    if type(filename) <> 10 then
-        error(msprintf(_("%s: Wrong type for input argument #%d: A string expected.\n"), fname, 1));
-    end
 
-    if isscalar(filename) then
-        if isfile(filename) then
-            f = mgetl(filename);
+    if fileext(filename) == ".xlsx" then
+        sheet = 1;
+        rangevalue = "";
+
+        if nargin > 2 then
+            if modulo(nargin-1, 2) <> 0 then
+                error(msprintf(_("%s: Wrong number of input arguments"), fname));
+            end
+
+            for i = nargin-2:-2:1
+                key = varargin(i);
+                if type(key) <> 10 || (type(key) == 10 && ~isscalar(key)) then
+                    error(msprintf(_("%s: Wrong type for input argument #%d: A string expected.\n"), fname, i));
+                end
+                value = varargin(i+1);
+                
+                select convstr(key, "l")
+                case "sheet"
+                    if type(value) == 10 then
+                        sheet = value;
+                    elseif type(value) == 1 then
+                        if value <> int(value) | value < 1 then
+                            error(msprintf(_("%s: Wrong value for ""%s"" argument: Must be a positive integer >=1.\n"), fname, key));
+                        end
+                        sheet = value;
+                    else
+                        error(msprintf(_("%s: Wrong type for ""%s"" argument: A double or string expected.\n"), fname, key));
+                    end
+
+                case "range"
+                    if typeValue == 10 then
+                        rangevalue = value;
+                    elseif typeValue == 1 then
+                        if and(size(value) == [2 2]) then
+                            rangevalue = %matrix_to_range(value);
+                        else
+                            error(msprintf(_("%s: Wrong value for ""%s"" argument: Range matrix must be 2x2 [row1 col1; row2 col2].\n"), fname, key));
+                        end
+                    else
+                        error(msprintf(_("%s: Wrong type for ""%s"" argument: Must be a string or a 2x2 matrix.\n"), fname, key));
+                    end
+                else
+                    error(msprintf(_("%s: Unknown option ""%s"". Valid options to xlsx format are %s.\n"), fname, key, sci2exp(["sheet", "range"])));
+                end
+            end 
+        end
+
+        s = xlsxInfo(filename);
+        f = %xlsxRead(filename, sheet, rangevalue, "string");
+        opts = detectImportOptionsXlsx(f);
+        if type(sheet) == 10 then
+            opts.sheet = sheet;
         else
-            f = filename;
+            opts.sheet = s.sheet_names(sheet);
         end
+        opts.range = rangevalue;
     else
-        f = filename;
-    end
-
-    if nargin > 2 then
-        if modulo(nargin-1, 2) <> 0 then
-            error(msprintf(_("%s: Wrong number of input arguments"), fname));
-        end
-
-        for i = nargin-2:-2:1
-            if type(varargin(i)) <> 10 || (type(varargin(i)) == 10 && ~isscalar(varargin(i))) then
-                error(msprintf(_("%s: Wrong type for input argument #%d: A string expected.\n"), fname, i));
+        delim = "";
+        decimal = [];
+        numHeaderLines = [];
+        if nargin > 2 then
+            if modulo(nargin-1, 2) <> 0 then
+                error(msprintf(_("%s: Wrong number of input arguments"), fname));
             end
 
-            select convstr(varargin(i), "l")
-            case "delimiter"
-                delim = varargin(i+1);
-                if type(delim) <> 10 then
-                    error(msprintf(_("%s: Wrong type for %s argument #%d: A string expected.\n"), fname, "Delimiter", i+1));
-                end
-                if delim == "" then
-                    error(msprintf(_("%s: Wrong value for %s argument #%d: A non-empty string expected.\n"), fname, "Delimiter", i+1));
+            for i = nargin-2:-2:1
+                if type(varargin(i)) <> 10 || (type(varargin(i)) == 10 && ~isscalar(varargin(i))) then
+                    error(msprintf(_("%s: Wrong type for input argument #%d: A string expected.\n"), fname, i));
                 end
 
-            case "decimal"
-                decimal = varargin(i+1);
-                if type(decimal) <> 10 then
-                    error(msprintf(_("%s: Wrong type for %s argument #%d: A string expected.\n"), fname, "Decimal", i+1));
+                select convstr(varargin(i), "l")
+                case "delimiter"
+                    delim = varargin(i+1);
+                    if type(delim) <> 10 then
+                        error(msprintf(_("%s: Wrong type for %s argument #%d: A string expected.\n"), fname, "Delimiter", i+1));
+                    end
+                    if delim == "" then
+                        error(msprintf(_("%s: Wrong value for %s argument #%d: A non-empty string expected.\n"), fname, "Delimiter", i+1));
+                    end
+
+                case "decimal"
+                    decimal = varargin(i+1);
+                    if type(decimal) <> 10 then
+                        error(msprintf(_("%s: Wrong type for %s argument #%d: A string expected.\n"), fname, "Decimal", i+1));
+                    end
+                    if decimal == "" then
+                        error(msprintf(_("%s: Wrong value for %s argument #%d: A non-empty string expected.\n"), fname, "Decimal", i+1));
+                    end
+
+                case "numheaderlines"
+                    numHeaderLines = varargin(i+1);
+                    if type(numHeaderLines) <> 1 then
+                        error(msprintf(_("%s: Wrong type for %s argument #%d: A double expected.\n"), fname, "NumHeaderLines", i+1));
+                    end
+                    if size(numHeaderLines, "*") > 1 then
+                        error(msprintf(_("%s: Wrong size for %s argument #%d: A non-empty value expected.\n"), fname, "NumHeaderLines", i+1));
+                    end
                 end
-                if decimal == "" then
-                    error(msprintf(_("%s: Wrong value for %s argument #%d: A non-empty string expected.\n"), fname, "Decimal", i+1));
-                end
-
-            case "numheaderlines"
-                numHeaderLines = varargin(i+1);
-                if type(numHeaderLines) <> 1 then
-                    error(msprintf(_("%s: Wrong type for %s argument #%d: A double expected.\n"), fname, "NumHeaderLines", i+1));
-                end
-                if size(numHeaderLines, "*") > 1 then
-                    error(msprintf(_("%s: Wrong size for %s argument #%d: A non-empty value expected.\n"), fname, "NumHeaderLines", i+1));
-                end
-            end
-        end 
-    end
-
-    while f($) == ""
-        f($) = [];
-    end
-
-    if numHeaderLines <> [] then
-        l = 1:numHeaderLines;
-        header = f(l);
-    else
-        // detect header
-        [header, c , l] = detectHeader(f);
-    end
-
-    // detect delimiter
-    datalines = [1:size(f, "r")];
-    if l <> [] then
-        v = 1:size(f, "r");
-        v(l) = [];
-        f(l) = [];
-        datalines = v;
-    end
-    headlines = [1 size(f, "r")];
-
-    if delim == "" then
-        if decimal == [] then
-            [delim, decimal] = detectDelimiter(f);
-        else
-            delim = detectDelimiter(f);
+            end 
         end
-    else
-        if decimal == [] then
-            [a, decimal] = detectDelimiter(f, delim);
-        end
+
+        f = mgetl(filename);
+        opts = detectImportOptionsCSV(f, delim, decimal, numHeaderLines);
     end
 
-    // detect variable names and type
-    test = csvTextScan(f(1), delim, decimal);
-    variableNames = [];
-    hasheader = %f;
-    index = [];
-
-    if size(f, "*") > 1 then
-        if and(isnan(test)) then
-            h = csvTextScan(f(1), delim, decimal, "string");
-            variableNames = h;
-            index = find(variableNames == "");
-            datalines(1) = [];
-            headlines(1) = [];
-            hasheader = %t;
-        end
-        f(1) = [];
-    end
-
-    // csvTextScan on all the file
-    h = csvTextScan(f, delim, decimal, "string");
-
-    if ~hasheader & index <> [] & variableNames <> [] then
-        for i = index
-            if and(h(:, i) == "") then
-                variableNames(index) = [];
-            end
-        end
-    end
-
-    variableTypes = emptystr(variableNames);
-    inputFormat = [];
-
-    for i = 1:size(h, 'c')
-        // types managed : datetime, double, string
-        if h(1, i) == "" then
-            variableTypes(1,i) = "string";
-            inputFormat(1,i) = "";
-            mat = h(:, i);
-            idx = mat <> "";
-            if or(idx) then
-                [infmt, _typ] = detectFormatDatetime(mat(idx)(1))
-                variableTypes(1,i) = _typ;
-                inputFormat(1,i) = infmt;
-            else
-                // empty column
-                if index <> i then
-                    index = [index, i];
-                end
-            end
-        else
-            [infmt, _typ] = detectFormatDatetime(h(:, i))
-            variableTypes(1,i) = _typ;
-            inputFormat(1,i) = infmt
-        end
-    end
-
-    variableNames(index) = [];
-    variableTypes(index) = [];
-    inputFormat(index) = [];
-
-    opts.variableNames = variableNames;
-    opts.variableTypes = variableTypes;
-    opts.delimiter = delim;
-    opts.decimal = decimal;
-    opts.datalines = datalines;
-    opts.header = header;
-    opts.inputFormat = inputFormat;
-    opts.emptyCol = index;
-    
 endfunction

@@ -39,7 +39,6 @@ static char *supportedFormat[NB_FORMAT_SUPPORTED] =
 {"lf", "lg", "d", "i", "e", "f", "g"};
 /*--------------------------------------------------------------------------*/
 static BOOL checkFprintfMatFormat(char *format);
-static char *getCleanedFormat(char *format);
 static char *replaceInFormat(char *format);
 /*--------------------------------------------------------------------------*/
 #ifndef signbit
@@ -193,7 +192,7 @@ static BOOL checkFprintfMatFormat(char *format)
         char *tokenPercent2 = strrchr(format, '%');
         if ((tokenPercent2 && tokenPercent1) && (tokenPercent1 == tokenPercent2))
         {
-            char *cleanedFormat = getCleanedFormat(format);
+            char *cleanedFormat = fprintfMat_getCleanedFormat(format);
             if (cleanedFormat)
             {
                 FREE(cleanedFormat);
@@ -210,7 +209,7 @@ static char *replaceInFormat(char *format)
     char *newFormat = NULL;
     if (format)
     {
-        char *cleanedFormat = getCleanedFormat(format);
+        char *cleanedFormat = fprintfMat_getCleanedFormat(format);
         if (cleanedFormat)
         {
             newFormat = strsub(format, cleanedFormat, "%s");
@@ -221,7 +220,7 @@ static char *replaceInFormat(char *format)
     return newFormat;
 }
 /*--------------------------------------------------------------------------*/
-static char *getCleanedFormat(char *format)
+char *fprintfMat_getCleanedFormat(const char *format)
 {
     char *cleanedFormat = NULL;
     if (format)
@@ -236,20 +235,32 @@ static char *getCleanedFormat(char *format)
                 if (token)
                 {
                     int nbcharacters = (int)(strlen(percent) - strlen(token));
+                    // nbcharacters is always > 0 because it includes the starting %
+                    // it is length of: %[parameter][flags][width][.precision][length]
+                    // does not include the type (e.g., lf, d, etc)
                     cleanedFormat = os_strdup(percent);
                     cleanedFormat[nbcharacters] = 0;
-                    if ( ((nbcharacters - 1 > 0) && (isdigit(cleanedFormat[nbcharacters - 1])) ||
-                            (cleanedFormat[nbcharacters - 1]) == '.') ||
-                            (cleanedFormat[nbcharacters - 1]) == '%')
+                    if (nbcharacters == 1)
                     {
+                        // common case, just % with type, copy
                         strcat(cleanedFormat, supportedFormat[i]);
                         return cleanedFormat;
                     }
-                    else
+                    if (isdigit(cleanedFormat[nbcharacters - 1]))
                     {
-                        FREE(cleanedFormat);
-                        cleanedFormat = NULL;
+                        // there is an optional [width], clean it 
+                        strcat(cleanedFormat, supportedFormat[i]);
+                        return cleanedFormat;
                     }
+                    if (cleanedFormat[nbcharacters - 1] == '.')
+                    {
+                        // there is an optional [.precision], clean it
+                        strcat(cleanedFormat, supportedFormat[i]);
+                        return cleanedFormat;
+                    }
+                    // error case
+                    FREE(cleanedFormat);
+                    cleanedFormat = NULL;
                 }
             }
         }

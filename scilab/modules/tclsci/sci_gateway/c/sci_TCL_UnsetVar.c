@@ -29,9 +29,6 @@ int sci_TCL_UnsetVar(char *fname, void* pvApiCtx)
     int* piAddrl2 = NULL;
     char* l2 = NULL;
 
-    static int n1, m1;
-    static int n2, m2;
-
     Tcl_Interp *TCLinterpreter = NULL;
 
     CheckInputArgument(pvApiCtx, 1, 2);

@@ -231,6 +231,9 @@ char *ParserSingleInstance::getCodeLine(int line, char **codeLine)
 {
     int i = 0;
 
+    // Store position of yyin to avoid side effects
+    // in FLEX
+    long lPos = ftell(yyin);
     rewind(yyin);
     /*
     ** WARNING : *codeLine will be allocated by getline
@@ -243,6 +246,8 @@ char *ParserSingleInstance::getCodeLine(int line, char **codeLine)
             break;
         }
     }
+
+    fseek(yyin, lPos, SEEK_SET);
     return *codeLine;
 }
 

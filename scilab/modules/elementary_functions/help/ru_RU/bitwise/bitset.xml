@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="bitset" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="bitset" xml:lang="ru">
     <refnamediv>
         <refname>bitset</refname>
         <refpurpose>устанавливает в целых числах биты по указанным индексам</refpurpose>
@@ -55,7 +52,7 @@
                 <tr align="center"><td>int16 </td><td>15</td><td>  </td><td>uint16</td><td>16</td></tr>
                 <tr align="center"><td>int32 </td><td>31</td><td>  </td><td>uint32</td><td>32</td></tr>
                 <tr align="center"><td>int64 </td><td>63</td><td>  </td><td>uint16</td><td>64</td></tr>
-                <tr align="center"><td>decimal</td><td>1024</td><td>  </td><td></td><td></td></tr>
+                <tr align="center"><td>decimal</td><td>1024</td><td>  </td><td/><td/></tr>
             </table>
                     </para>
                     <para>
@@ -383,20 +380,30 @@ ns = bitset(n, [  10 40       61    63 64 65   ], ..
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Теперь поддерживаются 64-битные целые числа.
+                             <para>
+                                Теперь поддерживаются 64-битные целые числа.
+                            </para>
                         </listitem>
                         <listitem>
-                            Добавлена поддержка для положительных знаковых целых чисел.
+                             <para>
+                                Добавлена поддержка для положительных знаковых целых чисел.
+                            </para>
                         </listitem>
                         <listitem>
-                            Для десятичных чисел биты от №53 до №1024 теперь могут быть должным образом установлены.
+                             <para>
+                                Для десятичных чисел биты от №53 до №1024 теперь могут быть должным образом установлены.
+                            </para>
                         </listitem>
                         <listitem>
-                            Для каждого входного элемента теперь несколько битов могут быть установлены одновременно.
+                             <para>
+                                Для каждого входного элемента теперь несколько битов могут быть установлены одновременно.
+                            </para>
                         </listitem>
                         <listitem>
-                          Входные аргументы теперь могут смешивать массивы и скаляры вместо обязательных
-                          поэлементных массивов.
+                             <para>
+                              Входные аргументы теперь могут смешивать массивы и скаляры вместо обязательных
+                              поэлементных массивов.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

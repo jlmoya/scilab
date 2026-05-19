@@ -1348,7 +1348,6 @@ void ConfigVariable::fillWhereError(const Location& _Location)
     if (m_WhereError.empty() && m_Where.empty() == false)
     {
         Location iTmpLoc = _Location;
-        int iTmpCol = 0;
         int iTmpLine = 0;
         if (_Location.first_line != 0)
         {

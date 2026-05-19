@@ -21,7 +21,7 @@
 /*--------------------------------------------------------------------------*/
 #include <stdio.h>
 #include "machine.h" /* C2F */
-#include "../../../linear_algebra/includes/issymmetric.h"
+#include "../../../elementary_functions/includes/issymmetric.h"
 #include "sci_malloc.h"
 #include "scicos.h"
 #include "scicos_block4.h"

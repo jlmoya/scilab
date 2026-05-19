@@ -38,7 +38,6 @@
 void* get_parent_property(void* _pvCtx, int iObjUID)
 {
     int iParentID = 0;
-    int* piParentID = &iParentID;
 
     /* All Graphic Objects have the __GO_PARENT__ property */
     iParentID = getParentObject(iObjUID);

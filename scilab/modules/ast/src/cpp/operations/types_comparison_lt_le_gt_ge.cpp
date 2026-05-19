@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  *  Copyright (C) 2008-2008 - DIGITEO - Antoine ELIAS
  *  Copyright (C) 2010-2010 - DIGITEO - Bruno JOFRET
@@ -177,10 +177,9 @@ int DoubleLessDouble(Double* _pDouble1, Double* _pDouble2, Bool** _pOut)
     }
 
     //D < D
-    std::wstring error = checkSameSize(_pDouble1, _pDouble2, L"<");
-    if (error.empty() == false)
+    if (checkSameSize(_pDouble1, _pDouble2) == false)
     {
-        throw ast::InternalError(error);
+        throw ast::InternalError(errorSameSize(_pDouble1, _pDouble2, L"<"));
     }
 
     pB = new Bool(_pDouble1->getDims(), _pDouble1->getDimsArray());

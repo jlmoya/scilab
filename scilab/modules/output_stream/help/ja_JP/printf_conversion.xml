@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="printf_conversion" xml:lang="ja">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="printf_conversion" xml:lang="ja">
     <refnamediv>
         <refname>printf_conversion</refname>
         <refpurpose>mprintf, msprintf, mfprintf 変換仕様</refpurpose>
@@ -127,186 +124,202 @@
         <para>
         <itemizedlist>
             <listitem>
-                <literal>d</literal>,
-                <literal>u</literal>, <literal>o</literal>, <literal>x</literal>, または
-                <literal>X</literal>変換に関する最小表示桁数
+                 <para><literal>d</literal>,
+                    <literal>u</literal>, <literal>o</literal>, <literal>x</literal>, または
+                    <literal>X</literal>変換に関する最小表示桁数
+                </para>
             </listitem>
             <listitem>
-                <literal>e</literal>, <literal>E</literal>, および <literal>f</literal>
-                における小数点の後に表示する桁数
+                 <para><literal>e</literal>, <literal>E</literal>, および <literal>f</literal>
+                    における小数点の後に表示する桁数
+                </para>
             </listitem>
             <listitem>
-                <literal>g</literal> および<literal>G</literal>変換における
-                有効桁の最大値
+                 <para><literal>g</literal> および<literal>G</literal>変換における
+                    有効桁の最大値
+                </para>
             </listitem>
             <listitem>
-                <literal>s</literal>変換において文字列から出力される
-                最大文字数
+                 <para><literal>s</literal>変換において文字列から出力される
+                    最大文字数
+                </para>
             </listitem>
             <listitem>
-                適用される変換の種類を示す文字:
-                <table>
-                    <tr>
-                        <th>% :</th>
-                        <td>
-                            変換しません.  %を表示.
-                            <note>
-                                This may be useful for instance to print percentages, or
-                                to process some LaTeX expression including LaTeX comments
-                                starting with "%", etc.
-                            </note>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>s :</th>
-                        <td>
-                            Accepts a string or boolean <literal>value</literal>,
-                            文字列から末尾または精度に示された文字数に達するまで,
-                            文字に変換します.精度が指定されない場合,末尾までの全ての文字が
-                            表示されます.
-                            Input strings including some UTF-8 extended characters are supported.
-                            Booleans are converted into 'T' or 'F'.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>c :</th>
-                        <td>
-                            Not supported.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            All following conversions accept any decimal numerical or boolean
-                            input <literal>value</literal>. Only the real part of any input
-                            complex number is considered. Booleans are implicitly converted
-                            into 0 and 1.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>d, i :</th>
-                        <td>
-                            Converts the input <literal>value</literal> to a signed integer int32
-                            notation. Conversions for input |Numbers| ≥ 2^31 are not reliable.
-                            精度は表示される最小の桁数を指定します.
-                            変換される値がより少ない桁数で表せる場合,
-                            前にゼロを付加して拡張されます.
-                            デフォルトの精度は1です.値0を精度0で変換した結果は,
-                            ヌル文字列となります.
-                            前に付加する文字をゼロとしてフィールド幅を指定すると,
-                            フィールド幅までの値では前にゼロを付加するパディングが
-                            行われます.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>u :</th>
-                        <td>
-                            Converts the input <literal>value</literal> to an unsigned integer
-                            uint32 notation. Conversions for input |Numbers| ≥ 2^32 are not reliable.
-                            精度は表示される最小の桁数を指定します.
-                            変換される値がより少ない桁数で表せる場合,
-                            前にゼロを付加して拡張されます.
-                            デフォルトの精度は1です.値0を精度0で変換した結果は,
-                            ヌル文字列となります.
-                            前に付加する文字をゼロとしてフィールド幅を指定すると,
-                            フィールド幅までの値では前にゼロを付加するパディングが
-                            行われます.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>o :</th>
-                        <td>
-                            Converts the input <literal>value</literal> to an unsigned octal notation.
-                            Conversions for input |Numbers| ≥ 2^32 are not reliable.
-                            精度は表示される最小の桁数を指定します.
-                            変換される値がより少ない桁数で表せる場合,
-                            前にゼロを付加して拡張されます.
-                            デフォルトの精度は1です.値0を精度0で変換した結果は,
-                            ヌル文字列となります.
-                            前に付加する文字をゼロとしてフィールド幅を指定すると,
-                            フィールド幅までの値では前にゼロを付加するパディングが
-                            行われます. フィールド幅に8進数を使用することはできません.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>x, X :</th>
-                        <td>
-                            Converts the input <literal>value</literal> to an unsigned hexadecimal
-                            notation. Conversions for input |Numbers| ≥ 2^32 are not reliable.
-                            <literal>x</literal>変換では,
-                            文字``abcdef''が使用されます;<literal>X</literal>変換では,
-                            文字``ABCDEF''が使用されます.
-                            精度はは表示される最小の桁数を指定します.
-                            変換される値がより少ない桁数で表せる場合,
-                            前にゼロを付加して拡張されます.
-                            デフォルトの精度は1です.値0を精度0で変換した結果は,
-                            ヌル文字列となります.
-                            前に付加する文字をゼロとしてフィールド幅を指定すると,
-                            フィールド幅までの値では前にゼロを付加するパディングが
-                            行われます.
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>f :</th>
-                        <td>
-                            Converts the input <literal>value</literal> to a decimal notation in
-                            the format %[\-]<literal>ddd.ddd</literal>.
-                            小数点以下の桁数は,精度指定子に等しくなります.
-                            <itemizedlist>
-                                <listitem>
-                                    精度が指定されない場合, 6桁が出力されます.
-                                </listitem>
-                                <listitem>
-                                    精度がゼロの場合, 小数点は表示されず,
-                                    システムは<literal>value</literal>に最も近い整数に丸めた数を
-                                    出力します.
-                                </listitem>
-                                <listitem>
-                                    小数点が出力される場合,最低でも1桁がその前に出力されます.
-                                </listitem>
-                            </itemizedlist>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>e, E :</th>
-                        <td>
-                            Converts the input <literal>value</literal> to the exponential
-                            form %[\-]<literal>d.ddde</literal>+/\-<literal>dd</literal>.
-                            小数点の前に1桁があり,小数点の後の桁数は精度指定子に等しくなります.
-                            <itemizedlist>
-                                <listitem>
-                                    精度が指定されない場合, 6桁が出力されます.
-                                </listitem>
-                                <listitem>
-                                    精度がゼロの場合, 小数点は表示されません.
-                                </listitem>
-                                <listitem>
-                                    <literal>E</literal> 変換文字の場合,
-                                    指数の前の e の代わりに E を付けた数値を出力します.
-                                    指数には常に2桁以上が含まれます.
-                                    値が 0 の場合, 指数は 0 となります.
-                                </listitem>
-                            </itemizedlist>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="white-space:nowrap"><emphasis role="bold">g, G :</emphasis></td>
-                        <td>
-                            有効桁数を指定する精度を付けた
-                            <literal>e</literal>, <literal>E</literal>, または
-                            <literal>f</literal>変換文字の形式に変換します.
-                            Booleans are converted into 0 and 1. Only the real part of complex
-                            numbers is considered.
-                            末尾のゼロは結果から削除されます.
-                            小数点は数字が続く場合にのみ表示されます.
-                            使用される形式は変換される値に依存します.
-                            変換結果の指数が-4よりも小さい場合,または,
-                            精度より大きいか等しい場合に,
-                            <literal>e</literal> (使用されるフラグが<literal>G</literal>の場合は
-                            <literal>E</literal>)形式が使用されます.
-                        </td>
-                    </tr>
-                </table>
-            </listitem>
+                 <para>
+                    適用される変換の種類を示す文字:
+                    <table>
+                        <tr>
+                            <th>% :</th>
+                            <td>
+                                変換しません.  %を表示.
+                                <note>
+                                    This may be useful for instance to print percentages, or
+                                    to process some LaTeX expression including LaTeX comments
+                                    starting with "%", etc.
+                                </note>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>s :</th>
+                            <td>
+                                Accepts a string or boolean <literal>value</literal>,
+                                文字列から末尾または精度に示された文字数に達するまで,
+                                文字に変換します.精度が指定されない場合,末尾までの全ての文字が
+                                表示されます.
+                                Input strings including some UTF-8 extended characters are supported.
+                                Booleans are converted into 'T' or 'F'.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>c :</th>
+                            <td>
+                                Not supported.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                All following conversions accept any decimal numerical or boolean
+                                input <literal>value</literal>. Only the real part of any input
+                                complex number is considered. Booleans are implicitly converted
+                                into 0 and 1.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>d, i :</th>
+                            <td>
+                                Converts the input <literal>value</literal> to a signed integer int32
+                                notation. Conversions for input |Numbers| ≥ 2^31 are not reliable.
+                                精度は表示される最小の桁数を指定します.
+                                変換される値がより少ない桁数で表せる場合,
+                                前にゼロを付加して拡張されます.
+                                デフォルトの精度は1です.値0を精度0で変換した結果は,
+                                ヌル文字列となります.
+                                前に付加する文字をゼロとしてフィールド幅を指定すると,
+                                フィールド幅までの値では前にゼロを付加するパディングが
+                                行われます.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>u :</th>
+                            <td>
+                                Converts the input <literal>value</literal> to an unsigned integer
+                                uint32 notation. Conversions for input |Numbers| ≥ 2^32 are not reliable.
+                                精度は表示される最小の桁数を指定します.
+                                変換される値がより少ない桁数で表せる場合,
+                                前にゼロを付加して拡張されます.
+                                デフォルトの精度は1です.値0を精度0で変換した結果は,
+                                ヌル文字列となります.
+                                前に付加する文字をゼロとしてフィールド幅を指定すると,
+                                フィールド幅までの値では前にゼロを付加するパディングが
+                                行われます.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>o :</th>
+                            <td>
+                                Converts the input <literal>value</literal> to an unsigned octal notation.
+                                Conversions for input |Numbers| ≥ 2^32 are not reliable.
+                                精度は表示される最小の桁数を指定します.
+                                変換される値がより少ない桁数で表せる場合,
+                                前にゼロを付加して拡張されます.
+                                デフォルトの精度は1です.値0を精度0で変換した結果は,
+                                ヌル文字列となります.
+                                前に付加する文字をゼロとしてフィールド幅を指定すると,
+                                フィールド幅までの値では前にゼロを付加するパディングが
+                                行われます. フィールド幅に8進数を使用することはできません.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>x, X :</th>
+                            <td>
+                                Converts the input <literal>value</literal> to an unsigned hexadecimal
+                                notation. Conversions for input |Numbers| ≥ 2^32 are not reliable.
+                                <literal>x</literal>変換では,
+                                文字``abcdef''が使用されます;<literal>X</literal>変換では,
+                                文字``ABCDEF''が使用されます.
+                                精度はは表示される最小の桁数を指定します.
+                                変換される値がより少ない桁数で表せる場合,
+                                前にゼロを付加して拡張されます.
+                                デフォルトの精度は1です.値0を精度0で変換した結果は,
+                                ヌル文字列となります.
+                                前に付加する文字をゼロとしてフィールド幅を指定すると,
+                                フィールド幅までの値では前にゼロを付加するパディングが
+                                行われます.
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>f :</th>
+                            <td>
+                                Converts the input <literal>value</literal> to a decimal notation in
+                                the format %[\-]<literal>ddd.ddd</literal>.
+                                小数点以下の桁数は,精度指定子に等しくなります.
+                                <itemizedlist>
+                                    <listitem>
+                                         <para>
+                                            精度が指定されない場合, 6桁が出力されます.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>
+                                            精度がゼロの場合, 小数点は表示されず,
+                                            システムは<literal>value</literal>に最も近い整数に丸めた数を
+                                            出力します.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>
+                                            小数点が出力される場合,最低でも1桁がその前に出力されます.
+                                        </para>
+                                    </listitem>
+                                </itemizedlist>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>e, E :</th>
+                            <td>
+                                Converts the input <literal>value</literal> to the exponential
+                                form %[\-]<literal>d.ddde</literal>+/\-<literal>dd</literal>.
+                                小数点の前に1桁があり,小数点の後の桁数は精度指定子に等しくなります.
+                                <itemizedlist>
+                                    <listitem>
+                                         <para>
+                                            精度が指定されない場合, 6桁が出力されます.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para>
+                                            精度がゼロの場合, 小数点は表示されません.
+                                        </para>
+                                    </listitem>
+                                    <listitem>
+                                         <para><literal>E</literal> 変換文字の場合,
+                                            指数の前の e の代わりに E を付けた数値を出力します.
+                                            指数には常に2桁以上が含まれます.
+                                            値が 0 の場合, 指数は 0 となります.
+                                        </para>
+                                    </listitem>
+                                </itemizedlist>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="white-space:nowrap"><emphasis role="bold">g, G :</emphasis></td>
+                            <td>
+                                有効桁数を指定する精度を付けた
+                                <literal>e</literal>, <literal>E</literal>, または
+                                <literal>f</literal>変換文字の形式に変換します.
+                                Booleans are converted into 0 and 1. Only the real part of complex
+                                numbers is considered.
+                                末尾のゼロは結果から削除されます.
+                                小数点は数字が続く場合にのみ表示されます.
+                                使用される形式は変換される値に依存します.
+                                変換結果の指数が-4よりも小さい場合,または,
+                                精度より大きいか等しい場合に,
+                                <literal>e</literal> (使用されるフラグが<literal>G</literal>の場合は
+                                <literal>E</literal>)形式が使用されます.
+                            </td>
+                        </tr>
+                    </table></para>
+                        </listitem>
         </itemizedlist>
         </para>
         <para>

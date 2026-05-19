@@ -27,8 +27,8 @@
         <synopsis>[tC, d] = coffg(M)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>M</term>
@@ -69,7 +69,9 @@
             <literal>1</literal> et <literal>d==M</literal>
         </para>
         <warning>
-            Pour une matrice de grande taille, les calculs peuvent être longs.
+            <para>
+                Pour une matrice de grande taille, les calculs peuvent être longs.
+            </para>
         </warning>
     </refsection>
     <refsection>

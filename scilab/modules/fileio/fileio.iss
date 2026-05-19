@@ -43,4 +43,5 @@ Source: modules\{#FILEIO}\macros\*.bin; DestDir: {app}\modules\{#FILEIO}\macros;
 ;
 Source: modules\{#FILEIO}\tests\*.*; DestDir: {app}\modules\{#FILEIO}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#FILEIO}\help\*.*; DestDir: {app}\modules\{#FILEIO}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

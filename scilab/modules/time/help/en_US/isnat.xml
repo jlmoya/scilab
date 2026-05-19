@@ -16,7 +16,7 @@
         <title>Syntax</title>
         <synopsis>t = isnat(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -37,7 +37,7 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <para><literal><varname>t</varname> = isnat(<varname>x</varname>)</literal> returns a boolean matrix of the same size as x, 
+        <para><literal>t = isnat(x)</literal> returns a boolean matrix of the same size as x, 
         where t(i) is %t when x(i) is NaT, and %f otherwise.</para>
     </refsection>
     <refsection>
@@ -67,9 +67,9 @@ isnat(dt)
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Introduction in Scilab.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

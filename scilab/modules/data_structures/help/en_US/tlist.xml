@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>tlist(typ, a1, ..., an)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -76,7 +76,9 @@
             <code>l(i)=null()</code> removes the <literal>i</literal>-th
             element of the <literal>tlist</literal> <literal>l</literal>.
             <note>
-                Note that the  semantics of <code>l.x=null()</code> is undefined, but a definition can be given through the <link linkend="overloading">overloading</link> mechanism.
+                <para>
+                    Note that the  semantics of <code>l.x=null()</code> is undefined, but a definition can be given through the <link linkend="overloading">overloading</link> mechanism.
+                </para>
             </note>
         </para>
         <para>

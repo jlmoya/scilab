@@ -37,7 +37,6 @@ char *csv_getArgumentAsStringWithEmptyManagement(void* pvApiCtx, int _iVar, cons
     char *returnedValue = NULL;
     int *piAddressVar = NULL;
     int iType = 0;
-    int m = 0, n = 0;
 
     sciErr = getVarAddressFromPosition(pvApiCtx, _iVar, &piAddressVar);
     if (sciErr.iErr)
@@ -117,7 +116,6 @@ wchar_t *csv_getArgumentAsWideStringWithEmptyManagement(void* pvApiCtx, int _iVa
     wchar_t *returnedValue = NULL;
     int *piAddressVar = NULL;
     int iType = 0;
-    int m = 0, n = 0;
 
     sciErr = getVarAddressFromPosition(pvApiCtx, _iVar, &piAddressVar);
     if (sciErr.iErr)
@@ -195,7 +193,6 @@ wchar_t *csv_getArgumentAsWideString(void* pvApiCtx, int _iVar,
     SciErr sciErr;
 
     int *piAddressVar = NULL;
-    int m = 0, n = 0;
     int iType = 0;
 
     wchar_t *returnedValue = NULL;
@@ -253,7 +250,6 @@ char *csv_getArgumentAsString(void* pvApiCtx, int _iVar,
     SciErr sciErr;
 
     int *piAddressVar = NULL;
-    int m = 0, n = 0;
     int iType = 0;
 
     char *returnedValue = NULL;
@@ -310,7 +306,6 @@ double csv_getArgumentAsScalarDouble(void* pvApiCtx, int _iVar,
     SciErr sciErr;
     double dValue = 0.;
     int *piAddressVar = NULL;
-    int m = 0, n = 0;
     int iType = 0;
 
     sciErr = getVarAddressFromPosition(pvApiCtx, _iVar, &piAddressVar);
@@ -355,7 +350,6 @@ int csv_getArgumentAsScalarBoolean(void* pvApiCtx, int _iVar,
     SciErr sciErr;
     int bValue = 0;
     int *piAddressVar = NULL;
-    int m = 0, n = 0;
     int iType = 0;
 
     sciErr = getVarAddressFromPosition(pvApiCtx, _iVar, &piAddressVar);
@@ -403,8 +397,6 @@ char **csv_getArgumentAsMatrixOfString(void* pvApiCtx, int _iVar,
     int *piAddressVar = NULL;
     int m_ = 0, n_ = 0;
     int iType = 0;
-    int *lengthStringValues = NULL;
-    int i = 0;
 
     *m = 0;
     *n = 0;
@@ -458,8 +450,6 @@ wchar_t **csv_getArgumentAsMatrixOfWideString(void* pvApiCtx, int _iVar,
     int *piAddressVar = NULL;
     int m_ = 0, n_ = 0;
     int iType = 0;
-    int *lengthStringValues = NULL;
-    int i = 0;
 
     *m = 0;
     *n = 0;
@@ -597,7 +587,6 @@ int *csv_getArgumentAsMatrixofIntFromDouble(void* pvApiCtx, int _iVar,
     int iType = 0;
     int m_ = 0;
     int n_ = 0;
-    int i = 0;
     int j = 0;
 
     sciErr = getVarAddressFromPosition(pvApiCtx, _iVar, &piAddressVar);

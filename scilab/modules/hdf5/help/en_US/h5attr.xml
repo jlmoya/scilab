@@ -25,7 +25,7 @@
             h5attr(filename, location, name, data [, targetType])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -70,7 +70,7 @@
         <title>Description</title>
         <para>Create a new named attribute based on the Scilab data passed as argument.</para>
         <para>
-            The target HDF5 type can be chosen in the list available in the <ulink url="http://www.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html">HDF5 manual</ulink>.
+            The target HDF5 type can be chosen in the list available in the <link xlink:href="http://www.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html">HDF5 manual</link>.
             Examples of this HDF5 type are "H5T_MIPS_U32" or "H5T_STD_B64BE", but shortcuts as "MIPS_U32" or "STD_B64BE" can also be used.
         </para>
         <para>An attribute can be located in a group or in a dataset</para>
@@ -114,7 +114,7 @@ h5close(a);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

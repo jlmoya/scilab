@@ -10,7 +10,7 @@
         <title>Syntax</title>
         <synopsis>r = with_javasci()</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -27,9 +27,11 @@
             Returns <constant>%t</constant> if Scilab has been built with the Java interface
             or <constant>%f</constant> if not.
         </para>
-        <para>
-            <note>Note that this function will always return True under GNU/Linux or Mac OS X.</note>
-        </para>
+        <note>
+            <para>
+                Note that this function will always return True under GNU/Linux or Mac OS X.
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>

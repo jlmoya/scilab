@@ -13,58 +13,43 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" 
-		  xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" 
-		  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" 
-		  xmlns:scilab="http://www.scilab.org" xml:id="SUMMATION" xml:lang="fr_FR">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="SUMMATION" xml:lang="fr_FR">
     <refnamediv>
         <refname>SUMMATION</refname>
         <refpurpose>Addition/Soustraction de matrices</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
 				<imagedata align="center" fileref="../../../../images/palettes/SUMMATION.png"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
     </refsection>
-    <refsection id="Contents_SUMMATION">
+    <refsection xml:id="Contents_SUMMATION">
         <title>Contenu</title>
 		<itemizedlist>
 			<listitem>
-				<para>
-					<xref linkend="Description_SUMMATION">Description</xref>
-				</para>
+                <para><link linkend="Description_SUMMATION">Description</link></para>
 			</listitem>
 			<listitem>
-				<para>
-					<xref linkend="Dialogbox_SUMMATION">Paramètres</xref>
-				</para>
+                <para><link linkend="Dialogbox_SUMMATION">Paramètres</link></para>
 			</listitem>
 			<listitem>
-				<para>
-					<xref linkend="Defaultproperties_SUMMATION">Propriétés par défaut</xref>
-				</para>
+                <para><link linkend="Defaultproperties_SUMMATION">Propriétés par défaut</link></para>
 			</listitem>
 			<listitem>
-				<para>
-					<xref linkend="Interfacingfunction_SUMMATION">Fonction d'interfaçage</xref>
-				</para>
+                <para><link linkend="Interfacingfunction_SUMMATION">Fonction d'interfaçage</link></para>
 			</listitem>
 			<listitem>
-				<para>
-					<xref linkend="Computationalfunction_SUMMATION">Fonctions de calcul</xref>
-				</para>
+                <para><link linkend="Computationalfunction_SUMMATION">Fonctions de calcul</link></para>
 			</listitem>
 			<listitem>
-				<para>
-					<xref linkend="Seealso_SUMMATION">Voir aussi</xref>
-				</para>
+                <para><link linkend="Seealso_SUMMATION">Voir aussi</link></para>
 			</listitem>
 		</itemizedlist>
     </refsection>
-    <refsection id="Description_SUMMATION">
+    <refsection xml:id="Description_SUMMATION">
         <title>Description</title>
         <para>
             Ce bloc effectue l'addition ou la soustraction des entrées scalaires, vectorielles ou matricielles.
@@ -79,10 +64,10 @@
         <para/>
         <informaltable border="1" cellpadding="2">
             <tr>
-                <td align="left" width="18%">
+                <td align="left">
                     <emphasis role="bold">Nombre d'entrées</emphasis>
                 </td>
-                <td align="left" width="18%">
+                <td align="left">
                     <emphasis role="bold">Opération</emphasis>
                 </td>
                 <td align="left">
@@ -90,14 +75,14 @@
                 </td>
             </tr>
             <tr>
-                <td align="left" rawspan="2">Une</td>
+                <td align="left">Une</td>
                 <td align="left">y = u</td>
                 <td align="left">
                     <emphasis>u</emphasis> est une valeur scalaire et le bloc se comporte comme un gain unitaire.
                 </td>
             </tr>
             <tr>
-                <td align="left" rawspan="2">Une</td>
+                <td align="left">Une</td>
                 <td align="left">y = u[1]+u[2]+...+u[N]</td>
                 <td align="left">
                     <emphasis>u</emphasis> est un vecteur ou une matrice et la sortie du bloc est la somme des éléments du
@@ -131,13 +116,13 @@
         </para>
         <para/>
     </refsection>
-    <refsection id="Dialogbox_SUMMATION">
+    <refsection xml:id="Dialogbox_SUMMATION">
         <title>Paramètres</title>
-		<inlinemediaobject>
+		<mediaobject>
 			<imageobject>
 				<imagedata align="center" fileref="../../../../images/gui/SUMMATION_gui.gif" valign="middle"/>
 			</imageobject>
-		</inlinemediaobject>
+		</mediaobject>
         <para/>
         <itemizedlist>
             <listitem>
@@ -171,7 +156,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_SUMMATION">
+    <refsection xml:id="Defaultproperties_SUMMATION">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -247,7 +232,7 @@
         </itemizedlist>
 		<para/>
     </refsection>
-    <refsection id="Interfacingfunction_SUMMATION">
+    <refsection xml:id="Interfacingfunction_SUMMATION">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -255,79 +240,119 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SUMMATION">
+    <refsection xml:id="Computationalfunction_SUMMATION">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_z.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_z.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i32n.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i32n.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i16n.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i16n.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i8n.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i8n.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui32n.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui32n.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui16n.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui16n.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui8n.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui8n.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i32s.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i32s.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i16s.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i16s.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i8s.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i8s.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui32s.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui32s.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui16s.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui16s.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui8s.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui8s.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i32e.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i32e.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i16e.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i16e.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_i8e.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_i8e.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui32e.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui32e.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui16e.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui16e.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/summation_ui8e.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/summation_ui8e.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_SUMMATION" role="see also">
+    <refsection xml:id="Seealso_SUMMATION" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-				<link linkend="BIGSOM_f">BIGSOM_f</link>
+				<para><link linkend="BIGSOM_f">BIGSOM_f</link></para>
             </listitem>
             <listitem>
-				<link linkend="SUM_f">SUM_f</link>
+				<para><link linkend="SUM_f">SUM_f</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

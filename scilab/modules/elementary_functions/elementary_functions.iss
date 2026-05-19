@@ -50,4 +50,5 @@ Source: modules\{#ELEMFUNCTIONS}\macros\*.bin; DestDir: {app}\modules\{#ELEMFUNC
 ;
 Source: modules\{#ELEMFUNCTIONS}\tests\*.*; DestDir: {app}\modules\{#ELEMFUNCTIONS}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#ELEMFUNCTIONS}\help\*.*; DestDir: {app}\modules\{#ELEMFUNCTIONS}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

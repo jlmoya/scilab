@@ -20,8 +20,8 @@
             [helptxt,demotxt]=help_from_sci(funname) // return funname.xml and funname.dem.sce code as two text matrices.
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Parameters</title>
+    <refsection role="arguments">
+        <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>funname:</term>
@@ -125,9 +125,11 @@
             </itemizedlist>
         </para>
         <note>
-          The "&amp;" character as well as numerical HTML entities like "&amp;#123;" are supported
-          in the contents. Literal HTML entities like "&amp;acute;" are not accepted. Please use
-          directly the UTF-8 character like "é" instead.
+            <para>
+                The "&amp;" character as well as numerical HTML entities like "&amp;#123;" are supported
+                in the contents. Literal HTML entities like "&amp;acute;" are not accepted. Please use
+                directly the UTF-8 character like "é" instead.
+            </para>
         </note>
         <para>
         </para>
@@ -166,8 +168,10 @@
             <revision>
                 <revnumber>6.0.1</revnumber>
                 <revdescription>
-                  Numerical HTML entities like <literal>&amp;#969;</literal> are now accepted in
-                  heading comments. However, writing directly UTF8 characters should be preferred.
+                    <para>
+                        Numerical HTML entities like <literal>&amp;#969;</literal> are now accepted in
+                        heading comments. However, writing directly UTF8 characters should be preferred.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

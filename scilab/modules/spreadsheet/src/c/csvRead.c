@@ -49,7 +49,6 @@ static void removeEmptyLinesAtEnd(wchar_t** lines, int* nonEmptyLines);
 static void moveEmptyLinesToEnd(wchar_t** lines, int* nonEmptyLines);
 static int replaceDoubleQuotes(wchar_t** lines, int* nbLines);
 static int hasOnlyBlankCharacters(wchar_t** line);
-static void replaceStrings(wchar_t** lines, int* nbLines, wchar_t** toreplace, int sizetoreplace);
 static wchar_t** extractComments(wchar_t** lines, int* nbLines, const wchar_t* regexpcomments, int* nbcomments, int* iErr);
 // =============================================================================
 csvResult* csvRead(const wchar_t* filename, const wchar_t* separator, const wchar_t* decimal, wchar_t** toreplace, int sizetoreplace, const wchar_t* regexpcomments, int header)
@@ -395,7 +394,8 @@ static int replaceDoubleQuotes(wchar_t** lines, int* nbLines)
     }
 
    *nbLines = realLines;
-    return 0;
+   FREE(data);
+   return 0;
 }
 // =============================================================================
 char* csvTextScanSize(wchar_t** lines, int* nbLines, const wchar_t* separator, int* rows, int* cols, int haveRange, int* iRange)
@@ -608,7 +608,7 @@ static int hasOnlyBlankCharacters(wchar_t** line)
     }
 }
 // =============================================================================
-static void replaceStrings(wchar_t** lines, int* nbLines, wchar_t** toreplace, int sizetoreplace)
+void replaceStrings(wchar_t** lines, int* nbLines, wchar_t** toreplace, int sizetoreplace)
 {
     // number of string to compare and replace
     int nr = sizetoreplace / 2;

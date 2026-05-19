@@ -23,7 +23,7 @@
         <title>Séquence d'appel</title>
         <synopsis>[ibutton,xcoord,yxcoord,iwin,cbmenu]=xclick([flag])</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -94,12 +94,12 @@
         <para>Avec 4 ou 5 arguments en sortie, l'appui sur un bouton de la souris
             est attendu dans toutes les fenêtres graphiques.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Attention, les coordonnées <literal>xcoord</literal>,
                 <literal>ycoord</literal> renvoyées par la fonction sont relatives au système d'axes courant (voir <link linkend="gca">gca()</link>).
-            </warning>
-        </para>
+            </para>
+        </warning>
         <para>
             Les valeurs de <literal>ibutton</literal> sont décrites ci-dessous
             :
@@ -227,9 +227,9 @@
         <revhistory>
             <revision>
                 <revnumber>5.0</revnumber>
-                <revdescription>
+                <revremark>
                     La fermeture d'une figure retourne désormais le code -1000 au lieu de -100.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

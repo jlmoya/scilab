@@ -23,7 +23,7 @@
         <title>Syntax</title>
         <synopsis>prev = system_setproperty(key,value)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -49,9 +49,9 @@
     <refsection>
         <title>Description</title>
         <para> Sets the system property indicated by the specified key.</para>
-        <para>
-            <warning>Warning : change property with precaution.</warning>
-        </para>
+        <warning>
+            <para>Warning : change property with precaution.</para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>

@@ -23,7 +23,7 @@
         <title>Syntax</title>
         <synopsis>[fd, err] = mopen(files [, mode, swap ])</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -83,7 +83,7 @@
                             <td>invalid status</td>
                         </tr>
                     </informaltable>
-                    <warning>When this output argument is given, no error will be raised by the function.</warning>
+                    <warning><para>When this output argument is given, no error will be raised by the function.</para></warning>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -168,14 +168,14 @@
             The default access mode is <literal>'rb'</literal> (binary
             file reading).
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note: on Windows, in text file mode, CR (carriage
                 return) - LF (linefeed) combinations are translated into
                 LF on reading, and LF are translated to CR-LF
                 combinations on writing.
-            </note>
-        </para>
+            </para>
+        </note>
         <para>
             When you open a file for update, you can perform both input and output
             operations on the resulting stream. However, an output operation cannot
@@ -200,8 +200,6 @@
         </para>
     </refsection>
     <refsection>
-    </refsection>
-    <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 // open a SCI+'/ACKNOWLEDGEMENTS' as text and read only
@@ -217,10 +215,6 @@ mfscanf(5, fd_r, '%s')
 // close file descriptor associated to SCI+'/ACKNOWLEDGEMENTS' as text and read only
 mclose(fd_r);
     ]]></programlisting>
-    </refsection>
-    <refsection>
-    </refsection>
-    <refsection>
         <programlisting role="example"><![CDATA[
 // open a file as text with write property
 fd_w = mopen(TMPDIR+'/write.txt', 'wt');
@@ -234,10 +228,6 @@ fd_r2 = mopen(TMPDIR+'/write.txt', 'rt');
 mgetl(fd_r2)
 mclose(fd_r2);
     ]]></programlisting>
-    </refsection>
-    <refsection>
-    </refsection>
-    <refsection>
         <programlisting role="example"><![CDATA[
 // read/write a file as binary
 
@@ -263,8 +253,6 @@ mget(fd_rb, 'c')
 
 mclose(fd_rb)
     ]]></programlisting>
-    </refsection>
-    <refsection>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

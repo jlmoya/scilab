@@ -62,7 +62,7 @@
         <title>Description</title>
         <para>H5 objects have some accessible properties. All the properties name are case insensitive (except for the path or objects names).</para>
     </refsection>
-    <refsection id="H5File">
+    <refsection xml:id="H5File">
         <title>H5 File</title>
         <para>The following properties can be accessed:
             <itemizedlist>
@@ -108,7 +108,7 @@ h5close(a);
     ]]></programlisting>
     </refsection>
 
-    <refsection id="H5Group">
+    <refsection xml:id="H5Group">
         <title>H5 Group</title>
         <para>The following properties can be accessed:
             <itemizedlist>
@@ -190,7 +190,7 @@ h5close(a);
     ]]></programlisting>
     </refsection>
 
-    <refsection id="H5Dataset">
+    <refsection xml:id="H5Dataset">
         <title>H5 Dataset</title>
         <para>The following properties can be accessed:
             <itemizedlist>
@@ -247,7 +247,7 @@ h5close(a);
     ]]></programlisting>
     </refsection>
 
-    <refsection id="H5Dataspace">
+    <refsection xml:id="H5Dataspace">
         <title>H5 Dataspace</title>
         <para>The following properties can be accessed:
             <itemizedlist>
@@ -295,7 +295,7 @@ h5close(a);
     ]]></programlisting>
     </refsection>
 
-    <refsection id="H5Attribute">
+    <refsection xml:id="H5Attribute">
         <title>H5 Attribute</title>
         <para>The following properties can be accessed:
             <itemizedlist>
@@ -343,7 +343,7 @@ h5close(a);
     ]]></programlisting>
     </refsection>
 
-    <refsection id="H5Type">
+    <refsection xml:id="H5Type">
         <title>H5 Type</title>
         <para>The following properties can be accessed:
             <itemizedlist>
@@ -401,7 +401,7 @@ h5close(a);
     ]]></programlisting>
     </refsection>
 
-    <refsection id="H5Reference">
+    <refsection xml:id="H5Reference">
         <title>H5 Reference</title>
         <para>H5 Reference object wrap an hypermatrix object where elements are a reference to an H5 object.</para>
         <programlisting role="example"><![CDATA[
@@ -510,7 +510,7 @@ h5close(a);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

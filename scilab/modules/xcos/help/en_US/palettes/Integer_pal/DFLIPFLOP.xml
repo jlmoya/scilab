@@ -25,47 +25,47 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
         xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:id="DFLIPFLOP" xmln.mml="http://www.w3.org/1998/Math/MathML" xml:lang="en_US">
+        xml:id="DFLIPFLOP" xmlns:mml="http://www.w3.org/1998/Math/MathML" xml:lang="en_US">
     <refnamediv>
         <refname>DFLIPFLOP</refname>
         <refpurpose>D flip-flop</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/DFLIPFLOP.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_DFLIPFLOP">
+    <refsection xml:id="Contents_DFLIPFLOP">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DFLIPFLOP">Description</xref>
+                <para><link linkend="Description_DFLIPFLOP">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_DFLIPFLOP">Data types</xref>
+                <para><link linkend="Data_Type_DFLIPFLOP">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DFLIPFLOP">Default properties</xref>
+                <para><link linkend="Defaultproperties_DFLIPFLOP">Default properties</link></para>
             </listitem>
             <!--      TODO wait for the bug 8900 resolution https://gitlab.com/scilab/scilab/-/issues/8900
   <listitem>
-    <xref linkend="Example_DFLIPFLOP">Example</xref>
+    <para><link linkend="Example_DFLIPFLOP">Example</link></para>
   </listitem>
 -->
             <listitem>
-                <xref linkend="Interfacingfunction_DFLIPFLOP">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DFLIPFLOP">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_DFLIPFLOP">See also</xref>
+                <para><link linkend="Seealso_DFLIPFLOP">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_DFLIPFLOP">
+    <refsection xml:id="Description_DFLIPFLOP">
         <title>Description</title>
         <para>
             That block outputs on <emphasis role="bold">Q</emphasis> its input state
@@ -83,7 +83,7 @@
         <para>
             The truth table of this block is the following:
         </para>
-        <informaltable border="1" cellpadding="3" align="center">
+        <informaltable border="1" cellpadding="3">
             <tr>
                 <th>clk</th>
                 <th>en</th>
@@ -131,7 +131,7 @@
             .
         </para>
     </refsection>
-    <refsection id="Data_Type_DFLIPFLOP">
+    <refsection xml:id="Data_Type_DFLIPFLOP">
         <title>Data types</title>
         <para>
             The block supports the following types :
@@ -169,7 +169,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_DFLIPFLOP">
+    <refsection xml:id="Defaultproperties_DFLIPFLOP">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -251,7 +251,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DFLIPFLOP">
+    <refsection xml:id="Interfacingfunction_DFLIPFLOP">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -262,7 +262,7 @@
         </itemizedlist>
     </refsection>
     <!-- TODO wait for the bug 8900 resolution https://gitlab.com/scilab/scilab/-/issues/8900
-  <refsection id="Example_DFLIPFLOP">
+  <refsection xml:id="Example_DFLIPFLOP">
     <title>Example</title>
     <para>
     </para>

@@ -27,7 +27,7 @@
             %m2scideclare variable_name|sizes|data_type|property
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -39,8 +39,10 @@
                         or describe the contents of a Cell using syntax
                         <literal>x(1,2).entries</literal>.
                         <note>
-                            NOTE that for Cells and Structs,
-                            <literal>*</literal> can be used as an index (see examples below).
+                            <para>
+                                NOTE that for Cells and Structs,
+                                <literal>*</literal> can be used as an index (see examples below).
+                            </para>
                         </note>
                     </para>
                 </listitem>
@@ -52,9 +54,11 @@
                         Sizes of the variable declared, separated by blanks. Any unknown size
                         can be specified with <literal>?</literal>.
                         <warning>
-                            NOTE that a Matlab character string as defined between single quotes
-                            is considered as a vector of characters. Therefore, for instance the
-                            size of 'string' is  <literal>|1 6|</literal>.
+                            <para>
+                                NOTE that a Matlab character string as defined between single quotes
+                                is considered as a vector of characters. Therefore, for instance the
+                                size of 'string' is  <literal>|1 6|</literal>.
+                            </para>
                         </warning>
                     </para>
                 </listitem>
@@ -67,9 +71,11 @@
                         documented in the <link linkend="Type">Type</link> page.
                     </para>
                     <note>
-                        Property values that are not defined as a constant in m2ci
-                        -- like 'int8' or 'Axes' -- must be specified without quotes
-                        in the m2scideclare statement.
+                        <para>
+                            Property values that are not defined as a constant in m2ci
+                            -- like 'int8' or 'Axes' -- must be specified without quotes
+                            in the m2scideclare statement.
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -96,46 +102,46 @@
         <title>Examples</title>
           <itemizedlist>
             <listitem>
-              <literal>%m2scideclare var1|2 3|Double|Real</literal>
+              <para><literal>%m2scideclare var1|2 3|Double|Real</literal></para>
               <para>
                 var1 is declared as a 2x3 Double matrix containing real data.
               </para>
             </listitem>
             <listitem>
-              <literal>%m2scideclare var2|2 3 10|Double|Complex</literal>
+              <para><literal>%m2scideclare var2|2 3 10|Double|Complex</literal></para>
               <para>
                 var2 is declared as a 2x3x10 Double hypermatrix containing complex data
               </para>
             </listitem>
             <listitem>
-              <literal>%m2scideclare var3(1,2).name|1 10|String|?</literal>
+              <para><literal>%m2scideclare var3(1,2).name|1 10|String|?</literal></para>
               <para>
                 var3 is declared as a Struct array containing a 1x10 character string
                 in field 'name' of struct at index (1,2)
               </para>
             </listitem>
             <listitem>
-              <literal>%m2scideclare var4(1,5).entries|1 ?|Boolean|?</literal>
+              <para><literal>%m2scideclare var4(1,5).entries|1 ?|Boolean|?</literal></para>
               <para>
                 var4 is declared as a Cell containing a row boolean vector at index (1,5)
               </para>
             </listitem>
             <listitem>
-              <literal>%m2scideclare var4(1,6).entries|? ?|Int|?</literal>
+              <para><literal>%m2scideclare var4(1,6).entries|? ?|Int|?</literal></para>
               <para>
                 var4 is declared as a Cell containing a row boolean vector at index (1,5)
                 and integer data at index (1,6)
               </para>
             </listitem>
             <listitem>
-              <literal>%m2scideclare var5(*,*).name|1 ?|String|?</literal>
+              <para><literal>%m2scideclare var5(*,*).name|1 ?|String|?</literal></para>
               <para>
                 var5 is declared as a Struct array containing a 1xn character string
                 in all fields 'name'
               </para>
             </listitem>
             <listitem>
-              <literal>%m2scideclare var6(2,*).entries|1 3|Double|Real</literal>
+              <para><literal>%m2scideclare var6(2,*).entries|1 3|Double|Real</literal></para>
               <para>
                 var6 is declared as a Cell array containing a 1x3 double vector
                 in each element of its second row
@@ -157,17 +163,19 @@
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    <literal>m2scideclare</literal> supports all new defined vtypes and properties
-                    <literal>Polynomial</literal>,
-                    <literal>Function/Macro</literal>, <literal>Function/Builtin</literal>,
-                    <literal>String/Char</literal>,
-                    <literal>Handle/'Figure'</literal>, <literal>Handle/'Axes'</literal>,
-                    <literal>Int/'int8'</literal>,  <literal>Int/'int16'</literal>,
-                    <literal>Int/'int32'</literal>, <literal>Int/'int64'</literal>,
-                    <literal>Int/'uint8'</literal>, <literal>Int/'uint16'</literal>,
-                    <literal>Int/'uint32'</literal>, <literal>Int/'uint64'</literal>,
-                    <literal>Sparse/Boolean</literal>.
-                    <literal>Sparse</literal> type is now actually supported.
+                    <para>
+                        <literal>m2scideclare</literal> supports all new defined vtypes and properties
+                        <literal>Polynomial</literal>,
+                        <literal>Function/Macro</literal>, <literal>Function/Builtin</literal>,
+                        <literal>String/Char</literal>,
+                        <literal>Handle/'Figure'</literal>, <literal>Handle/'Axes'</literal>,
+                        <literal>Int/'int8'</literal>,  <literal>Int/'int16'</literal>,
+                        <literal>Int/'int32'</literal>, <literal>Int/'int64'</literal>,
+                        <literal>Int/'uint8'</literal>, <literal>Int/'uint16'</literal>,
+                        <literal>Int/'uint32'</literal>, <literal>Int/'uint64'</literal>,
+                        <literal>Sparse/Boolean</literal>.
+                        <literal>Sparse</literal> type is now actually supported.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

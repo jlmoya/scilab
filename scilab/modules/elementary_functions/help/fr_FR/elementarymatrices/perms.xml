@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="perms" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="perms" xml:lang="fr">
     <refnamediv>
         <refname>perms</refname>
         <refpurpose>Génère le tableau des permutations des éléments donnés</refpurpose>
@@ -28,8 +25,8 @@
             y = perms(x, "unique")
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>x</term>
@@ -80,28 +77,35 @@
             Sinon, les permutations sont calculées et retournées en résultat.
         </para>
         <note>
+            <para>
             Lorsque "unique" est utilisé,
             <itemizedlist>
                 <listitem>
-                    si aucun doublon n'est détecté dans <varname>x</varname>,
-                    l'algorithme sans "unique" est automatiquement utilisé pour effectuer
-                    les calculs plus rapidement.
+                     <para>
+                        si aucun doublon n'est détecté dans <varname>x</varname>,
+                        l'algorithme sans "unique" est automatiquement utilisé pour effectuer
+                        les calculs plus rapidement.
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>x</varname> est préalablement trié en ordre croissant, et
-                    <varname>y</varname> est construite en ordre lexicographique croissant.
+                     <para><varname>x</varname> est préalablement trié en ordre croissant, et
+                        <varname>y</varname> est construite en ordre lexicographique croissant.
+                    </para>
                 </listitem>
             </itemizedlist>
             Sinon : l'ordre initial des éléments de <varname>x</varname> est conservé, et l'ordre
             des permutations dans <varname>y</varname> en tient compte. Ainsi <varname>x</varname>
             pourra si besoin être trié selon l'ordre <emphasis>choisi par l'utilisateur,
             avant</emphasis> d'appeler <literal>perms()</literal>.
+            </para>
         </note>
         <warning>
+            <para>
             Pour mémoire, le poids <varname>n*n!*8</varname> de <varname>y</varname> en octets
             est listé ci-dessous en fonction du nombre <literal>n</literal> d'éléments de
             <varname>x</varname>, pour <varname>x</varname> nombres décimaux, et sans
             l'option "unique" :
+            </para>
         </warning>
         <para>
             <table border="1">
@@ -165,7 +169,7 @@ perms(c)
   [1x1 string  ]  [1x1 constant]  [1x1 boolean ]
 ]]></screen>
     <para>
-        Avec des éléments de multiplicité > 1 (doublons ou plus) :
+        Avec des éléments de multiplicité &gt; 1 (doublons ou plus) :
     </para>
     <programlisting role="example"><![CDATA[
 perms([1 0 0])
@@ -228,9 +232,9 @@ size(p)
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Option "unique" ajoutée.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

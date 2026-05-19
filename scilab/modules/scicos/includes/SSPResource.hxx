@@ -540,6 +540,7 @@ private:
     Result writeBaseUnit(xmlTextWriterPtr writer, model::Datatype* d);
     Result writeAnnotations(xmlTextWriterPtr writer);
     Result writeAnnotations(xmlTextWriterPtr writer, model::BaseObject* o);
+    Result writeAnnotationLabel(xmlTextWriterPtr writer, model::BaseObject* o);
     Result writeAnnotations(xmlTextWriterPtr writer, const ChildrenCategories::all_port_t &o);
 
     /*

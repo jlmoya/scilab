@@ -35,7 +35,6 @@
                     </para>
                     <screen><![CDATA[-->atomsSetConfig('Verbose','True');]]></screen>
                 </listitem>
-                <para></para>
                 <listitem>
                     <para>
                         List available modules
@@ -60,7 +59,6 @@ stixbox - Statistics toolbox for Scilab 5.2
                             ]]></screen>
                     </para>
                 </listitem>
-                <para></para>
                 <listitem>
                     <para>
                         Install a module, download it and extract it. The module is installed but it's not loaded in the scilab environment
@@ -72,13 +70,14 @@ Installing NISP (2.1) ... success
                             ]]></screen>
                     </para>
                 </listitem>
-                <para></para>
                 <listitem>
                     <para>
                         Load a module.
                         <tip>
-                            By default, a module is added to the list of modules to load at Scilab
-                            start when it's installed.
+                            <para>
+                                By default, a module is added to the list of modules to load at Scilab
+                                start when it's installed.
+                            </para>
                         </tip>
                         <screen><![CDATA[-->atomsLoad('NISP');
 
@@ -89,7 +88,6 @@ Load demos
                                 ]]></screen>
                     </para>
                 </listitem>
-                <para></para>
                 <listitem>
                     <para>
                         Remove a module:

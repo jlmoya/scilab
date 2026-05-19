@@ -30,7 +30,7 @@
         <title>Syntax</title>
         <synopsis>[x [,iact [,iter [,f [,info]]]]] = qp_solve(Q, p, C, b, me)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -213,8 +213,7 @@ me=3;
             </listitem>
             <listitem>
                 <para>QuadProg (Quadratic Programming Routines), Berwin A
-                    Turlach,<ulink
-        url="http://www.maths.uwa.edu.au/~berwin/software/quadprog.html">http://www.maths.uwa.edu.au/~berwin/software/quadprog.html</ulink>
+                    Turlach,<link xlink:href="http://www.maths.uwa.edu.au/~berwin/software/quadprog.html">http://www.maths.uwa.edu.au/~berwin/software/quadprog.html</link>
                 </para>
             </listitem>
         </itemizedlist>
@@ -225,13 +224,13 @@ me=3;
             Berwin A. Turlach according to the Goldfarb/Idnani algorithm
         </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
                 <revdescription>
-                    Fifth output argument <literal>info</literal> added for error information.
+                    <para>Fifth output argument <literal>info</literal> added for error information.</para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -11,9 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="getdate">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="getdate">
     <refnamediv>
         <refname>getdate</refname>
         <refpurpose>
@@ -28,56 +26,59 @@
            dateTimes = getdate(timeStamps)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>curDatetime</term>
                 <listitem>
-                    vector of integers with
-                    <table>
-                        <tr><td>Index</td>
-                            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
-                            <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
-                        </tr>
-                        <tr><td>Content</td>
-                            <th>year</th><th>month</th><th>week</th><th>yearday</th><th>weekday</th>
-                            <th>monthday</th><th>hour</th><th>minute</th><th>second</th><th>millisecond</th>
-                        </tr>
-                        <tr><td>Range</td>
-                            <td>≥ 1970</td><td>[1,12]</td><td>[1,53]</td><td>[1,366]</td><td>[1,7] 1=sunday</td>
-                            <td>[1,31]</td><td>[0,23]</td><td>[0,59]</td><td>[0,59]</td><td>[0,999]</td>
-                        </tr>
-                    </table>
-                    <para/>
-                </listitem>
+                     <para>
+                        vector of integers with
+                        <table>
+                            <tr><td>Index</td>
+                                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                                <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+                            </tr>
+                            <tr><td>Content</td>
+                                <th>year</th><th>month</th><th>week</th><th>yearday</th><th>weekday</th>
+                                <th>monthday</th><th>hour</th><th>minute</th><th>second</th><th>millisecond</th>
+                            </tr>
+                            <tr><td>Range</td>
+                                <td>≥ 1970</td><td>[1,12]</td><td>[1,53]</td><td>[1,366]</td><td>[1,7] 1=sunday</td>
+                                <td>[1,31]</td><td>[0,23]</td><td>[0,59]</td><td>[0,59]</td><td>[0,999]</td>
+                            </tr>
+                        </table></para>
+                            </listitem>
             </varlistentry>
             <varlistentry>
                 <term>timeStamp</term>
                 <listitem>
-                    integer number of seconds elapsed since 1970-01-01 00:00:00 UTC,
-                    excluding leap seconds, as defined by the POSIX standard (see description).
-                    <para/>
-                </listitem>
+                     <para>
+                        integer number of seconds elapsed since 1970-01-01 00:00:00 UTC,
+                        excluding leap seconds, as defined by the POSIX standard (see description).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>timeStamps</term>
                 <listitem>
-                    Array of positive decimal numbers representing POSIX timestamps.
-                    Negative timestamps are not accepted.
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of positive decimal numbers representing POSIX timestamps.
+                        Negative timestamps are not accepted.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>dateTimes</term>
                 <listitem>
-                    length(timeStamps)-by-10 Matrix: The row #i elements are datetime data
-                    corresponding to timeStamps(i), as documented for <varname>curDatetime</varname>,
-                    except that <literal>dateTimes(:,10)</literal> are fractions of second in [0,1)
-                    instead of milliseconds. dateTimes are expressed in the current computer's time
-                    zone.
-                    <para/>
-                </listitem>
+                     <para>
+                        length(timeStamps)-by-10 Matrix: The row #i elements are datetime data
+                        corresponding to timeStamps(i), as documented for <varname>curDatetime</varname>,
+                        except that <literal>dateTimes(:,10)</literal> are fractions of second in [0,1)
+                        instead of milliseconds. dateTimes are expressed in the current computer's time
+                        zone.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -100,7 +101,7 @@
             of seconds elapsed since 1970-01-01 00:00:00 UTC, except that leap seconds
             are not counted. Hence, if <literal>n = getdate("s")</literal> is run at an
             exact round hour, <literal>modulo(n, 3600)</literal> will return 0 instead
-            of <ulink url="http://en.wikipedia.org/wiki/Leap_second">cumulated leap seconds</ulink>
+            of <link xlink:href="http://en.wikipedia.org/wiki/Leap_second">cumulated leap seconds</link>
             added since 1972 (27s, up to 2020).
         </para>
         <para>

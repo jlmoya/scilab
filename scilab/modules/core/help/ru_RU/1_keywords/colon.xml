@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="colon">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="colon">
     <refnamediv>
         <refname>двоеточие (:)</refname>
         <refpurpose>оператор "двоеточие"</refpurpose>
@@ -80,12 +77,12 @@
                 <listitem>
                     <para>
                         является вектором-столбцом
-                        <programlisting>
+                        <programlisting><![CDATA[
                             [A(j)
                             A(j+1)
                             ...
                             A(k)]
-                        </programlisting>
+                        ]]></programlisting>
                     </para>
                 </listitem>
             </varlistentry>
@@ -94,12 +91,12 @@
                 <listitem>
                     <para>
                         is
-                        <programlisting>
+                        <programlisting><![CDATA[
                             [A(1,j)  A(1,j+1)  ... A(1,k)
                             A(2,j)  A(2,j+1)  ... A(2,k)
                             . . . . . . . . . . .
                             A(M,j)  A(M,j+1)  ... A(M,k)]
-                        </programlisting>
+                        ]]></programlisting>
                         если <literal>A</literal> имеет размеры <literal>M</literal> на <literal>N</literal>;
                     </para>
                 </listitem>
@@ -108,12 +105,12 @@
                 <term>A(j:k,:)</term>
                 <listitem>
                     <para>is
-                        <programlisting>
+                        <programlisting><![CDATA[
                             [A(j,1)    A(j,2)   ... A(j,N)
                             A(j+1,1)  A(j+1,2) ... A(j+1,N)
                             . . . . . . . . . . .
                             A(k,1)    A(k,2)   ... A(k,N)]
-                        </programlisting>
+                        ]]></programlisting>
                         если <literal>A</literal> имеет размеры <literal>M</literal> на <literal>N</literal>;
                     </para>
                 </listitem>
@@ -195,16 +192,19 @@ A(i)
                 <revdescription>
                   <itemizedlist>
                     <listitem>
-                        <literal>type(:)</literal> равен 129 (как и у <literal>1:$</literal>)
-                        вместо 1. <literal>size(:)</literal> неопределён
-                        (вместо <literal>[-1,-1]</literal>).
+                         <para><literal>type(:)</literal> равен 129 (как и у <literal>1:$</literal>)
+                            вместо 1. <literal>size(:)</literal> неопределён
+                            (вместо <literal>[-1,-1]</literal>).
+                        </para>
                     </listitem>
                     <listitem>
-                        <literal>typeof(:)</literal> теперь <literal>"implicitlist"</literal>,
-                        как и у <literal>1:$</literal>.
+                         <para><literal>typeof(:)</literal> теперь <literal>"implicitlist"</literal>,
+                            как и у <literal>1:$</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                       <literal>%i:10</literal> теперь выдаёт ошибку.
+                         <para><literal>%i:10</literal> теперь выдаёт ошибку.
+                        </para>
                     </listitem>
                   </itemizedlist>
                 </revdescription>

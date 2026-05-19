@@ -37,14 +37,16 @@ struct OBJ_ATTR
     Callable* callable;
 };
 
+class Object;
+
 class EXTERN_AST Classdef : public types::InternalType
 {
 public:
     Classdef(const std::wstring& name,
-        std::map<std::wstring, OBJ_ATTR>& properties,
-        std::map<std::wstring, OBJ_ATTR>& methods,
-        std::map<std::wstring, std::vector<types::InternalType*>>& enumerations,
-        std::vector<std::wstring>& superclass);
+        const std::map<std::wstring, OBJ_ATTR>& properties,
+        const std::map<std::wstring, OBJ_ATTR>& methods,
+        const std::map<std::wstring, std::vector<types::InternalType*>>& enumerations,
+        const std::vector<std::wstring>& superclass);
 
     virtual ~Classdef();
 
@@ -100,22 +102,19 @@ public:
     bool extract(const std::wstring& name, InternalType*& out);
     Classdef* insert(typed_list* _pArgs, InternalType* _pSource);
 
-    std::wstring getPropertyClassdef(const std::wstring& name);
     std::wstring getMethodClassdef(const std::wstring& name);
 
     bool isAncestorOf(const Classdef* maybeDerived);
 
-    //static
-    /*
     void addStaticProperty(const std::wstring& name, const OBJ_ATTR& attr);
     void addStaticMethod(const std::wstring& name, const OBJ_ATTR& attr);
     InternalType* getStatic(const std::wstring& name);
     bool hasStatic(const std::wstring& name);
     bool setStatic(const std::wstring& name, InternalType* pIT);
-    */
+    bool isStaticMethod(const std::wstring& name);
 
     InternalType* instantiateProperty(const std::wstring& name, const OBJ_ATTR& attr);
-    InternalType* createEmptyInstance();
+    Object* createEmptyInstance();
 
 private:
     std::wstring name;
@@ -126,11 +125,13 @@ private:
     std::map<std::wstring, InternalType*> instances;
     std::vector<std::tuple<std::wstring, Classdef*>> supers;
     bool initialized;
+    bool initializing;
 
     void LoadClassdef();
     void internalCall(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e);
 
-/*****************************/
+    std::vector<Object*> objects;
+    /*****************************/
 
     //new implementation following rules of shadowing of scripting languages (js/python/matlab)
     std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>> methods;
@@ -143,17 +144,34 @@ private:
     void addHelpers();
     void addHelper(const std::wstring& name, Function::ReturnValue (Classdef::*_pFunc)(typed_list&, int, typed_list&));
     
-    std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>> getMethods() { return methods; }
-    std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>> getConstructors() { return constructors; }
+    const std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>>& getMethods() const { return methods; }
+    const std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>>& getConstructors() const { return constructors; }
 
     Callable* getMethod(const std::wstring& name);
 
     OBJ_ATTR getConstructor() { return std::get<0>(constructors[getName()]); }
     void showMethodTable();
 
-    std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>> getProperties() { return properties; }
+    const std::map<std::wstring, std::tuple<OBJ_ATTR, Classdef*>>& getProperties() const { return properties; }
 
-protected:
+    void addObject(Object* obj)
+    {
+        LoadClassdef();
+        objects.push_back(obj);
+    }
+
+    void removeObject(Object* obj)
+    {
+        auto it = std::find(objects.begin(), objects.end(), obj);
+        if (it != objects.end())
+        {
+            *it = objects.back(); //replace found object by last one
+            objects.pop_back(); //remove last object (duplicate) and remove O(1) instead of O(n) with erase.
+        }
+    }
+
+    std::vector<Object*> getObjects() { return objects; }
+  protected:
     Function::ReturnValue object_disp(typed_list& in, int _iRetCount, typed_list& out);
     Function::ReturnValue object_eq(typed_list& in, int _iRetCount, typed_list& out);
     Function::ReturnValue object_ne(typed_list& in, int _iRetCount, typed_list& out);

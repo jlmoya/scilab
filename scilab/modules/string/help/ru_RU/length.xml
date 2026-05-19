@@ -13,9 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xml:id="length" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xml:id="length" xml:lang="ru">
     <refnamediv>
         <refname>length</refname>
         <refpurpose>
@@ -129,16 +127,20 @@ length(a)
                 <revremark>
                     <itemizedlist>
                         <listitem>
-                            Функция <literal>length()</literal> для любого cell-массива <literal>C</literal>
-                            ранее всегда была равна 3, каким бы ни было количество размерностей и размеры массива.
-                            Теперь это количество элементов массива нулевой глубины (не считая рекурсии),
-                            эквивалентно инструкции <literal>size(C, "*")</literal>.
+                             <para>
+                                Функция <literal>length()</literal> для любого cell-массива <literal>C</literal>
+                                ранее всегда была равна 3, каким бы ни было количество размерностей и размеры массива.
+                                Теперь это количество элементов массива нулевой глубины (не считая рекурсии),
+                                эквивалентно инструкции <literal>size(C, "*")</literal>.
+                            </para>
                         </listitem>
                         <listitem>
-                            Функция <literal>length()</literal> для любого массива структур <literal>S</literal> 
-                            ранее была эквивалентна количеству её полей плюс 2, каким бы ни было количество
-                            размерностей и размеры массива. Теперь это количество элементов массива нулевой
-                            глубины, эквивалентно инструкции <literal>size(S, "*")</literal>.
+                             <para>
+                                Функция <literal>length()</literal> для любого массива структур <literal>S</literal> 
+                                ранее была эквивалентна количеству её полей плюс 2, каким бы ни было количество
+                                размерностей и размеры массива. Теперь это количество элементов массива нулевой
+                                глубины, эквивалентно инструкции <literal>size(S, "*")</literal>.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

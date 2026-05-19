@@ -9,6 +9,9 @@ STATISTICS_C_SOURCES = \
 	src/c/ipmpar1.c \
 	src/c/sci_string_matrix.c
 
+STATISTICS_CPP_SOURCES = \
+    src/cpp/pairwise_distances.cpp
+
 STATISTICS_FORTRAN_SOURCES = \
     src/dcdflib/psi.f \
     src/dcdflib/alngam.f \
@@ -94,11 +97,14 @@ GATEWAY_CPP_SOURCES = \
 	sci_gateway/cpp/sci_percent_cov.cpp \
 	sci_gateway/cpp/sci_nansum.cpp \
 	sci_gateway/cpp/sci_mean.cpp \
-	sci_gateway/cpp/sci_nanmean.cpp
+	sci_gateway/cpp/sci_nanmean.cpp \
+    sci_gateway/cpp/sci_pdist.cpp \
+    sci_gateway/cpp/sci_pdist2.cpp
 
 libscistatistics_la_CPPFLAGS = \
     -I$(srcdir)/includes/ \
     -I$(srcdir)/src/c/ \
+    -I$(srcdir)/src/cpp/ \
     -I$(top_srcdir)/modules/ast/includes/ast/ \
     -I$(top_srcdir)/modules/ast/includes/exps/ \
     -I$(top_srcdir)/modules/ast/includes/operations/ \
@@ -118,9 +124,7 @@ libscistatistics_la_CPPFLAGS = \
 pkglib_LTLIBRARIES = libscistatistics.la
 noinst_LTLIBRARIES = libscistatistics-algo.la
 
-
-
-libscistatistics_algo_la_SOURCES = $(STATISTICS_C_SOURCES) $(STATISTICS_FORTRAN_SOURCES)
+libscistatistics_algo_la_SOURCES = $(STATISTICS_C_SOURCES) $(STATISTICS_CPP_SOURCES) $(STATISTICS_FORTRAN_SOURCES)
 libscistatistics_la_SOURCES = $(GATEWAY_C_SOURCES) $(GATEWAY_CPP_SOURCES)
 libscistatistics_algo_la_CPPFLAGS = $(libscistatistics_la_CPPFLAGS)
 

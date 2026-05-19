@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="string" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="string" xml:lang="ru">
     <refnamediv>
         <refname>string</refname>
         <refpurpose>преобразование в строку</refpurpose>
@@ -61,13 +58,16 @@
             то <literal>[out, in, text] = string(SciFun)</literal> возвращает три вектора строк:
             <itemizedlist>
                 <listitem>
-                    <varname>out</varname> - вектор выходных переменных,
+                     <para><varname>out</varname> - вектор выходных переменных,
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>in</varname> - вектор входных переменных, а
+                     <para><varname>in</varname> - вектор входных переменных, а
+                    </para>
                 </listitem>
                 <listitem>
-                    <varname>text</varname> - вектор (вектор-столбец) исходного кода функции.
+                     <para><varname>text</varname> - вектор (вектор-столбец) исходного кода функции.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -89,7 +89,7 @@
     </refsection>
     <refsection>
         <title>Примеры</title>
-        <programlisting role="example">
+        <programlisting role="example"><![CDATA[
             string(rand(2, 2))
 
             deff("y = mymacro(x)", "y = x + 1")
@@ -111,7 +111,7 @@
             format(v(2))
 
             string(1:4:$)
-        </programlisting>
+        ]]></programlisting>
     </refsection>
     <refsection role="see also">
         <title>Смотрите также</title>

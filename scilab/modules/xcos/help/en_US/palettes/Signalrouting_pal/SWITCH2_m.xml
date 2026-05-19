@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/SWITCH2_m.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_SWITCH2_m">
+    <refsection xml:id="Contents_SWITCH2_m">
         <title>Contents</title>
         <itemizedlist>
                 <listitem>
-                    <xref linkend="Description_SWITCH2_m">Description</xref>
+                    <para><link linkend="Description_SWITCH2_m">Description</link></para>
                 </listitem>
                 <listitem>
-                    <xref linkend="Dialogbox_SWITCH2_m">Parameters</xref>
+                    <para><link linkend="Dialogbox_SWITCH2_m">Parameters</link></para>
                 </listitem>
                 <listitem>
-                    <xref linkend="Defaultproperties_SWITCH2_m">Default properties</xref>
+                    <para><link linkend="Defaultproperties_SWITCH2_m">Default properties</link></para>
                 </listitem>
                 <listitem>
-                    <xref linkend="Example_SWITCH2_m">Example</xref>
+                    <para><link linkend="Example_SWITCH2_m">Example</link></para>
                 </listitem>
                 <listitem>
-                    <xref linkend="Interfacingfunction_SWITCH2_m">Interfacing function</xref>
+                    <para><link linkend="Interfacingfunction_SWITCH2_m">Interfacing function</link></para>
                 </listitem>
                 <listitem>
-                    <xref linkend="Computationalfunction_SWITCH2_m">Computational function</xref>
+                    <para><link linkend="Computationalfunction_SWITCH2_m">Computational function</link></para>
                 </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_SWITCH2_m">
+    <refsection xml:id="Description_SWITCH2_m">
         <title>Description</title>
         <para>
             The Switch block passes through the first (top) input or the third
@@ -78,14 +78,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_SWITCH2_m">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_SWITCH2_m">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/SWITCH2_m_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/SWITCH2_m_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -170,7 +169,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_SWITCH2_m">
+    <refsection xml:id="Defaultproperties_SWITCH2_m">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -249,7 +248,7 @@
         </itemizedlist>
 		<para/>
     </refsection>
-    <refsection id="Example_SWITCH2_m">
+    <refsection xml:id="Example_SWITCH2_m">
         <title>Example</title>
         <para>
             <link type="scilab" linkend="scilab.xcos/xcos/examples/signalrouting_pal/SWITCH2_m_Example.zcos">
@@ -261,7 +260,7 @@
             </link>
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_SWITCH2_m">
+    <refsection xml:id="Interfacingfunction_SWITCH2_m">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -269,7 +268,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_SWITCH2_m">
+    <refsection xml:id="Computationalfunction_SWITCH2_m">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

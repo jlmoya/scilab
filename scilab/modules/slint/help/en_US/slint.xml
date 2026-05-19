@@ -11,10 +11,7 @@
  * https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="slint" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="slint" xml:lang="en">
     <refnamediv>
         <refname>slint</refname>
         <refpurpose>Checks the Scilab code of given macros against a set of criteria</refpurpose>
@@ -32,38 +29,48 @@
             out = slint(files, conf)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>files</term>
                 <listitem>
-                    matrix of strings: the <literal>.sci</literal> files or the directories to analyze.
-                    <literal>.sce</literal> or other types of input files are ignored.
+                     <para>
+                        matrix of strings: the <literal>.sci</literal> files or the directories to analyze.
+                        <literal>.sce</literal> or other types of input files are ignored.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>conf</term>
                 <listitem>
-                    a string: the name of the configuration file (by default it's <literal>SCIHOME/slint.xml</literal>).
+                     <para>
+                        a string: the name of the configuration file (by default it's <literal>SCIHOME/slint.xml</literal>).
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>resFilename</term>
                 <listitem>
-                    a string: the path + name of the file of XML-formated results.
+                     <para>
+                        a string: the path + name of the file of XML-formated results.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>print</term>
                 <listitem>
-                    a boolean: if true the result is printed else the result is a struct.
+                     <para>
+                        a boolean: if true the result is printed else the result is a struct.
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>out</term>
                 <listitem>
-                    a struct (if print is false).
+                     <para>
+                        a struct (if print is false).
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -71,14 +78,16 @@
     <refsection>
         <title>Description</title>
         <para>
-            slint has been written to check the &quot;quality&quot; of the Scilab's code according to configurable rules.
+            slint has been written to check the "quality" of the Scilab's code according to configurable rules.
        </para>
         <para>
             Scripts that list Scilab instructions out of any function can be analyzed,
             provided that their files have the <literal>.sci</literal> extension.
         </para>
         <warning>
-            The Scilab code to be analyzed must show no error at compilation time.
+            <para>
+                The Scilab code to be analyzed must show no error at compilation time.
+            </para>
         </warning>
         <para>
             <emphasis role="bold">slint(files)</emphasis> analyzes given files, and prints results
@@ -214,9 +223,9 @@ endfunction
         <revhistory>
             <revision>
                 <revnumber>6.0</revnumber>
-                <revdescription>
-                    slint introduced
-                </revdescription>
+                <revremark>
+                    slint introduced (developed with the contribution of CNES).
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

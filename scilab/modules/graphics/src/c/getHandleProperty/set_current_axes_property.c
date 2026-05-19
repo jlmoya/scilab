@@ -45,7 +45,6 @@ int set_current_axes_property(void* _pvCtx, int iObjUID, void* _pvData, int valu
     int iCurAxesUID = 0;
     int iCurChildUID = 0;
     int iParentFigureUID = -1;
-    int* piParentFigureUID = &iParentFigureUID;
     int type = -1;
     int *piType = &type;
 

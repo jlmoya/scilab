@@ -27,7 +27,7 @@ index_gitlab_pages:
       - public
   when: always
 
-# Create a new linux_runner:${DOCKER_TAG} from a downloaded binary
+# Create a new linux_runner:${CI_COMMIT_TAG} (eg. X.Y.Z) from a downloaded binary
 create_linux_runner:
   stage: publish
   image: docker:20.10.16
@@ -38,21 +38,21 @@ create_linux_runner:
     DISTRO: "ubuntu-22.04"
   script:
     - |
-      if echo "$DOCKER_TAG" | grep -vqEo '[0-9]{1,}.[0-9]{1,}.[0-9]{1,}'; then
-        echo "invalid DOCKER_TAG variable: expecting a Scilab X.Y.Z version"
+      if echo "$CI_COMMIT_TAG" | grep -vqEo '[0-9]{1,}.[0-9]{1,}.[0-9]{1,}'; then
+        echo "invalid CI_COMMIT_TAG variable: expecting a Scilab X.Y.Z version"
         exit 1
       fi
     - docker login -u "${CI_REGISTRY_USER}" -p "${CI_JOB_TOKEN}" "${CI_REGISTRY}"
     - |
-      docker build -t ${SCI_REGISTRY_IMAGE}/linux-runner:${DOCKER_TAG} - <<EOF
-      FROM ${SCI_REGISTRY_IMAGE}/${DISTRO}:${DOCKER_TAG}
+      docker build -t ${SCI_REGISTRY_IMAGE}/linux-runner:${CI_COMMIT_TAG} - <<EOF
+      FROM ${SCI_REGISTRY_IMAGE}/${DISTRO}:${CI_COMMIT_TAG}
       USER root
-      RUN curl -L https://www.scilab.org/download/${DOCKER_TAG}/scilab-${DOCKER_TAG}.bin.x86_64-linux-gnu.tar.xz | tar xJf - -C /opt/
+      RUN curl -L https://www.scilab.org/download/${CI_COMMIT_TAG}/scilab-${CI_COMMIT_TAG}.bin.x86_64-linux-gnu.tar.xz | tar xJf - -C /opt/
       USER scilab
-      ENV PATH="${PATH}:/opt/scilab-${DOCKER_TAG}/bin"
+      ENV PATH="${PATH}:/opt/scilab-${CI_COMMIT_TAG}/bin"
       EOF
-    - docker image tag ${SCI_REGISTRY_IMAGE}/linux-runner:${DOCKER_TAG} ${SCI_REGISTRY_IMAGE}/linux-runner:latest
-    - docker push ${SCI_REGISTRY_IMAGE}/linux-runner:${DOCKER_TAG}
+    - docker image tag ${SCI_REGISTRY_IMAGE}/linux-runner:${CI_COMMIT_TAG} ${SCI_REGISTRY_IMAGE}/linux-runner:latest
+    - docker push ${SCI_REGISTRY_IMAGE}/linux-runner:${CI_COMMIT_TAG}
     - docker push ${SCI_REGISTRY_IMAGE}/linux-runner:latest
     - docker logout "${CI_REGISTRY}"
   when: manual

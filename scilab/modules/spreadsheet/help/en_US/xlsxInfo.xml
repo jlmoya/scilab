@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is released under the 3-clause BSD license. See COPYING-BSD.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="xlsxInfo" xml:lang="en">
+    <refnamediv>
+        <refname>xlsxInfo</refname>
+        <refpurpose>
+            Get information about an Excel file.
+        </refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+            info = xlsxInfo(filename [, sheet_identifier])
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>filename</term>
+                <listitem>
+                    <para>A string specifying the path to the Excel file to analyze.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>sheet_identifier (optional)</term>
+                <listitem>
+                    <para>A string (sheet name) or positive integer (sheet index, 1-based) identifying a specific sheet.</para>
+                    <itemizedlist>
+                        <listitem><para>If omitted: Returns information about the entire workbook (all sheets)</para></listitem>
+                        <listitem><para>If provided: Returns detailed information about the specified sheet only</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>Read metadata and information from an Excel (.xlsx) file without loading the actual data.</para>
+        <para>This function provides comprehensive information about the file structure, metadata, and properties.</para>
+        <para><emphasis role="bold">Usage modes:</emphasis></para>
+        <itemizedlist>
+            <listitem><para><emphasis role="bold">Without sheet_identifier</emphasis>: Returns workbook-level information including all sheet names, file metadata, and document properties.</para></listitem>
+            <listitem><para><emphasis role="bold">With sheet_identifier</emphasis>: Returns detailed information about a specific sheet, including dimensions and sheet-specific metadata.</para></listitem>
+        </itemizedlist>
+        <para>The file must exist and be a valid Excel (.xlsx) format.</para>
+    </refsection>
+    <refsection>
+        <title>Return values</title>
+        <para>This function returns a structure containing comprehensive information about the Excel file.</para>
+        <para><emphasis role="bold">When called without sheet_identifier (workbook information):</emphasis></para>
+        <itemizedlist>
+            <listitem><para><emphasis role="bold">filename</emphasis>: A string containing the path to the analyzed file.</para></listitem>
+            <listitem><para><emphasis role="bold">total_sheets</emphasis>: A double indicating the number of sheets in the file.</para></listitem>
+            <listitem><para><emphasis role="bold">sheet_names</emphasis>: A string array containing the names of all sheets in the file.</para></listitem>
+            <listitem><para><emphasis role="bold">creator</emphasis>: A string containing the name of the creator of the file.</para></listitem>
+            <listitem><para><emphasis role="bold">last_modified_by</emphasis>: A string containing the name of the last person who modified the file.</para></listitem>
+            <listitem><para><emphasis role="bold">created_date</emphasis>: A string containing the creation date and time.</para></listitem>
+            <listitem><para><emphasis role="bold">modified_date</emphasis>: A string containing the last modified date and time.</para></listitem>
+            <listitem><para><emphasis role="bold">title</emphasis>: A string containing the document title (may be empty).</para></listitem>
+            <listitem><para><emphasis role="bold">subject</emphasis>: A string containing the document subject (may be empty).</para></listitem>
+            <listitem><para><emphasis role="bold">description</emphasis>: A string containing the document description (may be empty).</para></listitem>
+            <listitem><para><emphasis role="bold">file_size</emphasis>: A double indicating the size of the file in bytes.</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">When called with sheet_identifier (specific sheet information):</emphasis></para>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">sheet_name</emphasis>: A string containing the name of the sheet.</para></listitem>
+			<listitem><para><emphasis role="bold">sheet_index</emphasis>: A double indicating the sheet index in the workbook.</para></listitem>
+			<listitem><para><emphasis role="bold">max_row</emphasis>: A double indicating the maximum row number containing data.</para></listitem>
+			<listitem><para><emphasis role="bold">max_col</emphasis>: A double indicating the maximum column number containing data.</para></listitem>
+			<listitem><para><emphasis role="bold">cell_count</emphasis>: A double indicating the total number of cells containing data.</para></listitem>
+		</itemizedlist> 	
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+        // Create example file
+        data = [1 2 3; 4 5 6; 7 8 9];
+        test_file = TMPDIR + "/test_info.xlsx";
+        xlsxWrite(data, test_file, "title", "Test File", "subject", "Example", ..
+                  "description", "Test file for xlsxInfo");
+        
+        // Get information about the entire workbook
+        info = xlsxInfo(test_file)
+
+        // Get information about a specific sheet by name
+        sheet_info = xlsxInfo(test_file, "Sheet1")
+
+        ]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="xlsxRead">xlsxRead</link>
+            </member>
+            <member>
+                <link linkend="xlsxWrite">xlsxWrite</link>
+            </member>
+            <member>
+                <link linkend="xlsxSheet">xlsxSheet</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>
+                    Introduction in Scilab.
+                </revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

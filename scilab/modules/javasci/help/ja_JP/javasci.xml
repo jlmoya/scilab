@@ -103,24 +103,18 @@ class Example1 {
                 <revnumber>5.4.0</revnumber>
                 <revdescription>新規メソッド追加:
                     <itemizedlist>
-                        <listitem>Scilab.execException(String)
-                            <para>
-                                Scilab.exec(String) と同じですが, Scilabエラーが
-                                発生した際に例外を返します
-                            </para>
-                        </listitem>
-                        <listitem>Scilab.execException(String[])
-                            <para>
-                                Scilab.exec(String[]) と同じですが, Scilabエラーが
-                                発生した際に例外を返します
-                            </para>
-                        </listitem>
-                        <listitem>Scilab.execException(File)
-                            <para>
-                                Scilab.exec(File) と同じですが, Scilabエラーが
-                                発生した際に例外を返します
-                            </para>
-                        </listitem>
+                        <listitem>
+                             <para>Scilab.execException(String)
+                                </para>
+                            </listitem>
+                        <listitem>
+                             <para>Scilab.execException(String[])
+                                </para>
+                            </listitem>
+                        <listitem>
+                             <para>Scilab.execException(File)
+                                </para>
+                            </listitem>
                     </itemizedlist>
                 </revdescription>
             </revision>
@@ -128,14 +122,19 @@ class Example1 {
                 <revnumber>5.4.0</revnumber>
                 <revdescription>
                     <itemizedlist>
-                        <listitem>Javasci は疎行列と論理値疎行列データ型をサポートします.</listitem>
-                        <listitem>Javasci はtlists, mlists およびリストデータ型をサポートします.</listitem>
-                        <listitem>Javasci 多項式データ型をサポートします.</listitem>
-                        <listitem>mList形式のJavasciデータ型構造体をサポートします.
-                        </listitem>
-                    </itemizedlist>
-                </revdescription>
-            </revision>
-        </revhistory>
-    </refsection>
-</refentry>
+                        <listitem>
+                             <para>Javasci は疎行列と論理値疎行列データ型をサポートします.</para></listitem>
+                            <listitem>
+                                 <para>Javasci はtlists, mlists およびリストデータ型をサポートします.</para></listitem>
+                                <listitem>
+                                     <para>Javasci 多項式データ型をサポートします.</para></listitem>
+                                    <listitem>
+                                         <para>mList形式のJavasciデータ型構造体をサポートします.
+                                        </para>
+                                    </listitem>
+                                </itemizedlist>
+                            </revdescription>
+                        </revision>
+                    </revhistory>
+                </refsection>
+            </refentry>

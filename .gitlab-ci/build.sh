@@ -95,7 +95,7 @@ export LD_LIBRARY_PATH
 # configure (with reconfigure for up to date info)
 echo -e "\e[0Ksection_start:$(date +%s):configure[collapsed=true]\r\e[0KConfigure"
 cd scilab ||exit 1
-./configure --prefix='' | tee -a "../${LOG_PATH}/build_configure_${CI_COMMIT_SHORT_SHA}.log"
+./configure --prefix='' --enable-stop-on-warning | tee -a "../${LOG_PATH}/build_configure_${CI_COMMIT_SHORT_SHA}.log"
 CONFIGURE_STATUS="${PIPESTATUS[0]}"
 cp -a config.log "../${LOG_PATH}/build_config.log_${CI_COMMIT_SHORT_SHA}.log"
 if [ "${CONFIGURE_STATUS}" -ne 0 ]; then
@@ -107,7 +107,7 @@ echo -e "\e[0Ksection_end:$(date +%s):configure\r\e[0K"
 echo -e "\e[0Ksection_start:$(date +%s):make\r\e[0KMake"
 make --jobs="$(nproc)" all &>>"../${LOG_PATH}/build_make_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../${LOG_PATH}/build_make_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
 make doc &>"../${LOG_PATH}/build_doc_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_doc_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
-make doc-inline &>"../${LOG_PATH}/build_help_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_help_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
+make help &>"../${LOG_PATH}/build_help_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_help_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
 echo -e "\e[0Ksection_end:$(date +%s):make\r\e[0K"
 
 # install to tmpdir

@@ -29,6 +29,40 @@ build_javadoc:
       - public
   when: manual
 
+
+# Check the help files on merge request against RelaxNG schema
+check_help:
+  stage: test
+  tags: [x86_64-linux-gnu, docker, scilab]
+  image: ${SCI_REGISTRY_IMAGE}/ubuntu-22.04:${DOCKER_TAG}
+  variables:
+    ARTIFACT_DOWNLOAD_ATTEMPTS: 3
+    EXECUTOR_JOB_SECTION_ATTEMPTS: 3
+    GET_SOURCES_ATTEMPTS: 3
+    GIT_STRATEGY: "fetch"
+  retry:
+    max: 2
+    when: runner_system_failure
+  script:
+    - tar -xJf "${SCI_VERSION_STRING}.bin.${ARCH}.tar.xz" -C $HOME
+    - |
+      $HOME/${SCI_VERSION_STRING}/bin/scilab -nwni -quit <<EOF
+      assert_checktrue(check_help([],'en_US','${SCI_VERSION_STRING}/check_help.xml'))
+      EOF
+  needs:
+    - linux_build_mr
+    - linux_set_env
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - scilab/modules/*/help/**/*.xml
+  artifacts:
+    when: always
+    paths:
+      - "${SCI_VERSION_STRING}/check_help.xml"
+    reports:
+      junit: "${SCI_VERSION_STRING}/check_help.xml"
+
 # build Doxygen
 build_doxygen:
   stage: postbuild

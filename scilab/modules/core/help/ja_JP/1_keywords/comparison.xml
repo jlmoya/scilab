@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ja" xml:id="comparison">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="comparison">
     <refnamediv>
         <refname>comparison</refname>
         <refpurpose>比較, 関係演算子</refpurpose>
@@ -413,12 +410,15 @@ sine == sin
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>~</literal> (not) priority is now higher than the comparisons
-                            one (<literal>==  ~=  &lt;  &lt;=  >=  ></literal>).
+                             <para><literal>~</literal> (not) priority is now higher than the comparisons
+                                one (<literal>==  ~=  &lt;  &lt;=  &gt;=  &gt;</literal>).
+                            </para>
                         </listitem>
                         <listitem>
-                            Complex numbers with a null imaginary part are now compared as real
-                            numbers.
+                             <para>
+                                Complex numbers with a null imaginary part are now compared as real
+                                numbers.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

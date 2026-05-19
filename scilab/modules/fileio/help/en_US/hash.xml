@@ -19,7 +19,7 @@
             res = hash(string, algorithm)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -51,7 +51,7 @@
     <refsection>
         <title>Description</title>
         <para>
-            <function>hash</function> get the checksum of a file or a string using the hashing function <term>algorithm</term>. The available functions are:
+            <function>hash</function> get the checksum of a file or a string using the hashing function <literal>algorithm</literal>. The available functions are:
         </para>
         <para>
         <informaltable border="1">
@@ -96,7 +96,7 @@ hash(fp ,'sha256')
 mclose(fp)
  ]]></programlisting>
     </refsection>
-      <refsection>
+      <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

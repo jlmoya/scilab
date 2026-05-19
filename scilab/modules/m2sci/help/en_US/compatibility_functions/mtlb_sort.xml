@@ -26,7 +26,7 @@
             P = mtlb_sort(X,dim[,mode])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -88,10 +88,10 @@
             If you want to have a more efficient code it is possible to replace
             <literal>mtlb_sort</literal> call by <link linkend="gsort">gsort</link> call.
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Caution: <literal>mtlb_sort</literal> has not to be used for hand coded functions.
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
 </refentry>

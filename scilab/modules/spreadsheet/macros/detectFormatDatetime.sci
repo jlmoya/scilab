@@ -146,6 +146,11 @@ function [fmt, typ] = detectFormatDatetime(txt)
 
     if fmt == "" then
         typ="string";
+        m = members(str, ["false", "true", "F", "T"]);
+        if and(m == 1) then
+            typ = "boolean";
+            return;
+        end
         if and(isnum(txt)) then
             typ = "double";
         end

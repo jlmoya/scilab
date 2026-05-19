@@ -33,7 +33,7 @@
             toJSON(var, indent, filename)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -122,6 +122,72 @@ toJSON(list(42))
 toJSON([[%nan, 1]; [1e+380, 1e-380]; [%inf, -%inf]])
 toJSON([[%nan, 1]; [1e+380, 1e-380]; [%inf, -%inf]], convertInfAndNaN=%f)
  ]]></programlisting>
+ <screen><![CDATA[
+    
+--> // structure
+--> st = struct("status", "OK", "value", 12);
+--> toJSON(st)
+
+ ans = 
+
+  "{"status":"OK","value":12}"
+
+--> // matrix
+--> toJSON([1, 2, 3])
+
+ ans = 
+
+  "[1,2,3]"
+
+--> // pretty print
+--> st = struct("test", ["a" "b"], "values", [1 2]);
+--> toJSON(st)
+
+ ans = 
+
+  "{"test":["a","b"],"values":[1,2]}"
+
+--> toJSON(st, 4)
+
+ ans = 
+
+  "{
+    "test": [
+        "a",
+        "b"
+    ],
+    "values": [
+        1,
+        2
+    ]
+}"
+
+--> // Scalar value
+--> toJSON(42)
+
+ ans = 
+
+  "42"
+
+--> toJSON(list(42))
+
+ ans = 
+
+  "[42]"
+
+--> // non finite values
+--> toJSON([[%nan, 1]; [1e+380, 1e-380]; [%inf, -%inf]])
+
+ ans = 
+
+  "[[null,1],[null,0],[null,null]]"
+
+--> toJSON([[%nan, 1]; [1e+380, 1e-380]; [%inf, -%inf]], convertInfAndNaN=%f)
+
+ ans = 
+
+  "[[NaN,1],[Infinity,0],[Infinity,-Infinity]]"
+    ]]></screen>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -149,7 +215,7 @@ toJSON([[%nan, 1]; [1e+380, 1e-380]; [%inf, -%inf]], convertInfAndNaN=%f)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
@@ -166,9 +232,11 @@ toJSON([[%nan, 1]; [1e+380, 1e-380]; [%inf, -%inf]], convertInfAndNaN=%f)
             </revision>
             <revision>
                 <revnumber>2024.1.0</revnumber>
-                <revremark>
-                    <literal>convertInfAndNaN</literal> option added.
-                </revremark>
+                <revdescription>
+                    <para>
+                        <literal>convertInfAndNaN</literal> option added.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

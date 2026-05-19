@@ -23,7 +23,7 @@
             [R, G, B] = uigetcolor(title, ..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -88,16 +88,14 @@ uigetcolor()
 RBG = uigetcolor(0, 128, 255)
 RBG = uigetcolor("My color chooser", 250, 150, 50)
      ]]></programlisting>
-        <para/>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/uigetcolor_1.png"/>
             </imageobject>
-            <para/>
             <imageobject>
                 <imagedata fileref="../../images/uigetcolor_RGB.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

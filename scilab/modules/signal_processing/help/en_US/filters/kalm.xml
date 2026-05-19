@@ -8,7 +8,7 @@
         <title>Syntax</title>
         <synopsis>[x1,p1,x,p]=kalm(y,x0,p0,f,g,h,q,r)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -57,12 +57,12 @@
         </para>
         <para>
             <literal>
-                x(k+1)=<varname>f</varname>*x(k)+<varname>g</varname>*u(k)+v(k)
+                x(k+1)=f*x(k)+g*u(k)+v(k)
             </literal>
         </para>
         <para>
             <literal>
-                y(k)=<varname>h</varname>*x(k)+w(k)
+                y(k)=h*x(k)+w(k)
             </literal>
         </para>
         <para>
@@ -81,7 +81,7 @@
                 <para>
                     Innovation (output error):
                     <literal>
-                        E=<varname>y</varname>-<varname>h</varname>*<varname>x0</varname>
+                        E=y-h*x0
                     </literal>
                 </para>
             </listitem>
@@ -90,7 +90,7 @@
                 <para>
                     Output Error covariance:
                     <literal>
-                        S=<varname>h</varname>*<varname>p0</varname>*<varname>h</varname>'+<varname>r</varname>
+                        S=h*p0*h'+r
                     </literal>
                 </para>
             </listitem>
@@ -98,7 +98,7 @@
                 <para>
                     Kalman gain:
                     <literal>
-                        K=<varname>p0</varname>*<varname>h</varname>'*S^-1
+                        K=p0*h'*S^-1
                     </literal>
                 </para>
             </listitem>
@@ -106,7 +106,7 @@
                 <para>
                     Correction of state estimation:
                     <literal>
-                        <varname>x</varname>=<varname>x0</varname>+K*E
+                        x=x0+K*E
                     </literal>
                 </para>
             </listitem>
@@ -114,7 +114,7 @@
                 <para>
                     Correction of estimation of error covariance:
                     <literal>
-                        <varname>p</varname>=<varname>p0</varname>-K*<varname>h</varname>*<varname>p0</varname>
+                        p=p0-K*h*p0
                     </literal>
                 </para>
             </listitem>
@@ -122,7 +122,7 @@
                 <para>
                     State prediction:
                     <literal>
-                        <varname>x1</varname>=<varname>f</varname>*<varname>x</varname>
+                        x1=f*x
                     </literal>
                 </para>
             </listitem>
@@ -130,7 +130,7 @@
                 <para>
                     Error covariance prediction:
                     <literal>
-                        <varname>p1</varname>=<varname>f</varname>*<varname>p</varname>*<varname>f</varname>'+<varname>g</varname>*<varname>q</varname>*<varname>g</varname>'
+                        p1=f*p*f'+g*q*g'
                     </literal>
                 </para>
             </listitem>

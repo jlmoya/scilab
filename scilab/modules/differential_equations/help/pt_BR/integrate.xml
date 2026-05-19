@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="integrate" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="integrate" xml:lang="pt">
     <refnamediv>
         <refname>integrate</refname>
         <refpurpose>integração pela quadratura</refpurpose>
@@ -35,51 +32,58 @@
             <varlistentry>
                 <term>expr</term>
                 <listitem>
-                    string definindo uma expressão Scilab.
-                    <para/>
-                </listitem>
+                     <para>
+                        string definindo uma expressão Scilab.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    string : variável da integração.
-                    <para/>
-                </listitem>
+                     <para>
+                        string : variável da integração.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x0</term>
                 <listitem>
-                    número real : limite inferior de integração.
-                    <para/>
-                </listitem>
+                     <para>
+                        número real : limite inferior de integração.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>x1</term>
                 <listitem>
-                    vetor de números reais : limites superiores de integração.
-                    <para/>
-                </listitem>
+                     <para>
+                        vetor de números reais : limites superiores de integração.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>atol</term>
                 <listitem>
-                    número real : erro absoluto. Valor padrão: 1e-13.
-                    <para/>
-                </listitem>
+                     <para>
+                        número real : erro absoluto. Valor padrão: 1e-13.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>rtol</term>
                 <listitem>
-                    número real : erro relativo. Valor padrão: 1e-8.
-                    <para/>
-                </listitem>
+                     <para>
+                        número real : erro relativo. Valor padrão: 1e-8.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    vetor de números reais : o valor da integral para cada <literal>x1(i)</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        vetor de números reais : o valor da integral para cada <literal>x1(i)</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

@@ -99,12 +99,14 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    <varname>m</varname> がスカラーの場合,
-                    <literal>n</literal>番目の次元方向が
-                    <code>mean(x)</code> の大きさに一致するように拡張されます.
+                     <para><varname>m</varname> がスカラーの場合,
+                        <literal>n</literal>番目の次元方向が
+                        <code>mean(x)</code> の大きさに一致するように拡張されます.
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>stdev()</literal> can be overloaded.
+                     <para><literal>stdev()</literal> can be overloaded.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
@@ -163,7 +165,7 @@ mean(sd)
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    stdev(x, orien>ndims(x)) no longer returns zeros(x) but yields an error.
+                    stdev(x, orien&gt;ndims(x)) no longer returns zeros(x) but yields an error.
                 </revdescription>
             </revision>
             <revision>

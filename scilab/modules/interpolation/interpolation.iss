@@ -42,4 +42,6 @@ Source: modules\{#INTERPOLATION}\macros\cleanmacros.bat; DestDir: {app}\modules\
 Source: modules\{#INTERPOLATION}\demos\*.*; DestDir: {app}\modules\{#INTERPOLATION}\demos; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#INTERPOLATION}\tests\*.*; DestDir: {app}\modules\{#INTERPOLATION}\tests; Flags: recursesubdirs; Components:{#COMPN_SCILAB} and {#COMPN_TESTS}
+;
+Source: modules\{#INTERPOLATION}\help\*.*; DestDir: {app}\modules\{#INTERPOLATION}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

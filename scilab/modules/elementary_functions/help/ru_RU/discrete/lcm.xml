@@ -15,10 +15,7 @@
  *
  -->
 <!--  module: polynomials  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-         xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-         xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-         xml:lang="ru" xml:id="lcm">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="lcm">
    <refnamediv>
        <refname>lcm</refname>
        <refpurpose>наименьшее общее кратное (положительное) целых чисел или полиномов</refpurpose>
@@ -75,16 +72,22 @@
          Если <literal>p</literal> является массивом целых числел, то
            <itemizedlist>
                <listitem>
-                   если они являются кодированными целыми числами, то тогда они преобразуются
-                   в десятичные целые числи перед обработкой.
+                    <para>
+                       если они являются кодированными целыми числами, то тогда они преобразуются
+                       в десятичные целые числи перед обработкой.
+                   </para>
                </listitem>
                <listitem>
-                   Любые входные целые числа типа int64 или uint64 по модулю больше 2^53
-                   будут усечены и <literal>lcm()</literal> вернёт неверный результат.
+                    <para>
+                       Любые входные целые числа типа int64 или uint64 по модулю больше 2^53
+                       будут усечены и <literal>lcm()</literal> вернёт неверный результат.
+                   </para>
                </listitem>
                <listitem>
-                   Если некоторые из них отрицательные, то возвращаемое значение <literal>pp</literal>
-                   (их НОК) будет всегда положительным.
+                    <para>
+                       Если некоторые из них отрицательные, то возвращаемое значение <literal>pp</literal>
+                       (их НОК) будет всегда положительным.
+                   </para>
                </listitem>
            </itemizedlist>
        </para>
@@ -214,17 +217,23 @@ V = [3*2^52 , 3*5]
                <revdescription>
                    <itemizedlist>
                        <listitem>
-                           Теперь поддерживаются входные кодированные целые числа типа int64 и uint64.
+                            <para>
+                               Теперь поддерживаются входные кодированные целые числа типа int64 и uint64.
+                           </para>
                        </listitem>
                        <listitem>
-                           Теперь <varname>p</varname> может быть матрицей любой формы, необязательно строка.
+                            <para>
+                               Теперь <varname>p</varname> может быть матрицей любой формы, необязательно строка.
+                           </para>
                        </listitem>
                        <listitem>
-                           Когда <varname>p</varname> является матрицей кодированных или десятичных целых
-                           чисел, то вычисления теперь выполняются в числах с плавающей запятой вместо
-                           формата int32.
-                           <varname>pp</varname> и <varname>fact</varname> теперь десятичные целые числа
-                           (вместо целых чисел типа int32).
+                            <para>
+                               Когда <varname>p</varname> является матрицей кодированных или десятичных целых
+                               чисел, то вычисления теперь выполняются в числах с плавающей запятой вместо
+                               формата int32.
+                               <varname>pp</varname> и <varname>fact</varname> теперь десятичные целые числа
+                               (вместо целых чисел типа int32).
+                           </para>
                        </listitem>
                    </itemizedlist>
                </revdescription>

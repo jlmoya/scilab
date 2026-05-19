@@ -41,7 +41,7 @@ import com.mxgraph.util.mxUtils;
 @SuppressWarnings(value = { "serial" })
 public final class FilledColorAction extends VertexSelectionDependantAction {
     /** Name of the action */
-    public static final String NAME = XcosMessages.FILL_COLOR;
+    public static final String NAME = XcosMessages.FILL_BLOCK_COLOR;
     /** Icon name of the action */
     public static final String SMALL_ICON = "color-fill";
     /** Mnemonic key of the action */

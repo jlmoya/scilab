@@ -44,4 +44,5 @@ Source: modules\{#OPTIMIZATION}\demos\*.*; DestDir: {app}\modules\{#OPTIMIZATION
 ;
 Source: modules\{#OPTIMIZATION}\tests\*.*; DestDir: {app}\modules\{#OPTIMIZATION}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB}  and {#COMPN_TESTS}
 ;
+Source: modules\{#OPTIMIZATION}\help\*.*; DestDir: {app}\modules\{#OPTIMIZATION}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

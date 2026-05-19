@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="en" xml:id="GlobalProperty">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="GlobalProperty">
     <refnamediv>
         <refname>GlobalProperty</refname>
         <refpurpose>
@@ -76,7 +73,9 @@
                         <literal>data.color</literal> property (see
                         <link linkend="surface_properties">surface properties</link>).
                         <note>
-                            This property is available for surfaces only.
+                            <para>
+                                This property is available for surfaces only.
+                            </para>
                         </note>
                     </para>
                 </listitem>
@@ -99,10 +98,12 @@
                         <literal>2</literal>, <literal>3</literal> or
                         <literal>4</literal>.
                         <note>
-                            This property exists only with <literal>Fac3d</literal> entities.
-                            Note also that <function>plot3d</function> has
-                            <literal>'direct'</literal> mode by default and
-                            <function>surf</function> has <literal>'scaled'</literal> mode by default.
+                            <para>
+                                This property exists only with <literal>Fac3d</literal> entities.
+                                Note also that <function>plot3d</function> has
+                                <literal>'direct'</literal> mode by default and
+                                <function>surf</function> has <literal>'scaled'</literal> mode by default.
+                            </para>
                         </note>
                     </para>
                 </listitem>
@@ -117,7 +118,9 @@
                         property. This field contains the
                         <literal>visible</literal> property (see <link linkend="polyline_properties">polyline properties</link>).
                         <note>
-                            This property is not yet available for surface entities.
+                            <para>
+                                This property is not yet available for surface entities.
+                            </para>
                         </note>
                     </para>
                 </listitem>
@@ -163,17 +166,19 @@
                         specifying the way the facet's color are rendered.
                         <itemizedlist>
                             <listitem>
-                                <literal>'none'</literal>: a mesh of the surface is drawn.
+                                 <para><literal>'none'</literal>: a mesh of the surface is drawn.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>'flat'</literal> (default mode): the <literal>Fac3d</literal>
-                                <literal>color.data</literal> values determine one color
-                                per facet using the color of the first vertex of the facet.
+                                 <para><literal>'flat'</literal> (default mode): the <literal>Fac3d</literal><literal>color.data</literal> values determine one color
+                                    per facet using the color of the first vertex of the facet.
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>'interp'</literal>: an interpolated shading is done on
-                                the surface using <literal>color.data</literal> to determine a
-                                color at each vertex of each facet.
+                                 <para><literal>'interp'</literal>: an interpolated shading is done on
+                                    the surface using <literal>color.data</literal> to determine a
+                                    color at each vertex of each facet.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -370,8 +375,7 @@
                         must match all the previous specified
                         <literal>X</literal> and <literal>Y</literal>
                         data. This property is linked to the object's
-                        <literal>data.z</literal> property (see <link
-                        linkend="polyline_properties">polyline properties</link>
+                        <literal>data.z</literal> property (see <link linkend="polyline_properties">polyline properties</link>
                         or <link linkend="surface_properties">surface properties</link>).
                     </para>
                 </listitem>
@@ -493,11 +497,11 @@ surf(Z,'edgeco','b','marker','d','markersiz',9,'markerfac','k','xdata',-50:-41)
         <revhistory>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     The "Foreground", "markForeground", and "markBackground" colors can now be
                     specified as named colors chosen in the full predefined colors list, or by
                     their "#RRGGBB" hexadecimal codes, or by their indices in the colormap.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

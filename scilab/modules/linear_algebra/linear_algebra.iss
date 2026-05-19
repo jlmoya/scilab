@@ -38,4 +38,6 @@ Source: modules\{#LINEAR_ALGEBRA}\macros\*.bin; DestDir: {app}\modules\{#LINEAR_
 Source: modules\{#LINEAR_ALGEBRA}\macros\*.sce; DestDir: {app}\modules\{#LINEAR_ALGEBRA}\macros; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#LINEAR_ALGEBRA}\tests\*.*; DestDir: {app}\modules\{#LINEAR_ALGEBRA}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
+;
+Source: modules\{#LINEAR_ALGEBRA}\help\*.*; DestDir: {app}\modules\{#LINEAR_ALGEBRA}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

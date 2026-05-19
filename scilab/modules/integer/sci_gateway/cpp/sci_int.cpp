@@ -95,7 +95,24 @@ bool convert_int(U* _pIn, int _iSize, T* _pOut)
         }
         else
         {
+#ifdef _M_ARM64
+            if (_pIn[i] < 0.0)
+            {
+                int64_t tmp = static_cast<int64_t>(_pIn[i]);
+                _pOut[i] = (T)tmp;
+            }
+            else if (_pIn[i] >= static_cast<double>(std::numeric_limits<T>::max()) + 1.0)
+            {
+                uint64_t tmp = static_cast<uint64_t>(_pIn[i]);
+                _pOut[i] = (T)tmp;
+            }
+            else
+            {
+                _pOut[i] = (T)_pIn[i];
+            }
+#else
             _pOut[i] = (T)_pIn[i];
+#endif
         }
     }
 

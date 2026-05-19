@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="det">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="det">
     <refnamediv>
         <refname>det</refname>
         <refpurpose>определитель квадратной матрицы</refpurpose>
@@ -34,39 +31,43 @@
             <varlistentry>
                 <term>X</term>
                 <listitem>
-                    квадратная матрица вещественных или комплексных чисел, полиномов или
-                    дробно-рациональных выражений. Принимаются разрежённо-кодированные
-                    матрицы.
-                    <para/>
-                </listitem>
+                     <para>
+                        квадратная матрица вещественных или комплексных чисел, полиномов или
+                        дробно-рациональных выражений. Принимаются разрежённо-кодированные
+                        матрицы.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>d</term>
                 <listitem>
-                    Скаляр типа <varname>X</varname>: определитель <varname>X</varname>.
-                    Если <varname>X</varname> является разрежённо-кодированной, то
-                    <varname>d</varname> является плотной.
-                    <para/>
-                </listitem>
+                     <para>
+                        Скаляр типа <varname>X</varname>: определитель <varname>X</varname>.
+                        Если <varname>X</varname> является разрежённо-кодированной, то
+                        <varname>d</varname> является плотной.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>m</term>
                 <listitem>
-                    вещественное или комплексное число: определитель мантиссы по основанию 10
-                    <literal>abs(m) ∈ [1,10)</literal>. Не поддерживается для полиномиального
-                    или дробно-рационального <varname>X</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        вещественное или комплексное число: определитель мантиссы по основанию 10
+                        <literal>abs(m) ∈ [1,10)</literal>. Не поддерживается для полиномиального
+                        или дробно-рационального <varname>X</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>e</term>
                 <listitem>
-                    целое: определитель экспоненты по основанию 10, такой, что
-                    <literal>d = m * 10<superscript>e</superscript></literal>.
-                    Не поддерживается для полиномиального или дробно-рационального
-                    <varname>X</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        целое: определитель экспоненты по основанию 10, такой, что
+                        <literal>d = m * 10<superscript>e</superscript></literal>.
+                        Не поддерживается для полиномиального или дробно-рационального
+                        <varname>X</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

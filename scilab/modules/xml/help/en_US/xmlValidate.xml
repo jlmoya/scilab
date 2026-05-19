@@ -21,10 +21,10 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
-            error = xmlValidate(docs [, valid])
+            error = xmlValidate(xdocs [, valid])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -56,7 +56,7 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
+    xdoc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
     dtd = xmlDTD("SCI/modules/xml/tests/unit_tests/library.dtd");
     schema = xmlSchema("SCI/modules/xml/tests/unit_tests/library.xsd");
     rng = xmlRelaxNG("SCI/modules/xml/tests/unit_tests/library.rng");
@@ -65,21 +65,21 @@
     // If no error the file is valid
 
     // DTD
-    xmlValidate(doc, dtd);
+    xmlValidate(xdoc, dtd);
 
     // Relax NG
-    xmlValidate(doc, rng);
+    xmlValidate(xdoc, rng);
 
     // Schema
-    xmlValidate(doc, schema);
+    xmlValidate(xdoc, schema);
 
     // All is ok... now we add a new element to the document
-    doc.root.children(3) = "<a>error</a>"
+    xdoc.root.children(3) = "<a>error</a>"
 
     // Now the validations go to fail
-    xmlValidate(doc, dtd);
-    xmlValidate(doc, rng);
-    xmlValidate(doc, schema);
+    xmlValidate(xdoc, dtd);
+    xmlValidate(xdoc, rng);
+    xmlValidate(xdoc, schema);
 
     // You can validate a document with its path
     xmlValidate("SCI/modules/xml/tests/unit_tests/library.xml")
@@ -89,7 +89,7 @@
     xmlValidate("SCI/modules/xml/tests/unit_tests/invalid_library.xml", rng)
 
     // We delete the all the open documents
-    xmlDelete(doc, dtd, schema, rng);
+    xmlDelete(xdoc, dtd, schema, rng);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -106,7 +106,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

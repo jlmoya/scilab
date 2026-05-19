@@ -89,6 +89,5 @@ function tbx_build_help(moduletitle, path)
     else
         warning(_(".start file was not found, build of help pages using <scilab:image> tag may failed."));
         xmltojar(path, moduletitle, directory_language, default_language);
-        //xmltoinline(path, moduletitle, directory_language, default_language);
     end
 endfunction

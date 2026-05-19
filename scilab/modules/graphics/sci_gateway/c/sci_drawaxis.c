@@ -63,14 +63,12 @@ int sci_drawaxis(char *fname, void* pvApiCtx)
     };
 
     SciErr sciErr;
-    int iSubwinUID = 0;
     int minrhs = -1, maxrhs = 0, minlhs = 0, maxlhs = 1, nopt = 0;
     char dir = 'l', *format = NULL, tics = 'v', **val = NULL;
     int fontsize = -1, sub_int = 2, seg_flag = 1, textcolor = -1, ticscolor = -1;
     double *x = NULL, *y = NULL;
     int nx = 0, ny = 0, ntics;
     int nb_tics_labels = -1;
-    int iRhs = nbInputArgument(pvApiCtx);
 
     nopt = NumOpt(pvApiCtx);
 
@@ -83,7 +81,7 @@ int sci_drawaxis(char *fname, void* pvApiCtx)
         return 0;
     }
 
-    iSubwinUID = getOrCreateDefaultSubwin();
+    getOrCreateDefaultSubwin();
 
     if (opts[0].iPos != -1)
     {

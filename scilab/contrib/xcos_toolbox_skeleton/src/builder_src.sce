@@ -3,6 +3,7 @@
 function builder_src()
     src_path = get_absolute_file_path("builder_src.sce");
     tbx_builder_src_lang("c", src_path);
+    tbx_build_src_clean("c", src_path);
 endfunction
 
 builder_src();

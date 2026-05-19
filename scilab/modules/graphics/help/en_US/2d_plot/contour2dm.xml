@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>[xc, yc] = contour2dm(x, y, polygons, func, nz)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -318,15 +318,13 @@ f.color_map = jet(1024);
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.2</revnumber>
                 <revremark>
-                    <para>
-                        Function contour2dm introduced.
-                    </para>
+                    Function contour2dm introduced.
                 </revremark>
             </revision>
         </revhistory>

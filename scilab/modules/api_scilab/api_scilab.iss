@@ -37,5 +37,6 @@ Source: modules\{#API_SCILAB}\macros\cleanmacros.bat; DestDir: {app}\modules\{#A
 ;Source: modules\{#API_SCILAB}\examples\*.*; DestDir: {app}\modules\{#API_SCILAB}\examples; Flags: recursesubdirs; Components:  {#COMPN_SCILAB}
 ;
 Source: modules\{#API_SCILAB}\tests\*.*; DestDir: {app}\modules\{#API_SCILAB}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
-;
+;--------------------------------------------------------------------------------------------------------------
+Source: modules\{#API_SCILAB}\help\*.*; DestDir: {app}\modules\{#API_SCILAB}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

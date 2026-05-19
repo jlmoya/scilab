@@ -30,7 +30,7 @@
             status = consolebox()
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -47,8 +47,10 @@
     <refsection role="description">
         <title>Description</title>
         <note>
-            <literal>consolebox(…)</literal> is available only if the Scilab session runs in
-            normal (standard desktop) mode (<literal>getscilabmode()=="STD"</literal>).
+            <para>
+                <literal>consolebox(…)</literal> is available only if the Scilab session runs in
+                normal (standard desktop) mode (<literal>getscilabmode()=="STD"</literal>).
+            </para>
         </note>
         <para>
             The "consolebox" black window is the "hidden" terminal of the Operating system from
@@ -107,16 +109,20 @@
             by the OS and cancel any display in the consolebox.
         </para>
         <important>
-            Some low level Scilab functions (such as the documentation builder or other ones)
-            send most of their errors messages in the consolebox. These messages would be considered
-            as spam in the Scilab console. <literal>consolebox on</literal> allows to read them
-            very helpfully for debugging.
+            <para>
+                Some low level Scilab functions (such as the documentation builder or other ones)
+                send most of their errors messages in the consolebox. These messages would be considered
+                as spam in the Scilab console. <literal>consolebox on</literal> allows to read them
+                very helpfully for debugging.
+            </para>
         </important>
         <note>
-            When the Scilab console has the focus, pressing the <literal>F12</literal> key toggles
-            the consolebox on|off
+            <para>
+                When the Scilab console has the focus, pressing the <literal>F12</literal> key toggles
+                the consolebox on|off
+            </para>
         </note>
-        <note><literal>host("cls")</literal> clears the consolebox screen</note>
+        <note><para><literal>host("cls")</literal> clears the consolebox screen</para></note>
     </refsection>
     <refsection>
         <title>Examples</title>

@@ -32,7 +32,7 @@
             level = scicos_debug()
         </synopsis>
     </refsynopsisdiv>
-    <refsection id="Parameters_scicos_debug">
+    <refsection xml:id="Parameters_scicos_debug" role="arguments">
         <title>Arguments</title>
         <itemizedlist>
             <listitem>
@@ -68,13 +68,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_scicos_debug">
+    <refsection xml:id="Description_scicos_debug">
         <title>Description</title>
         <para>
-            This Scilab function is used to set the debug level of a Scicos simulation.
+            This Scilab function is used to set the debug level of a Scicos simulation. It will print debugging information and/or execute the Debug Block if any in the diagram.
         </para>
         <para>
-            One can used it in the "Calc" mode of the Scicos editor or as an instruction in a Scilab block or in an interfacing function.
+            It can also be used to log Scilab function blocks errors during the simulation.
         </para>
     </refsection>
     <refsection>

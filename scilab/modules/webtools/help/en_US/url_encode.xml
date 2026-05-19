@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="url_encode" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="url_encode" xml:lang="en">
     <refnamediv>
         <refname>url_encode</refname>
         <refpurpose>
@@ -27,29 +24,31 @@
             encoded = url_encode(Strings)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>Strings</term>
                 <listitem>
-                    Any single string or regular array of strings that needed to be encoded before using <link linkend="http_get">http_</link> functions.
-                    <para/>
-                </listitem>
+                     <para>
+                        Any single string or regular array of strings that needed to be encoded before using <link linkend="http_get">http_</link> functions.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>encoded</term>
                 <listitem>
-                    Array of strings. Its sizes match <varname>Strings</varname> ones.
-                    <para/>
-                </listitem>
+                     <para>
+                        Array of strings. Its sizes match <varname>Strings</varname> ones.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
     <refsection>
         <title>Description</title>
         <para>
-            <emphasis role="bold">url_encode(Strings)</emphasis> uses the <ulink url="https://curl.se/docs/url-syntax.html">CURL parser</ulink> to performs URL conversion for each element of <literal>Strings</literal>.
+            <emphasis role="bold">url_encode(Strings)</emphasis> uses the <link xlink:href="https://curl.se/docs/url-syntax.html">CURL parser</link> to performs URL conversion for each element of <literal>Strings</literal>.
         </para>
     </refsection>
     <refsection>
@@ -99,9 +98,9 @@ url_encode(["+-._~ ", "0123456789" ; "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijkl
         <revhistory>
            <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     url_encode() added to the webtools module.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

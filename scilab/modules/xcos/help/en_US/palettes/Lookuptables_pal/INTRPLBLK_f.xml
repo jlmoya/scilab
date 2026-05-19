@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/INTRPLBLK_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_INTRPLBLK_f">
+    <refsection xml:id="Contents_INTRPLBLK_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_INTRPLBLK_f">Description</xref>
+                <para><link linkend="Description_INTRPLBLK_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_INTRPLBLK_f">Parameters</xref>
+                <para><link linkend="Dialogbox_INTRPLBLK_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_INTRPLBLK_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_INTRPLBLK_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_INTRPLBLK_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_INTRPLBLK_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_INTRPLBLK_f">Example</xref>
+                <para><link linkend="Example_INTRPLBLK_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_INTRPLBLK_f">See also</xref>
+                <para><link linkend="Seealso_INTRPLBLK_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_INTRPLBLK_f">
+    <refsection xml:id="Description_INTRPLBLK_f">
         <title>Description</title>
         <para>The output of this block is a function of the input obtained by linear
             interpolation. This block has a single scalar input and a single scalar
@@ -73,14 +73,13 @@
             <emphasis>The parameter vectors should be sorted (strictly increasing).</emphasis>
         </para>
     </refsection>
-    <refsection id="Dialogbox_INTRPLBLK_f">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_INTRPLBLK_f">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/lookuptables_pal/en_US/INTRPLBLK_f_gui.png" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/lookuptables_pal/en_US/INTRPLBLK_f_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -100,7 +99,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_INTRPLBLK_f">
+    <refsection xml:id="Defaultproperties_INTRPLBLK_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -174,7 +173,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Example_INTRPLBLK_f">
+    <refsection xml:id="Example_INTRPLBLK_f">
         <title>Example</title>
         <para>
             The following example translate the sine input signal to a different range and cut part of it.
@@ -198,7 +197,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_INTRPLBLK_f">
+    <refsection xml:id="Interfacingfunction_INTRPLBLK_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

@@ -45,8 +45,6 @@ types::Function::ReturnValue sci_getscilabmode(types::typed_list &in, int _iRetC
         }
         case 2:
         {
-            int mode = getScilabMode();
-
             // first output argument
             out.push_back(new types::String(getScilabModeString()));
 

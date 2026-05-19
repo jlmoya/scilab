@@ -1,4 +1,4 @@
-/*
+﻿/*
 * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 * Copyright (C) 2012 - DIGITEO - Allan CORNET
 *
@@ -24,6 +24,7 @@
 /*-----------------------------------------------------------------------------------*/
 #pragma comment(lib, "../../../../bin/libxml2.lib")
 #pragma comment(lib, "../../../../bin/libintl.lib")
+#pragma comment(lib, "../../../../libs/libxslt/lib/libxslt.lib")
 #pragma comment(lib, "../../../../bin/blasplus.lib")
 #pragma comment(lib, "../../../../bin/lapack.lib")
 /*-----------------------------------------------------------------------------------*/

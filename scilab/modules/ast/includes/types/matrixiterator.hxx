@@ -604,9 +604,10 @@ template<typename S> IteratorFromVar<S> makeIteratorFromVar(S& s);
 
 struct Adjacency
 {
-    Adjacency(double const* x, double const*a): xadj(x), adjncy(a) {}
+    Adjacency(double const* x, double const*a, double const* xend): xadj(x), adjncy(a), xadj_end(xend) {}
     double const* xadj;
     double const* adjncy;
+    double const* xadj_end;
 };
 
 template<typename In, typename Sz, typename Out>
@@ -684,7 +685,7 @@ private:
  */
 template<> struct IteratorFromVar<Adjacency> : Coords2DIterator
 {
-    IteratorFromVar(Adjacency& a): xadj(a.xadj), adjncy(a.adjncy), c(1), nb(1)
+    IteratorFromVar(Adjacency& a): xadj(a.xadj), adjncy(a.adjncy), xadj_end(a.xadj_end), c(1), nb(1)
     {
         update();
     }
@@ -711,12 +712,13 @@ template<> struct IteratorFromVar<Adjacency> : Coords2DIterator
 private:
     void update()
     {
-        for (; xadj[1] <= nb; ++c, ++xadj)
+        for (; (xadj + 1 < xadj_end) && (xadj[1] <= nb); ++c, ++xadj)
         {
         }
     }
     double const* xadj;
     double const* adjncy;
+    double const* xadj_end;
     int c;
     std::size_t nb;
 };

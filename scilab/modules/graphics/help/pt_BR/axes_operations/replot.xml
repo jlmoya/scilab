@@ -11,10 +11,7 @@
  * https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-    xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-    xmlns:scilab="http://www.scilab.org" xml:id="replot" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="replot" xml:lang="pt">
     <refnamediv>
         <refname>replot</refname>
         <refpurpose>reformula a área de exibição de um ou mais gráficos
@@ -45,13 +42,15 @@
                         <note>
                             <itemizedlist>
                                 <listitem>
-                                    <literal>%nan</literal> can be used to keep a bound as is.
+                                     <para><literal>%nan</literal> can be used to keep a bound as is.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    <literal>%inf</literal> can be used to set
-                                    a bound to the position of the most marginal
-                                    graphical component existing in the axes,
-                                    for the considered direction.
+                                     <para><literal>%inf</literal> can be used to set
+                                        a bound to the position of the most marginal
+                                        graphical component existing in the axes,
+                                        for the considered direction.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </note>
@@ -137,11 +136,11 @@ x=[0:0.1:2*%pi]';
 plot2d(x,sin(x))
 replot([-1,-1,10,2])
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x=[0:0.1:2*%pi]';
             plot2d(x,sin(x))
             replot([-1,-1,10,2])
-        </scilab:image>
+        ]]></scilab:image>
 
         <programlisting role="example"><![CDATA[
 // segundo exemplo
@@ -151,13 +150,13 @@ f=gcf();
 replot([-1,-1,10,2],f.children(1)) // especificando o valor do manipulador dos eixos
 replot([-3,-2,8,4],f.children(2))
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             close(winsid());
             plot()
             f2=gcf();
             replot([-1,-1,10,2],f2.children(1))
             replot([-3,-2,8,4],f2.children(2))
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // Os fronteiras indicadas pelo valor %nan não são alterados:
 x = linspace(0,360,200).';
@@ -168,7 +167,7 @@ ax.data_bounds              // Fronteiras iniciais
 replot([%nan,-10,%nan,10])  // Ymin e Ymax só são modificados
 ax.data_bounds              // novas fronteiras
      ]]></programlisting>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // 3D Fronteiras Z também pode ser modificadas :
 clf
@@ -185,7 +184,7 @@ sleep(3000)
 replot([-5 0 -0.4 0 5 0.5])
 ax.data_bounds
      ]]></programlisting>
-        <para></para>
+        <para/>
         <programlisting role="example"><![CDATA[
 // Diversos gráficos podem ser cortadas simultaneamente :
 clf
@@ -243,18 +242,26 @@ replot([-1 %nan 1.5 %nan], [ax1 ax2])
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            Handles of frame uicontrols having Axes children are
-                            now accepted.
+                             <para>
+                                Handles of frame uicontrols having Axes children are
+                                now accepted.
+                            </para>
                         </listitem>
                         <listitem>
-                            %inf can now be used to set a bound to the position
-                            of most marginal contents.
+                             <para>
+                                %inf can now be used to set a bound to the position
+                                of most marginal contents.
+                            </para>
                         </listitem>
                         <listitem>
-                            replot() as replot([%inf %inf %inf %inf]) is added.
+                             <para>
+                                replot() as replot([%inf %inf %inf %inf]) is added.
+                            </para>
                         </listitem>
                         <listitem>
-                            Option tight_limits added.
+                             <para>
+                                Option tight_limits added.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

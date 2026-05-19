@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>fc = Funcall(name, lhsnb, rhslist, lhslist)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -96,7 +96,9 @@
             <revision>
                 <revnumber>6.1.1</revnumber>
                 <revdescription>
-                    <varname>lhslist</varname> is now optional: default = list().
+                    <para>
+                        <varname>lhslist</varname> is now optional: default = list().
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="spec" xml:lang="en">
     <refnamediv>
         <refname>spec</refname>
         <refpurpose>eigenvalues, and eigenvectors of a matrix or a pencil</refpurpose>
@@ -33,63 +30,70 @@
             [alpha, beta, Q, Z] = spec(A, B)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>A, B</term>
                 <listitem>
-                    Square matrices of real or complex numbers, of same sizes.
-                    <para/>
-                </listitem>
+                     <para>
+                        Square matrices of real or complex numbers, of same sizes.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>evals</term>
                 <listitem>
-                    Real or complex vector: The eigenvalues.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex vector: The eigenvalues.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>diagevals</term>
                 <listitem>
-                    Real or complex diagonal matrix: Eigenvalues along the diagonal.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex diagonal matrix: Eigenvalues along the diagonal.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>R</term>
                 <listitem>
-                    Real or complex invertible square matrix: Matrix right eigenvectors.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex invertible square matrix: Matrix right eigenvectors.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>alpha, beta</term>
                 <listitem>
-                    Vectors of same size: Generalized eigenvalues of the matrix pencil
-                    <literal>A - s.B</literal> (s is the variable).
-                    alpha./beta gives the usual eigenvalues.
-                    <varname>alpha</varname> are real or complex values.
-                    <varname>beta</varname> are real values.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vectors of same size: Generalized eigenvalues of the matrix pencil
+                        <literal>A - s.B</literal> (s is the variable).
+                        alpha./beta gives the usual eigenvalues.
+                        <varname>alpha</varname> are real or complex values.
+                        <varname>beta</varname> are real values.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Q</term>
                 <listitem>
-                    Real or complex invertible square matrix: Generalized left eigenvectors
-                    of the pencil.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex invertible square matrix: Generalized left eigenvectors
+                        of the pencil.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Z</term>
                 <listitem>
-                    Real or complex invertible square matrix: Generalized right eigenvectors
-                    of the pencil.
-                    <para/>
-                </listitem>
+                     <para>
+                        Real or complex invertible square matrix: Generalized right eigenvectors
+                        of the pencil.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -125,46 +129,47 @@
         <para>
             A complex hermitian matrix is equal to its own conjugate transposed.
         </para>
-        <refsect3>
-            <title>Matrix Pencil A - s.B</title>
-            <para>
-                <emphasis role="bold">evals = spec(A, B)</emphasis>
-                returns the eigenvalues of the matrix pencil,
-                i.e. the roots of the polynomial matrix <literal>s.B - A</literal>.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta] = spec(A, B)</emphasis>
-                returns the generalized eigenvalues <varname>alpha</varname> and
-                <varname>beta</varname> of the matrix pencil <literal>A - s.B</literal>.
-                They are such that the usual eigenvalues of the pencil are given by
-                <literal>alpha./beta</literal>.
-                The matrix <literal>A - alpha./beta × B</literal> is then singular.
-                If <literal>beta(i) = 0</literal>, the i<superscript>th</superscript> eigenvalue
-                is infinite.
-            </para>
-            <para>
-                For <literal>B = eye(A)</literal>, <literal>alpha./beta</literal> are equal to
-                <literal>spec(A)</literal>. It is usually represented as the pair
-                (alpha,beta), as there is a reasonable interpretation for <literal>beta=0</literal>,
-                 even when both are zero.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta, Z] = spec(A, B)</emphasis>
-                returns in addition the matrix <varname>Z</varname> of the
-                generalized right eigenvectors of the pencil.
-            </para>
-            <para>
-                <emphasis role="bold">[alpha, beta, Q, Z] = spec(A, B)</emphasis>
-                returns in addition the matrix <varname>Q</varname> of generalized left eigenvectors
-                of the pencil.
-            </para>
-        </refsect3>
+
         <para>
-            <note>
-            For large dense or sparse matrices, the <link linkend="eigs">eigs()</link> function
-            can be used.
-            </note>
+            <emphasis role="bold">Matrix Pencil A - s.B</emphasis>
         </para>
+        <para>
+            <emphasis role="bold">evals = spec(A, B)</emphasis>
+            returns the eigenvalues of the matrix pencil,
+            i.e. the roots of the polynomial matrix <literal>s.B - A</literal>.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta] = spec(A, B)</emphasis>
+            returns the generalized eigenvalues <varname>alpha</varname> and
+            <varname>beta</varname> of the matrix pencil <literal>A - s.B</literal>.
+            They are such that the usual eigenvalues of the pencil are given by
+            <literal>alpha./beta</literal>.
+            The matrix <literal>A - alpha./beta × B</literal> is then singular.
+            If <literal>beta(i) = 0</literal>, the i<superscript>th</superscript> eigenvalue
+            is infinite.
+        </para>
+        <para>
+            For <literal>B = eye(A)</literal>, <literal>alpha./beta</literal> are equal to
+            <literal>spec(A)</literal>. It is usually represented as the pair
+            (alpha,beta), as there is a reasonable interpretation for <literal>beta=0</literal>,
+                even when both are zero.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta, Z] = spec(A, B)</emphasis>
+            returns in addition the matrix <varname>Z</varname> of the
+            generalized right eigenvectors of the pencil.
+        </para>
+        <para>
+            <emphasis role="bold">[alpha, beta, Q, Z] = spec(A, B)</emphasis>
+            returns in addition the matrix <varname>Q</varname> of generalized left eigenvectors
+            of the pencil.
+        </para>
+        <note>
+            <para>
+                For large dense or sparse matrices, the <link linkend="eigs">eigs()</link> function
+                can be used.
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Used routines</title>

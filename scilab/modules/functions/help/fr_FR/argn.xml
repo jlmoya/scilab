@@ -31,7 +31,7 @@
         </synopsis>
     </refsynopsisdiv>
     <refsection role="arguments">
-        <title>Arguments</title>
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>lhs</term>
@@ -59,9 +59,11 @@
             et de sortie <varname>lhs</varname>. Elle permet d'utiliser des arguments optionnels.
         </para>
         <warning>
-            L'existence d'un argument d'entrée nommé (hors de la portée d'un éventuel varargin)
-            peut être testée avec <literal>isdef(..,"l")</literal> de manière plus robuste
-            qu'en utilisant <literal>argn()</literal>. Un exemple figure ci-après.
+            <para>
+                L'existence d'un argument d'entrée nommé (hors de la portée d'un éventuel varargin)
+                peut être testée avec <literal>isdef(..,"l")</literal> de manière plus robuste
+                qu'en utilisant <literal>argn()</literal>. Un exemple figure ci-après.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -177,6 +179,15 @@ endfunction
     </refsection>
     <refsection>
 	    <title>History</title>
-	    <revhistory><revision><revnumber>6.1.0</revnumber><revremark>L'argument <code>lhs</code> est assigné à zero si appelé sans argument de sortie.</revremark></revision></revhistory>
+	    <revhistory>
+            <revision>
+                <revnumber>6.1.0</revnumber>
+                <revdescription>
+                    <para>
+                        L'argument <code>lhs</code> est assigné à zero si appelé sans argument de sortie.
+                    </para>
+                </revdescription>
+            </revision>
+        </revhistory>
     </refsection>
 </refentry>

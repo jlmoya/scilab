@@ -13,10 +13,7 @@
 * along with this program.
 *
 -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="matfile_varreadnext">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="matfile_varreadnext">
     <refnamediv>
         <refname>matfile_varreadnext</refname>
         <refpurpose>Reads next variable in a Matlab binary MAT-file.</refpurpose>
@@ -25,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>[name, value, vartype] = matfile_varreadnext(fd)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -54,17 +51,19 @@
             <varlistentry>
                 <term>vartype</term>
                 <listitem>
-                    <para>integer: Matlab type of the variable if reading succeeds, or</para>
-                    <itemizedlist>
-                        <listitem>
-                            <emphasis>0</emphasis>: if the variable type is unknown.
-                        </listitem>
-                        <listitem>
-                            <emphasis>-1</emphasis>: if end of file has been reached.
-                        </listitem>
-                    </itemizedlist>
-                    Please see <link linkend="matfile_listvar">matfile_listvar</link> for the list
-                    of Matlab types.
+                     <para><itemizedlist>
+                            <listitem>
+                                 <para><emphasis>0</emphasis>: if the variable type is unknown.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><emphasis>-1</emphasis>: if end of file has been reached.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                        Please see <link linkend="matfile_listvar">matfile_listvar</link> for the list
+                        of Matlab types.
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -183,7 +182,7 @@ The variable "T" has type 4 and contains
         <para>
             This function uses MATIO library (
             <literal>
-                <ulink url="http://sourceforge.net/projects/matio/">http://sourceforge.net/projects/matio/</ulink>
+                <link xlink:href="http://sourceforge.net/projects/matio/">http://sourceforge.net/projects/matio/</link>
             </literal>
             ).
         </para>

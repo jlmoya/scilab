@@ -52,6 +52,8 @@ int csvTextScanInPlace(wchar_t** text, int nbLines, const wchar_t* separator,
                        const wchar_t* decimal, int haveRange, const int* iRange, int m1, int n1,
                        wchar_t** pstrValues, double* pDblRealValues, double** pDblImgValues);
 
+void replaceStrings(wchar_t** text, int* nbLines, wchar_t** toreplace, int sizetoreplace);
+
 char* csvTextScanSize(wchar_t** lines, int* numberOfLines, const wchar_t* separator, int *rows, int *cols, int haveRange, int* iRange);
 
 void freeCsvResult(csvResult *result);

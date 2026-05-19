@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+ * Copyright (C) 2025 - Dassault Systèmes S.E. - Antoine ELIAS
+ *
+ * For more information, see the COPYING file which you should have received
+ * along with this program.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
+        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
+        xml:lang="en" xml:id="operator_expand">
+    <refnamediv>
+        <refname>operator_expand</refname>
+        <refpurpose>Automatic expansion of singleton dimensions in binary operators</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+            X op Y
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>X, Y</term>
+                <listitem>
+                    <para>
+                        Scalars, vectors, matrices or hypermatrices of numbers (real or complex),
+                        encoded integers, polynomials or texts, according to the operator being
+                        applied.
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>
+            Expanding automatically replicates any dimension equal to <literal>1</literal>
+            so that both operands get identical shapes before applying an element-wise binary
+            operator. Missing trailing dimensions are considered to be <literal>1</literal>.
+            The resulting size is the per-dimension maximum of both shapes.
+        </para>
+        <para>
+            A scalar is just a special case where all dimensions are singletons, so scalar
+            expansion is naturally covered by expanding.
+        </para>
+        <para>
+            Expanding is currently implemented for the following operators:
+            <literal>+</literal> (addition), <literal>-</literal> (subtraction),
+            <literal>.*</literal> (element-wise multiplication),
+            <literal>./</literal> (element-wise right division),
+            and <literal>.^</literal> (element-wise power).
+        </para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+    <programlisting role="example"><![CDATA[
+// Addition with expand
+a = [1; 2];
+b = [10 20 30];
+a + b
+ ]]></programlisting>
+    <screen><![CDATA[
+--> a = [1; 2];
+--> b = [10 20 30];
+--> a + b
+ ans  =
+   11.   21.   31.
+   12.   22.   32.
+]]></screen>
+    <programlisting role="example"><![CDATA[
+// Subtraction with expand
+a = [1; 2];
+b = [10 20 30];
+b - a
+ ]]></programlisting>
+    <screen><![CDATA[
+--> b - a
+ ans  =
+   9.    19.   29.
+   8.    18.   28.
+]]></screen>
+    <programlisting role="example"><![CDATA[
+// Element-wise multiplication with expand
+a = [1; 2; 3];
+b = [10 20];
+a .* b
+ ]]></programlisting>
+    <screen><![CDATA[
+--> a = [1; 2; 3];
+--> b = [10 20];
+--> a .* b
+ ans  =
+   10.   20.
+   20.   40.
+   30.   60.
+]]></screen>
+    <programlisting role="example"><![CDATA[
+// Element-wise division with expand
+a = [100; 200];
+b = [1 2 4];
+a ./ b
+ ]]></programlisting>
+    <screen><![CDATA[
+--> a = [100; 200];
+--> b = [1 2 4];
+--> a ./ b
+ ans  =
+   100.   50.   25.
+   200.   100.  50.
+]]></screen>
+    <programlisting role="example"><![CDATA[
+// Element-wise power with expand
+a = [2; 3];
+b = [1 2 3];
+a .^ b
+ ]]></programlisting>
+    <screen><![CDATA[
+--> a = [2; 3];
+--> b = [1 2 3];
+--> a .^ b
+ ans  =
+   2.   4.   8.
+   3.   9.   27.
+]]></screen>
+    <programlisting role="example"><![CDATA[
+// Complex doubles
+ca = [1+%i; -2+2*%i];
+cb = [%i, 2-%i, -1+3*%i];
+ca + cb
+ ]]></programlisting>
+    <screen><![CDATA[
+--> ca = [1+%i; -2+2*%i];
+--> cb = [%i, 2-%i, -1+3*%i];
+--> ca + cb
+ ans  =
+   1. + 2.i   3. + 0.i  0. + 4.i
+  -2. + 3.i   0. + i   -3. + 5.i
+]]></screen>
+    <programlisting role="example"><![CDATA[
+// Polynomials
+pcol = [%s; 1 + %s];
+prow = [%s^2, 2 - %s];
+pcol + prow
+ ]]></programlisting>
+    <screen><![CDATA[
+--> pcol = [%s; 1 + %s];
+--> prow = [%s^2, 2 - %s];
+--> pcol + prow
+ ans  =
+   s +s^2       2
+   1. +s +s^2   3
+]]></screen>
+    <programlisting role="example"><![CDATA[
+// Incompatible shapes still fail
+[1 2; 3 4] + ones(3, 2)
+ ]]></programlisting>
+    <screen><![CDATA[
+--> [1 2; 3 4] + ones(3, 2)
+
+Operator +: Wrong dimensions for operation [2x2] + [3x2], same dimensions expected.
+]]></screen>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="plus">addition</link>
+            </member>
+            <member>
+                <link linkend="minus">subtraction</link>
+            </member>
+            <member>
+                <link linkend="star">multiplication</link>
+            </member>
+            <member>
+                <link linkend="slash">division</link>
+            </member>
+            <member>
+                <link linkend="hat">power</link>
+            </member>
+            <member>
+                <link linkend="symbols">operators</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>
+                    Feature added.
+                </revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

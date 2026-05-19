@@ -372,6 +372,7 @@ images/icons/16x16/actions/zoom-out.png \
 images/icons/16x16/actions/data_modify.png \
 images/icons/16x16/animations/process-working.png \
 images/icons/16x16/apps/accessories-text-editor.png \
+images/icons/16x16/apps/atoms-green.png \
 images/icons/16x16/apps/datatips.png \
 images/icons/16x16/apps/help-browser.png \
 images/icons/16x16/apps/rrze_table.png \
@@ -435,8 +436,12 @@ images/icons/256x256/apps/system-search.png \
 images/icons/256x256/apps/utilities-system-monitor.png \
 images/icons/aboutscilab.png \
 images/icons/check-icon.png \
+images/icons/close-icon-black.png \
+images/icons/close-icon-white.png \
 images/icons/close-tab-on.png \
 images/icons/close-tab.png \
+images/icons/doc-icon-black.png \
+images/icons/doc-icon-white.png \
 images/icons/dock_help_active.png \
 images/icons/dock_help_default.png \
 images/icons/puff.png \
@@ -445,6 +450,8 @@ images/icons/scilab_close_active.png \
 images/icons/scilab_close_default.png \
 images/icons/undock_active.png \
 images/icons/undock_default.png \
+images/icons/undock-icon-black.png \
+images/icons/undock-icon-white.png \
 images/icons/openBrace.png \
 images/icons/openBracket.png \
 images/icons/openParen.png \

@@ -18,234 +18,245 @@
         <refname>API double functions</refname>
         <refpurpose>This page lists all the functions to manipulate Scilab native objects containing doubles.</refpurpose>
     </refnamediv>
-    <refsynopsisdiv>
-        <refsection id="api_double_scilab_createEmptyMatrix">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createEmptyMatrix</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env)
-            </literal>
-            <para>Create an empty matrix.</para>
-        </refsection>
-        <refsection id="api_double_scilab_createDoubleMatrix">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createDoubleMatrix</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, int dim, const int* dims, int complex)
-            </literal>
-            <para>
-                Create a double matrix with <varname>dim</varname> dimensions (<varname>dims</varname>[0], <varname>dims</varname>[1], ..., <varname>dims</varname>[<varname>dim</varname>-1]).
-            </para>
-            <para>
-                <varname>complex</varname>: 0 to real matrix or 1 to complex matrix
-            </para>
-        </refsection>
-        <refsection id="api_double_scilab_createDoubleMatrix2d">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createDoubleMatrix2d</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, int row, int col, int complex)
-            </literal>
-            <para>
-                Create a double matrix with 2 dimensions (<varname>row</varname>, <varname>col</varname>).
-            </para>
-            <para>
-                <varname>complex</varname>: 0 to real matrix or 1 to complex matrix
-            </para>
-        </refsection>
-        <refsection id="api_double_scilab_createDouble">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createDouble</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, double real)
-            </literal>
-            <para>Create a scalar double.</para>
-        </refsection>
-        <refsection id="api_double_scilab_createDoubleComplex">
-            <literal>
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                <varname>scilab_createDoubleComplex</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env, double real, double img)
-            </literal>
-            <para>Create a scalar complex double.</para>
-        </refsection>
-        <refsection id="api_double_scilab_getDoubleArray">
-            <literal>
+    <refsection>
+        <title>Description</title>
+        <para>
+            <anchor xml:id="api_double_scilab_createEmptyMatrix"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createEmptyMatrix</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env)</literal>
+        </para>
+        <para>Create an empty matrix.</para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_createDoubleMatrix"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createDoubleMatrix</varname><literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, int dim, const int* dims, int complex)</literal>
+        </para>
+        <para>
+            Create a double matrix with <varname>dim</varname> dimensions (<varname>dims</varname>[0], <varname>dims</varname>[1], ..., <varname>dims</varname>[<varname>dim</varname>-1]).
+        </para>
+        <para>
+            <varname>complex</varname>: 0 to real matrix or 1 to complex matrix
+        </para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_createDoubleMatrix2d"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createDoubleMatrix2d</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, int row, int col, int complex)</literal>
+        </para>
+        <para>
+            Create a double matrix with 2 dimensions (<varname>row</varname>, <varname>col</varname>).
+        </para>
+        <para>
+            <varname>complex</varname>: 0 to real matrix or 1 to complex matrix
+        </para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_createDouble"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createDouble</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, double real)</literal>
+        </para>
+        <para>Create a scalar double.</para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_createDoubleComplex"/>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <varname>scilab_createDoubleComplex</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, double real, double img)</literal>
+        </para>
+        <para>Create a scalar complex double.</para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_getDoubleArray"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_getDoubleArray</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, double** real)</literal>
+        </para>
+        <para>
+            Get pointer on internal array of double of <literal>var</literal>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_getDoubleComplexArray"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_getDoubleComplexArray</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            env,
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, double** real, double** img)</literal>
+        </para>
+        <para>
+            Get pointers on internal arrays of double of <literal>var</literal>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_getDouble"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_getDouble</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, double* real)</literal>
+        </para>
+        <para>Get double value from an scalar double variable.</para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_getDoubleComplex"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_getDoubleComplex</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, double* real, double* img)</literal>
+        </para>
+        <para>Get double values from an scalar double variable.</para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_setDoubleArray"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setDoubleArray</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, const double* real)</literal>
+        </para>
+        <para>
+            Set values of double variable <literal>var</literal>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_setDoubleComplexArray"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setDoubleComplexArray</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, const double* real, const double* img)</literal>
+        </para>
+        <para>
+            Set values of complex double variable <literal>var</literal>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_setDouble"/>
                 <link linkend="api_types_scilabStatus">
                     <command>scilabStatus</command>
                 </link>
-                <varname>scilab_getDoubleArray</varname>(
+                <varname>scilab_setDouble</varname>
+                <literal>(</literal>
                 <link linkend="api_types_scilabEnv">
                     <command>scilabEnv</command>
                 </link>
-                env,
+                <literal>env, </literal>
                 <link linkend="api_types_scilabVar">
                     <command>scilabVar</command>
                 </link>
-                var, double** real)
-            </literal>
-            <para>
-                Get pointer on internal array of double of <literal>var</literal>.
-            </para>
-        </refsection>
-        <refsection id="api_double_scilab_getDoubleComplexArray">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_getDoubleComplexArray</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, double** real, double** img)
-            </literal>
-            <para>
-                Get pointers on internal arrays of double of <literal>var</literal>.
-            </para>
-        </refsection>
-        <refsection id="api_double_scilab_getDouble">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_getDouble</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, double* real)
-            </literal>
-            <para>Get double value from an scalar double variable.</para>
-        </refsection>
-        <refsection id="api_double_scilab_getDoubleComplex">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_getDoubleComplex</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, double* real, double* img)
-            </literal>
-            <para>Get double values from an scalar double variable.</para>
-        </refsection>
-        <refsection id="api_double_scilab_setDoubleArray">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setDoubleArray</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, const double* real)
-            </literal>
-            <para>
-                Set values of double variable <literal>var</literal>.
-            </para>
-        </refsection>
-        <refsection id="api_double_scilab_setDoubleComplexArray">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setDoubleComplexArray</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, const double* real, const double* img)
-            </literal>
-            <para>
-                Set values of complex double variable <literal>var</literal>.
-            </para>
-        </refsection>
-        <refsection id="api_double_scilab_setDouble">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setDouble</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, double real)
-            </literal>
-            <para>
-                Set value of a scalar double variable <literal>var</literal>.
-            </para>
-        </refsection>
-        <refsection id="api_double_scilab_setDoubleComplex">
-            <literal>
-                <link linkend="api_types_scilabStatus">
-                    <command>scilabStatus</command>
-                </link>
-                <varname>scilab_setDoubleComplex</varname>(
-                <link linkend="api_types_scilabEnv">
-                    <command>scilabEnv</command>
-                </link>
-                env,
-                <link linkend="api_types_scilabVar">
-                    <command>scilabVar</command>
-                </link>
-                var, double real, double img)
-            </literal>
-            <para>
-                Set values of a scalar complex double variable <literal>var</literal>.
-            </para>
-        </refsection>
-    </refsynopsisdiv>
+                <literal>var, double real)</literal>
+        </para>
+        <para>
+            Set value of a scalar double variable <literal>var</literal>.
+        </para>
+
+        <para>
+            <anchor xml:id="api_double_scilab_setDoubleComplex"/>
+            <link linkend="api_types_scilabStatus">
+                <command>scilabStatus</command>
+            </link>
+            <varname>scilab_setDoubleComplex</varname>
+            <literal>(</literal>
+            <link linkend="api_types_scilabEnv">
+                <command>scilabEnv</command>
+            </link>
+            <literal>env, </literal>
+            <link linkend="api_types_scilabVar">
+                <command>scilabVar</command>
+            </link>
+            <literal>var, double real, double img)</literal>
+        </para>
+        <para>
+            Set values of a scalar complex double variable <literal>var</literal>.
+        </para>
+    </refsection>
     <refsection>
         <title>Examples</title>
-        <title>Scilab test script</title>
         <programlisting role="example"><![CDATA[
 scinotes("SCI/modules/api_scilab/tests/unit_tests/api_c/double_test.c", "readonly")
 ]]>     </programlisting>

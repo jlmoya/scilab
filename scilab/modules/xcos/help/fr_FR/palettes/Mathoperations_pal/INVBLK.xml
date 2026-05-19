@@ -23,51 +23,50 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/INVBLK.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_INVBLK">
+    <refsection xml:id="Contents_INVBLK">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_INVBLK">Description</xref>
+                <para><link linkend="Description_INVBLK">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_INVBLK">Paramètres</xref>
+                <para><link linkend="Dialogbox_INVBLK">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_INVBLK">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_INVBLK">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_INVBLK">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_INVBLK">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_INVBLK">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_INVBLK">Fonction de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_INVBLK">Voir aussi</xref>
+                <para><link linkend="Seealso_INVBLK">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_INVBLK">
+    <refsection xml:id="Description_INVBLK">
         <title>Description</title>
         <para>
             Ce bloc calcule le vecteur de sortie y avec y[i]=1/u[i] où u est le vecteur d'entrée. Les dimensions des entrées
             et sorties est déterminée par le contexte.
         </para>
     </refsection>
-    <refsection id="Dialogbox_INVBLK">
+    <refsection xml:id="Dialogbox_INVBLK">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/INVBLK_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -78,7 +77,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_INVBLK">
+    <refsection xml:id="Defaultproperties_INVBLK">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -151,7 +150,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_INVBLK">
+    <refsection xml:id="Interfacingfunction_INVBLK">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -159,7 +158,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_INVBLK">
+    <refsection xml:id="Computationalfunction_INVBLK">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -167,17 +166,17 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_INVBLK" role="see also">
+    <refsection xml:id="Seealso_INVBLK" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="GAINBLK_f">GAINBLK_f</link>
+                <para><link linkend="GAINBLK_f">GAINBLK_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="PROD_f">PROD_f</link>
+                <para><link linkend="PROD_f">PROD_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="PRODUCT">PRODUCT</link>
+                <para><link linkend="PRODUCT">PRODUCT</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

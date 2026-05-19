@@ -154,7 +154,6 @@ int sci_uicontrol(char *fname, void* pvApiCtx)
         /* Create a pushbutton in figure given as parameter */
         /* Or give focus to the uicontrol given as parameter */
         int* piAddr = NULL;
-        int iType = 0;
 
         sciErr = getVarAddressFromPosition(pvApiCtx, 1, &piAddr);
         if (sciErr.iErr)

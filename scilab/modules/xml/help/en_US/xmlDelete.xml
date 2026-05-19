@@ -25,7 +25,7 @@
             xmlDelete("all")
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -44,9 +44,9 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("http://www.w3.org/TR/2009/REC-xml-names-20091208/xml-names-10-3e.xml");
-    root = doc.root
-    xmlDelete(doc);
+    xdoc = xmlRead("http://www.w3.org/TR/2009/REC-xml-names-20091208/xml-names-10-3e.xml");
+    root = xdoc.root
+    xmlDelete(xdoc);
 
     // root is no more valid... so try to access it, will lead to an error
     // disp(root) => This will fail
@@ -60,7 +60,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

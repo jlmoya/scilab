@@ -30,7 +30,7 @@
             [ind, which] = strindex(haystack, needle, "regexp")
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -106,7 +106,7 @@
         <para>
             The rules of regular expression are processed by PCRE2. For a
             quick syntax tour, see <link linkend="regexp"/>.
-            For full syntax specification, see the <ulink url="https://www.pcre.org/current/doc/html/pcre2pattern.html">regular expressions supported by PCRE2</ulink>.
+            For full syntax specification, see the <link xlink:href="https://www.pcre.org/current/doc/html/pcre2pattern.html">regular expressions supported by PCRE2</link>.
         </para>
     </refsection>
     <refsection>

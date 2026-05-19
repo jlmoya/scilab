@@ -18,21 +18,24 @@
         <refname>API optional functions</refname>
         <refpurpose>This page lists all the functions to get information about optional parameters.</refpurpose>
     </refnamediv>
-    <refsection id="api_optional_scilab_getOptional">
-        <literal>
+    <refsection>
+        <title>Description</title>
+        <para>
+            <anchor xml:id="api_optional_scilab_getOptional"/>
             <link linkend="api_types_scilabVar">
                 <command>scilabVar</command>
             </link>
-            <varname>scilab_getOptional</varname>(
+            <varname>scilab_getOptional</varname>
+            <literal>(</literal>
             <link linkend="api_types_scilabEnv">
                 <command>scilabEnv</command>
             </link>
-            env,
+            <literal></literal>env, /literal>
             <link linkend="api_types_scilabOpt">
                 <command>scilabOpt</command>
             </link>
-            opt, const wchar_t* varname)
-        </literal>
+            <literal></literal>opt, const wchar_t* varname)/literal>
+        </para>
         <para>
             Return optional parameter value associated to variable called <varname>varname</varname>, NULL if variable does not exist.
         </para>

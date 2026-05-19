@@ -12,7 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="CVode">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="CVode">
     <refnamediv>
         <refname>CVode</refname>
         <refpurpose>
@@ -48,25 +48,25 @@
                 \sum_{i=0}^{K_1} \alpha_{n,i} y_{n-i} + h_n\sum_{i=0}^{K_2} \beta_{n,i} \dot{y}_{n-i} = 0,\hspace{10 mm} (1)
                 \end{eqnarray}
             </latex>
-            <para>
-                avec
-                <emphasis>
-                    y<subscript>n</subscript>
-                </emphasis>
-                l'approximation de
-                <emphasis>
-                    y(t<subscript>n</subscript>)
-                </emphasis>
-                , et
-                <emphasis>
-                    h<subscript>n</subscript>
-                </emphasis>
-                =
-                <emphasis>
-                    t<subscript>n</subscript> - t<subscript>n-1</subscript>
-                </emphasis>
-                la taille du pas de temps.
-            </para>
+        </para>
+        <para>
+            avec
+            <emphasis>
+                y<subscript>n</subscript>
+            </emphasis>
+            l'approximation de
+            <emphasis>
+                y(t<subscript>n</subscript>)
+            </emphasis>
+            , et
+            <emphasis>
+                h<subscript>n</subscript>
+            </emphasis>
+            =
+            <emphasis>
+                t<subscript>n</subscript> - t<subscript>n-1</subscript>
+            </emphasis>
+            la taille du pas de temps.
         </para>
         <para>
             Ces méthodes implicites sont caractérisées par leur ordre <emphasis>q</emphasis>, qui indique le nombre de points intermédiaires requis pour le calcul de
@@ -78,17 +78,19 @@
         <para>
             C'est ici qu'intervient la différence entre <emphasis>BDF</emphasis> et <emphasis>Adams</emphasis> ("<emphasis>Backward Differentiation Formula</emphasis>" et "<emphasis>Adams-Moulton formula</emphasis>"):
         </para>
-        <para>
-            <caution>
+        <caution>
+            <para>
                 Si le problème est raide, il est préférable d'utiliser <emphasis>BDF</emphasis> :
-            </caution>
-        </para>
+            </para>
+        </caution>
         <itemizedlist>
             <listitem>
-                <emphasis>q</emphasis>, l'ordre de la méthode, est initialisé entre 1 et 5 (automatique),
+                 <para><emphasis>q</emphasis>, l'ordre de la méthode, est initialisé entre 1 et 5 (automatique),
+                </para>
             </listitem>
             <listitem>
-                <emphasis>K1 = q</emphasis> et <emphasis>K2 = 0</emphasis>.
+                 <para><emphasis>K1 = q</emphasis> et <emphasis>K2 = 0</emphasis>.
+                </para>
             </listitem>
         </itemizedlist>
         <para>
@@ -96,10 +98,12 @@
         </para>
         <itemizedlist>
             <listitem>
-                <emphasis>q</emphasis> est initialisé entre 1 et 12 (automatique),
+                 <para><emphasis>q</emphasis> est initialisé entre 1 et 12 (automatique),
+                </para>
             </listitem>
             <listitem>
-                <emphasis>K1 = 1</emphasis> et <emphasis>K2 = q</emphasis>.
+                 <para><emphasis>K1 = 1</emphasis> et <emphasis>K2 = q</emphasis>.
+                </para>
             </listitem>
         </itemizedlist>
         <para>
@@ -113,8 +117,8 @@
             Quelque soit le choix et à chaque pas, injecter cette intégration dans <emphasis>(1)</emphasis> donne le système non-linéaire:
         </para>
         <para>
-            <latex scilab:localized="true">
-                G(y_n)\equiv y_n-h_n\beta_{n,0}f(t_n,y_n)-a_n=0, \hspace{2 mm} où \hspace{2 mm} a_n\equiv \sum_{i>0} (\alpha_{n,i} y_{n-i} + h_n\beta_{n,i}\dot{y}_{n-i})
+            <latex localized="true">
+                G(y_n)\equiv y_n-h_n\beta_{n,0}f(t_n,y_n)-a_n=0, \hspace{2 mm} où \hspace{2 mm} a_n\equiv \sum_{i&gt;0} (\alpha_{n,i} y_{n-i} + h_n\beta_{n,i}\dot{y}_{n-i})
             </latex>
         </para>
         <para>
@@ -130,29 +134,17 @@
         <itemizedlist>
             <para>  </para>
             <listitem>
-                <emphasis role="bold">Fonctionnelles :</emphasis> cette méthode n'implique que des évaluations de <emphasis>f</emphasis>, elle calcule
-                <emphasis>
-                    y<subscript>n(0)</subscript>
-                </emphasis>
-                simplement en itérant la formule :
-                <para>
-                    <latex>
-                        y_{n(m+1)} = h_n β_{n,0} f(t_n,y_{n(m)}) + a_n
-                    </latex>
-                    <latex scilab:localized="true">
-                        où \hspace{2 mm} a_n\equiv \sum_{i>0} (\alpha_{n,i} y_{n-i} + h_n\beta_{n,i}\dot{y}_{n-i})
-                    </latex>
-                </para>
+                 <para><emphasis role="bold">Fonctionnelles :</emphasis> cette méthode n'implique que des évaluations de <emphasis>f</emphasis>, elle calcule
+                    <emphasis>
+                        y<subscript>n(0)</subscript>
+                    </emphasis>
+                    simplement en itérant la formule :
+                    </para>
             </listitem>
-            <para>  </para>
             <listitem>
-                <emphasis role="bold">Newton :</emphasis> ici, nous utilisons un solveur direct dense sur le système linéaire :
-                <para>
-                    <latex scilab:localized="true">
-                        M[y_{n(m+1)}-y_{n(m)}]=-G(y_{n(m)}), \hspace{4 mm} M \approx I-\gamma J, \hspace{2 mm} J=\frac{\partial f}{\partial y}, \hspace{2 mm} et \hspace{2 mm} \gamma = h_n\beta_{n,0}
-                    </latex>
-                </para>
-            </listitem>
+                 <para><emphasis role="bold">Newton :</emphasis> ici, nous utilisons un solveur direct dense sur le système linéaire :
+                    </para>
+                </listitem>
         </itemizedlist>
         <para>
             Dans les deux cas, <emphasis>CVode</emphasis> se sert des valeurs passées pour contrôler l'erreur locale
@@ -228,7 +220,7 @@ Temps pour BDF / Newton:
         </para>
         <para>
             Maintenant, dans le script suivant, on compare la différence de temps entre les méthodes en lançant l'exemple avec les quatre solveurs tour à tour :
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integCVode.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integCVode.sce">
                 Ouveture du script
             </link>
         </para>
@@ -252,7 +244,7 @@ Temps pour Adams / Functional :
             Les résultats montrent que pour un problème continu non-raide simple, <emphasis>Adams / Functional</emphasis> est le plus rapide.
         </para>
     </refsection>
-    <refsection>
+    <refsection role="see also">
         <title>Voir Aussi</title>
         <simplelist type="inline">
             <member>
@@ -299,7 +291,7 @@ Temps pour Adams / Functional :
     <refsection>
         <title>Bibliographie</title>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</link>
         </para>
     </refsection>
 </refentry>

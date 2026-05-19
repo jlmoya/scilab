@@ -210,17 +210,6 @@ public class ConnectionHandler extends mxConnectionHandler {
 
             e.consume();
         } else {
-            if (marker.hasValidState() && connectPreview.getPreviewState() != null) {
-                final mxGraph graph = graphComponent.getGraph();
-                final double x = graph.snap(e.getX());
-                final double y = graph.snap(e.getY());
-
-                // We are ending a link creation on an valid port,
-                // so sync the points coordinates with the model
-                mxICell cell = (mxICell) connectPreview.getPreviewState().getCell();
-                cell.setGeometry(cell.getGeometry());
-            }
-
             multiPointLinkStarted = false;
             super.mouseReleased(e);
         }

@@ -59,14 +59,14 @@ a = sciargs()
 ! Hello John                    !
 ! "C:\Users\Me"                 !
 ]]></screen>
-        <para>
         <warning>
-            Let's note that in <literal>scilab -nw</literal> the "-nw" option is used by
-            the <literal>scilab</literal> batch file to route the call to
-            <literal>WScilex-cli.exe</literal>, without forwarding "-nw". Therefore, this one
-            is not returned by <literal>sciargs()</literal>.
+            <para>
+                Let's note that in <literal>scilab -nw</literal> the "-nw" option is used by
+                the <literal>scilab</literal> batch file to route the call to
+                <literal>WScilex-cli.exe</literal>, without forwarding "-nw". Therefore, this one
+                is not returned by <literal>sciargs()</literal>.
+            </para>
         </warning>
-        </para>
     </refsection>
 
     <refsection role="see also">
@@ -88,9 +88,9 @@ a = sciargs()
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     A column is returned, instead of formerly a row.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

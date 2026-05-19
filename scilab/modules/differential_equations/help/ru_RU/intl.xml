@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="intl" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="intl" xml:lang="ru">
     <refnamediv>
         <refname>intl</refname>
         <refpurpose>Интеграл Коши по дуге окружности Интеграл</refpurpose>
@@ -35,35 +32,40 @@
             <varlistentry>
                 <term>z0</term>
                 <listitem>
-                    комплексное число<para/>
-                </listitem>
+                     <para>
+                        комплексное число</para>
+                                     </listitem>
             </varlistentry>
             <varlistentry>
                 <term>a, b</term>
                 <listitem>
-                    два вещественных числа<para/>
-                </listitem>
+                     <para>
+                        два вещественных числа</para>
+                                          </listitem>
             </varlistentry>
             <varlistentry>
                 <term>r</term>
                 <listitem>
-                    положительное вещественное число<para/>
-                </listitem>
+                     <para>
+                        положительное вещественное число</para>
+                                                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>f</term>
                 <listitem>
-                    идентификатор числовой функции, подлежащей интеграции (тип 13 или 130).
-                    <para/>
-                </listitem>
+                     <para>
+                        идентификатор числовой функции, подлежащей интеграции (тип 13 или 130).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>abserr, relerr</term>
                 <listitem>
-                    вещественные скаляры, абсолютная и относительная ошибки.
-                    Значения по умолчанию: <literal>1.d-13</literal> и <literal>1d-8</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        вещественные скаляры, абсолютная и относительная ошибки.
+                        Значения по умолчанию: <literal>1.d-13</literal> и <literal>1d-8</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

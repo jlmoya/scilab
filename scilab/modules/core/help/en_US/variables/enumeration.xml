@@ -20,7 +20,7 @@
             enums = enumeration(object)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -45,7 +45,9 @@
                     <para>
                         a string matrix of enumeration
                         <note>
-                            If <literal>enumeration</literal> is called without output argument, the function only print list of enumeration.
+                            <para>
+                                If <literal>enumeration</literal> is called without output argument, the function only print list of enumeration.
+                            </para>
                         </note>
                     </para>
                 </listitem>
@@ -109,7 +111,9 @@ l = enumeration(e)
             <revision>
                 <revnumber>2026.0.0</revnumber>
                 <revdescription>
-                    <literal>enumeration</literal> introduction.
+                    <para>
+                        <literal>enumeration</literal> introduction.
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

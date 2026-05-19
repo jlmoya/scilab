@@ -59,4 +59,9 @@ void setFPUToExtended(void)
     _FPU_SETCW(_cw);
 }
 
+#else
+
+void setFPUToDouble(void) {}
+void setFPUToExtended(void) {}
+
 #endif

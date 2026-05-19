@@ -31,38 +31,38 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/POWBLK_f.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_POWBLK_f">
+    <refsection xml:id="Contents_POWBLK_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_POWBLK_f">Description</xref>
+                <para><link linkend="Description_POWBLK_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_POWBLK_f">Parameters</xref>
+                <para><link linkend="Dialogbox_POWBLK_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_POWBLK_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_POWBLK_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_POWBLK_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_POWBLK_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_POWBLK_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_POWBLK_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_POWBLK_f">See also</xref>
+                <para><link linkend="Seealso_POWBLK_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_POWBLK_f">
+    <refsection xml:id="Description_POWBLK_f">
         <title>Description</title>
         <para>
             This block computes an output vector y with y[i]= u[i]^a where a is the real scalar
@@ -71,14 +71,13 @@
             connected blocks port sizes.
         </para>
     </refsection>
-    <refsection id="Dialogbox_POWBLK_f">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_POWBLK_f">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/POWBLK_f_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/POWBLK_f_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -89,7 +88,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_POWBLK_f">
+    <refsection xml:id="Defaultproperties_POWBLK_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -162,7 +161,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_POWBLK_f">
+    <refsection xml:id="Interfacingfunction_POWBLK_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -170,7 +169,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_POWBLK_f">
+    <refsection xml:id="Computationalfunction_POWBLK_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="atomsSetConfig" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="atomsSetConfig" xml:lang="en">
     <refnamediv>
         <refname>atomsSetConfig</refname>
         <refpurpose>Manage ATOMS system parameters</refpurpose>
@@ -28,7 +25,7 @@
             result = atomsSetConfig(parameter, value)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -46,7 +43,9 @@
             <varlistentry>
                 <term>result</term>
                 <listitem>
-                    Number of changed parameters
+                     <para>
+                        Number of changed parameters
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -204,12 +203,12 @@ atomsSetConfig("autoload","True")
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>offLine parameter renamed to offline</revdescription>
+                <revremark>offLine parameter renamed to offline</revremark>
             </revision>
         </revhistory>
     </refsection>

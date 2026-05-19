@@ -80,42 +80,58 @@ class Example1 {
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>
+                <revremark>
                     Javasci v1 is removed.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>New methods added:
-                    <itemizedlist>
-                        <listitem>Scilab.execException(String)
-                            <para>Same as Scilab.exec(String) but returns an exception when a Scilab error occurs</para>
-                        </listitem>
-                        <listitem>Scilab.execException(String[])
-                            <para>Same as Scilab.exec(String[]) but returns an exception when a Scilab error occurs</para>
-                        </listitem>
-                        <listitem>Scilab.execException(File)
-                            <para>Same as Scilab.exec(File) but returns an exception when a Scilab error occurs</para>
-                        </listitem>
-                    </itemizedlist>
+                <revdescription>
+                    <para>
+                        New methods added:
+                        <itemizedlist>
+                            <listitem>
+                                <para>Scilab.execException(String)
+                                    </para>
+                                </listitem>
+                            <listitem>
+                                <para>Scilab.execException(String[])
+                                    </para>
+                                </listitem>
+                            <listitem>
+                                <para>Scilab.execException(File)
+                                    </para>
+                                </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>5.4.0</revnumber>
                 <revdescription>
+                    <para>
                     <itemizedlist>
-                        <listitem>Javasci supports sparse and boolean sparse datatypes.</listitem>
-                        <listitem>Javasci supports tlists, mlists and lists datatypes.</listitem>
-                        <listitem>Javasci supports polynomial datatypes.</listitem>
-                        <listitem>Javasci supports struct datatypes under the form of an mList.</listitem>
+                        <listitem>
+                             <para>Javasci supports sparse and boolean sparse datatypes.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Javasci supports tlists, mlists and lists datatypes.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Javasci supports polynomial datatypes.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Javasci supports struct datatypes under the form of an mList.</para>
+                        </listitem>
                     </itemizedlist>
-                </revdescription>
-            </revision>
-        </revhistory>
-    </refsection>
+                </para>
+            </revdescription>
+        </revision>
+    </revhistory>
+</refsection>
 </refentry>

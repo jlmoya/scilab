@@ -16,7 +16,7 @@
         <title>Syntax</title>
         <synopsis>[x, y, z] = cylinder(r, n)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -76,8 +76,6 @@ gcf().color_map = jet(64);
             surf(x, y, 20 * z);
             gcf().color_map = jet(64);
         </scilab:image>
-    </refsection>
-    <refsection>
         <para><emphasis role="bold">Cylinder with decreasing radius (Cone):</emphasis></para>
         <programlisting role="example"><![CDATA[
 scf();
@@ -111,9 +109,11 @@ gcf().color_map = jet(64);
         <revhistory>
             <revision>
                 <revnumber>2025.1.0</revnumber>
-                <revremark>
-                    Function <literal>cylinder</literal> introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function <literal>cylinder</literal> introduced.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

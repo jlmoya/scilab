@@ -47,7 +47,6 @@ int sci_plot2d(char* fname, void *pvApiCtx)
     double* lt = NULL;
     int iTypel1 = 0;
     int iTypel2 = 0;
-    int lw = 0;
 
     int m1 = 0, n1 = 0, m2 = 0, n2 = 0;
     int test = 0, i = 0, j = 0, iskip = 0;

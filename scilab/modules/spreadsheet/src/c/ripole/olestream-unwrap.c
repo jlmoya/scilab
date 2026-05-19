@@ -237,7 +237,7 @@ int OLEUNWRAP_sanitize_filename( char *fname )
 \------------------------------------------------------------------*/
 int OLEUNWRAP_decode_attachment( struct OLEUNWRAP_object *oleuw, char *stream, size_t stream_size, char *decode_path )
 {
-    struct OLE10_header oh;
+    struct OLE10_header oh = {0};
     char *sp = stream;
     char *data_start_point = stream;
     int result = OLEUW_OK;

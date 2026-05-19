@@ -89,7 +89,8 @@ void getDoubleFormat(double _dblVal, DoubleFormat * _pDF)
     int iBlankSize = _pDF->bPrintBlank ? BLANK_SIZE : 0;
     _pDF->iSignLen = _pDF->bPrintBlank ? SIGN_LENGTH + BLANK_SIZE : _pDF->iSignLen;
 
-    _pDF->bExp |= ConfigVariable::getFormatMode() == 0;
+    _pDF->bExp |= (ConfigVariable::getFormatMode() == 0) | (ConfigVariable::getFormatMode() == 2);
+    _pDF->bEng |= ConfigVariable::getFormatMode() == 2;
     int iTotalLen = 0;
     int iPrecNeeded = ConfigVariable::getFormatSize();
 
@@ -250,18 +251,29 @@ void addDoubleValue(std::wostringstream * _postr, double _dblVal, DoubleFormat *
         // Prints the exponent part 1.543D+03 for example
         int iDecpt = 0;
         int iSign = 0;
+        int iPrec = _pDF->bEng ? std::max(3,_pDF->iPrec) : _pDF->iPrec;
         char *pRve = nullptr;
-        char *pDtoaStr = dtoa(fabs(_dblVal), 2, _pDF->iPrec + 1, &iDecpt, &iSign, &pRve);
+        char *pDtoaStr = dtoa(fabs(_dblVal), 2, iPrec + 1, &iDecpt, &iSign, &pRve);
 
         std::string str(pDtoaStr);
         freedtoa(pDtoaStr);
 
+        if (_pDF->bEng)
+        {
+            int iExp = iDecpt - 1;
+            int iQExp = (iExp/3)*3;
+            int iSiExp = iExp >= 0 ? iQExp : ( iQExp == iExp ? iExp : ((-iExp+3)/3)*(-3) );
+            /* add trailing zeros */
+            str.append(std::max(0, iPrec + 1 - (int)str.length()), '0');
+            str.insert(1+iExp-iSiExp, ".");
+            iDecpt = iSiExp+1;
+        }
         // in format("e") omiting the decimal point has a sense
         // only if fabs(_dblVal) is an integer in {1...9}
-        if (_pDF->bPrintPoint || str.length() > 1)
+        else if (_pDF->bPrintPoint || str.length() > 1)
         {
             /* add trailing zeros */
-            str.append(std::max(0, _pDF->iPrec + 1 - (int)str.length()), '0');
+            str.append(std::max(0, iPrec + 1 - (int)str.length()), '0');
             str.insert(1, ".");
         }
 
@@ -446,6 +458,7 @@ void addDoubleComplexValue(std::wostringstream * _postr, double _dblR, double _d
 
     df.iPrec = _pDFR->iPrec;
     df.bExp = _pDFR->bExp;
+    df.bEng = _pDFR->bEng;
 
     if (ISNAN(_dblR) || !finite(_dblR))
     {
@@ -461,6 +474,7 @@ void addDoubleComplexValue(std::wostringstream * _postr, double _dblR, double _d
     //I
     df.iPrec = _pDFI->iPrec;
     df.bExp = _pDFI->bExp;
+    df.bEng = _pDFI->bEng;
     df.bPrintPlusSign = true;
     df.bPrintComplexPlusSpace = true;
     df.bPrintOne = false;

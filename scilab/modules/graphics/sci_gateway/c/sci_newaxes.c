@@ -42,8 +42,6 @@ int sci_newaxes(char * fname, void *pvApiCtx)
 {
     SciErr sciErr;
 
-    long long* outindex = NULL;
-
     int iSubwinUID = 0;
     long long hParent = 0;
     int iParentUID = -1;
@@ -82,7 +80,6 @@ int sci_newaxes(char * fname, void *pvApiCtx)
     {
         // iRhs == 1
         int* piAddr = NULL;
-        int iType = 0;
 
         sciErr = getVarAddressFromPosition(pvApiCtx, 1, &piAddr);
         if (sciErr.iErr)

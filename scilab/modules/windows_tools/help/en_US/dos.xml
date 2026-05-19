@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="dos">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="dos">
     <refnamediv>
         <refname>dos</refname>
         <refpurpose>
@@ -34,7 +31,7 @@
             .. = dos(commands, '-echo')
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -101,19 +98,25 @@
             They are managed in the following ways:
             <itemizedlist>
                 <listitem>
-                    If the <varname>output</varname> argument is expected, the standard output
-                    and errors messages are returned in it as a column of text.
+                     <para>
+                        If the <varname>output</varname> argument is expected, the standard output
+                        and errors messages are returned in it as a column of text.
+                    </para>
                 </listitem>
                 <listitem>
-                    If the <varname>'-echo'</varname> option is used, the standard output and
-                    errors messages are (in addition) displayed in the Scilab console.
+                     <para>
+                        If the <varname>'-echo'</varname> option is used, the standard output and
+                        errors messages are (in addition) displayed in the Scilab console.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
         <note>
-            For Scilab on MS Windows, the functions <link linkend="unix_g">unix_g()</link>,
-            <link linkend="unix_s">unix_s()</link>, <link linkend="unix_w">unix_w()</link> and
-            <link linkend="unix_x">unix_x()</link> are based on <literal>dos()</literal>.
+            <para>
+                For Scilab on MS Windows, the functions <link linkend="unix_g">unix_g()</link>,
+                <link linkend="unix_s">unix_s()</link>, <link linkend="unix_w">unix_w()</link> and
+                <link linkend="unix_x">unix_x()</link> are based on <literal>dos()</literal>.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -193,7 +196,7 @@ getenv TEST
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

@@ -12,10 +12,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="splin" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="splin" xml:lang="en">
     <refnamediv>
         <refname>splin</refname>
         <refpurpose>cubic spline interpolation</refpurpose>
@@ -28,7 +25,7 @@
             d = splin(x, y, spline_type, der)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -113,7 +110,7 @@
                         <literal>der</literal>:
                     </para>
                     <para>
-                        <table align="center">
+                        <table>
                         <tr align="center"><td><emphasis>s'(x<subscript>1</subscript>) = der(1)</emphasis></td></tr>
                         <tr align="center"><td><emphasis>s'(x<subscript>n</subscript>) = der(2)</emphasis></td></tr>
                         </table>
@@ -125,7 +122,7 @@
                 <listitem>
                     <para>the cubic spline is computed by using the conditions:</para>
                     <para>
-                        <table align="center">
+                        <table>
                         <tr align="center"><td><emphasis>s''(x<subscript>1</subscript>) = 0</emphasis></td></tr>
                         <tr align="center"><td><emphasis>s''(x<subscript>n</subscript>) = 0</emphasis></td></tr>
                         </table>
@@ -140,7 +137,7 @@
                         verify <emphasis>y1=yn</emphasis>) by using the conditions:
                     </para>
                     <para>
-                        <table align="center">
+                        <table>
                         <tr align="center">
                             <td>
                             <emphasis>s'(x<subscript>1</subscript>) = s'(x<subscript>n</subscript>)</emphasis>
@@ -167,10 +164,14 @@
                     <para>
                         <itemizedlist>
                             <listitem>
-                                If y(i) ≤ y(i+1), s is increasing on <literal>[x(i), x(i+1)]</literal>.
+                                 <para>
+                                    If y(i) ≤ y(i+1), s is increasing on <literal>[x(i), x(i+1)]</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                If y(i) ≥ y(i+1), s is increasing on <literal>[x(i), x(i+1)]</literal>.
+                                 <para>
+                                    If y(i) ≥ y(i+1), s is increasing on <literal>[x(i), x(i+1)]</literal>.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -243,7 +244,7 @@ plot2d(xx, [yyi yye], style=[2 5], leg="interpolation spline@exact function")
 plot2d(x, y, -9)
 xtitle("interpolation of the Runge function")
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             deff("y=runge(x)","y=1 ./(1 + x.^2)")
             a = -5; b = 5; n = 11; m = 400;
             x = linspace(a, b, n)';
@@ -256,7 +257,7 @@ xtitle("interpolation of the Runge function")
             plot2d(xx, [yyi yye], style=[2 5], leg="interpolation spline@exact function")
             plot2d(x, y, -9)
             xtitle("interpolation of the Runge function")
-        </scilab:image>
+        ]]></scilab:image>
         <programlisting role="example"><![CDATA[
 // example 2 : show behavior of different splines on random data
 rand("seed", 0)
@@ -276,7 +277,7 @@ plot2d(x,y,-9, strf="000")  // to show interpolation points
 xtitle("Various spline and sub-splines on random data")
 show_window()
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             rand("seed", 0)
             a = 0; b = 1;        // interval of interpolation
             n = 10;              // nb of interpolation  points
@@ -293,7 +294,7 @@ show_window()
             plot2d(x,y,-9, strf="000")  // to show interpolation points
             xtitle("Various spline and sub-splines on random data")
             show_window()
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

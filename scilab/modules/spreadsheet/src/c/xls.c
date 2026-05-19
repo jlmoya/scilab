@@ -15,6 +15,7 @@
  *
  */
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -43,10 +44,6 @@ static void getSST(int *fd, short Len, int BIFF, int *ns, char ***sst, int *err)
 static void getBOF(int *fd , int* Data, int *err);
 static void getString(int *fd, short *count, short *Len, int flag, char **str, int *err);
 
-/**
- ** Bruno : Defined but not used ... so what !!!!!!!!
- static int get_oleheader(int *fd);
-**/
 /*------------------------------------------------------------------*/
 void xls_read(int *fd, int *cur_pos, double **data, int **chainesind, int *N, int *M, int *err)
 {
@@ -526,24 +523,29 @@ Err2:
 
 static double NumFromRk2(long rk)
 {
-    double num;
+    union {
+        double d;
+        uint32_t u32[2];
+    } num;
+
     if (rk & 0x02)
     {
         /* int*/
-        num = (double) (rk >> 2);
+        num.d = (double) (rk >> 2);
     }
     else
     {
         /* hi words of IEEE num*/
-        *((int *)&num + 1) = rk & 0xfffffffc;
-        *((int *)&num) = 0;
+        // little-endian: high word is u32[1], low word is u32[0]
+        num.u32[1] = rk & 0xfffffffc;
+        num.u32[0] = 0;
     }
     if (rk & 0x01)
         /* divide by 100*/
     {
-        num /= 100;
+        num.d /= 100;
     }
-    return num;
+    return num.d;
 }
 
 static void getBOF(int *fd , int* Data, int *err)
@@ -923,7 +925,7 @@ static void getString(int *fd, short *PosInRecord, short *RecordLen, int flag, c
                 /* first, convert read characters to two bytes*/
                 char *str1 = *str;
                 strindex = 0;
-                str = (char**) MALLOC((2 * BytesToBeRead + 1) * sizeof(char*));
+                str = (char**) CALLOC((2 * BytesToBeRead + 1), sizeof(char*));
                 if (str == NULL)
                 {
                     goto ErrL;

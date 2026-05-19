@@ -23,7 +23,7 @@
         <synopsis>xnumb(x, y, nums, [box, angle])
             hdl = xnumb(...)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -66,12 +66,12 @@
             If <varname>box</varname> is 1, a box is drawn around the numbers.
             If <varname>angle</varname> is given, it gives the direction for string drawing.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note that a maximum of 4 significant digits of each element of <varname>nums</varname>
                 will be displayed.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -99,9 +99,9 @@ xnumb(x,500*ones(x),[10,20,35],1)
         <revhistory>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

@@ -30,7 +30,7 @@
             currentDepth = recursionlimit("current")
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -74,7 +74,9 @@
         Default value is set to 1000 levels.
         </para>
         <note>
-           <varname>newMaxDepth</varname> can be set in Scilab preferences.
+           <para>
+                <varname>newMaxDepth</varname> can be set in Scilab preferences.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -134,7 +136,7 @@ recfib(11); //KO
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

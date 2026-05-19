@@ -31,50 +31,50 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/MFCLCK_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
+
     </refsection>
-    <refsection id="Contents_MFCLCK_f">
+    <refsection xml:id="Contents_MFCLCK_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MFCLCK_f">Description</xref>
+                <para><link linkend="Description_MFCLCK_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MFCLCK_f">Parameters</xref>
+                <para><link linkend="Dialogbox_MFCLCK_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MFCLCK_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_MFCLCK_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MFCLCK_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MFCLCK_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MFCLCK_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_MFCLCK_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_MFCLCK_f">Example</xref>
+                <para><link linkend="Example_MFCLCK_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MFCLCK_f">
+    <refsection xml:id="Description_MFCLCK_f">
         <title>Description</title>
         <para>
             (function to be described)
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_MFCLCK_f">
-        <title>Parameters</title>
+    <refsection xml:id="Dialogbox_MFCLCK_f">
+        <title>Arguments</title>
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../../../../images/gui/MFCLCK_f_gui.gif" align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    <imagedata fileref="../../../../images/gui/MFCLCK_f_gui.gif" align="center"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
@@ -95,7 +95,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MFCLCK_f">
+    <refsection xml:id="Defaultproperties_MFCLCK_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -153,7 +153,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_MFCLCK_f">
+    <refsection xml:id="Interfacingfunction_MFCLCK_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -161,7 +161,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MFCLCK_f">
+    <refsection xml:id="Computationalfunction_MFCLCK_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -169,8 +169,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_MFCLCK_f">
+    <refsection xml:id="Example_MFCLCK_f">
         <title>Example</title>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/events_pal/MFCLCK_f_Example.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -178,5 +179,6 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
+        </para>
     </refsection>
 </refentry>

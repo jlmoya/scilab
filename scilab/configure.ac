@@ -45,7 +45,7 @@ AM_CONDITIONAL(WITH_DEVTOOLS, [test x$WITH_DEVTOOLS = xtrue])
 
 # Change version here, other files will be updated at the end of configure
 SCILAB_VERSION_MAJOR=2026
-SCILAB_VERSION_MINOR=0
+SCILAB_VERSION_MINOR=1
 SCILAB_VERSION_MAINTENANCE=0
 AC_SUBST(SCILAB_VERSION_MAJOR)
 AC_SUBST(SCILAB_VERSION_MINOR)
@@ -872,6 +872,63 @@ AC_HDF5()
 # The Java detection is done after in this file.
 
 
+#######################
+## XLNT LIBRARY (reading and writing xlsx files)
+#######################
+if $WITH_DEVTOOLS; then # Scilab thirdparties
+    XLNT_CFLAGS="-I$DEVTOOLS_INCDIR"
+    XLNT_LDFLAGS="-L$DEVTOOLS_LIBDIR"
+    XLNT_LIBS="-lxlnt"
+else
+    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors xlnt]) || {
+        AC_MSG_ERROR([cannot find pkg-config package for xlnt])
+    }
+    XLNT_CFLAGS=`$PKG_CONFIG --cflags xlnt`
+    XLNT_LDFLAGS=`$PKG_CONFIG --libs-only-L xlnt`
+    XLNT_LIBS=`$PKG_CONFIG --libs-only-l xlnt`
+fi
+AC_SUBST(XLNT_CFLAGS)
+AC_SUBST(XLNT_LDFLAGS)
+AC_SUBST(XLNT_LIBS)
+
+#######################
+## ARROW LIBRARY (reading and writing ARROW files)
+#######################
+if $WITH_DEVTOOLS; then # Scilab thirdparties
+    ARROW_CFLAGS="-I$DEVTOOLS_INCDIR"
+    ARROW_LDFLAGS="-L$DEVTOOLS_LIBDIR"
+    ARROW_LIBS="-larrow"
+else
+    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors arrow]) || {
+        AC_MSG_ERROR([cannot find pkg-config package for arrow])
+    }
+    ARROW_CFLAGS=`$PKG_CONFIG --cflags arrow`
+    ARROW_LDFLAGS=`$PKG_CONFIG --libs-only-L arrow`
+    ARROW_LIBS=`$PKG_CONFIG --libs-only-l arrow`
+fi
+AC_SUBST(ARROW_CFLAGS)
+AC_SUBST(ARROW_LDFLAGS)
+AC_SUBST(ARROW_LIBS)
+
+#######################
+## PARQUET LIBRARY (reading and writing PARQUET files)
+#######################
+if $WITH_DEVTOOLS; then # Scilab thirdparties
+    PARQUET_CFLAGS="-I$DEVTOOLS_INCDIR"
+    PARQUET_LDFLAGS="-L$DEVTOOLS_LIBDIR"
+    PARQUET_LIBS="-lparquet"
+else
+    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors parquet]) || {
+        AC_MSG_ERROR([cannot find pkg-config package for parquet])
+    }
+    PARQUET_CFLAGS=`$PKG_CONFIG --cflags parquet`
+    PARQUET_LDFLAGS=`$PKG_CONFIG --libs-only-L parquet`
+    PARQUET_LIBS=`$PKG_CONFIG --libs-only-l parquet`
+fi
+AC_SUBST(PARQUET_CFLAGS)
+AC_SUBST(PARQUET_LDFLAGS)
+AC_SUBST(PARQUET_LIBS)
+
 #################
 ## scirenderer
 #################
@@ -926,8 +983,8 @@ fi
 
 AC_SUBST(XCOS_ENABLE)
 
-AM_CONDITIONAL(OCAMLFIND, test "$OCAMLFIND" = no)
-AM_CONDITIONAL(OCAML, test "$with_modelica" != no -a "$OCAMLC" != no -a "$OCAMLOPT" != no)
+AM_CONDITIONAL(OCAMLFIND, test "x$OCAMLFIND" != "xno")
+AM_CONDITIONAL(OCAML, test "$with_modelica" != no -a "x$OCAMLC" != "xno" -a "x$OCAMLOPT" != "xno")
 AM_CONDITIONAL(XCOS, test "$XCOS_ENABLE" != no)
 
 ###########################
@@ -1807,6 +1864,24 @@ fi
 AC_SUBST(KLU_ENABLE)
 AM_CONDITIONAL(KLU, test "$with_klu" != no)
 
+#######################
+## LIBXSLT
+#######################
+if $WITH_DEVTOOLS; then # Scilab thirdparties
+    LIBXSLT_CFLAGS="-I$DEVTOOLS_INCDIR"
+    LIBXSLT_LDFLAGS="-L$DEVTOOLS_LIBDIR"
+    LIBXSLT_LIBS="-lxslt"
+else
+    AC_RUN_LOG([$PKG_CONFIG --exists --print-errors libxslt]) || {
+        AC_MSG_ERROR([cannot find pkg-config package for libxslt])
+    }
+    LIBXSLT_CFLAGS=`$PKG_CONFIG --cflags libxslt`
+    LIBXSLT_LDFLAGS=`$PKG_CONFIG --libs-only-L libxslt`
+    LIBXSLT_LIBS=`$PKG_CONFIG --libs-only-l libxslt`
+fi
+AC_SUBST(LIBXSLT_CFLAGS)
+AC_SUBST(LIBXSLT_LDFLAGS)
+AC_SUBST(LIBXSLT_LIBS)
 
 #######################
 ## Test for PCRE2
@@ -1989,17 +2064,6 @@ AC_SUBST(HELP_ENABLE)
 
 AM_CONDITIONAL(BUILD_HELP, test $HELP_ENABLE = yes)
 
-## Install XML help files ###
-
-AC_ARG_WITH(install-help-xml,
-        AS_HELP_STRING([--with-install-help-xml],[make install will install XML files])
-        )
-HELP_INSTALL_ENABLE=no
-if test "$with_install_help_xml" != no -a "$with_install_help_xml" != ""; then
-   HELP_INSTALL_ENABLE=yes
-fi
-AM_CONDITIONAL(INSTALL_HELP_XML, test "$HELP_INSTALL_ENABLE" != "")
-
 ## Doxygen help generation
 AC_ARG_ENABLE(build-doxygen,
     AS_HELP_STRING([--enable-build-doxygen],[Generate doxygen C/C++ documentation]))
@@ -2180,6 +2244,12 @@ WARNING_CFLAGS="$WARNING_CFLAGS -Werror=implicit"
 WARNING_CFLAGS="$WARNING_CFLAGS -Werror=incompatible-pointer-types"
 if test "$enable_stop_on_warning" = yes; then
     WARNING_CFLAGS="$WARNING_CFLAGS -Werror"
+    # FIXME: swig generated code contains unused static functions
+    WARNING_CFLAGS="$WARNING_CFLAGS -Wno-error=unused-function"
+    # FIXME: swig generated code break strict-aliasing rules
+    WARNING_CFLAGS="$WARNING_CFLAGS -Wno-error=strict-aliasing"
+    # FIXME: sundials arkode.c is calling N_VSpace, which sundials now marked as deprecated
+    WARNING_CFLAGS="$WARNING_CFLAGS -Wno-error=deprecated-declarations"
 
     WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Werror"
     # Scilab indexes are int, standard containers are size_t: do not error when comparing them
@@ -2188,6 +2258,8 @@ if test "$enable_stop_on_warning" = yes; then
     WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Wno-error=int-to-pointer-cast"
     # FIXME: sundials contains unused static functions
     WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Wno-error=unused-function"
+    # FIXME: swig generated code break strict-aliasing rules
+    WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Wno-error=strict-aliasing"
     # FIXME: Eigen/src/Core/AssignEvaluator.h:86:63: error: enum constant in boolean context
     WARNING_CXXFLAGS="$WARNING_CXXFLAGS -Wno-error=int-in-bool-context"
 fi
@@ -2389,7 +2461,6 @@ echo "  TCL include (--with-tcl-include) ................. = $USER_TCL_INC_PATH"
 echo "  TCL library (--with-tcl-library) ................. = $USER_TCL_LIB_PATH"
 echo "  TK include (--with-tk-include) ................... = $USER_TK_INC_PATH"
 echo "  TK library (--with-tk-library) ................... = $USER_TK_LIB_PATH"
-echo "  Install XML Help (--with-install-help-xml) ....... = $with_install_help_xml"
 echo "  Compilation tests (--enable-compilation-tests) ... = $COMPILATION_TESTS"
 echo "  Make the package relocatable (--enable-relocatable)= $RELOCATABLE"
 echo "  Use FFTW (--without-fftw) ........................ = $with_fftw"
@@ -2405,7 +2476,7 @@ if test $XCOS_ENABLE = yes; then
    echo "Xcos enable"
    echo "Build modelica compiler (--without-modelica) ....... = $with_modelica"
    echo ""
-   if test "$with_modelica" != no -a "$OCAMLC" != no -a "$OCAMLOPT" != no; then
+   if test "$with_modelica" != no -a "x$OCAMLC" != "xno" -a "x$OCAMLOPT" != "xno"; then
      echo "Ocaml Configuration (for Modelica compiler):"
      echo "  OCAMLC ............. = $OCAMLC"
      echo "  OCAMLCFLAGS ........ = $OCAMLCFLAGS"
@@ -2615,6 +2686,24 @@ echo "XML configuration:"
 echo "  XML_FLAGS .......... = $XML_FLAGS"
 echo "  XML_LIBS ........... = $XML_LIBS"
 echo "  XML_VERSION ........ = $XML_VERSION"
+
+echo ""
+echo "XLNT configuration:"
+echo "  XLNT_CFLAGS ........ = $XLNT_CFLAGS"
+echo "  XLNT_LDFLAGS ....... = $XLNT_LDFLAGS"
+echo "  XLNT_LIBS .......... = $XLNT_LIBS"
+
+echo ""
+echo "ARROW configuration:"
+echo "  ARROW_CFLAGS ........ = $ARROW_CFLAGS"
+echo "  ARROW_LDFLAGS ....... = $ARROW_LDFLAGS"
+echo "  ARROW_LIBS .......... = $ARROW_LIBS"
+
+echo ""
+echo "PARQUET configuration:"
+echo "  PARQUET_CFLAGS ...... = $PARQUET_CFLAGS"
+echo "  PARQUET_LDFLAGS ..... = $PARQUET_LDFLAGS"
+echo "  PARQUET_LIBS ........ = $PARQUET_LIBS"
 
 echo ""
 echo "HDF5 configuration:"

@@ -24,7 +24,7 @@
             contourf(x, y, z, nz, [style, strf, leg, rect, nax, fpf])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -61,14 +61,14 @@
                                 <programlisting role="no-scilab-exec"><![CDATA[
 z= zmin + (1:nz)*(zmax-zmin)/(nz+1)
  ]]></programlisting>
-                                <para>
-                                    <note>
+                                <note>
+                                    <para>
                                         Note: that the <literal>zmin</literal> and
                                         <literal>zmax</literal> levels are not drawn
                                         (generically they are reduced to points) but
                                         they can be added with
-                                    </note>
-                                </para>
+                                    </para>
+                                </note>
                                 <programlisting role="no-scilab-exec"><![CDATA[
 [im,jm] = find(z == zmin);     // or zmax
 plot2d(x(im)',y(jm)',-9,"000")

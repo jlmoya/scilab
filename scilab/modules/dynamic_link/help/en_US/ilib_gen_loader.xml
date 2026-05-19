@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>ilib_gen_loader(name,table,[libs])</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -51,9 +51,11 @@
             Utility function used by <literal>ilib_build</literal>
             This function generates a loader file.
         </para>
-        <para>
-            <warning>This function should not be used directly.</warning>
-        </para>
+        <warning>
+            <para>
+                This function should not be used directly.
+            </para>
+        </warning>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

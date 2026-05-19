@@ -12,7 +12,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="LSodar">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr_FR" xml:id="LSodar">
     <refnamediv>
         <refname>LSodar</refname>
         <refpurpose>
@@ -35,16 +35,23 @@
             LSodar est similaire à <emphasis>CVode</emphasis> sur de nombreux points:
             <itemizedlist>
                 <listitem>
-                    Son pas de temps est variable,
+                     <para>
+                        Son pas de temps est variable,
+                    </para>
                 </listitem>
                 <listitem>
-                    Il est capable d'utiliser les méthodes d'intégration <emphasis>BDF</emphasis> et <emphasis>Adams</emphasis>,
+                     <para>
+                        Il est capable d'utiliser les méthodes d'intégration <emphasis>BDF</emphasis> et <emphasis>Adams</emphasis>,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>BDF</emphasis> et <emphasis>Adams</emphasis> étant des méthodes implicites stables, <emphasis>LSodar</emphasis> convient aussi bien à des problèmes raides que non-raides,
+                     <para><emphasis>BDF</emphasis> et <emphasis>Adams</emphasis> étant des méthodes implicites stables, <emphasis>LSodar</emphasis> convient aussi bien à des problèmes raides que non-raides,
+                    </para>
                 </listitem>
                 <listitem>
-                    Ils recherchent tous deux des racines sur l'intervalle.
+                     <para>
+                        Ils recherchent tous deux des racines sur l'intervalle.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -125,7 +132,7 @@ Temps pour  LSodar:
         </para>
         <para>
             Maintenant, dans le script suivant, on compare la différence de temps entre <emphasis>LSodar</emphasis> et <emphasis>CVode</emphasis> en lançant l'exemple avec les cinq solveurs tour à tour :
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integLSodar.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integLSodar.sce">
                 Ouverture du script
             </link>
         </para>
@@ -205,18 +212,18 @@ Temps pour Adams / Functional :
     <refsection>
         <title>Bibliographie</title>
         <para>
-            ACM SIGNUM Newsletter, Volume 15, Parution 4, Décembre 1980, Pages 10-11 <ulink url="http://dl.acm.org/citation.cfm?id=1218052.1218054&amp;coll=DL&amp;dl=GUIDE">LSode - LSodi</ulink>
+            ACM SIGNUM Newsletter, Volume 15, Parution 4, Décembre 1980, Pages 10-11 <link xlink:href="http://dl.acm.org/citation.cfm?id=1218052.1218054&amp;coll=DL&amp;dl=GUIDE">LSode - LSodi</link>
         </para>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Documentation Sundials</link>
         </para>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revdescription>LSodar ajouté</revdescription>
+                <revremark>LSodar ajouté</revremark>
             </revision>
         </revhistory>
     </refsection>

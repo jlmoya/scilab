@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="en" xml:id="title">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="title">
     <refnamediv>
         <refname>title</refname>
         <refpurpose>displays a title above a graphic axes, or updates its properties.
@@ -32,7 +29,7 @@
             h = title(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -71,7 +68,7 @@
                         <table border="1">
                             <tr>
                                 <th align="left">visible</th>
-                                <th></th>
+                                <th/>
                                 <td>
                                     <literal>"on"</literal> or <literal>"off"</literal>.
                                     If <literal>"off"</literal>, the title (and its box) still
@@ -91,30 +88,32 @@
                                 <th align="left">fontname</th>
                                 <th align="left">font_style</th>
                                 <td>
-                                    Ten font names are available (case and space unsensitive string),
-                                    or their related id number:
-                                    <table>
-                                        <tr>
-                                            <td>0</td><td>"courrier"</td><td></td>
-                                            <td>2</td><td>"times"</td><td></td>
-                                            <td>6</td><td>"helvetica"</td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td><td>"symbol"</td><td></td>
-                                            <td>3</td><td>"times italic"</td><td></td>
-                                            <td>7</td><td>"helvetica italic"</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td><td></td><td></td>
-                                            <td>4</td><td>"times bold"</td><td></td>
-                                            <td>8</td><td>"helvetica bold"</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td><td></td><td></td>
-                                            <td>5</td><td>"times bold italic"</td><td></td>
-                                            <td>9</td><td>"helvetica bold italic"</td>
-                                        </tr>
-                                    </table>
+                                    <para>
+                                        Ten font names are available (case and space unsensitive string),
+                                        or their related id number:
+                                        <table>
+                                            <tr>
+                                                <td>0</td><td>"courrier"</td><td/>
+                                                <td>2</td><td>"times"</td><td/>
+                                                <td>6</td><td>"helvetica"</td>
+                                            </tr>
+                                            <tr>
+                                                <td>1</td><td>"symbol"</td><td/>
+                                                <td>3</td><td>"times italic"</td><td/>
+                                                <td>7</td><td>"helvetica italic"</td>
+                                            </tr>
+                                            <tr>
+                                                <td/><td/><td/>
+                                                <td>4</td><td>"times bold"</td><td/>
+                                                <td>8</td><td>"helvetica bold"</td>
+                                            </tr>
+                                            <tr>
+                                                <td/><td/><td/>
+                                                <td>5</td><td>"times bold italic"</td><td/>
+                                                <td>9</td><td>"helvetica bold italic"</td>
+                                            </tr>
+                                        </table>
+                                    </para>
                                     <para>
                                         For instance, 3, "3", "times italic", "timesitalic" or
                                         "TimesItalic" are equivalent.
@@ -134,7 +133,7 @@
                             </tr>
                             <tr>
                                 <th align="left">position</th>
-                                <th></th>
+                                <th/>
                                 <td>
                                     Vector of coordinates of the title's anchor, in data unit.
                                     The anchor is the lower-left corner of the box of
@@ -154,7 +153,7 @@
                             </tr>
                             <tr>
                                 <th align="left">box</th>
-                                <th></th>
+                                <th/>
                                 <td>
                                     "off" | "on": hides or displays a box around the block of text
                                     of the title.
@@ -178,7 +177,7 @@
                             </tr>
                             <tr>
                                 <th align="left">tag</th>
-                                <th></th>
+                                <th/>
                                 <td>
                                     String or matrix of strings: Custom literal identifier of the title.
                                 </td>
@@ -189,24 +188,32 @@
                         (*) Any color can be specified by any of the following:
                         <itemizedlist>
                             <listitem>
-                                Its numerical or literal index in the current colormap
-                                (like 13 or "13"). Special values whatever is the colormap:
-                                -1 for black, -2 for white.
+                                 <para>
+                                    Its numerical or literal index in the current colormap
+                                    (like 13 or "13"). Special values whatever is the colormap:
+                                    -1 for black, -2 for white.
+                                </para>
                             </listitem>
                             <listitem>
-                                Its name as a string, if it is a predefined
-                                <link linkend="color_list">listed color</link>. For colors among
-                                the short list
-                                ["red","green","blue","cyan","magenta","yellow","black","white"],
-                                shortened names are supported, like "m" for magenta or "k"
-                                for "black".
+                                 <para>
+                                    Its name as a string, if it is a predefined
+                                    <link linkend="color_list">listed color</link>. For colors among
+                                    the short list
+                                    ["red","green","blue","cyan","magenta","yellow","black","white"],
+                                    shortened names are supported, like "m" for magenta or "k"
+                                    for "black".
+                                </para>
                             </listitem>
                             <listitem>
-                                Its "#RRGGBB" hexadecimal code, as a string.
+                                 <para>
+                                    Its "#RRGGBB" hexadecimal code, as a string.
+                                </para>
                             </listitem>
                             <listitem>
-                                the [r,g,b] row of its Red/Green/Blue 0 ≤ r,g,b ≤ 1 intensities.
-                                This syntax can't be used in console-oriented mode.
+                                 <para>
+                                    the [r,g,b] row of its Red/Green/Blue 0 ≤ r,g,b ≤ 1 intensities.
+                                    This syntax can't be used in console-oriented mode.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -236,8 +243,10 @@
             in console-oriented syntaxes.
         </para>
         <warning>
-            When an axes handle is specified as the target axes, it becomes the current axes
-            and remains as is after leaving title().
+            <para>
+                When an axes handle is specified as the target axes, it becomes the current axes
+                and remains as is after leaving title().
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -265,11 +274,11 @@ title rotation 90
 // We can do all these modifications with just the below instruction:
 title('my title','color','blue','edgecolor','red','fontsize',3,'rotation',90,'position',[0.3 0.8]);
  ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             plot2d([], [], 0, "011", " ", [0 0 1 1])
             title 'my title'  color blue  edgecolor red  fontsize 3  rotation 90
             title('position', [0.3 0.8])
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -312,41 +321,57 @@ title('my title','color','blue','edgecolor','red','fontsize',3,'rotation',90,'po
             <revision>
                 <revnumber>6.1.0</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            The <literal>text</literal> becomes optional, to update only properties.
-                        </listitem>
-                        <listitem>
-                            The full list of Scilab predefined colors names can now be used,
-                            as well as hexadecimal #RRGGBB colors codes.
-                        </listitem>
-                        <listitem>
-                            Console-oriented usages are now possible, specifying any color index,
-                            font id, font size, or box angle as a string like "13" instead of 13,
-                            excepted for [r,g,b] and [x,y,z] position.
-                        </listitem>
-                        <listitem>
-                            When a non-integer font size is specified,
-                            <literal>.fractional_font</literal> is now automatically turned "on".
-                            It is conversely forced to "off" for any input integer font size.
-                        </listitem>
-                        <listitem>
-                            Any specified font name is now space-insensitive.
-                        </listitem>
-                        <listitem>
-                            New property <literal>box="on"|"off"</literal> added.
-                        </listitem>
-                        <listitem>
-                            New property <literal>tag</literal> added.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    The <literal>text</literal> becomes optional, to update only properties.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The full list of Scilab predefined colors names can now be used,
+                                    as well as hexadecimal #RRGGBB colors codes.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Console-oriented usages are now possible, specifying any color index,
+                                    font id, font size, or box angle as a string like "13" instead of 13,
+                                    excepted for [r,g,b] and [x,y,z] position.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    When a non-integer font size is specified,
+                                    <literal>.fractional_font</literal> is now automatically turned "on".
+                                    It is conversely forced to "off" for any input integer font size.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Any specified font name is now space-insensitive.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New property <literal>box="on"|"off"</literal> added.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New property <literal>tag</literal> added.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>2025.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function returns the created handle(s).
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

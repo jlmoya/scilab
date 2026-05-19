@@ -106,7 +106,7 @@ static void getMacroString(types::Macro* _pM, types::InternalType** _pOut, types
 
     //get outputs
     std::vector<symbol::Variable*>* pOut = _pM->getOutputs();
-    if (pOut->size() == 0)
+    if (!pOut || pOut->size() == 0)
     {
         *_pOut = types::Double::Empty();
     }

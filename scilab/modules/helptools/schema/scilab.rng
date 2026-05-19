@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<grammar  xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:s="http://www.ascc.net/xml/schematron" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:ctrl="http://nwalsh.com/xmlns/schema-control/" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://docbook.org/ns/docbook">
+<grammar  xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:s="http://www.ascc.net/xml/schematron" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:ctrl="http://nwalsh.com/xmlns/schema-control/" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:scilab="http://www.scilab.org" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" ns="http://docbook.org/ns/docbook">
 <!-- DocBook Scilab schema used per help file -->
 
   <include href="docbook.rng">
@@ -9,11 +9,33 @@
       </start>
       
       <!-- Disable link idref checking as we are only checking files -->
-        <define name="db.linkend.attribute">
+      <define name="db.linkend.attribute">
         <attribute name="linkend">
           <a:documentation>Points to an internal link target by identifying the value of its xml:id attribute</a:documentation>
           <data type="string"/>
         </attribute>
+      </define>
+
+      <!-- Enable "type" attribute for <link> to add links to Scilab pages from toolboxes help -->
+      <define name="db.link.attlist">
+        <interleave>
+          <optional>
+            <ref name="db.link.role.attribute"/>
+          </optional>
+          <ref name="db.common.attributes"/>
+          <ref name="db.common.req.linking.attributes"/>
+          <optional>
+            <ref name="db.link.xrefstyle.attribute"/>
+          </optional>
+          <optional>
+            <ref name="db.link.endterm.attribute"/>
+          </optional>
+          <optional> <!-- Scilab -->
+            <attribute name="type">
+              <a:documentation>Identifies application-specific customization of the link behavior</a:documentation>
+            </attribute>
+          </optional>
+        </interleave>
       </define>
       
       <!-- Add support for latex as mathematical expression -->
@@ -23,14 +45,237 @@
             <ref name="sci.inlinelatex"/>
         </choice>
       </define>
-      
+
+      <!-- Allow custom inline elements inside <para> -->
+      <define name="db.para">
+        <element name="para">
+          <a:documentation>A paragraph</a:documentation>
+          <s:pattern name="Root must have version">
+            <s:rule context="/db:para">
+              <s:assert test="@version">The root element must have a version attribute.</s:assert>
+            </s:rule>
+          </s:pattern>
+          <ref name="db.para.attlist"/>
+          <ref name="db.para.info"/>
+          <zeroOrMore>
+            <choice>
+              <ref name="db.all.inlines"/>
+              <ref name="db.nopara.blocks"/>
+              <ref name="sci.inlinelatex"/> <!-- Scilab -->
+              <ref name="sci.image"/> <!-- Scilab -->
+            </choice>
+          </zeroOrMore>
+        </element>
+      </define>
+
+      <!-- Make date optional in <revision> -->
+      <define name="db.revision">
+        <element name="revision">
+          <a:documentation>An entry describing a single revision in the history of the revisions to a document</a:documentation>
+          <ref name="db.revision.attlist"/>
+          <optional>
+            <ref name="db.revnumber"/>
+          </optional>
+          <optional> <!-- Scilab -->
+            <ref name="db.date"/>
+          </optional>
+          <zeroOrMore>
+            <choice>
+              <ref name="db.authorinitials"/>
+              <ref name="db.author"/>
+            </choice>
+          </zeroOrMore>
+          <optional>
+            <choice>
+              <ref name="db.revremark"/>
+              <ref name="db.revdescription"/>
+            </choice>
+          </optional>
+        </element>
+      </define>
+
+      <!-- Make caption optional for <table> -->
+      <define name="db.html.table.model">
+        <optional>
+          <ref name="db.html.table.info"/>
+        </optional>
+        <optional> <!-- Scilab -->
+          <ref name="db.html.caption"/>
+        </optional>
+        <choice>
+          <zeroOrMore>
+            <ref name="db.html.col"/>
+          </zeroOrMore>
+          <zeroOrMore>
+            <ref name="db.html.colgroup"/>
+          </zeroOrMore>
+        </choice>
+        <optional>
+          <ref name="db.html.thead"/>
+        </optional>
+        <optional>
+          <ref name="db.html.tfoot"/>
+        </optional>
+        <choice>
+          <oneOrMore>
+            <ref name="db.html.tbody"/>
+          </oneOrMore>
+          <oneOrMore>
+            <ref name="db.html.tr"/>
+          </oneOrMore>
+        </choice>
+      </define>
+
+      <!-- Enable "needs-examples" attribute in <refentry> -->
+      <define name="db.refentry.attlist">
+        <interleave>
+          <optional>
+            <ref name="db.refentry.role.attribute"/>
+          </optional>
+          <ref name="db.common.attributes"/>
+          <ref name="db.common.linking.attributes"/>
+          <optional>
+            <ref name="db.status.attribute"/>
+          </optional>
+          <optional>
+            <ref name="db.label.attribute"/>
+          </optional>
+          <optional> <!-- Scilab -->
+            <ref name="sci.needs-examples.attribute"/>
+          </optional>
+        </interleave>
+      </define>
+
+      <!-- Allow custom inline elements inside <refsection> -->
+      <define name="db.refsection">
+        <element name="refsection">
+          <a:documentation>A recursive section in a refentry</a:documentation>
+          <s:pattern name="Root must have version">
+            <s:rule context="/db:refsection">
+              <s:assert test="@version">The root element must have a version attribute.</s:assert>
+            </s:rule>
+          </s:pattern>
+          <ref name="db.refsection.attlist"/>
+          <ref name="db.refsection.info"/>
+          <choice>
+            <group>
+              <oneOrMore>
+                <choice>
+                  <ref name="db.all.blocks"/>
+                  <ref name="sci.inlinelatex"/> <!-- Scilab -->
+                  <ref name="sci.image"/> <!-- Scilab -->
+                </choice>
+              </oneOrMore>
+              <zeroOrMore>
+                <choice>
+                  <ref name="db.refsection"/>
+                </choice>
+              </zeroOrMore>
+            </group>
+            <oneOrMore>
+              <choice>
+                <ref name="db.refsection"/>
+              </choice>
+            </oneOrMore>
+          </choice>
+        </element>
+      </define>
+
+      <!-- Allow custom inline elements inside <listitem> -->
+      <define name="db.listitem">
+        <element name="listitem">
+          <a:documentation>A wrapper for the elements of a list item</a:documentation>
+          <ref name="db.listitem.attlist"/>
+          <oneOrMore>
+            <choice>
+              <ref name="db.all.blocks"/>
+              <ref name="sci.inlinelatex"/> <!-- Scilab -->
+              <ref name="sci.image"/> <!-- Scilab -->
+            </choice>
+          </oneOrMore>
+        </element>
+      </define>
+
+      <!-- Allow custom inline elements inside <td> -->
+      <define name="db.html.td">
+        <element name="td">
+          <a:documentation>A table entry in an HTML table</a:documentation>
+          <ref name="db.html.td.attlist"/>
+          <choice>
+            <zeroOrMore>
+              <ref name="db.all.inlines"/>
+            </zeroOrMore>
+            <zeroOrMore>
+              <choice>
+                <ref name="db.all.blocks"/>
+                <ref name="sci.inlinelatex"/> <!-- Scilab -->
+                <ref name="sci.image"/> <!-- Scilab -->
+              </choice>
+            </zeroOrMore>
+          </choice>
+        </element>
+      </define>
+
   </include>
 
+  <!-- Latex equation -->
   <define name="sci.inlinelatex">
     <a:documentation>An inlined latex equation</a:documentation>
     <element name="latex">
-        <text/>
+      <optional>
+        <attribute name="style">
+          <choice>
+            <value>display</value>
+          </choice>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="alt">
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="fontsize">
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="align">
+        </attribute>
+      </optional>
+      <text/>
+      <optional>
+        <attribute name="localized">
+          <choice>
+             <data type="boolean"/>
+          </choice>
+        </attribute>
+      </optional>
     </element>
+  </define>
+
+  <!-- Images -->
+  <define name="sci.image">
+    <a:documentation>A Scilab code block used to generate an image</a:documentation>
+    <element name="image" ns="http://www.scilab.org">
+      <optional>
+        <attribute name="localized">
+          <choice>
+             <data type="boolean"/>
+          </choice>
+        </attribute>
+      </optional>
+      <text/>
+    </element>
+  </define>
+
+  <!-- "needs-examples" attribute -->
+  <define name="sci.needs-examples.attribute">
+    <a:documentation>Indicate whether examples are required for a help page</a:documentation>
+    <attribute name="needs-examples" ns="http://www.scilab.org">
+      <choice>
+        <value>yes</value>
+        <value>no</value>
+      </choice>
+    </attribute>
   </define>
 
 </grammar>

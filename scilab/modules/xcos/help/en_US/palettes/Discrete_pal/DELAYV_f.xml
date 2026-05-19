@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/DELAYV_f.png" />
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_DELAYV_f">
+    <refsection xml:id="Contents_DELAYV_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_DELAYV_f">Description</xref>
+                <para><link linkend="Description_DELAYV_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_DELAYV_f">Parameters</xref>
+                <para><link linkend="Dialogbox_DELAYV_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_DELAYV_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_DELAYV_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_DELAYV_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_DELAYV_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_DELAYV_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_DELAYV_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_DELAYV_f">Example</xref>
+                <para><link linkend="Example_DELAYV_f">Example</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_DELAYV_f">
+    <refsection xml:id="Description_DELAYV_f">
         <title>Description</title>
         <para>
             The Variable Delay block can be used to simulate a variable time delay
@@ -84,13 +84,13 @@
             The final delay is: <literal>τ(t) + "Max delay"/length("Register initial condition")</literal>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_DELAYV_f">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_DELAYV_f">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/gui/DELAYV_f_gui.gif" />
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -122,7 +122,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Defaultproperties_DELAYV_f">
+    <refsection xml:id="Defaultproperties_DELAYV_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -198,7 +198,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_DELAYV_f">
+    <refsection xml:id="Interfacingfunction_DELAYV_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -206,7 +206,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_DELAYV_f">
+    <refsection xml:id="Computationalfunction_DELAYV_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
@@ -214,7 +214,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Example_DELAYV_f">
+    <refsection xml:id="Example_DELAYV_f">
         <title>Variable delay example</title>
         <para>
             In this example, the sine function (in black) est delayed alternatively by 0 and 1 second.
@@ -223,6 +223,7 @@
             We see that with every time GENSQR_f is activated (every 2*π seconds), the delay changes:
             the curves overlap (delay=0) and are shifted (delay=1) in turn.
         </para>
+        <para>
         <link type="scilab" linkend="scilab.xcos/xcos/examples/discrete_pal/en_US/DELAYV_f_en_US.zcos">
             <inlinemediaobject>
                 <imageobject>
@@ -230,7 +231,7 @@
                 </imageobject>
             </inlinemediaobject>
         </link>
-        <para/>
+        </para>
         <scilab:image><![CDATA[
 importXcosDiagram(SCI + "/modules/xcos/examples/discrete_pal/en_US/DELAYV_f_en_US.zcos");
 xcos_simulate(scs_m, 4);

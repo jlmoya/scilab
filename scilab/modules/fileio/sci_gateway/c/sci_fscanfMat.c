@@ -32,8 +32,6 @@ int sci_fscanfMat(char *fname, void* pvApiCtx)
 {
     SciErr sciErr;
     int *piAddressVarOne = NULL;
-    int m1 = 0, n1 = 0;
-    int iType1 = 0;
 
     char *filename = NULL;
     char *expandedFilename = NULL;
@@ -49,8 +47,6 @@ int sci_fscanfMat(char *fname, void* pvApiCtx)
     if (Rhs == 3)
     {
         int *piAddressVarThree = NULL;
-        int m3 = 0, n3 = 0;
-        int iType3 = 0;
 
         sciErr = getVarAddressFromPosition(pvApiCtx, 3, &piAddressVarThree);
         if (sciErr.iErr)
@@ -79,7 +75,6 @@ int sci_fscanfMat(char *fname, void* pvApiCtx)
     if (Rhs >= 2)
     {
         int *piAddressVarTwo = NULL;
-        int m2 = 0, n2 = 0;
         int iType2 = 0;
 
         sciErr = getVarAddressFromPosition(pvApiCtx, 2, &piAddressVarTwo);

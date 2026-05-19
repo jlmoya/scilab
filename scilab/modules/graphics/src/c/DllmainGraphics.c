@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2006 - INRIA - Allan Cornet
  *
@@ -28,32 +28,6 @@
 /*--------------------------------------------------------------------------*/
 #pragma comment(lib,"../../bin/libintl.lib")
 /*--------------------------------------------------------------------------*/
-int WINAPI DllMain (HINSTANCE hInstance , DWORD reason, PVOID pvReserved)
-{
-    switch (reason)
-    {
-        case DLL_PROCESS_ATTACH:
-            break;
-        case DLL_PROCESS_DETACH:
-            destroyScilabSetHashTable();
-            destroyScilabGetHashTable();
-            break;
-        case DLL_THREAD_ATTACH:
-            break;
-        case DLL_THREAD_DETACH:
-            break;
-    }
-    return 1;
-}
-#else
-__attribute__((constructor)) static void load(void);
-__attribute__((destructor)) static void unload(void);
-
-void unload(void)
-{
-    destroyScilabSetHashTable();
-    destroyScilabGetHashTable();
-}
 #endif
 /*--------------------------------------------------------------------------*/
 

@@ -26,6 +26,7 @@
 #include "sci_malloc.h"
 #include "TCL_Command.h"
 #include "GlobalTclInterp.h"
+#include "InitTclTk.h"
 
 /* The tclLoop thread Id
 in order to wait it ends when closing Scilab */
@@ -34,7 +35,7 @@ __threadId TclThread;
 __threadSignal InterpReady;
 __threadSignalLock InterpReadyLock;
 
-// Globla Tcl Slave Name
+// Global Tcl Slave Name
 char *			TclSlave;
 // Global Tcl Command Buffer
 char *			TclCommand;
@@ -69,8 +70,6 @@ static Tcl_Interp *LocalTCLinterp;
 static BOOL FileEvaluationInProgress;
 static BOOL CommandEvaluationInProgress;
 
-extern BOOL TK_Started;
-
 /*
 ** This function is a timer to periodicly wake
 ** up the loop in startTclLoop.
@@ -78,7 +77,7 @@ extern BOOL TK_Started;
 */
 static void *sleepAndSignal(void* in)
 {
-    while (TK_Started)
+    while (isTclLoopAlive())
     {
 #ifdef __LOCAL_DEBUG__
         //printf(".");
@@ -158,7 +157,7 @@ void startTclLoop()
     /*
     ** TCL Event Loop : Threaded
     */
-    while (TK_Started)
+    while (isTkStarted())
     {
 #ifdef __LOCAL_DEBUG__
         //printf(".");
@@ -249,9 +248,10 @@ void startTclLoop()
             __UnLockSignal(&wakeUpLock);
         }
     }
+    setTclLoopAlive(FALSE);
+
     /* TK is stopped... Kill interpreter. */
     deleteTclInterp();
-
 }
 
 /*

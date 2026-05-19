@@ -8,7 +8,7 @@
         <title>Séquence d'appel</title>
         <synopsis>[Ar, U, rk] = htrianr(A)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -53,11 +53,11 @@
         <para>
             <literal>Ar=A*U</literal>
         </para>
-        <para>
-            <warning>
+        <warning>
+            <para>
                 Attention: il y a une élimination des "petits" termes (voir le code la fonction).
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Exemples</title>

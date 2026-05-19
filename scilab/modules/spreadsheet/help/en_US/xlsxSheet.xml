@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is released under the 3-clause BSD license. See COPYING-BSD.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="xlsxSheet" xml:lang="en">
+    <refnamediv>
+        <refname>xlsxSheet</refname>
+        <refpurpose>
+            Manage sheets in an Excel file.
+        </refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+            result = xlsxSheet(filename, operation, ...)
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>filename</term>
+                <listitem>
+                    <para>A string specifying the path to the Excel (.xlsx) file.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>operation</term>
+                <listitem>
+                    <para>A string specifying the operation to perform: "create", "delete", "rename", or "info".</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"create", sheet_name [, sheet_index]</term>
+                <listitem>
+                    <para>Create a new sheet in the workbook.</para>
+                    <itemizedlist>
+                        <listitem><para>sheet_name (string): Name of the new sheet</para></listitem>
+                        <listitem><para>sheet_index (integer, optional): Position where to insert the sheet (1-based). If omitted, sheet is added at the end.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"delete", sheet_identifier</term>
+                <listitem>
+                    <para>Remove a sheet from the workbook.</para>
+                    <itemizedlist>
+                        <listitem><para>sheet_identifier: Sheet name (string) or index (positive integer)</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"rename", sheet_identifier, new_name</term>
+                <listitem>
+                    <para>Change the name of an existing sheet.</para>
+                    <itemizedlist>
+                        <listitem><para>sheet_identifier: Current sheet name (string) or index (positive integer)</para></listitem>
+                        <listitem><para>new_name (string): New name for the sheet</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>"info" [, sheet_identifier]</term>
+                <listitem>
+                    <para>Get information about the workbook or a specific sheet.</para>
+                    <itemizedlist>
+                        <listitem><para>Without sheet_identifier: Returns complete workbook information (all sheets)</para></listitem>
+                        <listitem><para>With sheet_identifier: Returns information for the specified sheet only</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>Manage Excel workbook operations: create new sheets, delete existing sheets, rename sheets, or retrieve sheet information.</para>
+        <para><emphasis role="bold">Operations:</emphasis></para>
+        <para><emphasis role="bold">"create"</emphasis> - Create a new sheet in the workbook:</para>
+        <itemizedlist>
+            <listitem><para>Syntax: <literal>xlsxSheet(filename, "create", sheet_name [, sheet_index])</literal></para></listitem>
+            <listitem><para>sheet_name: Name of the new sheet (string)</para></listitem>
+            <listitem><para>sheet_index: Optional position where to insert the sheet (1-based). If omitted, sheet is added at the end.</para></listitem>
+            <listitem><para>Creates the file if it doesn't exist</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">"delete"</emphasis> - Remove a sheet from the workbook:</para>
+        <itemizedlist>
+            <listitem><para>Syntax: <literal>xlsxSheet(filename, "delete", sheet_identifier)</literal></para></listitem>
+            <listitem><para>sheet_identifier: Sheet name (string) or index (positive integer)</para></listitem>
+            <listitem><para>Error if sheet doesn't exist or if attempting to delete the last remaining sheet</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">"rename"</emphasis> - Change the name of an existing sheet:</para>
+        <itemizedlist>
+            <listitem><para>Syntax: <literal>xlsxSheet(filename, "rename", sheet_identifier, new_name)</literal></para></listitem>
+            <listitem><para>sheet_identifier: Current sheet name (string) or index (positive integer)</para></listitem>
+            <listitem><para>new_name: New name for the sheet (string)</para></listitem>
+            <listitem><para>Error if sheet doesn't exist or if new_name is already used by another sheet</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">"info"</emphasis> - Get information about the workbook or a specific sheet:</para>
+        <itemizedlist>
+            <listitem><para>Syntax: <literal>xlsxSheet(filename, "info") or xlsxSheet(filename, "info", sheet_identifier)</literal></para></listitem>
+            <listitem><para>Without sheet_identifier: Returns complete workbook information (all sheets)</para></listitem>
+            <listitem><para>With sheet_identifier: Returns information for the specified sheet only</para></listitem>
+            <listitem><para>This operation calls xlsxInfo internally</para></listitem>
+        </itemizedlist>
+        <para><emphasis role="bold">Sheet identification:</emphasis></para>
+        <para>Sheets can be identified by name (string) or by 1-based index (integer). Index 1 refers to the first sheet.</para>
+    </refsection>
+    <refsection>
+        <title>Return values</title>
+        <para>The return value depends on the operation performed:</para>
+        <itemizedlist>
+            <listitem>
+                <para><emphasis role="bold">"create", "delete", "rename"</emphasis>: Returns an operation result code (typically 0 for success, non-zero for errors).</para>
+            </listitem> 
+            <listitem>
+                <para><emphasis role="bold">"info"</emphasis>: Returns a structure containing workbook/sheet information: see <link linkend="xlsxInfo">xlsxInfo</link>.</para>
+            </listitem>
+        </itemizedlist>        
+        <para>If an error occurs (sheet not found, invalid operation...), an error message is raised.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+        // Create example file
+        data = [1 2 3; 4 5 6; 7 8 9];
+        test_file = TMPDIR + "/test_sheet.xlsx";
+        xlsxWrite(data, test_file, "title", "My Report", "subject", "Data Analysis", ..
+                  "description", "Quarterly analysis results");
+
+        // Create a new sheet named "Data" at the end of the workbook
+        result = xlsxSheet(test_file, "create", "Data");
+
+        // Create a new sheet at position 2 (becomes the 2nd sheet)
+        result = xlsxSheet(test_file, "create", "Summary", 2);
+
+        // Delete a sheet by name
+        result = xlsxSheet(test_file, "delete", "Data");
+
+        // Delete a sheet by index (delete the 2nd sheet)
+        result = xlsxSheet(test_file, "delete", 2);
+
+        // Rename a sheet by name
+        result = xlsxSheet(test_file, "rename", "Sheet1", "NewData");
+
+        // Get information about all sheets in the workbook
+        info = xlsxSheet(test_file, "info")
+
+        // Get information about a specific sheet by index
+        info = xlsxSheet(test_file, "info", 1)
+        ]]>
+        </programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="xlsxRead">xlsxRead</link>
+            </member>
+            <member>
+                <link linkend="xlsxWrite">xlsxWrite</link>
+            </member>
+            <member>
+                <link linkend="xlsxInfo">xlsxInfo</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2026.1.0</revnumber>
+                <revremark>
+                    Introduction in Scilab.
+                </revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

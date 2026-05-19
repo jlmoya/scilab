@@ -43,4 +43,5 @@ Source: modules\{#SPARSE}\demos\*.*; DestDir: {app}\modules\{#SPARSE}\demos; Fla
 ;
 Source: modules\{#SPARSE}\tests\*.*; DestDir: {app}\modules\{#SPARSE}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#SPARSE}\help\*.*; DestDir: {app}\modules\{#SPARSE}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

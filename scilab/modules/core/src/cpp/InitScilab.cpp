@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
  * Copyright (C) 2013 - Scilab Enterprises - Antoine ELIAS
  * Copyright (C) 2013 - Scilab Enterprises - Cedric DELAMARRE
@@ -39,6 +39,7 @@
 #include "debugmanager.hxx"
 #include "consoledebugger.hxx"
 #include "UTF8.hxx"
+#include "inlinehelp.hxx"
 
 extern "C"
 {
@@ -258,7 +259,7 @@ int StartScilabEngine(ScilabEngineInfo* _pSEI)
     symbol::Context::getInstance()->scope_begin();
 
     /* Scilab Startup */
-    xmlInitParser();
+    ensureLibxmlInitialized();
     InitializeEnvironnement();
 
     if (_pSEI->pstLang)

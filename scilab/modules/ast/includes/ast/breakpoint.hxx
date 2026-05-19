@@ -31,9 +31,9 @@ struct Breakpoint
 {
     Breakpoint() :  _pFunctionName(""),
                     _iMacroLine(0),
+                    _iFirstColumn(0),
                     _pFileName(""),
                     _iFileLine(0),
-                    _iFirstColumn(0),
                     _iHitCondition(0),
                     _iHitCount(0),
                     _condition(""),

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="man" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="man" xml:lang="en">
     <refnamediv>
         <refname>Scilab documentation format</refname>
         <refpurpose>on line help XML file description format</refpurpose>
@@ -39,10 +36,10 @@
         <para>A XML file is similar to a HTML file but with a more rigid syntax.
             The documentation of Scilab must be written using the strict subset of
             DocBook 5.1 defined in SCI/modules/helptools/schema/scilab.rng. DocBook 5.1
-            elements are fully documented in <ulink url="http://tdg.docbook.org/tdg/5.1/docbook.html">"DocBook 5.1: The Definitive Guide"</ulink>
+            elements are fully documented in <link xlink:href="http://tdg.docbook.org/tdg/5.1/docbook.html">"DocBook 5.1: The Definitive Guide"</link>
         </para>
         <para>
-            Scilab is able to understand a large subset of Docbook tags. However, if any are missing, a bug report can be reported on the <ulink url="https://gitlab.com/scilab/scilab/-/issues">Scilab bug tracker</ulink>.
+            Scilab is able to understand a large subset of Docbook tags. However, if any are missing, a bug report can be reported on the <link xlink:href="https://gitlab.com/scilab/scilab/-/issues">Scilab bug tracker</link>.
         </para>
     </refsection>
     <refsection>
@@ -228,19 +225,19 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refentry.html">refentry</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refentry.html">refentry</link>
                     </td>
                     <td>A reference page</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refsection.html">refsection</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refsection.html">refsection</link>
                     </td>
                     <td>A recursive section in a refentry</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refsect1.html">refsect1</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refsect1.html">refsect1</link>
                     </td>
                     <td>
                         A recursive section in a refentry level 1 ; similar to <code>refsection</code>
@@ -248,7 +245,7 @@ end
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refsect2.html">refsect2</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refsect2.html">refsect2</link>
                     </td>
                     <td>
                         A recursive section in a refentry level 2 ; sub-section of <code>refsect1</code>
@@ -256,7 +253,7 @@ end
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refsect3.html">refsect3</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refsect3.html">refsect3</link>
                     </td>
                     <td>
                         A recursive section in a refentry level 3 ; sub-section of <code>refsect2</code>
@@ -264,31 +261,31 @@ end
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/book.html">book</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/book.html">book</link>
                     </td>
                     <td>A book</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/part.html">part</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/part.html">part</link>
                     </td>
                     <td>A division in a book</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/chapter.html">chapter</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/chapter.html">chapter</link>
                     </td>
                     <td>A chapter, as of a book</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/section.html">section</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/section.html">section</link>
                     </td>
                     <td>A recursive section</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/para.html">para</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/para.html">para</link>
                     </td>
                     <td>A paragraph</td>
                 </tr>
@@ -298,100 +295,100 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refnamediv.html">refnamediv</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refnamediv.html">refnamediv</link>
                     </td>
                     <td>The name, purpose, and classification of a reference page</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refname.html">refname</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refname.html">refname</link>
                     </td>
                     <td>The name of (one of) the subject(s) of a reference page</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refpurpose.html">refpurpose</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refpurpose.html">refpurpose</link>
                     </td>
                     <td>A short (one sentence) synopsis of the topic of a reference page</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/refsynopsisdiv.html">refsynopsisdiv</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/refsynopsisdiv.html">refsynopsisdiv</link>
                     </td>
                     <td>A syntactic synopsis of the subject of the reference page
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/synopsis.html">synopsis</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/synopsis.html">synopsis</link>
                     </td>
                     <td>A general-purpose element for representing the syntax of commands or functions</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/title.html">title</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/title.html">title</link>
                     </td>
                     <td>The text of the title of a section of a document or of a formal block-level element</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/informalequation.html">informalequation</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/informalequation.html">informalequation</link>
                     </td>
                     <td>A displayed mathematical equation without a title
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/programlisting.html">programlisting</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/programlisting.html">programlisting</link>
                     </td>
                     <td>A literal listing of all or part of a program</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/screen.html">screen</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/screen.html">screen</link>
                     </td>
                     <td>Text that a user sees or might see on a computer screen</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/caption.html">caption</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/caption.html">caption</link>
                     </td>
                     <td>A caption</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/pubdate.html">pubdate</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/pubdate.html">pubdate</link>
                     </td>
                     <td>The date of publication of a document</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/bibliomset.html">bibliomset</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/bibliomset.html">bibliomset</link>
                     </td>
                     <td>A 'cooked' container for related bibliographic information</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/bibliomixed.html">bibliomixed</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/bibliomixed.html">bibliomixed</link>
                     </td>
                     <td>An entry in a Bibliography</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/surname.html">surname</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/surname.html">surname</link>
                     </td>
                     <td>A family name; in western cultures the 'last name'</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/firstname.html">firstname</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/firstname.html">firstname</link>
                     </td>
                     <td>The first name of a person
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/replaceable.html">replaceable</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/replaceable.html">replaceable</link>
                     </td>
                     <td>Content that may or must be replaced by the user
                     </td>
@@ -402,31 +399,31 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/function.html">function</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/function.html">function</link>
                     </td>
                     <td>The name of a function or subroutine, as in a programming language</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/varname.html">varname</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/varname.html">varname</link>
                     </td>
                     <td>The name of a variable</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/literal.html">literal</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/literal.html">literal</link>
                     </td>
                     <td>Inline text that is some literal value</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/emphasis.html">emphasis</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/emphasis.html">emphasis</link>
                     </td>
                     <td>Emphasized text</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/subscript.html">subscript</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/subscript.html">subscript</link>
                     </td>
                     <td>
                         A subscript (as in H<subscript>2</subscript>O, the molecular formula for water)
@@ -434,7 +431,7 @@ end
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/superscript.html">superscript</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/superscript.html">superscript</link>
                     </td>
                     <td>
                         A superscript (as in x<superscript>2</superscript>, the mathematical notation for x multiplied by itself)
@@ -446,19 +443,19 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/ulink.html">ulink</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/ulink.html">ulink</link>
                     </td>
                     <td>A link that addresses its target by means of a URL (Uniform Resource Locator)</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/link.html">link</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/link.html">link</link>
                     </td>
                     <td>A hypertext link</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/xref.html">xref</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/xref.html">xref</link>
                     </td>
                     <td>A cross reference to another part of the document</td>
                 </tr>
@@ -468,52 +465,52 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/simplelist.html">simplelist</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/simplelist.html">simplelist</link>
                     </td>
                     <td>An undecorated list of single words or short phrases</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/member.html">member</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/member.html">member</link>
                     </td>
                     <td>An element of a simple list</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/itemizedlist.html">itemizedlist</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/itemizedlist.html">itemizedlist</link>
                     </td>
                     <td>A list in which each entry is marked with a bullet or other dingbat
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/orderedlist.html">orderedlist</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/orderedlist.html">orderedlist</link>
                     </td>
                     <td>A list in which each entry is marked with a sequentially incremented label
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/listitem.html">listitem</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/listitem.html">listitem</link>
                     </td>
                     <td>A wrapper for the elements of a list item
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/variablelist.html">variablelist</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/variablelist.html">variablelist</link>
                     </td>
                     <td>A list in which each entry is composed of a set of one or more terms and an associated description</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/term.html">term</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/term.html">term</link>
                     </td>
                     <td>The word or phrase being defined or described in a variable list</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/varlistentry.html">varlistentry</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/varlistentry.html">varlistentry</link>
                     </td>
                     <td>A wrapper for a set of terms and the associated description in a variable list</td>
                 </tr>
@@ -523,37 +520,37 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/table.html">table</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/table.html">table</link>
                     </td>
                     <td>A formal table in a document</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/informaltable.html">informaltable</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/informaltable.html">informaltable</link>
                     </td>
                     <td>A table without a title</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/tbody.html">tbody</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/tbody.html">tbody</link>
                     </td>
                     <td>A wrapper for the rows of a table or informal table</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/tr.html">tr</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/tr.html">tr</link>
                     </td>
                     <td>A row in an HTML table</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/td.html">td</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/td.html">td</link>
                     </td>
                     <td>A table entry in an HTML table</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/th.html">th</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/th.html">th</link>
                     </td>
                     <td>A table header entry in an HTML table</td>
                 </tr>
@@ -569,31 +566,31 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/imagedata.html">imagedata</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/imagedata.html">imagedata</link>
                     </td>
                     <td>Pointer to external image data</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/imageobject.html">imageobject</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/imageobject.html">imageobject</link>
                     </td>
                     <td>A wrapper for image data and its associated meta-information</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/inlinemediaobject.html">inlinemediaobject</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/inlinemediaobject.html">inlinemediaobject</link>
                     </td>
                     <td>An inline media object (video, audio, image, and so on)</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/screenshot.html">screenshot</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/screenshot.html">screenshot</link>
                     </td>
                     <td>A representation of what the user sees or might see on a computer screen</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/mediaobject.html">mediaobject</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/mediaobject.html">mediaobject</link>
                     </td>
                     <td>A displayed media object (video, audio, image, etc.)</td>
                 </tr>
@@ -611,25 +608,25 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/question.html">question</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/question.html">question</link>
                     </td>
                     <td>A question in a QandASet</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/answer.html">answer</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/answer.html">answer</link>
                     </td>
                     <td>An answer to a question posed in a QandASet</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/qandaentry.html">qandaentry</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/qandaentry.html">qandaentry</link>
                     </td>
                     <td>A question/answer set within a QandASet</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/qandaset.html">qandaset</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/qandaset.html">qandaset</link>
                     </td>
                     <td>A question-and-answer set</td>
                 </tr>
@@ -639,31 +636,31 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/revhistory.html">revhistory</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/revhistory.html">revhistory</link>
                     </td>
                     <td>A history of the revisions to a document</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/revision.html">revision</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/revision.html">revision</link>
                     </td>
                     <td>An entry describing a single revision in the history of the revisions to a document</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/revnumber.html">revnumber</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/revnumber.html">revnumber</link>
                     </td>
                     <td>A document revision number</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/revremark.html">revremark</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/revremark.html">revremark</link>
                     </td>
                     <td>A description of a revision to a document</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/revdescription.html">revdescription</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/revdescription.html">revdescription</link>
                     </td>
                     <td>A extended description of a revision to a document
                     </td>
@@ -674,33 +671,33 @@ end
             <informaltable border="1">
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/note.html">note</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/note.html">note</link>
                     </td>
                     <td>A message set off from the text
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/warning.html">warning</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/warning.html">warning</link>
                     </td>
                     <td>An admonition set off from the text</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/caution.html">caution</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/caution.html">caution</link>
                     </td>
                     <td>A note of caution</td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/tip.html">tip</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/tip.html">tip</link>
                     </td>
                     <td>A suggestion to the user, set off from the text
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <ulink url="http://tdg.docbook.org/tdg/5.1/important.html">important</ulink>
+                        <link xlink:href="http://tdg.docbook.org/tdg/5.1/important.html">important</link>
                     </td>
                     <td>An admonition set off from the text</td>
                 </tr>
@@ -727,6 +724,9 @@ end
                 <link linkend="help_skeleton">help_skeleton</link>
             </member>
             <member>
+                <link linkend="check_help">check_help</link>
+            </member>
+            <member>
                 <link linkend="help_from_sci">help_from_sci</link>
             </member>
             <member>
@@ -737,52 +737,78 @@ end
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revdescription>Management of tags &lt;note&gt;, &lt;caution&gt;, &lt;warning&gt;, &lt;important&gt; and &lt;tip&gt;
-                </revdescription>
+                <revremark>Management of tags &lt;note&gt;, &lt;caution&gt;, &lt;warning&gt;, &lt;important&gt; and &lt;tip&gt;
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                  <itemizedlist>
-                    <listitem>Documentation updated to Docbook 5.1</listitem>
-                    <listitem>&lt;refsect1>, &lt;refsect2>, and &lt;refsect3> tags added.</listitem>
-                    <listitem>&lt;td>: valign and style attributes are now supported.</listitem>
-                    <listitem>&lt;th>: align, valign and style attributes are now supported.</listitem>
-                    <listitem>&lt;tr>: valign attribute now supported.</listitem>
-                 </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>Documentation updated to Docbook 5.1</para>
+                            </listitem>
+                            <listitem>
+                                <para>&lt;refsect1&gt;, &lt;refsect2&gt;, and &lt;refsect3&gt; tags added.</para>
+                            </listitem>
+                            <listitem>
+                                <para>&lt;td&gt;: valign and style attributes are now supported.</para>
+                            </listitem>
+                            <listitem>
+                                <para>&lt;th&gt;: align, valign and style attributes are now supported.</para>
+                            </listitem>
+                            <listitem>
+                                <para>&lt;tr&gt;: valign attribute now supported.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
                 <revdescription>
-                  <itemizedlist>
-                    <listitem>
-                      &lt;imagedata>: id, width, height, align and style attributes are now supported.
-                    </listitem>
-                    <listitem>&lt;tr>: id attribute now supported.</listitem>
-                  </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    &lt;imagedata&gt;: id, width, height, align and style attributes are now supported.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>&lt;tr&gt;: id attribute now supported.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>
                 <revdescription>
-                  <itemizedlist>
-                    <listitem>
-                      &lt;latex>: attribute alt now supported. Default value is the tag content.
-                    </listitem>
-                    <listitem>
-                      &lt;tr>: now by default valign="top" instead of "middle".
-                    </listitem>
-                    <listitem>
-                      For external modules, pages in Farsi or Arabic are now correctly processed
-                      to be correctly displayed in a Right-To-Left way in their web version.
-                    </listitem>
-                  </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    &lt;latex&gt;: attribute alt now supported. Default value is the tag content.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    &lt;tr&gt;: now by default valign="top" instead of "middle".
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    For external modules, pages in Farsi or Arabic are now correctly processed
+                                    to be correctly displayed in a Right-To-Left way in their web version.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

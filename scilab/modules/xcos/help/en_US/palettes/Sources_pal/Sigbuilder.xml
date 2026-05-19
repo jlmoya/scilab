@@ -22,45 +22,42 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:id="Sigbuilder" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="Sigbuilder" xml:lang="en_US">
     <refnamediv>
         <refname>Sigbuilder</refname>
         <refpurpose>Signal creator/generator</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/Sigbuilder.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_Sigbuilder">
+    <refsection xml:id="Contents_Sigbuilder">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_Sigbuilder">Description</xref>
+                <para><link linkend="Description_Sigbuilder">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_Sigbuilder">Parameters</xref>
+                <para><link linkend="Dialogbox_Sigbuilder">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_Sigbuilder">Default properties</xref>
+                <para><link linkend="Defaultproperties_Sigbuilder">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_Sigbuilder">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_Sigbuilder">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Sigbuilder">Compiled Super Block content</xref>
+                <para><link linkend="Sigbuilder">Compiled Super Block content</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_Sigbuilder">
+    <refsection xml:id="Description_Sigbuilder">
         <title>Description</title>
         <para>
             The Signal Builder block is a superblock containing a block whose output event
@@ -74,15 +71,13 @@
         </para>
     </refsection>
 
-    <refsection id="Dialogbox_Sigbuilder">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_Sigbuilder">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../images/gui/Sigbuilder_gui.gif"
-                           align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../../images/gui/Sigbuilder_gui.gif" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -135,7 +130,7 @@
                             The cubic spline is computed by using the following conditions
                             (considering <emphasis>n</emphasis> points
                             x<subscript>i</subscript>, …, x<subscript>n</subscript>) :
-                            <table align="center">
+                            <table>
                                 <tr><td>
                                     S<superscript>(3)</superscript>
                                         (x<subscript>2</subscript><superscript>-</superscript>)
@@ -162,7 +157,7 @@
                             <emphasis>y<subscript>1</subscript>=y<subscript>n</subscript></emphasis>)
                             by using the conditions:
                             x<subscript>i</subscript>, …, x<subscript>n</subscript> :
-                            <table align="center">
+                            <table>
                                 <tr><td align="center">
                                     S′(x<subscript>1</subscript>) = S′(x<subscript>n</subscript>)
                                     </td>
@@ -188,13 +183,17 @@
                             on each interval:
                             <itemizedlist>
                                 <listitem>
-                                    if y<subscript>i</subscript> ≤ y<subscript>i+1</subscript> :
-                                    <emphasis>S</emphasis> is increasing on
-                                    [x<subscript>i</subscript>, x<subscript>i+1</subscript>]
+                                     <para>
+                                        if y<subscript>i</subscript> ≤ y<subscript>i+1</subscript> :
+                                        <emphasis>S</emphasis> is increasing on
+                                        [x<subscript>i</subscript>, x<subscript>i+1</subscript>]
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    Otherwise: <emphasis>S</emphasis> is decreasing on
-                                       [x<subscript>i</subscript>, x<subscript>i+1</subscript>]
+                                     <para>
+                                        Otherwise: <emphasis>S</emphasis> is decreasing on
+                                           [x<subscript>i</subscript>, x<subscript>i+1</subscript>]
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </para>
@@ -204,7 +203,7 @@
                             <emphasis role="bold">Clamped</emphasis>.
                             In this case, the cubic spline <emphasis>S</emphasis> is computed by
                             using the end points derivatives which are set to zero, i.e.
-                            <table align="center">
+                            <table>
                                 <tr><td>
                                     S′(x<subscript>1</subscript>) = S′(x<subscript>n</subscript>) = 0
                                 </td></tr>
@@ -316,7 +315,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_Sigbuilder">
+    <refsection xml:id="Defaultproperties_Sigbuilder">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -382,7 +381,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_Sigbuilder">
+    <refsection xml:id="Interfacingfunction_Sigbuilder">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

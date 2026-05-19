@@ -411,6 +411,7 @@ function [x,y,typ]=MBLOCK(job,arg1,arg2)
                 graphics.out_implicit=outtype
                 //graphics.exprs=label
                 graphics.exprs=exprs
+                graphics.style="MBLOCK;displayedLabel=Modelica<BR>"+nameF+";"
                 x.graphics=graphics
                 break
             end
@@ -466,6 +467,7 @@ function [x,y,typ]=MBLOCK(job,arg1,arg2)
         x=standard_define([3 2],model,exprs,gr_i)
         x.graphics.in_implicit =intype
         x.graphics.out_implicit=outtype
+        x.graphics.style="MBLOCK;displayedLabel=Modelica<BR>"+nameF+";"
     end
 endfunction
 

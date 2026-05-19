@@ -23,33 +23,33 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/PRODUCT.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_PRODUCT">
+    <refsection xml:id="Contents_PRODUCT">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_PRODUCT">Description</xref>
+                <para><link linkend="Description_PRODUCT">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_PRODUCT">Paramètres</xref>
+                <para><link linkend="Dialogbox_PRODUCT">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_PRODUCT">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_PRODUCT">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_PRODUCT">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_PRODUCT">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_PRODUCT">Fonction de calcul</xref>
+                <para><link linkend="Computationalfunction_PRODUCT">Fonction de calcul</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_PRODUCT">
+    <refsection xml:id="Description_PRODUCT">
         <title>Description</title>
         <para>
             Ce bloc effectue la multiplication ou la division élément par élément des vecteurs d'entrée. Le nombre des entrées
@@ -69,15 +69,14 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_PRODUCT">
+    <refsection xml:id="Dialogbox_PRODUCT">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/PRODUCT_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -95,7 +94,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_PRODUCT">
+    <refsection xml:id="Defaultproperties_PRODUCT">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -171,7 +170,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_PRODUCT">
+    <refsection xml:id="Interfacingfunction_PRODUCT">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -179,7 +178,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_PRODUCT">
+    <refsection xml:id="Computationalfunction_PRODUCT">
         <title>Fonction de calcul</title>
         <itemizedlist>
             <listitem>
@@ -187,17 +186,17 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_PRODUCT" role="see also">
+    <refsection xml:id="Seealso_PRODUCT" role="see also">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="GAINBLK_f">GAINBLK_f</link>
+                <para><link linkend="GAINBLK_f">GAINBLK_f</link></para>
             </listitem>
             <listitem>
-                <link linkend="INVBLK">INVBLK</link>
+                <para><link linkend="INVBLK">INVBLK</link></para>
             </listitem>
             <listitem>
-                <link linkend="PROD_f">PROD_f</link>
+                <para><link linkend="PROD_f">PROD_f</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

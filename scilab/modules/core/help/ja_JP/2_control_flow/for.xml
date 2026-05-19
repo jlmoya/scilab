@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-        xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-        xml:lang="ja" xml:id="for">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ja" xml:id="for">
     <refnamediv>
         <refname>for</refname>
         <refpurpose>ループ用の言語キーワード </refpurpose>
@@ -210,12 +207,16 @@ for j = 1:n, v = a(:,j), write(%io(2),v), end
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            The for <literal>expression</literal> can now be a vector of graphic handles.
-                            <literal>for</literal> is now protected:
-                            Assignments like <literal>for=1</literal> are no longer possible.
+                             <para>
+                                The for <literal>expression</literal> can now be a vector of graphic handles.
+                                <literal>for</literal> is now protected:
+                                Assignments like <literal>for=1</literal> are no longer possible.
+                            </para>
                         </listitem>
                         <listitem>
-                            The number of characters used to define the body of any conditional instruction (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, or <literal>select/case</literal>) is no more limited to 16k.
+                             <para>
+                                The number of characters used to define the body of any conditional instruction (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, or <literal>select/case</literal>) is no more limited to 16k.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revdescription>

@@ -44,7 +44,6 @@ int sci_TCL_DeleteInterp(char *fname, void* pvApiCtx)
 
         if (checkInputArgumentType(pvApiCtx, 1, sci_strings))
         {
-            static int n2, m2;
             Tcl_Interp *TCLinterpreter = NULL;
 
             sciErr = getVarAddressFromPosition(pvApiCtx, 1, &piAddrl2);

@@ -26,7 +26,7 @@
             f = stackedplot(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -72,7 +72,8 @@
             <varlistentry>
                 <term>GlobalProperty</term>
                 <listitem>
-                    <para>This optional argument represents a sequence of couple
+                    <para>
+                        This optional argument represents a sequence of couple
                         statements <literal>{PropertyName,PropertyValue}</literal> that defines
                         global objects properties applied to all the curves created by this
                         plot. For a complete view of the available properties (see
@@ -85,15 +86,8 @@
                 <term>Name, Value</term>
                 <listitem>
                     <para><emphasis role="bold">'Title'</emphasis>: string that contains the title of plot.</para>
-                    <para/>
-                </listitem>
-                <listitem>
                     <para><emphasis role="bold">'DisplayLabels'</emphasis>: matrix of strings that contains the names of Y-label for each axe. Default value: variables names of timeseries</para>
-                    <para/>
-                </listitem>
-                <listitem>
                     <para><emphasis role="bold">'LegendLabels'</emphasis>: matrix of strings that contains the names of timeseries.</para>
-                    <para/>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -293,9 +287,9 @@
         <revhistory>
             <revision>
                 <revnumber>2024.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Introduction in Scilab.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

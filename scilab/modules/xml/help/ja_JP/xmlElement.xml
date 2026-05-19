@@ -21,14 +21,14 @@
     <refsynopsisdiv>
         <title>呼び出し手順</title>
         <synopsis>
-            e = xmlElement(doc, name)
+            e = xmlElement(xdoc, name)
         </synopsis>
     </refsynopsisdiv>
     <refsection>
         <title>引数</title>
         <variablelist>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>XMLDoc型のmlist</para>
                 </listitem>
@@ -54,13 +54,13 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a>Hello</a><b> world</b></root>");
-    e = xmlElement(doc, "c");
+    xdoc = xmlReadStr("<root><a>Hello</a><b> world</b></root>");
+    e = xmlElement(xdoc, "c");
     e.attributes.attr = "value";
     e.content = "!";
-    doc.root.children(3) = e;
-    xmlDump(doc)
-    xmlDelete(doc);
+    xdoc.root.children(3) = e;
+    xmlDump(xdoc)
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">

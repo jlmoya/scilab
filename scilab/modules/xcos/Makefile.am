@@ -83,6 +83,7 @@ GATEWAY_CXX_SOURCES = \
 	sci_gateway/cpp/sci_xcosCellCreated.cpp \
 	sci_gateway/cpp/sci_xcosUpdateBlock.cpp \
 	sci_gateway/cpp/sci_xcosDiagramToScilab.cpp \
+	sci_gateway/cpp/sci_xcosDiagramExport.cpp \
 	sci_gateway/cpp/sci_xcosPalLoad.cpp \
 	sci_gateway/cpp/sci_xcosPalCategoryAdd.cpp \
 	sci_gateway/cpp/sci_xcosPalDelete.cpp \

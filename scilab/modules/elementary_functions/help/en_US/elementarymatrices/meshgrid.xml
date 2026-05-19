@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="meshgrid" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="meshgrid" xml:lang="en">
     <refnamediv>
         <refname>meshgrid</refname>
         <refpurpose>
@@ -32,31 +29,34 @@
             [X, Y, Z] = meshgrid(x, y, z)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
                 <term>u, x, y, z</term>
                 <listitem>
-                    Vectors of any types, of lengths nu, nx, ny, nz.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vectors of any types, of lengths nu, nx, ny, nz.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>U, V</term>
                 <listitem>
-                    Square matrices of size nu x nu
-                    <para/>
-                </listitem>
+                     <para>
+                        Square matrices of size nu x nu
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>X, Y, Z</term>
                 <listitem>
-                    Matrices or hypermatrices of the same size
-                    [<emphasis role="bold">ny</emphasis>, nx] or
-                    [<emphasis role="bold">ny</emphasis>, nx, nz].
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrices or hypermatrices of the same size
+                        [<emphasis role="bold">ny</emphasis>, nx] or
+                        [<emphasis role="bold">ny</emphasis>, nx, nz].
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
@@ -66,15 +66,15 @@
             meshgrid(..) builds matrices or 3-D hypermatrices by replicating input vectors
             along 2 or 3 dimensions.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 To create arrays of size [<emphasis role="bold">nx</emphasis>, ny] instead of
                 [ny, nx], or with more than 3 dimensions, please use
                 <literal>ndgrid(x, y)</literal> or <literal>ndgrid(x, y, z,..)</literal>.
-            </note>
-        </para>
-        <para>
-            <warning>
+            </para>
+        </note>
+        <warning>
+            <para>
                 Most of Scilab 2D or 3D graphical functions like <literal>champ()</literal>,
                 <literal>grayplot()</literal>, <literal>Sgrayplot()</literal>,
                 <literal>plot3d()</literal>, <literal>contour()</literal>, etc.. work with grids
@@ -82,15 +82,15 @@
                 <literal>meshgrid()</literal>. Data computed on grids coming from
                 <literal>meshgrid()</literal> will require being transposed (please see the
                 example thereafter).
-            </warning>
-        </para>
+            </para>
+        </warning>
     </refsection>
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 [X, Y] = meshgrid(0:2)
  ]]></programlisting>
-    <screen>
+    <screen><![CDATA[
 --> [X, Y] = meshgrid(0:2)
  X  =
    0.   1.   2.
@@ -101,12 +101,12 @@
    0.   0.   0.
    1.   1.   1.
    2.   2.   2.
-</screen>
+]]></screen>
         <para/>
         <programlisting role="example"><![CDATA[
 [X, Y] = meshgrid(["a" "bc" "αβγδ"], [-3 5])
  ]]></programlisting>
-    <screen>
+    <screen><![CDATA[
 --> [X, Y] = meshgrid(["a" "bc" "αβγδ"], [-3 5])
  X  =
 !a  bc  αβγδ  !
@@ -115,7 +115,7 @@
  Y  =
   -3.  -3.  -3.
    5.   5.   5.
-</screen>
+]]></screen>
         <para/>
         <para>
             Application to grids for graphics:
@@ -159,7 +159,7 @@ gcf().children.tight_limits = ["on" "on" "on"];
 drawnow
  ]]></programlisting>
         <para/>
-        <scilab:image>
+        <scilab:image><![CDATA[
             // Generating data
             x = -1:0.1:1.7;
             y = -1:0.1:1;
@@ -196,7 +196,7 @@ drawnow
 
             gcf().children.tight_limits = ["on" "on" "on"];
             drawnow
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="see also">
         <title>See also</title>

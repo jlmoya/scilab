@@ -28,7 +28,7 @@
             xmlSetValues(xpath, attributes_values, doc)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -46,7 +46,7 @@
         </variablelist>
         <variablelist>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>
                         mlist typed XMLDoc: the XML document in which to write values.
@@ -60,7 +60,7 @@
     <refsection>
         <title>Description</title>
         <para>
-            When no explicit XML document <varname>doc</varname> is indicated,
+            When no explicit XML document <varname>xdoc</varname> is indicated,
             <literal>xmlSetValues</literal> opens the main Scilab preferences file
             <literal>SCIHOME + '/XConfiguration.xml'</literal>, looks for the tag pointed to by
             <varname>xpath</varname>, updates some of its attributes and related values as
@@ -68,7 +68,7 @@
         </para>
         <para>
             <literal>xmlSetValues</literal> can also be used on-the-fly on an already open XML
-            document <varname>doc</varname>. In this case, the document is kept open after
+            document <varname>xdoc</varname>. In this case, the document is kept open after
             leaving <literal>xmlSetValues</literal>. This mode is useful when several
             tags must be updated in the same document.
         </para>
@@ -80,8 +80,8 @@
             All valid XPath requests are possible. For example to write the XPath request to
             set proxy settings in the main Scilab configuration file:
         </para>
-        <simplelist type="inline">
-            <member>
+        <itemizedlist>
+            <listitem>
                 <para>
                     Opens <literal>SCIHOME+'/XConfiguration.xml'</literal> and gets the
                     nodes names to access to the expected node:
@@ -106,11 +106,13 @@
                     The path will be <literal>"/interface/web/body/proxy"</literal>
                     (or to simplify <literal>"//web/body/proxy"</literal>).
                 </para>
-            </member>
-        <warning>
-            Modifying incorrectly some preferences can alter the Scilab's behaviour.
-        </warning>
-        </simplelist>
+                <warning>
+                    <para>
+                        Modifying incorrectly some preferences can alter the Scilab's behaviour.
+                    </para>
+                </warning>
+            </listitem>
+        </itemizedlist>
     </refsection>
     <refsection>
         <title>Examples</title>
@@ -140,9 +142,9 @@ xmlGetValues("//web/body/proxy", ["enabled", "host", "port"])
         <revhistory>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     xmlSetValues() introduced, replacing setPreferencesValue().
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

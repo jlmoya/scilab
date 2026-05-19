@@ -13,55 +13,56 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="repmat" xml:lang="fr">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="repmat" xml:lang="fr">
     <refnamediv>
         <refname>repmat</refname>
         <refpurpose>Définit un grand tableau par pavage avec un tableau 2D.</refpurpose>
     </refnamediv>
     <refsynopsisdiv>
-        <title>Sequence d'appel</title>
+        <title>Séquence d'appel</title>
         <synopsis>
           B = repmat(A, siz)
           B = repmat(A, m)
           B = repmat(A, m, n,...)
       </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>A</term>
                 <listitem>
-                    Tableau de tout type natif quelconque (booléen, numérique, texte, ..., cellules,
-                    structures), de toute dimensionnalité, et de toutes tailles. Les matrices creuses
-                    booléennes ou numériques peuvent être répliquées.
-                    <para/>
-                </listitem>
+                     <para>
+                        Tableau de tout type natif quelconque (booléen, numérique, texte, ..., cellules,
+                        structures), de toute dimensionnalité, et de toutes tailles. Les matrices creuses
+                        booléennes ou numériques peuvent être répliquées.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>m, n, ...</term>
                 <listitem>
-                    entiers positifs : nombres de fois que <varname>A</varname> doit être répliqué,
-                    selon chaque dimension respective de <varname>B</varname>.
-                    <para/>
-                </listitem>
+                     <para>
+                        entiers positifs : nombres de fois que <varname>A</varname> doit être répliqué,
+                        selon chaque dimension respective de <varname>B</varname>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>siz</term>
                 <listitem>
-                    Vecteur des nombres de replications : <literal>siz=[m,n,..]</literal>.
-                    <para/>
-                </listitem>
+                     <para>
+                        Vecteur des nombres de replications : <literal>siz=[m,n,..]</literal>.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>B</term>
                 <listitem>
-                    Le tableau résultant du pavage.
-                    <para/>
-                </listitem>
+                     <para>
+                        Le tableau résultant du pavage.
+                        </para>
+                    </listitem>
             </varlistentry>
         </variablelist>
     </refsection>

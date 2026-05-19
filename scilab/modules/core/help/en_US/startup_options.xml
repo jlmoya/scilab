@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="startup_options" xml:lang="en">
     <refnamediv>
         <refname>scilab</refname>
         <refpurpose>runs Scilab in interactive or batch mode with command line options.</refpurpose>
@@ -86,13 +83,21 @@ Developer Debug arguments:
                     <para>
                         This option allows to send some data to the Scilab session:
                         <itemizedlist>
-                            <listitem>Consecutive data are separated by one or several spaces.
+                            <listitem>
+                                 <para>Consecutive data are separated by one or several spaces.
+                                </para>
                             </listitem>
-                            <listitem>An expression between double-quotes is a single data.
+                            <listitem>
+                                 <para>An expression between double-quotes is a single data.
+                                </para>
                             </listitem>
-                            <listitem>To include a double-quote in a data, write <literal>\"</literal> instead of <literal>"</literal>.
+                            <listitem>
+                                 <para>To include a double-quote in a data, write <literal>\"</literal> instead of <literal>"</literal>.
+                                </para>
                             </listitem>
-                            <listitem>The single quote <literal>'</literal> is a regular character. It has no special meaning.
+                            <listitem>
+                                 <para>The single quote <literal>'</literal> is a regular character. It has no special meaning.
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -145,12 +150,12 @@ evstr(a(i+2))*2
                       in such a way that the "-nw" option is not returned by <literal>sciargs()</literal>
                       (see further below).
                     </para>
-                    <para>
-                        <note>
+                    <note>
+                        <para>
                            Using <literal>-args</literal> as the <emphasis role="italic">last</emphasis>
                            command line option is safer.
-                        </note>
-                    </para>
+                        </para>
+                    </note>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -187,7 +192,9 @@ evstr(a(i+2))*2
                         </itemizedlist>
                     </para>
                     <warning>
-                        <literal>-e</literal> and <literal>-f</literal> options can't be used together.
+                        <para>
+                            <literal>-e</literal> and <literal>-f</literal> options can't be used together.
+                        </para>
                     </warning>
                 </listitem>
             </varlistentry>
@@ -250,10 +257,12 @@ evstr(a(i+2))*2
                         The default language is English.
                     </para>
                     <note>
-                        On Windows, in "-nw" or "-nwni" modes, the selected font of the terminal
-                        must be a TrueType one to support UTF-8 characters, like
-                        <emphasis>Monospaced</emphasis> (best choice if available) or
-                        <emphasis>Consolas</emphasis> or <emphasis>Lucida Console</emphasis>..
+                        <para>
+                            On Windows, in "-nw" or "-nwni" modes, the selected font of the terminal
+                            must be a TrueType one to support UTF-8 characters, like
+                            <emphasis>Monospaced</emphasis> (best choice if available) or
+                            <emphasis>Consolas</emphasis> or <emphasis>Lucida Console</emphasis>.
+                        </para>
                     </note>
                     <para>
                         On some systems, locales must be compiled to render correctly
@@ -312,11 +321,15 @@ evstr(a(i+2))*2
                         The actual Scilab binary file executed when using the "-nw" option is:
                         <itemizedlist>
                             <listitem>
-                                on Windows: <literal xml:id="wscilex-cli">WScilex-cli.exe</literal>.
+                                 <para>
+                                    on Windows: <literal xml:id="wscilex-cli">WScilex-cli.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                on Linux and MacOS: <literal xml:id="scilab-adv-cli">scilab-adv-cli</literal>
-                                (Scilab Advanced Command Line Interpreter).
+                                 <para>
+                                    on Linux and MacOS: <literal xml:id="scilab-adv-cli">scilab-adv-cli</literal>
+                                    (Scilab Advanced Command Line Interpreter).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -326,13 +339,17 @@ evstr(a(i+2))*2
                 <term>-nwni / -nogui</term>
                 <listitem>
                     <important>
-                        This mode prevents loading the Java Virtual Machine.
-                        It starts faster and uses less memory. But then...
+                        <para>
+                            This mode prevents loading the Java Virtual Machine.
+                            It starts faster and uses less memory. But then...
+                        </para>
                     </important>
                     <warning>
-                        Scilab is started as command line interpreter without any advanced features
-                        requiring the JVM: graphics, export, xcos, scinotes, help browser, other
-                        java interfaces, the Java module,... are not available.
+                        <para>
+                            Scilab is started as command line interpreter without any advanced features
+                            requiring the JVM: graphics, export, xcos, scinotes, help browser, other
+                            java interfaces, the Java module,... are not available.
+                        </para>
                     </warning>
                     <para>
                         Anyway, pipes are enabled for all operating systems.
@@ -343,10 +360,14 @@ evstr(a(i+2))*2
                         provided:
                         <itemizedlist>
                             <listitem>
-                                Windows: <literal xml:id="scilex">Scilex.exe</literal>.
+                                 <para>
+                                    Windows: <literal xml:id="scilex">Scilex.exe</literal>.
+                                </para>
                             </listitem>
                             <listitem>
-                                Others: <literal xml:id="scilab-cli">scilab-cli</literal> (Scilab Command Line Interpreter).
+                                 <para>
+                                    Others: <literal xml:id="scilab-cli">scilab-cli</literal> (Scilab Command Line Interpreter).
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -377,8 +398,8 @@ evstr(a(i+2))*2
                 <listitem>
                     <para>
                         This option is used when Scilab is used as computational interface
-                        within the <ulink url="http://texmacs.org">TeXmacs</ulink> scientific editor,
-                        using the <ulink url="https://atoms.scilab.org/toolboxes/texmacs">TeXmacs</ulink>
+                        within the <link xlink:href="http://texmacs.org">TeXmacs</link> scientific editor,
+                        using the <link xlink:href="https://atoms.scilab.org/toolboxes/texmacs">TeXmacs</link>
                         ATOMS module.
                         This one can be priorly installed in Scilab with <code>atomsInstall('texmacs')</code>.
                     </para>
@@ -396,7 +417,9 @@ evstr(a(i+2))*2
         </variablelist>
         <para>
             <note>
-                On Windows, if neither <literal>"-nw"</literal> nor <literal>"-nwni"/"-nogui"</literal> options are given, then the <literal xml:id="wscilex">WScilex.exe</literal> binary is executed.
+                <para>
+                    On Windows, if neither <literal>"-nw"</literal> nor <literal>"-nwni"/"-nogui"</literal> options are given, then the <literal xml:id="wscilex">WScilex.exe</literal> binary is executed.
+                </para>
             </note>
         </para>
     </refsection>
@@ -416,7 +439,7 @@ evstr(a(i+2))*2
             <varlistentry>
                 <term>-debug-rr</term>
                 <listitem>
-                    <para>Start Scilab under <ulink url="https://rr-project.org/">rr</ulink>.</para>
+                    <para>Start Scilab under <link xlink:href="https://rr-project.org/">rr</link>.</para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -491,7 +514,9 @@ evstr(a(i+2))*2
     <refsection role="description">
         <title>Java Virtual Machine options</title>
         <warning>
-            The options described here-below are useless and are cancelled if the option <literal>-nwni</literal> is used.
+            <para>
+                The options described here-below are useless and are cancelled if the option <literal>-nwni</literal> is used.
+            </para>
         </warning>
         <para>Starting from Scilab 5.0, the graphical user interface (GUI) and the
             build documentation are based on Java features. In some cases, it can be
@@ -539,7 +564,7 @@ evstr(a(i+2))*2
             </varlistentry>
         </variablelist>
         <para>Many more options are available. They can improve the performances,
-            change look and feel, change memory managements... See: <ulink url="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</ulink>.
+            change look and feel, change memory managements... See: <link xlink:href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html">http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</link>.
         </para>
     </refsection>
     <refsection role="examples">
@@ -558,7 +583,7 @@ echo "handle SIGSEGV nostop" > debug.txt
 export SCILAB_GDB_OPT="--command=debug.txt"
 # Start Scilab in debug mode
 scilab -debug ]]></screen>
-        <para></para>
+        <para/>
         <screen><![CDATA[
 # Under GNU/Linux, Mac OS X or Unix:
 $ echo "disp(%pi)" | scilab-cli
@@ -629,48 +654,61 @@ echo $? ]]></screen>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
-                    <itemizedlist>
-                        <listitem>
-                            User options:
-                            <itemizedlist>
-                                <listitem>
-                                    Added: <literal>--help</literal>, <literal>-quit</literal>
-                                </listitem>
-                                <listitem>
-                                    Removed: <literal>-mem</literal>
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
-                        <listitem>
-                            Developer options added:
-                            <itemizedlist>
-                                <listitem>
-                                    <literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
-                                    <literal>--pretty-print</literal>
-                                </listitem>
-                                <listitem>
-                                    <literal>--AST-timed</literal>, <literal>--timed</literal>
-                                </listitem>
-                                <listitem>
-                                    <literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
-                                    <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
-                                </listitem>
-                            </itemizedlist>
-                        </listitem>
-                    </itemizedlist>
-                </revremark>
+                <revdescription>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    User options:
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>
+                                                Added: <literal>--help</literal>, <literal>-quit</literal>
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                Removed: <literal>-mem</literal>
+                                            </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Developer options added:
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para><literal>--parse-trace</literal>, <literal>--AST-trace</literal>,
+                                                <literal>--pretty-print</literal>
+                                            </para>
+                                        </listitem>
+                                        <listitem>
+                                            <para><literal>--AST-timed</literal>, <literal>--timed</literal></para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>
+                                                <literal>--no-exec</literal>, <literal>--exec-verbose</literal>,
+                                                <literal>--timeout delay</literal>, <literal>--context-dump</literal>.
+                                            </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
-                <revremark>
-                  <para><literal>-scihome</literal> option added.</para>
-                  <para>On Windows, a new <literal>scilab.bat</literal> file becomes the main
+                <revdescription>
+                    <para><literal>-scihome</literal> option added.</para>
+                    <para>On Windows, a new <literal>scilab.bat</literal> file becomes the main
                     executable script managing all launching options. There are now 3 binaries
                     Wscilex.exe, Wscilex-cli.exe, and Scilex.exe corresponding to each Scilab
                     running mode (STD, NW, NWNI).
-                  </para>
-                </revremark>
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

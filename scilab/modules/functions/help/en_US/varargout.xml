@@ -44,7 +44,9 @@
             <literal>argn(1)</literal> returns the actual total number of output arguments.
         </para>
         <note>
-            <literal>varargout</literal> is by default initialized to <literal>list()</literal>.
+            <para>
+                <literal>varargout</literal> is by default initialized to <literal>list()</literal>.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -91,9 +93,9 @@ exampl1()
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     varargout is now initialized to list() by default.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-    xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-    xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-    xml:lang="fr" xml:id="pixel_drawing_mode">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="pixel_drawing_mode">
     <refnamediv>
         <refname>pixel_drawing_mode</refname>
         <refpurpose>mode d'actualisation des couleurs RVB des pixels lors des tracés graphiques</refpurpose>
@@ -33,29 +30,31 @@
         <para>
             <itemizedlist>
                 <listitem>
-                    <literal>src</literal> est la couleur du pixel considéré dans l'objet à tracer / dessiner.
+                    <para><literal>src</literal> est la couleur du pixel considéré dans l'objet à tracer / dessiner.
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>cur</literal> est la couleur courante préxistante du même pixel, avant le tracé.
+                     <para><literal>cur</literal> est la couleur courante préxistante du même pixel, avant le tracé.
+                    </para>
                 </listitem>
             </itemizedlist>
             Les valeurs possibles (de type texte) de l'attribut <literal>pixel_drawing_mode</literal> sont listées ci-après, suivies de l'opération binaire correspondante. Dans ces expressions logiques,
             <itemizedlist>
                 <listitem>
-                    <literal>NOT v</literal> signifie <literal>255 - v</literal>
+                     <para><literal>NOT v</literal> signifie <literal>255 - v</literal></para>
                 </listitem>
                 <listitem>
-                    <literal>a AND b</literal> signifie <literal>a &amp; b</literal>
+                    <para><literal>a AND b</literal> signifie <literal>a &amp; b</literal></para>
                 </listitem>
                 <listitem>
-                    <literal>a OR b</literal> signifie <literal>a | b</literal>
+                    <para><literal>a OR b</literal> signifie <literal>a | b</literal></para>
                 </listitem>
                 <listitem>
-                    <literal>a XOR b</literal> signifie <literal>(a OR b) AND NOT (a AND b)</literal>
+                    <para><literal>a XOR b</literal> signifie <literal>(a OR b) AND NOT (a AND b)</literal></para>
                 </listitem>
             </itemizedlist>
         </para>
-        <informaltable border="1" cellpadding="3px">
+        <informaltable border="1">
             <tr>
                 <th>Valeur</th>
                 <th>opération effectuée / résultat</th>
@@ -129,73 +128,73 @@
     <refsection>
         <title>Exemples</title>
         <programlisting role="example"><![CDATA[
-pxmodes = ["copy", "copyInverted", "equiv", "xor", ..
-           "and",  "nand", "andReverse", "andInverted", ..
-           "or",   "nor",  "orReverse",  "orInverted", ..
-           "noop", "set",  "clear",      "invert" ..
-           ];
-// Dimensions et recouvrement marginal des fenêtres en damier
-s = 300;
-hm = 8;
-vm = 52;
-//
-for k = 16:-1:1
-    m = pxmodes(k);
-
-    // Position de la fenêtre
-    i = fix((k-1)/4);
-    j = modulo(k-1,4);
-
-    // Création et paramétrage de la fenêtre
-    f = figure("toolbar_visible","off", ..
-               "menubar_visible","off", ..
-               "infobar_visible","off", ..
-               "figure_position", [j*(s-hm), i*(s-vm)], ..
-               "figure_size", [s s], ..
-               "background", color("grey85"), ..
-               "pixel_drawing_mode", m ..
-               );
-    drawlater
-
-    // Configuration du tracé
-    b = 0.82;
-    plot2d([],[],0,"051"," ",[-1 -1 1 1]*b)
-    plot2d([-1 1]*b,[0 0])
-    a = gca();
-    a.isoview = "on";
-    a.tight_limits = "on";
-    title(m,"fontsize",4)
-
-    // Affichage de 3 disques rouge, vert et bleu se recouvrant partiellement
-    e = xfarc(-0.7, 0.8, 1, 1, 0, 360*64)
-    e.background = color("red");
-    e.fill_mode = "on";
-
-    e = xfarc(-0.2, 0.5, 1, 1, 0, 360*64)
-    e.background = color("blue");
-    e.fill_mode = "on";
-
-    e = xfarc(-0.7,  0.2, 1, 1, 0, 360*64)
-    e.background = color("green");
-    e.fill_mode = "on";
-
-    drawnow
-end
-// Ménage : on supprime les 16 fenêtres
-b = messagebox(_("Presser OK pour fermer les fenêtres"),"Clore la démonstration", "question", "modal");
-w = winsid();
-close(w($-15:$));
-    ]]></programlisting>
+                pxmodes = ["copy", "copyInverted", "equiv", "xor", ..
+                           "and",  "nand", "andReverse", "andInverted", ..
+                           "or",   "nor",  "orReverse",  "orInverted", ..
+                           "noop", "set",  "clear",      "invert" ..
+                           ];
+                // Dimensions et recouvrement marginal des fenêtres en damier
+                s = 300;
+                hm = 8;
+                vm = 52;
+                //
+                for k = 16:-1:1
+                    m = pxmodes(k);
+                
+                    // Position de la fenêtre
+                    i = fix((k-1)/4);
+                    j = modulo(k-1,4);
+                
+                    // Création et paramétrage de la fenêtre
+                    f = figure("toolbar_visible","off", ..
+                               "menubar_visible","off", ..
+                               "infobar_visible","off", ..
+                               "figure_position", [j*(s-hm), i*(s-vm)], ..
+                               "figure_size", [s s], ..
+                               "background", color("grey85"), ..
+                               "pixel_drawing_mode", m ..
+                               );
+                    drawlater
+                
+                    // Configuration du tracé
+                    b = 0.82;
+                    plot2d([],[],0,"051"," ",[-1 -1 1 1]*b)
+                    plot2d([-1 1]*b,[0 0])
+                    a = gca();
+                    a.isoview = "on";
+                    a.tight_limits = "on";
+                    title(m,"fontsize",4)
+                
+                    // Affichage de 3 disques rouge, vert et bleu se recouvrant partiellement
+                    e = xfarc(-0.7, 0.8, 1, 1, 0, 360*64)
+                    e.background = color("red");
+                    e.fill_mode = "on";
+                
+                    e = xfarc(-0.2, 0.5, 1, 1, 0, 360*64)
+                    e.background = color("blue");
+                    e.fill_mode = "on";
+                
+                    e = xfarc(-0.7,  0.2, 1, 1, 0, 360*64)
+                    e.background = color("green");
+                    e.fill_mode = "on";
+                
+                    drawnow
+                end
+                // Ménage : on supprime les 16 fenêtres
+                b = messagebox(_("Presser OK pour fermer les fenêtres"),"Clore la démonstration", "question", "modal");
+                w = winsid();
+                close(w($-15:$));
+        ]]></programlisting>
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../../images/pixel_drawing_mode_70.png" />
+                    <imagedata fileref="../../images/pixel_drawing_mode_70.png"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
     </refsection>
     <refsection role="see also">
-        <title>Voir ausi</title>
+        <title>Voir aussi</title>
         <simplelist type="inline">
             <member>
                 <link linkend="figure_properties">figure_properties</link>

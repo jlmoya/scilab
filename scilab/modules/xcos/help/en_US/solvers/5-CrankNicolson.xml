@@ -9,7 +9,7 @@
  * The terms are also available at
  * https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg"  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="CRANI">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en_US" xml:id="CRANI">
 
     <refnamediv>
         <refname>Crank-Nicolson 2(3)</refname>
@@ -78,18 +78,20 @@
             by the function <emphasis>f(t,y)</emphasis>.
             <itemizedlist>
                 <listitem>
-                    <emphasis>k1</emphasis> is the increment based on the slope at the midpoint of the interval, using
-                    <emphasis>
-                        y<subscript>n</subscript> + a11*h*k1/2 + a12*h*k2/2
-                    </emphasis>
-                    ,
+                     <para><emphasis>k1</emphasis> is the increment based on the slope at the midpoint of the interval, using
+                        <emphasis>
+                            y<subscript>n</subscript> + a11*h*k1/2 + a12*h*k2/2
+                        </emphasis>
+                        ,
+                    </para>
                 </listitem>
                 <listitem>
-                    <emphasis>k2</emphasis> is the increment based on the slope at the midpoint of the interval, but now using
-                    <emphasis>
-                        y<subscript>n</subscript>
-                    </emphasis>
-                    .
+                     <para><emphasis>k2</emphasis> is the increment based on the slope at the midpoint of the interval, but now using
+                        <emphasis>
+                            y<subscript>n</subscript>
+                        </emphasis>
+                        .
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -241,7 +243,7 @@ Time for Crank-Nicolson:
         <para>
             Now, in the following script, we compare the time difference between <emphasis>Crank-Nicolson</emphasis>
             and <emphasis>CVode</emphasis> by running the example with the five solvers in turn:
-            <link type="scilab" linkend ="scilab.scinotes/xcos/examples/solvers/integCRANI.sce">
+            <link type="scilab" linkend="scilab.scinotes/xcos/examples/solvers/integCRANI.sce">
                 Open the script
             </link>
         </para>
@@ -319,17 +321,17 @@ Time for Crank-Nicolson:
         <title>Bibliography</title>
         <para>
             Advances in Computational Mathematics, Volume 6, Issue 1, 1996, Pages 207-226
-            <ulink url="http://link.springer.com/article/10.1007%2FBF02127704">
+            <link xlink:href="http://link.springer.com/article/10.1007%2FBF02127704">
                 A practical method for numerical evaluation of solutions of partial differential equations of the heat-conduction type
-            </ulink>
+            </link>
         </para>
         <para>
-            Pages 81-82 <ulink url="http://repository.lib.ncsu.edu/ir/bitstream/1840.16/6653/1/etd.pdf">
+            Pages 81-82 <link xlink:href="http://repository.lib.ncsu.edu/ir/bitstream/1840.16/6653/1/etd.pdf">
                 A family of higher-order implicit time integration methods for unsteady compressible flows
-            </ulink>
+            </link>
         </para>
         <para>
-            <ulink url="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Sundials Documentation</ulink>
+            <link xlink:href="https://computation.llnl.gov/casc/sundials/documentation/documentation.html">Sundials Documentation</link>
         </para>
     </refsection>
 
@@ -338,7 +340,7 @@ Time for Crank-Nicolson:
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revdescription>Crank-Nicolson 2(3) solver added</revdescription>
+                <revremark>Crank-Nicolson 2(3) solver added</revremark>
             </revision>
         </revhistory>
     </refsection>

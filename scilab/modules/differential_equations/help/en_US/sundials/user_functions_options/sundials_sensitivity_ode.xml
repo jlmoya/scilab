@@ -20,7 +20,7 @@
             sol = cvode( ... , sensPar = pvalue, options)
         </synopsis>
     </refsynopsisdiv>
-    <refsection role="parameters">
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -45,7 +45,7 @@
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    <para>array of solution at time values in <term>t</term></para>
+                    <para>array of solution at time values in <literal>t</literal></para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -68,7 +68,7 @@
         <title>Description</title>
 
         <para>While integrating an ODE where the right hand side f(t,y,p) depends on a vector p of parameters, cvode can compute simultaneously the
-            solution vector y at given time points and also <latex style="inline">S={\partial y}/{\partial p</latex> the derivative of the solution with 
+            solution vector y at given time points and also <latex>S={\partial y}/{\partial p</latex> the derivative of the solution with 
             respect to p, i.e. the sensitivity matrix/function. 
             This amounts to augment the original ODE with the sensitivity equation, which is obtained by formal derivation of the original ODE
             with respect to p:
@@ -103,7 +103,7 @@
                 </programlisting>
             </para>
             <para>
-                where the sensitivity of the solution is retrieved in the "s" field of either the <term>info</term> or <term>sol</term> output argument. 
+                where the sensitivity of the solution is retrieved in the "s" field of either the <literal>info</literal> or <literal>sol</literal> output argument. 
                 When the right hand side of the ODE is yielded by a Scilab function, the protoype of <literal>fun</literal> must include a formal
                 input argument after the regular (t,y) pair (denoted p below), which will contain the parameter values. Additionnal user parameters
                 must be given as explained in the <link linkend="sundials_user_functions">User functions</link> help page :
@@ -117,8 +117,8 @@
                 parameters can be precised by using the <code>sensParIndex</code> (see below).
             </para>
             <para>
-                Note that the yielded <term>s</term> array has dimensions (length(y0), length(p), length(t)) but singleton dimensions are squeezed when
-                p or the ODE state is a scalar. The sensitivity related output arguments <term>s</term> and <term>se</term> can also be recovered in 
+                Note that the yielded <literal>s</literal> array has dimensions (length(y0), length(p), length(t)) but singleton dimensions are squeezed when
+                p or the ODE state is a scalar. The sensitivity related output arguments <literal>s</literal> and <literal>se</literal> can also be recovered in 
                 the solution output as complimentary fields.
             </para>
     </refsection>

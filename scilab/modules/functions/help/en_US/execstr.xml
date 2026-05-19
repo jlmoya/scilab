@@ -27,7 +27,7 @@
             [ierr, errormsg, callstack] = execstr(instr,'errcatch' [,msg])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -72,7 +72,9 @@
             <varname>instr</varname>.
         </para>
         <note>
-            Note that <varname>instr</varname> should not make use of continuation marks (..)
+            <para>
+                Note that <varname>instr</varname> should not make use of continuation marks (..)
+            </para>
         </note>
         <para>
             If the <literal>'errcatch'</literal> flag is not present, error handling works as usual.

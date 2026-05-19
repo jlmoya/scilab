@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="ru" xml:id="error">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="ru" xml:id="error">
     <refnamediv>
         <refname>error</refname>
         <refpurpose>сообщает об ошибке во время выполнения</refpurpose>
@@ -46,7 +43,7 @@
                 <term>n</term>
                 <listitem>
                     <para>
-                        целое число > 0: числовой идентификатор приписанный к ошибке. По умолчанию = 10000.
+                        целое число &gt; 0: числовой идентификатор приписанный к ошибке. По умолчанию = 10000.
                         В то время, как сообщение часто переводится на язык текущей сессии,
                         <varname>n</varname> позволяет проверит ошибку способом, независимым от языка.
                     </para>
@@ -61,16 +58,24 @@
             ошибку. По умолчанию <literal>error</literal>
             <itemizedlist>
                 <listitem>
-                    прекращает текущее выполнение,
+                     <para>
+                        прекращает текущее выполнение,
+                    </para>
                 </listitem>
                 <listitem>
-                    отображает в командном окне рекурсивное дерево вызовов, приводящее к ошибке,
+                     <para>
+                        отображает в командном окне рекурсивное дерево вызовов, приводящее к ошибке,
+                    </para>
                 </listitem>
                 <listitem>
-                    выводит на экран сообщение об ошибке <varname>message</varname>,
+                     <para>
+                        выводит на экран сообщение об ошибке <varname>message</varname>,
+                    </para>
                 </listitem>
                 <listitem>
-                    и возвращается на уровень командной строки.
+                     <para>
+                        и возвращается на уровень командной строки.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>

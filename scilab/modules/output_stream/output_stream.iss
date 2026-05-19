@@ -51,4 +51,6 @@ Source: modules\{#OUTPUT_STREAM}\macros\lib; DestDir: {app}\modules\{#OUTPUT_STR
 ;Source: modules\{#OUTPUT_STREAM}\demos\*.*; DestDir: {app}\modules\{#OUTPUT_STREAM}\demos; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;
 Source: modules\{#OUTPUT_STREAM}\tests\*.*; DestDir: {app}\modules\{#OUTPUT_STREAM}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
+;
+Source: modules\{#OUTPUT_STREAM}\help\*.*; DestDir: {app}\modules\{#OUTPUT_STREAM}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

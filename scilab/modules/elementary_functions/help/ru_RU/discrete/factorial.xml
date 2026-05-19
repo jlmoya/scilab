@@ -11,10 +11,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="factorial" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="factorial" xml:lang="ru">
     <refnamediv>
         <refname>factorial</refname>
         <refpurpose>функция факториала : произведение первых n положительных целых чисел</refpurpose>
@@ -80,18 +77,24 @@
         <note>
             <itemizedlist>
                 <listitem>
-                    Для <literal>n</literal> в <literal>[22, 170]</literal> относительная точность
-                    <varname>f</varname> примерно равна <literal>%eps ~ 2e-16</literal>.
+                     <para>
+                        Для <literal>n</literal> в <literal>[22, 170]</literal> относительная точность
+                        <varname>f</varname> примерно равна <literal>%eps ~ 2e-16</literal>.
+                    </para>
                 </listitem>
                 <listitem>
-                    Для <literal>n</literal> в <literal>[171, 1.0x10<superscript>14</superscript>]</literal> значение
-                    степени <varname>p</varname> равна точно и относительная точность мантиссы <varname>m</varname> 
-                    примерно равно <literal>n*%eps ~ n * 1e-16</literal> (см. последний пример).
+                     <para>
+                        Для <literal>n</literal> в <literal>[171, 1.0x10<superscript>14</superscript>]</literal> значение
+                        степени <varname>p</varname> равна точно и относительная точность мантиссы <varname>m</varname> 
+                        примерно равно <literal>n*%eps ~ n * 1e-16</literal> (см. последний пример).
+                    </para>
                 </listitem>
                 <listitem>
-                    После <literal>n > 10.0<superscript>14</superscript></literal>,
-                    <varname>p</varname> становится > 1/%eps и ограничивается. Тогда нельзя более
-                    получить надёжную мантиссу.
+                     <para>
+                        После <literal>n &gt; 10.0<superscript>14</superscript></literal>,
+                        <varname>p</varname> становится &gt; 1/%eps и ограничивается. Тогда нельзя более
+                        получить надёжную мантиссу.
+                    </para>
                 </listitem>
             </itemizedlist>
         </note>
@@ -99,7 +102,7 @@
     </refsection>
     <refsection>
         <title>Граф</title>
-        <scilab:image>
+        <scilab:image><![CDATA[
             x = (10^(0:13)).*.(1:9); x(1)=[]; x($)=1e14;
             [f, p, m] = factorial(x);
             plot2d("ll", x, p+log10(m))
@@ -109,7 +112,7 @@
             set(gca(), "sub_ticks",[8 2], "tight_limits","on");
             gca().data_bounds([1 4]) = [1 2e15];
             gcf().axes_size = [840 470];
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection role="examples">
         <title>Примеры</title>

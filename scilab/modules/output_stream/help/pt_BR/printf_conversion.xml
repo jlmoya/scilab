@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="printf_conversion" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="printf_conversion" xml:lang="pt">
     <refnamediv>
         <refname>printf_conversion</refname>
         <refpurpose>Especificações de conversão de mprintf, msprintf,
@@ -123,22 +120,30 @@
                 </para>
                 <itemizedlist>
                     <listitem>
-                        O número mínimo de dígitos a aparecerem nas conversões
-                        <literal>d</literal>, <literal>u</literal>, <literal>o</literal>,
-                        <literal>x</literal>, ou <literal>X</literal>.
+                         <para>
+                            O número mínimo de dígitos a aparecerem nas conversões
+                            <literal>d</literal>, <literal>u</literal>, <literal>o</literal>,
+                            <literal>x</literal>, ou <literal>X</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                        O número de dígitos a aparecerem após o ponto decimal nas
-                        conversões <literal>e</literal>, <literal>E</literal>, e
-                        <literal>f</literal>.
+                         <para>
+                            O número de dígitos a aparecerem após o ponto decimal nas
+                            conversões <literal>e</literal>, <literal>E</literal>, e
+                            <literal>f</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                        O número máximo de dígitos significativos para as conversões
-                        <literal>g</literal> e <literal>G</literal>.
+                         <para>
+                            O número máximo de dígitos significativos para as conversões
+                            <literal>g</literal> e <literal>G</literal>.
+                        </para>
                     </listitem>
                     <listitem>
-                        O número máximo de caracteres a serem impressos a partir de um
-                        string em uma convesão <literal>s</literal>.
+                         <para>
+                            O número máximo de caracteres a serem impressos a partir de um
+                            string em uma convesão <literal>s</literal>.
+                        </para>
                     </listitem>
                 </itemizedlist>
             </listitem>
@@ -250,16 +255,22 @@
                             precisão.
                             <itemizedlist>
                                 <listitem>
-                                    Se nenhuma precisão for especificada, a saída possui seis dígitos
+                                     <para>
+                                        Se nenhuma precisão for especificada, a saída possui seis dígitos
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    Se a precisão for zero, nenhum ponto decimal aparece e o sistema
-                                    imprime na saída o valor inteiro mais próximo de
-                                    <literal>value</literal>.
+                                     <para>
+                                        Se a precisão for zero, nenhum ponto decimal aparece e o sistema
+                                        imprime na saída o valor inteiro mais próximo de
+                                        <literal>value</literal>.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    Se a saída possui um ponto decimal, pelo menos um dígito é posto
-                                    antes dele.
+                                     <para>
+                                        Se a saída possui um ponto decimal, pelo menos um dígito é posto
+                                        antes dele.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </td>
@@ -273,16 +284,22 @@
                             ponto decimal é igual à especificação de precisão.
                             <itemizedlist>
                                 <listitem>
-                                    Se nenhuma precisão for especificada, a saída são seis dígitos.
+                                     <para>
+                                        Se nenhuma precisão for especificada, a saída são seis dígitos.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    Se a precisão for zero, nenhum ponto decimal aparece.
+                                     <para>
+                                        Se a precisão for zero, nenhum ponto decimal aparece.
+                                    </para>
                                 </listitem>
                                 <listitem>
-                                    A caractere de conversão <literal>E</literal> produz um
-                                    número com o caractere 'E', ao invés de 'e' antes do expoente.
-                                    O expoente sempre contém pelo menos dois dígitos. Se o valor
-                                    for zero, o expoente é zero.
+                                     <para>
+                                        A caractere de conversão <literal>E</literal> produz um
+                                        número com o caractere 'E', ao invés de 'e' antes do expoente.
+                                        O expoente sempre contém pelo menos dois dígitos. Se o valor
+                                        for zero, o expoente é zero.
+                                    </para>
                                 </listitem>
                             </itemizedlist>
                         </td>

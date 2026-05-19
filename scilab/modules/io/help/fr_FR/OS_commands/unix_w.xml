@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:lang="fr" xml:id="unix_w">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="fr" xml:id="unix_w">
     <refnamediv>
         <refname>unix_w</refname>
         <refpurpose>
@@ -29,8 +26,8 @@
         <title>Séquence d'appel</title>
         <synopsis>unix_w(commands)</synopsis>
     </refsynopsisdiv>
-    <refsection>
-        <title>Arguments</title>
+    <refsection role="arguments">
+        <title>Paramètres</title>
         <variablelist>
             <varlistentry>
                 <term>commands</term>
@@ -62,25 +59,31 @@
             Si dans <varname>commands</varname> une instruction produit une erreur,
             <itemizedlist>
                 <listitem>
-                    le message d'erreur issu de l'OS est affiché dans la console Scilab.
+                     <para>
+                        le message d'erreur issu de l'OS est affiché dans la console Scilab.
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>unix_w</literal> est interrompue et affiche son propre message d'erreur
-                    dans la console Scilab.
+                     <para><literal>unix_w</literal> est interrompue et affiche son propre message d'erreur
+                        dans la console Scilab.
+                    </para>
                 </listitem>
                 <listitem>
-                    Dans <varname>commands</varname>, les instructions suivantes sont ignorées.
+                     <para>
+                        Dans <varname>commands</varname>, les instructions suivantes sont ignorées.
+                    </para>
                 </listitem>
-                <warning>
+            </itemizedlist>
+            <warning>
+                <para>
                     Les opérations effectuées par les instructions valides figurant avant l'instruction
                     erronées demeurent réelles (par exemple, suppression de fichiers). Leurs
                     compte-rendus ou résultats affichables sont cependant ignorés : ils ne sont pas
                     affichés dans la console Scilab.
                     Les <literal>commands</literal> comportant plusieurs instructions sont
                     déconseillées. Elles sont plus difficiles à déboguer.
-                </warning>
-
-            </itemizedlist>
+                </para>
+            </warning>
         </para>
     </refsection>
     <refsection>

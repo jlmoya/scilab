@@ -30,7 +30,7 @@
         <title>Syntax</title>
         <synopsis>sys = lincos(scs_m [,x0,u0 [,param] ])</synopsis>
     </refsynopsisdiv>
-    <refsection id="Description_lincos">
+    <refsection xml:id="Description_lincos">
         <title>Description</title>
         <para>
             Construct a linear state-space system by linearizing a model given as a Xcos diagram. The idea is to transform a <link linkend="SUPER_f">sub-diagram</link> to a linear state-space model. The sub-diagram should have <link linkend="IN_f">inputs</link> and <link linkend="OUT_f">outputs</link>.
@@ -70,7 +70,7 @@ sys = lincos(scs_m);
 bode(sys);
  ]]></programlisting>
     </refsection>
-    <refsection id="Parameters_lincos">
+    <refsection xml:id="Parameters_lincos" role="arguments">
         <title>Arguments</title>
         <itemizedlist>
             <listitem>

@@ -26,47 +26,33 @@
         <refname>sci_struct</refname>
         <refpurpose>Scicos block structure of a scilab computational function</refpurpose>
     </refnamediv>
-    <refsection id="Contents_sci_struct">
+    <refsection xml:id="Contents_sci_struct">
         <title>Contents</title>
         <itemizedlist>
           <listitem>
-            <para>
-              <xref linkend="Description_sci_struct">Description</xref>
-            </para>
+              <para><link linkend="Description_sci_struct">Description</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Inputsoutputs_sci_struct">Inputs/outputs</xref>
-            </para>
+              <para><link linkend="Inputsoutputs_sci_struct">Inputs/outputs</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Events_sci_struct">Events</xref>
-            </para>
+              <para><link linkend="Events_sci_struct">Events</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Parameters_sci_struct">Parameters</xref>
-            </para>
+              <para><link linkend="Parameters_sci_struct">Parameters</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="States_sci_struct">States</xref>
-            </para>
+              <para><link linkend="States_sci_struct">States</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Zerocrossingsurfacesandmodes_sci_struct">Zero crossing surfaces and modes</xref>
-            </para>
+              <para><link linkend="Zerocrossingsurfacesandmodes_sci_struct">Zero crossing surfaces and modes</link></para>
           </listitem>
           <listitem>
-            <para>
-              <xref linkend="Miscellaneous_sci_struct">Miscellaneous</xref>
-            </para>
+              <para><link linkend="Miscellaneous_sci_struct">Miscellaneous</link></para>
           </listitem>
       </itemizedlist>
     </refsection>
-    <refsection id="Description_sci_struct">
+    <refsection xml:id="Description_sci_struct">
         <title>Description</title>
         <para>
             A Scicos computational function of type 5 can be realized by the use of a Scilab function.
@@ -75,7 +61,7 @@
         </para>
         <para>
             Such a function must be written in a file with extension .sci, must be loaded inside scilab by the
-            common loading scilab function (, , , ,...) and must have
+            common loading Scilab function (<literal>exec</literal>, <literal>getf</literal>, <literal>getd</literal>, <literal>genlib</literal>,...) and must have
             two right hand side arguments and one left hand side argument, as the following syntax:
         </para>
         <para>
@@ -102,7 +88,7 @@
 
         </para>
     </refsection>
-    <refsection id="Inputsoutputs_sci_struct">
+    <refsection xml:id="Inputsoutputs_sci_struct">
         <title>Inputs/outputs</title>
         <para>
 
@@ -270,7 +256,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Events_sci_struct">
+    <refsection xml:id="Events_sci_struct">
         <title>Events</title>
         <para>
         <itemizedlist>
@@ -292,7 +278,7 @@
         </itemizedlist>
         </para>
     </refsection>
-    <refsection id="Parameters_sci_struct">
+    <refsection xml:id="Parameters_sci_struct" role="arguments">
         <title>Arguments</title>
         <para>
         <itemizedlist>
@@ -339,7 +325,7 @@
         </itemizedlist>
         </para>
     </refsection>
-    <refsection id="States_sci_struct">
+    <refsection xml:id="States_sci_struct">
         <title>States</title>
         <para>
         <itemizedlist>
@@ -396,7 +382,7 @@
         </itemizedlist>
         </para>
     </refsection>
-    <refsection id="Zerocrossingsurfacesandmodes_sci_struct">
+    <refsection xml:id="Zerocrossingsurfacesandmodes_sci_struct">
         <title>Zero crossing surfaces and modes</title>
         <para>
 
@@ -424,7 +410,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Miscellaneous_sci_struct">
+    <refsection xml:id="Miscellaneous_sci_struct">
         <title>Miscellaneous</title>
         <para>
         <itemizedlist>

@@ -1,4 +1,3 @@
-//<-- CLI SHELL MODE -->
 // =============================================================================
 // Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 // Copyright (C) 2011 - DIGITEO - Antoine ELIAS
@@ -7,6 +6,9 @@
 // =============================================================================
 //
 // <-- Non-regression test for bug 9510 -->
+//
+// <-- CLI SHELL MODE -->
+// <-- NO CHECK REF -->
 //
 // <-- GitLab URL -->
 // https://gitlab.com/scilab/scilab/-/issues/9510
@@ -25,5 +27,5 @@ lusparse = umf_lufact(A);
 
 err = execstr("save(TMPDIR + ""/lusparse.sod"",""lusparse"")", "errcatch");
 assert_checktrue(err <> 0);
-if ls(TMPDIR+"/lusparse.sod") <> [] then pause end
+assert_checkfalse(isfile(TMPDIR+"/lusparse.sod"));
 umf_ludel(lusparse);

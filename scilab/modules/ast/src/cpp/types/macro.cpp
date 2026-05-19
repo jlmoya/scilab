@@ -42,12 +42,14 @@ extern "C"
 namespace types
 {
 Macro::Macro(std::vector<symbol::Variable*>& _inputArgs, ast::SeqExp& _body, const std::wstring& _stModule, std::unordered_map<std::wstring, types::InternalType*> captured) : Callable(),
-    m_inputArgs(&_inputArgs), m_body(_body.clone()), m_isLambda(true), m_outputArgs(nullptr), parent(nullptr),
+    m_inputArgs(&_inputArgs), m_outputArgs(nullptr), m_body(_body.clone()),
     m_Nargin(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"nargin"))),
     m_Nargout(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"nargout"))),
     m_Varargin(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"varargin"))),
     m_Varargout(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"varargout"))),
-    m_captured(captured)
+    m_isLambda(true),
+    m_captured(captured),
+    parent(nullptr)
 {
     setName(L"anonymous");
     setModule(_stModule);
@@ -149,11 +151,13 @@ Macro::Macro(std::vector<symbol::Variable*>& _inputArgs, ast::SeqExp& _body, con
 }
 
 Macro::Macro(const std::wstring& _stName, std::vector<symbol::Variable*>& _inputArgs, std::vector<symbol::Variable*>& _outputArgs, ast::SeqExp& _body, const std::wstring& _stModule) : Callable(),
-    m_inputArgs(&_inputArgs), m_outputArgs(&_outputArgs), m_body(_body.clone()), m_isLambda(false), parent(nullptr),
+    m_inputArgs(&_inputArgs), m_outputArgs(&_outputArgs), m_body(_body.clone()),
     m_Nargin(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"nargin"))),
     m_Nargout(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"nargout"))),
     m_Varargin(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"varargin"))),
-    m_Varargout(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"varargout")))
+    m_Varargout(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"varargout"))),
+    m_isLambda(false),
+    parent(nullptr)
 {
     setName(_stName);
     setModule(_stModule);
@@ -182,11 +186,13 @@ Macro::Macro(const std::wstring& _stName, std::vector<symbol::Variable*>& _input
 }
 
 Macro::Macro(const std::wstring& _stName, Classdef* def, std::vector<symbol::Variable*>& _inputArgs, std::vector<symbol::Variable*>& _outputArgs, ast::SeqExp& _body, const std::wstring& _stModule) : Callable(),
-      m_inputArgs(&_inputArgs), m_outputArgs(&_outputArgs), m_body(_body.clone()), m_isLambda(false), parent(nullptr),
+      m_inputArgs(&_inputArgs), m_outputArgs(&_outputArgs), m_body(_body.clone()),
       m_Nargin(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"nargin"))),
       m_Nargout(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"nargout"))),
       m_Varargin(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"varargin"))),
-      m_Varargout(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"varargout")))
+      m_Varargout(symbol::Context::getInstance()->getOrCreate(symbol::Symbol(L"varargout"))),
+      m_isLambda(false),
+      parent(nullptr)
 {
     setName(_stName);
     setModule(_stModule);

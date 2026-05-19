@@ -1,4 +1,4 @@
-// operations.cpp : Defines the exported functions for the DLL application.
+﻿// operations.cpp : Defines the exported functions for the DLL application.
 //
 
 #include "operations.hxx"
@@ -28,13 +28,13 @@ void initOperationArray()
     fillComparisonNoEqualFunction();
 }
 
-std::wstring checkSameSize(types::GenericType* pGT1, types::GenericType* pGT2, std::wstring op)
+bool checkSameSize(types::GenericType* pGT1, types::GenericType* pGT2)
 {
     int iDims1 = pGT1->getDims();
     int iDims2 = pGT2->getDims();
     if (iDims1 != iDims2)
     {
-        return errorSameSize(pGT1, pGT2, op);
+        return false;
     }
 
     int* piDims1 = pGT1->getDimsArray();
@@ -44,11 +44,11 @@ std::wstring checkSameSize(types::GenericType* pGT1, types::GenericType* pGT2, s
     {
         if (piDims1[i] != piDims2[i])
         {
-            return errorSameSize(pGT1, pGT2, op);
+            return false;
         }
     }
 
-    return L"";
+    return true;
 }
 
 std::wstring errorSameSize(types::GenericType* pGT1, types::GenericType* pGT2, std::wstring op)

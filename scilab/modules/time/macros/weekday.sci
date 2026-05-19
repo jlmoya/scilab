@@ -57,7 +57,7 @@ function [I, Names] = weekday(varargin)
                     error(msprintf(msg, fname, 3))
                 end
                 M = v;
-                varargin(1) = null()
+                varargin(1) = null();
                 i = 3;
                 v = varargin(1);
                 if or(v<1) | or(v>31) | or(v~=fix(v))

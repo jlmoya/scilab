@@ -28,7 +28,7 @@
             y = stdev(x, orien, m)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -86,7 +86,9 @@
             retourne la déviation suivant la <literal>n</literal>-ème dimension.
         </para>
         <note>
-            <literal>stdev()</literal> peut être étendue par surdéfinition.
+            <para>
+                <literal>stdev()</literal> peut être étendue par surdéfinition.
+            </para>
         </note>
     </refsection>
     <refsection>
@@ -131,25 +133,25 @@ mean(sd)
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>5.5.0</revnumber>
                 <revdescription>
-                    Peut désormais calculer l'écart-type moyen quadratique en utilisant la moyenne a priori définie par <varname>m</varname>
+                    <para>Peut désormais calculer l'écart-type moyen quadratique en utilisant la moyenne a priori définie par <varname>m</varname></para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.0</revnumber>
                 <revdescription>
-                    stdev(x, orien>ndims(x)) ne donne plus zeros(x) mais produit une erreur.
+                    <para>stdev(x, orien>ndims(x)) ne donne plus zeros(x) mais produit une erreur.</para>
                 </revdescription>
             </revision>
             <revision>
                 <revnumber>6.0.1</revnumber>
                 <revdescription>
-                    stdev() peut désormais être étendue par surdéfinition.
+                    <para>stdev() peut désormais être étendue par surdéfinition.</para>
                 </revdescription>
             </revision>
         </revhistory>

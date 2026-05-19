@@ -14,10 +14,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="unix_x" xml:lang="pt">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="unix_x" xml:lang="pt">
     <refnamediv>
         <refname>unix_x</refname>
         <refpurpose>
@@ -62,14 +59,19 @@
             Se uma instrução nos <varname>commands</varname> gera um erro,
             <itemizedlist>
                 <listitem>
-                    A mensagem de erro do interpretador do sistema operacional é exibida no console
-                    do Scilab
+                     <para>
+                        A mensagem de erro do interpretador do sistema operacional é exibida no console
+                        do Scilab
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>unix_x</literal> para e exibe sua própria mensagem de erro.
+                     <para><literal>unix_x</literal> para e exibe sua própria mensagem de erro.
+                    </para>
                 </listitem>
                 <listitem>
-                    As instruções restantes nos <varname>commands</varname> são então ignoradas.
+                     <para>
+                        As instruções restantes nos <varname>commands</varname> são então ignoradas.
+                    </para>
                 </listitem>
             </itemizedlist>
             <warning>

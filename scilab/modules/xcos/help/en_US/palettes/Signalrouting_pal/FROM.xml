@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/FROM.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_FROM">
+    <refsection xml:id="Contents_FROM">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_FROM">Description</xref>
+                <para><link linkend="Description_FROM">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_FROM">Parameters</xref>
+                <para><link linkend="Dialogbox_FROM">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_FROM">Default properties</xref>
+                <para><link linkend="Defaultproperties_FROM">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_FROM">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_FROM">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_FROM">See also</xref>
+                <para><link linkend="Seealso_FROM">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_FROM">
+    <refsection xml:id="Description_FROM">
         <title>Description</title>
         <para>
             The main role of the GOTO/FROM blocks is to transport signals from a block to another
@@ -80,15 +80,14 @@
         <para>
         </para>
     </refsection>
-    <refsection id="Dialogbox_FROM">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_FROM">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/FROM_gui.gif"
-                    align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                    align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -99,7 +98,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_FROM">
+    <refsection xml:id="Defaultproperties_FROM">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -164,7 +163,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_FROM">
+    <refsection xml:id="Interfacingfunction_FROM">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

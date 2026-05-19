@@ -24,7 +24,7 @@
             xmlCode = xmlFormat(scilabVar)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -49,22 +49,22 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
     // This code will fail:
-    // doc.root.children(1.5) = 1.23456;
+    // xdoc.root.children(1.5) = 1.23456;
 
     // Now we define %s_xmlFormat to handle double type
     // Take care, in this example, the double matrix is not handled
     function y=%s_xmlFormat(x), y="<number>" + string(x) + "</number>", endfunction;
 
     // we retry a number insertion
-    doc.root.children(1.5) = 1.23456;
-    xmlDump(doc)
+    xdoc.root.children(1.5) = 1.23456;
+    xmlDump(xdoc)
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

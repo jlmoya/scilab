@@ -40,12 +40,12 @@
                         éléments sont <literal>c(i,j) = a(i,j)/b(i,j)</literal>. Le produit de Kronecker est
                         noté <literal>.*.</literal>.
                     </para>
-                    <para>
-                        <note>
+                    <note>
+                        <para>
                             Notez que lorsqu'un point est utilisé pour un opérateur, il n'est pas
                             considéré comme faisant partie d'un nombre précédant ce point. Ainsi <literal>2.*x</literal> et <literal>2 .*x</literal> sont évalués comme <literal>(2).*x</literal> et pas comme <literal>2.0*x</literal>.
-                        </note>
-                    </para>
+                        </para>
+                    </note>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -84,9 +84,12 @@ endfunction
                         de faire est nécessaire car les points de suite peuvent apparaître
                         n'importe où dans la ligne logique, même à l'intérieur d'une
                         expression.
-                        <note>La différence entre lignes logiques et lignes physiques
-                            a son importance lors de l'édition (scinotes, edit) et dans les messages d'erreurs (whereami),
-                            lorsque le numéro de ligne est fourni ou affiché.
+                        <note>
+                            <para>
+                                La différence entre lignes logiques et lignes physiques
+                                a son importance lors de l'édition (scinotes, edit) et dans les messages d'erreurs (whereami),
+                                lorsque le numéro de ligne est fourni ou affiché.
+                            </para>
                         </note>
                     </para>
                     <para>
@@ -223,12 +226,12 @@ y = 12..
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>Historique</title>
         <revhistory>
             <revision>
                 <revnumber>6.0.0</revnumber>
-                <revremark>
+                <revdescription>
                     <para>
                         Il est désormais impossible de couper un scalaire.
                     </para>
@@ -238,7 +241,7 @@ y = 12..
                     <para>Dans les appels de fonctions en mode orienté console,
                         <literal>myfun ..</literal> n'attend plus de suite en ligne suivante.
                     </para>
-                </revremark>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

@@ -15,10 +15,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="datafit" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="datafit" xml:lang="en">
     <refnamediv>
         <refname>datafit</refname>
         <refpurpose>Non linear (constrained) parametric fit of measured (weighted) data</refpurpose>
@@ -35,24 +32,28 @@
         [p, dmin, status] = datafit(iprint, ..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <para>
             The following definitions are used:
             <itemizedlist>
                 <listitem>
-                    <literal>ng = size(g,1)</literal>: number of fitting criteria (= of
-                    gap definitions).
+                     <para><literal>ng = size(g,1)</literal>: number of fitting criteria (= of
+                        gap definitions).
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>np = size(p,"*")</literal>: total number of fitting parameters.
+                     <para><literal>np = size(p,"*")</literal>: total number of fitting parameters.
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>nd = size(Data,2)</literal>: number of data points.
+                     <para><literal>nd = size(Data,2)</literal>: number of data points.
+                    </para>
                 </listitem>
                 <listitem>
-                    <literal>ndc = size(Data,1)</literal>: number of coordinates of each
-                    data point.
+                     <para><literal>ndc = size(Data,1)</literal>: number of coordinates of each
+                        data point.
+                    </para>
                 </listitem>
             </itemizedlist>
         </para>
@@ -60,42 +61,47 @@
             <varlistentry>
                 <term>p0</term>
                 <listitem>
-                    Matrix of initial guess of the model parameters (np elements).
-                  <para/>
-                </listitem>
+                     <para>
+                        Matrix of initial guess of the model parameters (np elements).
+                      </para>
+                  </listitem>
             </varlistentry>
             <varlistentry>
                 <term>"b"</term>
                 <listitem>
-                    keyword heading the <literal>p_inf, p_sup</literal> sequence, where
-                    <literal>p_inf</literal> and <literal>p_sup</literal> are real matrices
-                    with the <literal>p0</literal> shape and sizes.
-                    <literal>p_inf</literal> is the vector of lower bounds of respective
-                    <literal>p</literal> components. <literal>p_sup</literal> are upper bounds.
-                    <para/>
-                </listitem>
+                     <para>
+                        keyword heading the <literal>p_inf, p_sup</literal> sequence, where
+                        <literal>p_inf</literal> and <literal>p_sup</literal> are real matrices
+                        with the <literal>p0</literal> shape and sizes.
+                        <literal>p_inf</literal> is the vector of lower bounds of respective
+                        <literal>p</literal> components. <literal>p_sup</literal> are upper bounds.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>p</term>
                 <listitem>
-                    Matrix of the best fitting model parameters, with the <varname>p0</varname> sizes.
-                    <para/>
-                </listitem>
+                     <para>
+                        Matrix of the best fitting model parameters, with the <varname>p0</varname> sizes.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Data</term>
                 <listitem>
-                    (ndc × nd) matrix of experimental data points, where <literal>Data(:,i)</literal>
-                    are the ndc coordinates of the ith measurement.
-                    <para/>
-                </listitem>
+                     <para>
+                        (ndc × nd) matrix of experimental data points, where <literal>Data(:,i)</literal>
+                        are the ndc coordinates of the ith measurement.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Wd</term>
                 <listitem>
-                    Data weights (optional). Row vector with nd elements.
-                    <para/>
-                </listitem>
+                     <para>
+                        Data weights (optional). Row vector with nd elements.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>G</term>
@@ -136,21 +142,28 @@
                             </tr>
                             <tr valign="top">
                                 <th>g</th>
-                                <td>: result: (ng × nd) matrix; or (ng × 1) column if <literal>G</literal>
-                                    accepts only one data point per call (much slower).
-                                    <itemizedlist>
-                                        <listitem>
-                                            Each column is related to a given data point and retuns its
-                                            gaps to the fitting model.
-                                        </listitem>
-                                        <listitem>
-                                            Each row is about a gap definition. <literal>G</literal> may
-                                            compute several types of gaps. For instance, the vertical
-                                            gaps may be returned in <literal>g(1,:)</literal> ; the
-                                            horizontal gaps in <literal>g(2,:)</literal> ; the nearest
-                                            distances in <literal>g(3,:)</literal> ; etc.
-                                        </listitem>
-                                    </itemizedlist>
+                                <td>
+                                    <para>
+                                        : result: (ng × nd) matrix; or (ng × 1) column if <literal>G</literal>
+                                        accepts only one data point per call (much slower).
+                                        <itemizedlist>
+                                            <listitem>
+                                                <para>
+                                                    Each column is related to a given data point and retuns its
+                                                    gaps to the fitting model.
+                                                </para>
+                                            </listitem>
+                                            <listitem>
+                                                <para>
+                                                    Each row is about a gap definition. <literal>G</literal> may
+                                                    compute several types of gaps. For instance, the vertical
+                                                    gaps may be returned in <literal>g(1,:)</literal> ; the
+                                                    horizontal gaps in <literal>g(2,:)</literal> ; the nearest
+                                                    distances in <literal>g(3,:)</literal> ; etc.
+                                                </para>
+                                            </listitem>
+                                        </itemizedlist>
+                                    </para>
                                 </td>
                             </tr>
                         </table>
@@ -160,36 +173,39 @@
             <varlistentry>
                 <term>DG</term>
                 <listitem>
-                    (optional) Handle of a function in Scilab language or of a compiled external
-                    function, computing the partial of <varname>G</varname> wrt <varname>p</varname>.
-                    Its syntax must be like <literal>S = DG(p, Data)</literal>. The expected sizes
-                    of the result are (ng × np × 1) (Data-unvectorized) or (ng × np × nd)
-                    (Data-vectorized).
-                    <para/>
-                </listitem>
+                     <para>
+                        (optional) Handle of a function in Scilab language or of a compiled external
+                        function, computing the partial of <varname>G</varname> wrt <varname>p</varname>.
+                        Its syntax must be like <literal>S = DG(p, Data)</literal>. The expected sizes
+                        of the result are (ng × np × 1) (Data-unvectorized) or (ng × np × nd)
+                        (Data-vectorized).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>Wg</term>
                 <listitem>
-                    Optional (ng × ng) matrix of weights of gaps definitions. Default = eye().
-                    <varname>G()</varname> defines as many types of gaps as required.
-                    Most often, a unique gap will be computed -- most often the vertical one --,
-                    but other ones can be computed (horizontal, nearest distance, etc).
-                    This matrix allows to weight the different types.
-                    <para/>
-                </listitem>
+                     <para>
+                        Optional (ng × ng) matrix of weights of gaps definitions. Default = eye().
+                        <varname>G()</varname> defines as many types of gaps as required.
+                        Most often, a unique gap will be computed -- most often the vertical one --,
+                        but other ones can be computed (horizontal, nearest distance, etc).
+                        This matrix allows to weight the different types.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>algo</term>
                 <listitem>
-                    Word <literal>'qn'</literal> (quasi-Newton, default), or
-                    <literal>'gc'</literal> (conjugate gradient), or
-                    <literal>'nd'</literal> (non-differentiable. Then <varname>p_inf</varname>
-                    and <varname>p_sup</varname> parameters bounds are not accepted).
-                    Selects the algorithm used to perform the fitting.
-                    See <function>optim()</function> for more details.
-                    <para/>
-                </listitem>
+                     <para>
+                        Word <literal>'qn'</literal> (quasi-Newton, default), or
+                        <literal>'gc'</literal> (conjugate gradient), or
+                        <literal>'nd'</literal> (non-differentiable. Then <varname>p_inf</varname>
+                        and <varname>p_sup</varname> parameters bounds are not accepted).
+                        Selects the algorithm used to perform the fitting.
+                        See <function>optim()</function> for more details.
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>stop</term>
@@ -254,12 +270,13 @@
             <varlistentry>
                 <term>dmin</term>
                 <listitem>
-                    Average Model-to-data residual distance. It is equal to
-                    <literal>sqrt(fmin/ng/nd)</literal> or
-                    <literal>sqrt(fmin/ng/sum(Wd))</literal>, where fmin is the quadratic residue
-                    of the cost function <literal>f</literal> (see the description).
-                    <para/>
-                </listitem>
+                     <para>
+                        Average Model-to-data residual distance. It is equal to
+                        <literal>sqrt(fmin/ng/nd)</literal> or
+                        <literal>sqrt(fmin/ng/sum(Wd))</literal>, where fmin is the quadratic residue
+                        of the cost function <literal>f</literal> (see the description).
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>iprint</term>
@@ -279,11 +296,13 @@
                                 <td>2</td><td>adds a report per iteration</td>
                             </tr>
                             <tr>
-                                <td>>2</td><td>adds reports on linear search</td>
+                                <td>&gt;2</td><td>adds reports on linear search</td>
                             </tr>
                         </table>
                         <warning>
-                            Most of the reports are displayed in the Scilab console.
+                            <para>
+                                Most of the reports are displayed in the Scilab console.
+                            </para>
                         </warning>
                     </para>
                 </listitem>
@@ -291,37 +310,37 @@
             <varlistentry>
                 <term>status</term>
                 <listitem>
-                  return flag = termination status (only for the 'qn' default algorithm.
-                  Set to %nan otherwise): <literal>9</literal> is successful. Possible values are:
-                  <table>
-                    <tr valign="top">
-                      <th>1</th><td>: Norm of projected gradient lower than...</td>
-                      <td>....</td>
-                      <th>6</th><td>: Optim stops: too small variations in gradient direction.</td>
-                    </tr>
-                    <tr valign="top">
-                      <th>2</th><td>: At last iteration, f decreases by less than...</td>
-                      <td></td>
-                      <th>7</th><td>: Stop during calculation of descent direction.</td>
-                    </tr>
-                    <tr valign="top">
-                      <th>3</th><td>: Optim stops: Too small variations for p.</td>
-                      <td></td>
-                      <th>8</th><td>: Stop during calculation of estimated hessian.</td>
-                    </tr>
-                    <tr valign="top">
-                      <th>4</th><td>: Optim stops: maximum number of calls to f is reached.</td>
-                      <td></td>
-                      <th>9</th><td>: Successful completion.</td>
-                    </tr>
-                    <tr valign="top">
-                      <th>5</th><td>: Optim stops: maximum number of iterations is reached.</td>
-                      <td></td>
-                      <th>10</th><td>: Linear search fails.</td>
-                    </tr>
-                  </table>
-                  <para/>
-                </listitem>
+                     <para>
+                      return flag = termination status (only for the 'qn' default algorithm.
+                      Set to %nan otherwise): <literal>9</literal> is successful. Possible values are:
+                      <table>
+                        <tr valign="top">
+                          <th>1</th><td>: Norm of projected gradient lower than...</td>
+                          <td>....</td>
+                          <th>6</th><td>: Optim stops: too small variations in gradient direction.</td>
+                        </tr>
+                        <tr valign="top">
+                          <th>2</th><td>: At last iteration, f decreases by less than...</td>
+                          <td/>
+                          <th>7</th><td>: Stop during calculation of descent direction.</td>
+                        </tr>
+                        <tr valign="top">
+                          <th>3</th><td>: Optim stops: Too small variations for p.</td>
+                          <td/>
+                          <th>8</th><td>: Stop during calculation of estimated hessian.</td>
+                        </tr>
+                        <tr valign="top">
+                          <th>4</th><td>: Optim stops: maximum number of calls to f is reached.</td>
+                          <td/>
+                          <th>9</th><td>: Successful completion.</td>
+                        </tr>
+                        <tr valign="top">
+                          <th>5</th><td>: Optim stops: maximum number of iterations is reached.</td>
+                          <td/>
+                          <th>10</th><td>: Linear search fails.</td>
+                        </tr>
+                      </table></para>
+                          </listitem>
             </varlistentry>
         </variablelist>
         <para>
@@ -345,30 +364,30 @@
             Starting from initial values <varname>p0</varname> of the model parameters,
             <literal>datafit()</literal> varies them in order to minimize the whole Model-to-Data
             distance defined as
-            <screen>
+            <screen><![CDATA[
 f = (G(p, Data(:,1))' * Wg * G(p, Data(:,1)))* Wd(1) + ..
     (G(p, Data(:,2))' * Wg * G(p, Data(:,2)))* Wd(2) + ..
     ...
     (G(p, Data(:,nz))' * Wg * G(p,Data(:,nz)))* Wd(nz)
-</screen>
+]]></screen>
         </para>
         <para>
             When <literal>Wg = eye()</literal> (default), this definition is equivalent to
-<screen>
+<screen><![CDATA[
 f = sum(G(p, Data(:,1)).^2) * Wd(1) + ..
     sum(G(p, Data(:,2)).^2) * Wd(2) + ..
     ...
     sum(G(p, Data(:,nz)).^2) * Wd(nz)
-</screen>
+]]></screen>
         </para>
         <para>
             If in addition <varname>G</varname> returns only one gap type, this even simplifies to
-            <screen>
+            <screen><![CDATA[
 f = G(p, Data(:,1))^2 * Wd(1) + ..
     G(p, Data(:,2))^2 * Wd(2) + ..
     ...
     G(p, Data(:,nz))^2 * Wd(nz)
-</screen>
+]]></screen>
         </para>
         <para>
             <literal>datafit()</literal> calls <function>optim()</function> to minimize f.
@@ -451,11 +470,11 @@ xgrid(color("grey70"))
             gcf().axes_size = [520 550];
         </scilab:image>
         -->
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/datafit_A.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <para/>
         <para>
             <emphasis role="bold">Fitting a gaussian curve + sloping base (5 parameters)</emphasis>:
@@ -537,11 +556,11 @@ xgrid(color("grey70"))
             gcf().axes_size = [520 550];
         </scilab:image>
         -->
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/datafit_B.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <para/>
         <para>
             <emphasis role="bold">Extraction of 3 overlapping gaussian curves (9 parameters)</emphasis>:
@@ -610,7 +629,7 @@ gca().x_ticks.labels = emptystr(size(gca().x_ticks.labels,"*"),1);
 ylabel("Model - Data")
 xgrid(color("grey70"))
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             // Basic gaussian component:
             function Y = gauss(X, average, stDev, ymax)
             Y = ymax * exp(-(X-average).^2 / (2*stDev*stDev))
@@ -674,7 +693,7 @@ xgrid(color("grey70"))
             xgrid(color("grey70"))
             // ===============
             gcf().axes_size = [520 400];
-        </scilab:image>
+        ]]></scilab:image>
         <para/>
         <para>
             <emphasis role="bold">With a parametric curve: Fitting a off-centered tilted 2D elliptical arc (5 parameters)</emphasis>.
@@ -754,11 +773,11 @@ xstring(-2.5, 0.9, "dmin = " + msprintf("%5.3f", dmin))
             gcf().axes_size = [520 550];
         </scilab:image>
         -->
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../images/datafit_C.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
     <refsection role="see also">
         <title>See also</title>
@@ -783,28 +802,40 @@ xstring(-2.5, 0.9, "dmin = " + msprintf("%5.3f", dmin))
             <revision>
                 <revnumber>6.1</revnumber>
                 <revdescription>
-                    <itemizedlist>
-                        <listitem>
-                            New option <varname>Wd</varname> to weight measured data
-                            <varname>Data</varname>.
-                        </listitem>
-                        <listitem>
-                            The gap function G() may now be vectorized over <literal>Data</literal>
-                            points.
-                        </listitem>
-                        <listitem>
-                            Initial parameters <varname>p0</varname> and their bounds may now be
-                            provided as a matrix instead of a mandatory column.
-                        </listitem>
-                        <listitem>
-                            The <literal>err</literal> output argument is replaced with
-                            <literal>dmin</literal> = average Model-to-data distance.
-                        </listitem>
-                        <listitem>
-                            New output argument <literal>status</literal> added
-                            (for the "qn" algorithm).
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>
+                                    New option <varname>Wd</varname> to weight measured data
+                                    <varname>Data</varname>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The gap function G() may now be vectorized over <literal>Data</literal>
+                                    points.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Initial parameters <varname>p0</varname> and their bounds may now be
+                                    provided as a matrix instead of a mandatory column.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    The <literal>err</literal> output argument is replaced with
+                                    <literal>dmin</literal> = average Model-to-data distance.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    New output argument <literal>status</literal> added
+                                    (for the "qn" algorithm).
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
                 </revdescription>
             </revision>
         </revhistory>

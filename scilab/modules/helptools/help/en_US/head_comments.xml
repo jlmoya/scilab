@@ -24,7 +24,7 @@
             head_comments(fname)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -43,7 +43,9 @@
             definition.
         </para>
         <warning>
-            Warning: most of the Scilab predefined functions have no heading comments.
+            <para>
+                Warning: most of the Scilab predefined functions have no heading comments.
+            </para>
         </warning>
     </refsection>
     <refsection>
@@ -78,9 +80,9 @@ function [y] = logspace(d1,d2,n)
         <revhistory>
             <revision>
                 <revnumber>5.0</revnumber>
-                <revdescription>
+                <revremark>
                     Second input argument %path removed.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

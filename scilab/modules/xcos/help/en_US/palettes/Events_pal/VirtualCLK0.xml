@@ -31,36 +31,36 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/VirtualCLK0.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_VirtualCLK0">
+    <refsection xml:id="Contents_VirtualCLK0">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_VirtualCLK0">Description</xref>
+                <para><link linkend="Description_VirtualCLK0">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_VirtualCLK0">Default properties</xref>
+                <para><link linkend="Defaultproperties_VirtualCLK0">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_VirtualCLK0">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_VirtualCLK0">Interfacing function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_VirtualCLK0">
+    <refsection xml:id="Description_VirtualCLK0">
         <title>Description</title>
         <para>
             This block is considered a virtual block by the compiler. It is used in a SuperBlock (subsystem) to trigger the always active blocks (ex: the sine generator) in the SuperBlock and in the level below. The blocks will be virtually connected to the input of the VirtualCLK0.
         </para>
     </refsection>
 
-    <refsection id="Defaultproperties_VirtualCLK0">
+    <refsection xml:id="Defaultproperties_VirtualCLK0">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -117,11 +117,11 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_VirtualCLK0">
+    <refsection xml:id="Interfacingfunction_VirtualCLK0">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
-                <link type="scilab" linkend="scilab.scinotes/scicos_blocks/macros/Events/VirtualCLK0.sci">SCI/modules/scicos_blocks/macros/Events/VirtualCLK0.sci</link>
+                <para><link type="scilab" linkend="scilab.scinotes/scicos_blocks/macros/Events/VirtualCLK0.sci">SCI/modules/scicos_blocks/macros/Events/VirtualCLK0.sci</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

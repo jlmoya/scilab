@@ -50,7 +50,6 @@ int set_layout_options_property(void* _pvCtx, int iObjUID, void* _pvData, int va
     else
     {
         SciErr sciErr;
-        int i = 0;
         int* piAddrList = (int*)_pvData;
 
         int* piAddr = NULL;

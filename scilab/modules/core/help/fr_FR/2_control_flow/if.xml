@@ -31,7 +31,7 @@
             end
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -127,11 +127,14 @@ end
                 <revdescription>
                     <itemizedlist>
                         <listitem>
-                            <literal>if</literal> est désormais protégé. Les affectations telles que
-                            <literal>if=1</literal> ne sont plus possibles.
+                             <para><literal>if</literal> est désormais protégé. Les affectations telles que
+                                <literal>if=1</literal> ne sont plus possibles.
+                            </para>
                         </listitem>
                         <listitem>
-                            Le nombre de caractères constituant le corps d'une instruction conditionnelle (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, ou <literal>select/case</literal>) n'est plus limité à 16k.
+                             <para>
+                                Le nombre de caractères constituant le corps d'une instruction conditionnelle (<literal>if</literal>, <literal>while</literal>, <literal>for</literal>, ou <literal>select/case</literal>) n'est plus limité à 16k.
+                            </para>
                         </listitem>
                    </itemizedlist>
                 </revdescription>

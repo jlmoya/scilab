@@ -28,7 +28,7 @@
             clc(nblines)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -50,11 +50,11 @@
         <para>
             <code>clc(nblines)</code> clears <varname>nblines</varname> above cursor current line and move cursor up to this line.
         </para>
-        <para>
-            <note>
+        <note>
+            <para>
                 Note that <literal>clc([nblines])</literal> cannot be used under Unix/Linux platforms when Scilab used in <literal>cli</literal> or <literal>adv-cli</literal> (no window) modes.
-            </note>
-        </para>
+            </para>
+        </note>
     </refsection>
     <refsection>
         <title>Examples</title>

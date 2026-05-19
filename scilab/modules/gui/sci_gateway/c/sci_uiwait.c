@@ -29,7 +29,6 @@ int sci_uiwait(char *fname, void* pvApiCtx)
 
     int* piAddrstkAdr = NULL;
     long long* stkAdr = NULL;
-    char* strAdr = NULL;
 
     int nbRow = 0, nbCol = 0;
     char *result = NULL;

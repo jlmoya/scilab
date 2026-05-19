@@ -56,6 +56,7 @@ public class LinkWriter extends ScilabWriter {
         String[] dst = new String[1];
         String[] style = new String[1];
         String[] value = new String[1];
+        String[] description = new String[1];
 
         /*
          * Retrieve all the serialized info
@@ -69,7 +70,8 @@ public class LinkWriter extends ScilabWriter {
         shared.controller.getObjectProperty(scicosId[0], Kind.PORT, ObjectProperties.UID, dst);
 
         shared.controller.getObjectProperty(uid, kind, ObjectProperties.STYLE, style);
-        shared.controller.getObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, value);
+        shared.controller.getObjectProperty(uid, kind, ObjectProperties.NAME, value);
+        shared.controller.getObjectProperty(uid, kind, ObjectProperties.DESCRIPTION, description);
 
         /*
          * Only serialized a fully connected link
@@ -91,6 +93,7 @@ public class LinkWriter extends ScilabWriter {
             // remove any '\n' character that will not be preserved by the XML Handlers on re-load
             String escaped = value[0].replace('\n', ' ');
             shared.stream.writeAttribute("value", escaped);
+            shared.stream.writeAttribute("description", description[0]);
 
             new JGraphXWriter(shared).write(uid, kind);
             writeAnnotationCell(uid, kind);

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="linspace" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="linspace" xml:lang="ru">
     <refnamediv>
         <refname>linspace</refname>
         <refpurpose>генерирует линейно распределённые числа между двумя достижимыми границами</refpurpose>
@@ -193,9 +190,13 @@ x(:,1:$-1) - x(:,2:$)
                 <revnumber>5.4.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>Могут быть указаны вектор-столбцы.
+                        <listitem>
+                             <para>Могут быть указаны вектор-столбцы.
+                            </para>
                         </listitem>
-                        <listitem>Третьим входным аргументом (n) должно быть целое значение.
+                        <listitem>
+                             <para>Третьим входным аргументом (n) должно быть целое значение.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>
@@ -204,9 +205,13 @@ x(:,1:$-1) - x(:,2:$)
                 <revnumber>6.0</revnumber>
                 <revremark>
                     <itemizedlist>
-                        <listitem>linspace(a, b, n&lt;=0) теперь возвращает [] вместо b.
+                        <listitem>
+                             <para>linspace(a, b, n&lt;=0) теперь возвращает [] вместо b.
+                            </para>
                         </listitem>
-                        <listitem>Границы теперь проверяются на значения %inf или %nan.
+                        <listitem>
+                             <para>Границы теперь проверяются на значения %inf или %nan.
+                            </para>
                         </listitem>
                     </itemizedlist>
                 </revremark>

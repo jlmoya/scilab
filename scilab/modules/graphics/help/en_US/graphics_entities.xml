@@ -316,38 +316,40 @@
                 </listitem>
             </varlistentry>
         </variablelist>
-        <refsect3>
-            <title>Other entities</title>
-            <variablelist>
-                <varlistentry>
-                    <term>Interactive components (uicontrol)</term>
-                    <listitem>
-                        <para>
-                            Scilab allows to create graphical interactive components like sliders,
-                            spinners, editable tables, editable texts on graphics, checkboxes,
-                            groups of radio buttons, listboxes, popup menus, push buttons, etc.
-                            These objects are direct children of the figure where they are defined.
-                            Their properties can be set and tuned through their handles as for
-                            any other graphical objects. Please
-                            see <link linkend="uicontrol_properties">uicontrol properties</link> for
-                            details.
-                        </para>
-                    </listitem>
-                </varlistentry>
-                <varlistentry>
-                    <term>UI menus</term>
-                    <listitem>
-                        <para>
-                            <link linkend="uimenu">uimenu</link>() allows to add and manage some
-                            menus on the menu bar of any graphical figure. <literal>uimenu()</literal>
-                            returns a handle through which the contents and properties of the
-                            created menu can be addressed. Please see
-                            <link linkend="uimenu_properties">uimenus properties</link> for details.
-                        </para>
-                    </listitem>
-                </varlistentry>
-            </variablelist>
-        </refsect3>
+
+        <para>
+            <emphasis role="bold">Other entities</emphasis>
+        </para>
+        <variablelist>
+            <varlistentry>
+                <term>Interactive components (uicontrol)</term>
+                <listitem>
+                    <para>
+                        Scilab allows to create graphical interactive components like sliders,
+                        spinners, editable tables, editable texts on graphics, checkboxes,
+                        groups of radio buttons, listboxes, popup menus, push buttons, etc.
+                        These objects are direct children of the figure where they are defined.
+                        Their properties can be set and tuned through their handles as for
+                        any other graphical objects. Please
+                        see <link linkend="uicontrol_properties">uicontrol properties</link> for
+                        details.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>UI menus</term>
+                <listitem>
+                    <para>
+                        <link linkend="uimenu">uimenu</link>() allows to add and manage some
+                        menus on the menu bar of any graphical figure. <literal>uimenu()</literal>
+                        returns a handle through which the contents and properties of the
+                        created menu can be addressed. Please see
+                        <link linkend="uimenu_properties">uimenus properties</link> for details.
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+
     </refsection>
     <refsection>
         <title>Examples</title>

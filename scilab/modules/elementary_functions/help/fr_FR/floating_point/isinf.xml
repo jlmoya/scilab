@@ -25,7 +25,7 @@
         <title>Syntaxe</title>
         <synopsis>r = isinf(x)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -88,12 +88,13 @@ isinf(inf-nan*i)
  ans  =
   F
 ]]></screen>
+    <para>
         Note : <literal>%inf-%nan*%i</literal> est évalué comme
         <literal>%inf - %nan*complex(0,1) == %inf - complex(%nan*0, %nan*1) == %inf - complex(%nan, %nan)
             == complex(%inf-%nan, -%nan) == complex(%nan, %nan)
         </literal>
         , où Inf est effacé par Nan et n'apparait plus.
-        <para/>
+        </para>
         <para>
             Avec des polynômes :
         </para>
@@ -145,9 +146,9 @@ isinf([p q r])
             <revhistory>
                 <revision>
                     <revnumber>6.1.0</revnumber>
-                    <revdescription>
+                    <revremark>
                         Extension aux polynômes.
-                    </revdescription>
+                    </revremark>
                 </revision>
             </revhistory>
         </refsection>

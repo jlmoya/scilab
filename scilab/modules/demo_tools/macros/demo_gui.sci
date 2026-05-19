@@ -3,6 +3,7 @@
 // Copyright (C) 2008 - INRIA - Pierre MARECHAL
 // Copyright (C) 2012 - DIGITEO - Vincent COUVERT
 // Copyright (C) 2014 - Scilab Enterprises - Anais AUBERT
+// Copyright (C) 2026 - Dassault Systemes S.E. - Antoine ELIAS
 //
 // Copyright (C) 2012 - 2016 - Scilab Enterprises
 //
@@ -16,16 +17,15 @@
 
 function demo_gui()
 
-    global demolist; // Demos list is defined in scilab.start
+    global demolist;
     global demolistlock;
     if isempty(demolist) then
         if isempty(demolistlock) then
             demolistlock = %t;
-            // we load scilab demos only when it is required
             modules = getmodules();
-            for i=1:size(modules,"*")
-                if isfile("SCI/modules/"+modules(i)+"/demos/" + modules(i) + ".dem.gateway.sce") then
-                    exec("SCI/modules/"+modules(i)+"/demos/" + modules(i) + ".dem.gateway.sce",-1);
+            for i = 1:size(modules, "*")
+                if isfile("SCI/modules/" + modules(i) + "/demos/" + modules(i) + ".dem.gateway.sce") then
+                    exec("SCI/modules/" + modules(i) + "/demos/" + modules(i) + ".dem.gateway.sce", -1);
                 end
             end
             clear demolistlock;
@@ -33,9 +33,9 @@ function demo_gui()
         end
     end
 
-    // define a local demolist variable
+    // localize demo names
     tmp = demolist;
-    clear demolist   // The global one must stay in en_US
+    clear demolist;
     demolist = gettext(tmp);
 
     if get("scilab_demo_fig") <> [] then
@@ -43,64 +43,37 @@ function demo_gui()
         return;
     end
 
+    // Figure
+    demo_fig = figure( ...
+        "figure_name", _("Demonstrations"), ...
+        "figure_id", 100000, ...
+        "infobar_visible", "off", ...
+        "toolbar_visible", "off", ...
+        "dockable", "off", ...
+        "menubar", "none", ...
+        "menubar_visible", "off", ...
+        "default_axes", "off", ...
+        "position", [50 50 900 620], ...
+        "layout", "border", ...
+        "icon", "x-office-presentation", ...
+        "tag", "scilab_demo_fig", ...
+        "visible", "off");
 
-    // Figure creation
-    // =========================================================================
-    // We get the user Preferences for the GUI: dockable / not dockable
-    File = SCIHOME + "/XConfiguration.xml";
-    r = xmlGetValues("//general/documentation/body/demos","demoGUIisDockable", File);
+    fr = uicontrol(demo_fig, ...
+        "style", "frame", ...
+        "backgroundcolor", [1 1 1], ...
+        "layout", "border");
 
-    // We tune accordingly the predefined demo GUI
-    File = SCI + "/modules/demo_tools/gui/demo_gui.xml";
-    File2 = TMPDIR + "/demo_gui_dockable.xml";
-    if r=="checked" then
-        if ~isfile(File2) then
-            mputl(mgetl(File), File2); // copyfile() sometimes keeps the no-writable status
-            doc = xmlRead(File2);
-            xmlSetValues("/scilabgui/figure", ..
-                         ["dockable" "on"
-                          "infobar_visible" "on"
-                          "menubar" "figure"
-                          "menubar_visible" "on"]', doc);
-            xmlWrite(doc);
-            xmlDelete(doc);
-        end
-        File = File2;
-    end
+    uicontrol(fr, ...
+        "style", "browser", ...
+        "string", SCI + "/modules/demo_tools/gui/demo_browser.html", ...
+        "callback", "demo_gui_callback", ...
+        "tag", "demo_browser");
 
-    // We load the preset GUI
-    demo_fig = loadGui(File);
-    demo_fig.figure_name = _("Demonstrations");
-    demo_fig.icon = "x-office-presentation";
+    // Store the demolist on the browser for later use
+    set("demo_browser", "userdata", demolist);
 
-    // Parameters
-    // =========================================================================
-    demo_fig.userdata = struct();
-    demo_fig.userdata.frame_number = 1;      // Frame number
-    demo_fig.userdata.subdemolist = [];
-
-    lst_vars_locals = ["%h_delete";
-    "demo_fig";
-    "subdemolist";
-    "demolistlock";
-    "resize_demo_gui";
-    "demo_gui_update";
-    "demo_gui"];
-
-    clear_vars_str = strcat("clear " + lst_vars_locals, ";") + ";";
-
-    callback_close_str = "delete(get(""scilab_demo_fig""));";
-    callback_close_str = callback_close_str + clear_vars_str + "clearglobal demolistlock;";
-
-    b = get("frame_1", "border");
-    b.title = _("Demonstrations");
-    set("frame_1", "border", b);
-    set("listbox_1", "string", "<html>"+demolist(:, 1)+" &#x2023; </html>");
-    set("listbox_1", "userdata", demolist);
-
-    demo_fig.closerequestfcn = callback_close_str;
-
-    demo_fig.visible = "on"; // Display now
+    demo_fig.closerequestfcn = "delete(get(""scilab_demo_fig""));";
+    demo_fig.visible = "on";
 
 endfunction
-

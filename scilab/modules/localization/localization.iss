@@ -52,4 +52,5 @@ Source: modules\{#LOCALIZATION}\xml\*.dtd; DestDir: {app}\modules\{#LOCALIZATION
 ;
 Source: modules\{#LOCALIZATION}\tests\*.*; DestDir: {app}\modules\{#LOCALIZATION}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#LOCALIZATION}\help\*.*; DestDir: {app}\modules\{#LOCALIZATION}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

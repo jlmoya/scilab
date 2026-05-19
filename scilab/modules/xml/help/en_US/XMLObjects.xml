@@ -62,7 +62,7 @@
         <title>Description</title>
         <para>The nodes and their properties can be accessed and modified.</para>
     </refsection>
-    <refsection id="XMLDocument">
+    <refsection xml:id="XMLDocument">
         <title>XML Document</title>
         <para>A XML Document has two properties: root and url
             <itemizedlist>
@@ -79,16 +79,16 @@
             </itemizedlist>
         </para>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
-    doc.root = doc.root.children(1);
-    xmlDump(doc)
-    doc.url = TMPDIR+"/foo.xml";
+    xdoc = xmlReadStr("<root><a att=""foo"" rib=""bar""><b>Hello</b></a></root>");
+    xdoc.root = xdoc.root.children(1);
+    xmlDump(xdoc)
+    xdoc.url = TMPDIR+"/foo.xml";
     doc
-    xmlWrite(doc);
-    xmlDelete(doc);
+    xmlWrite(xdoc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLElement">
+    <refsection xml:id="XMLElement">
         <title>XML Element</title>
         <para>A XML Element has seven properties:
             <itemizedlist>
@@ -137,8 +137,8 @@
     s = "<root xmlns:bar=""http://www.scilab.org/"">"+..
         "<bar:a att=""foo"" rib=""bar"">"+..
         "<b>Hello</b><c> world</c></bar:a></root>"
-    doc = xmlReadStr(s);
-    first = doc.root.children(1);
+    xdoc = xmlReadStr(s);
+    first = xdoc.root.children(1);
     b = first.children(1);
 
     // Add a new attribute named "new_attribute"
@@ -163,19 +163,19 @@
     b.line
 
     xmlDump(first)
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
         </para>
     </refsection>
-    <refsection id="XMLAttributes">
+    <refsection xml:id="XMLAttributes">
         <title>XML Attributes</title>
         <para>A XML Attributes is a kind of hashtable which maps attributes name to attributes value. An attribute value can be accessed or modified in using the attribute name as field of this object or in using an index between 1 and attributes size.</para>
         <programlisting role="example"><![CDATA[
     s = "<root xmlns:bar=""http://www.scilab.org/"">"+..
         "<bar:a att=""foo"" rib=""bar"">"+..
         "<b>Hello</b><c> world</c></bar:a></root>"
-    doc = xmlReadStr(s);
-    first = doc.root.children(1);
+    xdoc = xmlReadStr(s);
+    first = xdoc.root.children(1);
 
     // Read an attribute
     first.attributes.att
@@ -191,10 +191,10 @@
     first.attributes(1)
 
     xmlDump(first)
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLNamespace">
+    <refsection xml:id="XMLNamespace">
         <title>XML Namespace</title>
         <para>A XML Namespace has two properties: href and prefix
             <itemizedlist>
@@ -214,22 +214,22 @@
     s = "<root xmlns:bar=""http://www.scilab.org/"">"+..
         "<bar:a att=""foo"" rib=""bar"">"+..
         "<b>Hello</b><c> world</c></bar:a></root>"
-    doc = xmlReadStr(s);
-    ns = doc.root.children(1).namespace;
+    xdoc = xmlReadStr(s);
+    ns = xdoc.root.children(1).namespace;
     ns.href
     ns.prefix
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLNodeList">
+    <refsection xml:id="XMLNodeList">
         <title>XML Node List</title>
         <para>A XML Node List is a type used to enumerate the children of an element. Each element can be accessed with an integer index. Since this is a list, it is possible to make insertion of new element in it, in using double index.</para>
         <para>The size of the list can be retrieved in using 'size' field.</para>
         <para>The name or the contents of each node of the list can be retrieved in using 'name' or 'content' field.</para>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a>Hello</a><b> world</b></root>");
-    c = doc.root.children;
+    xdoc = xmlReadStr("<root><a>Hello</a><b> world</b></root>");
+    c = xdoc.root.children;
 
     // We check that we have two elements
     c.size
@@ -255,16 +255,16 @@
     // Get the nodes contents
     c.content
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLNodeSet">
+    <refsection xml:id="XMLNodeSet">
         <title>XML XPath result set</title>
         <para>A XML Node Set is an object returned by a XPath query. It is not possible to insert new elements or to replace existing ones. It is just possible to get them in using an integer index.</para>
         <para>The size of the set can be retrieved with field 'size'.</para>
         <programlisting role="example"><![CDATA[
-    doc = xmlReadStr("<root><a><b>Hello</b></a><a>World</a></root>");
-    s = xmlXPath(doc, "//a")
+    xdoc = xmlReadStr("<root><a><b>Hello</b></a><a>World</a></root>");
+    s = xmlXPath(xdoc, "//a")
     s.size
 
     s(1).content
@@ -273,22 +273,22 @@
     // Or ...
     s.content
 
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
-    <refsection id="XMLValid">
+    <refsection xml:id="XMLValid">
         <title>XML Validation file</title>
         <para>A XML Validation file is an object used to validate a document. It is possible to validate in using DTD, Relax NG or schema.</para>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
+    xdoc = xmlRead("SCI/modules/xml/tests/unit_tests/library.xml");
     dtd = xmlDTD("SCI/modules/xml/tests/unit_tests/library.dtd");
     schema = xmlSchema("SCI/modules/xml/tests/unit_tests/library.xsd");
     rng = xmlRelaxNG("SCI/modules/xml/tests/unit_tests/library.rng");
 
     // Validation
-    xmlValidate(doc, dtd);
-    xmlValidate(doc, rng);
-    xmlValidate(doc, schema);
+    xmlValidate(xdoc, dtd);
+    xmlValidate(xdoc, rng);
+    xmlValidate(xdoc, schema);
 
     xmlDelete("all");
     ]]></programlisting>
@@ -322,7 +322,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

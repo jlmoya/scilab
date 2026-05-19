@@ -39,7 +39,7 @@ if isdir(fullfile(SCI,"modules","core","help")) then
 end
 
 if ~isempty(ls("SCI/modules/xml/help/en_US/*.xml")) then // Help XML sources must be available for the following lines
-    example_run("xml", [], "", "short_summary");
+    example_run("output_stream", [], "", "short_summary");
     example_run("functions", "argn", "", "short_summary");
     example_run("elementary_functions", ["extraction"; "insertion"], "", "short_summary");
     example_run("elementary_functions", "extraction", "en_US", "short_summary");

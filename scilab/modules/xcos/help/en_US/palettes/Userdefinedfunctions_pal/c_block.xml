@@ -31,47 +31,46 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/c_block.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_c_block">
+    <refsection xml:id="Contents_c_block">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_c_block">Description</xref>
+                <para><link linkend="Description_c_block">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_c_block">Parameters</xref>
+                <para><link linkend="Dialogbox_c_block">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_c_block">Default properties</xref>
+                <para><link linkend="Defaultproperties_c_block">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_c_block">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_c_block">Interfacing function</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_c_block">
+    <refsection xml:id="Description_c_block">
         <title>Description</title>
         <para>
             This block creates skeleton of the C computing function. Also it creates library file
             and object files.
         </para>
     </refsection>
-    <refsection id="Dialogbox_c_block">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_c_block">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/c_block_gui.gif"
-                            align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -104,7 +103,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_c_block">
+    <refsection xml:id="Defaultproperties_c_block">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -177,7 +176,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_c_block">
+    <refsection xml:id="Interfacingfunction_c_block">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>

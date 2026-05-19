@@ -23,7 +23,7 @@
         <title>Séquence d'appel</title>
         <synopsis>TF = setlanguage(language)</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Paramètres</title>
         <variablelist>
             <varlistentry>
@@ -63,12 +63,15 @@
             <literal>setlanguage</literal> est utilisable sur tous les systèmes d'exploitation
              supportés par Scilab.
         </para>
-        <warning>La nouvelle langue n'est pas utilisée dans les menus des interfaces (navigateur
-          d'aide, navigateur de variables, éditeur de code Scilab, etc). Aucune traduction des menus
-          n"est effectuée ni à la volée ni après avoir réouvert les interfaces pour actualisation.
-          Les menus sont toujours traduits dans la langue par défaut de la session Scilab (celle
-          utilisée à l'ouverture de la session). Celle-ci peut être modifiée avec
-          <literal>setdefaultlanguage(..)</literal>.
+        <warning>
+            <para>
+                La nouvelle langue n'est pas utilisée dans les menus des interfaces (navigateur
+                d'aide, navigateur de variables, éditeur de code Scilab, etc). Aucune traduction des menus
+                n"est effectuée ni à la volée ni après avoir réouvert les interfaces pour actualisation.
+                Les menus sont toujours traduits dans la langue par défaut de la session Scilab (celle
+                utilisée à l'ouverture de la session). Celle-ci peut être modifiée avec
+                <literal>setdefaultlanguage(..)</literal>.
+            </para>
         </warning>
     </refsection>
     <refsection role="examples">

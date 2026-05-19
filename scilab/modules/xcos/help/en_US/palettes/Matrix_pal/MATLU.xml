@@ -21,68 +21,64 @@
  *
  * See the file ./license.txt
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-        xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-        xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-        xmlns:scilab="http://www.scilab.org" xml:id="MATLU" xml:lang="en_US">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="MATLU" xml:lang="en_US">
     <refnamediv>
         <refname>MATLU</refname>
         <refpurpose>LU Factorization</refpurpose>
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/MATLU.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_MATLU">
+    <refsection xml:id="Contents_MATLU">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_MATLU">Description</xref>
+                <para><link linkend="Description_MATLU">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_MATLU">Parameters</xref>
+                <para><link linkend="Dialogbox_MATLU">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_MATLU">Default properties</xref>
+                <para><link linkend="Defaultproperties_MATLU">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_MATLU">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_MATLU">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_MATLU">Computational function</xref>
+                <para><link linkend="Computationalfunction_MATLU">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_MATLU">See also</xref>
+                <para><link linkend="Seealso_MATLU">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_MATLU">
+    <refsection xml:id="Description_MATLU">
         <title>Description</title>
         <para>
             The MATLU Block outputs two matrices L and U, with row pivoting, from the LU factorization of a
             square input matrix. If A is the input matrix then:
-            <para>
             </para>
+            <para>
             E*A=L*U where E is the permutation matrix, U an upper triangular matrix and L a lower triangular matrix.
         </para>
         <para>
             The equivalent function of this block in Scilab is <link linkend="lu">[l,u,e]=lu(A)</link>.
         </para>
     </refsection>
-    <refsection id="Dialogbox_MATLU">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_MATLU">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/MATLU_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/MATLU_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -96,7 +92,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_MATLU">
+    <refsection xml:id="Defaultproperties_MATLU">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -172,7 +168,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_MATLU">
+    <refsection xml:id="Interfacingfunction_MATLU">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -180,14 +176,18 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_MATLU">
+    <refsection xml:id="Computationalfunction_MATLU">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/mat_lu.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/mat_lu.c
+                </para>
             </listitem>
             <listitem>
-                SCI/modules/scicos_blocks/src/c/matz_lu.c
+                 <para>
+                    SCI/modules/scicos_blocks/src/c/matz_lu.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>

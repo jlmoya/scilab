@@ -21,7 +21,7 @@
             ZZ = peaks(...)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -93,9 +93,11 @@ gcf().color_map = jet(64);
         <revhistory>
             <revision>
                 <revnumber>2025.1.0</revnumber>
-                <revremark>
-                    Function <literal>peaks</literal> introduced.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function <literal>peaks</literal> introduced.
+                    </para>
+                </revdescription>
             </revision>
         </revhistory>
     </refsection>

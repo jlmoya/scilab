@@ -34,6 +34,7 @@ import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.SpinnerModel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -164,6 +165,7 @@ public final class EditFormatAction extends DefaultAction {
         int fontSize;
         int fontStyle;
         Color textColor;
+        String name;
         String description;
         String text;
         String image = null;
@@ -257,15 +259,20 @@ public final class EditFormatAction extends DefaultAction {
             image = working;
         }
 
+        JavaController controller = new JavaController();
+        String[] v = { "" };
+
+        /*
+         * Name
+         */
+        controller.getObjectProperty(cell.getUID(), cell.getKind(), ObjectProperties.NAME, v);
+        name = v[0];
+
         /*
          * Description
          */
-        final Object currentValue = model.getValue(cell);
-        if (currentValue == null) {
-            description = "";
-        } else {
-            description = currentValue.toString();
-        }
+        controller.getObjectProperty(cell.getUID(), cell.getKind(), ObjectProperties.DESCRIPTION, v);
+        description = v[0];
 
         /*
          * Text
@@ -278,7 +285,7 @@ public final class EditFormatAction extends DefaultAction {
         }
 
         EditFormatDialog dialog = new EditFormatDialog(window);
-        dialog.setValues(border, fill, font, fontSize, fontStyle, textColor, description, text, image);
+        dialog.setValues(border, fill, font, fontSize, fontStyle, textColor, name, description, text, image);
         dialog.setGraph(graph);
         dialog.setCell(cell);
         return dialog;
@@ -315,7 +322,7 @@ public final class EditFormatAction extends DefaultAction {
      */
     // CSOFF: NPathComplexity
     private static void updateFromDialog(EditFormatDialog dialog, Color borderColor, Color backgroundColor, String fontName, int fontSize, Color textColor,
-                                         boolean isBold, boolean isItalic, String oneliner, String text, String image) {
+                                         boolean isBold, boolean isItalic, String name, String description, String text, String image) {
         final XcosDiagram graph = dialog.getGraph();
         final mxGraphModel model = (mxGraphModel) graph.getModel();
 
@@ -373,8 +380,8 @@ public final class EditFormatAction extends DefaultAction {
 
         // convert to a C / Scilab compatible variable name
         // @see XcosCell.isValidCIdentifier
-        StringBuilder str = new StringBuilder(oneliner.length());
-        oneliner.codePoints()
+        StringBuilder str = new StringBuilder(name.length());
+        name.codePoints()
             .dropWhile(c -> !XcosCell.is_nondigit(c))
             .map(c -> Character.isWhitespace(c) ? '_' : c)
             .filter(c -> XcosCell.is_nondigit(c) || XcosCell.is_digit(c))
@@ -383,7 +390,7 @@ public final class EditFormatAction extends DefaultAction {
         // add a leading '_'
         if (str.isEmpty()) {
             str.insert(0, '_');
-            oneliner.codePoints()
+            name.codePoints()
                 .dropWhile(c -> !XcosCell.is_nondigit(c) && !XcosCell.is_digit(c))
                 .map(c -> Character.isWhitespace(c) ? '_' : c)
                 .filter(c -> XcosCell.is_nondigit(c) || XcosCell.is_digit(c))
@@ -393,23 +400,26 @@ public final class EditFormatAction extends DefaultAction {
         if (str.length() == 1 && str.charAt(0) == '_') {
             str.setLength(0);
         }
-        oneliner = str.toString();
+        name = str.toString();
 
         //
         // Update the cell value and cell identifier value (related annotation)
         //
+        JavaController controller = new JavaController();
 
-        graph.cellLabelChanged(cell, oneliner, false);
+        graph.cellLabelChanged(cell, name, false);
         graph.fireEvent(new mxEventObject(mxEvent.LABEL_CHANGED, "cell", cell, "value", text, "parent", cell.getParent()));
+
+        ((XcosGraphModel) (graph.getModel())).setProperty(cell, ObjectProperties.DESCRIPTION, new String[] { description });
 
         graph.cellLabelChanged(identifier, text, false);
         graph.fireEvent(new mxEventObject(mxEvent.LABEL_CHANGED, "cell", identifier, "value", text, "parent", cell));
 
         //
-        // Update the corresponding port if the block is an I/O block
-        //
+        // When the block is an I/O block do some propagation:
+        //  * The outter port is named after the corresponding port
+        //  * The inner I/O block port is also named (The I/O block keeps its number)
         if (cell instanceof ContextUpdate) {
-            JavaController controller = new JavaController();
 
             VectorOfInt ipar = new VectorOfInt();
             controller.getObjectProperty(((ContextUpdate) cell).getUID(), Kind.BLOCK, ObjectProperties.IPAR, ipar);
@@ -428,13 +438,12 @@ public final class EditFormatAction extends DefaultAction {
 
                     if (ports.size() >= portNumber) {
                         mxICell port = ports.get(portNumber - 1);
-                        parentGraph.cellLabelChanged(port, oneliner, false);
+                        parentGraph.cellLabelChanged(port, name, false);
                         parentGraph.fireEvent(new mxEventObject(mxEvent.LABEL_CHANGED, "cell", port, "value", text, "parent", superBlock));
                     }
                 }
 
             }
-
         }
     }
 
@@ -465,7 +474,7 @@ public final class EditFormatAction extends DefaultAction {
 
         cellStyle.clear();
 
-        dialog.setValues(DEFAULT_BORDERCOLOR, DEFAULT_FILLCOLOR, mxConstants.DEFAULT_FONTFAMILY, mxConstants.DEFAULT_FONTSIZE, 0, DEFAULT_BORDERCOLOR, "", "", null);
+        dialog.setValues(DEFAULT_BORDERCOLOR, DEFAULT_FILLCOLOR, mxConstants.DEFAULT_FONTFAMILY, mxConstants.DEFAULT_FONTSIZE, 0, DEFAULT_BORDERCOLOR, "", "", "", null);
 
         dialog.updateFont();
     }
@@ -583,10 +592,12 @@ public final class EditFormatAction extends DefaultAction {
         private javax.swing.JTextField imagePath;
         private javax.swing.JButton imageFileChooserBtn;
 
-        private javax.swing.JPanel jPanel2;
         private javax.swing.JScrollPane jScrollPane1;
         private javax.swing.JTabbedPane mainTab;
-        private javax.swing.JTextField labelArea;
+        private javax.swing.JLabel nameLabel;
+        private javax.swing.JTextField nameTextField;
+        private javax.swing.JLabel descriptionLabel;
+        private javax.swing.JTextField descriptionTextField;
         private javax.swing.JTextPane textArea;
         private javax.swing.JPanel textFormat;
 
@@ -662,7 +673,7 @@ public final class EditFormatAction extends DefaultAction {
          *            the current URL of the image (may be null, absolute or
          *            relative)
          */
-        public void setValues(Color borderColor, Color backgroundColor, String fontName, int fontSize, int fontStyle, Color textColor, String description, String text, String image) {
+        public void setValues(Color borderColor, Color backgroundColor, String fontName, int fontSize, int fontStyle, Color textColor, String name, String description, String text, String image) {
             borderColorChooser.setColor(borderColor);
             backgroundColorChooser.setColor(backgroundColor);
             textColorChooser.setColor(textColor);
@@ -673,7 +684,8 @@ public final class EditFormatAction extends DefaultAction {
             fontStyleBold.setSelected((fontStyle & mxConstants.FONT_BOLD) != 0);
             fontStyleItalic.setSelected((fontStyle & mxConstants.FONT_ITALIC) != 0);
 
-            labelArea.setText(description);
+            nameTextField.setText(name);
+            descriptionTextField.setText(description);
             textArea.setText(text);
             if (image != null) {
                 imagePath.setText(image);
@@ -704,11 +716,32 @@ public final class EditFormatAction extends DefaultAction {
         public void setCell(XcosCell selectedCell) {
             cell = selectedCell;
 
-            // enable/disable the fill color pane
-            if (selectedCell.isVertex()) {
-                mainTab.addTab(XcosMessages.FILL_COLOR, backgroundPane);
-            } else {
-                mainTab.remove(backgroundPane);
+            // enable/disable some tabs depending on the cell type
+            switch(cell.getKind())
+            {
+                case BLOCK:
+                    mainTab.addTab(XcosMessages.TEXT_BLOCK_SETTINGS, textFormat);
+                    mainTab.addTab(XcosMessages.BORDER_BLOCK_COLOR, borderColorChooser);
+                    mainTab.addTab(XcosMessages.TEXT_COLOR, textColorChooser);
+                    mainTab.addTab(XcosMessages.FILL_BLOCK_COLOR, backgroundPane);
+                    break;
+                case DIAGRAM:
+                    // TODO: use it to write "description"
+                    break;
+                case LINK:
+                    mainTab.addTab(XcosMessages.TEXT_LINK_SETTINGS, textFormat);
+                    mainTab.addTab(XcosMessages.BORDER_LINK_COLOR, borderColorChooser);
+                    mainTab.addTab(XcosMessages.TEXT_COLOR, textColorChooser);
+                    break;
+                case ANNOTATION:
+                    mainTab.addTab(XcosMessages.TEXT_BLOCK_SETTINGS, textFormat);
+                    mainTab.addTab(XcosMessages.BORDER_BLOCK_COLOR, borderColorChooser);
+                    mainTab.addTab(XcosMessages.TEXT_COLOR, textColorChooser);
+                    mainTab.addTab(XcosMessages.FILL_BLOCK_COLOR, backgroundPane);
+                break;
+                case PORT:
+                    // nothing it editable.
+                break;
             }
 
             pack();
@@ -744,7 +777,6 @@ public final class EditFormatAction extends DefaultAction {
             backgroundColorChooser = new javax.swing.JColorChooser();
             textColorChooser = new javax.swing.JColorChooser();
             textFormat = new javax.swing.JPanel();
-            jPanel2 = new javax.swing.JPanel();
             fontSizeLabel = new javax.swing.JLabel();
             fontSizeSpinner = new javax.swing.JSpinner();
             fontNameLabel = new javax.swing.JLabel();
@@ -757,8 +789,15 @@ public final class EditFormatAction extends DefaultAction {
             imagePath = new javax.swing.JTextField(TEXT_AREA_COLUMNS);
             backgroundPane = new javax.swing.JPanel();
 
-            labelArea = new javax.swing.JTextField();
-            labelArea.setToolTipText(XcosMessages.ONELINE_DESCRIPTION_TOOLTIP);
+            nameLabel = new javax.swing.JLabel();
+            nameLabel.setText(XcosMessages.NAME_LABEL);
+            nameTextField = new javax.swing.JTextField();
+            nameTextField.setToolTipText(XcosMessages.VAR_NAME_TOOLTIP);
+
+            descriptionLabel = new javax.swing.JLabel();
+            descriptionLabel.setText(XcosMessages.DESCRIPTION_LABEL);
+            descriptionTextField = new javax.swing.JTextField();
+            descriptionTextField.setToolTipText(XcosMessages.ONELINE_DESCRIPTION_TOOLTIP);
 
             jScrollPane1 = new javax.swing.JScrollPane();
             textArea = new javax.swing.JTextPane();
@@ -796,70 +835,68 @@ public final class EditFormatAction extends DefaultAction {
 
             imagePathLabel.setText(XcosMessages.IMAGE_PATH);
 
-            javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-            jPanel2.setLayout(jPanel2Layout);
-            jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                             .addGroup(
-                                                 javax.swing.GroupLayout.Alignment.TRAILING,
-                                                 jPanel2Layout
-                                                 .createSequentialGroup()
-                                                 .addContainerGap()
-                                                 .addGroup(
-                                                         jPanel2Layout
-                                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                         .addComponent(fontNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                 Short.MAX_VALUE)
-                                                         .addComponent(fontSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                 Short.MAX_VALUE)
-                                                         .addComponent(fontStyleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                 Short.MAX_VALUE))
-                                                 .addGap(BORDER_SIZE)
-                                                 .addGroup(
-                                                         jPanel2Layout
-                                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                         .addComponent(fontNameComboBox, 0, javax.swing.GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                         .addComponent(fontSizeSpinner, 0, javax.swing.GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                         .addGroup(
-                                                                 jPanel2Layout.createSequentialGroup().addComponent(fontStyleBold)
-                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                 .addComponent(fontStyleItalic))).addContainerGap()));
-            jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(
-                                               jPanel2Layout
-                                               .createSequentialGroup()
-                                               .addGroup(
-                                                   jPanel2Layout
-                                                   .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                   .addComponent(fontSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                           javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                   .addComponent(fontSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                           javax.swing.GroupLayout.PREFERRED_SIZE))
-                                               .addGap(BORDER_SIZE)
-                                               .addGroup(
-                                                   jPanel2Layout
-                                                   .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                   .addComponent(fontNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                           javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                   .addComponent(fontNameComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                           javax.swing.GroupLayout.PREFERRED_SIZE))
-                                               .addGap(BORDER_SIZE)
-                                               .addGroup(
-                                                   jPanel2Layout
-                                                   .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                   .addComponent(fontStyleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                           javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                   .addComponent(fontStyleBold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                           javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                   .addComponent(fontStyleItalic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                           javax.swing.GroupLayout.PREFERRED_SIZE))
-                                               .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-
-            textFormat.add(jPanel2, java.awt.BorderLayout.PAGE_END);
-
             jScrollPane1.setViewportView(textArea);
             jScrollPane1.setBackground(Color.WHITE);
 
-            textFormat.add(labelArea, java.awt.BorderLayout.PAGE_START);
-            textFormat.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+            javax.swing.GroupLayout textFormatLayout = new javax.swing.GroupLayout(textFormat);
+            textFormat.setLayout(textFormatLayout);
+            textFormatLayout.setHorizontalGroup(
+                textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(textFormatLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1)
+                        .addGroup(textFormatLayout.createSequentialGroup()
+                            .addGroup(textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(nameLabel)
+                                .addComponent(descriptionLabel))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(descriptionTextField)
+                                .addComponent(nameTextField)))
+                        .addGroup(textFormatLayout.createSequentialGroup()
+                            .addComponent(fontStyleLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(fontStyleBold)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(fontStyleItalic)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(textFormatLayout.createSequentialGroup()
+                            .addComponent(fontSizeLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(fontSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(fontNameLabel)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(fontNameComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap())
+            );
+            textFormatLayout.setVerticalGroup(
+                textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(textFormatLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(nameLabel)
+                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(descriptionLabel)
+                        .addComponent(descriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(fontSizeLabel)
+                        .addComponent(fontNameLabel)
+                        .addComponent(fontSizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fontNameComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(textFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(fontStyleLabel)
+                        .addComponent(fontStyleBold)
+                        .addComponent(fontStyleItalic))
+                    .addContainerGap())
+            );
 
             backgroundPane.add(backgroundColorChooser, java.awt.BorderLayout.CENTER);
             javax.swing.JPanel filePane = new javax.swing.JPanel();
@@ -869,12 +906,7 @@ public final class EditFormatAction extends DefaultAction {
             filePane.add(imageFileChooserBtn);
             backgroundPane.add(filePane, java.awt.BorderLayout.SOUTH);
 
-            mainTab.addTab(XcosMessages.TEXT_SETTINGS, textFormat);
-            mainTab.addTab(XcosMessages.BORDER_COLOR, borderColorChooser);
-            mainTab.addTab(XcosMessages.TEXT_COLOR, textColorChooser);
-            // backgroundColorChooser is added on the setCell method only if the
-            // cell is a vertex
-            // mainTab.addTab(XcosMessages.FILL_COLOR, backgroundColorChooser);
+            // tabs are added depending on the XcosCell Kind
 
             mainTab.addChangeListener(defaultChangeListener);
 
@@ -914,7 +946,8 @@ public final class EditFormatAction extends DefaultAction {
                                 textColorChooser.getColor(),
                                 fontStyleBold.isSelected(),
                                 fontStyleItalic.isSelected(),
-                                labelArea.getText(),
+                                nameTextField.getText(),
+                                descriptionTextField.getText(),
                                 mxUtils.getBodyMarkup(textArea.getText(), false),
                                 imagePath.getText());
                     }
@@ -985,7 +1018,6 @@ public final class EditFormatAction extends DefaultAction {
             });
 
             getRootPane().setDefaultButton(okButton);
-            labelArea.requestFocusInWindow();
 
             buttonPane.setLayout(new javax.swing.BoxLayout(buttonPane, javax.swing.BoxLayout.LINE_AXIS));
             buttonPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));

@@ -41,4 +41,5 @@ Source: modules\{#SOUND}\demos\*.*; DestDir: {app}\modules\{#SOUND}\demos; Flags
 ;
 Source: modules\{#SOUND}\tests\*.*; DestDir: {app}\modules\{#SOUND}\tests; Flags: recursesubdirs; Components: {#COMPN_SCILAB} and {#COMPN_TESTS}
 ;
+Source: modules\{#SOUND}\help\*.*; DestDir: {app}\modules\{#SOUND}\help; Flags: recursesubdirs; Components: {#COMPN_SCILAB}
 ;--------------------------------------------------------------------------------------------------------------

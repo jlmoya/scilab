@@ -56,12 +56,12 @@
     <refsection>
         <title>例</title>
         <programlisting role="example"><![CDATA[
-    doc = xmlRead("http://www.w3.org/TR/2009/REC-xml-names-20091208/xml-names-10-3e.xml");
-    r = doc.root
+    xdoc = xmlRead("http://www.w3.org/TR/2009/REC-xml-names-20091208/xml-names-10-3e.xml");
+    r = xdoc.root
     // %Tを返します
     xmlIsValidObject(r)
     // 文書を削除
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     // [%F %F]を返します
     xmlIsValidObject(["doc" "r"])
     ]]></programlisting>

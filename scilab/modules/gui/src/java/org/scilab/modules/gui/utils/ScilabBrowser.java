@@ -13,7 +13,9 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.scilab.modules.commons.OS;
 import org.scilab.modules.commons.ScilabCommons;
@@ -27,9 +29,16 @@ import org.cef.CefApp.CefAppState;
 public final class ScilabBrowser {
 
     private static CefApp cefApp_;
-    /**
-     * Constructor
-     */
+
+    /** Active clients, tracked so they can be force-disposed at shutdown
+     *  before cefApp_.dispose() (otherwise clients of browsers that never
+     *  fully initialized can block the shutdown). */
+    private static final Set<CefClient> activeClients = new LinkedHashSet<>();
+
+    /** Delay (ms) before the shutdown watchdog forces the process to exit
+     *  if CefApp.N_Shutdown stays stuck in native code. */
+    private static final long SHUTDOWN_WATCHDOG_DELAY_MS = 3000;
+
     private ScilabBrowser() { }
 
     private static void init() {
@@ -60,15 +69,14 @@ public final class ScilabBrowser {
             CefApp.startup(cefArgs.toArray(new String[0]));
             cefApp_ = CefApp.getInstance(cefArgs.toArray(new String[0]), settings);
 
-
             try {
                 Class scilab = ClassLoader.getSystemClassLoader().loadClass("org.scilab.modules.core.Scilab");
                 Method registerFinalHook = scilab.getDeclaredMethod("registerFinalHook", Runnable.class);
-                    registerFinalHook.invoke(null, new Runnable() {
-                        public void run() {
-                            cefApp_.dispose();
-                        }
-                    });
+                registerFinalHook.invoke(null, new Runnable() {
+                    public void run() {
+                        shutdown();
+                    }
+                });
             } catch (ClassNotFoundException|
                 IllegalAccessException|
                 IllegalArgumentException|
@@ -80,12 +88,61 @@ public final class ScilabBrowser {
         }
     }
 
+    /**
+     * JCEF shutdown hook, run just before the JVM shuts down.
+     * Force-releases any still-referenced CefClient, then starts a daemon
+     * watchdog that will halt the process if CefApp.N_Shutdown stays stuck
+     * in native code (case of a browser that was created but never reached
+     * onAfterCreated).
+     */
+    private static void shutdown() {
+        List<CefClient> pending;
+        synchronized (activeClients) {
+            pending = new ArrayList<>(activeClients);
+            activeClients.clear();
+        }
+        for (CefClient c : pending) {
+            try {
+                c.dispose();
+            } catch (Throwable t) {
+                // ignore: we are just trying to unblock the shutdown
+            }
+        }
+
+        // Daemon watchdog: CefApp.dispose posts N_Shutdown on the EDT,
+        // which can stay stuck indefinitely in native code. Force exit
+        // after a delay if the JVM could not die on its own.
+        Thread watchdog = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(SHUTDOWN_WATCHDOG_DELAY_MS);
+                } catch (InterruptedException ie) {
+                    return;
+                }
+                System.err.println("[ScilabBrowser] CEF shutdown watchdog: forcing JVM halt (N_Shutdown stuck)");
+                Runtime.getRuntime().halt(0);
+            }
+        }, "ScilabBrowser-shutdown-watchdog");
+        watchdog.setDaemon(true);
+        watchdog.start();
+
+        cefApp_.dispose();
+    }
+
     public static CefClient get() {
         init();
-        return cefApp_.createClient();
+        CefClient c = cefApp_.createClient();
+        synchronized (activeClients) {
+            activeClients.add(c);
+        }
+        return c;
     }
 
     public static void release(CefClient client) {
+        synchronized (activeClients) {
+            activeClients.remove(client);
+        }
         client.dispose();
     }
 

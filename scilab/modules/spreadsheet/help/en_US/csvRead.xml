@@ -35,7 +35,7 @@
             [M, comments] = csvRead(filename, separator, decimal, conversion, substitute, regexpcomments, range, header)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -109,10 +109,12 @@
                         the header and/or commented rows (when requested).
                     </para>
                     <note>
-                        To select all rows or/and columns starting from [firstRow, firstCol],
-                        while the total numbers of rows or columns are unknown,
-                        lastRow=2e9 or/and lastColumn=2e9 can be specified (the actual limit is
-                        2<superscript>31</superscript>).
+                        <para>
+                            To select all rows or/and columns starting from [firstRow, firstCol],
+                            while the total numbers of rows or columns are unknown,
+                            lastRow=2e9 or/and lastColumn=2e9 can be specified (the actual limit is
+                            2<superscript>31</superscript>).
+                        </para>
                     </note>
                 </listitem>
             </varlistentry>
@@ -434,25 +436,29 @@ header = 2;
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>
                 <revnumber>5.4.0</revnumber>
-                <revremark>
-                    Function introduced. Based on the 'csv_readwrite' module.
-                    The only difference in the behavior compared to
-                    <link linkend="read_csv">read_csv</link> is that csvRead will try to
-                    convert value to double by default when read_csv will return value as string.
-                </revremark>
+                <revdescription>
+                    <para>
+                        Function introduced. Based on the 'csv_readwrite' module.
+                        The only difference in the behavior compared to
+                        <link linkend="read_csv">read_csv</link> is that csvRead will try to
+                        convert value to double by default when read_csv will return value as string.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>5.4.1</revnumber>
-                <revremark>
-                    If <literal>decimal</literal> is different of <literal>[]</literal>
-                    and <literal>conversion</literal> is set to <literal>string</literal>,
-                    the decimal conversion will be done.
-                </revremark>
+                <revdescription>
+                    <para>
+                        If <literal>decimal</literal> is different of <literal>[]</literal>
+                        and <literal>conversion</literal> is set to <literal>string</literal>,
+                        the decimal conversion will be done.
+                    </para>
+                </revdescription>
             </revision>
             <revision>
                 <revnumber>5.5</revnumber>

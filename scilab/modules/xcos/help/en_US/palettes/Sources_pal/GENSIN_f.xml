@@ -32,44 +32,44 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/GENSIN_f.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_GENSIN_f">
+    <refsection xml:id="Contents_GENSIN_f">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_GENSIN_f">Description</xref>
+                <para><link linkend="Description_GENSIN_f">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Datatype_GENSIN_f">Data types</xref>
+                <para><link linkend="Datatype_GENSIN_f">Data types</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_GENSIN_f">Parameters</xref>
+                <para><link linkend="Dialogbox_GENSIN_f">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_GENSIN_f">Default properties</xref>
+                <para><link linkend="Defaultproperties_GENSIN_f">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_GENSIN_f">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_GENSIN_f">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_GENSIN_f">Computational function</xref>
+                <para><link linkend="Computationalfunction_GENSIN_f">Computational function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_GENSIN_f">Example</xref>
+                <para><link linkend="Example_GENSIN_f">Example</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_GENSIN_f">See also</xref>
+                <para><link linkend="Seealso_GENSIN_f">See also</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_GENSIN_f">
+    <refsection xml:id="Description_GENSIN_f">
         <title>Description</title>
         <para>
             This block is a sine wave generator and its output is defined by the equation:
@@ -102,7 +102,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Datatype_GENSIN_f">
+    <refsection xml:id="Datatype_GENSIN_f">
         <title>Data types</title>
         <itemizedlist>
             <listitem>
@@ -113,15 +113,14 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Dialogbox_GENSIN_f">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_GENSIN_f">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../gui/sources_pal/en_US/GENSIN_f_gui.png"
-                        align="center" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                        align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -147,7 +146,7 @@
         </itemizedlist>
     </refsection>
 
-    <refsection id="Defaultproperties_GENSIN_f">
+    <refsection xml:id="Defaultproperties_GENSIN_f">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -212,7 +211,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_GENSIN_f">
+    <refsection xml:id="Example_GENSIN_f">
         <title>Example</title>
         <para>
             This diagram shows the output of the block GENSIN_f for an amplitude value of 1.2 and an initial
@@ -233,7 +232,7 @@ xcos_simulate(scs_m, 4);
 ]]></scilab:image>
     </refsection>
 
-    <refsection id="Interfacingfunction_GENSIN_f">
+    <refsection xml:id="Interfacingfunction_GENSIN_f">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -243,7 +242,7 @@ xcos_simulate(scs_m, 4);
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_GENSIN_f">
+    <refsection xml:id="Computationalfunction_GENSIN_f">
         <title>Computational function</title>
         <itemizedlist>
             <listitem>

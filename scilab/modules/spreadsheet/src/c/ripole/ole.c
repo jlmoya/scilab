@@ -606,7 +606,7 @@ int OLE_get_header(struct OLE_object *ole)
         return OLEER_NOT_OLE_FILE;
     }
 
-    return OLE_OK;
+    return result;
 }
 
 /*-----------------------------------------------------------------\

@@ -13,10 +13,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml"
-		  xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-		  xmlns:scilab="http://www.scilab.org" xml:id="dawson" xml:lang="ru">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="dawson" xml:lang="ru">
     <refnamediv>
         <refname>dawson</refname>
         <refpurpose>Вычислить функцию Доусона (масштабированная мнимая часть ошибки).</refpurpose>
@@ -31,13 +28,17 @@
             <varlistentry>
                 <term>z</term>
                 <listitem>
-                    вектор или матрица вещественных или комплексных чисел
+                     <para>
+                        вектор или матрица вещественных или комплексных чисел
+                    </para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>y</term>
                 <listitem>
-                    вектор или матрица вещественных или комплексных чисел (того же размера, что и <varname>x</varname>).
+                     <para>
+                        вектор или матрица вещественных или комплексных чисел (того же размера, что и <varname>x</varname>).
+                    </para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -95,7 +96,7 @@ xlabel x fontsize 3
 title imag(dawson(x.i)) fontsize 3.5
 xgrid(color("grey60"))
      ]]></programlisting>
-        <scilab:image>
+        <scilab:image><![CDATA[
             clf
             subplot(1,2,1)
             x = logspace(-20,20,100);
@@ -114,7 +115,7 @@ xgrid(color("grey60"))
             xgrid(color("grey60"))
 
             gcf().axes_size = [700 380];
-        </scilab:image>
+        ]]></scilab:image>
     </refsection>
     <refsection>
         <title>Алгоритмы</title>

@@ -22,7 +22,7 @@
         <title>Syntax</title>
         <synopsis>ilib_gen_cleaner(makename,[loadername],[files])</synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -57,9 +57,11 @@
             This is internal function used by <literal>ilib_build and ilib_for_link</literal>
             This function generates a cleaner file.
         </para>
-        <para>
-            <warning>This function should not be used directly.</warning>
-        </para>
+        <warning>
+            <para>
+                This function should not be used directly.
+            </para>
+        </warning>
         <para>
             <emphasis role="bold">Only use this function is you know what you are doing (it is a semi-private function).</emphasis>
         </para>

@@ -21,10 +21,10 @@
     <refsynopsisdiv>
         <title>Syntax</title>
         <synopsis>
-            doc = htmlRead(path [, encoding])
+            xdoc = htmlRead(path [, encoding])
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -40,7 +40,7 @@
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term>doc</term>
+                <term>xdoc</term>
                 <listitem>
                     <para>a mlist typed XMLDoc</para>
                 </listitem>
@@ -60,17 +60,17 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-    doc = htmlRead("https://www.scilab.org");
-    e = doc.root.children(1).children(1)
+    xdoc = htmlRead("https://www.scilab.org");
+    e = xdoc.root.children(1).children(1)
     e.name
     e.content
 
     // Now we can retrieve all the nodes with an 'href' attribute
-    q = xmlXPath(doc, "//*[@href]");
+    q = xmlXPath(xdoc, "//*[@href]");
     q(1).attributes
 
     // We delete the doc
-    xmlDelete(doc);
+    xmlDelete(xdoc);
     ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -93,7 +93,7 @@
             </member>
         </simplelist>
     </refsection>
-    <refsection>
+    <refsection role="history">
         <title>History</title>
         <revhistory>
             <revision>

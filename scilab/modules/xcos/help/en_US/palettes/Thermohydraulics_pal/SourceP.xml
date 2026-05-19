@@ -31,35 +31,35 @@
     </refnamediv>
     <refsection>
         <title>Block Screenshot</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/SourceP.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
 
-    <refsection id="Contents_SourceP">
+    <refsection xml:id="Contents_SourceP">
         <title>Contents</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_SourceP">Description</xref>
+                <para><link linkend="Description_SourceP">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_SourceP">Parameters</xref>
+                <para><link linkend="Dialogbox_SourceP">Parameters</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_SourceP">Default properties</xref>
+                <para><link linkend="Defaultproperties_SourceP">Default properties</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_SourceP">Interfacing function</xref>
+                <para><link linkend="Interfacingfunction_SourceP">Interfacing function</link></para>
             </listitem>
             <listitem>
-                <xref linkend="SourceP">Modelica model</xref>
+                <para><link linkend="SourceP">Modelica model</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
 
-    <refsection id="Description_SourceP">
+    <refsection xml:id="Description_SourceP">
         <title>Description</title>
         <para>This thermal-hydraulic component represents a thermal-hydraulic
             constant pressure supply. This block is specified with its output pressure
@@ -67,14 +67,13 @@
             fluid flows out of the block.
         </para>
     </refsection>
-    <refsection id="Dialogbox_SourceP">
-        <title>Parameters</title>
-        <inlinemediaobject>
+    <refsection xml:id="Dialogbox_SourceP">
+        <title>Arguments</title>
+        <mediaobject>
             <imageobject>
-                <imagedata align="center" fileref="../../../../images/gui/SourceP_gui.gif" style="float:right"/>
-                    <!-- align => Javahelp, style => Online -->
+                <imagedata align="center" fileref="../../../../images/gui/SourceP_gui.gif"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -109,7 +108,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_SourceP">
+    <refsection xml:id="Defaultproperties_SourceP">
         <title>Default properties</title>
         <itemizedlist>
             <listitem>
@@ -188,7 +187,7 @@
         <para/>
     </refsection>
 
-    <refsection id="Interfacingfunction_SourceP">
+    <refsection xml:id="Interfacingfunction_SourceP">
         <title>Interfacing function</title>
         <itemizedlist>
             <listitem>
@@ -196,7 +195,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_SourceP">
+    <refsection xml:id="Modelicamodel_SourceP">
         <title>Modelica model</title>
         <itemizedlist>
             <listitem>

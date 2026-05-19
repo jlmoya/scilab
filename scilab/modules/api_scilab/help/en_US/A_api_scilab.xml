@@ -28,6 +28,8 @@
         <para>
             To use the API, only “api_scilab.h” needs to be included in your C code; all API functions are then available. If you write C++ code, you can use the API the same way. You only need to wrap the <literal>#include “api_scilab.h”</literal> in an <literal>extern “C” { … }</literal> block. More information are provided in <link linkend="api_scilab_getting_started">API Scilab getting started</link>.
         </para>
+    </refsection>
+    <refsection>
         <title>Code optimization</title>
         <para>
             If your code does an important amount of access of variables, in particular in loops, then you may want to compile with the <literal>__API_SCILAB_UNSAFE__</literal> flag defined (through a “#define” positioned before the “#include “api_scilab.h”, or -D in the compiler options). It does not change the API’s behavior but reduces the amount of input and output parameters checked done when you call the APIs, thus may improve the performance.

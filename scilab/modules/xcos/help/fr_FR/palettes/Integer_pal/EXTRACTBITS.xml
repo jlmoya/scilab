@@ -13,52 +13,49 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org"
-          xml:id="EXTRACTBITS" xml:lang="fr_FR" xml.mml="http://www.w3.org/1998/Math/MathML">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="EXTRACTBITS" xml:lang="fr_FR" xmlns:mml="http://www.w3.org/1998/Math/MathML">
     <refnamediv>
         <refname>EXTRACTBITS</refname>
         <refpurpose>Extraction de bits</refpurpose>
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/palettes/EXTRACTBITS.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_EXTRACTBITS">
+    <refsection xml:id="Contents_EXTRACTBITS">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_EXTRACTBITS">Description</xref>
+                <para><link linkend="Description_EXTRACTBITS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Data_Type_EXTRACTBITS">Types de données</xref>
+                <para><link linkend="Data_Type_EXTRACTBITS">Types de données</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_EXTRACTBITS">Paramètres</xref>
+                <para><link linkend="Dialogbox_EXTRACTBITS">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_EXTRACTBITS">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_EXTRACTBITS">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Example_EXTRACTBITS">Exemple</xref>
+                <para><link linkend="Example_EXTRACTBITS">Exemple</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_EXTRACTBITS">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_EXTRACTBITS">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Computationalfunction_EXTRACTBITS">Fonctions de calcul</xref>
+                <para><link linkend="Computationalfunction_EXTRACTBITS">Fonctions de calcul</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_EXTRACTBITS">Voir aussi</xref>
+                <para><link linkend="Seealso_EXTRACTBITS">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_EXTRACTBITS">
+    <refsection xml:id="Description_EXTRACTBITS">
         <title>Description</title>
         <para>
             Pour une entrée numérique entière, ce bloc sort une sélection contiguë de bits.
@@ -154,7 +151,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Data_Type_EXTRACTBITS">
+    <refsection xml:id="Data_Type_EXTRACTBITS">
         <title>Types de données</title>
         <para>
             Le bloc supporte les types de données suivants  :
@@ -173,15 +170,13 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Dialogbox_EXTRACTBITS">
+    <refsection xml:id="Dialogbox_EXTRACTBITS">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../gui/integer_pal/fr_FR/EXTRACTBITS_gui.png"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                <imagedata fileref="../../../gui/integer_pal/fr_FR/EXTRACTBITS_gui.png" align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -267,7 +262,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_EXTRACTBITS">
+    <refsection xml:id="Defaultproperties_EXTRACTBITS">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -340,7 +335,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Example_EXTRACTBITS">
+    <refsection xml:id="Example_EXTRACTBITS">
         <title>Exemple</title>
         <para>
             Le tableau suivant présente les résultats obtenus pour le nombre 215 en fonction
@@ -464,7 +459,7 @@
             </link>
         </para>
     </refsection>
-    <refsection id="Interfacingfunction_EXTRACTBITS">
+    <refsection xml:id="Interfacingfunction_EXTRACTBITS">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -474,121 +469,187 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Computationalfunction_EXTRACTBITS">
+    <refsection xml:id="Computationalfunction_EXTRACTBITS">
         <title>Fonctions de calcul</title>
         <itemizedlist>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_32_UH0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_32_UH0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_32_UH1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_32_UH1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u32_UH1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u32_UH1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_32_LH.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_32_LH.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_32_MSB0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_32_MSB0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_32_MSB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_32_MSB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u32_MSB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u32_MSB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_32_LSB.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_32_LSB.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_32_RB0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_32_RB0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_32_RB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_32_RB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u32_RB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u32_RB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_16_UH0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_16_UH0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_16_UH1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_16_UH1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u16_UH1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u16_UH1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_16_LH.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_16_LH.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_16_MSB0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_16_MSB0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_16_MSB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_16_MSB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u16_MSB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u16_MSB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_16_LSB.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_16_LSB.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_16_RB0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_16_RB0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_16_RB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_16_RB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u16_RB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u16_RB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_8_UH0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_8_UH0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_8_UH1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_8_UH1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u8_UH1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u8_UH1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_8_LH.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_8_LH.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_8_MSB0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_8_MSB0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_8_MSB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_8_MSB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u8_MSB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u8_MSB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_8_LSB.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_8_LSB.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_8_RB0.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_8_RB0.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_8_RB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_8_RB1.c
+                </para>
             </listitem>
             <listitem>
-                 SCI/modules/scicos_blocks/src/c/extract_bit_u8_RB1.c
+                 <para>
+                     SCI/modules/scicos_blocks/src/c/extract_bit_u8_RB1.c
+                </para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection role="see also" id="Seealso_EXTRACTBITS">
+    <refsection role="see also" xml:id="Seealso_EXTRACTBITS">
         <title>Voir aussi</title>
         <itemizedlist>
             <listitem>
-                <link linkend="BITSET">BITSET</link>
+                <para><link linkend="BITSET">BITSET</link></para>
             </listitem>
             <listitem>
-                <link linkend="BITCLEAR">BITCLEAR</link>
+                <para><link linkend="BITCLEAR">BITCLEAR</link></para>
             </listitem>
             <listitem>
-                <link linkend="LOGICAL_OP">LOGICAL_OP</link>
+                <para><link linkend="LOGICAL_OP">LOGICAL_OP</link></para>
             </listitem>
         </itemizedlist>
     </refsection>

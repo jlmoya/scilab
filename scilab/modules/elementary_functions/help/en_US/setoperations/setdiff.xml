@@ -10,10 +10,7 @@
  * along with this program.
  *
  -->
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
-          xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml"
-          xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook"
-          xmlns:scilab="http://www.scilab.org" xml:id="setdiff" xml:lang="en">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:id="setdiff" xml:lang="en">
     <refnamediv>
         <refname>setdiff</refname>
         <refpurpose>
@@ -28,7 +25,7 @@
             [v, ka] = setdiff(..)
         </synopsis>
     </refsynopsisdiv>
-    <refsection>
+    <refsection role="arguments">
         <title>Arguments</title>
         <variablelist>
             <varlistentry>
@@ -50,57 +47,68 @@
             <varlistentry>
                 <term>orien</term>
                 <listitem>
-                    oriented processing:
-                    <itemizedlist>
-                        <listitem>
-                            <literal>"r"</literal>: rows of
-                            <varname>a</varname> are searched among <varname>b</varname> ones.
-                        </listitem>
-                        <listitem>
-                            <literal>"c"</literal>: columns of
-                            <varname>a</varname> are searched among <varname>b</varname> ones.
-                        </listitem>
-                        <listitem>
-                            no orien: elements of <varname>a</varname> are searched among
-                            <varname>b</varname> ones.
-                        </listitem>
-                    </itemizedlist>
+                    <para>
+                        oriented processing:
+                        <itemizedlist>
+                            <listitem>
+                                 <para><literal>"r"</literal>: rows of
+                                    <varname>a</varname> are searched among <varname>b</varname> ones.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>"c"</literal>: columns of
+                                    <varname>a</varname> are searched among <varname>b</varname> ones.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    no orien: elements of <varname>a</varname> are searched among
+                                    <varname>b</varname> ones.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                    <para>
+                        If the option <literal>orien="r"</literal> is used, <varname>a</varname>
+                        and <varname>b</varname> must have the same number of columns.
+                        If the <literal>orien="c"</literal> is used, they must have the same
+                        number of rows.
+                    </para>
+                    <para>
+                        This option is not supported for table and timeseries.
+                    </para>
                 </listitem>
-                <para>
-                    If the option <literal>orien="r"</literal> is used, <varname>a</varname>
-                    and <varname>b</varname> must have the same number of columns.
-                    If the <literal>orien="c"</literal> is used, they must have the same
-                    number of rows.
-                </para>
-                <para>
-                    This option is not supported for table and timeseries.
-                </para>
-                <para/>
             </varlistentry>
             <varlistentry>
                 <term>v</term>
                 <listitem>
-                    depending on type of <varname>a</varname> and <varname>b</varname>:
-                    <itemizedlist>
-                        <listitem>
-                            sorted vector of <varname>a</varname>'s components that are not in
-                            <varname>b</varname>.
-                        </listitem>
-                        <listitem>
-                            <literal>orien="r"</literal>: matrix of rows of <varname>a</varname>
-                            that are not in <varname>b</varname>, sorted in lexicographic order.
-                        </listitem>
-                        <listitem>
-                            <literal>orien="c"</literal>: matrix of columns of <varname>a</varname>
-                            that are not in <varname>b</varname>, sorted in lexicographic order.
-                        </listitem>
-                        <listitem>
-                            table or timeseries containing the rows of <varname>a</varname> 
-                            that are not in <varname>b</varname>
-                        </listitem>
-                    </itemizedlist>
-                    <para/>
-                </listitem>
+                     <para>
+                        depending on type of <varname>a</varname> and <varname>b</varname>:
+                        <itemizedlist>
+                            <listitem>
+                                 <para>
+                                    sorted vector of <varname>a</varname>'s components that are not in
+                                    <varname>b</varname>.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>orien="r"</literal>: matrix of rows of <varname>a</varname>
+                                    that are not in <varname>b</varname>, sorted in lexicographic order.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para><literal>orien="c"</literal>: matrix of columns of <varname>a</varname>
+                                    that are not in <varname>b</varname>, sorted in lexicographic order.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                 <para>
+                                    table or timeseries containing the rows of <varname>a</varname> 
+                                    that are not in <varname>b</varname></para>
+                                                                    </listitem>
+                          </itemizedlist>
+                        </para>
+                    </listitem>
             </varlistentry>
             <varlistentry>
                 <term>ka</term>
@@ -110,13 +118,16 @@
                         rows, or columns, such that
                         <itemizedlist>
                             <listitem>
-                                <literal>v = a(ka)</literal>, or
+                                 <para><literal>v = a(ka)</literal>, or
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>v = a(ka,:)</literal> (<literal>orien="r"</literal>), or
+                                 <para><literal>v = a(ka,:)</literal> (<literal>orien="r"</literal>), or
+                                </para>
                             </listitem>
                             <listitem>
-                                <literal>v = a(:,ka)</literal> (<literal>orien="c"</literal>)
+                                 <para><literal>v = a(:,ka)</literal> (<literal>orien="c"</literal>)
+                                </para>
                             </listitem>
                         </itemizedlist>
                     </para>
@@ -348,8 +359,8 @@ v = [1x3 datetime]
 
 ka = [1x3 double]
 
-1.   4.   6.]]>
-        </screen>
+1.   4.   6.
+        ]]></screen>
         <para/>
         <para>
         <literal>setdiff()</literal> for table:
@@ -362,8 +373,8 @@ ka = [1x3 double]
             A = table([1;3;4;2], ["d";"c";"f";"h"], [%f;%t;%t; %f], "VariableNames", ["double", "string", "boolean"])
             B = table([2;3;4;1], [%t;%t;%t;%t], ["d";"c";"f";"h"], "VariableNames", ["double", "boolean", "string"])
             [v, ka] = setdiff(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <screen><![CDATA[ 
 --> A = table([1 7 7 4 3 6 6]', [1:7]')
  A = [7x2 table]
@@ -448,8 +459,8 @@ ka = [1x3 double]
  ka = [2x1 double]
 
    1.
-   4.]]>
-        </screen>
+   4.
+        ]]></screen>
         <para/>
         <para>
         <literal>setdiff()</literal> for timeseries:
@@ -458,8 +469,8 @@ ka = [1x3 double]
             A = timeseries(hours([1:10])', [2 7 0 3 6 6 8 6 8 0]')
             B = timeseries(hours(1:2:15)', [2 9 6 8 8 3 0 0]')
             [v, ka] = setdiff(A, B)
-            ]]>
-        </programlisting>
+            
+        ]]></programlisting>
         <screen><![CDATA[ 
 --> A = timeseries(hours([1:10])', [2 7 0 3 6 6 8 6 8 0]')
  
@@ -539,33 +550,33 @@ v = [6x1 timeseries]
         <revhistory>
             <revision>
                 <revnumber>&lt; 5.0</revnumber>
-                <revdescription>
+                <revremark>
                     Function introduced.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.0.2</revnumber>
-                <revdescription>
+                <revremark>
                     Option "r" | "c" added, including for hypermatrices.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.0</revnumber>
-                <revdescription>
+                <revremark>
                     Extension to complex numbers.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>6.1.1</revnumber>
-                <revdescription>
+                <revremark>
                     Boolean inputs and sparse inputs (boolean or numeric) are now accepted.
-                </revdescription>
+                </revremark>
             </revision>
             <revision>
                 <revnumber>2026.0.0</revnumber>
-                <revdescription>
+                <revremark>
                     Support for duration, datetime, table and timeseries types added.
-                </revdescription>
+                </revremark>
             </revision>
         </revhistory>
     </refsection>

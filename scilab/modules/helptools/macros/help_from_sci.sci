@@ -447,7 +447,7 @@ function [txt, doing] = change_activity(currently_doing, start_doing)
     case "SYNTAX"
         txt = [txt; ""; "<refsynopsisdiv>"; "   <title>Syntax</title>"; "   <synopsis>"];
     case "PARAMETERS"
-        txt = [txt; ""; "<refsection>"; "   <title>Parameters</title>"; "   <variablelist>"];
+        txt = [txt; ""; "<refsection role=""arguments"">"; "   <title>Arguments</title>"; "   <variablelist>"];
     case "DESCRIPTION"
         txt = [txt; ""; "<refsection>"; "   <title>Description</title>"; "   <para>"];
     case "EXAMPLES"

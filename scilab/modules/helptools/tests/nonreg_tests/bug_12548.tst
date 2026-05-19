@@ -5,11 +5,7 @@
 //  This file is distributed under the same license as the Scilab package.
 // =============================================================================
 //
-// <-- JVM MANDATORY -->
-//
-// <-- ENGLISH IMPOSED -->
-//
-// <-- NO CHECK ERROR OUTPUT --> 
+// <-- NO CHECK REF -->
 //
 // <-- Non-regression test for bug 12548 -->
 //
@@ -24,9 +20,9 @@ function a = bug_12548(b, c, d)
 endfunction
 
 test_bug_12548 = "bug_12548";
-pathDest = TMPDIR + filesep() + test_bug_12548 + filesep();
-mkdir(TMPDIR, test_bug_12548);
+pathDest = fullfile(TMPDIR, test_bug_12548, "help", getlanguage());
+mkdir(pathDest);
 
-mputl(help_skeleton("bug_12548"), pathDest + "bug_12548.xml");
+mputl(help_skeleton("bug_12548"), fullfile(pathDest, "bug_12548.xml"));
 
 assert_checktrue(execstr("xmltoformat(""javaHelp"",pathDest, ""bug help"")","errcatch")==0);

@@ -73,13 +73,14 @@ bool PCREMatcher::match(const wchar_t * str, const unsigned int len, const bool 
 {
     if (!pattern.empty())
     {
-        int resVect[3];
+        int resVect[3] = {0};
         char * _str = wide_string_to_UTF8(str);
         pcre2_match_data* match_data = pcre2_match_data_create_from_pattern(re, NULL);
         int result = pcre2_match(re, (PCRE2_SPTR)_str, len, 0, 0, match_data, NULL);
         FREE(_str);
         if (full)
         {
+            // FIXME: dead code? resVect is not used by pcre2_match
             if (result == 1 && resVect[0] == 0 && resVect[1] == len)
             {
                 return true;

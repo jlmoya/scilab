@@ -23,36 +23,36 @@
     </refnamediv>
     <refsection>
         <title>Aperçu</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata align="center" fileref="../../../../images/palettes/NMOS.png"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
     </refsection>
-    <refsection id="Contents_NMOS">
+    <refsection xml:id="Contents_NMOS">
         <title>Contenu</title>
         <itemizedlist>
             <listitem>
-                <xref linkend="Description_NMOS">Description</xref>
+                <para><link linkend="Description_NMOS">Description</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Dialogbox_NMOS">Paramètres</xref>
+                <para><link linkend="Dialogbox_NMOS">Paramètres</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Defaultproperties_NMOS">Propriétés par défaut</xref>
+                <para><link linkend="Defaultproperties_NMOS">Propriétés par défaut</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Interfacingfunction_NMOS">Fonction d'interfaçage</xref>
+                <para><link linkend="Interfacingfunction_NMOS">Fonction d'interfaçage</link></para>
             </listitem>
             <listitem>
-                <link linkend="NMOS">Modèle Modelica</link>
+                <para><link linkend="NMOS">Modèle Modelica</link></para>
             </listitem>
             <listitem>
-                <xref linkend="Seealso_NMOS">Voir aussi</xref>
+                <para><link linkend="Seealso_NMOS">Voir aussi</link></para>
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Description_NMOS">
+    <refsection xml:id="Description_NMOS">
         <title>Description</title>
         <para/>
         <para>
@@ -277,15 +277,14 @@
             </tr>
         </informaltable>
     </refsection>
-    <refsection id="Dialogbox_NMOS">
+    <refsection xml:id="Dialogbox_NMOS">
         <title>Paramètres</title>
-        <inlinemediaobject>
+        <mediaobject>
             <imageobject>
                 <imagedata fileref="../../../../images/gui/NMOS_gui.gif"
-                            align="center" style="float:right"/>
-                <!-- align => Javahelp, style => Online -->
+                            align="center"/>
             </imageobject>
-        </inlinemediaobject>
+        </mediaobject>
         <itemizedlist>
             <listitem>
                 <para>
@@ -352,7 +351,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Defaultproperties_NMOS">
+    <refsection xml:id="Defaultproperties_NMOS">
         <title>Propriétés par défaut</title>
         <itemizedlist>
             <listitem>
@@ -515,7 +514,7 @@
         </itemizedlist>
         <para/>
     </refsection>
-    <refsection id="Interfacingfunction_NMOS">
+    <refsection xml:id="Interfacingfunction_NMOS">
         <title>Fonction d'interfaçage</title>
         <itemizedlist>
             <listitem>
@@ -523,7 +522,7 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Modelicamodel_NMOS">
+    <refsection xml:id="Modelicamodel_NMOS">
         <title>Modèle Modelica</title>
         <itemizedlist>
             <listitem>
@@ -531,9 +530,9 @@
             </listitem>
         </itemizedlist>
     </refsection>
-    <refsection id="Seealso_NMOS" role="see also">
+    <refsection xml:id="Seealso_NMOS" role="see also">
         <title>Voir aussi</title>
-        <simplelist>
+        <simplelist type="inline">
             <member>
                 <link linkend="PMOS">PMOS</link>
             </member>
