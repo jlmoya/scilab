@@ -56,9 +56,9 @@ For a high-level description of the main new features in this release, please co
 - `gallery()` can now generate "minij" (Symmetric positive definite matrix) and "moler" (Moler symmetric positive definite matrix) test matrices.
 - "use_vectorized" parameter is now available for `optim_ga()`, `optim_moga()`, `optim_nsga()`, `optim_nsga2()` to indicate that the cost function is vectorized (called with the whole population at once).
 
-#### Performances
+#### Language evolutions
 
-- Arithmetic operators now perform **automatic expansion** without any memory footprint: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using `.*.` or `repmat()`) unnecessary for most case. See `doc operator_expand`.
+- Arithmetic operators now perform **automatic expansion** with no memory overhead: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using `.*.` or `repmat()`) unnecessary for most case. See `doc operator_expand`.
 
 ### Scilab 2026.0.0
 
@@ -87,7 +87,7 @@ For a high-level description of the main new features in this release, please co
 - `union()` now manages `duration`, `datetime`, `table`, and `timeseries` types.
 - Options names are now case-insensitive for `duration()`, `calendarDuration()`, `datetime()`, `timeseries()`, and `table()` functions.
 
-#### Language
+#### Language evolutions
 
 - Classes/Objects can now be defined and used in Scilab based on the new `classdef`, `enumeration`, `properties` & `methods` keywords.
 - The `end` keyword can now be used to specify the last row/column index of an array, similarly to `$`.

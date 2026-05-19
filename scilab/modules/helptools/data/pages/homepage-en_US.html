@@ -93,15 +93,11 @@
                     <li>"use_vectorized" parameter is now available for <code>optim_ga()</code>, <code>optim_moga()</code>, <code>optim_nsga()</code>, <code>optim_nsga2()</code> to indicate that the cost function is vectorized (called with the whole population at once).</li>
                 </ul>
             </li>
-            <li>Language changes:
+            <li>Language evolutions:
                 <ul>
                     <li>Classes/Objects can now be defined and used in Scilab based on the new <code>classdef</code>, <code>enumeration</code>, <code>properties</code> &amp; <code>methods</code> keywords.</li>
                     <li>The <code>end</code> keyword can now be used to specify the last row/column index of an array, similarly to <code>$</code>.</li>
-                </ul>
-            </li>
-            <li>Performances:
-                <ul>
-                    <li>Arithmetic operators now perform <strong>automatic expansion</strong> without any memory footprint: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using <code>.*.</code> or <code>repmat()</code>) unnecessary for most case. See <code>doc operator_expand</code>.</li>
+                    <li>Arithmetic operators now perform <strong>automatic expansion</strong> with no memory overhead: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using <code>.*.</code> or <code>repmat()</code>) unnecessary for most case. See <code>doc operator_expand</code>.</li>
                 </ul>
             </li>
             <li>Graphics:

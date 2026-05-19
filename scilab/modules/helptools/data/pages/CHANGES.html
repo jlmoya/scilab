@@ -68,9 +68,9 @@
 <li><code>gallery()</code> can now generate &quot;minij&quot; (Symmetric positive definite matrix) and &quot;moler&quot; (Moler symmetric positive definite matrix) test matrices.</li>
 <li>&quot;use_vectorized&quot; parameter is now available for <code>optim_ga()</code>, <code>optim_moga()</code>, <code>optim_nsga()</code>, <code>optim_nsga2()</code> to indicate that the cost function is vectorized (called with the whole population at once).</li>
 </ul>
-<h4>Performances</h4>
+<h4>Language evolutions</h4>
 <ul>
-<li>Arithmetic operators now perform <strong>automatic expansion</strong> without any memory footprint: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using <code>.*.</code> or <code>repmat()</code>) unnecessary for most case. See <code>doc operator_expand</code>.</li>
+<li>Arithmetic operators now perform <strong>automatic expansion</strong> with no memory overhead: a singleton dimension is automatically replicated to match the other operand, making manual expansion (using <code>.*.</code> or <code>repmat()</code>) unnecessary for most case. See <code>doc operator_expand</code>.</li>
 </ul>
 <h3>Scilab 2026.0.0</h3>
 <h4>New functions</h4>
@@ -98,7 +98,7 @@
 <li><code>union()</code> now manages <code>duration</code>, <code>datetime</code>, <code>table</code>, and <code>timeseries</code> types.</li>
 <li>Options names are now case-insensitive for <code>duration()</code>, <code>calendarDuration()</code>, <code>datetime()</code>, <code>timeseries()</code>, and <code>table()</code> functions.</li>
 </ul>
-<h4>Language</h4>
+<h4>Language evolutions</h4>
 <ul>
 <li>Classes/Objects can now be defined and used in Scilab based on the new <code>classdef</code>, <code>enumeration</code>, <code>properties</code> &amp; <code>methods</code> keywords.</li>
 <li>The <code>end</code> keyword can now be used to specify the last row/column index of an array, similarly to <code>$</code>.</li>
