@@ -422,6 +422,7 @@
     </add>
     <!-- MODELICA -->
     <add as="MBLOCK" extend="blockWithLabel">
+        <!-- overriden by block interface to render the Modelica function name -->
         <add as="displayedLabel" value="Modelica&lt;BR&gt; generic"/>
     </add>
     <add as="FROMMO" extend="blockWithLabel">

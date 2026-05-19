@@ -235,6 +235,7 @@ public final class XcosCellFactory {
 
                     b.updateStyle(controller, diagram, b);
                     b.updateValue(controller, diagram, b);
+                    b.updateBlockView();
                     break;
                 case LINK:
                     BasicLink l = createLink(controller, uid, kind);

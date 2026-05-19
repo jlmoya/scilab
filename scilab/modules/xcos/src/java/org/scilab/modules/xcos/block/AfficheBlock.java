@@ -182,10 +182,19 @@ public final class AfficheBlock extends BasicBlock {
         controller.getObjectProperty(getUID(), Kind.BLOCK, ObjectProperties.DSTATE, dstate);
 
         // nt
-        final int width = ipar.get(3);
+        int width = ipar.get(3);
+        if (width <= 3) {
+            width = 3;
+        }
+        if (width > 20) {
+            width = 20;
+        }
 
         // nd
-        final int rational = ipar.get(4);
+        int rational = ipar.get(4);
+        if (rational < 0) {
+            rational = 0;
+        }
 
         // in(1,1)
         final int rows = ipar.get(5);
@@ -193,23 +202,26 @@ public final class AfficheBlock extends BasicBlock {
 
         final StringBuilder sb = new StringBuilder();
         final String format = "%" + Integer.toString(width) + "." + Integer.toString(rational) + "f";
-        try (Formatter formatter = new Formatter(Locale.US))
+        try (Formatter formatter = new Formatter(sb, Locale.US))
         {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
                     try {
-                        sb.append(formatter.format(format, 0.0).toString());
+                        formatter.format(format, 0.0);
                     } catch (IllegalFormatException e) {
                         // juste append a default value, the format is not valid and will be reported at simulation time with proper error
                         sb.append("0.0");
                     }
                     sb.append(SPACE);
                 }
-                sb.append(NEW_LINE);
+                if (i < rows - 1) {
+                    sb.append(NEW_LINE);
+                }
             }
         }
 
-        parent.getModel().setValue(this, sb.toString());
+        String str = sb.toString();
+        parent.getModel().setValue(this, str);
     }
 
     /**
