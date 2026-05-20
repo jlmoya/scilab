@@ -2655,6 +2655,28 @@ Xcos trace:   propertyUpdated( 39 , PORT , NAME ) : NO_CHANGES
 Xcos trace:   propertyUpdated( 40 , PORT , NAME ) : NO_CHANGES
 Xcos trace:   propertyUpdated( 37 , BLOCK , STYLE ) : NO_CHANGES
 Xcos trace:   objectUnreferenced( 37 , BLOCK ) : 0
+Xcos trace:   objectReferenced( 37 , BLOCK ) : 1
+Xcos trace:   objectUnreferenced( 37 , BLOCK ) : 0
+Xcos trace:   objectReferenced( 37 , BLOCK ) : 1
+Xcos trace:   propertyUpdated( 37 , BLOCK , GEOMETRY ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 37 , BLOCK , GEOMETRY ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 37 , BLOCK , EXPRS ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 37 , BLOCK , INPUTS ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 37 , BLOCK , OUTPUTS ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 37 , BLOCK , EVENT_INPUTS ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 37 , BLOCK , EVENT_OUTPUTS ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 37 , BLOCK , DESCRIPTION ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 38 , PORT , IMPLICIT ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 39 , PORT , IMPLICIT ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 40 , PORT , IMPLICIT ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 38 , PORT , STYLE ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 39 , PORT , STYLE ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 40 , PORT , STYLE ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 38 , PORT , NAME ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 39 , PORT , NAME ) : NO_CHANGES
+Xcos trace:   propertyUpdated( 40 , PORT , NAME ) : NO_CHANGES
+Xcos debug:   propertyUpdated( 37 , BLOCK , STYLE ) : SUCCESS
+Xcos trace:   objectUnreferenced( 37 , BLOCK ) : 0
 Xcos trace:   propertyUpdated( 34 , BLOCK , LABEL ) : NO_CHANGES
 Xcos debug:   propertyUpdated( 34 , BLOCK , INPUTS ) : SUCCESS
 Xcos trace:   propertyUpdated( 34 , BLOCK , INPUTS ) : NO_CHANGES
@@ -2702,7 +2724,7 @@ Xcos trace:   objectUnreferenced( 37 , BLOCK ) : 0
       out_style = ["";""]
       in_label = ""
       out_label = ["";""]
-      style = ""
+      style: [1x1 string]
   model: (model mlist) with fields:
       sim: (2-elements list)
           (1) = "generic"
@@ -2754,7 +2776,7 @@ in_style = ""
 out_style = ["";""]
 in_label = ""
 out_label = ["";""]
-style = ""
+style = "MBLOCK;displayedLabel=Modelica<BR>generic;"
 o.graphics.exprs
 Xcos trace:   objectReferenced( 37 , BLOCK ) : 1
 Xcos trace:   objectUnreferenced( 37 , BLOCK ) : 0
