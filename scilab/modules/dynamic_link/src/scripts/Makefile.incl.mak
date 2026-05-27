@@ -47,16 +47,20 @@ CC_LDFLAGS =
 #==================================================
 USE_F2C=NO
 # detect intel fortran compiler
+!IF "$(IFORT_COMPILER26)" == ""
+!IF "$(IFORT_COMPILER25)" == ""
 !IF "$(IFORT_COMPILER23)" == ""
 !IF "$(IFORT_COMPILER22)" == ""
 USE_F2C=YES
+!ENDIF
+!ENDIF
 !ENDIF
 !ENDIF
 
 #==================================================
 # if USE_F2C is set to NO we will use the following Fortran compiler (i.e Intel Fortran 10.x)
 !IF "$(USE_F2C)" == "NO"
-FC=ifort
+FC=ifx
 FC_OPTIONS_COMMON=/nologo /DFORDLL /assume:underscore \
 /noaltparam /f77rtl /fpscomp:nolibs /names:lowercase \
 /iface:cref /threads /c /Qvc9 \

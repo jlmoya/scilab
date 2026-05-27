@@ -7,8 +7,9 @@ REM
 REM NOTE: log all commands to log files to avoid hitting Gitlab log limit
 
 REM set Visual Studio environment
-call "%VS2022INSTALLDIR%\Common7\Tools\VsDevCmd.bat"
 echo on
+echo VS2026INSTALLDIR=%VS2026INSTALLDIR%
+call "%VS2026INSTALLDIR%\Common7\Tools\VsDevCmd.bat"
 
 
 REM Create log folder

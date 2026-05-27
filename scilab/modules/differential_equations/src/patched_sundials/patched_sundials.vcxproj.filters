@@ -352,6 +352,10 @@
     <ClInclude Include="include\sunnonlinsol\sunnonlinsol_fixedpoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\sundials\sundials_core.hpp" />
+    <ClInclude Include="include\sundials\sundials_matrix.hpp" />
+    <ClInclude Include="include\sundials\sundials_memory.hpp" />
+    <ClInclude Include="src\sundials\sundials_iterative_impl.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="patched_sundials.rc">
@@ -604,9 +608,6 @@
     <ClCompile Include="src/sunadaptcontroller\mrihtol\sunadaptcontroller_mrihtol.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src/sunadaptcontroller\soderlind\sunadaptcontroller_soderlind.c ">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\sundials\sundials_adjointcheckpointscheme.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -692,6 +693,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\sunnonlinsol\newton\sunnonlinsol_newton.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src/sunadaptcontroller\soderlind\sunadaptcontroller_soderlind.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

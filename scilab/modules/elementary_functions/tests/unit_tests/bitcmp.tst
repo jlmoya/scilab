@@ -136,8 +136,9 @@ assert_checkalmostequal(r, V, %eps);
 // ==============
 errmsg = msprintf(_("%s: Wrong number of input arguments: %d or %d expected.\n"), "bitcmp", 1, 2);
 assert_checkerror("bitcmp()", errmsg);       // no input argument
-errmsg = _("Wrong number of input arguments.")
+errmsg = sprintf(_("Wrong number of input arguments.\n"));
 assert_checkerror("bitcmp(1,2,3)", errmsg);  // too many argins
+
 
 // argin#1
 errmsg = msprintf(_("%s: Argument #%d: Decimal or encoded integers expected.\n"), "bitcmp", 1);

@@ -27,7 +27,11 @@ function vs = getVsWhereInformation()
     if isempty(x) == %f then
         for i = 1:length(x)
             xi = x(i);
-            vs($+1) = struct("name", xi.displayName, "version", strtod(xi.catalog.productLineVersion), "path", xi.installationPath);
+            [_, _, _, val] = regexp(xi.catalog.productLine, "/.*?(\d+)/");
+            if val <> [] then
+
+                vs($+1) = struct("name", xi.displayName, "version", strtod(val), "path", xi.installationPath);
+            end
         end
 
         vers = list2vec(vs.version);

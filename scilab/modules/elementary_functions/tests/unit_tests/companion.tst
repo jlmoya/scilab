@@ -103,7 +103,7 @@ assert_checkerror("companion(vector)", msg);
 
 msg = msprintf(_("%s: Wrong number of input argument(s): %d expected.\n"), "companion", 1);
 assert_checkerror("companion()", msg);
-msg = msprintf(_("Wrong number of input arguments."));
+msg = msprintf(_("Wrong number of input arguments.\n"));
 assert_checkerror("companion(1,2)", msg);
 
 msg = msprintf(_("%s: Wrong type for input argument #%d: Must be in %s.\n"), "companion", 1, sci2exp(["double", "polynomial"]));
