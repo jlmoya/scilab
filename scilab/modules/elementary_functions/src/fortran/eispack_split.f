@@ -1,4 +1,4 @@
-      subroutine split(a, v, n, l, e1, e2, na, nv)
+      subroutine eispack_split(a, v, n, l, e1, e2, na, nv)
 c
 c!purpose
 c
@@ -12,7 +12,7 @@ c     rotation is accumulated in v. the eigenvalues (real
 c     or complex) are returned in e1 and e2.
 c!calling sequence
 c
-c     subroutine split(a, v, n, l, e1, e2, na, nv)
+c     subroutine eispack_split(a, v, n, l, e1, e2, na, nv)
 c
 c     double precision a,v,e1,e2
 c     integer n,l,na,nv

@@ -282,7 +282,7 @@ am__objects_5 = src/fortran/wasum.lo src/fortran/dexpm1.lo \
 	src/fortran/rcsort.lo src/fortran/wddiv.lo \
 	src/fortran/lnblnk.lo src/fortran/entier.lo \
 	src/fortran/round.lo src/fortran/cortr.lo \
-	src/fortran/simple.lo src/fortran/split.lo \
+	src/fortran/simple.lo src/fortran/eispack_split.lo \
 	src/fortran/wdrdiv.lo src/fortran/imcopy.lo \
 	src/fortran/cbal.lo src/fortran/dsum.lo src/fortran/urand.lo \
 	src/fortran/intp.lo src/fortran/watan.lo src/fortran/wipowe.lo \
@@ -1148,7 +1148,7 @@ ELEMENTARIES_FUNCTIONS_FORTRAN_SOURCES = \
     src/fortran/round.f \
     src/fortran/cortr.f \
     src/fortran/simple.f \
-    src/fortran/split.f \
+    src/fortran/eispack_split.f \
     src/fortran/wdrdiv.f \
     src/fortran/imcopy.f \
     src/fortran/cbal.f \
@@ -1876,7 +1876,7 @@ src/fortran/cortr.lo: src/fortran/$(am__dirstamp) \
 	src/fortran/$(DEPDIR)/$(am__dirstamp)
 src/fortran/simple.lo: src/fortran/$(am__dirstamp) \
 	src/fortran/$(DEPDIR)/$(am__dirstamp)
-src/fortran/split.lo: src/fortran/$(am__dirstamp) \
+src/fortran/eispack_split.lo: src/fortran/$(am__dirstamp) \
 	src/fortran/$(DEPDIR)/$(am__dirstamp)
 src/fortran/wdrdiv.lo: src/fortran/$(am__dirstamp) \
 	src/fortran/$(DEPDIR)/$(am__dirstamp)

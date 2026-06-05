@@ -77,7 +77,7 @@ c
 c
 c!auxiliary routines
 c     orthes ortran (eispack)
-c     hqror2 exch split (eispack.extensions)
+c     hqror2 exch eispack_split (eispack.extensions)
 c     dset ddot (blas)
 c     real dble abs (fortran)
 c     shrslv dad
@@ -222,7 +222,7 @@ c
 c
 c             try to split this block into 2 real eigenvalues
 c
-      call split(a, x, n, km1, e1, e2, lda, lda)
+      call eispack_split(a, x, n, km1, e1, e2, lda, lda)
       if (a(k,km1).eq.zero) go to 120
 c
 c             block is still complex.
@@ -275,7 +275,7 @@ c
 c
 c             try to split swapped block into two reals.
 c
-      call split(a, x, n, k, e1, e2, lda, lda)
+      call eispack_split(a, x, n, k, e1, e2, lda, lda)
       er(km2) = er(k)
       er(km1) = er(k+1)
       ei(km2) = ei(k)
@@ -321,7 +321,7 @@ c
 c             try to split relocated complex block.
 c
   210 continue
-      call split(a, x, n, k, e1, e2, lda, lda)
+      call eispack_split(a, x, n, k, e1, e2, lda, lda)
       if (a(k+1,k).eq.zero) go to 220
 c
 c             still complex.
