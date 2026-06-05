@@ -278,7 +278,7 @@ assert_checkerror("timeseries(AmbientTemperature, FlowRate, ""TimeStep"", hours(
 msg = msprintf(_("%s: Wrong type for %s argument #%d: string vector expected"), "timeseries", "VariableNames", 6);
 assert_checkerror("timeseries(AmbientTemperature, FlowRate, ""TimeStep"", hours(1), ""VariableNames"", 1)", msg);
 
-msg = msprintf(_("%s: Wrong size of %s values.\n"), "timeseries", "VariableNames");
+msg = msprintf(_("%s: Wrong size for ""%s"" property: Row vector of size %d expected.\n"), "timeseries", "VariableNames", 3);
 assert_checkerror("timeseries(AmbientTemperature, FlowRate, ""TimeStep"", hours(1), ""VariableNames"", [""Time"", ""Temp""])", msg);
 
 msg = msprintf(_("%s: Wrong type for %s argument #%d: string vector expected"), "timeseries", "VariableUnits", 6);

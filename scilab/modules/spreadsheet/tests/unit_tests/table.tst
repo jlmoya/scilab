@@ -333,5 +333,5 @@ assert_checkequal(t.Row, ["values"; "non-values"]);
 t = matrix2table(a, "RowNames", ["values" "non-values"]');
 assert_checkequal(t.Row, ["values"; "non-values"]);
 
-msg = msprintf(_("%s: Wrong size for ""%s"" argument: Must be a vector containing %d elements.\n"), "table", "RowNames", 2);
+msg = msprintf(_("%s: Wrong size for ""%s"" property: Column vector of size %d expected.\n"), "table", "RowNames", 2);
 assert_checkerror("matrix2table(a, ""RowNames"", ""values"")", msg);

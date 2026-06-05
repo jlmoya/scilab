@@ -102,18 +102,24 @@ function t = table(varargin)
             variableNames(1, i) = sprintf("Var%d", i);
         end
     else
-        if size(variableNames, "*") <> size([1:size(data, "*")], "*") then
-            error(msprintf(_("%s: Wrong size of %s values.\n"), fname, "VariableNames"));
+        nbVars = size(data, "c");
+        if ~isvector(variableNames) || (size(variableNames, "*") <> nbVars) then
+            error(msprintf(_("%s: Wrong size for ""%s"" property: Row vector of size %d expected.\n"), fname, "VariableNames", nbVars));
+        end
+
+        if iscolumn(variableNames) then
+            variableNames = variableNames';
         end
     end
 
     if rowNames <> [] then
-        if isvector(rowNames) && (size(rowNames, "*") == size(data(1).data, 1)) then
-            if isrow(rowNames) then
-                rowNames = rowNames';
-            end
-        else
-            error(msprintf(_("%s: Wrong size for ""%s"" argument: Must be a vector containing %d elements.\n"), "table", "RowNames", size(data(1).data, 1)));
+        nbRows = size(data(1).data, "r");
+        if ~isvector(rowNames) || (size(rowNames, "*") <> nbRows) then
+            error(msprintf(_("%s: Wrong size for ""%s"" property: Column vector of size %d expected.\n"), fname, "RowNames", nbRows));
+        end
+
+        if isrow(rowNames) then
+            rowNames = rowNames';
         end
     end
 

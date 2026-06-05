@@ -1,0 +1,94 @@
+// =============================================================================
+// Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+// Copyright (C) 2026 - Dassault Systèmes S.E. - Adeline CARNIS
+//
+//  This file is distributed under the same license as the Scilab package.
+// =============================================================================
+//
+// <-- CLI SHELL MODE -->
+//
+// <-- Non-regression test for issue 17559 -->
+//
+// <-- GitLab URL -->
+// https://gitlab.com/scilab/scilab/-/issues/17559
+//
+// <-- Short Description -->
+// table/timeseries now accepts a column vector for VariableNames property. 
+// This vector is automatically converted to a row vector.
+v = ["varA", "varB", "varC"];
+tt = table(ones(3, 3), "VariableNames", v);
+assert_checktrue(tt.Properties.VariableNames == v);
+ttt = table(ones(3, 3), "VariableNames", v');
+assert_checktrue(ttt.Properties.VariableNames == v)
+ ans = 
+  T
+tt
+ tt = [3x3 table]
+   varA   varB   varC
+   ____   ____   ____
+                     
+   1      1      1   
+   1      1      1   
+   1      1      1   
+ttt
+ ttt = [3x3 table]
+   varA   varB   varC
+   ____   ____   ____
+                     
+   1      1      1   
+   1      1      1   
+   1      1      1   
+tt(:, 2)
+ ans = [3x1 table]
+   varB
+   ____
+       
+   1   
+   1   
+   1   
+ttt(:, 2)
+ ans = [3x1 table]
+   varB
+   ____
+       
+   1   
+   1   
+   1   
+tt("varB")
+ ans = [3x1 double]
+   1.
+   1.
+   1.
+tt.varB
+ ans = [3x1 double]
+   1.
+   1.
+   1.
+ttt("varB")
+ ans = [3x1 double]
+   1.
+   1.
+   1.
+ttt.varB
+ ans = [3x1 double]
+   1.
+   1.
+   1.
+tt.Properties.VariableNames = ["A"; "B"; "C"]
+ tt = [3x3 table]
+    A     B     C 
+   ___   ___   ___
+                  
+   1     1     1  
+   1     1     1  
+   1     1     1  
+assert_checktrue(tt.Properties.VariableNames == ["A" "B" "C"]);
+ttt.Properties.VariableNames = ["1"; "2"; "3"]
+ ttt = [3x3 table]
+    1     2     3 
+   ___   ___   ___
+                  
+   1     1     1  
+   1     1     1  
+   1     1     1  
+assert_checktrue(ttt.Properties.VariableNames == ["1" "2" "3"]);

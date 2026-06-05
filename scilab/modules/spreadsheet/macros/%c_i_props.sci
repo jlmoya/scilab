@@ -13,12 +13,17 @@ function out = %c_i_props(varargin)
     //disp("c_i_props", varargin)
     out = varargin($);
     val = varargin(2);
-
-    if and(varargin(1) <> ["Description", "RowNames"]) && (val <> "" && or(size(val) <> out.userdata)) then
-        error(msprintf(_("%s: Wrong size for %s property.\n"), "%c_i_props", varargin(1)));
+    opt = varargin(1);
+    fields = ["Description", "VariableNames", "VariableDescriptions", "VariableUnits", "VariableContinuity", "RowNames"];
+    if grep(fields, opt) == [] then
+        error(msprintf(_("Unknown field: %s.\n"), opt));
     end
 
-    select varargin(1)
+    if and(opt <> ["Description", "RowNames"]) && (val <> "" && (~isvector(val) || or(size(val, "*") <> out.userdata(2)))) then
+        error(msprintf(_("%s: Wrong size for %s property: row vector of size %d expected.\n"), "%c_i_props", opt, out.userdata(2)));
+    end
+
+    select opt
     case "Description"
         out.description = val;
     case "VariableNames"
@@ -40,26 +45,38 @@ function out = %c_i_props(varargin)
         if or(fieldnames(out) == "rowNames") & or(val == "Row") then
             error(msprintf(_("%s: ""%s"" can not be used.\n"), "c_i_props", "Row"));
         end
+
+        if iscolumn(val) then
+            val = val';
+        end
+
         out.variableNames = val;
     case "VariableDescriptions"
         if size(val, "*") == 1 then
             val = val + emptystr(out.variableNames);
+        elseif iscolumn(val) then
+            val = val';
         end
         out.variableDescriptions = val;
     case "VariableUnits"
         if size(val, "*") == 1 then
             val = val + emptystr(out.variableNames);
+        elseif iscolumn(val) then
+            val = val';
         end
         out.variableUnits = val;
     case "VariableContinuity"
         if size(val, "*") == 1 then
             val = val + emptystr(out.variableNames);
+        elseif iscolumn(val) then
+            val = val';
         end
         out.variableContinuity = val
     case "RowNames"
+        if isrow(val) then
+            val = val';
+        end
         out.rowNames = val;
-    else
-        error(msprintf(_("Unknown field: %s.\n"), varargin(1)));
     end
 
     out.userdata = [];

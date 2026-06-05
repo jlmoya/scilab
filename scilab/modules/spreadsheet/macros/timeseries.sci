@@ -248,8 +248,12 @@ function ts = timeseries(varargin)
             names(1, i) = sprintf("Var%d", i - 1);
         end
     else
-        if size(names, "*") <> size(t, "*") then
-            error(msprintf(_("%s: Wrong size of %s values.\n"), "timeseries", "VariableNames"));
+        nbVars = size(t, "c");
+        if ~isvector(names) || (size(names, "*") <> nbVars) then
+            error(msprintf(_("%s: Wrong size for ""%s"" property: Row vector of size %d expected.\n"), fname, "VariableNames", nbVars));
+        end
+        if iscolumn(names) then
+            names = names';
         end
     end
 
