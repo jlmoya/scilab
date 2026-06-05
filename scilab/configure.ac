@@ -176,6 +176,16 @@ AC_ARG_WITH(min_macosx_version,
 AS_HELP_STRING([--with-min-macosx-version],[Force compilers to generate binaries compatible with MacOSX minimal version.]))
 case "$host" in
     *darwin*)
+    if test -z "$with_min_macosx_version"; then
+       # Default to an older deployment target on macOS. macOS only enforces its
+       # newer, strict main-thread AppKit assertions on binaries built against a
+       # recent SDK ("linked on or after"). Scilab runs the interpreter on a
+       # secondary thread and initializes JOGL graphics there, so binaries built
+       # against a current SDK SIGTRAP on the first onscreen NSWindow (e.g. when
+       # plotting). An older target makes macOS apply the tolerant legacy behavior.
+       # Override with --with-min-macosx-version=... if needed.
+       with_min_macosx_version=11.0
+    fi
     if test -n "$with_min_macosx_version"; then
        MIN_MACOSX_VERSION=$with_min_macosx_version
        #Append to the default flags on Apple machines
@@ -1734,9 +1744,20 @@ AC_ARG_WITH(openmp,
 OPENMP_ENABLE=no
 if test "$with_openmp" != no; then
 #   AC_OPENMP
-    OPENMP_CFLAGS="-fopenmp"
-    OPENMP_CXXFLAGS="-fopenmp"
-    OPENMP_LIBS="-lgomp"
+    case "$host" in
+        *darwin*)
+            # Apple clang rejects a bare -fopenmp; it needs -Xpreprocessor -fopenmp and
+            # links against libomp (-lomp) rather than GCC's libgomp (-lgomp).
+            OPENMP_CFLAGS="-Xpreprocessor -fopenmp"
+            OPENMP_CXXFLAGS="-Xpreprocessor -fopenmp"
+            OPENMP_LIBS="-lomp"
+            ;;
+        *)
+            OPENMP_CFLAGS="-fopenmp"
+            OPENMP_CXXFLAGS="-fopenmp"
+            OPENMP_LIBS="-lgomp"
+            ;;
+    esac
 
     AC_CHECK_HEADERS([omp.h], [],
      [AC_MSG_ERROR([Could not find omp.h])])

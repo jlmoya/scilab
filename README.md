@@ -5,6 +5,13 @@ Scilab
 
 ![Scilab desktop preview](scilab/desktop/images/scilab-desktop.png "Scilab desktop")
 
+# Building from source
+
+See **[BUILDING-macOS.md](BUILDING-macOS.md)** for building and running Scilab on
+macOS (Apple Silicon / arm64), including the macOS-specific dependencies and fixes.
+For Linux and Windows, see the
+[developer wiki](https://gitlab.com/scilab/scilab/-/wikis/home).
+
 # What does Scilab do?
 
 Scilab includes hundreds of mathematical functions. It has a high-level programming language allowing access to advanced data structures, 2-D and 3-D graphical functions. A large number of functionalities is included in Scilab:

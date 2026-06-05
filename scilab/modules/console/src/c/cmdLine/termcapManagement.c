@@ -25,7 +25,7 @@ void setStringCapacities(const char *capacity)
 {
     char *stringCap;
 
-    stringCap = tgetstr(capacity, NULL);
+    stringCap = tgetstr((char *)capacity, NULL);
     if (stringCap != NULL)
     {
         tputs(stringCap, 1, putchar);

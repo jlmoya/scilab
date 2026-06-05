@@ -26,8 +26,6 @@ libscihelptools_algo_la_SOURCES =  $(HELPTOOLS_SOURCES)
 libscihelptools_algo_la_CPPFLAGS = $(libscihelptools_la_CPPFLAGS)
 noinst_LTLIBRARIES = libscihelptools-algo.la
 
-HELPTOOLS_DISABLE_CPP_SOURCES = sci_gateway/nogui/nogui.cpp
-
 if GIWS
 BUILT_SOURCES=giws
 endif
@@ -39,6 +37,11 @@ endif
 else
 GATEWAY_CXX_SOURCES = sci_gateway/nogui/nogui.cpp
 endif
+
+# nogui stub for the "disable" library. Defined unconditionally (not only under
+# BUILD_HELP) so libscihelptools-disable.la is never empty: an empty library fails
+# to link on macOS ("ld: no object files specified").
+HELPTOOLS_DISABLE_CPP_SOURCES = sci_gateway/nogui/nogui.cpp
 
 pkglib_LTLIBRARIES = libscihelptools.la libscihelptools-disable.la
 
