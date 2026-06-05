@@ -657,7 +657,7 @@ int generate_inline_links(const std::wstring& lang, const std::wstring& path)
                     }
                     else
                     {
-                        storedPath = replaceToolboxRoot(normalizedXmlPath, toolboxBase.u8string());
+                        storedPath = replaceToolboxRoot(normalizedXmlPath, toolboxBase.string());
                     }
                     links[id] = storedPath;
                 }
