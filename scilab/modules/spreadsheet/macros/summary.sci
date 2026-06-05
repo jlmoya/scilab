@@ -36,13 +36,14 @@ function varargout = summary(t, statistics, datavars)
             statistics = fields;
         end
 
+        statistics = unique(statistics, "keepOrder");
         statistics = convstr(part(statistics, 1), "u") + part(statistics, 2:$);
     end
 
     if datavars <> "all" then
         nb = members(datavars, varnames);
         if or(nb == 0) then
-            error(msprintf(_("%s: Wrong value for input argument #%d: no valid variable name %s.\n"), fname, sci2exp(datavars(nb ==0))));
+            error(msprintf(_("%s: Wrong value for input argument #%d: no valid variable name %s.\n"), "summary", sci2exp(datavars(nb ==0))));
         end
         varnames = datavars;
     end
@@ -73,7 +74,7 @@ function varargout = summary(t, statistics, datavars)
 
     for i = start:size(varnames, "*")
         name = varnames(i);
-        data = t.vars(i).data;
+        data = t(name);
         typ = typeof(data);
         if typ == "constant" then
             typ = "double";
@@ -211,7 +212,8 @@ endfunction
 function [st, newfields] = doubleSummary(st, data, fields)
 
     if isdatetime(data) then
-        val = data.date * 24 * 60 *60 + data.time;
+        d = data(~isnat(data));
+        val = d.date * 24 * 60 *60 + d.time;
     end
 
     for f = fields
@@ -242,14 +244,15 @@ function [st, newfields] = doubleSummary(st, data, fields)
                 end
             case "Median"
                 if isduration(data) then 
-                    r = milliseconds(nanmedian(data.duration));
+                    d = data.duration;
+                    r = milliseconds(median(d(~isnan(d))));
                 elseif isdatetime(data) then
                     r = data;
-                    m = nanmedian(val);
+                    m = median(val);
                     r.date = floor(m / (24*60*60));
                     r.time = modulo(m, 24*60*60);
                 elseif type(data) == 1 then
-                    r = nanmedian(data);
+                    r = median(data(~isnan(data)));
                 else
                     r = median(data);
                 end
@@ -258,7 +261,7 @@ function [st, newfields] = doubleSummary(st, data, fields)
                     r = milliseconds(nanmean(data.duration));
                 elseif isdatetime(data) then
                     r = data;
-                    m = nanmean(val);
+                    m = mean(val);
                     r.date = floor(m / (24*60*60));
                     r.time = modulo(m, 24*60*60);
                 else
@@ -268,31 +271,35 @@ function [st, newfields] = doubleSummary(st, data, fields)
                 if isduration(data) then 
                     r = milliseconds(nanstdev(data.duration));
                 elseif isdatetime(data) then
-                    r = duration(0, 0, nanstdev(val));
+                    r = duration(0, 0, stdev(val));
                 else
                     r = nanstdev(data);
                 end
             case {"Q1", "Q3"}
                 if f == "Q1" then
-                    y = 25;
+                    p = 0.25;
                 else
-                    y = 75;
+                    p = 0.75;
                 end
                 // percentile
                 if isduration(data) then 
-                    r = milliseconds(perctl(data.duration, y)(1));
+                    d = data.duration;
+                    r = milliseconds(%quantile(d(~isnan(d)), p));
                 elseif isdatetime(data) then
                     r = data;
-                    m = perctl(val, y)(1);
+                    m = %quantile(val, p);
                     r.date = floor(m / (24*60*60));
                     r.time = modulo(m, 24*60*60);
                 else
-                    r = perctl(data, y)(1);
+                    r = %quantile(data(~isnan(data)), p);
                 end
             case "Var"
                 tmp = doubleSummary(st, data, "std");
                 r = tmp.Std .^2;
             case "Mode"
+                if isdatetime(data) then
+                    data = d;
+                end
                 [x, _, _, nb] = unique(data);
                 val = max(nb);
                 r = x(find(nb == val))(1);
@@ -302,18 +309,26 @@ function [st, newfields] = doubleSummary(st, data, fields)
             case "Range"
                 r = strange(data, "r");
             case "Sum"
-                r = sum(data);
+                r = sum(data(~isnan(data)));
             case "Nnz"
                 if isduration(data) then
-                    r = data.duration <> 0;
+                    r = (data.duration <> 0 & ~isnan(data));
+                elseif isdatetime(data) then
+                    r = (data <> 0 & ~isnat(data));
                 else
-                    r = data <> 0;
+                    r = (data <> 0 & ~isnan(data));
                 end
-                r = sum(r & ~isnan(data));
+                r = sum(r);
             end
             st(f) = r;
         catch
             lasterror();
         end
     end
+endfunction
+
+function res = %quantile(x, p)
+    x = gsort(x, "g", "i");
+    n = length(x);
+    res = x(ceil(n * p));
 endfunction

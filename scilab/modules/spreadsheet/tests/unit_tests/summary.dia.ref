@@ -577,15 +577,15 @@ summary(t)
      Var2: datetime
      Var3: duration
  Statistics for numeric data:
-                Var1          Var2             Var3  
-                ____   ___________________   ________
-                                                     
-   NumMissing   1      1                     1       
-          Min   1      NaT                   01:00:00
-       Median   2      2025-12-10 12:00:00   02:00:00
-          Max   3      2025-12-12            03:00:00
-         Mean   2      1519-06-17 06:00:00   02:00:00
-          Std   1      8879556:00:00.077     01:00:00
+                Var1      Var2        Var3  
+                ____   __________   ________
+                                            
+   NumMissing   1      1            1       
+          Min   1      2025-12-10   01:00:00
+       Median   2      2025-12-11   02:00:00
+          Max   3      2025-12-12   03:00:00
+         Mean   2      2025-12-11   02:00:00
+          Std   1      24:00:00     01:00:00
 s = summary(t)
  s = [struct] with fields:
   Var1: [struct] with fields:

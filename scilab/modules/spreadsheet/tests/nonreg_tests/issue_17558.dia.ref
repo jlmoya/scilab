@@ -1,0 +1,80 @@
+// =============================================================================
+// Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+// Copyright (C) 2026 - Dassault Systèmes S.E. - Adeline CARNIS
+//
+//  This file is distributed under the same license as the Scilab package.
+// =============================================================================
+//
+// <-- CLI SHELL MODE -->
+//
+// <-- Non-regression test for issue 17558 -->
+//
+// <-- GitLab URL -->
+// https://gitlab.com/scilab/scilab/-/issues/17558
+//
+// <-- Short Description -->
+// table summary optionnal selection feature returned incoherent result.
+rand("seed", 0);
+tb = table(rand(10,5))
+ tb = [10x5 table]
+     Var1        Var2        Var3        Var4        Var5   
+   _________   _________   _________   _________   _________
+                                                            
+   0.2113249   0.5608486   0.3076091   0.5015342   0.2806498
+   0.7560439   0.6623569   0.9329616   0.4368588   0.1280058
+   0.0002211   0.7263507   0.2146008   0.2693125   0.7783129
+   0.3303271   0.1985144   0.312642    0.6325745   0.211903 
+   0.6653811   0.5442573   0.3616361   0.4051954   0.1121355
+   0.6283918   0.2320748   0.2922267   0.9184708   0.6856896
+   0.8497452   0.2312237   0.5664249   0.0437334   0.1531217
+   0.685731    0.2164633   0.4826472   0.4818509   0.6970851
+   0.8782165   0.8833888   0.3321719   0.2639556   0.8415518
+   0.068374    0.6525135   0.5935095   0.4148104   0.4062025
+summary(tb(:,4:5))
+ table: [10x2 table]
+ Variables:
+     Var4: double
+     Var5: double
+ Statistics for numeric data:
+                  Var4        Var5   
+                _________   _________
+                                     
+   NumMissing   0           0        
+          Min   0.0437334   0.1121355
+       Median   0.4258346   0.3434261
+          Max   0.9184708   0.8415518
+         Mean   0.4368296   0.4294658
+          Std   0.2334441   0.2918796
+summary(tb,"default",["Var4","Var5"])
+ table: [10x5 table]
+ Variables:
+     Var4: double
+     Var5: double
+ Statistics for numeric data:
+                  Var4        Var5   
+                _________   _________
+                                     
+   NumMissing   0           0        
+          Min   0.0437334   0.1121355
+       Median   0.4258346   0.3434261
+          Max   0.9184708   0.8415518
+         Mean   0.4368296   0.4294658
+          Std   0.2334441   0.2918796
+summary(tb)
+ table: [10x5 table]
+ Variables:
+     Var1: double
+     Var2: double
+     Var3: double
+     Var4: double
+     Var5: double
+ Statistics for numeric data:
+                  Var1        Var2        Var3        Var4        Var5   
+                _________   _________   _________   _________   _________
+                                                                         
+   NumMissing   0           0           0           0           0        
+          Min   0.0002211   0.1985144   0.2146008   0.0437334   0.1121355
+       Median   0.6468864   0.552553    0.346904    0.4258346   0.3434261
+          Max   0.8782165   0.8833888   0.9329616   0.9184708   0.8415518
+         Mean   0.5073757   0.4907992   0.439643    0.4368296   0.4294658
+          Std   0.3260738   0.2512121   0.2130556   0.2334441   0.2918796
