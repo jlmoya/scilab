@@ -25,17 +25,17 @@
 #include <crtdefs.h>
 
 
-void *MyHeapRealloc(void *lpAddress, size_t dwSize, char *file, int line);
-void *MyHeapAlloc(size_t dwSize, char *file, int line);
-void MyHeapFree(void *lpAddress, char *file, int line);
-void *MyVirtualAlloc(size_t dwSize, char *file, int line);
-void MyVirtualFree(void *lpAddress, char *file, int line);
+void *MyHeapRealloc(void *lpAddress, size_t dwSize, const char *file, int line);
+void *MyHeapAlloc(size_t dwSize, const char *file, int line);
+void MyHeapFree(void *lpAddress, const char *file, int line);
+void *MyVirtualAlloc(size_t dwSize, const char *file, int line);
+void MyVirtualFree(void *lpAddress, const char *file, int line);
 
-void *MyHeapRealloc2(void *lpAddress, size_t dwSize, char *file, int line);
-void *MyHeapAlloc2(size_t dwSize, char *file, int line);
-void MyHeapFree2(void *lpAddress, char *file, int line);
-void *MyVirtualAlloc2(size_t dwSize, char *file, int line);
-void MyVirtualFree2(void *lpAddress, char *file, int line);
+void *MyHeapRealloc2(void *lpAddress, size_t dwSize, const char *file, int line);
+void *MyHeapAlloc2(size_t dwSize, const char *file, int line);
+void MyHeapFree2(void *lpAddress, const char *file, int line);
+void *MyVirtualAlloc2(size_t dwSize, const char *file, int line);
+void MyVirtualFree2(void *lpAddress, const char *file, int line);
 
 
 #ifdef MALLOC
@@ -46,7 +46,7 @@ void MyVirtualFree2(void *lpAddress, char *file, int line);
 #ifdef FREE
 #undef FREE
 #endif
-#define FREE(x) if (x  != NULL) MyHeapFree((char *)x,__FILE__,__LINE__);
+#define FREE(x) if (x  != NULL) MyHeapFree((void *)x,__FILE__,__LINE__);
 
 #ifdef CALLOC
 #undef CALLOC
@@ -62,11 +62,11 @@ void MyVirtualFree2(void *lpAddress, char *file, int line);
 #ifdef SCISTACKMALLOC
 #undef SCISTACKMALLOC
 #endif
-#define SCISTACKMALLOC(x) MyVirtualAlloc((unsigned long)x,__FILE__,__LINE__)
+#define SCISTACKMALLOC(x) MyVirtualAlloc((size_t)x,__FILE__,__LINE__)
 
 #ifdef SCISTACKFREE
 #undef SCISTACKFREE
 #endif
-#define SCISTACKFREE(x) if (x  != NULL) MyVirtualFree((char *) x,__FILE__,__LINE__);
+#define SCISTACKFREE(x) if (x  != NULL) MyVirtualFree((void *) x,__FILE__,__LINE__);
 
 #endif /* __WIN_MEM_ALLOC__ */

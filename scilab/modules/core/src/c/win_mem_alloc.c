@@ -28,7 +28,7 @@
 /*-----------------------------------------------------------------------------------*/
 #define FREE_FLAGS 0
 /*-----------------------------------------------------------------------------------*/
-void *MyHeapRealloc(void *lpAddress, size_t dwSize, char *file, int line)
+void *MyHeapRealloc(void *lpAddress, size_t dwSize, const char *file, int line)
 {
     LPVOID NewPointer = NULL;
     SIZE_T precSize = 0;
@@ -58,7 +58,7 @@ void *MyHeapRealloc(void *lpAddress, size_t dwSize, char *file, int line)
     return NewPointer;
 }
 /*-----------------------------------------------------------------------------------*/
-void *MyHeapAlloc(size_t dwSize, char *file, int line)
+void *MyHeapAlloc(size_t dwSize, const char *file, int line)
 {
     LPVOID NewPointer = NULL;
 
@@ -98,7 +98,7 @@ void *MyHeapAlloc(size_t dwSize, char *file, int line)
     return NewPointer;
 }
 /*-----------------------------------------------------------------------------------*/
-void MyHeapFree(void *lpAddress, char *file, int line)
+void MyHeapFree(void *lpAddress, const char *file, int line)
 {
     _try
     {
@@ -112,7 +112,7 @@ void MyHeapFree(void *lpAddress, char *file, int line)
     }
 }
 /*-----------------------------------------------------------------------------------*/
-void *MyVirtualAlloc(size_t dwSize, char *file, int line)
+void *MyVirtualAlloc(size_t dwSize, const char *file, int line)
 {
     LPVOID NewPointer = NULL;
 
@@ -154,7 +154,7 @@ void *MyVirtualAlloc(size_t dwSize, char *file, int line)
     return NewPointer;
 }
 /*-----------------------------------------------------------------------------------*/
-void MyVirtualFree(void *lpAddress, char *file, int line)
+void MyVirtualFree(void *lpAddress, const char *file, int line)
 {
     if (lpAddress)
     {
@@ -168,27 +168,27 @@ void MyVirtualFree(void *lpAddress, char *file, int line)
     }
 }
 /*-----------------------------------------------------------------------------------*/
-void *MyHeapRealloc2(void *lpAddress, size_t dwSize, char *file, int line)
+void *MyHeapRealloc2(void *lpAddress, size_t dwSize, const char *file, int line)
 {
     return MyHeapRealloc(lpAddress, dwSize, file, line);
 }
 
-void *MyHeapAlloc2(size_t dwSize, char *file, int line)
+void *MyHeapAlloc2(size_t dwSize, const char *file, int line)
 {
     return MyHeapAlloc(dwSize, file, line);
 }
 
-void MyHeapFree2(void *lpAddress, char *file, int line)
+void MyHeapFree2(void *lpAddress, const char *file, int line)
 {
     MyHeapFree(lpAddress, file, line);
 }
 
-void *MyVirtualAlloc2(size_t dwSize, char *file, int line)
+void *MyVirtualAlloc2(size_t dwSize, const char *file, int line)
 {
     return MyVirtualAlloc(dwSize, file, line);
 }
 
-void MyVirtualFree2(void *lpAddress, char *file, int line)
+void MyVirtualFree2(void *lpAddress, const char *file, int line)
 {
     MyVirtualFree(lpAddress, file, line);
 }
