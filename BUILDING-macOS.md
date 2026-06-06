@@ -179,6 +179,74 @@ uninstalled `/usr/local/lib/scilab`. Always use the `bin/` launchers (or the lib
 
 ---
 
+## 7. Launch from Finder with no Terminal — the `.app` bundle and menu-bar name
+
+Two visible-but-cosmetic macOS issues remain once the GUI runs:
+
+- Double-clicking any `bin/` launcher from Finder — or wrapping it in a `.command` — **opens
+  a Terminal window**. Only an **application bundle** (`.app`) launches with no terminal.
+- The macOS menu bar (next to the  logo) and the Dock label read the raw process name
+  **`scilab-bin`**.
+
+**The menu-bar title is the running process's executable _filename_** — not `argv[0]`, and
+**not** the `apple.awt.application.name` JVM property. (That property _is_ honored for the
+**About/Quit** menu items, but macOS 26 / JDK 17 ignore it for the bold app-name title.) So
+the fix is to make the GUI process's executable be a file literally named `Scilab-2027.0.0`.
+
+The exec chain is `bin/scilab` → libtool wrapper `./scilab-bin` → `.libs/scilab-bin`; we add a
+versioned name at the tail of it:
+
+```sh
+cd scilab/scilab
+NAME="Scilab-2027.0.0"                # = SCI_VERSION  (getversion("scilab") -> [2027 0 0])
+
+# 1. the GUI binary under the versioned name (same arm64 + minos-11 binary)
+ln -f .libs/scilab-bin ".libs/$NAME" || cp -f .libs/scilab-bin ".libs/$NAME"
+codesign -f -s - ".libs/$NAME"        # signing turns a hard link into an independent signed copy
+
+# 2. point the libtool wrapper at it (the wrapper is regenerated on every relink)
+sed -i '' "s/program='scilab-bin'/program='$NAME'/" scilab-bin
+
+# 3. make the About/Quit items match — etc/jvm_options.xml (committed):
+#    <option value="-Dapple.awt.application.name=Scilab-2027.0.0" os="macosx"/>
+```
+
+Then wrap it in an `.app` for the no-Terminal Finder launch (a `.command` always spawns a
+terminal; only a bundle does not):
+
+```text
+Scilab-2027.0.0.app/Contents/
+├── Info.plist                 # CFBundleName/CFBundleExecutable = Scilab-2027.0.0,
+│                              #   CFBundleIconFile = scilab, CFBundleShortVersionString = 2027.0.0,
+│                              #   LSMinimumSystemVersion = 11.0
+├── MacOS/Scilab-2027.0.0      # tiny launcher (below)
+└── Resources/scilab.icns      # copied from /Applications/scilab-2026.1.0.app
+```
+
+```sh
+#!/bin/bash
+# Contents/MacOS/Scilab-2027.0.0
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home
+cd /path/to/scilab/scilab || exit 1   # absolute path to the build root
+exec ./bin/scilab "$@"
+```
+
+Sign the bundle (`codesign -f -s - Scilab-2027.0.0.app`). Net result — both launch paths now
+agree on the name:
+
+| Launch | Terminal window | Menu bar / Dock |
+|--------|-----------------|-----------------|
+| Double-click `Scilab-2027.0.0.app` (Finder / Dock / Spotlight) | **none** | **Scilab-2027.0.0** + Scilab icon |
+| `./bin/scilab` from a terminal | shows console output | **Scilab-2027.0.0** |
+
+Drag the `.app` into `/Applications` (or keep it in the Dock) to launch this build with one
+click. Steps 1–3 above are re-applied automatically by **`reapply-macos-fixes.sh`** after a
+rebuild (a relink drops the wrapper edit and the `.libs/` name); the `.app` itself is static
+and needs no re-apply. The bundle is a machine-specific artifact (its launcher hard-codes the
+build path), so it is **not** committed — recreate it from the steps above.
+
+---
+
 ## The GUI / plotting crash on macOS 14+/26 — and the real fix
 
 **Symptom:** the GUI traps (`SIGTRAP` / `EXC_BREAKPOINT`) at startup, or when `plot()` first

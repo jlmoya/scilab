@@ -59,6 +59,8 @@ $SCILAB : scilab path (SCI in Scilab)
 
     <option value="-Dawt.useSystemAAFontSettings=on" os="linux"/>
     <option value="-Dapple.laf.useScreenMenuBar=true" os="macosx"/>
+    <!-- macOS menu-bar / application name; otherwise the raw executable name "scilab-bin" is shown -->
+    <option value="-Dapple.awt.application.name=Scilab-2027.0.0" os="macosx"/>
 
     <!-- without this option TempFileCache leaves some files in TMPDIR, see https://gitlab.com/scilab/scilab/-/issues/17220 -->
     <!-- you can log its behavior with <option value="-Djogamp.debug.TempFileCache=true" /> -->
