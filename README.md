@@ -5,11 +5,17 @@ Scilab
 
 ![Scilab desktop preview](scilab/desktop/images/scilab-desktop.png "Scilab desktop")
 
-# Building from source
+# Documentation
 
-See **[BUILDING-macOS.md](BUILDING-macOS.md)** for building and running Scilab on
-macOS (Apple Silicon / arm64), including the macOS-specific dependencies and fixes.
-For Linux and Windows, see the
+All project documentation lives in **[`docs/`](docs/)** — start at
+[docs/README.md](docs/README.md). Highlights:
+
+- **[Building on macOS](docs/building/macos.md)** — build & run Scilab from source on
+  macOS (Apple Silicon / arm64), including the macOS-specific dependencies and fixes.
+- **[Terminal + live-reload design](docs/design/terminal-live-reload.md)** — embedded
+  terminal and live external-change awareness.
+
+For Linux and Windows builds, see the
 [developer wiki](https://gitlab.com/scilab/scilab/-/wikis/home).
 
 # What does Scilab do?
