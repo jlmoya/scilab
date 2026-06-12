@@ -19,13 +19,11 @@ package org.scilab.modules.jvm;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.VarHandle;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 import jdk.internal.loader.NativeLibraries;
+import sun.misc.Unsafe;
 
 /**
  * LibraryPath to overload java.library.path.
@@ -63,32 +61,42 @@ public class LibraryPath {
      * @throws IOException return a exception
      */
     public static void addPath(final String p) throws IOException {
-        if (!pathAlreadyExists(System.getProperty(JAVALIBRARYPATH), p)) {
-            /* The order matter here... see bug #4022 */
-            String newLibPath = System.getProperty(JAVALIBRARYPATH) + File.pathSeparator + p;
-            System.setProperty(JAVALIBRARYPATH, newLibPath);
-            try {
-            	/* Enable modifications on USER_PATHS field in LibraryPaths class */
-            	final Class<?>[] declClassArr = NativeLibraries.class.getDeclaredClasses();
-            	final Class<?> libraryPaths = Arrays.stream(declClassArr).filter(klass -> klass.getSimpleName().equals("LibraryPaths")).findFirst().get();
-            	final Field field = libraryPaths.getDeclaredField("USER_PATHS");
-            	final MethodHandles.Lookup lookup = MethodHandles.privateLookupIn(Field.class, MethodHandles.lookup());
-            	final VarHandle varHandle = lookup.findVarHandle(Field.class, "modifiers", int.class);
-            	varHandle.set(field, field.getModifiers() & ~Modifier.FINAL);
-            	field.setAccessible(true);
-            	
-            	/* Update field by adding new path to current value */
-            	String[] paths = (String[])field.get(null);
-                String[] newPaths = new String[paths.length+1];
-                System.arraycopy(paths, 0, newPaths, 0, paths.length);
-                newPaths[paths.length] = p;
-                field.set(null, newPaths);
-                
-            } catch (NoSuchFieldException e) {
-        		throw new IOException("Error NoSuchFieldException, could not add path to " + JAVALIBRARYPATH);
-            } catch (IllegalAccessException e) {
-                throw new IOException("Error IllegalAccessException, could not add path to " + JAVALIBRARYPATH);
-            }
+        if (pathAlreadyExists(System.getProperty(JAVALIBRARYPATH), p)) {
+            return;
+        }
+        /* The order matter here... see bug #4022 */
+        System.setProperty(JAVALIBRARYPATH, System.getProperty(JAVALIBRARYPATH) + File.pathSeparator + p);
+        try {
+            /*
+             * Append p to the JVM's cached native-library search paths, i.e. the static final
+             * String[] jdk.internal.loader.NativeLibraries$LibraryPaths.USER_PATHS.
+             *
+             * JDK 18+ (JEP 416 - core reflection on method handles) forbids reflective writes to
+             * static final fields (Field.set throws UnsupportedOperationException, even after the
+             * old "clear the FINAL modifier" trick). So we read the array via reflection (reads of
+             * final fields are still allowed) and write the new array via Unsafe, which is not
+             * subject to that restriction and works on JDK 17 through 25.
+             *
+             * Best effort: a failure here must NOT abort Scilab startup. The java.library.path
+             * property is already updated above; if a future JDK removes this avenue too, the
+             * launcher must seed -Djava.library.path at JVM creation instead.
+             */
+            final Class<?> libraryPaths = Arrays.stream(NativeLibraries.class.getDeclaredClasses())
+                                          .filter(klass -> klass.getSimpleName().equals("LibraryPaths"))
+                                          .findFirst().get();
+            final Field field = libraryPaths.getDeclaredField("USER_PATHS");
+            field.setAccessible(true);
+            final String[] paths = (String[]) field.get(null);
+            final String[] newPaths = Arrays.copyOf(paths, paths.length + 1);
+            newPaths[paths.length] = p;
+
+            final Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            final Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+            unsafe.putObject(unsafe.staticFieldBase(field), unsafe.staticFieldOffset(field), newPaths);
+        } catch (Throwable t) {
+            System.err.println("[LibraryPath] could not patch " + JAVALIBRARYPATH
+                               + " native search paths (" + p + "): " + t);
         }
     }
 

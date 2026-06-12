@@ -111,14 +111,24 @@ Wiring (per the existing model): drop jars in `thirdparty/` → declare in
 (`load on="Terminal"`/`"Console"`) → `build.incl.xml` compile classpath. JNA's `jnidispatch`
 self-extracts at runtime exactly like JOGL's native libs already do here.
 
+**Pinned in Phase 1 spike:** `org.jetbrains.jediterm:jediterm-core:3.70` + `jediterm-ui:3.70`
+(from the JetBrains `intellij-dependencies` repo — JediTerm is **not** on Maven Central),
+`org.jetbrains.kotlin:kotlin-stdlib:2.1.21`, `org.slf4j:slf4j-api:2.0.9`,
+`org.jetbrains:annotations:24.0.1`, `net.java.dev.jna:jna:5.14.0`.
+
 ---
 
 ## 5. Plan (phased)
 
-- **Phase 1 — Terminal spike (de-risk).** JNA `forkpty` connector + JediTerm widget in a
-  `SwingScilabDockablePanel`, hardcoded `bash -l`, docked. Success = `claude
-  --dangerously-skip-permissions -c` runs with full color, input, and repaint-on-resize.
-  Proves classpath (kotlin/jna/jediterm), JNA native extraction, and the login-shell PATH fix.
+- **Phase 1 — Terminal spike (de-risk). ✅ PROVEN.** A JediTerm 3.70 widget driven by our JNA
+  PTY runs `claude --dangerously-skip-permissions -c` in full color, interactive, with resize
+  reflow. Spike code: `terminal-spike/` (Pty / PtyTtyConnector / TermGui + headless Spike,
+  StressTest, ConnectorTest). Established for Phase 2:
+    - PTY = `posix_openpt` + `posix_spawn` over libSystem via JNA (NOT `forkpty`, which would
+      fork the multi-threaded JVM). Controlling tty via `POSIX_SPAWN_SETSID` + opening the slave
+      as fd 0; resize via `TIOCSWINSZ`; child reaped via `waitpid`.
+    - Connector decodes PTY bytes→chars with `InputStreamReader(UTF-8)`; `ready()` via `FIONREAD`.
+    - `$SHELL -l` (login) rebuilds PATH from a `.app`-minimal env so `claude` resolves.
 - **Phase 2 — Terminal full module.** `modules/terminal` (Makefile.am, build.xml, `.start`,
   `modules.xml`+MODULES), `terminal()` gateway, Applications menu + icon, multiple sessions,
   `SIGHUP` on close, full prefs pane + `terminal-font`, help page, i18n, basic test.
@@ -133,7 +143,8 @@ Phases 3–4 may proceed in parallel with/after Phase 2.
 ---
 
 ## 6. Risks / watch-items
-- **forkpty correctness:** controlling tty, raw termios, `TIOCSWINSZ`/SIGWINCH, child reaping, EOF on exit.
+- **PTY correctness (✅ done in spike):** `posix_openpt`+`posix_spawn` (not `forkpty`); controlling tty via `SETSID`+open-slave-as-fd0; `TIOCSWINSZ`/SIGWINCH resize; `waitpid` reaping; EOF on exit.
+- **arm64 JNA varargs (✅ fixed in spike):** variadic libc functions (`ioctl`, …) MUST be declared `Object...` in the JNA interface on Apple Silicon, or the misplaced arg corrupts the JVM heap → SIGBUS. Applies to any variadic C reached via JNA.
 - **macOS native libs:** JNA + JOGL precedent says runtime extraction + ad-hoc signing works; a C gateway's libtool lib still needs the `minos 11.0` + codesign step from `reapply-macos-fixes.sh`.
 - **Interpreter reload:** only when idle (use the queue, never mutate Context from a watcher thread); respect `funcprot`; expect "finishes on old code" mid-call.
 - **Watcher hygiene:** debounce bursts; filter Scilab's own writes to avoid reload loops.
