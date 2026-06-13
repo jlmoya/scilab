@@ -194,6 +194,7 @@ public class SwingScilabTreeTable extends JTable {
                 if (getColumnClass(col) == ScilabTreeTableModel.class
                         && SwingUtilities.isLeftMouseButton(e)) {
                     MouseEvent me = e;
+                    boolean toggled = false;
                     if (isLocationInExpandControl != null) {
                         try {
                             int row = rowAtPoint(p);
@@ -203,23 +204,41 @@ public class SwingScilabTreeTable extends JTable {
                                  isLocationInExpandControl.invoke(
                                      tree.getUI(), path, e.getX(), e.getY()))
                                 .booleanValue();
-                            Rectangle r = tree.getRowBounds(row);
-                            if (!isOnExpander && !r.contains(p)) {
-                                me =
-                                    new MouseEvent(
-                                    (Component) e.getSource(),
-                                    e.getID(),
-                                    e.getWhen(),
-                                    e.getModifiers(),
-                                    r.x,
-                                    r.y,
-                                    e.getClickCount(),
-                                    e.isPopupTrigger());
+                            if (isOnExpander && path != null) {
+                                // Forwarding the click to the hidden tree via
+                                // tree.dispatchEvent(...) no longer toggles the
+                                // node on recent JDKs (the synthetic event is not
+                                // routed to BasicTreeUI's expand handler), so the
+                                // expand arrow appeared dead. Toggle the path
+                                // directly instead.
+                                if (tree.isExpanded(path)) {
+                                    tree.collapsePath(path);
+                                } else {
+                                    tree.expandPath(path);
+                                }
+                                setRowSelectionInterval(row, row);
+                                toggled = true;
+                            } else {
+                                Rectangle r = tree.getRowBounds(row);
+                                if (!isOnExpander && !r.contains(p)) {
+                                    me =
+                                        new MouseEvent(
+                                        (Component) e.getSource(),
+                                        e.getID(),
+                                        e.getWhen(),
+                                        e.getModifiers(),
+                                        r.x,
+                                        r.y,
+                                        e.getClickCount(),
+                                        e.isPopupTrigger());
+                                }
                             }
                         } catch (Exception ex) {
                         }
                     }
-                    tree.dispatchEvent(me);
+                    if (!toggled) {
+                        tree.dispatchEvent(me);
+                    }
                 }
             }
         });
