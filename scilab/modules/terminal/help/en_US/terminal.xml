@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+ * Copyright (C) 2026 - Jose Moya
+ *
+ * This file is hereby licensed under the terms of the GNU GPL v2.0,
+ * pursuant to article 5.3.4 of the CeCILL v.2.1.
+ * This file was originally licensed under the terms of the CeCILL v2.1,
+ * and continues to be available under such terms.
+ * For more information, see the COPYING file which you should have received
+ * along with this program.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="terminal">
+    <refnamediv>
+        <refname>terminal</refname>
+        <refpurpose>Open an embedded terminal in the Scilab GUI</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>terminal()</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>
+            <literal>terminal</literal> opens an embedded terminal in a dockable
+            Scilab tab. It is a full PTY terminal emulator (truecolor, alternate
+            screen, raw input), so it can host any interactive shell command -
+            in particular <emphasis>Claude Code</emphasis>
+            (<literal>claude --dangerously-skip-permissions -c</literal>) - exactly
+            like the terminal embedded in JetBrains IDEs.
+        </para>
+        <para>
+            <literal>terminal</literal> has several features:
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    A login shell (<literal>$SHELL -l</literal>) is started, so
+                    the profile is sourced and your real <literal>PATH</literal>
+                    is rebuilt (commands such as <literal>claude</literal> or
+                    <literal>node</literal> resolve even when Scilab was launched
+                    from the Finder/<literal>.app</literal>).
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Multiple independent sessions: each call to
+                    <literal>terminal()</literal> opens a new terminal with its own
+                    shell, in a dockable tab that can be floated or grouped with the
+                    console, Variable Browser, SciNotes, etc.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Configurable from
+                    <emphasis>Preferences &gt; Terminal</emphasis> (shell override,
+                    starting directory, scrollback, audible bell) and
+                    <emphasis>Preferences &gt; Fonts</emphasis> (the
+                    <literal>Terminal</literal> font).
+                </para>
+            </listitem>
+        </itemizedlist>
+        <para>
+            It is also available from the
+            <emphasis>Applications &gt; Terminal</emphasis> menu.
+        </para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+terminal()
+        ]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="unix_g">unix_g</link>
+            </member>
+            <member>
+                <link linkend="host">host</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2027.0.0</revnumber>
+                <revremark>Function terminal introduced.</revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>
