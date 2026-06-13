@@ -40,6 +40,7 @@ import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 
 import org.scilab.modules.action_binding.InterpreterManagement;
+import org.scilab.modules.commons.ScilabConstants;
 import org.scilab.modules.commons.gui.ScilabGUIUtilities;
 import org.scilab.modules.gui.bridge.console.SwingScilabConsole;
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
@@ -56,6 +57,7 @@ import org.scilab.modules.gui.menuitem.ScilabMenuItem;
 import org.scilab.modules.gui.tab.SimpleTab;
 import org.scilab.modules.gui.tabfactory.ScilabTabFactory;
 import org.scilab.modules.gui.textbox.ScilabTextBox;
+import org.scilab.modules.gui.utils.MenuBarBuilder;
 import org.scilab.modules.gui.textbox.TextBox;
 import org.scilab.modules.gui.toolbar.ScilabToolBar;
 import org.scilab.modules.gui.toolbar.ToolBar;
@@ -182,10 +184,32 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
     }
 
     /**
-     * A minimal but non-null menu bar (File: Close; Help) - required so the tab,
-     * when active, does not blank the parent window's / macOS screen menu bar.
+     * Build the terminal tab's menu bar. Uses the full Scilab main menu bar (the
+     * same {@code main_menubar.xml} the console builds from) so that focusing the
+     * terminal keeps the complete menu (File / Edit / Control / Applications / ?)
+     * on the parent window and the macOS screen menu - rather than swapping in a
+     * stripped-down menu that only reappears when the console regains focus.
+     * Falls back to a minimal File/? menu if the XML cannot be loaded (a menu bar
+     * must be non-null, else BarUpdater blanks the window menu when this tab is
+     * active).
      */
     private MenuBar createMenuBar() {
+        try {
+            MenuBar full = MenuBarBuilder.buildMenuBar(ScilabConstants.SCI + "/modules/gui/etc/main_menubar.xml");
+            if (full != null) {
+                return full;
+            }
+        } catch (Throwable t) {
+            // fall through to the minimal menu bar below
+        }
+        return createMinimalMenuBar();
+    }
+
+    /**
+     * A minimal but non-null menu bar (File: Close; Help) - fallback used only if
+     * the full main menu bar cannot be built.
+     */
+    private MenuBar createMinimalMenuBar() {
         MenuBar menuBar = ScilabMenuBar.createMenuBar();
 
         Menu fileMenu = ScilabMenu.createMenu();
