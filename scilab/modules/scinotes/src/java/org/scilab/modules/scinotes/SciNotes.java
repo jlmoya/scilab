@@ -1117,6 +1117,8 @@ public class SciNotes extends SwingScilabDockablePanel {
 
         File newSavedFile = new File(fileToSave);
 
+        // do not let our own write bounce back from the file monitor as an external change
+        SciNotesFileWatcher.getInstance().suppress(newSavedFile);
         if (!SaveFile.doSave(textPaneAt, indexTab, newSavedFile, editorKit)) {
             return false;
         }
@@ -1125,6 +1127,8 @@ public class SciNotes extends SwingScilabDockablePanel {
         styledDocument.setContentModified(false);
 
         textPaneAt.setLastModified(newSavedFile.lastModified());
+        // a save-as may introduce a new directory to watch
+        SciNotesFileWatcher.getInstance().refresh();
 
         if (textPaneAt.getName() == null) {
             String name = getTabPane().getScilabTitleAt(indexTab);
@@ -2260,6 +2264,8 @@ public class SciNotes extends SwingScilabDockablePanel {
             getTabPane().setTitleAt(getTabPane().getSelectedIndex(), f.getName());
             setTitle(theTextPane.getTitle());
             styleDocument.setContentModified(false);
+            // watch this file's directory for live external changes (auto-reload)
+            SciNotesFileWatcher.getInstance().refresh();
             styleDocument.enableUndoManager();
 
             if (styleDocument.getBinary()) {
