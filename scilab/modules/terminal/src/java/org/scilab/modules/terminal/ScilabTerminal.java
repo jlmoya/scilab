@@ -36,8 +36,10 @@ import com.jediterm.terminal.ui.settings.SettingsProvider;
 
 import org.scilab.modules.action_binding.InterpreterManagement;
 import org.scilab.modules.commons.gui.ScilabGUIUtilities;
+import org.scilab.modules.gui.bridge.console.SwingScilabConsole;
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
 import org.scilab.modules.gui.bridge.window.SwingScilabWindow;
+import org.scilab.modules.gui.console.ScilabConsole;
 import org.scilab.modules.gui.events.callback.CommonCallBack;
 import org.scilab.modules.gui.menu.Menu;
 import org.scilab.modules.gui.menu.ScilabMenu;
@@ -326,15 +328,35 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
             lastError = "";
             String id = UUID.randomUUID().toString();
             SwingScilabDockablePanel tab = TerminalTab.getTerminalInstance(id);
-            SwingScilabWindow window = SwingScilabWindow.createWindow(true);
+            // Open docked into the main (console) window so it appears as a tab next
+            // to the console - the console tab (and its full menu bar) stays one click
+            // away. Fall back to a fresh window if the console is not available.
+            SwingScilabWindow window = getMainWindow();
+            if (window == null) {
+                window = SwingScilabWindow.createWindow(true);
+                window.setLocation(0, 0);
+                window.setSize(800, 500);
+                window.setVisible(true);
+            }
             window.addTab(tab);
-            window.setLocation(0, 0);
-            window.setSize(800, 500);
-            window.setVisible(true);
             ScilabGUIUtilities.toFront(tab, TITLE);
         } catch (Throwable t) {
             lastError = String.valueOf(t);
             t.printStackTrace();
+        }
+    }
+
+    /**
+     * @return the main Scilab window (the one hosting the console), or null if the
+     * console is not up (e.g. -nw mode).
+     */
+    private static SwingScilabWindow getMainWindow() {
+        try {
+            SwingScilabConsole console = (SwingScilabConsole) ScilabConsole.getConsole().getAsSimpleConsole();
+            SwingScilabDockablePanel consoleTab = (SwingScilabDockablePanel) console.getParent();
+            return SwingScilabWindow.allScilabWindows.get(consoleTab.getParentWindowId());
+        } catch (Throwable t) {
+            return null;
         }
     }
 
