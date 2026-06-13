@@ -34,6 +34,9 @@ import com.jediterm.terminal.ui.JediTermWidget;
 import com.jediterm.terminal.ui.settings.DefaultSettingsProvider;
 import com.jediterm.terminal.ui.settings.SettingsProvider;
 
+import org.flexdock.docking.Dockable;
+import org.flexdock.docking.DockingConstants;
+import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.DockingPort;
 
 import org.scilab.modules.action_binding.InterpreterManagement;
@@ -82,6 +85,20 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
 
     private static final int DEFAULT_COLS = 100;
     private static final int DEFAULT_ROWS = 30;
+
+    // Persistent ids of the default desktop tool tabs, taken verbatim from
+    // modules/gui/etc/integratedConfiguration.xml. resetDesktop() re-creates the
+    // classic split layout (File Browser west | Console center | Variable Browser /
+    // Command History / News feed east) from these, then docks the terminal south
+    // of the console.
+    private static final String ID_CONSOLE      = "00000000-0000-0000-0000-000000000000";
+    private static final String ID_FILEBROWSER  = "3b649047-6a71-4998-bd8e-00d367a4793d";
+    private static final String ID_VARBROWSER   = "3b649047-6a71-4998-bd8e-00d367a4793c";
+    private static final String ID_CMDHISTORY   = "856207f6-0a60-47a0-b9f4-232feedd4bf4";
+    private static final String ID_NEWSFEED     = "DC0957B3-81DA-4E39-B0B5-E93B35412162";
+
+    /** Fraction of the console column given to the terminal docked beneath it. */
+    private static final float TERMINAL_SOUTH_RATIO = 0.30f;
 
     /** All currently-open terminals, keyed by tab uuid (insertion-ordered). */
     private static final Map<String, ScilabTerminal> INSTANCES =
@@ -331,22 +348,80 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
             lastError = "";
             String id = UUID.randomUUID().toString();
             SwingScilabDockablePanel tab = TerminalTab.getTerminalInstance(id);
-            // Open docked into the main (console) window so it appears as a tab next
-            // to the console - the console tab (and its full menu bar) stays one click
-            // away. Fall back to a fresh window if the console is not available.
+            // Dock the new terminal beneath the console. If a terminal is already
+            // open, tab the new one onto it so every session shares one region
+            // below the console (like the terminal pane in JetBrains IDEs). Fall
+            // back to a fresh window only if the console is not available.
             SwingScilabWindow window = getMainWindow();
             if (window == null) {
                 window = SwingScilabWindow.createWindow(true);
                 window.setLocation(0, 0);
                 window.setSize(800, 500);
                 window.setVisible(true);
+                window.addTab(tab);
+            } else {
+                dockTerminal(tab, window);
             }
-            window.addTab(tab);
             ScilabGUIUtilities.toFront(tab, TITLE);
         } catch (Throwable t) {
             lastError = String.valueOf(t);
             t.printStackTrace();
         }
+    }
+
+    /**
+     * Dock {@code tab} (a terminal) into {@code window}: as a new tab on the
+     * existing terminal region if one is open, otherwise as a split south of the
+     * console. Called on the EDT.
+     */
+    private static void dockTerminal(SwingScilabDockablePanel tab, SwingScilabWindow window) {
+        SwingScilabDockablePanel existing = firstOpenTerminalExcluding(tab);
+        if (existing != null && DockingManager.isDocked((Dockable) existing)) {
+            DockingManager.dock((Dockable) tab, (Dockable) existing, DockingConstants.CENTER_REGION);
+            return;
+        }
+        SwingScilabDockablePanel console = findDockedPanel(ID_CONSOLE);
+        if (console != null && DockingManager.isDocked((Dockable) console)) {
+            DockingManager.dock((Dockable) tab, (Dockable) console, DockingConstants.SOUTH_REGION, TERMINAL_SOUTH_RATIO);
+        } else {
+            window.addTab(tab);
+        }
+    }
+
+    /** @return the first open terminal panel other than {@code self}, or null. */
+    private static SwingScilabDockablePanel firstOpenTerminalExcluding(SwingScilabDockablePanel self) {
+        synchronized (INSTANCES) {
+            for (ScilabTerminal t : INSTANCES.values()) {
+                if (t != self) {
+                    return t;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Find the live dockable panel with the given persistent id by scanning every
+     * Scilab window's docking port.
+     * @return the panel, or null if it is not currently open
+     */
+    private static SwingScilabDockablePanel findDockedPanel(String persistentId) {
+        for (SwingScilabWindow w : new ArrayList<SwingScilabWindow>(SwingScilabWindow.allScilabWindows.values())) {
+            if (!(w instanceof SwingScilabDockingWindow)) {
+                continue;
+            }
+            DockingPort port = ((SwingScilabDockingWindow) w).getDockingPort();
+            if (port == null) {
+                continue;
+            }
+            for (Object o : port.getDockables()) {
+                if (o instanceof SwingScilabDockablePanel
+                        && persistentId.equals(((SwingScilabDockablePanel) o).getPersistentId())) {
+                    return (SwingScilabDockablePanel) o;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -386,51 +461,18 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         try {
             lastError = "";
             SwingScilabWindow main = getMainWindow();
-            if (main != null) {
-                for (SwingScilabWindow w : new ArrayList<SwingScilabWindow>(SwingScilabWindow.allScilabWindows.values())) {
-                    if (w == main || !(w instanceof SwingScilabDockingWindow)) {
-                        continue;
-                    }
-                    DockingPort port = ((SwingScilabDockingWindow) w).getDockingPort();
-                    if (port == null) {
-                        continue;
-                    }
-                    for (Object o : new ArrayList<Object>(port.getDockables())) {
-                        if (o instanceof SwingScilabDockablePanel && !isGraphicsTab((SwingScilabDockablePanel) o)) {
-                            try {
-                                main.addTab((SwingScilabDockablePanel) o);
-                            } catch (Throwable ignore) { }
-                        }
-                    }
-                    if (((SwingScilabDockingWindow) w).getNbDockedObjects() == 0) {
-                        try {
-                            w.close();
-                        } catch (Throwable ignore) { }
-                    }
-                }
+            if (main == null) {
+                return;
             }
             // Close any "Empty tab" placeholders left by failed restores of a
-            // stale window layout (e.g. an Xcos diagram whose file is gone).
-            String emptyName = Messages.gettext("Empty tab");
-            for (SwingScilabWindow w : new ArrayList<SwingScilabWindow>(SwingScilabWindow.allScilabWindows.values())) {
-                if (!(w instanceof SwingScilabDockingWindow)) {
-                    continue;
-                }
-                DockingPort p = ((SwingScilabDockingWindow) w).getDockingPort();
-                if (p == null) {
-                    continue;
-                }
-                for (Object o : new ArrayList<Object>(p.getDockables())) {
-                    if (o instanceof SwingScilabDockablePanel
-                            && emptyName.equals(((SwingScilabDockablePanel) o).getName())) {
-                        try {
-                            ClosingOperationsManager.startClosingOperationWithoutSave((SwingScilabDockablePanel) o);
-                        } catch (Throwable ignore) { }
-                    }
-                }
-            }
-
-            // Make sure a terminal is shown, docked in the main window.
+            // stale window layout (e.g. an Xcos diagram whose file is gone), so
+            // they are not pulled into the rebuilt layout.
+            closeEmptyTabs();
+            // Rebuild the classic split layout (File Browser west | Console center
+            // | Variable Browser / Command History / News feed east), plus the
+            // terminal(s) south of the console.
+            rebuildDefaultLayout(main);
+            // Guarantee a terminal is shown, docked beneath the console.
             ScilabTerminal term = null;
             synchronized (INSTANCES) {
                 for (ScilabTerminal t : INSTANCES.values()) {
@@ -443,14 +485,120 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
             } else {
                 ScilabGUIUtilities.toFront(term, TITLE);
             }
+            // Close any windows left empty after re-docking everything into main.
+            closeEmptyDockingWindows(main);
         } catch (Throwable t) {
             lastError = String.valueOf(t);
             t.printStackTrace();
         }
     }
 
-    private static boolean isGraphicsTab(SwingScilabDockablePanel tab) {
-        return tab.getClass().getName().contains("SwingScilabAxes");
+    /**
+     * Re-create the default desktop split layout in {@code main} from whichever
+     * of the standard tool tabs are currently open, mirroring
+     * {@code integratedConfiguration.xml}, then dock every open terminal south of
+     * the console (tabbed together). Tabs not currently open are simply skipped;
+     * graphics figures are never touched. Must run on the EDT.
+     */
+    private static void rebuildDefaultLayout(SwingScilabWindow main) {
+        SwingScilabDockablePanel console = findDockedPanel(ID_CONSOLE);
+        if (console == null) {
+            return; // nothing to anchor the layout on
+        }
+        SwingScilabDockablePanel fileBrowser = findDockedPanel(ID_FILEBROWSER);
+        SwingScilabDockablePanel varBrowser  = findDockedPanel(ID_VARBROWSER);
+        SwingScilabDockablePanel cmdHistory  = findDockedPanel(ID_CMDHISTORY);
+        SwingScilabDockablePanel newsFeed    = findDockedPanel(ID_NEWSFEED);
+        List<ScilabTerminal> terminals;
+        synchronized (INSTANCES) {
+            terminals = new ArrayList<ScilabTerminal>(INSTANCES.values());
+        }
+
+        // Pull the movable tabs out so the re-dock yields clean splits rather
+        // than stacking them onto whatever port they currently share.
+        for (SwingScilabDockablePanel p : new SwingScilabDockablePanel[] { fileBrowser, varBrowser, cmdHistory, newsFeed }) {
+            if (p != null) {
+                try {
+                    DockingManager.undock((Dockable) p);
+                } catch (Throwable ignore) { }
+            }
+        }
+        for (ScilabTerminal t : terminals) {
+            try {
+                DockingManager.undock((Dockable) t);
+            } catch (Throwable ignore) { }
+        }
+
+        // Console becomes the sole root of the main docking port.
+        DockingManager.dock((Dockable) console, main.getDockingPort(), DockingConstants.CENTER_REGION);
+
+        if (fileBrowser != null) {
+            DockingManager.dock((Dockable) fileBrowser, (Dockable) console, DockingConstants.WEST_REGION, 0.27f);
+        }
+        SwingScilabDockablePanel eastAnchor = null;
+        if (varBrowser != null) {
+            DockingManager.dock((Dockable) varBrowser, (Dockable) console, DockingConstants.EAST_REGION, 0.35f);
+            eastAnchor = varBrowser;
+        }
+        if (cmdHistory != null) {
+            if (eastAnchor != null) {
+                DockingManager.dock((Dockable) cmdHistory, (Dockable) eastAnchor, DockingConstants.SOUTH_REGION, 0.70f);
+            } else {
+                DockingManager.dock((Dockable) cmdHistory, (Dockable) console, DockingConstants.EAST_REGION, 0.35f);
+            }
+            eastAnchor = cmdHistory;
+        }
+        if (newsFeed != null) {
+            if (eastAnchor != null) {
+                DockingManager.dock((Dockable) newsFeed, (Dockable) eastAnchor, DockingConstants.SOUTH_REGION, 0.50f);
+            } else {
+                DockingManager.dock((Dockable) newsFeed, (Dockable) console, DockingConstants.EAST_REGION, 0.35f);
+            }
+        }
+
+        if (!terminals.isEmpty()) {
+            SwingScilabDockablePanel first = terminals.get(0);
+            DockingManager.dock((Dockable) first, (Dockable) console, DockingConstants.SOUTH_REGION, TERMINAL_SOUTH_RATIO);
+            for (int i = 1; i < terminals.size(); i++) {
+                DockingManager.dock((Dockable) terminals.get(i), (Dockable) first, DockingConstants.CENTER_REGION);
+            }
+        }
+    }
+
+    /** Close stray "Empty tab" restore placeholders in every window. */
+    private static void closeEmptyTabs() {
+        String emptyName = Messages.gettext("Empty tab");
+        for (SwingScilabWindow w : new ArrayList<SwingScilabWindow>(SwingScilabWindow.allScilabWindows.values())) {
+            if (!(w instanceof SwingScilabDockingWindow)) {
+                continue;
+            }
+            DockingPort p = ((SwingScilabDockingWindow) w).getDockingPort();
+            if (p == null) {
+                continue;
+            }
+            for (Object o : new ArrayList<Object>(p.getDockables())) {
+                if (o instanceof SwingScilabDockablePanel
+                        && emptyName.equals(((SwingScilabDockablePanel) o).getName())) {
+                    try {
+                        ClosingOperationsManager.startClosingOperationWithoutSave((SwingScilabDockablePanel) o);
+                    } catch (Throwable ignore) { }
+                }
+            }
+        }
+    }
+
+    /** Close every docking window other than {@code main} that holds no tabs. */
+    private static void closeEmptyDockingWindows(SwingScilabWindow main) {
+        for (SwingScilabWindow w : new ArrayList<SwingScilabWindow>(SwingScilabWindow.allScilabWindows.values())) {
+            if (w == main || !(w instanceof SwingScilabDockingWindow)) {
+                continue;
+            }
+            if (((SwingScilabDockingWindow) w).getNbDockedObjects() == 0) {
+                try {
+                    w.close();
+                } catch (Throwable ignore) { }
+            }
+        }
     }
 
     /**
