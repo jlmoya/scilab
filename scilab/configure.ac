@@ -1010,7 +1010,7 @@ if test "$with_javasci" != no -o "$with_gui" != no -o "$enable_build_help" != no
 
      AC_JAVA_DETECT_JVM
      case "$ac_java_jvm_version" in
-        17)
+        17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25)
         ;;
         *)
             AC_MSG_ERROR([Wrong version of Java. Expected at least 17. Found $ac_java_jvm_version])

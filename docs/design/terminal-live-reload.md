@@ -148,7 +148,9 @@ Phases 3–4 may proceed in parallel with/after Phase 2.
 - **macOS native libs:** JNA + JOGL precedent says runtime extraction + ad-hoc signing works; a C gateway's libtool lib still needs the `minos 11.0` + codesign step from `reapply-macos-fixes.sh`.
 - **Interpreter reload:** only when idle (use the queue, never mutate Context from a watcher thread); respect `funcprot`; expect "finishes on old code" mid-call.
 - **Watcher hygiene:** debounce bursts; filter Scilab's own writes to avoid reload loops.
-- **Versions:** pick a JDK-17-compatible JediTerm and the matching `kotlin-stdlib`.
+- **Versions:** JediTerm + `kotlin-stdlib` must be JDK-25-compatible (Scilab now targets JDK 25
+  at all levels). The pinned stack — JediTerm 3.70 / kotlin-stdlib 2.1.21 / JNA 5.14 — is proven
+  on JDK 25 (the Phase-1 spike compiles clean to Java-25 bytecode in `terminal-spike/out25/`).
 
 ## 7. Deferred / explicitly out of scope for now
 - Windows (a ConPTY `TtyConnector` + the Windows watcher backend).

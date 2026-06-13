@@ -10,7 +10,7 @@ The official reference is the GitLab wiki
 (which uses **conda**). This guide uses **Homebrew**.
 
 > - Build system: GNU **Autotools** (`./configure` → `make`), **not** CMake.
-> - Java: **JDK 25** (the upgrade from the branch's JDK 17 is validated — see §7). `ant` via sdkman/Homebrew.
+> - Java: **JDK 25** at every level — runtime, build toolchain, and language level (`source/target=25`, Java-25 bytecode; see §7). `ant` via sdkman/Homebrew.
 > - Source root is the inner `scilab/scilab/` directory.
 
 ---
@@ -213,8 +213,14 @@ inside Scilab: `genlib("foolib", SCI+"/modules/foo/macros", %t)`.
 
 ## 7. JDK 25 notes
 
-The branch targets JDK 17; building/running on **JDK 25** is validated (compiles + links, CLI,
-and GUI with graphics all work). Two JDK-25 specifics:
+The branch is fully migrated to **JDK 25 at all levels** — runtime, build toolchain, *and* Java
+language level. `source="25" target="25"` is set in `build.incl.xml.in` (the template that
+generates `build.incl.xml`), `build.qa.incl.xml`, and `modules/javasci/build.xml`; emitted
+bytecode is **major version 69** (Java 25), not 61 (Java 17). `configure` detects and accepts
+JDK 17–25 — `m4/java.m4` probes `java.util.SequencedCollection` (21) and `java.lang.IO` (25),
+and the version gate accepts `17|…|25` (mirrored into the generated `configure`). Validated
+end-to-end: compiles + links, all jars at bytecode 69, CLI, GUI with graphics, and virtual
+threads (`Thread.ofVirtual()`) all work. Two JDK-25 specifics worth knowing:
 
 - **`LibraryPath.addPath` (committed fix).** `org.scilab.modules.jvm.LibraryPath.addPath`
   augments `java.library.path` at runtime (the launcher seeds it empty, then the C side adds

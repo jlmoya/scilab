@@ -14994,6 +14994,52 @@ EOF
             fi
 
 
+    # The interface java.util.SequencedCollection is new in Java 21
+
+    cat << \EOF > conftest.java
+import java.util.SequencedCollection;
+
+public class conftest {
+    public static void main(String[] argv) {
+    }
+}
+EOF
+
+    CLASSPATH=$ac_java_classpath
+    export CLASSPATH
+    cmd="$JAVAC ${JAVAC_FLAGS} conftest.java"
+    if (echo $cmd >&5 ; eval $cmd >conftest.java.output 2>&5) ; then
+        echo "yes" >&5
+        ac_java_jvm_version=21
+        if test -f conftest.java.output; then
+           rm conftest.java.output
+        fi
+    fi
+
+
+    # The class java.lang.IO is new in Java 25
+
+    cat << \EOF > conftest.java
+import java.lang.IO;
+
+public class conftest {
+    public static void main(String[] argv) {
+    }
+}
+EOF
+
+    CLASSPATH=$ac_java_classpath
+    export CLASSPATH
+    cmd="$JAVAC ${JAVAC_FLAGS} conftest.java"
+    if (echo $cmd >&5 ; eval $cmd >conftest.java.output 2>&5) ; then
+        echo "yes" >&5
+        ac_java_jvm_version=25
+        if test -f conftest.java.output; then
+           rm conftest.java.output
+        fi
+    fi
+
+
     if test "x$ac_java_jvm_version" = "x" ; then
         as_fn_error $? "Could not detect Java version, 1.4 or newer is required" "$LINENO" 5
     fi
@@ -15003,7 +15049,7 @@ printf "%s\n" "$ac_java_jvm_version" >&6; }
 
 
      case "$ac_java_jvm_version" in
-        17)
+        17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25)
         ;;
         *)
             as_fn_error $? "Wrong version of Java. Expected at least 17. Found $ac_java_jvm_version" "$LINENO" 5

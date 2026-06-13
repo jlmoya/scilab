@@ -337,6 +337,12 @@ Maybe JAVA_HOME is pointing to a JRE (Java Runtime Environment) instead of a JDK
     # The class java.util.random.RandomGenerator is new in Java 17
     AC_JAVA_TRY_COMPILE([import java.util.random.RandomGenerator;], , "no", ac_java_jvm_version=17)
 
+    # The interface java.util.SequencedCollection is new in Java 21
+    AC_JAVA_TRY_COMPILE([import java.util.SequencedCollection;], , "no", ac_java_jvm_version=21)
+
+    # The class java.lang.IO is new in Java 25
+    AC_JAVA_TRY_COMPILE([import java.lang.IO;], , "no", ac_java_jvm_version=25)
+
     if test "x$ac_java_jvm_version" = "x" ; then
         AC_MSG_ERROR([Could not detect Java version, 1.4 or newer is required])
     fi
