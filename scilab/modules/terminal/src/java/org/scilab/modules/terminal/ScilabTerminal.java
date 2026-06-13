@@ -101,6 +101,11 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
 
     /** Fraction of the console column given to the terminal docked beneath it. */
     private static final float TERMINAL_SOUTH_RATIO = 0.30f;
+    /** Fraction of the width given to the File Browser column (west). */
+    private static final float WEST_COLUMN_RATIO = 0.27f;
+    /** Fraction of the remaining width given to the east tool column (Variable
+     *  Browser / Command History / News feed); the Console keeps the rest. */
+    private static final float EAST_COLUMN_RATIO = 0.22f;
 
     /** All currently-open terminals, keyed by tab uuid (insertion-ordered). */
     private static final Map<String, ScilabTerminal> INSTANCES =
@@ -557,18 +562,18 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         DockingManager.dock((Dockable) console, main.getDockingPort(), DockingConstants.CENTER_REGION);
 
         if (fileBrowser != null) {
-            DockingManager.dock((Dockable) fileBrowser, (Dockable) console, DockingConstants.WEST_REGION, 0.27f);
+            DockingManager.dock((Dockable) fileBrowser, (Dockable) console, DockingConstants.WEST_REGION, WEST_COLUMN_RATIO);
         }
         SwingScilabDockablePanel eastAnchor = null;
         if (varBrowser != null) {
-            DockingManager.dock((Dockable) varBrowser, (Dockable) console, DockingConstants.EAST_REGION, 0.35f);
+            DockingManager.dock((Dockable) varBrowser, (Dockable) console, DockingConstants.EAST_REGION, EAST_COLUMN_RATIO);
             eastAnchor = varBrowser;
         }
         if (cmdHistory != null) {
             if (eastAnchor != null) {
                 DockingManager.dock((Dockable) cmdHistory, (Dockable) eastAnchor, DockingConstants.SOUTH_REGION, 0.70f);
             } else {
-                DockingManager.dock((Dockable) cmdHistory, (Dockable) console, DockingConstants.EAST_REGION, 0.35f);
+                DockingManager.dock((Dockable) cmdHistory, (Dockable) console, DockingConstants.EAST_REGION, EAST_COLUMN_RATIO);
             }
             eastAnchor = cmdHistory;
         }
@@ -576,7 +581,7 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
             if (eastAnchor != null) {
                 DockingManager.dock((Dockable) newsFeed, (Dockable) eastAnchor, DockingConstants.SOUTH_REGION, 0.50f);
             } else {
-                DockingManager.dock((Dockable) newsFeed, (Dockable) console, DockingConstants.EAST_REGION, 0.35f);
+                DockingManager.dock((Dockable) newsFeed, (Dockable) console, DockingConstants.EAST_REGION, EAST_COLUMN_RATIO);
             }
         }
 
