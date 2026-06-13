@@ -34,10 +34,13 @@ import com.jediterm.terminal.ui.JediTermWidget;
 import com.jediterm.terminal.ui.settings.DefaultSettingsProvider;
 import com.jediterm.terminal.ui.settings.SettingsProvider;
 
+import org.flexdock.docking.DockingPort;
+
 import org.scilab.modules.action_binding.InterpreterManagement;
 import org.scilab.modules.commons.gui.ScilabGUIUtilities;
 import org.scilab.modules.gui.bridge.console.SwingScilabConsole;
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
+import org.scilab.modules.gui.bridge.window.SwingScilabDockingWindow;
 import org.scilab.modules.gui.bridge.window.SwingScilabWindow;
 import org.scilab.modules.gui.console.ScilabConsole;
 import org.scilab.modules.gui.events.callback.CommonCallBack;
@@ -358,6 +361,75 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         } catch (Throwable t) {
             return null;
         }
+    }
+
+    /**
+     * Re-dock every tool tab (Variable Browser, File Browser, Command History,
+     * SciNotes, Terminal, ...) into the main window and make sure a terminal is
+     * shown there, so the user can recover from a scattered/undockable desktop.
+     * Graphics figures are left untouched. Entry point for the resetdesktop()
+     * command and the Applications -&gt; Reset Desktop menu item.
+     */
+    public static void resetDesktop() {
+        if (SwingUtilities.isEventDispatchThread()) {
+            resetDesktopSafe();
+        } else {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    resetDesktopSafe();
+                }
+            });
+        }
+    }
+
+    private static void resetDesktopSafe() {
+        try {
+            lastError = "";
+            SwingScilabWindow main = getMainWindow();
+            if (main != null) {
+                for (SwingScilabWindow w : new ArrayList<SwingScilabWindow>(SwingScilabWindow.allScilabWindows.values())) {
+                    if (w == main || !(w instanceof SwingScilabDockingWindow)) {
+                        continue;
+                    }
+                    DockingPort port = ((SwingScilabDockingWindow) w).getDockingPort();
+                    if (port == null) {
+                        continue;
+                    }
+                    for (Object o : new ArrayList<Object>(port.getDockables())) {
+                        if (o instanceof SwingScilabDockablePanel && !isGraphicsTab((SwingScilabDockablePanel) o)) {
+                            try {
+                                main.addTab((SwingScilabDockablePanel) o);
+                            } catch (Throwable ignore) { }
+                        }
+                    }
+                    if (((SwingScilabDockingWindow) w).getNbDockedObjects() == 0) {
+                        try {
+                            w.close();
+                        } catch (Throwable ignore) { }
+                    }
+                }
+            }
+            // Make sure a terminal is shown, docked in the main window.
+            ScilabTerminal term = null;
+            synchronized (INSTANCES) {
+                for (ScilabTerminal t : INSTANCES.values()) {
+                    term = t;
+                    break;
+                }
+            }
+            if (term == null) {
+                newTerminalSafe();
+            } else {
+                ScilabGUIUtilities.toFront(term, TITLE);
+            }
+        } catch (Throwable t) {
+            lastError = String.valueOf(t);
+            t.printStackTrace();
+        }
+    }
+
+    private static boolean isGraphicsTab(SwingScilabDockablePanel tab) {
+        return tab.getClass().getName().contains("SwingScilabAxes");
     }
 
     /**
