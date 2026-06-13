@@ -409,6 +409,27 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
                     }
                 }
             }
+            // Close any "Empty tab" placeholders left by failed restores of a
+            // stale window layout (e.g. an Xcos diagram whose file is gone).
+            String emptyName = Messages.gettext("Empty tab");
+            for (SwingScilabWindow w : new ArrayList<SwingScilabWindow>(SwingScilabWindow.allScilabWindows.values())) {
+                if (!(w instanceof SwingScilabDockingWindow)) {
+                    continue;
+                }
+                DockingPort p = ((SwingScilabDockingWindow) w).getDockingPort();
+                if (p == null) {
+                    continue;
+                }
+                for (Object o : new ArrayList<Object>(p.getDockables())) {
+                    if (o instanceof SwingScilabDockablePanel
+                            && emptyName.equals(((SwingScilabDockablePanel) o).getName())) {
+                        try {
+                            ClosingOperationsManager.startClosingOperationWithoutSave((SwingScilabDockablePanel) o);
+                        } catch (Throwable ignore) { }
+                    }
+                }
+            }
+
             // Make sure a terminal is shown, docked in the main window.
             ScilabTerminal term = null;
             synchronized (INSTANCES) {
