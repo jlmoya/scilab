@@ -61,6 +61,7 @@ public final class Pty {
         // not a fixed register arg, or JNA corrupts memory. Declare it with Object...
         int ioctl(int fd, long request, Object... args);
         int waitpid(int pid, IntByReference status, int options);
+        int kill(int pid, int sig);
         String strerror(int errnum);
     }
 
@@ -70,6 +71,9 @@ public final class Pty {
     private static final short POSIX_SPAWN_SETSID = 0x0400;
     private static final long  TIOCSWINSZ         = 0x80087467L;
     private static final long  FIONREAD           = 0x4004667FL;
+    private static final int   SIGHUP             = 1;
+    private static final int   SIGKILL            = 9;
+    private static final int   WNOHANG            = 1;
 
     private int masterFd = -1;
     private int childPid = -1;
@@ -167,6 +171,33 @@ public final class Pty {
     public void close() {
         if (masterFd >= 0) {
             C.I.close(masterFd);
+            masterFd = -1;
+        }
+    }
+
+    /**
+     * Terminate the child shell and release the PTY. SIGHUP the child (a login
+     * shell hangs up and exits), close the master fd (which both hangs up the
+     * slave and unblocks any thread blocked in read() with EOF), then reap the
+     * child - SIGKILL as a last resort if it ignored SIGHUP. Idempotent and
+     * safe to call from any thread (e.g. a JVM shutdown hook). Without this the
+     * orphaned shell + a reader blocked on the master fd keep the JVM from
+     * exiting at Scilab quit.
+     */
+    public synchronized void terminate() {
+        final int pid = childPid;
+        if (pid > 0) {
+            C.I.kill(pid, SIGHUP);
+        }
+        close();
+        if (pid > 0) {
+            IntByReference status = new IntByReference();
+            if (C.I.waitpid(pid, status, WNOHANG) == 0) {
+                // still alive after SIGHUP -> force it and reap
+                C.I.kill(pid, SIGKILL);
+                C.I.waitpid(pid, status, 0);
+            }
+            childPid = -1;
         }
     }
 

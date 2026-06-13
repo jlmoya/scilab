@@ -57,6 +57,7 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
 
     private static SwingScilabDockablePanel terminalTab;
     private static volatile String lastError = "";
+    private static boolean shutdownHookRegistered = false;
 
     private transient Pty pty;
     private transient PtyTtyConnector connector;
@@ -121,8 +122,31 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
     public static SwingScilabDockablePanel createTerminalTab() {
         ScilabTerminal tab = new ScilabTerminal();
         terminalTab = tab;
+        registerShutdownHook();
         WindowsConfigurationManager.restorationFinished(tab);
         return tab;
+    }
+
+    /**
+     * Backstop for a non-graceful exit: ensure the child shell is killed and the
+     * PTY released even if etc/terminal.quit did not run. Registered lazily (when
+     * a terminal is actually opened) and guarded so it never throws if the JVM is
+     * already shutting down.
+     */
+    private static synchronized void registerShutdownHook() {
+        if (shutdownHookRegistered) {
+            return;
+        }
+        try {
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                public void run() {
+                    closeAllTerminals();
+                }
+            }, "scilab-terminal-shutdown"));
+            shutdownHookRegistered = true;
+        } catch (IllegalStateException alreadyShuttingDown) {
+            // nothing to do - quit hook handles teardown
+        }
     }
 
     /**
@@ -181,9 +205,19 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
     }
 
     /**
-     * Close the terminal tab and tear down the PTY (SIGHUP the child shell).
+     * Close the terminal tab and tear down the PTY (called when the tab is closed).
      */
     public static void closeTerminal() {
+        closeAllTerminals();
+    }
+
+    /**
+     * Tear down every open terminal: SIGHUP/close its PTY so the child shell dies
+     * and the JediTerm reader thread unblocks. Idempotent and thread-safe; invoked
+     * from etc/terminal.quit on Scilab shutdown and from the JVM shutdown hook, so
+     * a live shell never keeps the JVM from exiting.
+     */
+    public static synchronized void closeAllTerminals() {
         if (terminalTab instanceof ScilabTerminal) {
             ((ScilabTerminal) terminalTab).disposeShell();
         }
@@ -198,7 +232,7 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         } catch (Throwable ignore) { }
         try {
             if (pty != null) {
-                pty.close();
+                pty.terminate();
             }
         } catch (Throwable ignore) { }
     }

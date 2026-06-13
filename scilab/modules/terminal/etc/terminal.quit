@@ -7,3 +7,10 @@
 // and continues to be available under such terms.
 // For more information, see the COPYING file which you should have received
 // along with this program.
+
+// Tear down any open terminal so the child shell is killed and the JediTerm
+// reader thread unblocks - otherwise a live PTY keeps the JVM from exiting.
+if getscilabmode() == "STD" then
+    jimport org.scilab.modules.terminal.ScilabTerminal
+    ScilabTerminal.closeAllTerminals();
+end
