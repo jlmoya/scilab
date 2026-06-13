@@ -1058,6 +1058,9 @@ if test "$with_javasci" != no -o "$with_gui" != no -o "$enable_build_help" != no
                 AC_JAVA_CHECK_JAR([annotations],[org.jetbrains.annotations.NotNull],[Scilab terminal - JetBrains annotations (JediTerm dependency)])
                 ANNOTATIONS=$PACKAGE_JAR_FILE
                 AC_SUBST(ANNOTATIONS)
+                AC_JAVA_CHECK_JAR([directory-watcher],[io.methvin.watcher.DirectoryWatcher],[Scilab live file monitor - io.methvin directory-watcher (native FSEvents)])
+                DIRECTORY_WATCHER=$PACKAGE_JAR_FILE
+                AC_SUBST(DIRECTORY_WATCHER)
 
                 # JCEF (from https://github.com/jcefmaven/jcefmaven/releases)
                 AC_JAVA_CHECK_JAR([jcef],[org.cef.CefApp],[Scilab Embedded browser - Java Chromium Embedded Framework])
