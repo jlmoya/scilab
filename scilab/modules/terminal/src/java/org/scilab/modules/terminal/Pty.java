@@ -188,17 +188,30 @@ public final class Pty {
         final int pid = childPid;
         if (pid > 0) {
             C.I.kill(pid, SIGHUP);
-        }
-        close();
-        if (pid > 0) {
             IntByReference status = new IntByReference();
-            if (C.I.waitpid(pid, status, WNOHANG) == 0) {
-                // still alive after SIGHUP -> force it and reap
+            // Give the shell a brief chance to hang up cleanly, then force it.
+            // Reaping the child BEFORE closing the master makes the slave close,
+            // so a thread blocked in read() on the still-open master gets EOF.
+            boolean reaped = false;
+            for (int i = 0; i < 10 && !reaped; i++) {
+                if (C.I.waitpid(pid, status, WNOHANG) != 0) {
+                    reaped = true;
+                } else {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
+            if (!reaped) {
                 C.I.kill(pid, SIGKILL);
                 C.I.waitpid(pid, status, 0);
             }
             childPid = -1;
         }
+        close();
     }
 
     public int masterFd() {

@@ -21,19 +21,19 @@ import org.scilab.modules.gui.tabfactory.ScilabTabFactory;
 import org.scilab.modules.gui.utils.ClosingOperationsManager;
 
 /**
- * Class to create the Terminal tab and register its closing operation
- * (which tears down the PTY).
+ * Creates a Terminal tab for a given uuid and registers its closing operation
+ * (which tears down that terminal's PTY).
  *
  * @author Jose Moya
  */
 public class TerminalTab {
 
     /**
-     * @param uuid the uuid to restore
+     * @param uuid the uuid of the terminal tab to create
      * @return a new Terminal tab
      */
-    public static SwingScilabDockablePanel getTerminalInstance(String uuid) {
-        final SwingScilabDockablePanel term = ScilabTerminal.createTerminalTab();
+    public static SwingScilabDockablePanel getTerminalInstance(final String uuid) {
+        final SwingScilabDockablePanel term = ScilabTerminal.createTerminalTab(uuid);
         ScilabTabFactory.getInstance().addToCache(term);
 
         ClosingOperationsManager.registerClosingOperation(term, new ClosingOperationsManager.ClosingOperation() {
@@ -45,7 +45,7 @@ public class TerminalTab {
 
             @Override
             public void destroy() {
-                ScilabTerminal.closeTerminal();
+                ScilabTerminal.closeTerminal(uuid);
             }
 
             @Override

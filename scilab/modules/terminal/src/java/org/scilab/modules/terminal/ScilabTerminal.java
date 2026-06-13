@@ -15,9 +15,11 @@ package org.scilab.modules.terminal;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -40,25 +42,32 @@ import org.scilab.modules.gui.utils.WindowsConfigurationManager;
  * Embedded terminal tab: a JediTerm VT emulator driven by our JNA {@link Pty},
  * hosted in a Scilab dockable panel - modelled on the Command History browser.
  *
+ * Multiple independent sessions are supported: each {@code terminal()} call opens
+ * a new tab with its own PTY/shell and a unique uuid, tracked in {@link #INSTANCES}.
+ * Terminals are ephemeral (a restored terminal would hold a dead shell), so the
+ * factory only recognises currently-open uuids - they are not restored across
+ * Scilab restarts.
+ *
  * Run any shell command, in particular {@code claude --dangerously-skip-permissions -c},
- * exactly like the terminal embedded in JetBrains IDEs. Opened by the {@code terminal()}
- * Scilab command (see macros/terminal.sci).
+ * exactly like the terminal embedded in JetBrains IDEs.
  *
  * @author Jose Moya
  */
 @SuppressWarnings(value = { "serial" })
 public final class ScilabTerminal extends SwingScilabDockablePanel implements SimpleTab {
 
-    public static final String TERMINALUUID = "b3a8f1c2-7d4e-4a6b-9c1f-2e5d6a7b8c90";
     public static final String TITLE = "Terminal";
 
     private static final int DEFAULT_COLS = 100;
     private static final int DEFAULT_ROWS = 30;
 
-    private static SwingScilabDockablePanel terminalTab;
+    /** All currently-open terminals, keyed by tab uuid (insertion-ordered). */
+    private static final Map<String, ScilabTerminal> INSTANCES =
+        Collections.synchronizedMap(new LinkedHashMap<String, ScilabTerminal>());
     private static volatile String lastError = "";
     private static boolean shutdownHookRegistered = false;
 
+    private final String uuid;
     private transient Pty pty;
     private transient PtyTtyConnector connector;
     private transient JediTermWidget widget;
@@ -70,8 +79,9 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
     /**
      * Constructor - builds the JediTerm widget on a freshly spawned login shell.
      */
-    private ScilabTerminal() {
-        super(TITLE, TERMINALUUID);
+    private ScilabTerminal(String uuid) {
+        super(TITLE, uuid);
+        this.uuid = uuid;
         addInfoBar(ScilabTextBox.createTextBox());
 
         widget = new JediTermWidget(DEFAULT_COLS, DEFAULT_ROWS, new DefaultSettingsProvider());
@@ -116,20 +126,123 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
     }
 
     /**
-     * Create a new terminal tab (called by the tab factory).
+     * Create a terminal tab bound to {@code uuid} and register it (called by the
+     * tab factory / the open path).
      * @return the corresponding tab
      */
-    public static SwingScilabDockablePanel createTerminalTab() {
-        ScilabTerminal tab = new ScilabTerminal();
-        terminalTab = tab;
+    public static SwingScilabDockablePanel createTerminalTab(String uuid) {
+        ScilabTerminal tab = new ScilabTerminal(uuid);
+        INSTANCES.put(uuid, tab);
         registerShutdownHook();
         WindowsConfigurationManager.restorationFinished(tab);
         return tab;
     }
 
     /**
-     * Backstop for a non-graceful exit: ensure the child shell is killed and the
-     * PTY released even if etc/terminal.quit did not run. Registered lazily (when
+     * Open a NEW terminal session in its own dockable window. Entry point for the
+     * {@code terminal()} macro; safe to call from the interpreter thread.
+     */
+    public static void openTerminal() {
+        if (SwingUtilities.isEventDispatchThread()) {
+            newTerminalSafe();
+        } else {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    newTerminalSafe();
+                }
+            });
+        }
+    }
+
+    private static void newTerminalSafe() {
+        try {
+            lastError = "";
+            String id = UUID.randomUUID().toString();
+            SwingScilabDockablePanel tab = TerminalTab.getTerminalInstance(id);
+            SwingScilabWindow window = SwingScilabWindow.createWindow(true);
+            window.addTab(tab);
+            window.setLocation(0, 0);
+            window.setSize(800, 500);
+            window.setVisible(true);
+            ScilabGUIUtilities.toFront(tab, TITLE);
+        } catch (Throwable t) {
+            lastError = String.valueOf(t);
+            t.printStackTrace();
+        }
+    }
+
+    /**
+     * @param uuid a tab uuid
+     * @return the open terminal for that uuid, or null (used by the tab factory)
+     */
+    public static ScilabTerminal getTerminal(String uuid) {
+        return INSTANCES.get(uuid);
+    }
+
+    /**
+     * @param uuid a tab uuid
+     * @return true if a terminal with that uuid is currently open
+     */
+    public static boolean isValidUUID(String uuid) {
+        return INSTANCES.containsKey(uuid);
+    }
+
+    /**
+     * Close one terminal tab and tear down its PTY (called when the tab is closed).
+     * @param uuid the tab uuid
+     */
+    public static void closeTerminal(String uuid) {
+        ScilabTerminal term = INSTANCES.remove(uuid);
+        if (term != null) {
+            term.disposeShell();
+        }
+    }
+
+    /**
+     * Tear down every open terminal: SIGHUP/close each PTY so the child shells die
+     * and the JediTerm reader threads unblock. Idempotent and thread-safe; invoked
+     * from etc/terminal.quit on Scilab shutdown and from the JVM shutdown hook, so
+     * live shells never keep the JVM from exiting.
+     */
+    public static void closeAllTerminals() {
+        List<ScilabTerminal> all;
+        synchronized (INSTANCES) {
+            all = new ArrayList<ScilabTerminal>(INSTANCES.values());
+            INSTANCES.clear();
+        }
+        for (ScilabTerminal term : all) {
+            term.disposeShell();
+        }
+    }
+
+    private void disposeShell() {
+        // 1. kill the child shell so the master read returns EOF and JediTerm's
+        //    emulator read-loop ends.
+        try {
+            if (pty != null) {
+                pty.terminate();
+            }
+        } catch (Throwable ignore) { }
+        // 2. mark the connector disconnected.
+        try {
+            if (connector != null) {
+                connector.close();
+            }
+        } catch (Throwable ignore) { }
+        // 3. stop the JediTerm session and shut down its per-widget executor;
+        //    otherwise its non-daemon pool threads keep the JVM from exiting.
+        try {
+            if (widget != null) {
+                widget.stop();
+                widget.close();
+                widget.getExecutorServiceManager().shutdownWhenAllExecuted();
+            }
+        } catch (Throwable ignore) { }
+    }
+
+    /**
+     * Backstop for a non-graceful exit: ensure child shells are killed and the
+     * PTYs released even if etc/terminal.quit did not run. Registered lazily (when
      * a terminal is actually opened) and guarded so it never throws if the JVM is
      * already shutting down.
      */
@@ -149,99 +262,19 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         }
     }
 
-    /**
-     * Open (or bring to front) the terminal tab. Entry point for the
-     * {@code terminal()} macro; safe to call from the interpreter thread.
-     */
-    public static void openTerminal() {
-        if (SwingUtilities.isEventDispatchThread()) {
-            setVisibleSafe();
-        } else {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    setVisibleSafe();
-                }
-            });
-        }
-    }
-
-    private static void setVisibleSafe() {
-        try {
-            lastError = "";
-            setVisible();
-        } catch (Throwable t) {
-            lastError = String.valueOf(t);
-            t.printStackTrace();
-        }
-    }
-
-    /** @return true if a terminal tab is currently open (test/introspection hook). */
+    /** @return true if at least one terminal is open (test/introspection hook). */
     public static boolean isTerminalOpen() {
-        return terminalTab != null;
+        return !INSTANCES.isEmpty();
     }
 
-    /** @return the last error thrown while opening the terminal, or "" if none. */
+    /** @return the number of currently-open terminals (test/introspection hook). */
+    public static int terminalCount() {
+        return INSTANCES.size();
+    }
+
+    /** @return the last error thrown while opening a terminal, or "" if none. */
     public static String getLastError() {
         return lastError;
-    }
-
-    /**
-     * Manage terminal tab visibility (mirrors CommandHistory.setVisible).
-     */
-    private static void setVisible() {
-        if (terminalTab == null) {
-            boolean success = WindowsConfigurationManager.restoreUUID(TERMINALUUID);
-            if (!success) {
-                TerminalTabFactory.getInstance().getTab(TERMINALUUID);
-                SwingScilabWindow window = SwingScilabWindow.createWindow(true);
-                window.addTab(terminalTab);
-                window.setLocation(0, 0);
-                window.setSize(800, 500);
-                window.setVisible(true);
-            }
-        }
-        ScilabGUIUtilities.toFront(terminalTab, TITLE);
-        terminalTab.setVisible(true);
-    }
-
-    /**
-     * Close the terminal tab and tear down the PTY (called when the tab is closed).
-     */
-    public static void closeTerminal() {
-        closeAllTerminals();
-    }
-
-    /**
-     * Tear down every open terminal: SIGHUP/close its PTY so the child shell dies
-     * and the JediTerm reader thread unblocks. Idempotent and thread-safe; invoked
-     * from etc/terminal.quit on Scilab shutdown and from the JVM shutdown hook, so
-     * a live shell never keeps the JVM from exiting.
-     */
-    public static synchronized void closeAllTerminals() {
-        if (terminalTab instanceof ScilabTerminal) {
-            ((ScilabTerminal) terminalTab).disposeShell();
-        }
-        terminalTab = null;
-    }
-
-    private void disposeShell() {
-        try {
-            if (connector != null) {
-                connector.close();
-            }
-        } catch (Throwable ignore) { }
-        try {
-            if (pty != null) {
-                pty.terminate();
-            }
-        } catch (Throwable ignore) { }
-    }
-
-    /**
-     * @return the terminal tab, or null if none is open
-     */
-    public static SwingScilabDockablePanel getTerminalTab() {
-        return terminalTab;
     }
 
     /**

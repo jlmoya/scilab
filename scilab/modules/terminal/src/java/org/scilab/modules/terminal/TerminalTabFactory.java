@@ -41,9 +41,11 @@ public class TerminalTabFactory extends AbstractScilabTabFactory {
 
     /**
      * {@inheritDoc}
+     * Returns the already-open terminal for this uuid (terminals are not
+     * recreated on restore - a restored terminal would hold a dead shell).
      */
     public SwingScilabDockablePanel getTab(String uuid) {
-        return TerminalTab.getTerminalInstance(uuid);
+        return ScilabTerminal.getTerminal(uuid);
     }
 
     /**
@@ -71,7 +73,7 @@ public class TerminalTabFactory extends AbstractScilabTabFactory {
      * {@inheritDoc}
      */
     public boolean isAValidUUID(String uuid) {
-        return ScilabTerminal.TERMINALUUID.equals(uuid);
+        return ScilabTerminal.isValidUUID(uuid);
     }
 
     /**
