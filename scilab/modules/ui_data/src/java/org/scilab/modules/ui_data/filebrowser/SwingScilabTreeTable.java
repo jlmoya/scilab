@@ -255,14 +255,29 @@ public class SwingScilabTreeTable extends JTable {
                     c = Character.toLowerCase(c);
                     int[] rows = getSelectedRows();
                     int count = getRowCount();
+                    if (count <= 0) {
+                        return;
+                    }
                     int start = 0;
                     if (rows != null && rows.length != 0) {
                         start = modulo(rows[0] + step, count);
                     }
-                    for (int i = start; i != start - step; i = modulo(i + step, count)) {
-                        char first =
-                            ((FileNode) tree.getPathForRow(i).getLastPathComponent()).toString().charAt(0);
-                        first = Character.toLowerCase(first);
+                    // Scan exactly `count` rows from `start` in the `step`
+                    // direction. The previous loop used `i != start - step` as the
+                    // bound, but start-step is not normalised mod count, so e.g.
+                    // start==0, step==1 made the bound -1, which `i` (always >= 0)
+                    // never reaches - an infinite loop that froze the EDT.
+                    for (int k = 0; k < count; k++) {
+                        int i = modulo(start + k * step, count);
+                        TreePath tp = tree.getPathForRow(i);
+                        if (tp == null) {
+                            continue;
+                        }
+                        String name = ((FileNode) tp.getLastPathComponent()).toString();
+                        if (name.isEmpty()) {
+                            continue;
+                        }
+                        char first = Character.toLowerCase(name.charAt(0));
                         if (first == c) {
                             scrollRectToVisible(tree.getRowBounds(i));
                             setRowSelectionInterval(i, i);
