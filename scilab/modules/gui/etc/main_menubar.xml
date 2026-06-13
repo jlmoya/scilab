@@ -105,6 +105,10 @@
             <callback instruction="scinotes();" type="0"/>
         </submenu>
         <separator/>
+        <submenu label="&amp;Terminal" icon="utilities-terminal">
+            <callback instruction="if with_module(&quot;terminal&quot;) then terminal(); else disp(gettext(&quot;Please install terminal module.&quot;)); end" type="0"/>
+        </submenu>
+        <separator/>
         <submenu label="&amp;Xcos" icon="utilities-system-monitor">
             <callback instruction="if with_module(&quot;xcos&quot;) then xcos(); else disp(gettext(&quot;Please install xcos module.&quot;)); end" type="0"/>
         </submenu>
