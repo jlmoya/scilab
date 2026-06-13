@@ -174,11 +174,17 @@ if getscilabmode() == "STD" then
   toolbar(-1, "on");
   main_menubar_cb("setFavoriteDirs");
 
-  // Auto-open an embedded terminal docked below the console. Queued for the
-  // first idle prompt (once the console window layout has finished restoring).
+  // Auto-open an embedded terminal docked below the console. TerminalAutoOpen is
+  // deliberately lightweight: it only arms an EDT timer and does NOT load the
+  // heavy terminal/GUI classes on this (interpreter) thread, so it cannot block
+  // or deadlock startup. The terminal itself opens later, on the EDT. Wrapped in
+  // try/catch so it can never abort startup.
   if with_module("terminal") then
-    jimport org.scilab.modules.terminal.ScilabTerminal
-    ScilabTerminal.openInitialTerminal();
+    try
+      jimport org.scilab.modules.terminal.TerminalAutoOpen
+      TerminalAutoOpen.scheduleInitialTerminal();
+    catch
+    end
   end
 end
 // ====================================================================
