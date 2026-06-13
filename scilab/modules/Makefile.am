@@ -88,6 +88,7 @@ parallel \
 modules_manager \
 ui_data \
 history_browser \
+terminal \
 preferences \
 xml \
 external_objects \

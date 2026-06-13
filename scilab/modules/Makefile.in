@@ -298,7 +298,7 @@ DIST_SUBDIRS = prebuildjava threads output_stream arnoldi \
 	graphic_export graphics optimization randlib interpolation \
 	sound overloading m2sci development_tools helptools umfpack \
 	demo_tools matio atoms graph ast scinotes parallel \
-	modules_manager ui_data history_browser preferences xml \
+	modules_manager ui_data history_browser terminal preferences xml \
 	external_objects slint coverage webtools external_objects_java \
 	scicos_blocks scicos xcos mpi . javasci
 am__DIST_COMMON = $(srcdir)/Makefile.in \
@@ -680,7 +680,7 @@ SUBDIRS = prebuildjava threads output_stream arnoldi \
 	graphic_export graphics optimization randlib interpolation \
 	sound overloading m2sci development_tools helptools umfpack \
 	demo_tools parameters matio atoms hdf5 graph ast scinotes \
-	parallel modules_manager ui_data history_browser preferences \
+	parallel modules_manager ui_data history_browser terminal preferences \
 	xml external_objects slint coverage webtools $(am__append_1) \
 	$(am__append_2) $(am__append_3) $(am__append_4) . \
 	$(am__append_5)
