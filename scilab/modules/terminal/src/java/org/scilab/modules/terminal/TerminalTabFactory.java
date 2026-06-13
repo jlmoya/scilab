@@ -64,9 +64,12 @@ public class TerminalTabFactory extends AbstractScilabTabFactory {
 
     /**
      * {@inheritDoc}
+     * Returns "" so terminals are never written to windowsConfiguration.xml:
+     * they are ephemeral (a live shell) and must not be restored on the next
+     * startup (which would fail with "the tab ... cannot be restored").
      */
     public String getApplication() {
-        return APPLICATION;
+        return "";
     }
 
     /**

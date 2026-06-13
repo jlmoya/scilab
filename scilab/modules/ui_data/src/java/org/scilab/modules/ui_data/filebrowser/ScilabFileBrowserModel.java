@@ -34,9 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import org.scilab.modules.commons.filemonitor.FileSystemMonitor;
 import org.scilab.modules.ui_data.utils.UiDataMessages;
 
 /**
@@ -170,10 +168,6 @@ public class ScilabFileBrowserModel extends AbstractScilabTreeTableModel
     private String baseDir = "";
     WatchService watcher;
     private DirWatcher dirWatcher;
-    // Shared native monitor: adds live, recursive MODIFY events (the WatchService
-    // above is create/delete-only and polls ~10s on macOS).
-    private Path monitoredRoot;
-    private FileSystemMonitor.FileSystemListener fsListener;
 
     /** Default constructor */
     public ScilabFileBrowserModel() {
@@ -234,91 +228,9 @@ public class ScilabFileBrowserModel extends AbstractScilabTreeTableModel
             dirWatcher.execute();
         }
 
-        // Recursively watch for content modifications via the shared native monitor.
-        subscribeFileMonitor((FileNode) root);
-
         // Force the root to load its children in the SwingWorker thread rather than in
         // EDT
         watchDirectories(((FileNode) root).getChildren());
-    }
-
-    /**
-     * (Re)subscribe the shared {@link FileSystemMonitor} to deliver live, recursive
-     * MODIFY events for {@code root}, refreshing the affected directory node so the
-     * size / last-modified columns update without a chdir.
-     */
-    private void subscribeFileMonitor(FileNode root) {
-        final FileSystemMonitor monitor = FileSystemMonitor.getInstance();
-        if (monitoredRoot != null && fsListener != null) {
-            monitor.unsubscribe(monitoredRoot, fsListener);
-        }
-        final Path rootPath = root.file.toPath();
-        monitoredRoot = rootPath;
-        fsListener = new FileSystemMonitor.FileSystemListener() {
-            @Override
-            public void fileChanged(FileSystemMonitor.FileChangeEvent event) {
-                if (event.getType() != FileSystemMonitor.ChangeType.MODIFY) {
-                    return;
-                }
-                final Path changed = event.getPath();
-                // Locate + reset the changed file's parent node off the EDT (like
-                // DirWatcher.doInBackground), then fire the structure change on the EDT.
-                final FileNode node = locateAndReset(rootPath, changed);
-                if (node == null) {
-                    return;
-                }
-                final Path rel = rootPath.relativize(changed);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        fireTreeStructureChanged(ScilabFileBrowserModel.this, new Path[] {rel}, null, null);
-                    }
-                });
-            }
-        };
-        monitor.subscribe(rootPath, fsListener);
-    }
-
-    /**
-     * Find the tree node for the parent directory of {@code changed} and reset its
-     * children so the model re-reads it. Runs off the EDT.
-     * @return the reset node, or null if the directory is not currently in the tree
-     */
-    private FileNode locateAndReset(Path rootPath, Path changed) {
-        Object r = getRoot();
-        if (!(r instanceof FileNode) || !changed.startsWith(rootPath)) {
-            return null;
-        }
-        Path parent = changed.getParent();
-        if (parent == null || !parent.startsWith(rootPath)) {
-            return null;
-        }
-        FileNode node = (FileNode) r;
-        for (Path name : rootPath.relativize(parent)) {
-            String n = name.toString();
-            if (n.isEmpty()) {
-                continue;
-            }
-            FileNode next = null;
-            Object[] children = node.getChildren();
-            if (children != null) {
-                for (Object o : children) {
-                    if (o instanceof FileNode && ((FileNode) o).name.equals(n)) {
-                        next = (FileNode) o;
-                        break;
-                    }
-                }
-            }
-            if (next == null) {
-                return null;
-            }
-            node = next;
-        }
-        if (!node.file.exists()) {
-            return null;
-        }
-        node.resetChildren();
-        return node;
     }
 
     Object[] watchDirectories(Object[] objects) {

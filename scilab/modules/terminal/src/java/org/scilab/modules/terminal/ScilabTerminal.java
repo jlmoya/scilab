@@ -34,16 +34,26 @@ import com.jediterm.terminal.ui.JediTermWidget;
 import com.jediterm.terminal.ui.settings.DefaultSettingsProvider;
 import com.jediterm.terminal.ui.settings.SettingsProvider;
 
+import org.scilab.modules.action_binding.InterpreterManagement;
 import org.scilab.modules.commons.gui.ScilabGUIUtilities;
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
 import org.scilab.modules.gui.bridge.window.SwingScilabWindow;
+import org.scilab.modules.gui.events.callback.CommonCallBack;
+import org.scilab.modules.gui.menu.Menu;
+import org.scilab.modules.gui.menu.ScilabMenu;
 import org.scilab.modules.gui.menubar.MenuBar;
+import org.scilab.modules.gui.menubar.ScilabMenuBar;
+import org.scilab.modules.gui.menuitem.MenuItem;
+import org.scilab.modules.gui.menuitem.ScilabMenuItem;
 import org.scilab.modules.gui.tab.SimpleTab;
 import org.scilab.modules.gui.tabfactory.ScilabTabFactory;
 import org.scilab.modules.gui.textbox.ScilabTextBox;
 import org.scilab.modules.gui.textbox.TextBox;
+import org.scilab.modules.gui.toolbar.ScilabToolBar;
 import org.scilab.modules.gui.toolbar.ToolBar;
+import org.scilab.modules.gui.utils.ClosingOperationsManager;
 import org.scilab.modules.gui.utils.WindowsConfigurationManager;
+import org.scilab.modules.localization.Messages;
 
 /**
  * Embedded terminal tab: a JediTerm VT emulator driven by our JNA {@link Pty},
@@ -89,6 +99,12 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
     private ScilabTerminal(String uuid) {
         super(TITLE, uuid);
         this.uuid = uuid;
+        setAssociatedXMLIDForHelp("terminal");
+        // A tab MUST supply non-null menu/tool bars: when it becomes the active
+        // dockable, BarUpdater installs them on the parent window (the macOS screen
+        // menu bar). Without them the application's menus blank out.
+        addMenuBar(createMenuBar());
+        addToolBar(ScilabToolBar.createToolBar());
         addInfoBar(ScilabTextBox.createTextBox());
 
         TerminalOptions.TerminalSettings settings = TerminalOptions.getSettings();
@@ -123,6 +139,11 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         if (env.get("LANG") == null) {
             env.put("LANG", "en_US.UTF-8");
         }
+        // Scilab sets these so its own embedded JVM is not headless; do not leak
+        // them to the shell or every java/sdkman/jenv invocation in the terminal
+        // prints "Picked up _JAVA_OPTIONS ...".
+        env.remove("_JAVA_OPTIONS");
+        env.remove("JAVA_TOOL_OPTIONS");
         List<String> envp = new ArrayList<String>();
         for (Map.Entry<String, String> e : env.entrySet()) {
             envp.add(e.getKey() + "=" + e.getValue());
@@ -136,6 +157,46 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
             throw new RuntimeException("Could not start terminal shell '" + shell + "': " + ex.getMessage(), ex);
         }
         connector = new PtyTtyConnector(pty);
+    }
+
+    /**
+     * A minimal but non-null menu bar (File: Close; Help) - required so the tab,
+     * when active, does not blank the parent window's / macOS screen menu bar.
+     */
+    private MenuBar createMenuBar() {
+        MenuBar menuBar = ScilabMenuBar.createMenuBar();
+
+        Menu fileMenu = ScilabMenu.createMenu();
+        fileMenu.setText(Messages.gettext("File"));
+        fileMenu.setMnemonic('F');
+        MenuItem closeItem = ScilabMenuItem.createMenuItem();
+        closeItem.setText(Messages.gettext("Close"));
+        closeItem.setCallback(new CommonCallBack("") {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public void callBack() {
+                ClosingOperationsManager.startClosingOperation(ScilabTerminal.this);
+            }
+        });
+        fileMenu.add(closeItem);
+        menuBar.add(fileMenu);
+
+        Menu helpMenu = ScilabMenu.createMenu();
+        helpMenu.setText(Messages.gettext("?"));
+        helpMenu.setMnemonic('?');
+        MenuItem helpItem = ScilabMenuItem.createMenuItem();
+        helpItem.setText(Messages.gettext("Terminal"));
+        helpItem.setCallback(new CommonCallBack("") {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public void callBack() {
+                InterpreterManagement.requestScilabExec("help terminal");
+            }
+        });
+        helpMenu.add(helpItem);
+        menuBar.add(helpMenu);
+
+        return menuBar;
     }
 
     /**
