@@ -99,8 +99,10 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
     private static final String ID_CMDHISTORY   = "856207f6-0a60-47a0-b9f4-232feedd4bf4";
     private static final String ID_NEWSFEED     = "DC0957B3-81DA-4E39-B0B5-E93B35412162";
 
-    /** Fraction of the console column given to the terminal docked beneath it. */
-    private static final float TERMINAL_SOUTH_RATIO = 0.30f;
+    /** Fraction of the console column given to the terminal docked beneath it.
+     *  0.35 makes the terminal the same height as the News feed, which occupies
+     *  the bottom 35% of the (full-height) east tool column. */
+    private static final float TERMINAL_SOUTH_RATIO = 0.35f;
     // Target an overall width split of 25% File Browser / 50% Console / 25% east
     // tool column. FlexDock ratios are relative to the region being split: the
     // File Browser takes 25% of the whole port, then the east column takes a third
