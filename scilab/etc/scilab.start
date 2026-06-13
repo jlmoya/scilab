@@ -173,6 +173,13 @@ if getscilabmode() == "STD" then
   setmenu(gettext("&Toolboxes"));
   toolbar(-1, "on");
   main_menubar_cb("setFavoriteDirs");
+
+  // Auto-open an embedded terminal docked below the console. Queued for the
+  // first idle prompt (once the console window layout has finished restoring).
+  if with_module("terminal") then
+    jimport org.scilab.modules.terminal.ScilabTerminal
+    ScilabTerminal.openInitialTerminal();
+  end
 end
 // ====================================================================
 clear ans main_menubar_cb  getPreferencesValue

@@ -376,6 +376,18 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         }
     }
 
+    /**
+     * Open one terminal automatically at GUI startup, docked below the console.
+     * Called from {@code terminal.start}. The open is queued via the interpreter
+     * command queue so it runs when Scilab first goes idle - i.e. after the
+     * console window layout has finished restoring - which guarantees the console
+     * is docked and the terminal lands south of it (rather than in a stray
+     * fallback window).
+     */
+    public static void openInitialTerminal() {
+        InterpreterManagement.putCommandInScilabQueue("terminal();");
+    }
+
     private static void newTerminalSafe() {
         try {
             lastError = "";
