@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+ * Copyright (C) 2026 - Jose Moya
+ *
+ * This file is hereby licensed under the terms of the GNU GPL v2.0,
+ * pursuant to article 5.3.4 of the CeCILL v.2.1.
+ * This file was originally licensed under the terms of the CeCILL v2.1,
+ * and continues to be available under such terms.
+ * For more information, see the COPYING file which you should have received
+ * along with this program.
+ *
+ -->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:db="http://docbook.org/ns/docbook" xmlns:scilab="http://www.scilab.org" xml:lang="en" xml:id="macroswatch">
+    <refnamediv>
+        <refname>macroswatch</refname>
+        <refpurpose>watch macro library source directories and hot-reload them on change</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+            macroswatch()
+            macroswatch(library_name, directory)
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection role="arguments">
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>library_name</term>
+                <listitem>
+                    <para>a string, the name of a loaded library (as returned by <link linkend="librarieslist">librarieslist</link>).</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>directory</term>
+                <listitem>
+                    <para>a string, the path of the directory holding the library's <literal>*.sci</literal> source files.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>
+            <literal>macroswatch</literal> enables live hot-reload of a macro
+            library: it watches the library's source directory and, when one of its
+            <literal>*.sci</literal> files is changed by another program (a build,
+            a version-control checkout, or a command run in the embedded
+            <link linkend="terminal">terminal</link>), it automatically re-runs
+            <link linkend="genlib">genlib</link> so the updated function becomes
+            live in the interpreter - not merely changed on disk.
+        </para>
+        <para>
+            The reload is queued and runs at the interpreter prompt: workspace
+            variables are untouched and a function currently executing finishes on
+            its old code, while subsequent calls use the new code.
+        </para>
+        <para>
+            <literal>macroswatch()</literal> with no argument watches every loaded
+            user library (Scilab's own libraries, under <literal>SCI</literal>, are
+            left alone). <literal>macroswatch(library_name, directory)</literal>
+            watches a single library.
+        </para>
+        <para>
+            File watching uses the native change-notification service, so it is
+            immediate and recursive. This function requires the Scilab graphical
+            interface.
+        </para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// build and load a user library, then watch it for live changes
+genlib("mylib", "~/myproject/macros");
+macroswatch("mylib", "~/myproject/macros");
+
+// or, watch every library currently loaded from outside SCI
+macroswatch();
+ ]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="genlib">genlib</link>
+            </member>
+            <member>
+                <link linkend="librarieslist">librarieslist</link>
+            </member>
+            <member>
+                <link linkend="library">library</link>
+            </member>
+            <member>
+                <link linkend="terminal">terminal</link>
+            </member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2027.0.0</revnumber>
+                <revremark>Function macroswatch introduced.</revremark>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>
