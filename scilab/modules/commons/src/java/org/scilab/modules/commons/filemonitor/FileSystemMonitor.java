@@ -13,37 +13,46 @@
 
 package org.scilab.modules.commons.filemonitor;
 
+import java.io.IOException;
+import java.nio.file.ClosedWatchServiceException;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashSet;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import io.methvin.watcher.DirectoryChangeEvent;
-import io.methvin.watcher.DirectoryWatcher;
-
 /**
- * Process-wide, recursive file-system monitor shared by the Scilab GUI components
- * (File Browser, SciNotes, and - via the interpreter - loaded library reload).
+ * Process-wide file-system monitor shared by the Scilab GUI components (SciNotes,
+ * and - via the interpreter - loaded library reload).
  *
- * It wraps {@code io.methvin:directory-watcher} (native FSEvents on macOS,
- * inotify on Linux), which - unlike the JDK {@code WatchService}, whose macOS
- * implementation polls every ~10s - delivers CREATE / MODIFY / DELETE events
- * recursively and promptly.
+ * Each subscriber registers a {@link FileSystemListener} for a single directory
+ * and is notified (off the EDT - each listener must marshal its own Swing work)
+ * of changes to files <em>directly</em> in that directory. Watching is
+ * deliberately <strong>non-recursive</strong>: the subscribers only care about
+ * the files in the directory they name (SciNotes watches the parent directory of
+ * its open files; the library reloader watches a macros directory), so there is
+ * no reason to descend. A recursive watcher would, when handed a large tree (a
+ * project root, {@code $HOME}, ...), walk and watch the whole subtree - tens of
+ * seconds of CPU and a flood of irrelevant events.
  *
- * Subscribers register a {@link FileSystemListener} for a root directory and are
- * called (off the EDT - each listener must marshal its own Swing work) for any
- * change under that root. Two hygiene mechanisms avoid feedback loops and bursts:
+ * It uses the JDK {@link WatchService}. On Linux this is inotify-backed (prompt);
+ * on macOS it polls the watched directories - cheap, because only single
+ * directories are registered, never trees. Best-effort high sensitivity reduces
+ * the macOS poll interval when available.
+ *
+ * Two hygiene mechanisms avoid feedback loops and bursts:
  * <ul>
- *   <li>{@link #suppress(Path)} - a short time window during which events for a
- *       given path are dropped, so Scilab's own writes (e.g. a SciNotes save) do
- *       not bounce back as "external" changes;</li>
+ *   <li>{@link #suppress(Path)} - a short window during which events for a given
+ *       path are dropped, so Scilab's own writes (e.g. a SciNotes save) do not
+ *       bounce back as "external" changes;</li>
  *   <li>a per-(path,type) debounce that coalesces the rapid duplicate events a
  *       single save typically produces.</li>
  * </ul>
@@ -55,7 +64,7 @@ public final class FileSystemMonitor {
     /** Kind of change reported to listeners. */
     public enum ChangeType { CREATE, MODIFY, DELETE, OVERFLOW }
 
-    /** A single change under a watched root. */
+    /** A single change in a watched directory. */
     public static final class FileChangeEvent {
         private final Path path;
         private final ChangeType type;
@@ -91,21 +100,30 @@ public final class FileSystemMonitor {
 
     private static final FileSystemMonitor INSTANCE = new FileSystemMonitor();
 
-    // one watcher per distinct watched root, fanned out to its listeners
-    private final Map<Path, DirectoryWatcher> watchers = new ConcurrentHashMap<Path, DirectoryWatcher>();
+    // Best-effort high sensitivity for the (polling) macOS WatchService; an empty
+    // array (default sensitivity) on any JDK where the modifier is unavailable.
+    private static final WatchEvent.Modifier[] SENSITIVITY = highSensitivity();
+
+    private final Map<Path, WatchKey> keysByRoot = new ConcurrentHashMap<Path, WatchKey>();
+    private final Map<WatchKey, Path> rootsByKey = new ConcurrentHashMap<WatchKey, Path>();
     private final Map<Path, CopyOnWriteArrayList<FileSystemListener>> listeners =
         new ConcurrentHashMap<Path, CopyOnWriteArrayList<FileSystemListener>>();
     private final Map<Path, Long> suppressedUntil = new ConcurrentHashMap<Path, Long>();
     private final Map<String, Long> lastDispatch = new ConcurrentHashMap<String, Long>();
-    private final Set<Path> building = Collections.synchronizedSet(new HashSet<Path>());
-    private final ExecutorService buildExecutor =
+
+    // Registration is done off the caller thread (callers are often on the Swing
+    // EDT, e.g. SciNotes loadFile): registering a directory snapshots its entries,
+    // which must never block the UI.
+    private final ExecutorService registerExecutor =
         Executors.newSingleThreadExecutor(new ThreadFactory() {
             public Thread newThread(Runnable r) {
-                Thread t = new Thread(r, "scilab-fsmonitor-builder");
+                Thread t = new Thread(r, "scilab-fsmonitor-register");
                 t.setDaemon(true);
                 return t;
             }
         });
+
+    private volatile WatchService watchService;
 
     private FileSystemMonitor() { }
 
@@ -113,13 +131,46 @@ public final class FileSystemMonitor {
         return INSTANCE;
     }
 
+    @SuppressWarnings("unchecked")
+    private static WatchEvent.Modifier[] highSensitivity() {
+        try {
+            WatchEvent.Modifier high =
+                (WatchEvent.Modifier) Enum.valueOf(
+                    (Class<? extends Enum>) Class.forName("com.sun.nio.file.SensitivityWatchEventModifier"),
+                    "HIGH");
+            return new WatchEvent.Modifier[] { high };
+        } catch (Throwable ignore) {
+            return new WatchEvent.Modifier[0];
+        }
+    }
+
     private static Path normalize(Path p) {
         return p.toAbsolutePath().normalize();
     }
 
+    private synchronized void ensureStarted() {
+        if (watchService != null) {
+            return;
+        }
+        try {
+            watchService = FileSystems.getDefault().newWatchService();
+        } catch (IOException ex) {
+            System.err.println("FileSystemMonitor: cannot create watch service: " + ex);
+            return;
+        }
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                runLoop();
+            }
+        }, "scilab-fsmonitor");
+        t.setDaemon(true);
+        t.start();
+    }
+
     /**
-     * Watch {@code root} recursively and deliver changes to {@code listener}.
-     * Several listeners may share a root (one native watcher is used per root).
+     * Watch the directory {@code root} (non-recursively) and deliver changes to
+     * files directly in it to {@code listener}. Several listeners may share a
+     * directory (one watch key is used per directory).
      * @param root the directory to watch (must exist and be a directory)
      * @param listener the callback
      */
@@ -132,48 +183,48 @@ public final class FileSystemMonitor {
             return;
         }
         listeners.computeIfAbsent(key, k -> new CopyOnWriteArrayList<FileSystemListener>()).addIfAbsent(listener);
-        // Build the native watcher OFF the calling thread (callers are often on the
-        // Swing EDT, e.g. SciNotes loadFile): directory-watcher.build() walks the
-        // tree, which can be slow for a large directory and must never block the UI.
-        if (!watchers.containsKey(key) && building.add(key)) {
-            buildExecutor.submit(new Runnable() {
+        ensureStarted();
+        if (watchService != null && !keysByRoot.containsKey(key)) {
+            registerExecutor.submit(new Runnable() {
                 public void run() {
-                    buildWatcher(key);
+                    register(key);
                 }
             });
         }
     }
 
-    private void buildWatcher(Path key) {
-        DirectoryWatcher watcher;
+    private void register(Path key) {
+        WatchService ws = watchService;
+        if (ws == null) {
+            return;
+        }
+        WatchKey wk;
         try {
-            watcher = DirectoryWatcher.builder()
-                .path(key)
-                .fileHashing(false) // FSEvents/inotify are recursive natively; skip the costly initial hash scan
-                .listener(event -> onEvent(key, event))
-                .build();
+            wk = key.register(ws,
+                              new WatchEvent.Kind[] {
+                                  StandardWatchEventKinds.ENTRY_CREATE,
+                                  StandardWatchEventKinds.ENTRY_MODIFY,
+                                  StandardWatchEventKinds.ENTRY_DELETE
+                              },
+                              SENSITIVITY);
         } catch (Throwable ex) {
             System.err.println("FileSystemMonitor: cannot watch " + key + ": " + ex);
-            building.remove(key);
             return;
         }
         synchronized (this) {
-            building.remove(key);
             if (!listeners.containsKey(key)) {
-                // unsubscribed while we were building - drop the watcher
-                try {
-                    watcher.close();
-                } catch (Exception ignore) { }
+                // unsubscribed while we were registering - drop the key
+                wk.cancel();
                 return;
             }
-            watchers.put(key, watcher);
+            keysByRoot.put(key, wk);
+            rootsByKey.put(wk, key);
         }
-        watcher.watchAsync();
     }
 
     /**
-     * Stop delivering changes under {@code root} to {@code listener}; closes the
-     * native watcher when its last listener leaves.
+     * Stop delivering changes in {@code root} to {@code listener}; cancels the
+     * watch key when its last listener leaves.
      */
     public synchronized void unsubscribe(Path root, FileSystemListener listener) {
         if (root == null || listener == null) {
@@ -185,11 +236,10 @@ public final class FileSystemMonitor {
             ls.remove(listener);
             if (ls.isEmpty()) {
                 listeners.remove(key);
-                DirectoryWatcher watcher = watchers.remove(key);
-                if (watcher != null) {
-                    try {
-                        watcher.close();
-                    } catch (Exception ignore) { }
+                WatchKey wk = keysByRoot.remove(key);
+                if (wk != null) {
+                    rootsByKey.remove(wk);
+                    wk.cancel();
                 }
             }
         }
@@ -218,25 +268,58 @@ public final class FileSystemMonitor {
         return true;
     }
 
-    private static ChangeType map(DirectoryChangeEvent.EventType t) {
-        switch (t) {
-            case CREATE:   return ChangeType.CREATE;
-            case MODIFY:   return ChangeType.MODIFY;
-            case DELETE:   return ChangeType.DELETE;
-            default:       return ChangeType.OVERFLOW;
+    private static ChangeType map(WatchEvent.Kind<?> kind) {
+        if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
+            return ChangeType.CREATE;
+        }
+        if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
+            return ChangeType.MODIFY;
+        }
+        if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+            return ChangeType.DELETE;
+        }
+        return ChangeType.OVERFLOW;
+    }
+
+    private void runLoop() {
+        final WatchService ws = watchService;
+        while (true) {
+            WatchKey wk;
+            try {
+                wk = ws.take();
+            } catch (InterruptedException ie) {
+                return;
+            } catch (ClosedWatchServiceException ce) {
+                return;
+            }
+            Path root = rootsByKey.get(wk);
+            for (WatchEvent<?> event : wk.pollEvents()) {
+                ChangeType type = map(event.kind());
+                Object ctx = event.context();
+                Path full = (root != null && ctx instanceof Path)
+                            ? normalize(root.resolve((Path) ctx)) : null;
+                dispatch(root, full, type);
+            }
+            if (!wk.reset()) {
+                // directory gone or no longer accessible - forget it
+                Path gone = rootsByKey.remove(wk);
+                if (gone != null) {
+                    keysByRoot.remove(gone);
+                }
+            }
         }
     }
 
-    private void onEvent(Path root, DirectoryChangeEvent event) {
-        final Path path = normalize(event.path());
-        final ChangeType type = map(event.eventType());
+    private void dispatch(Path root, Path path, ChangeType type) {
+        if (root == null || path == null) {
+            return;
+        }
         final long now = System.currentTimeMillis();
-
         if (isSuppressed(path, now)) {
             return;
         }
         // coalesce the burst of duplicate events a single write produces
-        final String dkey = type + " " + path;
+        final String dkey = type + " " + path;
         Long last = lastDispatch.get(dkey);
         if (last != null && now - last < DEBOUNCE_MS) {
             return;
