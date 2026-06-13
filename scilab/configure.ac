@@ -1040,6 +1040,24 @@ if test "$with_javasci" != no -o "$with_gui" != no -o "$enable_build_help" != no
                 AC_JAVA_CHECK_JAR([gson],[com.google.gson.JsonObject],[Scilab Embedded browser - A Java serialization/deserialization library to convert Java Objects into JSON and back])
                 GSON=$PACKAGE_JAR_FILE
                 AC_SUBST(GSON)
+                AC_JAVA_CHECK_JAR([jediterm-core],[com.jediterm.terminal.Terminal],[Scilab terminal - JediTerm core (PTY/VT emulator)])
+                JEDITERM_CORE=$PACKAGE_JAR_FILE
+                AC_SUBST(JEDITERM_CORE)
+                AC_JAVA_CHECK_JAR([jediterm-ui],[com.jediterm.terminal.ui.JediTermWidget],[Scilab terminal - JediTerm UI widget])
+                JEDITERM_UI=$PACKAGE_JAR_FILE
+                AC_SUBST(JEDITERM_UI)
+                AC_JAVA_CHECK_JAR([kotlin-stdlib],[kotlin.Unit],[Scilab terminal - Kotlin stdlib (JediTerm dependency)])
+                KOTLIN_STDLIB=$PACKAGE_JAR_FILE
+                AC_SUBST(KOTLIN_STDLIB)
+                AC_JAVA_CHECK_JAR([jna],[com.sun.jna.Native],[Scilab terminal - JNA native bridge (PTY)])
+                JNA=$PACKAGE_JAR_FILE
+                AC_SUBST(JNA)
+                AC_JAVA_CHECK_JAR([slf4j-api],[org.slf4j.Logger],[Scilab terminal - SLF4J API (JediTerm logging)])
+                SLF4J_API=$PACKAGE_JAR_FILE
+                AC_SUBST(SLF4J_API)
+                AC_JAVA_CHECK_JAR([annotations],[org.jetbrains.annotations.NotNull],[Scilab terminal - JetBrains annotations (JediTerm dependency)])
+                ANNOTATIONS=$PACKAGE_JAR_FILE
+                AC_SUBST(ANNOTATIONS)
 
                 # JCEF (from https://github.com/jcefmaven/jcefmaven/releases)
                 AC_JAVA_CHECK_JAR([jcef],[org.cef.CefApp],[Scilab Embedded browser - Java Chromium Embedded Framework])

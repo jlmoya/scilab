@@ -41,6 +41,12 @@ The option is "disableUnderMode" and can be:
 <path value="@JAVAFX_GRAPHICS@"/>
 <path value="@JCEF@"/>
 <path value="@GSON@"/>
+<path value="@JEDITERM_CORE@"/>
+<path value="@JEDITERM_UI@"/>
+<path value="@KOTLIN_STDLIB@"/>
+<path value="@JNA@"/>
+<path value="@SLF4J_API@"/>
+<path value="@ANNOTATIONS@"/>
 
 <!-- Load when needed -->
 
@@ -269,6 +275,7 @@ The option is "disableUnderMode" and can be:
 <path value="$SCILAB/modules/javasci/jar/org.scilab.modules.javasci.jar"/>
 
 <path value="$SCILAB/modules/history_browser/jar/org.scilab.modules.history_browser.jar" disableUnderMode="NW"/>
+<path value="$SCILAB/modules/terminal/jar/org.scilab.modules.terminal.jar" disableUnderMode="NW"/>
 
 <path value="$SCILAB/modules/external_objects_java/jar/org.scilab.modules.external_objects_java.jar" />
 
