@@ -50,6 +50,7 @@ public final class Pty {
         int posix_spawn_file_actions_addopen(Pointer fa, int fildes, String path, int oflag, int mode);
         int posix_spawn_file_actions_adddup2(Pointer fa, int fildes, int newfildes);
         int posix_spawn_file_actions_addclose(Pointer fa, int fildes);
+        int posix_spawn_file_actions_addchdir_np(Pointer fa, String path);
         int posix_spawnattr_init(Pointer attr);
         int posix_spawnattr_destroy(Pointer attr);
         int posix_spawnattr_setflags(Pointer attr, short flags);
@@ -78,8 +79,11 @@ public final class Pty {
     private int masterFd = -1;
     private int childPid = -1;
 
-    /** Spawn {@code shell} with the given argv/envp on a fresh PTY of size rows x cols. */
-    public void start(String shell, String[] argv, String[] envp, int rows, int cols) throws IOException {
+    /**
+     * Spawn {@code shell} with the given argv/envp on a fresh PTY of size rows x cols.
+     * If {@code startDir} is non-empty the child is chdir'd there before exec.
+     */
+    public void start(String shell, String[] argv, String[] envp, int rows, int cols, String startDir) throws IOException {
         C c = C.I;
         int master = c.posix_openpt(O_RDWR | O_NOCTTY);
         if (master < 0) {
@@ -103,6 +107,10 @@ public final class Pty {
         c.posix_spawn_file_actions_init(fa);
         c.posix_spawnattr_init(attr);
         c.posix_spawnattr_setflags(attr, POSIX_SPAWN_SETSID);
+        if (startDir != null && !startDir.isEmpty()) {
+            // chdir the child to the configured starting directory before exec
+            c.posix_spawn_file_actions_addchdir_np(fa, startDir);
+        }
         c.posix_spawn_file_actions_addclose(fa, master);
         // Opening the slave by path as fd 0 in the new session makes it the controlling tty.
         c.posix_spawn_file_actions_addopen(fa, 0, slavePath, O_RDWR, 0);

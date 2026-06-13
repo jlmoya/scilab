@@ -14,18 +14,25 @@
 package org.scilab.modules.terminal;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.jediterm.terminal.TerminalExecutorServiceManager;
 import com.jediterm.terminal.ui.JediTermWidget;
 import com.jediterm.terminal.ui.settings.DefaultSettingsProvider;
+import com.jediterm.terminal.ui.settings.SettingsProvider;
 
 import org.scilab.modules.commons.gui.ScilabGUIUtilities;
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
@@ -84,8 +91,11 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         this.uuid = uuid;
         addInfoBar(ScilabTextBox.createTextBox());
 
-        widget = new JediTermWidget(DEFAULT_COLS, DEFAULT_ROWS, new DefaultSettingsProvider());
-        startShell();
+        TerminalOptions.TerminalSettings settings = TerminalOptions.getSettings();
+        widget = new DaemonJediTermWidget(DEFAULT_COLS, DEFAULT_ROWS,
+                                          new TerminalSettingsProvider(TerminalOptions.getFont(),
+                                                  settings.scrollback, settings.audibleBell));
+        startShell(settings);
         widget.setTtyConnector(connector);
         widget.start();
 
@@ -99,8 +109,11 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
      * (-l) re-sources the profile so a .app/Finder launch's minimal PATH is
      * rebuilt and {@code claude}/{@code node} resolve, just like Terminal.app.
      */
-    private void startShell() {
-        String shell = System.getenv("SHELL");
+    private void startShell(TerminalOptions.TerminalSettings settings) {
+        String shell = settings.shell;
+        if (shell == null || shell.isEmpty()) {
+            shell = System.getenv("SHELL");
+        }
         if (shell == null || shell.isEmpty()) {
             shell = "/bin/bash";
         }
@@ -118,11 +131,104 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         pty = new Pty();
         try {
             pty.start(shell, new String[] {shell, "-l", "-i"},
-                      envp.toArray(new String[0]), DEFAULT_ROWS, DEFAULT_COLS);
+                      envp.toArray(new String[0]), DEFAULT_ROWS, DEFAULT_COLS, settings.startDir);
         } catch (java.io.IOException ex) {
             throw new RuntimeException("Could not start terminal shell '" + shell + "': " + ex.getMessage(), ex);
         }
         connector = new PtyTtyConnector(pty);
+    }
+
+    /**
+     * JediTerm settings backed by the Terminal preferences pane: configured font,
+     * scrollback (buffer max lines) and audible-bell.
+     */
+    private static final class TerminalSettingsProvider extends DefaultSettingsProvider {
+
+        private static final int FALLBACK_SCROLLBACK = 5000;
+
+        private final Font font;
+        private final int scrollback;
+        private final boolean bell;
+
+        TerminalSettingsProvider(Font font, int scrollback, boolean bell) {
+            this.font = font;
+            this.scrollback = scrollback > 0 ? scrollback : FALLBACK_SCROLLBACK;
+            this.bell = bell;
+        }
+
+        @Override
+        public Font getTerminalFont() {
+            return font;
+        }
+
+        @Override
+        public float getTerminalFontSize() {
+            return font.getSize2D();
+        }
+
+        @Override
+        public int getBufferMaxLinesCount() {
+            return scrollback;
+        }
+
+        @Override
+        public boolean audibleBell() {
+            return bell;
+        }
+    }
+
+    /**
+     * JediTerm widget whose per-widget executor uses DAEMON threads. The embedded
+     * Scilab JVM exits via DestroyJavaVM, which waits for non-daemon threads; with
+     * daemon threads a live terminal never blocks Scilab from quitting (and when
+     * the process exits the PTY master closes, so the child shell gets SIGHUP and
+     * dies - no orphan), independent of whether the quit/close teardown ran.
+     */
+    private static final class DaemonJediTermWidget extends JediTermWidget {
+
+        DaemonJediTermWidget(int cols, int rows, SettingsProvider settings) {
+            super(cols, rows, settings);
+        }
+
+        @Override
+        protected TerminalExecutorServiceManager createExecutorServiceManager() {
+            return new DaemonExecutorServiceManager();
+        }
+    }
+
+    private static final class DaemonExecutorServiceManager implements TerminalExecutorServiceManager {
+
+        private final ScheduledExecutorService scheduled =
+            Executors.newSingleThreadScheduledExecutor(daemonFactory("Scilab-TerminalEmulator"));
+        private final ExecutorService unbounded =
+            Executors.newCachedThreadPool(daemonFactory("Scilab-JediTerm-job"));
+
+        @Override
+        public ScheduledExecutorService getSingleThreadScheduledExecutor() {
+            return scheduled;
+        }
+
+        @Override
+        public ExecutorService getUnboundedExecutorService() {
+            return unbounded;
+        }
+
+        @Override
+        public void shutdownWhenAllExecuted() {
+            scheduled.shutdown();
+            unbounded.shutdown();
+        }
+
+        private static ThreadFactory daemonFactory(final String prefix) {
+            return new ThreadFactory() {
+                private int n = 0;
+                public synchronized Thread newThread(Runnable r) {
+                    Thread t = new Thread(r, prefix + "-" + (n++));
+                    t.setDaemon(true);
+                    return t;
+                }
+            };
+        }
     }
 
     /**
@@ -229,13 +335,16 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
                 connector.close();
             }
         } catch (Throwable ignore) { }
-        // 3. stop the JediTerm session and shut down its per-widget executor;
-        //    otherwise its non-daemon pool threads keep the JVM from exiting.
+        // 3. stop the JediTerm session and shut down its per-widget executor.
         try {
             if (widget != null) {
+                try {
+                    widget.getTerminalStarter().requestEmulatorStop();
+                } catch (Throwable ignore) { }
                 widget.stop();
                 widget.close();
-                widget.getExecutorServiceManager().shutdownWhenAllExecuted();
+                widget.getExecutorServiceManager().getSingleThreadScheduledExecutor().shutdownNow();
+                widget.getExecutorServiceManager().getUnboundedExecutorService().shutdownNow();
             }
         } catch (Throwable ignore) { }
     }

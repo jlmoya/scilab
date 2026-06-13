@@ -551,7 +551,9 @@ libsciterminal_la_root_DATA = license.txt
 #### terminal : init scripts ####
 libsciterminal_la_etcdir = $(mydatadir)/etc
 libsciterminal_la_etc_DATA = etc/terminal.quit \
-				etc/terminal.start
+				etc/terminal.start \
+				etc/XConfiguration-terminal.xml \
+				etc/XConfiguration-terminal.xsl
 
 
 # Where all the Scilab stuff is installed (macros, help, ...)
