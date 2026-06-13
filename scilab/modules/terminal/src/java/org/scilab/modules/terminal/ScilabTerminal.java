@@ -101,11 +101,15 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
 
     /** Fraction of the console column given to the terminal docked beneath it. */
     private static final float TERMINAL_SOUTH_RATIO = 0.30f;
-    /** Fraction of the width given to the File Browser column (west). */
-    private static final float WEST_COLUMN_RATIO = 0.27f;
-    /** Fraction of the remaining width given to the east tool column (Variable
-     *  Browser / Command History / News feed); the Console keeps the rest. */
-    private static final float EAST_COLUMN_RATIO = 0.22f;
+    // Target an overall width split of 25% File Browser / 50% Console / 25% east
+    // tool column. FlexDock ratios are relative to the region being split: the
+    // File Browser takes 25% of the whole port, then the east column takes a third
+    // of the remaining 75% (0.25 / 0.75) so the Console keeps the other 50%.
+    /** Fraction of the whole width given to the File Browser column (west). */
+    private static final float WEST_COLUMN_RATIO = 0.25f;
+    /** Fraction of the post-File-Browser width given to the east tool column
+     *  (Variable Browser / Command History / News feed); the Console keeps the rest. */
+    private static final float EAST_COLUMN_RATIO = 0.3333f;
 
     /** All currently-open terminals, keyed by tab uuid (insertion-ordered). */
     private static final Map<String, ScilabTerminal> INSTANCES =
