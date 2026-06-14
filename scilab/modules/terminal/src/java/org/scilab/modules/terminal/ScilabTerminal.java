@@ -14,7 +14,13 @@
 package org.scilab.modules.terminal;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -26,8 +32,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import com.jediterm.terminal.TerminalExecutorServiceManager;
 import com.jediterm.terminal.ui.JediTermWidget;
@@ -84,6 +96,9 @@ import org.scilab.modules.localization.Messages;
 public final class ScilabTerminal extends SwingScilabDockablePanel implements SimpleTab {
 
     public static final String TITLE = "Terminal";
+
+    /** Marks a terminal tab strip that already has the rename popup installed. */
+    private static final String RENAME_POPUP_INSTALLED = "scilabTerminalRenamePopup";
 
     private static final int DEFAULT_COLS = 100;
     private static final int DEFAULT_ROWS = 30;
@@ -153,6 +168,122 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.add(widget, BorderLayout.CENTER);
         setContentPane(contentPane);
+
+        // Right-click the title bar of a lone terminal to rename it (the tabbed
+        // case is handled by the tab-strip popup installed at dock time).
+        addRenameMouseListener(getTitlebar());
+    }
+
+    /**
+     * Add a right-click (popup-trigger) listener to {@code c} that offers to
+     * rename this terminal's tab.
+     */
+    private void addRenameMouseListener(Component c) {
+        if (c == null) {
+            return;
+        }
+        c.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                maybePopup(e);
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                maybePopup(e);
+            }
+            private void maybePopup(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    showRenamePopup(ScilabTerminal.this, e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
+    }
+
+    /** Prompt for a new tab name and apply it to this terminal's tab. */
+    private void promptRename() {
+        Object input = JOptionPane.showInputDialog(this,
+                       Messages.gettext("New tab name:"),
+                       Messages.gettext("Rename Terminal Tab"),
+                       JOptionPane.PLAIN_MESSAGE, null, null, getTitle());
+        if (input == null) {
+            return;
+        }
+        String name = input.toString().trim();
+        if (name.isEmpty()) {
+            return;
+        }
+        setTitle(name, true);
+        if (getTitlePane() != null) {
+            getTitlePane().repaint();
+        }
+        Container p = getParent();
+        while (p != null && !(p instanceof JTabbedPane)) {
+            p = p.getParent();
+        }
+        if (p != null) {
+            p.repaint();
+        }
+    }
+
+    /** Show the "Rename Tab" popup for {@code term} at the given point. */
+    private static void showRenamePopup(final ScilabTerminal term, Component invoker, int x, int y) {
+        JPopupMenu popup = new JPopupMenu();
+        JMenuItem rename = new JMenuItem(Messages.gettext("Rename Tab"));
+        rename.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                term.promptRename();
+            }
+        });
+        popup.add(rename);
+        popup.show(invoker, x, y);
+    }
+
+    /**
+     * Install the right-click "Rename Tab" popup on the tab strip that holds
+     * {@code terminal}, when it is tabbed together with other terminals. Deferred
+     * so FlexDock has created the tabbed pane; installed once per pane (FlexDock
+     * recreates the pane as tabs come and go, so this is called on each dock).
+     */
+    private static void installTabRenamePopup(final SwingScilabDockablePanel terminal) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Container p = terminal.getParent();
+                while (p != null && !(p instanceof JTabbedPane)) {
+                    p = p.getParent();
+                }
+                if (!(p instanceof JTabbedPane)) {
+                    return;
+                }
+                final JTabbedPane tabs = (JTabbedPane) p;
+                if (Boolean.TRUE.equals(tabs.getClientProperty(RENAME_POPUP_INSTALLED))) {
+                    return;
+                }
+                tabs.putClientProperty(RENAME_POPUP_INSTALLED, Boolean.TRUE);
+                tabs.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        maybePopup(e);
+                    }
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        maybePopup(e);
+                    }
+                    private void maybePopup(MouseEvent e) {
+                        if (!e.isPopupTrigger()) {
+                            return;
+                        }
+                        int idx = tabs.indexAtLocation(e.getX(), e.getY());
+                        if (idx < 0) {
+                            return;
+                        }
+                        Component c = tabs.getComponentAt(idx);
+                        if (c instanceof ScilabTerminal) {
+                            showRenamePopup((ScilabTerminal) c, tabs, e.getX(), e.getY());
+                        }
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -413,14 +544,66 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         SwingScilabDockablePanel existing = firstOpenTerminalExcluding(tab);
         if (existing != null && DockingManager.isDocked((Dockable) existing)) {
             DockingManager.dock((Dockable) tab, (Dockable) existing, DockingConstants.CENTER_REGION);
+            installTabRenamePopup(tab);
             return;
         }
         SwingScilabDockablePanel console = findDockedPanel(ID_CONSOLE);
         if (console != null && DockingManager.isDocked((Dockable) console)) {
             DockingManager.dock((Dockable) tab, (Dockable) console, DockingConstants.SOUTH_REGION, TERMINAL_SOUTH_RATIO);
+            matchTerminalHeightToNewsFeed(tab);
         } else {
             window.addTab(tab);
         }
+    }
+
+    /**
+     * Resize the terminal's split so it is exactly as tall as the News feed
+     * panel. The News feed height depends on the (possibly user-customised) east
+     * column layout, so a fixed split ratio cannot match it - we measure the live
+     * News feed height and set the divider of the console/terminal split directly.
+     * Deferred so the split has been laid out (non-zero sizes) first. No-op if the
+     * News feed is not open or the expected split is not found (the dock ratio then
+     * stands). Must be called on the EDT.
+     */
+    private static void matchTerminalHeightToNewsFeed(final SwingScilabDockablePanel terminal) {
+        Timer timer = new Timer(200, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    SwingScilabDockablePanel news = findDockedPanel(ID_NEWSFEED);
+                    if (news == null || news.getHeight() <= 0) {
+                        return;
+                    }
+                    Container p = terminal.getParent();
+                    while (p != null && !(p instanceof JSplitPane)) {
+                        p = p.getParent();
+                    }
+                    if (!(p instanceof JSplitPane)) {
+                        return;
+                    }
+                    JSplitPane split = (JSplitPane) p;
+                    if (split.getOrientation() != JSplitPane.VERTICAL_SPLIT) {
+                        return;
+                    }
+                    int total = split.getHeight();
+                    if (total <= 0) {
+                        return;
+                    }
+                    // Set the proportion through FlexDock so it is stored in the
+                    // docking split's persisted `percent` field - a raw
+                    // setDividerLocation(int) is reset to that stored percent the
+                    // next time the split lays out (e.g. when a tab is clicked).
+                    // The divider ratio is the console (top) fraction; the terminal
+                    // (bottom) then occupies exactly the News feed's height.
+                    float proportion =
+                        (float) (total - news.getHeight() - split.getDividerSize()) / (float) total;
+                    if (proportion > 0.05f && proportion < 0.95f) {
+                        DockingManager.setSplitProportion((Dockable) terminal, proportion);
+                    }
+                } catch (Throwable ignore) { }
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
 
     /** @return the first open terminal panel other than {@code self}, or null. */
@@ -597,6 +780,10 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
             for (int i = 1; i < terminals.size(); i++) {
                 DockingManager.dock((Dockable) terminals.get(i), (Dockable) first, DockingConstants.CENTER_REGION);
             }
+            if (terminals.size() > 1) {
+                installTabRenamePopup(first);
+            }
+            matchTerminalHeightToNewsFeed(first);
         }
     }
 
