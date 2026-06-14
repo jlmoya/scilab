@@ -124,6 +124,21 @@
             <callback instruction="if with_module(&quot;atoms&quot;) then atomsGui(); else disp(gettext(&quot;Please install atoms module.&quot;)); end" type="0"/>
         </submenu>
         <separator/>
+        <submenu label="&amp;Python Environments">
+            <submenu label="&amp;Status">
+                <callback instruction="if isdef(&quot;pyenvStatus&quot;) then pyenvStatus(); else disp(gettext(&quot;Load the PIMS toolbox first (exec its loader.sce).&quot;)); end" type="0"/>
+            </submenu>
+            <submenu label="&amp;Provision all">
+                <callback instruction="if isdef(&quot;pyenvProvisionAllUI&quot;) then pyenvProvisionAllUI(); else disp(gettext(&quot;Load the PIMS toolbox first (exec its loader.sce).&quot;)); end" type="0"/>
+            </submenu>
+            <submenu label="&amp;Reset an environment...">
+                <callback instruction="if isdef(&quot;pyenvResetUI&quot;) then pyenvResetUI(); else disp(gettext(&quot;Load the PIMS toolbox first (exec its loader.sce).&quot;)); end" type="0"/>
+            </submenu>
+            <submenu label="&amp;Update uv">
+                <callback instruction="if isdef(&quot;pyUvUpgradeUI&quot;) then pyUvUpgradeUI(); else disp(gettext(&quot;Load the PIMS toolbox first (exec its loader.sce).&quot;)); end" type="0"/>
+            </submenu>
+        </submenu>
+        <separator/>
         <submenu label="&amp;Variable Browser">
             <callback instruction="browsevar()" type="0"/>
         </submenu>
