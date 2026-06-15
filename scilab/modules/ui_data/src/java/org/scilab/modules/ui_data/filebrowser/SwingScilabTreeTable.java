@@ -501,11 +501,25 @@ public class SwingScilabTreeTable extends JTable {
         new CommonCallBack(null) {
             public void callBack() {
                 int[] rows = getSelectedRows();
-                if (rows != null && rows.length != 0) {
-                    TreePath path = tree.getPathForRow(rows[0]);
-                    if (path != null && tree.isExpanded(path)) {
-                        tree.collapsePath(path);
-                        setRowSelectionInterval(rows[0], rows[0]);
+                if (rows == null || rows.length == 0) {
+                    return;
+                }
+                TreePath path = tree.getPathForRow(rows[0]);
+                if (path == null) {
+                    return;
+                }
+                if (tree.isExpanded(path)) {
+                    tree.collapsePath(path);
+                    setRowSelectionInterval(rows[0], rows[0]);
+                } else {
+                    // Already collapsed (or a file): jump to the parent folder.
+                    TreePath parent = path.getParentPath();
+                    if (parent != null) {
+                        int prow = tree.getRowForPath(parent);
+                        if (prow >= 0) {
+                            setRowSelectionInterval(prow, prow);
+                            scrollRectToVisible(getCellRect(prow, 0, true));
+                        }
                     }
                 }
             }
