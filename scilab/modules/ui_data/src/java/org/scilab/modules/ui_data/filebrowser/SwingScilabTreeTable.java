@@ -476,9 +476,46 @@ public class SwingScilabTreeTable extends JTable {
             }
         });
 
+        // Keyboard expand/collapse: Right expands a collapsed folder, Left
+        // collapses an expanded one. The JTable would otherwise consume the arrow
+        // keys for column navigation, so we override them on the focused table.
+        actions.put(
+            "expandfolder",
+        new CommonCallBack(null) {
+            public void callBack() {
+                int[] rows = getSelectedRows();
+                if (rows != null && rows.length != 0) {
+                    TreePath path = tree.getPathForRow(rows[0]);
+                    if (path != null) {
+                        FileNode fn = (FileNode) path.getLastPathComponent();
+                        if (!fn.isLeaf() && !tree.isExpanded(path)) {
+                            tree.expandPath(path);
+                            setRowSelectionInterval(rows[0], rows[0]);
+                        }
+                    }
+                }
+            }
+        });
+        actions.put(
+            "collapsefolder",
+        new CommonCallBack(null) {
+            public void callBack() {
+                int[] rows = getSelectedRows();
+                if (rows != null && rows.length != 0) {
+                    TreePath path = tree.getPathForRow(rows[0]);
+                    if (path != null && tree.isExpanded(path)) {
+                        tree.collapsePath(path);
+                        setRowSelectionInterval(rows[0], rows[0]);
+                    }
+                }
+            }
+        });
+
         combobox.setAction((CommonCallBack) actions.get("cwd"));
         InputMap map = getInputMap();
         map.put(KeyStroke.getKeyStroke("ENTER"), "validateorexpand");
+        map.put(KeyStroke.getKeyStroke("RIGHT"), "expandfolder");
+        map.put(KeyStroke.getKeyStroke("LEFT"), "collapsefolder");
     }
 
     /** Create the popup menu */
