@@ -59,7 +59,7 @@ windows_set_env:
     - echo SCI_VERSION_STRING=$env:SCI_VERSION_STRING
     # display configured variables
     - where.exe devenv cl javac
-    - echo VS2022INSTALLDIR=$env:VS2022INSTALLDIR
+    - echo VS2026INSTALLDIR=$env:VS2026INSTALLDIR
     - echo SCILAB_JDK64=$env:SCILAB_JDK64
     - if ($env:SCILAB_JDK64) { &"$env:SCILAB_JDK64\bin\javac" -version }
     - echo JAVA_HOME=$env:JAVA_HOME
