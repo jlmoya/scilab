@@ -153,7 +153,7 @@ public:
     const XMLXPath *makeXPathQuery(const char *query, char **namespaces, int length, const XMLElement * e, std::string * error);
 
     const XMLObject *getXMLObjectParent() const;
-    const std::string dump(bool indent) const;
+    const std::string dump(bool indent) const override;
     const std::string dumpHTML(bool indent) const;
     const std::string toString() const;
 

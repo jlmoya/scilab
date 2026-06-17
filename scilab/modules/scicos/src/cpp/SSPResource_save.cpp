@@ -348,18 +348,18 @@ SSPResource::Result SSPResource::save(const char* uri)
 static bool is_empty_matrix(const std::vector<double>& v)
 {
     // v == {1, 2, 0, 0, 0}
-    return v.size() == 5 && v[0] == sci_matrix && v[1] == 2. && v[2] == 0. && v[3] == 0. && v[4] == 0.;
+    return v.size() == 5 && static_cast<int>(v[0]) == sci_matrix && v[1] == 2. && v[2] == 0. && v[3] == 0. && v[4] == 0.;
 }
 
 static bool is_empty_list(const std::vector<double>& v)
 {
     // v == {15, 0}
-    return v.size() == 2 && v[0] == sci_list && v[1] == 0.;
+    return v.size() == 2 && static_cast<int>(v[0]) == sci_list && v[1] == 0.;
 }
 
 static bool is_string_vector(const std::vector<double>& v)
 {
-    return v.size() > 2 && v[0] == sci_strings && v[1] != 0;
+    return v.size() > 2 && static_cast<int>(v[0]) == sci_strings && v[1] != 0;
 }
 
 /* helper function to decode simple string EXPRS */

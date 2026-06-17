@@ -47,6 +47,7 @@ public:
 
     H5Object ** getReferencesObject() const;
 
+    using H5BasicData<char>::getData;
     virtual H5Object & getData(const unsigned int size, const unsigned int * index) const;
 
     virtual std::string toString(const unsigned int indentLevel) const;

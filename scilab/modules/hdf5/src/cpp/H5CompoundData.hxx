@@ -33,9 +33,10 @@ public:
 
     virtual void getAccessibleAttribute(const std::string & _name, const int pos, void * pvApiCtx) const;
 
+    using H5BasicData<char>::getData;
     virtual H5Data & getData(const std::string fieldname) const;
 
-    virtual H5Object & getData(const unsigned int size, const unsigned int * index) const;
+    virtual H5Object & getData(const unsigned int size, const unsigned int * index) const override;
 
     virtual bool isCompound() const;
 

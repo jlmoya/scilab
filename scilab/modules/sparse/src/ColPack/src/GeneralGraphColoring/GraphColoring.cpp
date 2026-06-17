@@ -1987,16 +1987,7 @@ namespace ColPack
 			}
 		}
 
-#if COLPACK_DEBUG_LEVEL == 0
-		int i_LoopCount = 0;
-#endif
 		while(vi_VerticesToBeColored.size()>0) {
-#if COLPACK_DEBUG_LEVEL == 0
-			i_LoopCount++;
-			//cout<<"(loop "<<i_LoopCount<<") vi_VerticesToBeColored.size()="<<vi_VerticesToBeColored.size()<<"/"<<i_VertexCount<<endl;
-			//cout<<"(loop "<<i_LoopCount<<") i_MaxColor="<<i_MaxColor<<endl;
-			//Pause();
-#endif
 			// reinitialize vip_VerticesToBeRecolored_Private
 			for(int i=0; i < i_MaxNumThreads; i++) {
 				vip_VerticesToBeRecolored_Private[i].clear();

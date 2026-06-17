@@ -36,7 +36,8 @@ public:
 
     virtual ~H5StringData();
 
-    virtual void * getData() const;
+    using H5Data::getData;
+    virtual void * getData() const override;
 
     virtual void printData(std::ostream & os, const unsigned int pos, const unsigned int indentLevel) const;
 

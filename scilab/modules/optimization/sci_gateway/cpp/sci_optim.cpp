@@ -531,7 +531,7 @@ types::Function::ReturnValue sci_optim(types::typed_list &in, types::optional_li
 
                 for (int i = 0; i < iWorkSizeI; i++)
                 {
-                    piWork[i] = (int)pdbl[i];
+                    piWork[i] = (int)pdbl[iWorkSize + i];
                 }
             }
 
@@ -863,7 +863,7 @@ types::Function::ReturnValue sci_optim(types::typed_list &in, types::optional_li
             if (iIndSim < 0)
             {
                 throw ast::ScilabException();
-            }                        
+            }
             switch (iMode)
             {
                 case 0 :
@@ -967,7 +967,12 @@ types::Function::ReturnValue sci_optim(types::typed_list &in, types::optional_li
                 C2F(dcopy)(&iSizeX0, &dTol, &iZero, pdblEpsx, &iOne);
             }
 
-            iIndOpt = 1 + pDblWork ? 1 : 0;
+            iIndOpt = 1;
+            if (iMode == 3 && pdblWork != nullptr)
+            {
+                // hot-restart, pdblWork provided by user
+                iIndOpt = 2;
+            }
             C2F(qnbd)(&iIndOpt, costf, &iSizeX0, pdblX0, &dF, pdblG, &iPrint, &io, &dTol, &iNap,
                       &iItMax, &dEpsf, &dEpsg, pdblEpsx, &df0, pdblBinf, pdblBsub,
                       &iNfac, pdblWork, &iWorkSize, piWork, &iWorkSizeI, piIzs, pfRzs, pdblDzs, &iIndSim);
@@ -1234,4 +1239,3 @@ types::Function::ReturnValue sci_optim(types::typed_list &in, types::optional_li
 
     return ret;
 }
-

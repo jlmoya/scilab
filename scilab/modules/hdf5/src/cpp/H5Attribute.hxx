@@ -45,6 +45,7 @@ public :
         return true;
     }
 
+    using H5Object::getData;
     H5Data & getData();
     H5Type & getDataType();
     H5Dataspace & getSpace();

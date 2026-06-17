@@ -47,6 +47,7 @@ public :
         return true;
     }
 
+    using H5Object::getData;
     H5Data & getData();
     H5Data & getData(H5Dataspace & space, hsize_t * dims);
     H5Dataspace & getSpace();

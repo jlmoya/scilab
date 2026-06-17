@@ -747,7 +747,6 @@ wchar_t* findChars(wchar_t* chars, BOOL* _bInv) // ex: "123456789abc" = findChar
 {
     unsigned int iIterChars = 0;
     unsigned int iIterRes   = 0;
-    int iNbr                = 0;
     int iLen                = 0;
     wchar_t* wcsRes         = NULL;
     int* piPos              = NULL;
@@ -771,7 +770,6 @@ wchar_t* findChars(wchar_t* chars, BOOL* _bInv) // ex: "123456789abc" = findChar
             if (iSize >= 0)
             {
                 iLen += iSize;
-                iNbr++;
                 piPos[iIterChars] = 1;
             }
             else

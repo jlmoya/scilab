@@ -351,8 +351,15 @@ private:
 
 /* convenient typedef for pairs of (row, column) int values used as 2D coords */
 typedef std::pair<int, int> Coords2D;
-/* convenient typedef for iterator over pairs of (row, column) int values used as 2D coords */
-typedef std::iterator<std::forward_iterator_tag, Coords2D > Coords2DIterator;
+/* iterator over pairs of (row, column) int values used as 2D coords */
+struct Coords2DIterator {
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = Coords2D;
+    using difference_type = Coords2D;
+    using pointer = Coords2D*;
+    using reference = Coords2D&;
+};
+
 /**
    Iterator over coords making a full row-wise traversal wrapping around when reaching
    the end of the 2D container.
@@ -568,8 +575,14 @@ or with 1D coords from another vector (1x) matrix
 to respect Double insert() API, we take int* and a bool
 */
 template<typename S, typename V, typename Iter>
-struct MatrixIterator : std::iterator<std::forward_iterator_tag, V>
+struct MatrixIterator
 {
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = V;
+    using difference_type = V;
+    using pointer = V*;
+    using reference = V&;
+
     MatrixIterator(S& s_, Iter i_): s(s_), i(i_)
     {
     }

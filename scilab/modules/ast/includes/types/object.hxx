@@ -70,6 +70,7 @@ public:
     Function::ReturnValue callSuperclassContructor(Classdef* super, typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e);
 
     bool extract(const std::wstring& name, InternalType*& out);
+    using UserType::insert;
     Object* insert(typed_list* _pArgs, InternalType* _pSource, const ast::Exp& e);
 
     Object* clone()

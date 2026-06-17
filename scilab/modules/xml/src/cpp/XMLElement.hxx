@@ -198,7 +198,7 @@ public:
     void setAttributeValue(const char **name, const char **value, int size) const;
     void append(const XMLElement & elem) const;
     const XMLObject *getXMLObjectParent() const;
-    const std::string dump(bool indent) const;
+    const std::string dump(bool indent) const override;
     const std::string toString() const;
 };
 }

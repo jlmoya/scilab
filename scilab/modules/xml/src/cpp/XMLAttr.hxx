@@ -34,7 +34,7 @@ public:
      * Default constructor
      * @param elem the element which has this attributes
      */
-    XMLAttr(const XMLElement & elem);
+    explicit XMLAttr(const XMLElement & elem);
 
     ~XMLAttr();
 

@@ -78,6 +78,7 @@ public :
     */
     Struct*                     clone() override;
 
+    using ArrayOf<SingleStruct*>::set;
     Struct*                     set(int _iRows, int _iCols, SingleStruct* _pIT) override;
     Struct*                     set(int _iRows, int _iCols, const SingleStruct* _pIT);
     Struct*                     set(int _iIndex, SingleStruct* _pIT) override;

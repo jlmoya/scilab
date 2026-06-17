@@ -601,7 +601,7 @@ void Context::print(std::wostream& ostr, bool sorted) const
     std::list<std::pair<std::wstring, int>>::const_iterator it = lstVar.begin();
     int iWidth = ConfigVariable::getConsoleWidth();
     int iCurrentWidth = 0;
-    for (int i = 1; it != lstVar.end(); ++it, i++)
+    for (; it != lstVar.end(); ++it)
     {
         if (iCurrentWidth + iVarLenMax + 1 > iWidth)
         {

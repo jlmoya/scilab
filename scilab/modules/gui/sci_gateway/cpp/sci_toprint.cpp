@@ -281,12 +281,12 @@ static int sci_toprint_two_rhs(void* _pvCtx, const char *fname)
                 }
 
                 sciErr = getMatrixOfString(_pvCtx, piAddressVarOne, &mOne, &nOne, lenStVarOne, pStVarOne);
-                FREE(lenStVarOne);
                 if (sciErr.iErr)
                 {
                     printError(&sciErr, 0);
                     Scierror(999, _("%s: Can not read input argument #%d.\n"), fname, 1);
                     freeArrayOfString(pStVarOne, mnOne);
+                    FREE(lenStVarOne);
                     return 1;
                 }
 
@@ -295,6 +295,7 @@ static int sci_toprint_two_rhs(void* _pvCtx, const char *fname)
                 {
                     Scierror(999, _("%s: No more memory.\n"), fname);
                     freeArrayOfString(pStVarOne, mnOne);
+                    FREE(lenStVarOne);
                     return 1;
                 }
 
@@ -314,6 +315,7 @@ static int sci_toprint_two_rhs(void* _pvCtx, const char *fname)
                     }
                 }
                 freeArrayOfString(pStVarOne, mnOne);
+                FREE(lenStVarOne);
 
                 if (getAllocatedSingleString(_pvCtx, piAddressVarTwo, &pageHeader) == 0)
                 {
