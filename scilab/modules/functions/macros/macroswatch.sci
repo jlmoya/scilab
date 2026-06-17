@@ -29,6 +29,11 @@ function macroswatch(name, dir)
         // Auto mode: watch every loaded user library (skip Scilab's own, under SCI).
         libs = librarieslist();
         sciroot = pathconvert(fullpath(SCI), %f, %f);
+        // Resolve the singleton into a variable first: Scilab's Java bridge cannot
+        // chain a static result into an instance call
+        // (LibraryReloader.getInstance().watch(...) raises "No method watch in the
+        // class java.lang.String"), so hold the instance and call watch() on it.
+        %mw_reloader = LibraryReloader.getInstance();
         n = 0;
         for i = 1:size(libs, "*")
             nm = libs(i);
@@ -36,13 +41,13 @@ function macroswatch(name, dir)
                 if size(%mw_p, "*") >= 1 then
                     d = pathconvert(fullpath(%mw_p(1)), %f, %f);
                     if part(d, 1:length(sciroot)) <> sciroot & isdir(%mw_p(1)) then
-                        LibraryReloader.getInstance().watch(nm, %mw_p(1));
+                        %mw_reloader.watch(nm, %mw_p(1));
                         n = n + 1;
                     end
                 end
             end
         end
-        clear %mw_p;
+        clear %mw_p %mw_reloader;
         mprintf(gettext("macroswatch: watching %d user library(ies) for live reload.\n"), n);
         return;
     end
@@ -60,5 +65,7 @@ function macroswatch(name, dir)
         error(msprintf(gettext("%s: The directory ""%s"" does not exist.\n"), "macroswatch", dir));
     end
 
-    LibraryReloader.getInstance().watch(name, dir);
+    %mw_reloader = LibraryReloader.getInstance();
+    %mw_reloader.watch(name, dir);
+    clear %mw_reloader;
 endfunction
