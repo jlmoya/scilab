@@ -148,17 +148,23 @@ public class ScilabFileBrowserModel extends AbstractScilabTreeTableModel
                     continue;
                 }
                 Path p = fn.file.toPath();
-                if(Files.isReadable(p) == false) {
-                    // See #17447: java.nio.file.AccessDeniedException issued when trying to watch C:\Users\<USER>\Documents\My Music and similar directories
+                // Skip anything that is not, right now, a readable directory: a
+                // permission-denied dir (#17447) or a listed-but-unmounted location
+                // -- e.g. a Google Drive / cloud "File Provider" placeholder under the
+                // home dir -- otherwise makes register() throw NoSuchFileException
+                // (the macOS WatchService is the polling impl, which stats on register).
+                if (!Files.isDirectory(p) || !Files.isReadable(p)) {
                     continue;
                 }
                 try {
                     p.register(
                         watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    Logger.getLogger(SwingScilabTreeTable.class.getName()).log(Level.SEVERE, null, ex);
-                    cancel(false);
+                } catch (IOException | RuntimeException ex) {
+                    // A single un-watchable directory (vanished between the check and
+                    // here, unmounted, or platform-denied) must NOT cancel the watcher
+                    // for the rest of the tree -- log quietly and carry on.
+                    Logger.getLogger(SwingScilabTreeTable.class.getName()).log(Level.FINE,
+                        "FileBrowser: skipping unwatchable directory " + p, ex);
                 }
             }
         }
