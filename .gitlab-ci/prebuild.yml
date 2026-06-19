@@ -1,6 +1,7 @@
 # Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
 # Copyright (C) 2022 - Dassault Systèmes S.E. - Clément DAVID
 # Copyright (C) 2022 - Dassault Systèmes S.E. - Cédric DELAMARRE
+# Copyright (C) 2026 - Dassault Systèmes S.E. - Vincent COUVERT
 #
 #
 # This YAML file describe the prebuild stage of the CI. This stage is used to
@@ -38,10 +39,10 @@ linux_set_env:
     reports:
       dotenv: build.env
 
-# define x64 windows env
-windows_set_env:
+# define windows env
+.windows_set_env:
   stage: prebuild
-  tags: [x64_windows, shell, scilab]
+  tags: [shell, scilab]
   needs: []
   variables:
     GIT_STRATEGY: none
@@ -51,10 +52,12 @@ windows_set_env:
     - echo CI_MERGE_REQUEST_TARGET_BRANCH_NAME=$env:CI_MERGE_REQUEST_TARGET_BRANCH_NAME
     - echo CI_COMMIT_TAG=$env:CI_COMMIT_TAG
     # define NOW as Gitlab display ISO 8601 timestamp
-    - $env:NOW=(Get-Date(Get-Date).ToUniversalTime() -uformat '%s')
+    - $Now=(Get-Date(Get-Date).ToUniversalTime() -uformat '%s')
+    # define ARCH (prereqs & binaries naming convention) according to PROCESSOR_ARCHITECTURE
+    - if ($env:PROCESSOR_ARCHITECTURE -eq "AMD64") { $ARCH="x64" } else { $ARCH="arm64" }
     # export useful variables
     - |
-      Set-Content -Path build.env -Value "ARCH=x64","SCI_VERSION_TIMESTAMP=$env:NOW"
+      Set-Content -Path build.env -Value "ARCH=$ARCH","SCI_VERSION_TIMESTAMP=$Now"
       cat build.env
     - echo SCI_VERSION_STRING=$env:SCI_VERSION_STRING
     # display configured variables
@@ -67,6 +70,16 @@ windows_set_env:
   artifacts:
     reports:
       dotenv: build.env
+
+# define x64 windows env
+windows_x64_set_env:
+  extends: .windows_set_env
+  tags: [x64_windows]
+
+# define arm64 windows env
+windows_arm64_set_env:
+  extends: .windows_set_env
+  tags: [arm64_windows]
 
 # rebuild linux dependencies
 linux_build_prereq:
@@ -102,16 +115,14 @@ linux_build_prereq:
         compare_to: ${CI_DEFAULT_BRANCH}
 
 # update windows dependencies
-windows_build_prereq:
+.windows_build_prereq:
   stage: prebuild
-  tags: [x64_windows, shell, scilab]
-  needs:
-    - windows_set_env
+  tags: [shell, scilab]
   before_script: cmd /C "call .gitlab-ci/prebuild.bat version"
   script: cmd /C "call .gitlab-ci/prebuild.bat fromscratch"
   artifacts:
     paths:
-      - prerequirements-${SCI_VERSION_STRING}-windows_x64.zip
+      - prerequirements-${SCI_VERSION_STRING}-windows_${ARCH}.zip
       - $SCI_VERSION_STRING
     when: always
   rules:
@@ -130,13 +141,23 @@ windows_build_prereq:
       changes:
         paths: *PREBUILD_WINDOWS_CHANGED
         compare_to: ${CI_DEFAULT_BRANCH}
+# update x64 windows dependencies
+windows_x64_build_prereq:
+  extends: .windows_build_prereq
+  tags: [x64_windows]
+  needs:
+    - windows_x64_set_env
+# update arm64 windows dependencies
+windows_arm64_build_prereq:
+  extends: .windows_build_prereq
+  tags: [arm64_windows]
+  needs:
+    - windows_arm64_set_env
 
 # Clean up the Windows common folder, TMPDIR, uninstall Scilab, and kill any remaining Scilab processes.
-windows_cleanup:
+.windows_cleanup:
   stage: prebuild
-  tags: [x64_windows, shell, scilab]
-  needs:
-    - windows_set_env
+  tags: [shell, scilab]
   script:
     - echo "Starting Windows Common path cleanup..."
     - powershell -NoProfile -ExecutionPolicy Bypass -File ".gitlab-ci\cleanup_windows.ps1"
@@ -144,3 +165,15 @@ windows_cleanup:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   allow_failure: true
+# Clean up x64 Windows common folder
+windows_x64_cleanup:
+  extends: .windows_cleanup
+  tags: [x64_windows]
+  needs:
+    - windows_x64_set_env
+# Clean up arm64 Windows common folder
+windows_arm64_cleanup:
+  extends: .windows_cleanup
+  tags: [arm64_windows]
+  needs:
+    - windows_arm64_set_env
