@@ -4355,7 +4355,6 @@ GenericType* SparseBool::extract(typed_list* _pArgs)
 
             pOut = new SparseBool(iNewRows, iNewCols);
 
-            int iPos = 0;
             // Write in output all elements extract from input.
             for (int iRow = 0; iRow < iNewRows; iRow++)
             {
@@ -4377,7 +4376,6 @@ GenericType* SparseBool::extract(typed_list* _pArgs)
                         //only non zero values
                         pOut->set(iRow, iCol, true, false);
                     }
-                    iPos++;
                 }
             }
         }

@@ -15,7 +15,14 @@
 // along with this program.
 //
 
-function demo_gui()
+function demo_gui(category)
+    // category (optional): name of the category to open directly, or a
+    // string vector for a nested path (e.g. ["Xcos" "Standard demos"]).
+
+    [lhs, rhs] = argn(0);
+    if rhs < 1 then
+        category = [];
+    end
 
     global demolist;
     global demolistlock;
@@ -40,7 +47,19 @@ function demo_gui()
 
     if get("scilab_demo_fig") <> [] then
         set("scilab_demo_fig", "visible", "on");
+        // GUI already open: its tree is loaded, navigate right away.
+        if ~isempty(category) then
+            demo_gui_navigate(category);
+        end
         return;
+    end
+
+    // Fresh GUI: the tree is sent asynchronously once the browser page
+    // reports "loaded". Stash the request so demo_gui_send_tree() can
+    // honor it right after sending the tree.
+    if ~isempty(category) then
+        global demo_gui_nav_request;
+        demo_gui_nav_request = category;
     end
 
     // Figure

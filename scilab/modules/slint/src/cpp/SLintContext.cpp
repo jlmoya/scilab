@@ -21,10 +21,15 @@
 namespace slint
 {
 
-SLintContext::SLintContext(const SLint & _project) : project(_project), LHSExp(nullptr) { }
+SLintContext::SLintContext() : project(), LHSExp(nullptr) { }
 
 SLintContext::~SLintContext()
 {
+}
+
+void SLintContext::setProject(const SLint & _project)
+{
+    project = &_project;
 }
 
 void SLintContext::setSciFile(const SciFilePtr & file)
@@ -306,7 +311,7 @@ const ast::FunctionDec * SLintContext::getPrivateFunction(const std::wstring & n
 
 bool SLintContext::isExternPrivateFunction(const symbol::Symbol & sym, std::wstring & name) const
 {
-    const std::vector<SciFilePtr> & files = project.getFiles();
+    const std::vector<SciFilePtr> & files = project->getFiles();
     for (const auto & file : files)
     {
         if (currentFile != file && file->isPrivateFunction(sym))
@@ -338,6 +343,6 @@ const ast::FunctionDec * SLintContext::getPublicFunction(const std::wstring & na
 
 const ast::Exp * SLintContext::getNextRelevantExp() const
 {
-    return project.getVisitor().getNextRelevantExp();
+    return project->getVisitor().getNextRelevantExp();
 }
 }

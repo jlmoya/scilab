@@ -171,7 +171,6 @@ void Triangulator::removeColinearVertices(void)
     std::list<int> tmpVertexIndices;
 
     int numColinear = 0;
-    int index = 0;
 
     for (vi = vertexIndices.begin(); vi != vertexIndices.end(); vi++)
     {
@@ -189,8 +188,6 @@ void Triangulator::removeColinearVertices(void)
             sievedPoints.push_back(points[*vi]);
             actualVertexIndices.push_back(*vi);
         }
-
-        index++;
     }
 
     points.clear();
@@ -240,7 +237,6 @@ void Triangulator::removeColinearVertices(void)
 
 void Triangulator::removeDuplicateVertices(void)
 {
-    int numDuplicateVertices = 0;
     std::vector<int> duplicateFlagArray;
 
     std::vector<Vector3d> sievedPoints;
@@ -261,7 +257,6 @@ void Triangulator::removeDuplicateVertices(void)
 
         if (compareVertices(vi, vip1))
         {
-            numDuplicateVertices++;
             duplicateFlagArray[ic] = 1;
         }
         else

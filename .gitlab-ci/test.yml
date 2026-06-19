@@ -1,5 +1,6 @@
 # Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
 # Copyright (C) 2022 - Dassault Systèmes S.E. - Clément DAVID
+# Copyright (C) 2026 - Dassault Systèmes S.E. - Vincent COUVERT
 #
 #
 # This YAML file describe the test stage of the CI. Tests run are defined
@@ -7,9 +8,10 @@
 # impacted are added for modules modified by Merge Request.
 #
 
-windows_install:
+# install windows
+.windows_install:
   stage: test
-  tags: [x64_windows, shell, scilab]
+  tags: [shell, scilab]
   variables:
     ARTIFACT_DOWNLOAD_ATTEMPTS: 3
     GET_SOURCES_ATTEMPTS: 3
@@ -17,20 +19,36 @@ windows_install:
   retry:
     max: 2
     when: runner_system_failure
-  needs:
-    - job: windows_build_release
-      optional: true
-    - job: windows_build_nightly
-      optional: true
-    - job: windows_build_mr
-      optional: true
-    - windows_set_env
   script:
     - .gitlab-ci\test_windows_install.ps1
   artifacts:
     paths:
       - "${SCI_VERSION_STRING}/"
     when: always
+# install x64 windows
+windows_x64_install:
+  extends: .windows_install
+  tags: [x64_windows]
+  needs:
+    - job: windows_x64_build_release
+      optional: true
+    - job: windows_x64_build_nightly
+      optional: true
+    - job: windows_x64_build_mr
+      optional: true
+    - windows_x64_set_env
+# install arm64 windows
+windows_arm64_install:
+  extends: .windows_install
+  tags: [arm64_windows]
+  needs:
+    - job: windows_arm64_build_release
+      optional: true
+    - job: windows_arm64_build_nightly
+      optional: true
+    - job: windows_arm64_build_mr
+      optional: true
+    - windows_arm64_set_env
 
 .windows_test:
   stage: test
@@ -56,7 +74,7 @@ windows_install:
 windows_basic:
   extends: .windows_test
   needs:
-    - windows_install
+    - windows_x64_install
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -99,7 +117,7 @@ windows_basic:
 windows_intermediate:
   extends: .windows_test
   needs:
-    - windows_install
+    - windows_x64_install
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -149,7 +167,7 @@ windows_intermediate:
 windows_advanced:
   extends: .windows_test
   needs:
-    - windows_install
+    - windows_x64_install
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"
@@ -183,7 +201,7 @@ windows_advanced:
 windows_only:
   extends: .windows_test
   needs:
-    - windows_install
+    - windows_x64_install
   rules:
     - if: $CI_COMMIT_TAG
     - if: $CI_PIPELINE_SOURCE == "schedule"

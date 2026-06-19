@@ -36,12 +36,10 @@ types::Function::ReturnValue sci_dct(types::typed_list &in, int _iRetCount, type
 int sci_dct_gen(const char *fname, types::Double* A, types::Double** O, int isn, guru_dim_struct gdim, int iopt)
 {
     *O = A->clone()->getAs<types::Double>();
-    int ndimsA = (*O)->getDims();
-    int *dimsA = (*O)->getDimsArray();
     double *Ar = (*O)->get();
     double *Ai = (*O)->getImg();
     /* Input  array variables */
-    int  isrealA = (Ai == NULL), lA = 1;
+    int  isrealA = (Ai == NULL);
     /*for MKL*/
 
     /*FFTW specific library variable */
@@ -56,12 +54,6 @@ int sci_dct_gen(const char *fname, types::Double* A, types::Double** O, int isn,
     /* local variable */
     int i = 0;
     int errflag = 0;
-
-    for (i = 0; i < ndimsA; i++)
-    {
-        lA *= dimsA[i];
-    }
-
 
     if (isn == 1 && iopt == 0)
     {

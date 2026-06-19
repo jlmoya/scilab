@@ -206,6 +206,7 @@ struct EXTERN_AST Sparse : GenericType
       @param  _bAsVector if _piSeqCoord contains 1D coords.
 
      */
+    using GenericType::extract;
     GenericType* extract(typed_list* _pArgs);
     Sparse* extract(int _iSeqCount, int* _piSeqCoord, int* _piMaxDim, int* _piDimSize, bool _bAsVector) SPARSE_CONST;
     virtual bool invoke(typed_list & in, optional_list & /*opt*/, int /*_iRetCount*/, typed_list & out, const ast::Exp & e);
@@ -550,6 +551,7 @@ struct EXTERN_AST SparseBool : GenericType
 
     GenericType* remove(typed_list* _pArgs);
     GenericType* insertNew(typed_list* _pArgs);
+    using GenericType::extract;
     GenericType* extract(typed_list* _pArgs);
 
     SparseBool* extract(int _iSeqCount, int* _piSeqCoord, int* _piMaxDim, int* _piDimSize, bool _bAsVector) SPARSE_CONST;

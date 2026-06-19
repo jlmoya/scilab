@@ -473,7 +473,7 @@ String* String::set(const wchar_t* const* _pwstData)
 String* String::set(int _iPos, const char* _pcData)
 {
     wchar_t* w = to_wide_string(_pcData);
-    String* ret = set(_iPos, w);
+    String* ret = set(_iPos, (const wchar_t*) w);
     FREE(w);
     return ret;
 }

@@ -121,7 +121,7 @@ namespace ColPack
 		bool b_symmetric;
 
 		istringstream in2;
-		int entry_counter = 0, num_of_entries = 0, nz_counter=0;
+		int entry_counter = 0, num_of_entries = 0;
 		//bool value_not_specified = false;
 		int i_LineCount = _TRUE;
 
@@ -265,13 +265,11 @@ namespace ColPack
 
 				v2i_LeftVertexAdjacency[STEP_DOWN(i_LeftVertex)].push_back(STEP_DOWN(i_RightVertex));
 				v2i_RightVertexAdjacency[STEP_DOWN(i_RightVertex)].push_back(STEP_DOWN(i_LeftVertex));
-				nz_counter++;
 
 				if(b_symmetric && (i_RightVertex != i_LeftVertex)) {
 //cout<<"\t i_LeftVertex = "<<i_LeftVertex<<"; i_RightVertex = "<<i_RightVertex<<endl;
 				  v2i_LeftVertexAdjacency[STEP_DOWN(i_RightVertex)].push_back(STEP_DOWN(i_LeftVertex));
 				  v2i_RightVertexAdjacency[STEP_DOWN(i_LeftVertex)].push_back(STEP_DOWN(i_RightVertex));
-				  nz_counter++;
 				}
 			}
 

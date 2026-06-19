@@ -37,7 +37,8 @@ public:
 
     virtual ~H5ArrayData();
 
-    virtual H5Object & getData(const unsigned int size, const unsigned int * index) const;
+    using H5BasicData<char>::getData;
+    virtual H5Object & getData(const unsigned int size, const unsigned int * index) const override;
 
     virtual bool isArray() const;
 

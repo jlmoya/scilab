@@ -77,6 +77,7 @@ public :
     */
     Cell*               clone() override;
 
+    using ArrayOf<InternalType*>::set;
     Cell*               set(int _iRows, int _iCols, InternalType* _pIT) override;
     Cell*               set(int _iRows, int _iCols, const InternalType* _pIT);
     Cell*               set(int _iIndex, InternalType* _pIT) override;

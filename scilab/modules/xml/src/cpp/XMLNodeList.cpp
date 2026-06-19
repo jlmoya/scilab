@@ -104,12 +104,12 @@ const XMLObject *XMLNodeList::getXMLObjectParent() const
     return &doc;
 }
 
-const std::string XMLNodeList::dump() const
+const std::string XMLNodeList::dump(bool indent) const
 {
     xmlBufferPtr buffer = xmlBufferCreate();
     for (xmlNode * cur = parent->children; cur; cur = cur->next)
     {
-        xmlNodeDump(buffer, doc.getRealDocument(), cur, 0, 1);
+        xmlNodeDump(buffer, doc.getRealDocument(), cur, 0, indent ? 1 : 0);
         xmlBufferAdd(buffer, (xmlChar *) "\n", (int)strlen("\n"));
     }
     std::string str = std::string((const char *)buffer->content);

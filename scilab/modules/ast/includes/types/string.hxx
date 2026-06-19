@@ -48,6 +48,7 @@ public :
 
     void                    whoAmI() override;
 
+    using ArrayOf<wchar_t*>::set;
     virtual String*         set(int _iPos, const wchar_t* _pwstData);
     virtual String*         set(int _iRows, int _iCols, const wchar_t* _pwstData);
     virtual String*         set(const wchar_t* const* _pwstData);

@@ -2038,6 +2038,7 @@ taucs_ccs_symbolic_elimination(taucs_ccs_matrix* A,
                                   );
 
     {
+        /*
         double nnz   = 0.0;
         double flops = 0.0;
         int sn, i, colnnz;
@@ -2051,6 +2052,7 @@ taucs_ccs_symbolic_elimination(taucs_ccs_matrix* A,
                 nnz   += (double) (colnnz);
             }
         }
+        */
         /*sciprint("\t\tSymbolic Analysis of CC^T: %.2e nonzeros, %.2e flops\n",
           nnz, flops); */
     }
@@ -2072,6 +2074,7 @@ taucs_ccs_symbolic_elimination(taucs_ccs_matrix* A,
 
 
     {
+        /*
         double nnz   = 0.0;
         double flops = 0.0;
         int sn, i, colnnz;
@@ -2085,6 +2088,7 @@ taucs_ccs_symbolic_elimination(taucs_ccs_matrix* A,
                 nnz   += (double) (colnnz);
             }
         }
+        */
         /*sciprint("\t\tRelaxed  Analysis of LL^T: %.2e nonzeros, %.2e flops\n",
           nnz, flops); */
     }

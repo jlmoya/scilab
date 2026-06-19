@@ -194,8 +194,8 @@ void MeshFecDataDecomposer::fillColors(int id, float* buffer, int bufferLength, 
     double maxValue = 0.;
     double valueRange = 0.;
 
-    float minColor[3];
-    float maxColor[3];
+    float minColor[3] = {0.f, 0.f, 0.f};
+    float maxColor[3] = {0.f, 0.f, 0.f};
 
     int colormapSize = 0;
 

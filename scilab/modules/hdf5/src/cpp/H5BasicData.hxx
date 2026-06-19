@@ -140,7 +140,8 @@ public:
         }
     }
 
-    inline virtual void * getData() const
+    using H5Data::getData;
+    inline virtual void * getData() const override
     {
         if (stride == 0)
         {

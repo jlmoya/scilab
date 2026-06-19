@@ -1,5 +1,6 @@
 // Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
 // Copyright (C) 2011-2012 - DIGITEO - Allan CORNET
+// Copyright (C) 2026 - Dassault Systèmes S.E. - Vincent COUVERT
 //
 // Copyright (C) 2012 - 2016 - Scilab Enterprises
 //
@@ -42,6 +43,11 @@ function generatef2csln(defaultSLNpath)
     SLN = mgetl(fullFilenameSLN);
     F2CSLN = strsubst(SLN, FORTRAN_GUID, C_GUID);
     F2CSLN = strsubst(F2CSLN, VFPROJ, VCPROJ);
+    // Specific case for ARM64 (no Fortran configuration for this platform, x64 is used by default)
+    F2CSLN = strsubst(F2CSLN, "|ARM64.ActiveCfg = Debug|x64", "|ARM64.ActiveCfg = Debug|ARM64");
+    F2CSLN = strsubst(F2CSLN, "|ARM64.Build.0 = Debug|x64", "|ARM64.Build.0 = Debug|ARM64");
+    F2CSLN = strsubst(F2CSLN, "|ARM64.ActiveCfg = Release|x64", "|ARM64.ActiveCfg = Release|ARM64");
+    F2CSLN = strsubst(F2CSLN, "|ARM64.Build.0 = Release|x64", "|ARM64.Build.0 = Release|ARM64");
     mputl(F2CSLN, fullfile(defaultSLNpath, SLN_NAME_F2C));
 endfunction
 // =============================================================================

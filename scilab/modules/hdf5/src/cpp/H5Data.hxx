@@ -50,6 +50,7 @@ public:
         }
     }
 
+    using H5Object::getData;
     inline virtual void * getData() const
     {
         return data;

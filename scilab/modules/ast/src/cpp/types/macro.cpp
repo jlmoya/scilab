@@ -1219,9 +1219,8 @@ void Macro::updateArguments()
                         throw ast::InternalError(scilab::UTF8::toWide(msg), 999, dec->getArgumentType()->getLocation());
                     }
 
-                    std::wstring callerName(m_wstName);
-                    argConv.convertor = [f, callerName](types::InternalType* x)
-                    { return f(x, callerName); };
+                    argConv.convertor = [f, this](types::InternalType* x)
+                    { return f(x, m_wstName); };
                     arg.convertors.push_back(argConv);
                 }
 

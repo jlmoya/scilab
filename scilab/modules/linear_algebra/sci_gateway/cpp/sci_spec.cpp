@@ -371,16 +371,26 @@ types::Function::ReturnValue sci_spec(types::typed_list &in, int _iRetCount, typ
 
         int totalSize = pDblA->getSize();
 
-        if ((pDblA->isComplex() ? C2F(vfiniteComplex)(&totalSize, (doublecomplex*)pDataA) : C2F(vfinite)(&totalSize, pDataA)) == false)
+        if ((bIsComplex ? C2F(vfiniteComplex)(&totalSize, (doublecomplex*)pDataA) : C2F(vfinite)(&totalSize, pDataA)) == false)
         {
+            if (bIsComplex)
+            {
+                vFreeDoubleComplexFromPointer((doublecomplex*)pDataA);
+                vFreeDoubleComplexFromPointer((doublecomplex*)pDataB);
+            }
             pDblA->killMe();
             pDblB->killMe();
             Scierror(264, _("%s: Wrong value for input argument %d: Must not contain NaN or Inf.\n"), "spec", 1);
             return types::Function::Error;
         }
 
-        if ((pDblB->isComplex() ? C2F(vfiniteComplex)(&totalSize, (doublecomplex*)pDataB) : C2F(vfinite)(&totalSize, pDataB)) == false)
+        if ((bIsComplex ? C2F(vfiniteComplex)(&totalSize, (doublecomplex*)pDataB) : C2F(vfinite)(&totalSize, pDataB)) == false)
         {
+            if (bIsComplex)
+            {
+                vFreeDoubleComplexFromPointer((doublecomplex*)pDataA);
+                vFreeDoubleComplexFromPointer((doublecomplex*)pDataB);
+            }
             pDblA->killMe();
             pDblB->killMe();
             Scierror(264, _("%s: Wrong value for input argument %d: Must not contain NaN or Inf.\n"), "spec", 2);

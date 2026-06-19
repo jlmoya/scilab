@@ -148,7 +148,7 @@ types::Function::ReturnValue sci_part(types::typed_list& in, int _iRetCount, typ
             temp->killMe();
         }
     }
-    
+
     if (index.empty() && in[1]->isDouble())
     {
         types::Double* pD = in[1]->getAs<types::Double>();
@@ -161,7 +161,7 @@ types::Function::ReturnValue sci_part(types::typed_list& in, int _iRetCount, typ
 
         int i_len = pD->getSize();
         index.resize(i_len);
-        const double* pdata = pD->get(); 
+        const double* pdata = pD->get();
         for (int i = 0; i < i_len; i++)
         {
             int idx = static_cast<int>(pdata[i]);
@@ -185,19 +185,23 @@ types::Function::ReturnValue sci_part(types::typed_list& in, int _iRetCount, typ
     wchar_t** out_data = pOut->get();
     wchar_t** in_data = pS->get();
 
+    // allocate the default output string and fill it with spaces
+    wchar_t* defaultValue = new wchar_t[index.size() + 1];
+    std::wmemset(defaultValue, L' ', index.size());
+    defaultValue[index.size()] = L'\0';
+
     for (int i = 0; i < pS->getSize(); ++i)
     {
         wchar_t* wcs_in = in_data[i];
         size_t s_len = wcslen(wcs_in);
-        int wcs_len = (s_len > std::numeric_limits<int>::max()) 
-                    ? std::numeric_limits<int>::max() 
+        int wcs_len = (s_len > std::numeric_limits<int>::max())
+                    ? std::numeric_limits<int>::max()
                     : static_cast<int>(s_len);
 
-        // Allocate and initialize output string
-        out_data[i] = new wchar_t[index.size() + 1];
-        std::wmemset(out_data[i], L' ', index.size());
-        out_data[i][index.size()] = L'\0';
+        // initialize output string
+        pOut->set(i, defaultValue);
 
+        // copy the input characters
         for (size_t j = 0; j < index.size(); ++j)
         {
             if (index[j] <= wcs_len) [[likely]]
@@ -206,6 +210,8 @@ types::Function::ReturnValue sci_part(types::typed_list& in, int _iRetCount, typ
             }
         }
     }
+
+    delete[] defaultValue;
 
     out.push_back(pOut);
     return types::Function::OK;

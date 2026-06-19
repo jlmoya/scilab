@@ -49,8 +49,9 @@ extern "C"
 namespace slint
 {
 
-SLint::SLint(SLintOptions & options, SLintResult & result) : context(*this), visitor(context, result)
+SLint::SLint(SLintOptions & options, SLintResult & result) : context(), visitor(context, result)
 {
+    context.setProject(*this);
     visitor.setOptions(options);
 }
 

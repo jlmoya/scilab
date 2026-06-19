@@ -108,7 +108,7 @@ public:
     void setAttributeValue(const char **prefix, const char **name, const char **value, int lsize) const;
     void setAttributeValue(const char **name, const char **value, int lsize) const;
     const XMLObject *getXMLObjectParent() const;
-    const std::string dump() const;
+    const std::string dump(bool indent) const override;
     const XMLObject *getListElement(int index);
 
     /**

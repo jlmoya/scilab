@@ -34,7 +34,7 @@ class SLint;
 class SLintContext
 {
 
-    const SLint & project;
+    const SLint* project;
     std::unordered_map<std::wstring, const ast::FunctionDec *> publicFunctions;
     SciFilePtr currentFile;
     const ast::Exp * LHSExp;
@@ -45,9 +45,10 @@ class SLintContext
 
 public:
 
-    SLintContext(const SLint & _project);
+    SLintContext();
     ~SLintContext();
 
+    void setProject(const SLint & _project);
     void setSciFile(const SciFilePtr & file);
     const SciFilePtr & getSciFile() const;
     const std::wstring & getFilename() const;

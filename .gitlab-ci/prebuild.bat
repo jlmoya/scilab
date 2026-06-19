@@ -1,7 +1,9 @@
 @echo off
-
-set ARCH=x64
-set LOGDIR="%SCI_VERSION_STRING%"
+REM Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
+REM Copyright (C) 2022 - Dassault Systèmes S.E. - Clément DAVID
+REM Copyright (C) 2026 - Dassault Systèmes S.E. - Vincent COUVERT
+REM
+REM Builder script for building Scilab prerequirements on Windows
 
 if "%1" == "" (
     echo This script compiles dependencies of Scilab for Windows x64.
@@ -16,6 +18,8 @@ if "%1" == "" (
 )
 
 echo Scilab prerequirements for Windows %ARCH% in branch %BRANCH%
+
+set LOGDIR="%SCI_VERSION_STRING%"
 if exist "%LOGDIR%" (
     echo logging into existing "%LOGDIR%"
 ) else (
@@ -62,12 +66,27 @@ rem #####################
     goto :eof
 
 :download_prereqs
-    curl.exe -L -k -o prereq.zip https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements/prerequirements-scilab-svn-revision-%SVN_REVISION%-windows_x64.zip || exit 1
-    unzip.exe -qt prereq.zip || exit 1
+    set SVN_REVISION_PREREQS=https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements/prerequirements-scilab-svn-revision-%SVN_REVISION%-windows_%ARCH%.zip
+    echo Downloading %SVN_REVISION_PREREQS%...
+    curl.exe -f -L -k -o prereq.zip %SVN_REVISION_PREREQS%
+    IF %ERRORLEVEL% NEQ 0 (
+        echo %SVN_REVISION_PREREQS% not found.
+        goto :download_default_prereqs
+    )
+    unzip.exe -qt prereq.zip
+    goto :eof
+
+:download_default_prereqs
+    rem Fallback on standard prereqs file for current branch
+    rem Useful when prebuild.bat is modified for another reason than SVN_REVISION change and SVN_REVISION prereqs are not more available on Outscale
+    set STD_PREREQS=https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements/prerequirements-scilab-branch-%BRANCH%-windows_%ARCH%.zip
+    echo Downloading %STD_PREREQS%...
+    curl.exe -L -k -o prereq.zip %STD_PREREQS%
+    unzip.exe -qt prereq.zip
     goto :eof
 
 :copy
-    copy /Y prereq.zip prerequirements-%SCI_VERSION_STRING%-windows_x64.zip
+    copy /Y prereq.zip prerequirements-%SCI_VERSION_STRING%-windows_%ARCH%.zip
     goto :eof
 
 :done
