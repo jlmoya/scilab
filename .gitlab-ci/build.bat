@@ -121,4 +121,17 @@ move ".\Output\%SCI_VERSION_STRING%_%ARCH%.exe" "..\%SCI_VERSION_STRING%.bin.%AR
 copy "..\%SCI_VERSION_STRING%.bin.%ARCH%.exe" "%SCILAB_COMMON_PATH%\%SCI_VERSION_STRING%\%SCI_VERSION_STRING%.bin.%ARCH%.exe"
 IF %ERRORLEVEL% NEQ 0 exit 1
 
+REM Check for debug DLLs in the Windows build
+@echo off
+for /r ".\bin\" %%F in (*.dll) do (
+    dumpbin /dependents "%%F" /out:dll_dependents_list.txt >nul
+    findstr /I /R /C:" libifcoremdd\.dll" /C:" libifcorertd\.dll" /C:" vcruntime[0-9_]*d\.dll" /C:" msvcrtd\.dll" dll_dependents_list.txt
+    IF NOT ERRORLEVEL 1 (
+        echo WARNING: Found debug DLL dependency in "%%F"
+        type dll_dependents_list.txt
+        exit 1
+    )
+)
+del dll_dependents_list.txt
+
 exit 0
