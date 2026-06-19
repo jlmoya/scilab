@@ -92,6 +92,6 @@ public final class XcosDemonstrationsAction extends DefaultAction {
             return;
         }
 
-        ScilabInterpreterManagement.requestScilabExec("exec(\"" + System.getenv("SCI") + "/modules/xcos/demos/xcos_demos.sce\", -1)");
+        ScilabInterpreterManagement.requestScilabExec("demo_gui(gettext(\"Xcos\"))");
     }
 }

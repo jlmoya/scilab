@@ -10,6 +10,7 @@
 var demoTree = null;       // full tree received from Scilab
 var navStack = [];         // stack of indices for current path in tree
 var searchMode = false;
+var pendingNav = null;     // category name(s) to open once the tree is loaded
 var appLabels = {
     title: "Demonstrations",
     home: "Home",
@@ -54,8 +55,58 @@ function fromScilab(msg) {
         searchInput.placeholder = appLabels.search;
         navStack = [];
         render();
+        // A navigation request may have arrived before the tree was ready.
+        if (pendingNav !== null) {
+            var target = pendingNav;
+            pendingNav = null;
+            navigateByNames(target);
+        }
     } else if (msg.type === "theme") {
         setTheme(msg.theme || "light");
+    } else if (msg.type === "navigate") {
+        // Ask the browser to open a category by name (e.g. from xcos_demos.sce).
+        // msg.path is a category name, or an array of names for a nested path.
+        if (demoTree) {
+            navigateByNames(msg.path);
+        } else {
+            pendingNav = msg.path;
+        }
+    }
+}
+
+// Resolve a path of category names to tree indices and navigate there.
+// Matching is case-insensitive and tolerates surrounding whitespace.
+function navigateByNames(names) {
+    if (!demoTree) return;
+    if (typeof names === "string") {
+        names = [names];
+    }
+    if (!names || names.length === 0) return;
+
+    var indices = [];
+    var nodes = demoTree;
+    for (var level = 0; level < names.length; level++) {
+        var wanted = String(names[level]).trim().toLowerCase();
+        var found = -1;
+        for (var i = 0; i < nodes.length; i++) {
+            if (String(nodes[i].name).trim().toLowerCase() === wanted) {
+                found = i;
+                break;
+            }
+        }
+        if (found < 0) {
+            // Unknown category: navigate as far as we could resolve.
+            break;
+        }
+        indices.push(found);
+        if (!nodes[found].children) {
+            break;
+        }
+        nodes = nodes[found].children;
+    }
+
+    if (indices.length > 0) {
+        navigateTo(indices);
     }
 }
 

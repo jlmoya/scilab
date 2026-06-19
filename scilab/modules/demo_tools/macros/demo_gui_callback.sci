@@ -85,6 +85,15 @@ function demo_gui_send_tree()
         "data", tree, ...
         "labels", labels);
     set("demo_browser", "data", data);
+
+    // A demo launcher (e.g. xcos_demos.sce) may have asked to open a given
+    // category. The browser only has the tree now, so honor the request here.
+    global demo_gui_nav_request;
+    if ~isempty(demo_gui_nav_request) then
+        req = demo_gui_nav_request;
+        clearglobal demo_gui_nav_request;
+        demo_gui_navigate(req);
+    end
 endfunction
 
 function nodes = demo_gui_sort_nodes(nodes)
