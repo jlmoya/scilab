@@ -24,8 +24,10 @@ import java.lang.reflect.Proxy;
 import java.util.Collection;
 import java.util.TreeSet;
 
+import javax.swing.ImageIcon;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.scilab.modules.commons.gui.FindIconHelper;
 import org.scilab.modules.commons.gui.ScilabKeyStroke;
 import org.scilab.modules.commons.xml.ScilabDocumentBuilderFactory;
 import org.scilab.modules.graphic_objects.graphicObject.CallBack;
@@ -136,6 +138,7 @@ public final class MenuBarBuilder {
         protected static final String CALLBACK = "callback";
         protected static final String TYPE = "type";
         protected static final String INSTRUCTION = "instruction";
+        protected static final String ICON = "icon";
         protected static final String TRUE = "true";
 
         private Document dom;
@@ -242,6 +245,8 @@ public final class MenuBarBuilder {
                         } else if (attributes.item(i).getNodeName() == ACCELERATOR) {
                             SwingScilabMenuItem smenuitem = (SwingScilabMenuItem) menuItem.getAsSimpleMenuItem();
                             smenuitem.setAccelerator(ScilabKeyStroke.getKeyStroke(attributes.item(i).getNodeValue()));
+                        } else if (attributes.item(i).getNodeName() == ICON) {
+                            setMenuItemIcon(menuItem, attributes.item(i).getNodeValue());
                         }
                     }
 
@@ -293,6 +298,8 @@ public final class MenuBarBuilder {
                     subMenuItem.setMnemonic(attributes.item(i).getNodeValue().charAt(0));
                 } else if (attributes.item(i).getNodeName() == ENABLED) {
                     subMenuItem.setEnabled(attributes.item(i).getNodeValue().equals(TRUE));
+                } else if (attributes.item(i).getNodeName() == ICON) {
+                    setMenuItemIcon(subMenuItem, attributes.item(i).getNodeValue());
                 }
             }
 
@@ -321,6 +328,25 @@ public final class MenuBarBuilder {
             }
             menuItem.add(subMenuItem);
 
+        }
+
+        /**
+         * Resolve a Tango/freedesktop icon name (the {@code icon=} attribute in
+         * main_menubar.xml) to a 16x16 icon and set it on the Swing menu item, so
+         * this menu bar shows the same item icons as the console's menu bar. A
+         * missing/unknown icon is silently skipped - it must never break the menu.
+         * @param menuItem the menu item to decorate
+         * @param iconName the icon name from the XML
+         */
+        private void setMenuItemIcon(MenuItem menuItem, String iconName) {
+            try {
+                String path = FindIconHelper.findIcon(iconName, false);
+                if (path != null) {
+                    ((SwingScilabMenuItem) menuItem.getAsSimpleMenuItem()).setIcon(new ImageIcon(path));
+                }
+            } catch (Exception e) {
+                // never let a missing icon break menu construction
+            }
         }
 
 
