@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <newsfeed>
-   <!-- RSS Feed URL -->
-   <url>https://news.scilab.io/feed</url>
+   <!-- RSS Feed URL — this fork's self-hosted feed (edit news/feed.xml + push to update) -->
+   <url>https://gitlab.com/jlmoya/scilab/-/raw/main/news/feed.xml</url>
    <!-- automatic news change interval time (in ms), set to -1 to disable -->
-   <newsChangeTimeInterval>-1</newsChangeTimeInterval>
+   <newsChangeTimeInterval>12000</newsChangeTimeInterval>
    <!-- periodic feed update interval time (in ms), set to -1 to disable -->
    <feedUpdateTimeInterval>14400</feedUpdateTimeInterval>
 </newsfeed>

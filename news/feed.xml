@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Scilab on macOS (Apple Silicon) — fork news</title>
+    <link>https://gitlab.com/jlmoya/scilab</link>
+    <description>News for the macOS / Scilab 2027 fork: native Apple-Silicon builds, the standalone app, and the toolbox ecosystem.</description>
+    <language>en-us</language>
+
+    <item>
+      <title>Toolbox manager is now a core Scilab module</title>
+      <link>https://gitlab.com/jlmoya/scilab/-/tree/main/scilab/modules/toolbox_manager</link>
+      <pubDate>Sat, 27 Jun 2026 18:00:00 +0000</pubDate>
+      <description><![CDATA[<HTML>The <b>tbxManager()</b> picker and the <b>tbx*</b> verbs now load in every Scilab session as an intrinsic module.]]></description>
+      <content:encoded><![CDATA[
+        <p>The toolbox manager has been promoted from a sideloaded macro library to an
+        <b>intrinsic Scilab module</b> (<code>modules/toolbox_manager</code>). The verbs are
+        available in every session:</p>
+        <ul>
+          <li><code>tbxManager()</code> &mdash; GUI check-list with <i>Apply &amp; Relaunch</i></li>
+          <li><code>tbxInstall</code> / <code>tbxUpdate</code> / <code>tbxRemove</code> / <code>tbxList</code></li>
+          <li><code>tbxHelp()</code> &mdash; in-console reference for every verb</li>
+        </ul>
+        <p>Toolboxes are remembered in a manifest and autoloaded at startup.</p>
+      ]]></content:encoded>
+    </item>
+
+    <item>
+      <title>Standalone Scilab-2027.0.0.app for macOS</title>
+      <link>https://gitlab.com/jlmoya/scilab/-/blob/main/docs/building/macos.md</link>
+      <pubDate>Fri, 26 Jun 2026 18:00:00 +0000</pubDate>
+      <description><![CDATA[<HTML>A relocatable <b>/Applications</b> app built with <code>package-macos.sh</code> &mdash; configurable JDK, isolated config, one-command refresh.]]></description>
+      <content:encoded><![CDATA[
+        <p><code>package-macos.sh</code> turns the dev build into an independent
+        <b>/Applications/Scilab-2027.0.0.app</b> for daily use, decoupled from the source tree:</p>
+        <ul>
+          <li>Configurable JDK (<code>~/.config/scilab-app/java_home</code>)</li>
+          <li>Its own isolated <code>SCIHOME</code></li>
+          <li>A <code>scilab2027</code> console on your <code>PATH</code></li>
+          <li>Incremental refresh after every rebuild</li>
+        </ul>
+      ]]></content:encoded>
+    </item>
+
+    <item>
+      <title>50 toolboxes ported to macOS / Scilab 2027</title>
+      <link>https://gitlab.com/jlmoya</link>
+      <pubDate>Thu, 25 Jun 2026 18:00:00 +0000</pubDate>
+      <description><![CDATA[<HTML>cgal, sndfile, parquet, xlsx, libsvm, scicv, sciDatabase and more &mdash; rebuilt from source for Apple Silicon.]]></description>
+      <content:encoded><![CDATA[
+        <p>A growing set of toolboxes has been ported and rebuilt from source for macOS arm64 /
+        Scilab 2027, each mirrored to <b>gitlab.com/jlmoya</b>:</p>
+        <ul>
+          <li>Geometry &amp; data: <b>cgal</b>, <b>parquet</b>, <b>xlsx</b>, <b>sndfile</b></li>
+          <li>ML &amp; CV: <b>libsvm</b>, <b>scicv</b></li>
+          <li>Databases: <b>sciDatabase</b> (5 engines)</li>
+        </ul>
+        <p>The sndfile port even fixed a real upstream multi-buffer write bug.</p>
+      ]]></content:encoded>
+    </item>
+
+    <item>
+      <title>Scilab branch-2027.0 builds natively on Apple Silicon</title>
+      <link>https://gitlab.com/jlmoya/scilab/-/blob/main/docs/building/macos.md</link>
+      <pubDate>Fri, 05 Jun 2026 18:00:00 +0000</pubDate>
+      <description><![CDATA[<HTML>A full from-source build on macOS arm64 with <b>JDK 25</b> &mdash; Homebrew deps + the JOGL/deployment-target fixes.]]></description>
+      <content:encoded><![CDATA[
+        <p>Scilab branch-2027.0 now builds and runs from source on macOS arm64 (tested on
+        macOS 26), with the GUI, plotting and virtual threads working under <b>JDK 25</b>.
+        The full handbook &mdash; Homebrew dependencies, the deployment-target / JOGL startup
+        fix, runtime dylib fixes &mdash; is in <code>docs/building/macos.md</code>.</p>
+      ]]></content:encoded>
+    </item>
+
+  </channel>
+</rss>
