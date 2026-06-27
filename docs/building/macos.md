@@ -368,15 +368,18 @@ with the dev build's `~/.Scilab/scilab-branch-2027.0`.
 
 ### Toolbox manager
 
-Built-from-source toolboxes (e.g. the ports under `~/Projects/SciLabProjects`) are managed by a
-small macro library autoloaded from the app's `$SCIHOME/.scilab`:
+Built-from-source toolboxes (e.g. the ports under `~/Projects/SciLabProjects`) are managed by an
+intrinsic Scilab module — **`modules/toolbox_manager/`** — registered in `etc/modules.xml.in`, so
+the verbs load in **every** Scilab session (dev tree *and* the app), not just the packaged app.
+`tbxHelp()` prints a console reference, and the module ships a `help/en_US` chapter that compiles
+into the Help browser on a help-enabled build.
 
 | Verb | Action |
 |------|--------|
 | `tbxManager()` | GUI check-list — pick toolboxes, then **Apply** (save) or **Apply & Relaunch** (save + restart so they load now). Verified set pre-ticked. |
 | `tbxInstall("name"[, "local"｜"remote"])` | git clone/pull (prefers a local `SciLabProjects/<name>` clone, else `jlmoya` GitLab→GitHub) → build → register for autoload. |
 | `tbxUpdate(["name"])` | git pull + rebuild (all, or one — always the latest). |
-| `tbxRemove("name")` ／ `tbxList()` | unregister + delete clone ／ show the set. |
+| `tbxRemove("name")` ／ `tbxList()` ／ `tbxHelp([name])` | unregister+delete clone ／ show the set ／ console help. |
 
 A manifest `$SCIHOME/installed_toolboxes.tbx` (TSV: `name⇥path⇥source⇥autoload`) is the source of
 truth; `.scilab` autoloads every `autoload=1` entry at startup. **First launch** (empty manifest)
@@ -402,9 +405,11 @@ auto-opens `tbxManager()` with the verified set pre-checked — pick, **Apply & 
 
 ### Files
 
-`package-macos.sh` + `macos-app/` (the toolbox manager `toolbox-manager/tbxmgr*.sce` and the
-`dot-scilab.template`) live in the source root and **are** committed; the generated
-`/Applications/…app` is machine-specific and is not. Full design + rationale:
+The toolbox manager is the Scilab module `modules/toolbox_manager/` (macros + `help/en_US` +
+`etc/toolbox_manager.start`, registered in `etc/modules.xml.in`); `package-macos.sh` +
+`macos-app/dot-scilab.template` (the app's autoload startup) live in the source root. All are
+committed; the built macro lib (`macros/lib`) is gitignored and rebuilt on demand, and the
+generated `/Applications/…app` is machine-specific and is not committed. Full design + rationale:
 [`docs/design/macos-app-packaging.md`](../design/macos-app-packaging.md).
 
 ---
