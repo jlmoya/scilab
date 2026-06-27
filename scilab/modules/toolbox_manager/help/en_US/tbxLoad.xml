@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="tbxLoad" xml:lang="en">
+    <refnamediv>
+        <refname>tbxLoad</refname>
+        <refpurpose>load / unload a toolbox in the current session</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+tbxLoad(name)
+tbxUnload(name)
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>Run the toolbox native <literal>loader.sce</literal> / <literal>unloader.sce</literal>. Note that toolbox <emphasis>macros</emphasis> only become global when loaded at base scope; from a function or callback only the native gateways take effect immediately, so prefer enabling toolboxes through <link linkend="tbxManager">tbxManager</link> and relaunching.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+tbxLoad("cgal");
+]]></programlisting>
+    </refsection>
+    <refsection>
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="tbxManager">tbxManager</link></member>
+            <member><link linkend="tbxInstall">tbxInstall</link></member>
+            <member><link linkend="tbxList">tbxList</link></member>
+            <member><link linkend="tbxUpdate">tbxUpdate</link></member>
+            <member><link linkend="tbxRemove">tbxRemove</link></member>
+            <member><link linkend="tbxLoader">tbxLoader</link></member>
+            <member><link linkend="tbxHelp">tbxHelp</link></member>
+        </simplelist>
+    </refsection>
+</refentry>

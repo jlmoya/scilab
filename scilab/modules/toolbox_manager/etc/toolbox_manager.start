@@ -1,0 +1,17 @@
+// Scilab toolbox_manager module — manage source-built toolboxes (tbx* verbs + tbxManager GUI).
+// Pure-macro module: load the macro library, (re)building it on demand if the compiled lib is
+// missing (fresh checkout, or a Scilab version bump). Wrapped so a failure here can never break
+// Scilab startup. The help/en_US chapter is compiled into Scilab's help by a help-enabled `make`.
+if isdef("toolbox_managerlib") then return; end
+toolbox_manager_macros = SCI + "/modules/toolbox_manager/macros";
+try
+    if ~isfile(toolbox_manager_macros + "/lib") then
+        // fresh checkout / version bump: compile the macros (genlib builds the lib files)
+        genlib("toolbox_managerlib", toolbox_manager_macros, %t);
+    end
+    // load() is what makes the library functions globally visible (genlib alone does not)
+    load(toolbox_manager_macros + "/lib");
+catch
+    warning("toolbox_manager: could not load the toolbox manager (" + lasterror() + ").");
+end
+clear toolbox_manager_macros;

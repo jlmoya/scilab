@@ -123,11 +123,12 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 </plist>
 PLIST
 
-# ---- 6. install the toolbox manager + seed the app SCIHOME .scilab ---------
-echo "[5/7] toolbox manager + .scilab…"
-# manager lives beside the engine payload so .scilab finds it at SCI/../toolbox-manager
-rsync -a --delete "$DEV/macos-app/toolbox-manager/" "$RES_DIR/toolbox-manager/"
-# write .scilab only if absent (preserve the user's own startup edits)
+# ---- 6. seed the app SCIHOME .scilab (autoload startup) --------------------
+echo "[5/7] .scilab autoload startup…"
+# The toolbox manager is a core Scilab module (modules/toolbox_manager) — it is rsync'd
+# with the engine above, so the tbx* verbs load for free. .scilab only autoloads the
+# user's enabled toolboxes. Write it only if absent (preserve the user's own edits).
+if [ ! -f "$APP_SCIHOME/.scilab" ]; then
 if [ ! -f "$APP_SCIHOME/.scilab" ]; then
   cp "$DEV/macos-app/dot-scilab.template" "$APP_SCIHOME/.scilab"
   echo "      wrote $APP_SCIHOME/.scilab"

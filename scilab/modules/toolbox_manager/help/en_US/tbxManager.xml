@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="tbxManager" xml:lang="en">
+    <refnamediv>
+        <refname>tbxManager</refname>
+        <refpurpose>open the GUI check-list of toolboxes</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+tbxManager()
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>Opens a scrollable check-list of the known toolboxes. Tick the ones to enable, then <emphasis>Apply</emphasis> (save the selection) or <emphasis>Apply &amp; Relaunch</emphasis> (save and restart the app so the checked toolboxes autoload immediately). The verified-on-macOS set is pre-ticked. Requires the Scilab desktop (STD mode).</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+tbxManager();
+]]></programlisting>
+    </refsection>
+    <refsection>
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="tbxInstall">tbxInstall</link></member>
+            <member><link linkend="tbxList">tbxList</link></member>
+            <member><link linkend="tbxUpdate">tbxUpdate</link></member>
+            <member><link linkend="tbxRemove">tbxRemove</link></member>
+            <member><link linkend="tbxLoad">tbxLoad</link></member>
+            <member><link linkend="tbxLoader">tbxLoader</link></member>
+            <member><link linkend="tbxHelp">tbxHelp</link></member>
+        </simplelist>
+    </refsection>
+</refentry>

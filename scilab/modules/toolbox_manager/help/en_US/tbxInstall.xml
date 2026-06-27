@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="tbxInstall" xml:lang="en">
+    <refnamediv>
+        <refname>tbxInstall</refname>
+        <refpurpose>install a toolbox from git and enable it</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+tbxInstall(name)
+tbxInstall(name, source)
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>Resolves <literal>name</literal> to a toolbox source, clones or pulls it, builds it, registers it in the manifest with autoload enabled, and loads it. <literal>source</literal> is <literal>"local"</literal> (use <literal>~/Projects/SciLabProjects/&lt;name&gt;</literal>), <literal>"remote"</literal> (clone from <literal>jlmoya</literal> on GitLab then GitHub), or omitted (prefer a local clone, else remote).</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+tbxInstall("cgal");
+tbxInstall("sndfile-toolbox", "remote");
+]]></programlisting>
+    </refsection>
+    <refsection>
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="tbxManager">tbxManager</link></member>
+            <member><link linkend="tbxList">tbxList</link></member>
+            <member><link linkend="tbxUpdate">tbxUpdate</link></member>
+            <member><link linkend="tbxRemove">tbxRemove</link></member>
+            <member><link linkend="tbxLoad">tbxLoad</link></member>
+            <member><link linkend="tbxLoader">tbxLoader</link></member>
+            <member><link linkend="tbxHelp">tbxHelp</link></member>
+        </simplelist>
+    </refsection>
+</refentry>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="tbxUpdate" xml:lang="en">
+    <refnamediv>
+        <refname>tbxUpdate</refname>
+        <refpurpose>git-pull and rebuild toolboxes</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+tbxUpdate()
+tbxUpdate(name)
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>Runs <literal>git pull</literal> then rebuilds the toolbox. With no argument, updates every installed toolbox; with a <literal>name</literal>, updates just that one.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+tbxUpdate("cgal");
+tbxUpdate();
+]]></programlisting>
+    </refsection>
+    <refsection>
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="tbxManager">tbxManager</link></member>
+            <member><link linkend="tbxInstall">tbxInstall</link></member>
+            <member><link linkend="tbxList">tbxList</link></member>
+            <member><link linkend="tbxRemove">tbxRemove</link></member>
+            <member><link linkend="tbxLoad">tbxLoad</link></member>
+            <member><link linkend="tbxLoader">tbxLoader</link></member>
+            <member><link linkend="tbxHelp">tbxHelp</link></member>
+        </simplelist>
+    </refsection>
+</refentry>

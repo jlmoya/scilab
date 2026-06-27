@@ -1,22 +1,18 @@
 // ============================================================================
 // Scilab-app startup (~/.Scilab/scilab-app-2027/.scilab)
-// Loads the toolbox manager and autoloads your registered toolboxes.
-// Managed by package-macos.sh — but it is only written if absent, so anything
-// you add below the marker is preserved across re-packaging.
+// The toolbox manager is now a core Scilab module (modules/toolbox_manager), so the
+// tbx* verbs + tbxManager() are always available. This file only AUTOLOADS the
+// toolboxes you enabled (macros only become global when their loader runs at base
+// scope, i.e. here at .scilab's top level) and opens the picker on first run.
+// Managed by package-macos.sh — written only if absent, so edits below the marker
+// are preserved across re-packaging.
 // ============================================================================
-tbxmgr_dir = fullfile(SCI, "..", "toolbox-manager");
-if isfile(fullfile(tbxmgr_dir, "tbxmgr.sce")) then
-    exec(fullfile(tbxmgr_dir, "tbxmgr.sce"), -1);
-    if isfile(fullfile(tbxmgr_dir, "tbxmgr_gui.sce")) then
-        exec(fullfile(tbxmgr_dir, "tbxmgr_gui.sce"), -1);
-    end
+if isdef("tbxAutoloadList") then
     // Suppress toolbox help-chapter loading during autoload: locally-built toolboxes
     // have no built jar/ dir, and in NW/STD mode add_help_chapter() would error and
-    // abort the toolbox load. Shadow the help loaders as no-ops, then restore them.
+    // abort the load. Shadow the help loaders as no-ops, then restore them.
     function add_help_chapter(varargin), endfunction
     function varargout = loadToolboxInlineHelp(varargin), varargout = list(); endfunction
-    // Autoload at THIS top level (not inside a function): a toolbox's macro library
-    // only becomes globally visible when its loader.sce is exec'd at base scope.
     tbx_autoload_paths = tbxAutoloadList();
     tbx_nload = 0;
     for tbx_k = 1:size(tbx_autoload_paths, "*")
@@ -38,6 +34,5 @@ if isfile(fullfile(tbxmgr_dir, "tbxmgr.sce")) then
         tbxManager();
     end
 end
-clear tbxmgr_dir;
 
 // ===== USER STARTUP BELOW (preserved across re-packaging) ====================

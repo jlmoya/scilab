@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="tbxHelp" xml:lang="en">
+    <refnamediv>
+        <refname>tbxHelp</refname>
+        <refpurpose>console help for the toolbox manager verbs</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+tbxHelp()
+tbxHelp(name)
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>Prints a console reference for the toolbox-manager verbs. With no argument it lists all verbs; with a <literal>name</literal> it shows that one. Available on every build, including those without the help browser.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+tbxHelp();
+tbxHelp("tbxInstall");
+]]></programlisting>
+    </refsection>
+    <refsection>
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="tbxManager">tbxManager</link></member>
+            <member><link linkend="tbxInstall">tbxInstall</link></member>
+            <member><link linkend="tbxList">tbxList</link></member>
+            <member><link linkend="tbxUpdate">tbxUpdate</link></member>
+            <member><link linkend="tbxRemove">tbxRemove</link></member>
+            <member><link linkend="tbxLoad">tbxLoad</link></member>
+            <member><link linkend="tbxLoader">tbxLoader</link></member>
+        </simplelist>
+    </refsection>
+</refentry>

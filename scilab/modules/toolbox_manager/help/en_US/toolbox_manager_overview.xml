@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="toolbox_manager_overview" xml:lang="en">
+    <refnamediv>
+        <refname>toolbox_manager</refname>
+        <refpurpose>manage source-built Scilab toolboxes (git install, autoload, GUI picker)</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>
+tbxManager()
+tbxInstall(name)
+tbxList()
+        </synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Description</title>
+        <para>The <emphasis>toolbox_manager</emphasis> module manages toolboxes built from source. It installs them from git (a local clone under <literal>~/Projects/SciLabProjects</literal> or a remote <literal>jlmoya</literal> repository), records them in a manifest (<literal>SCIHOME/installed_toolboxes.tbx</literal>), and autoloads the enabled ones at startup. Toolbox <emphasis>macros</emphasis> become available only when their loader runs at base scope (the app startup file), which is why the GUI offers <emphasis>Apply &amp; Relaunch</emphasis>.</para>
+    </refsection>
+    <refsection>
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="tbxManager">tbxManager</link></member>
+            <member><link linkend="tbxInstall">tbxInstall</link></member>
+            <member><link linkend="tbxList">tbxList</link></member>
+            <member><link linkend="tbxUpdate">tbxUpdate</link></member>
+            <member><link linkend="tbxRemove">tbxRemove</link></member>
+            <member><link linkend="tbxLoad">tbxLoad</link></member>
+            <member><link linkend="tbxLoader">tbxLoader</link></member>
+            <member><link linkend="tbxHelp">tbxHelp</link></member>
+        </simplelist>
+    </refsection>
+</refentry>
