@@ -11,7 +11,11 @@ All project documentation lives in **[`docs/`](docs/)** — start at
 [docs/README.md](docs/README.md). Highlights:
 
 - **[Building on macOS](docs/building/macos.md)** — build & run Scilab from source on
-  macOS (Apple Silicon / arm64), including the macOS-specific dependencies and fixes.
+  macOS (Apple Silicon / arm64), including the macOS-specific dependencies and fixes, plus
+  packaging a standalone **`Scilab-2027.0.0.app`** with a git **toolbox manager** ([§11](docs/building/macos.md)).
+- **[macOS app packaging + toolbox manager](docs/design/macos-app-packaging.md)** — the
+  independent `/Applications` app (configurable JDK, isolated config) and the `tbxManager()`
+  toolbox picker.
 - **[Terminal + live-reload design](docs/design/terminal-live-reload.md)** — embedded
   terminal and live external-change awareness.
 

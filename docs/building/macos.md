@@ -89,7 +89,7 @@ cat > "$PREFIX/include/xlnt/utils/xlnt_cmake_export.h" <<'EOF'
 #endif
 #endif /* XLNT_API_H */
 EOF
-cp /Applications/scilab-2026.1.0.app/Contents/lib/thirdparty/libxlnt.1.6.1.dylib "$PREFIX/lib/"
+cp /Applications/scilab-*.app/Contents/lib/thirdparty/libxlnt.1.6.1.dylib "$PREFIX/lib/"   # from any installed Scilab release
 ln -sf libxlnt.1.6.1.dylib "$PREFIX/lib/libxlnt.dylib"
 cat > "$PREFIX/lib/pkgconfig/xlnt.pc" <<EOF
 prefix=$PREFIX
@@ -292,7 +292,7 @@ Scilab-2027.0.0.app/Contents/
 │                              #   CFBundleIconFile = scilab, CFBundleShortVersionString = 2027.0.0,
 │                              #   LSMinimumSystemVersion = 11.0
 ├── MacOS/Scilab-2027.0.0      # tiny launcher: sets JAVA_HOME (jdk-25), cd's to the build, exec ./bin/scilab
-└── Resources/scilab.icns      # copied from /Applications/scilab-2026.1.0.app
+└── Resources/scilab.icns      # copied from any installed Scilab release (/Applications/scilab-*.app)
 ```
 
 Sign it (`codesign -f -s - Scilab-2027.0.0.app`). Result:
@@ -304,6 +304,9 @@ Sign it (`codesign -f -s - Scilab-2027.0.0.app`). Result:
 
 The bundle hard-codes the build path (machine-specific), so it is **not** committed — recreate
 it from these steps. Steps [6/6] above are re-applied by `reapply-macos-fixes.sh`.
+
+> This §9 bundle launches the dev tree **in place**. For a **standalone, relocated** app that is
+> independent of the dev tree (plus a git toolbox manager and a `scilab2027` CLI), see **§11**.
 
 ---
 
@@ -321,6 +324,88 @@ it from these steps. Steps [6/6] above are re-applied by `reapply-macos-fixes.sh
 | GUI traps `SIGTRAP`/`EXC_BREAKPOINT` at startup or first `plot()` | Deployment target too new → run `reapply-macos-fixes.sh` (sets minos 11.0); see appendix. |
 | `Library not loaded: /usr/local/lib/scilab/…` or a bare-name dylib | `@loader_path` not applied → run `reapply-macos-fixes.sh`. |
 | ``dlopen(…libsci…`test .$module = .yes && echo .so || echo .dylib`)`` | You ran `autoreconf` and got libtool 2.5.4 → §0 (revert to committed build system / libtool 2.4.7). |
+
+---
+
+## 11. A standalone, relocatable app + toolbox manager (`package-macos.sh`)
+
+§9's `.app` is a thin launcher that runs the dev tree **in place** — handy while developing, but
+it breaks if the tree moves or is mid-rebuild. **`package-macos.sh`** (source root) instead
+produces an **independent** `/Applications/Scilab-2027.0.0.app`: a relocated copy you can use
+daily, decoupled from the dev tree, with a git-driven toolbox manager. It still uses the
+machine's Homebrew dylibs + a system JDK (it is **not** a notarized, dependency-vendored
+redistributable for other Macs).
+
+### Build / refresh
+
+```sh
+cd scilab/scilab
+./build-macos.sh && ./reapply-macos-fixes.sh    # a healthy, runtime-fixed dev build first
+./package-macos.sh                              # -> /Applications/Scilab-2027.0.0.app  (~1 min)
+```
+
+`package-macos.sh` is **idempotent and incremental**: it `rsync`s the dev build into
+`Contents/Resources/scilab/` (skipping `*.o`/`*.lo`), rewrites the dev abs-path → app path in the
+~17 text configs (`classpath.xml`, `*.properties`, `*.la`, the libtool wrapper scripts — the
+Mach-O binaries hold it only as harmless cruft and resolve siblings relatively), writes the
+launcher + `Info.plist` + icon, installs the toolbox manager, and creates the `scilab2027` CLI.
+**Re-run it after any rebuild** — seconds, and your toolboxes/config (which live *outside* the
+bundle) are untouched. `--rebuild-toolboxes` also rebuilds native toolboxes (for a core-ABI change);
+`--jdk-version N` pins a different default JDK.
+
+### Configurable JDK
+
+The launcher resolves `JAVA_HOME` in order: a one-line file **`~/.config/scilab-app/java_home`**
+→ the inherited `$JAVA_HOME` → `/usr/libexec/java_home -v 25`. When you upgrade Java, edit that
+one line (default pin: 25 — `bin/scilab` honors `JAVA_HOME`, and its own fallback probes JDK 17,
+which you may not have, so the launcher sets it explicitly).
+
+### Isolated config (its own SCIHOME)
+
+The app launches with **`-scihome ~/.Scilab/scilab-app-2027`** (Scilab **ignores the `SCIHOME`
+env var** — only the launch flag works), so its preferences + installed-toolbox set never mix
+with the dev build's `~/.Scilab/scilab-branch-2027.0`.
+
+### Toolbox manager
+
+Built-from-source toolboxes (e.g. the ports under `~/Projects/SciLabProjects`) are managed by a
+small macro library autoloaded from the app's `$SCIHOME/.scilab`:
+
+| Verb | Action |
+|------|--------|
+| `tbxManager()` | GUI check-list — pick toolboxes, then **Apply** (save) or **Apply & Relaunch** (save + restart so they load now). Verified set pre-ticked. |
+| `tbxInstall("name"[, "local"｜"remote"])` | git clone/pull (prefers a local `SciLabProjects/<name>` clone, else `jlmoya` GitLab→GitHub) → build → register for autoload. |
+| `tbxUpdate(["name"])` | git pull + rebuild (all, or one — always the latest). |
+| `tbxRemove("name")` ／ `tbxList()` | unregister + delete clone ／ show the set. |
+
+A manifest `$SCIHOME/installed_toolboxes.tbx` (TSV: `name⇥path⇥source⇥autoload`) is the source of
+truth; `.scilab` autoloads every `autoload=1` entry at startup. **First launch** (empty manifest)
+auto-opens `tbxManager()` with the verified set pre-checked — pick, **Apply & Relaunch**, done.
+
+### `scilab2027` — the console from any terminal
+
+`package-macos.sh` installs **`scilab2027`** on your `PATH` (`/usr/local/bin`): the app's console
+(`bin/scilab -nw`) with the same JDK resolution + isolated SCIHOME. Your toolboxes autoload here too.
+
+### Two platform constraints worth knowing
+
+- **Macros activate at launch, not on the spot.** Scilab makes a toolbox's *macros* global only
+  when its `loader.sce` is exec'd at **top level** (the `.scilab` autoload), never from inside a
+  function — so enabling a toolbox via the GUI/verbs takes effect on the **next launch**. That is
+  exactly why the GUI has **Apply & Relaunch** (it `open -n`s the bundle and `exit`s). Native
+  *gateways* load immediately; only the macro wrappers need the relaunch.
+- **Help is suppressed during autoload.** Locally-built toolboxes have no built `jar/`, so in
+  GUI/console mode `add_help_chapter` would error and abort the load (a `scilab-cli -nb`/NWNI run
+  skips help, which hides it). `.scilab` shadows the help loaders as no-ops during the autoload
+  loop, then restores them (functions work fully; per-toolbox `help` pages are not loaded — build
+  them separately if wanted).
+
+### Files
+
+`package-macos.sh` + `macos-app/` (the toolbox manager `toolbox-manager/tbxmgr*.sce` and the
+`dot-scilab.template`) live in the source root and **are** committed; the generated
+`/Applications/…app` is machine-specific and is not. Full design + rationale:
+[`docs/design/macos-app-packaging.md`](../design/macos-app-packaging.md).
 
 ---
 
