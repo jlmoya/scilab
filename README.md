@@ -5,7 +5,7 @@ Scilab
 [![Pipeline status](https://gitlab.com/jlmoya/scilab/badges/main/pipeline.svg)](https://gitlab.com/jlmoya/scilab/-/pipelines)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](scilab/COPYING)
 [![Platform: macOS Apple Silicon](https://img.shields.io/badge/macOS-Apple%20Silicon%20%C2%B7%20Scilab%202027-black?logo=apple&logoColor=white)](docs/building/macos.md)
-[![Last commit](https://img.shields.io/github/last-commit/jlmoya/scilab/main?logo=github)](https://github.com/jlmoya/scilab/commits/main)
+[![Last commit](https://img.shields.io/gitlab/last-commit/jlmoya/scilab?logo=gitlab)](https://gitlab.com/jlmoya/scilab/-/commits/main)
 
 ![Scilab-2027.0.0 on macOS — console, embedded terminal, file & variable browsers, news feed](docs/images/scilab-2027-desktop.png "Scilab-2027.0.0 desktop on macOS (Apple Silicon)")
 
