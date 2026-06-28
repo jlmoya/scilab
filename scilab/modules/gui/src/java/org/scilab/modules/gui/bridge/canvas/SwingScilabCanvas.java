@@ -45,6 +45,7 @@ import org.scilab.forge.scirenderer.implementation.jogl.JoGLCanvasFactory;
 import org.scilab.modules.graphic_objects.axes.AxesContainer;
 import org.scilab.modules.graphic_objects.graphicController.GraphicController;
 import org.scilab.modules.gui.bridge.tab.SwingScilabAxes;
+import org.scilab.modules.gui.canvas.AbstractScilabCanvas;
 import org.scilab.modules.gui.canvas.SimpleCanvas;
 import org.scilab.modules.gui.events.GlobalEventWatcher;
 import org.scilab.modules.gui.graphicWindow.PanelLayout;
@@ -60,7 +61,7 @@ import org.scilab.modules.renderer.JoGLView.DrawerVisitor;
  * @author Marouane BEN JELLOUL
  * @author Jean-Baptiste Silvy
  */
-public class SwingScilabCanvas extends JPanel implements SimpleCanvas {
+public class SwingScilabCanvas extends AbstractScilabCanvas {
 
     private static final long serialVersionUID = 6101347094617535625L;
 

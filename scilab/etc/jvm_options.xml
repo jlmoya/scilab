@@ -19,6 +19,10 @@ $SCILAB : scilab path (SCI in Scilab)
     <option value="-Djava.library.path="/>
     <option value="-Djava.class.path=$SCILAB/modules/jvm/jar/org.scilab.modules.jvm.jar"/>
     <option value="-Djava.system.class.loader=org.scilab.modules.jvm.ScilabClassLoader"/>
+    <!-- Experimental real-time 3D renderer (bgfx/Metal) for figure canvases, macOS only.
+         OFF by default; uncomment to route figures through SwingScilabBgfxCanvas instead of
+         the JOGL canvas. See modules/gui/.../bridge/canvas/ScilabCanvasFactory.java. -->
+    <!-- <option value="-Dscilab.renderer.bgfx=true"/> -->
     <!-- Use of Scilab class loader requires to disable class data sharing to hide a "Archived non-system classes are disabled" warning at startup -->
     <!-- See https://gitlab.com/scilab/scilab/-/issues/17144 -->
     <option value="-Xshare:off"/>

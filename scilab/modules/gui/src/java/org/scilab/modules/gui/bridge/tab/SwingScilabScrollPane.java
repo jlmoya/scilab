@@ -33,7 +33,7 @@ import javax.swing.ScrollPaneConstants;
 import org.scilab.modules.graphic_objects.figure.Figure;
 import org.scilab.modules.graphic_objects.graphicController.GraphicController;
 import org.scilab.modules.graphic_objects.graphicView.GraphicView;
-import org.scilab.modules.gui.bridge.canvas.SwingScilabCanvas;
+import org.scilab.modules.gui.canvas.AbstractScilabCanvas;
 import org.scilab.modules.renderer.JoGLView.util.ColorFactory;
 
 /**
@@ -45,7 +45,7 @@ public class SwingScilabScrollPane extends JScrollPane implements ScilabScrollPa
     /** Needed */
     private static final long serialVersionUID = -4262585651413643814L;
 
-    private SwingScilabCanvas canvas;
+    private AbstractScilabCanvas canvas;
     private Figure figure;
     private Component comp;
     private Container uiContent;
@@ -163,7 +163,7 @@ public class SwingScilabScrollPane extends JScrollPane implements ScilabScrollPa
 
     }
 
-    public void setCanvas(SwingScilabCanvas canvas) {
+    public void setCanvas(AbstractScilabCanvas canvas) {
         this.canvas = canvas;
         // use the axes background as default one
         if (canvas != null) {

@@ -60,6 +60,13 @@
         <pathelement location="${javafx.base.jar}"/>
         <pathelement location="${javafx.swing.jar}"/>
         <pathelement location="${javafx.graphics.jar}"/>
+        <!-- Real-time 3D renderer (bgfx/Metal): Layer-1 Swing<->GPU surface + LWJGL bgfx
+             bindings, for the flag-gated SwingScilabBgfxCanvas (compile-time only). -->
+        <pathelement location="${thirdparty.dir}/swing-gpu-surface-1.0.jar"/>
+        <pathelement location="${thirdparty.dir}/lwjgl-3.3.4.jar"/>
+        <pathelement location="${thirdparty.dir}/lwjgl-bgfx-3.3.4.jar"/>
+        <pathelement location="${thirdparty.dir}/lwjgl-jawt-3.3.4.jar"/>
+        <pathelement location="${thirdparty.dir}/lwjgl3-awt-0.2.4.jar"/>
         <!-- Not use at build time but used for unitary tests -->
         <pathelement location="${library.javasci.dir}/${library.javasci.name}"/>
         <pathelement location="${library.javasci.dir}/${library.javasci-v1.name}"/>

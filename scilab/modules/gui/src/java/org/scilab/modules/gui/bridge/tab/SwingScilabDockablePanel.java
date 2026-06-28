@@ -67,7 +67,8 @@ import org.scilab.modules.graphic_objects.graphicController.GraphicController;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.gui.SwingViewObject;
 import org.scilab.modules.gui.SwingViewWidget;
-import org.scilab.modules.gui.bridge.canvas.SwingScilabCanvas;
+import org.scilab.modules.gui.bridge.canvas.ScilabCanvasFactory;
+import org.scilab.modules.gui.canvas.AbstractScilabCanvas;
 import org.scilab.modules.gui.bridge.console.SwingScilabConsole;
 import org.scilab.modules.gui.bridge.helpbrowser.SwingScilabHelpBrowser;
 import org.scilab.modules.gui.bridge.menubar.SwingScilabMenuBar;
@@ -154,7 +155,7 @@ public class SwingScilabDockablePanel extends View implements SimpleTab, FocusLi
     private EditorEventListener editorEventHandler = null;
 
     /** A reference to the canvas used for event handling management */
-    private SwingScilabCanvas contentCanvas = null;
+    private AbstractScilabCanvas contentCanvas = null;
 
     private Dimension deltaSize = null;
 
@@ -619,7 +620,7 @@ public class SwingScilabDockablePanel extends View implements SimpleTab, FocusLi
     public void addMember(SwingViewObject member) {
         if (member instanceof SwingScilabAxes) {
             if (contentCanvas == null) {
-                contentCanvas = new SwingScilabCanvas((Figure) GraphicController.getController().getObjectFromId(((SwingScilabAxes) member).getFigureId()));
+                contentCanvas = ScilabCanvasFactory.createCanvas((Figure) GraphicController.getController().getObjectFromId(((SwingScilabAxes) member).getFigureId()));
                 contentCanvas.addEventHandlerKeyListener(editorEventHandler);
                 contentCanvas.addEventHandlerMouseListener(editorEventHandler);
                 contentCanvas.addEventHandlerMouseMotionListener(editorEventHandler);
@@ -801,7 +802,7 @@ public class SwingScilabDockablePanel extends View implements SimpleTab, FocusLi
      * Get the canvas
      * @return the canvas
      */
-    public SwingScilabCanvas getContentCanvas() {
+    public AbstractScilabCanvas getContentCanvas() {
         return contentCanvas;
     }
 

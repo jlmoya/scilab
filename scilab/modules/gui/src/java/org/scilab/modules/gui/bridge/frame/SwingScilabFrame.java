@@ -64,7 +64,8 @@ import org.scilab.modules.graphic_objects.utils.LayoutType;
 import org.scilab.modules.gui.SwingView;
 import org.scilab.modules.gui.SwingViewObject;
 import org.scilab.modules.gui.SwingViewWidget;
-import org.scilab.modules.gui.bridge.canvas.SwingScilabCanvas;
+import org.scilab.modules.gui.bridge.canvas.ScilabCanvasFactory;
+import org.scilab.modules.gui.canvas.AbstractScilabCanvas;
 import org.scilab.modules.gui.bridge.console.SwingScilabConsole;
 import org.scilab.modules.gui.bridge.tab.SwingScilabAxes;
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
@@ -102,7 +103,7 @@ public class SwingScilabFrame extends JPanel implements SwingViewObject, Widget 
     int redraw = 0;
     protected boolean hasLayout = false;
     private Border defaultBorder = null;
-    private SwingScilabCanvas canvas = null;
+    private AbstractScilabCanvas canvas = null;
 
     // BJ: This EditorEventListener leads to a huge leak mem openning many Axes withih Frames.
     // DO NOT ACTIVATE THIS until EditorEventListener can manage Axes within Frames (Only Figure is working now)
@@ -226,7 +227,7 @@ public class SwingScilabFrame extends JPanel implements SwingViewObject, Widget 
             if (canvas == null) {
                 editorEventHandler = new EditorEventListener(getId());
                 AxesContainer frame = (AxesContainer) GraphicModel.getModel().getObjectFromId(getId());
-                canvas = new SwingScilabCanvas(frame);
+                canvas = ScilabCanvasFactory.createCanvas(frame);
                 canvas.addEventHandlerKeyListener(editorEventHandler);
                 canvas.addEventHandlerMouseListener(editorEventHandler);
                 canvas.addEventHandlerMouseMotionListener(editorEventHandler);
@@ -382,7 +383,7 @@ public class SwingScilabFrame extends JPanel implements SwingViewObject, Widget 
      * @return index of member in ArrayList
      */
     public int addMember(Canvas member) {
-        return this.addMember((SwingScilabCanvas) member.getAsSimpleCanvas());
+        return this.addMember((AbstractScilabCanvas) member.getAsSimpleCanvas());
     }
 
     /**
@@ -390,7 +391,7 @@ public class SwingScilabFrame extends JPanel implements SwingViewObject, Widget 
      * @param member the member to add
      * @return index of member in ArrayList
      */
-    private int addMember(SwingScilabCanvas member) {
+    private int addMember(AbstractScilabCanvas member) {
         return 0;
     }
 

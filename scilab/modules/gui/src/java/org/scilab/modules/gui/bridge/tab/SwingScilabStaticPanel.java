@@ -40,7 +40,8 @@ import org.scilab.modules.graphic_objects.graphicController.GraphicController;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.gui.SwingViewObject;
 import org.scilab.modules.gui.SwingViewWidget;
-import org.scilab.modules.gui.bridge.canvas.SwingScilabCanvas;
+import org.scilab.modules.gui.bridge.canvas.ScilabCanvasFactory;
+import org.scilab.modules.gui.canvas.AbstractScilabCanvas;
 import org.scilab.modules.gui.bridge.window.SwingScilabWindow;
 import org.scilab.modules.gui.editor.EditorEventListener;
 import org.scilab.modules.gui.events.ScilabEventListener;
@@ -69,7 +70,7 @@ public class SwingScilabStaticPanel extends SwingScilabScrollPane implements Swi
     private ScilabEventListener eventHandler;
     private EditorEventListener editorEventHandler = null;
 
-    private SwingScilabCanvas contentCanvas;
+    private AbstractScilabCanvas contentCanvas;
     protected boolean hasLayout;
     private Dimension deltaSize = null;
 
@@ -266,7 +267,7 @@ public class SwingScilabStaticPanel extends SwingScilabScrollPane implements Swi
     public void addMember(SwingViewObject member) {
         if (member instanceof SwingScilabAxes) {
             if (contentCanvas == null) {
-                contentCanvas = new SwingScilabCanvas((Figure) GraphicController.getController().getObjectFromId(((SwingScilabAxes) member).getFigureId()));
+                contentCanvas = ScilabCanvasFactory.createCanvas((Figure) GraphicController.getController().getObjectFromId(((SwingScilabAxes) member).getFigureId()));
                 contentCanvas.addEventHandlerKeyListener(editorEventHandler);
                 contentCanvas.addEventHandlerMouseListener(editorEventHandler);
                 contentCanvas.addEventHandlerMouseMotionListener(editorEventHandler);
