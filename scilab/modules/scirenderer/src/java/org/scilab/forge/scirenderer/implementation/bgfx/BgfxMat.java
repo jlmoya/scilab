@@ -65,7 +65,7 @@ final class BgfxMat {
         if (homogeneousDepth) {
             return m;
         }
-        // Column-major z-remap: rows unchanged except z' = 0.5 z + 0.5 w.
+        // Column-major z-remap GL[-1,1] -> Metal[0,1]: z' = 0.5 z + 0.5 w.
         final float[] zRemap = {
             1, 0, 0,    0,
             0, 1, 0,    0,

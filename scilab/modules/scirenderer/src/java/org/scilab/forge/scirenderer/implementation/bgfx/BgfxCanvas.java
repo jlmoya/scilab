@@ -79,6 +79,13 @@ public final class BgfxCanvas implements Canvas {
     private FloatBuffer identityProj;
     private int clearRgba = DEFAULT_CLEAR_RGBA;
 
+    // Optional non-intrusive QA capture: dumps the bgfx framebuffer (the figure only, never the
+    // desktop) to -Dscilab.renderer.bgfx.shot=<path> a few seconds after init.
+    private final String shotPath = System.getProperty("scilab.renderer.bgfx.shot");
+    private long shotAtMs = 0L;
+    private boolean shotRequested = false;
+    private BgfxScreenShot screenShot;
+
     BgfxCanvas(int width, int height) {
         this.dimension = new Dimension(Math.max(1, width), Math.max(1, height));
         this.buffersManager = new BgfxBuffersManager();
@@ -100,6 +107,10 @@ public final class BgfxCanvas implements Canvas {
             init.type(BGFX_RENDERER_TYPE_COUNT);   // auto -> Metal on macOS
             init.resolution(res -> res.width(dimension.width).height(dimension.height).reset(BGFX_RESET_VSYNC));
             init.platformData(pd -> pd.nwh(nwh));
+            if (shotPath != null) {
+                screenShot = new BgfxScreenShot();
+                init.callback(screenShot.iface());
+            }
             if (!bgfx_init(init)) {
                 System.err.println("[scirenderer.bgfx] bgfx_init failed (nwh=" + nwh + ")");
                 return false;
@@ -112,6 +123,9 @@ public final class BgfxCanvas implements Canvas {
         buildProgram();
 
         initialised = true;
+        if (shotPath != null) {
+            shotAtMs = System.currentTimeMillis() + 2500L;
+        }
         System.out.println("[scirenderer.bgfx] canvas ready: "
                            + bgfx_get_renderer_name(bgfx_get_renderer_type()) + "  "
                            + dimension.width + "x" + dimension.height
@@ -158,6 +172,11 @@ public final class BgfxCanvas implements Canvas {
             } catch (Throwable t) {
                 t.printStackTrace();
             }
+        }
+        if (shotPath != null && !shotRequested && System.currentTimeMillis() >= shotAtMs) {
+            bgfx_request_screen_shot(INVALID_HANDLE, shotPath);
+            shotRequested = true;
+            System.out.println("[scirenderer.bgfx] screenshot -> " + shotPath);
         }
         bgfx_frame(false);
     }

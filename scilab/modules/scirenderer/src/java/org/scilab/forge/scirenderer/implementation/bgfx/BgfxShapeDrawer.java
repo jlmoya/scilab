@@ -43,7 +43,14 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 final class BgfxShapeDrawer {
 
     private static final long STATE_BASE =
-          BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A | BGFX_STATE_WRITE_Z | BGFX_STATE_DEPTH_TEST_LESS
+          BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A | BGFX_STATE_WRITE_Z
+        // First slice draws lines/wireframes/curves; Scilab submits roughly back-to-front, so
+        // paint order (DEPTH_TEST_ALWAYS) is visually correct here and avoids the bg-colored axes
+        // back-planes depth-occluding interior curves. When opaque surfaces (textured) land, this
+        // becomes DEPTH_TEST_LESS once the depth-sign / winding conventions are pinned against a
+        // real surface to look at.
+        | BGFX_STATE_DEPTH_TEST_ALWAYS
+        | BGFX_STATE_FRONT_CCW
         | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA);
 
     private BgfxShapeDrawer() { }
@@ -92,13 +99,19 @@ final class BgfxShapeDrawer {
                 }
             }
 
-            // Fill (triangles).
+            // Fill (triangles). A thick polyline reports a spurious TRIANGLES fill with no indices;
+            // drawing index-less triangles as a soup is garbage that occludes the real line, so skip
+            // that case (real fills — boxes, surfaces — are indexed or strip/fan).
             if (geom.getFillDrawingMode() != Geometry.FillDrawingMode.NONE) {
                 final int[] idx = fillIndices(geom, count);
-                final long pt = geom.getFillDrawingMode() == Geometry.FillDrawingMode.TRIANGLE_STRIP
-                                ? BGFX_STATE_PT_TRISTRIP : 0L;
-                submit(stack, canvas, tvb, count, idx, pt, colors != null, app.getFillColor(),
-                       mvp, cullFlag(geom.getFaceCullingMode()));
+                final boolean spuriousFill =
+                    geom.getFillDrawingMode() == Geometry.FillDrawingMode.TRIANGLES && idx == null;
+                if (!spuriousFill) {
+                    final long pt = geom.getFillDrawingMode() == Geometry.FillDrawingMode.TRIANGLE_STRIP
+                                    ? BGFX_STATE_PT_TRISTRIP : 0L;
+                    submit(stack, canvas, tvb, count, idx, pt, colors != null, app.getFillColor(),
+                           mvp, cullFlag(geom.getFaceCullingMode()));
+                }
             }
 
             // Wire (lines): line color overrides per-vertex; else per-vertex; else skip.
