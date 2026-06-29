@@ -23,28 +23,29 @@ import java.awt.image.BufferedImage;
 
 import com.jogamp.opengl.GL;
 
-import com.jlmoya.gpu.BgfxBackend;
 import com.jlmoya.gpu.GpuSurfaceComponent;
 import com.jlmoya.gpu.NativeSurface;
 
+import org.scilab.forge.scirenderer.implementation.bgfx.BgfxCanvas;
+import org.scilab.forge.scirenderer.implementation.bgfx.BgfxCanvasFactory;
 import org.scilab.modules.graphic_objects.axes.AxesContainer;
 import org.scilab.modules.gui.canvas.AbstractScilabCanvas;
 import org.scilab.modules.gui.utils.Position;
 import org.scilab.modules.gui.utils.Size;
+import org.scilab.modules.renderer.JoGLView.DrawerVisitor;
 
 /**
  * Experimental bgfx/Metal figure canvas (real-time 3D renderer, Layer-2).
  *
  * <p>Selected only when {@code -Dscilab.renderer.bgfx=true} (see {@link ScilabCanvasFactory}); the
  * default Scilab canvas remains the JOGL {@link SwingScilabCanvas}. It embeds the reusable Layer-1
- * Swing&lt;-&gt;GPU surface ({@link GpuSurfaceComponent}) and drives a {@link BgfxBackend} on a
- * dedicated render thread, presenting directly to a {@code CAMetalLayer}.
+ * Swing&lt;-&gt;GPU surface ({@link GpuSurfaceComponent}) and drives a {@link BgfxCanvas} (the
+ * scirenderer bgfx backend) on a dedicated render thread, presenting directly to a {@code CAMetalLayer}.
  *
- * <p>This is the integration milestone: it proves a bgfx-backed surface can stand in a real Scilab
- * figure's canvas slot, driven by the figure lifecycle. It does NOT yet render Scilab
- * {@code graphic_objects} through bgfx — that scene mapping (Layer-3) is separate future work — so
- * in this mode the figure shows the bgfx proof content (the spinning cube / animated clear) rather
- * than plots. macOS only for now; any construction/runtime failure falls back to JOGL upstream.
+ * <p>The figure's {@code graphic_objects} are rendered through bgfx by the SHARED
+ * {@link DrawerVisitor} — the very visitor the JOGL backend uses — so real plots (surf/plot3d) draw
+ * on the GPU (Layer-3). Text/sprites are not yet rasterized. macOS only for now; any
+ * construction/runtime failure falls back to JOGL upstream.
  *
  * @author Scilab macOS/2027 modernization
  */
@@ -58,7 +59,9 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
 
     private final AxesContainer figure;
     private final GpuSurfaceComponent surfaceComponent;
-    private volatile BgfxBackend backend;
+    private final BgfxCanvas bgfxCanvas;
+    private final DrawerVisitor drawerVisitor;
+    private volatile boolean running;
     private volatile Thread renderThread;
 
     public SwingScilabBgfxCanvas(final AxesContainer figure) {
@@ -69,6 +72,13 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
         setBackground(Color.black);
         setFocusable(true);
         setEnabled(true);
+
+        // The scirenderer bgfx backend + the shared DrawerVisitor: the figure's graphic_objects
+        // render through bgfx exactly as they do through JOGL, just via a different Canvas.
+        this.bgfxCanvas = BgfxCanvasFactory.createCanvas(Math.max(1, getWidth()), Math.max(1, getHeight()));
+        this.drawerVisitor = new DrawerVisitor(surfaceComponent, bgfxCanvas, figure);
+        bgfxCanvas.setMainDrawer(drawerVisitor);
+
         startRenderThread();
     }
 
@@ -80,11 +90,23 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
                                    + "render thread aborting.");
                 return;
             }
+            bgfxCanvas.setSize(s.width(), s.height());
+            if (!bgfxCanvas.initBgfx(s.handle())) {
+                return;
+            }
+            running = true;
             try {
-                backend = new BgfxBackend(s);
-                backend.run();
+                while (running) {
+                    NativeSurface cur = surfaceComponent.surface();
+                    if (cur != null && cur.handle() != 0L) {
+                        bgfxCanvas.setSize(cur.width(), cur.height());
+                    }
+                    bgfxCanvas.renderFrame();
+                }
             } catch (Throwable err) {
                 err.printStackTrace();
+            } finally {
+                bgfxCanvas.shutdownBgfx();
             }
         }, "scilab-bgfx-render-" + System.identityHashCode(this));
         t.setDaemon(true);
@@ -201,10 +223,7 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
 
     @Override
     public void close() {
-        BgfxBackend b = backend;
-        if (b != null) {
-            b.stop();
-        }
+        running = false;
         Thread t = renderThread;
         if (t != null) {
             try {
