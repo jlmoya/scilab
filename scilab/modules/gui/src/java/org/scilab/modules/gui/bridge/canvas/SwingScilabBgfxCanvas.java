@@ -17,9 +17,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.jogamp.opengl.GL;
 
@@ -69,6 +72,15 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
     private final RedrawNotifier redrawNotifier;
     private volatile boolean running;
     private volatile Thread renderThread;
+
+    // HiDPI: AWT delivers mouse coordinates in logical points, but the renderer's projection (used by
+    // EntityPicker for datatip/object picking and by the editor) is computed at the bgfx framebuffer's
+    // physical-pixel resolution. On a Retina display those differ by the backing-scale factor, so a
+    // click never matches a projected data point. We scale the coordinates of the figure event-handler
+    // listeners (picking/editing) to physical pixels; the rotate/zoom interaction attaches directly to
+    // the surface and works on deltas, so it is intentionally left in logical space.
+    private final Map<MouseListener, MouseListener> mouseWrappers = new HashMap<MouseListener, MouseListener>();
+    private final Map<MouseMotionListener, MouseMotionListener> motionWrappers = new HashMap<MouseMotionListener, MouseMotionListener>();
 
     public SwingScilabBgfxCanvas(final AxesContainer figure) {
         super(new BorderLayout());
@@ -197,23 +209,73 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
     }
 
     @Override
-    public void addEventHandlerMouseListener(MouseListener listener) {
-        surfaceComponent.addMouseListener(listener);
+    public void addEventHandlerMouseListener(final MouseListener listener) {
+        MouseListener wrapper = new MouseListener() {
+            public void mouseClicked(MouseEvent e)  {
+                listener.mouseClicked(scaled(e));
+            }
+            public void mousePressed(MouseEvent e)  {
+                listener.mousePressed(scaled(e));
+            }
+            public void mouseReleased(MouseEvent e) {
+                listener.mouseReleased(scaled(e));
+            }
+            public void mouseEntered(MouseEvent e)  {
+                listener.mouseEntered(scaled(e));
+            }
+            public void mouseExited(MouseEvent e)   {
+                listener.mouseExited(scaled(e));
+            }
+        };
+        mouseWrappers.put(listener, wrapper);
+        surfaceComponent.addMouseListener(wrapper);
     }
 
     @Override
     public void removeEventHandlerMouseListener(MouseListener listener) {
-        surfaceComponent.removeMouseListener(listener);
+        MouseListener wrapper = mouseWrappers.remove(listener);
+        surfaceComponent.removeMouseListener(wrapper != null ? wrapper : listener);
     }
 
     @Override
-    public void addEventHandlerMouseMotionListener(MouseMotionListener listener) {
-        surfaceComponent.addMouseMotionListener(listener);
+    public void addEventHandlerMouseMotionListener(final MouseMotionListener listener) {
+        MouseMotionListener wrapper = new MouseMotionListener() {
+            public void mouseDragged(MouseEvent e) {
+                listener.mouseDragged(scaled(e));
+            }
+            public void mouseMoved(MouseEvent e) {
+                listener.mouseMoved(scaled(e));
+            }
+        };
+        motionWrappers.put(listener, wrapper);
+        surfaceComponent.addMouseMotionListener(wrapper);
     }
 
     @Override
     public void removeEventHandlerMouseMotionListener(MouseMotionListener listener) {
-        surfaceComponent.removeMouseMotionListener(listener);
+        MouseMotionListener wrapper = motionWrappers.remove(listener);
+        surfaceComponent.removeMouseMotionListener(wrapper != null ? wrapper : listener);
+    }
+
+    /**
+     * Rescale a mouse event from logical points to the bgfx framebuffer's physical pixels (the space
+     * the renderer projection works in). Returns the original event when there is no HiDPI scaling.
+     */
+    private MouseEvent scaled(MouseEvent e) {
+        final int cw = surfaceComponent.getWidth();
+        final int ch = surfaceComponent.getHeight();
+        if (cw <= 0 || ch <= 0) {
+            return e;
+        }
+        final double sx = (double) bgfxCanvas.getWidth() / cw;
+        final double sy = (double) bgfxCanvas.getHeight() / ch;
+        if (sx == 1.0 && sy == 1.0) {
+            return e;
+        }
+        return new MouseEvent(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
+                (int) Math.round(e.getX() * sx), (int) Math.round(e.getY() * sy),
+                e.getXOnScreen(), e.getYOnScreen(),
+                e.getClickCount(), e.isPopupTrigger(), e.getButton());
     }
 
     // ---- SimpleCanvas -------------------------------------------------------
