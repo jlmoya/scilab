@@ -23,7 +23,6 @@ $SCILAB : scilab path (SCI in Scilab)
          OFF by default; uncomment to route figures through SwingScilabBgfxCanvas instead of
          the JOGL canvas. See modules/gui/.../bridge/canvas/ScilabCanvasFactory.java. -->
     <!-- <option value="-Dscilab.renderer.bgfx=true"/> -->
-    <!-- Add -Dscilab.renderer.bgfx.shot=/path/figure.png to dump the bgfx framebuffer to a PNG. -->
     <!-- Use of Scilab class loader requires to disable class data sharing to hide a "Archived non-system classes are disabled" warning at startup -->
     <!-- See https://gitlab.com/scilab/scilab/-/issues/17144 -->
     <option value="-Xshare:off"/>

@@ -13,15 +13,104 @@
 package org.scilab.forge.scirenderer.implementation.bgfx.texture;
 
 import org.scilab.forge.scirenderer.texture.AbstractTexture;
+import org.scilab.forge.scirenderer.texture.TextureDataProvider;
+
+import org.lwjgl.system.MemoryUtil;
+
+import java.awt.Dimension;
+import java.nio.ByteBuffer;
+
+import static org.lwjgl.bgfx.BGFX.*;
 
 /**
- * bgfx texture stub.
+ * A bgfx texture. {@link AbstractTexture} provides the wrapping/filter state and the
+ * {@link TextureDataProvider} plumbing (with the {@code upToDate} dirty flag); this adds the GPU
+ * upload, mirroring the JOGL backend's {@code JoGLTexture.checkData}.
  *
- * <p>{@link AbstractTexture} already implements the whole {@link org.scilab.forge.scirenderer.texture.Texture}
- * contract (wrapping/filtering state + the data-provider plumbing), so DrawerVisitor can create and
- * configure textures (for text labels, marks, image plots) without error. The first slice does not
- * yet rasterize them to the GPU — {@code BgfxDrawingTools.draw(Texture, ...)} is a no-op — so text
- * and sprites simply don't appear yet. GPU texture upload is a later pass.
+ * <p>The data provider yields RGBA8 pixels ({@code getData()}) and a size ({@code getTextureSize()})
+ * — used identically for colormap surfaces, text labels, and marks. Upload happens lazily on the
+ * render thread the first time the texture is bound, and again whenever the provider invalidates it
+ * ({@code dataUpdated()} clears {@code upToDate}).
  */
 public class BgfxTexture extends AbstractTexture {
+
+    public static final short INVALID = (short) 0xffff;
+
+    private short handle = INVALID;
+    private int texWidth;
+    private int texHeight;
+
+    /**
+     * Ensure the current pixel data is on the GPU; returns the bgfx texture handle (or
+     * {@link #INVALID} if there is no drawable data yet). Must run on the render thread.
+     */
+    public short ensureUploaded() {
+        if (handle != INVALID && upToDate) {
+            return handle;
+        }
+        final TextureDataProvider provider = getDataProvider();
+        if (provider == null) {
+            return handle;
+        }
+        final Dimension size = provider.getTextureSize();
+        final ByteBuffer data = provider.getData();   // heap RGBA8
+        if (size == null || data == null || size.width <= 0 || size.height <= 0) {
+            return handle;
+        }
+        final int w = size.width;
+        final int h = size.height;
+
+        data.rewind();
+        final ByteBuffer buf = MemoryUtil.memAlloc(data.remaining());
+        buf.put(data);
+        buf.flip();
+
+        if (handle != INVALID) {
+            bgfx_destroy_texture(handle);
+        }
+        handle = bgfx_create_texture_2d((short) w, (short) h, false, 1,
+                                        BGFX_TEXTURE_FORMAT_RGBA8, samplerFlags(), bgfx_copy(buf));
+        MemoryUtil.memFree(buf);
+        texWidth = w;
+        texHeight = h;
+        upToDate = true;
+        return handle;
+    }
+
+    private long samplerFlags() {
+        long flags = 0L;
+        if (getSWrappingMode() == Wrap.CLAMP) {
+            flags |= BGFX_SAMPLER_U_CLAMP;
+        }
+        if (getTWrappingMode() == Wrap.CLAMP) {
+            flags |= BGFX_SAMPLER_V_CLAMP;
+        }
+        if (getMagnificationFilter() == Filter.NEAREST) {
+            flags |= BGFX_SAMPLER_MAG_POINT;
+        }
+        if (getMinifyingFilter() == Filter.NEAREST) {
+            flags |= BGFX_SAMPLER_MIN_POINT;
+        }
+        return flags;
+    }
+
+    public short handle() {
+        return handle;
+    }
+
+    public int textureWidth() {
+        return texWidth;
+    }
+
+    public int textureHeight() {
+        return texHeight;
+    }
+
+    /** Release the GPU texture (render thread). */
+    public void disposeGpu() {
+        if (handle != INVALID) {
+            bgfx_destroy_texture(handle);
+            handle = INVALID;
+        }
+    }
 }

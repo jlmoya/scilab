@@ -71,9 +71,12 @@ public final class BgfxCanvas implements Canvas {
     private volatile boolean initialised = false;
     private boolean sizeDirty = false;
     private short program = INVALID_HANDLE;
+    private short texProgram = INVALID_HANDLE;
     private short uColor = INVALID_HANDLE;
     private short uParams = INVALID_HANDLE;
+    private short sTexColor = INVALID_HANDLE;
     private BGFXVertexLayout layout;
+    private BGFXVertexLayout texLayout;
     private boolean homogeneousDepth;
     private FloatBuffer identityView;
     private FloatBuffer identityProj;
@@ -124,7 +127,7 @@ public final class BgfxCanvas implements Canvas {
 
         initialised = true;
         if (shotPath != null) {
-            shotAtMs = System.currentTimeMillis() + 2500L;
+            shotAtMs = System.currentTimeMillis() + 4000L;
         }
         System.out.println("[scirenderer.bgfx] canvas ready: "
                            + bgfx_get_renderer_name(bgfx_get_renderer_type()) + "  "
@@ -149,6 +152,20 @@ public final class BgfxCanvas implements Canvas {
 
         uColor = bgfx_create_uniform("u_color", BGFX_UNIFORM_TYPE_VEC4, 1);
         uParams = bgfx_create_uniform("u_params", BGFX_UNIFORM_TYPE_VEC4, 1);
+
+        // Textured program (colormap surfaces + text/mark sprites): POSITION + TEXCOORD0, sampled
+        // and tinted by u_color (white for surfaces, the text/aux color for sprites).
+        short vshTex = loadShader("vs_tex");
+        short fshTex = loadShader("fs_tex");
+        if (vshTex != INVALID_HANDLE && fshTex != INVALID_HANDLE) {
+            texProgram = bgfx_create_program(vshTex, fshTex, true);
+            texLayout = BGFXVertexLayout.calloc();
+            bgfx_vertex_layout_begin(texLayout, bgfx_get_renderer_type());
+            bgfx_vertex_layout_add(texLayout, BGFX_ATTRIB_POSITION, 4, BGFX_ATTRIB_TYPE_FLOAT, false, false);
+            bgfx_vertex_layout_add(texLayout, BGFX_ATTRIB_TEXCOORD0, 4, BGFX_ATTRIB_TYPE_FLOAT, false, false);
+            bgfx_vertex_layout_end(texLayout);
+            sTexColor = bgfx_create_uniform("s_texColor", BGFX_UNIFORM_TYPE_SAMPLER, 1);
+        }
     }
 
     /** Render one frame: clear, then let the shared DrawerVisitor submit the scene. */
@@ -189,6 +206,18 @@ public final class BgfxCanvas implements Canvas {
         if (program != INVALID_HANDLE) {
             bgfx_destroy_program(program);
             program = INVALID_HANDLE;
+        }
+        if (texProgram != INVALID_HANDLE) {
+            bgfx_destroy_program(texProgram);
+            texProgram = INVALID_HANDLE;
+        }
+        if (sTexColor != INVALID_HANDLE) {
+            bgfx_destroy_uniform(sTexColor);
+            sTexColor = INVALID_HANDLE;
+        }
+        if (texLayout != null) {
+            texLayout.free();
+            texLayout = null;
         }
         if (uColor != INVALID_HANDLE) {
             bgfx_destroy_uniform(uColor);
@@ -247,6 +276,18 @@ public final class BgfxCanvas implements Canvas {
 
     BGFXVertexLayout layout() {
         return layout;
+    }
+
+    short texProgram() {
+        return texProgram;
+    }
+
+    BGFXVertexLayout texLayout() {
+        return texLayout;
+    }
+
+    short uniformTexColor() {
+        return sTexColor;
     }
 
     boolean homogeneousDepth() {

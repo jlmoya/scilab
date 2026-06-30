@@ -14,6 +14,7 @@ package org.scilab.forge.scirenderer.implementation.bgfx;
 
 import org.scilab.forge.scirenderer.buffers.ElementsBuffer;
 import org.scilab.forge.scirenderer.buffers.IndicesBuffer;
+import org.scilab.forge.scirenderer.implementation.bgfx.texture.BgfxTexture;
 import org.scilab.forge.scirenderer.shapes.appearance.Appearance;
 import org.scilab.forge.scirenderer.shapes.appearance.Color;
 import org.scilab.forge.scirenderer.shapes.geometry.Geometry;
@@ -35,10 +36,11 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 /**
  * Translates a scirenderer {@link Geometry} into bgfx draw submits (immediate mode).
  *
- * <p>One interleaved transient vertex buffer (pos {@code vec4} + color {@code vec4}) is filled per
- * geometry, then the fill (triangles) and the wire (lines) are submitted with the z-remapped
- * scene-to-clip matrix as the model transform. Per-vertex colors are used when present; otherwise a
- * flat {@code u_color} (fill or line color) is applied — selected by {@code u_params.x}.
+ * <p>A fill pass (triangles) then a wire pass (lines), reusing the same vertices. The fill is either
+ * <b>textured</b> (a colormap-shaded surface: {@code appearance.getTexture()} +
+ * {@code geometry.getTextureCoordinates()}, the JOGL guard) drawn with the textured program, or
+ * <b>colored</b> (per-vertex colors or a flat fill/line color) drawn with the scene program. Lines
+ * are always colored.
  */
 final class BgfxShapeDrawer {
 
@@ -52,6 +54,9 @@ final class BgfxShapeDrawer {
         | BGFX_STATE_DEPTH_TEST_ALWAYS
         | BGFX_STATE_FRONT_CCW
         | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA);
+
+    /** Sentinel for bgfx_set_texture telling it to use the texture's own sampler flags. */
+    private static final int USE_TEXTURE_SAMPLER = 0xffffffff;
 
     private BgfxShapeDrawer() { }
 
@@ -73,6 +78,8 @@ final class BgfxShapeDrawer {
             return;
         }
         final FloatBuffer colors = geom.getColors() != null ? geom.getColors().getData() : null;
+        final FloatBuffer texcoords =
+            geom.getTextureCoordinates() != null ? geom.getTextureCoordinates().getData() : null;
 
         final TransformationManager tm = dt.getTransformationManager();
         final double[] sceneToClip = tm.isUsingSceneCoordinate()
@@ -80,28 +87,15 @@ final class BgfxShapeDrawer {
                                      : tm.getWindowTransformation().getMatrix();
         final float[] mvp = BgfxMat.toClip(sceneToClip, canvas.homogeneousDepth());
 
-        try (MemoryStack stack = stackPush()) {
-            final BGFXVertexLayout layout = canvas.layout();
-            if (bgfx_get_avail_transient_vertex_buffer(count, layout) < count) {
-                return;
-            }
-            final BGFXTransientVertexBuffer tvb = BGFXTransientVertexBuffer.malloc(stack);
-            bgfx_alloc_transient_vertex_buffer(tvb, count, layout);
-            final ByteBuffer vb = tvb.data();
-            final int colorLimit = colors != null ? colors.limit() : 0;
-            for (int i = 0; i < count; i++) {
-                final int b = i * 4;
-                vb.putFloat(verts.get(b)).putFloat(verts.get(b + 1)).putFloat(verts.get(b + 2)).putFloat(verts.get(b + 3));
-                if (colors != null && (b + 3) < colorLimit) {
-                    vb.putFloat(colors.get(b)).putFloat(colors.get(b + 1)).putFloat(colors.get(b + 2)).putFloat(colors.get(b + 3));
-                } else {
-                    vb.putFloat(1f).putFloat(1f).putFloat(1f).putFloat(1f);
-                }
-            }
+        // A colormap surface: a Texture on the appearance + texture coords on the geometry (the JOGL
+        // guard). Otherwise per-vertex / flat color.
+        final BgfxTexture tex = (app.getTexture() instanceof BgfxTexture) ? (BgfxTexture) app.getTexture() : null;
+        final short texHandle = (tex != null && texcoords != null) ? tex.ensureUploaded() : BgfxTexture.INVALID;
+        final boolean textured = texHandle != BgfxTexture.INVALID && texcoords != null
+                                 && canvas.texProgram() != BgfxCanvas.INVALID_HANDLE;
 
-            // Fill (triangles). A thick polyline reports a spurious TRIANGLES fill with no indices;
-            // drawing index-less triangles as a soup is garbage that occludes the real line, so skip
-            // that case (real fills — boxes, surfaces — are indexed or strip/fan).
+        try (MemoryStack stack = stackPush()) {
+            // Fill.
             if (geom.getFillDrawingMode() != Geometry.FillDrawingMode.NONE) {
                 final int[] idx = fillIndices(geom, count);
                 final boolean spuriousFill =
@@ -109,60 +103,125 @@ final class BgfxShapeDrawer {
                 if (!spuriousFill) {
                     final long pt = geom.getFillDrawingMode() == Geometry.FillDrawingMode.TRIANGLE_STRIP
                                     ? BGFX_STATE_PT_TRISTRIP : 0L;
-                    submit(stack, canvas, tvb, count, idx, pt, colors != null, app.getFillColor(),
-                           mvp, cullFlag(geom.getFaceCullingMode()));
+                    final long cull = cullFlag(geom.getFaceCullingMode());
+                    if (textured) {
+                        submitTextured(stack, canvas, verts, texcoords, count, idx, pt, texHandle, mvp, cull);
+                    } else {
+                        submitColored(stack, canvas, verts, colors, count, idx, pt,
+                                      colors != null, app.getFillColor(), mvp, cull);
+                    }
                 }
             }
 
-            // Wire (lines): line color overrides per-vertex; else per-vertex; else skip.
+            // Wire overlay (lines): line color overrides per-vertex; else per-vertex; else skip.
             if (geom.getLineDrawingMode() != Geometry.LineDrawingMode.NONE) {
                 final Color lineColor = app.getLineColor();
                 final boolean useVtx = lineColor == null && colors != null;
                 if (lineColor != null || colors != null) {
                     final int[] idx = lineIndices(geom, count);
-                    submit(stack, canvas, tvb, count, idx, linePt(geom.getLineDrawingMode()),
-                           useVtx, lineColor, mvp, 0L);
+                    submitColored(stack, canvas, verts, colors, count, idx,
+                                  linePt(geom.getLineDrawingMode()), useVtx, lineColor, mvp, 0L);
                 }
             }
         }
     }
 
-    private static void submit(MemoryStack stack, BgfxCanvas canvas, BGFXTransientVertexBuffer tvb,
-                               int vertexCount, int[] idx, long primType, boolean useVertexColor,
-                               Color flatColor, float[] mvp, long cull) {
-        final FloatBuffer mtx = stack.mallocFloat(16).put(mvp);
-        mtx.flip();
-        bgfx_set_transform(mtx);
-        bgfx_set_transient_vertex_buffer(0, tvb, 0, vertexCount);
-
-        if (idx != null) {
-            if (bgfx_get_avail_transient_index_buffer(idx.length, true) < idx.length) {
-                return;
-            }
-            final BGFXTransientIndexBuffer tib = BGFXTransientIndexBuffer.malloc(stack);
-            bgfx_alloc_transient_index_buffer(tib, idx.length, true);
-            final IntBuffer ib = tib.data().asIntBuffer();
-            ib.put(idx);
-            bgfx_set_transient_index_buffer(tib, 0, idx.length);
+    private static void submitColored(MemoryStack stack, BgfxCanvas canvas, FloatBuffer verts,
+                                      FloatBuffer colors, int count, int[] idx, long primType,
+                                      boolean useVertexColor, Color flatColor, float[] mvp, long cull) {
+        final BGFXVertexLayout layout = canvas.layout();
+        if (bgfx_get_avail_transient_vertex_buffer(count, layout) < count) {
+            return;
         }
+        final BGFXTransientVertexBuffer tvb = BGFXTransientVertexBuffer.malloc(stack);
+        bgfx_alloc_transient_vertex_buffer(tvb, count, layout);
+        final ByteBuffer vb = tvb.data();
+        final int colorLimit = colors != null ? colors.limit() : 0;
+        for (int i = 0; i < count; i++) {
+            final int b = i * 4;
+            vb.putFloat(verts.get(b)).putFloat(verts.get(b + 1)).putFloat(verts.get(b + 2)).putFloat(verts.get(b + 3));
+            if (colors != null && (b + 3) < colorLimit) {
+                vb.putFloat(colors.get(b)).putFloat(colors.get(b + 1)).putFloat(colors.get(b + 2)).putFloat(colors.get(b + 3));
+            } else {
+                vb.putFloat(1f).putFloat(1f).putFloat(1f).putFloat(1f);
+            }
+        }
+        setTransform(stack, mvp);
+        bgfx_set_transient_vertex_buffer(0, tvb, 0, count);
+        bindIndices(stack, idx);
 
-        final FloatBuffer params = stack.mallocFloat(4)
-                .put(useVertexColor ? 1f : 0f).put(0f).put(0f).put(0f);
+        final FloatBuffer params = stack.mallocFloat(4).put(useVertexColor ? 1f : 0f).put(0f).put(0f).put(0f);
         params.flip();
         bgfx_set_uniform(canvas.uniformParams(), params, 1);
-
-        final FloatBuffer col = stack.mallocFloat(4);
-        if (flatColor != null) {
-            col.put(flatColor.getRedAsFloat()).put(flatColor.getGreenAsFloat())
-               .put(flatColor.getBlueAsFloat()).put(flatColor.getAlphaAsFloat());
-        } else {
-            col.put(0.8f).put(0.8f).put(0.8f).put(1f);
-        }
-        col.flip();
-        bgfx_set_uniform(canvas.uniformColor(), col, 1);
+        bgfx_set_uniform(canvas.uniformColor(), colorVec(stack, flatColor), 1);
 
         bgfx_set_state(STATE_BASE | primType | cull, 0);
         bgfx_submit(canvas.viewId(), canvas.program(), 0, BGFX_DISCARD_ALL);
+    }
+
+    private static void submitTextured(MemoryStack stack, BgfxCanvas canvas, FloatBuffer verts,
+                                       FloatBuffer texcoords, int count, int[] idx, long primType,
+                                       short texHandle, float[] mvp, long cull) {
+        final BGFXVertexLayout layout = canvas.texLayout();
+        if (layout == null) {
+            return;
+        }
+        if (bgfx_get_avail_transient_vertex_buffer(count, layout) < count) {
+            return;
+        }
+        final BGFXTransientVertexBuffer tvb = BGFXTransientVertexBuffer.malloc(stack);
+        bgfx_alloc_transient_vertex_buffer(tvb, count, layout);
+        final ByteBuffer vb = tvb.data();
+        final int tcLimit = texcoords.limit();
+        for (int i = 0; i < count; i++) {
+            final int b = i * 4;
+            vb.putFloat(verts.get(b)).putFloat(verts.get(b + 1)).putFloat(verts.get(b + 2)).putFloat(verts.get(b + 3));
+            if ((b + 3) < tcLimit) {
+                vb.putFloat(texcoords.get(b)).putFloat(texcoords.get(b + 1)).putFloat(texcoords.get(b + 2)).putFloat(texcoords.get(b + 3));
+            } else {
+                vb.putFloat(0f).putFloat(0f).putFloat(0f).putFloat(1f);
+            }
+        }
+        setTransform(stack, mvp);
+        bgfx_set_transient_vertex_buffer(0, tvb, 0, count);
+        bindIndices(stack, idx);
+
+        bgfx_set_texture(0, canvas.uniformTexColor(), texHandle, USE_TEXTURE_SAMPLER);
+        bgfx_set_uniform(canvas.uniformColor(), colorVec(stack, null), 1);   // white = colormap REPLACE
+
+        bgfx_set_state(STATE_BASE | primType | cull, 0);
+        bgfx_submit(canvas.viewId(), canvas.texProgram(), 0, BGFX_DISCARD_ALL);
+    }
+
+    private static void setTransform(MemoryStack stack, float[] mvp) {
+        final FloatBuffer mtx = stack.mallocFloat(16).put(mvp);
+        mtx.flip();
+        bgfx_set_transform(mtx);
+    }
+
+    private static void bindIndices(MemoryStack stack, int[] idx) {
+        if (idx == null) {
+            return;
+        }
+        if (bgfx_get_avail_transient_index_buffer(idx.length, true) < idx.length) {
+            return;
+        }
+        final BGFXTransientIndexBuffer tib = BGFXTransientIndexBuffer.malloc(stack);
+        bgfx_alloc_transient_index_buffer(tib, idx.length, true);
+        tib.data().asIntBuffer().put(idx);
+        bgfx_set_transient_index_buffer(tib, 0, idx.length);
+    }
+
+    /** A vec4 uniform value: the given color, or opaque white when {@code null}. */
+    private static FloatBuffer colorVec(MemoryStack stack, Color color) {
+        final FloatBuffer col = stack.mallocFloat(4);
+        if (color != null) {
+            col.put(color.getRedAsFloat()).put(color.getGreenAsFloat()).put(color.getBlueAsFloat()).put(color.getAlphaAsFloat());
+        } else {
+            col.put(1f).put(1f).put(1f).put(1f);
+        }
+        col.flip();
+        return col;
     }
 
     /** Triangle indices, or {@code null} for a sequential (non-indexed) draw. */
@@ -171,7 +230,7 @@ final class BgfxShapeDrawer {
         if (geom.getFillDrawingMode() == Geometry.FillDrawingMode.TRIANGLE_FAN) {
             return fanToTriangles(base != null ? base : sequence(count));
         }
-        return base; // TRIANGLES / TRIANGLE_STRIP: indices as-is, or null = sequential
+        return base;
     }
 
     /** Line indices, or {@code null} for a sequential draw. Closes SEGMENTS_LOOP. */
