@@ -117,8 +117,8 @@ public class BgfxDrawingTools implements DrawingTools {
 
     // ---- Texture draws: screen-aligned sprites (text labels, marks) ----------
     // Each overload funnels to BgfxShapeDrawer.drawTexture (mirrors the JoGL TextureManager.draw
-    // funnel). The rotationAngle is accepted but not yet applied (most tick/axis labels are
-    // horizontal). draw(Texture) alone (full-frame image plots) is not handled yet.
+    // funnel). rotationAngle is in degrees (+Z CCW), as the text/label managers pass it. draw(Texture)
+    // alone (full-frame image plots) is not handled yet.
 
     @Override
     public void draw(Texture texture) throws SciRendererException {
@@ -126,41 +126,41 @@ public class BgfxDrawingTools implements DrawingTools {
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions) throws SciRendererException {
-        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, 0, 1, null);
+        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, 0, 1, 0, null);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, double rotationAngle) throws SciRendererException {
-        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, 0, 1, null);
+        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, 0, 1, rotationAngle, null);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, Color auxColor, ElementsBuffer colors) throws SciRendererException {
-        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, 0, 1, auxColor);
+        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, 0, 1, 0, auxColor);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, double rotationAngle, Color auxColor, ElementsBuffer colors) throws SciRendererException {
-        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, 0, 1, auxColor);
+        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, 0, 1, rotationAngle, auxColor);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, int offset, int stride, double rotationAngle) throws SciRendererException {
-        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, offset, stride, null);
+        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, offset, stride, rotationAngle, null);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, int offset, int stride, double rotationAngle, Color auxColor, ElementsBuffer colors) throws SciRendererException {
-        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, offset, stride, auxColor);
+        BgfxShapeDrawer.drawTexture(this, texture, anchor, positions, offset, stride, rotationAngle, auxColor);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, Vector3d position) throws SciRendererException {
-        BgfxShapeDrawer.drawTexture(this, texture, anchor, position);
+        BgfxShapeDrawer.drawTexture(this, texture, anchor, position, 0);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, Vector3d position, double rotationAngle) throws SciRendererException {
-        BgfxShapeDrawer.drawTexture(this, texture, anchor, position);
+        BgfxShapeDrawer.drawTexture(this, texture, anchor, position, rotationAngle);
     }
 }

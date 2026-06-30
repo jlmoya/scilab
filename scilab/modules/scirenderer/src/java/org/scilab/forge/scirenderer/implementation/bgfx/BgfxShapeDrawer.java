@@ -169,7 +169,7 @@ final class BgfxShapeDrawer {
      * (null = white, i.e. use the rasterized glyph colours as-is). Rotation is not yet applied.
      */
     static void drawTexture(BgfxDrawingTools dt, Texture texture, AnchorPosition anchor,
-                            ElementsBuffer positions, int offset, int stride, Color auxColor) {
+                            ElementsBuffer positions, int offset, int stride, double rotationDeg, Color auxColor) {
         if (positions == null) {
             return;
         }
@@ -196,13 +196,14 @@ final class BgfxShapeDrawer {
                 }
                 final float w = (es >= 4 && b + 3 < pos.limit()) ? pos.get(b + 3) : 1f;
                 submitSprite(stack, canvas, anchor, mvp, pos.get(b), pos.get(b + 1), pos.get(b + 2), w,
-                             size, texHandle, auxColor);
+                             size, texHandle, auxColor, rotationDeg);
             }
         }
     }
 
     /** Single-position sprite (the Vector3d draw overloads). */
-    static void drawTexture(BgfxDrawingTools dt, Texture texture, AnchorPosition anchor, Vector3d position) {
+    static void drawTexture(BgfxDrawingTools dt, Texture texture, AnchorPosition anchor, Vector3d position,
+                            double rotationDeg) {
         final float[] mvp = spriteSetup(dt, texture);
         if (mvp == null || position == null) {
             return;
@@ -216,7 +217,7 @@ final class BgfxShapeDrawer {
         }
         try (MemoryStack stack = stackPush()) {
             submitSprite(stack, canvas, anchor, mvp, (float) position.getX(), (float) position.getY(),
-                         (float) position.getZ(), 1f, size, texHandle, null);
+                         (float) position.getZ(), 1f, size, texHandle, null, rotationDeg);
         }
     }
 
@@ -238,7 +239,7 @@ final class BgfxShapeDrawer {
 
     private static void submitSprite(MemoryStack stack, BgfxCanvas canvas, AnchorPosition anchor,
                                      float[] mvp, float px, float py, float pz, float pw,
-                                     Dimension size, short texHandle, Color color) {
+                                     Dimension size, short texHandle, Color color, double rotationDeg) {
         // Project the anchor point to clip, then NDC (drop sprites behind the camera).
         final float cw = mvp[3] * px + mvp[7] * py + mvp[11] * pz + mvp[15] * pw;
         if (cw <= 0f) {
@@ -248,25 +249,38 @@ final class BgfxShapeDrawer {
         final float ny = (mvp[1] * px + mvp[5] * py + mvp[9] * pz + mvp[13] * pw) / cw;
         final float nz = (mvp[2] * px + mvp[6] * py + mvp[10] * pz + mvp[14] * pw) / cw;
 
-        // Texture size in NDC units (y up).
-        final float wn = 2f * size.width / Math.max(1, canvas.getWidth());
-        final float hn = 2f * size.height / Math.max(1, canvas.getHeight());
+        final float w = size.width;
+        final float h = size.height;
 
-        // Bottom-left corner of the quad in NDC, from the anchor position.
-        float bx = nx;
-        float by = ny;
+        // Pixel offset (y up) of the quad's (0,0) corner from the anchor point, per AnchorPosition —
+        // mirrors JoGLTextureManager.getAnchorDelta.
+        float adx = 0f;
+        float ady = 0f;
         switch (anchor) {
-            case UPPER_LEFT:  by = ny - hn; break;
-            case UPPER_RIGHT: bx = nx - wn; by = ny - hn; break;
-            case LOWER_RIGHT: bx = nx - wn; break;
-            case CENTER:      bx = nx - wn / 2f; by = ny - hn / 2f; break;
-            case LEFT:        by = ny - hn / 2f; break;
-            case RIGHT:       bx = nx - wn; by = ny - hn / 2f; break;
-            case UP:          bx = nx - wn / 2f; by = ny - hn; break;
-            case DOWN:        bx = nx - wn / 2f; break;
+            case UPPER_LEFT:  ady = -h;                       break;
+            case UPPER_RIGHT: adx = -w;       ady = -h;       break;
+            case LOWER_RIGHT: adx = -w;                       break;
+            case CENTER:      adx = -w / 2f;  ady = -h / 2f;  break;
+            case LEFT:        ady = -h / 2f;                  break;
+            case RIGHT:       adx = -w;       ady = -h / 2f;  break;
+            case UP:          adx = -w / 2f;  ady = -h;       break;
+            case DOWN:        adx = -w / 2f;                  break;
             case LOWER_LEFT:
             default:          break;
         }
+
+        // Screen-aligned quad, optionally rotated about the anchor (+Z, CCW, degrees — matching JOGL's
+        // glRotated). Build it in pixels so the rotation isn't sheared by the viewport aspect ratio,
+        // then convert each corner's offset-from-anchor to an NDC offset: screen = anchor + R*(delta).
+        final double rad = Math.toRadians(rotationDeg);
+        final float cos = (float) Math.cos(rad);
+        final float sin = (float) Math.sin(rad);
+        final float sx = 2f / Math.max(1, canvas.getWidth());
+        final float sy = 2f / Math.max(1, canvas.getHeight());
+        final float[] cornerX = {0f, w, w, 0f};   // BL, BR, TR, TL (local quad, pixels)
+        final float[] cornerY = {0f, 0f, h, h};
+        final float[] u = {0f, 1f, 1f, 0f};
+        final float[] v = {1f, 1f, 0f, 0f};        // v=0 is the top of the rasterized glyph (Java2D)
 
         final BGFXVertexLayout layout = canvas.texLayout();
         if (bgfx_get_avail_transient_vertex_buffer(4, layout) < 4) {
@@ -275,11 +289,13 @@ final class BgfxShapeDrawer {
         final BGFXTransientVertexBuffer tvb = BGFXTransientVertexBuffer.malloc(stack);
         bgfx_alloc_transient_vertex_buffer(tvb, 4, layout);
         final ByteBuffer vb = tvb.data();
-        // BL, BR, TR, TL — texcoord v=0 is the top of the rasterized glyph (Java2D origin).
-        putSpriteVertex(vb, bx,      by,      nz, 0f, 1f);
-        putSpriteVertex(vb, bx + wn, by,      nz, 1f, 1f);
-        putSpriteVertex(vb, bx + wn, by + hn, nz, 1f, 0f);
-        putSpriteVertex(vb, bx,      by + hn, nz, 0f, 0f);
+        for (int i = 0; i < 4; i++) {
+            final float ox = adx + cornerX[i];
+            final float oy = ady + cornerY[i];
+            final float rx = cos * ox - sin * oy;
+            final float ry = sin * ox + cos * oy;
+            putSpriteVertex(vb, nx + rx * sx, ny + ry * sy, nz, u[i], v[i]);
+        }
 
         setTransform(stack, BgfxMat.identity());
         bgfx_set_transient_vertex_buffer(0, tvb, 0, 4);
