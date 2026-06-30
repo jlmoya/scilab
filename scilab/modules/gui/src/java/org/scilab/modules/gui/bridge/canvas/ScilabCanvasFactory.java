@@ -15,6 +15,7 @@ package org.scilab.modules.gui.bridge.canvas;
 
 import org.w3c.dom.Document;
 
+import org.scilab.forge.scirenderer.implementation.bgfx.BgfxCanvas;
 import org.scilab.modules.commons.xml.XConfiguration;
 import static org.scilab.modules.commons.xml.XConfiguration.XConfAttribute;
 import org.scilab.modules.graphic_objects.axes.AxesContainer;
@@ -46,6 +47,9 @@ public final class ScilabCanvasFactory {
     /** XConfiguration path of the Preferences checkbox backing the bgfx toggle. */
     private static final String BGFX_PREF_PATH = "//general/graphics/body/rendering";
 
+    /** Guards the "could not read the preference" warning so it is logged at most once per process. */
+    private static boolean bgfxPrefWarned = false;
+
     private ScilabCanvasFactory() {
     }
 
@@ -67,7 +71,14 @@ public final class ScilabCanvasFactory {
             BgfxRendererPref[] prefs = XConfiguration.get(BgfxRendererPref.class, doc, BGFX_PREF_PATH);
             return prefs.length > 0 && prefs[0].enabled;
         } catch (Throwable t) {
-            // No preferences (e.g. -nogui / very early startup) -> default JOGL.
+            // Preferences may legitimately be unavailable (e.g. -nogui / very early startup) -> default
+            // to JOGL. But don't silently swallow an unexpected config error that would suppress the
+            // user's explicit choice: log it once so a genuine XConfiguration problem stays visible.
+            if (!bgfxPrefWarned) {
+                bgfxPrefWarned = true;
+                System.err.println("[" + BGFX_PROPERTY + "] could not read the bgfx renderer preference"
+                                   + " (defaulting to JOGL): " + t);
+            }
             return false;
         }
     }
@@ -80,12 +91,23 @@ public final class ScilabCanvasFactory {
      */
     public static AbstractScilabCanvas createCanvas(final AxesContainer figure) {
         if (isBgfxRequested()) {
-            try {
-                return new SwingScilabBgfxCanvas(figure);
-            } catch (Throwable t) {
-                // An experimental backend must never break figure creation.
-                System.err.println("[" + BGFX_PROPERTY + "] bgfx canvas unavailable, "
-                                   + "falling back to JOGL: " + t);
+            // bgfx is a single global context per process: only one figure can drive it at a time.
+            // Claim the slot here; a concurrent bgfx figure falls back to JOGL rather than corrupting
+            // the live context. The bgfx canvas's render thread releases the slot when it shuts down.
+            if (BgfxCanvas.tryAcquireContext()) {
+                try {
+                    return new SwingScilabBgfxCanvas(figure);
+                } catch (Throwable t) {
+                    // An experimental backend must never break figure creation. The constructor starts
+                    // its render thread last, so a throw here means the thread is not running to release
+                    // the slot — release it before falling back to JOGL.
+                    BgfxCanvas.releaseContext();
+                    System.err.println("[" + BGFX_PROPERTY + "] bgfx canvas unavailable, "
+                                       + "falling back to JOGL: " + t);
+                }
+            } else {
+                System.err.println("[" + BGFX_PROPERTY + "] bgfx is already rendering another figure;"
+                                   + " this figure uses the JOGL renderer.");
             }
         }
         return new SwingScilabCanvas(figure);

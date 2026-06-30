@@ -26,6 +26,10 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import com.jogamp.opengl.GL;
 
 import com.jlmoya.gpu.GpuSurfaceComponent;
@@ -44,15 +48,21 @@ import org.scilab.modules.renderer.JoGLView.DrawerVisitor;
 /**
  * Experimental bgfx/Metal figure canvas (real-time 3D renderer, Layer-2).
  *
- * <p>Selected only when {@code -Dscilab.renderer.bgfx=true} (see {@link ScilabCanvasFactory}); the
- * default Scilab canvas remains the JOGL {@link SwingScilabCanvas}. It embeds the reusable Layer-1
- * Swing&lt;-&gt;GPU surface ({@link GpuSurfaceComponent}) and drives a {@link BgfxCanvas} (the
- * scirenderer bgfx backend) on a dedicated render thread, presenting directly to a {@code CAMetalLayer}.
+ * <p>Selected when the bgfx backend is enabled — via the Preferences &gt; General &gt; Graphics checkbox
+ * or {@code -Dscilab.renderer.bgfx=true} (see {@link ScilabCanvasFactory}); the default Scilab canvas
+ * remains the JOGL {@link SwingScilabCanvas}. It embeds the reusable Layer-1 Swing&lt;-&gt;GPU surface
+ * ({@link GpuSurfaceComponent}) and drives a {@link BgfxCanvas} (the scirenderer bgfx backend) on a
+ * dedicated render thread, presenting directly to a {@code CAMetalLayer}.
  *
- * <p>The figure's {@code graphic_objects} are rendered through bgfx by the SHARED
- * {@link DrawerVisitor} — the very visitor the JOGL backend uses — so real plots (surf/plot3d) draw
- * on the GPU (Layer-3). Text/sprites are not yet rasterized. macOS only for now; any
- * construction/runtime failure falls back to JOGL upstream.
+ * <p>The figure's {@code graphic_objects} are rendered through bgfx by the SHARED {@link DrawerVisitor}
+ * — the very visitor the JOGL backend uses — so real plots (surf/plot3d, lines, text, marks, image
+ * plots) draw on the GPU (Layer-3). macOS only for now.
+ *
+ * <p>Failure handling: if constructing this canvas fails, {@link ScilabCanvasFactory} falls back to
+ * JOGL so a figure always appears. A failure later on the render thread (no surface acquired, or
+ * {@code bgfx_init} fails) cannot retroactively choose JOGL — the figure is already committed — so it
+ * shows an on-figure notice rather than a silent black window. bgfx is a single global context, so
+ * only one figure renders through bgfx at a time; concurrent figures fall back to JOGL.
  *
  * @author Scilab macOS/2027 modernization
  */
@@ -72,8 +82,11 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
     private final BgfxCanvas bgfxCanvas;
     private final DrawerVisitor drawerVisitor;
     private final RedrawNotifier redrawNotifier;
-    private volatile boolean running;
+    // Shutdown signal. Only ever set true (by close()/removeNotify), so the render thread can never
+    // re-arm itself after teardown was requested — the bug a plain running=true at loop start caused.
+    private volatile boolean stopRequested = false;
     private volatile Thread renderThread;
+    private boolean dumpWarned = false;
 
     // HiDPI: AWT delivers mouse coordinates in logical points, but the renderer's projection (used by
     // EntityPicker for datatip/object picking and by the editor) is computed at the bgfx framebuffer's
@@ -153,38 +166,103 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
 
     private void startRenderThread() {
         Thread t = new Thread(() -> {
-            NativeSurface s = waitForSurface();
-            if (s == null || s.handle() == 0L) {
-                System.err.println("[scilab.renderer.bgfx] no native surface acquired; "
-                                   + "render thread aborting.");
-                return;
-            }
-            bgfxCanvas.setSize(s.width(), s.height());
-            if (!bgfxCanvas.initBgfx(s.handle())) {
-                return;
-            }
-            running = true;
             try {
-                while (running) {
-                    // Block until the shared DrawerVisitor signals a model change (redraw), or a
-                    // keep-alive tick. This is the happens-before that lets the traversal below see
-                    // the latest graphic_objects model rather than a free-running, possibly stale read.
-                    bgfxCanvas.awaitRedraw(RENDER_KEEPALIVE_MS);
-                    NativeSurface cur = surfaceComponent.surface();
-                    if (cur != null && cur.handle() != 0L) {
-                        bgfxCanvas.setSize(cur.width(), cur.height());
-                    }
-                    bgfxCanvas.renderFrame();
+                NativeSurface s = waitForSurface();
+                if (s == null || s.handle() == 0L) {
+                    reportInitFailure("no native surface was acquired");
+                    return;
                 }
+                bgfxCanvas.setSize(s.width(), s.height());
+                if (!bgfxCanvas.initBgfx(s.handle())) {
+                    reportInitFailure("bgfx could not initialise on this display");
+                    return;
+                }
+                renderLoop();
             } catch (Throwable err) {
+                reportInitFailure("the render thread stopped on an unexpected error");
                 err.printStackTrace();
             } finally {
-                bgfxCanvas.shutdownBgfx();
+                // Always run, on every exit path (init failure included), so the process-wide bgfx
+                // context slot is freed for the next figure even when this one never rendered a frame.
+                bgfxCanvas.shutdownBgfx();      // no-op if bgfx never initialised
+                BgfxCanvas.releaseContext();
             }
         }, "scilab-bgfx-render-" + System.identityHashCode(this));
         t.setDaemon(true);
         renderThread = t;
         t.start();
+    }
+
+    /** The frame loop, on the render thread, once bgfx is initialised. */
+    private void renderLoop() {
+        if (stopRequested) {
+            return;   // close() was requested during init — do not start presenting
+        }
+        // Per-frame error throttle: a transient bgfx_reset/bgfx_frame failure must neither kill this
+        // thread (which would freeze the figure) nor print a stack trace every frame.
+        String lastErrSig = null;
+        long suppressed = 0;
+        while (!stopRequested) {
+            // Block until the shared DrawerVisitor signals a model change (redraw), or a keep-alive
+            // tick. This is the happens-before that lets the traversal below see the latest
+            // graphic_objects model rather than a free-running, possibly stale read.
+            bgfxCanvas.awaitRedraw(RENDER_KEEPALIVE_MS);
+            if (stopRequested) {
+                break;
+            }
+            NativeSurface cur = surfaceComponent.surface();
+            if (cur == null || cur.handle() == 0L) {
+                continue;   // peer/CAMetalLayer gone (teardown in flight) — never present to a dead surface
+            }
+            bgfxCanvas.setSize(cur.width(), cur.height());
+            try {
+                bgfxCanvas.renderFrame();
+            } catch (Throwable err) {
+                String sig = err.getClass().getName() + ": " + err.getMessage();
+                if (!sig.equals(lastErrSig)) {
+                    if (suppressed > 0) {
+                        System.err.println("[scilab.renderer.bgfx] (" + suppressed
+                                           + " more frame(s) failed with the previous error)");
+                    }
+                    System.err.println("[scilab.renderer.bgfx] render error "
+                                       + "(identical errors suppressed until it changes):");
+                    err.printStackTrace();
+                    lastErrSig = sig;
+                    suppressed = 0;
+                } else {
+                    suppressed++;
+                }
+            }
+        }
+    }
+
+    /**
+     * Report an async render-thread init failure. The figure is already committed to bgfx (the JOGL
+     * fallback in {@link ScilabCanvasFactory} only guards construction), so instead of leaving a silent
+     * black window we log a clear, actionable message and replace the dead GPU surface with an on-figure
+     * notice. Best-effort — the log line is the reliable signal.
+     */
+    private void reportInitFailure(String reason) {
+        System.err.println("[scilab.renderer.bgfx] this figure's GPU renderer failed to start ("
+                           + reason + "). Disable the experimental backend in "
+                           + "Preferences > General > Graphics (or -Dscilab.renderer.bgfx=false) "
+                           + "to use the default JOGL renderer.");
+        SwingUtilities.invokeLater(() -> {
+            try {
+                remove(surfaceComponent);
+                JLabel notice = new JLabel(
+                    "<html><div style='text-align:center'>The experimental bgfx/Metal renderer "
+                    + "could not start for this figure.<br>Disable it in "
+                    + "Preferences &gt; General &gt; Graphics.</div></html>",
+                    SwingConstants.CENTER);
+                notice.setForeground(Color.WHITE);
+                add(notice, BorderLayout.CENTER);
+                revalidate();
+                repaint();
+            } catch (Throwable ignored) {
+                // best-effort; the logged message above is the reliable signal
+            }
+        });
     }
 
     /** Poll until the heavyweight peer is realized (addNotify -> CAMetalLayer) and sized. */
@@ -346,13 +424,21 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
 
     @Override
     public void close() {
-        running = false;
+        stopRequested = true;
         GraphicController.getController().unregister(redrawNotifier);
         bgfxCanvas.wakeRedraw();   // unblock the render thread if it is waiting on a redraw
         Thread t = renderThread;
-        if (t != null) {
+        if (t != null && t != Thread.currentThread()) {
             try {
-                t.join(2000);
+                // The render thread must be dead before removeNotify() lets the peer release the
+                // CAMetalLayer it presents to, otherwise use-after-free. The loop re-checks
+                // stopRequested after each <=100ms keep-alive, so this returns promptly; the generous
+                // bound only guards a wedged GPU driver (warn, then proceed — never hang the EDT forever).
+                t.join(5000);
+                if (t.isAlive()) {
+                    System.err.println("[scilab.renderer.bgfx] render thread did not stop within 5s; "
+                                       + "proceeding with teardown.");
+                }
             } catch (InterruptedException ignored) {
                 Thread.currentThread().interrupt();
             }
@@ -361,7 +447,16 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
 
     @Override
     public BufferedImage dumpAsBufferedImage() {
-        return null;   // GPU readback from the Metal surface is future work
+        // The bgfx backend presents to a CAMetalLayer, not an offscreen buffer the AWT export/print
+        // path can read; GPU readback into a BufferedImage is not wired here yet. Returning null (which
+        // callers treat as "no image") is correct, but say so once rather than failing silently.
+        if (!dumpWarned) {
+            dumpWarned = true;
+            System.err.println("[scilab.renderer.bgfx] figure export/print is not supported by the "
+                               + "experimental bgfx backend yet; use a JOGL figure to export, or "
+                               + "-Dscilab.renderer.bgfx.shot=<path> to capture this figure to a PNG.");
+        }
+        return null;
     }
 
     @Override

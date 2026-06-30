@@ -17,8 +17,8 @@ import org.scilab.forge.scirenderer.shapes.appearance.Color;
 import org.scilab.forge.scirenderer.tranformations.Vector3d;
 
 /**
- * bgfx light: stores light state (first slice renders flat / vertex-colored, so the state is
- * recorded but not yet consumed by a lighting shader).
+ * bgfx light: stores light state. The renderer has no lighting shader yet (geometry is drawn flat,
+ * vertex-colored, or colormap-textured), so this state is recorded for parity but not yet consumed.
  */
 public class BgfxLight implements Light {
 

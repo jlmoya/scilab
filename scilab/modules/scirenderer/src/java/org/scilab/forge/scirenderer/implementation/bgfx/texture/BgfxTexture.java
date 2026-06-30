@@ -37,8 +37,7 @@ public class BgfxTexture extends AbstractTexture {
     public static final short INVALID = (short) 0xffff;
 
     private short handle = INVALID;
-    private int texWidth;
-    private int texHeight;
+    private boolean createWarned = false;
 
     /**
      * Ensure the current pixel data is on the GPU; returns the bgfx texture handle (or
@@ -62,36 +61,45 @@ public class BgfxTexture extends AbstractTexture {
 
         data.rewind();
         final ByteBuffer buf = MemoryUtil.memAlloc(w * h * 4);
-        if (provider.isRowMajorOrder()) {
-            buf.put(data);
-            buf.flip();
-        } else {
-            // Column-major source (a Scilab matrix, e.g. Matplot): src(r,c) is at c*h + r. Transpose
-            // into a row-major w*h texture so the rest of the pipeline treats it like any other image.
-            for (int r = 0; r < h; r++) {
-                for (int c = 0; c < w; c++) {
-                    final int s = (c * h + r) * 4;
-                    final int d = (r * w + c) * 4;
-                    buf.put(d,     data.get(s));
-                    buf.put(d + 1, data.get(s + 1));
-                    buf.put(d + 2, data.get(s + 2));
-                    buf.put(d + 3, data.get(s + 3));
+        try {
+            if (provider.isRowMajorOrder()) {
+                buf.put(data);
+                buf.flip();
+            } else {
+                // Column-major source (a Scilab matrix, e.g. Matplot): src(r,c) is at c*h + r. Transpose
+                // into a row-major w*h texture so the rest of the pipeline treats it like any other image.
+                for (int r = 0; r < h; r++) {
+                    for (int c = 0; c < w; c++) {
+                        final int s = (c * h + r) * 4;
+                        final int d = (r * w + c) * 4;
+                        buf.put(d,     data.get(s));
+                        buf.put(d + 1, data.get(s + 1));
+                        buf.put(d + 2, data.get(s + 2));
+                        buf.put(d + 3, data.get(s + 3));
+                    }
                 }
+                buf.position(w * h * 4);
+                buf.flip();
             }
-            buf.position(w * h * 4);
-            buf.flip();
-        }
 
-        if (handle != INVALID) {
-            bgfx_destroy_texture(handle);
+            if (handle != INVALID) {
+                bgfx_destroy_texture(handle);
+                handle = INVALID;
+            }
+            handle = bgfx_create_texture_2d((short) w, (short) h, false, 1,
+                                            BGFX_TEXTURE_FORMAT_RGBA8, samplerFlags(), bgfx_copy(buf));
+            if (handle == INVALID && !createWarned) {
+                createWarned = true;
+                System.err.println("[scirenderer.bgfx] texture upload failed "
+                                   + "(bgfx_create_texture_2d returned invalid for " + w + "x" + h + ")");
+            }
+            upToDate = true;
+            return handle;
+        } finally {
+            // bgfx_copy took its own copy, so free the staging buffer on EVERY path (including a
+            // transpose or create exception) — otherwise a malformed provider leaks one buffer per frame.
+            MemoryUtil.memFree(buf);
         }
-        handle = bgfx_create_texture_2d((short) w, (short) h, false, 1,
-                                        BGFX_TEXTURE_FORMAT_RGBA8, samplerFlags(), bgfx_copy(buf));
-        MemoryUtil.memFree(buf);
-        texWidth = w;
-        texHeight = h;
-        upToDate = true;
-        return handle;
     }
 
     private long samplerFlags() {
@@ -111,19 +119,7 @@ public class BgfxTexture extends AbstractTexture {
         return flags;
     }
 
-    public short handle() {
-        return handle;
-    }
-
-    public int textureWidth() {
-        return texWidth;
-    }
-
-    public int textureHeight() {
-        return texHeight;
-    }
-
-    /** Release the GPU texture (render thread). */
+    /** Release the GPU texture. Must run on the render thread (bgfx is single-threaded). */
     public void disposeGpu() {
         if (handle != INVALID) {
             bgfx_destroy_texture(handle);

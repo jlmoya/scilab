@@ -27,9 +27,9 @@ import java.nio.ByteBuffer;
  * the figure (only the bgfx framebuffer, never the desktop), and is the basis for a real
  * figure-to-image export.
  *
- * <p>The {@link BGFXCallbackInterface}/{@link BGFXCallbackVtbl} and the native closures are held for
- * the lifetime of bgfx (referenced from {@link BgfxCanvas}); they are intentionally not freed (the
- * capture path is opt-in QA, and bgfx may reference them until shutdown).
+ * <p>The {@link BGFXCallbackInterface}/{@link BGFXCallbackVtbl} and the native closures are referenced
+ * by bgfx for the whole context lifetime, so they are held by {@link BgfxCanvas} and freed via
+ * {@link #dispose()} only after {@code bgfx_shutdown()} (when bgfx no longer references them).
  */
 final class BgfxScreenShot {
 
@@ -59,6 +59,12 @@ final class BgfxScreenShot {
 
     BGFXCallbackInterface iface() {
         return iface;
+    }
+
+    /** Free the native callback structs. Call only after {@code bgfx_shutdown()} (bgfx held references). */
+    void dispose() {
+        iface.free();
+        vtbl.free();
     }
 
     private static void writePng(String path, int width, int height, int pitch, long data, int size, boolean yflip) {

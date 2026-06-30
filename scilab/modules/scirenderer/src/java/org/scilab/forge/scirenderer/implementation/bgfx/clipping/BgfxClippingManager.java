@@ -16,8 +16,8 @@ import org.scilab.forge.scirenderer.clipping.ClippingManager;
 import org.scilab.forge.scirenderer.clipping.ClippingPlane;
 
 /**
- * bgfx clipping manager: a fixed bank of {@link BgfxClippingPlane}s. Clipping is recorded but not
- * yet enforced in the first slice.
+ * bgfx clipping manager: a fixed bank of {@link BgfxClippingPlane}s. Clip planes are recorded but the
+ * renderer does not enforce clipping yet.
  */
 public class BgfxClippingManager implements ClippingManager {
 

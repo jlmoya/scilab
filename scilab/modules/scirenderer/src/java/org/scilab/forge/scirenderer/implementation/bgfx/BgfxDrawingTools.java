@@ -34,8 +34,9 @@ import org.scilab.forge.scirenderer.tranformations.Vector3d;
  * bgfx implementation of {@link DrawingTools}.
  *
  * <p>Geometry draws are forwarded to {@link BgfxShapeDrawer} (immediate-mode bgfx submits). Texture
- * draws (text, marks, image plots) are no-ops in the first slice — they don't yet rasterize to the
- * GPU. The transformation is read per-draw by the shape drawer (no GL-style matrix listener needed).
+ * draws — text and mark sprites, and image plots (Matplot/Grayplot) — are forwarded there too and
+ * rasterize to the GPU as textured quads. The transformation is read per-draw by the shape drawer
+ * (no GL-style matrix listener needed).
  */
 public class BgfxDrawingTools implements DrawingTools {
 

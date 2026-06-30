@@ -17,8 +17,8 @@ import org.scilab.forge.scirenderer.lightning.LightManager;
 import org.scilab.forge.scirenderer.shapes.appearance.Material;
 
 /**
- * bgfx light manager: records lighting state for a fixed bank of lights. The first slice renders
- * flat / vertex-colored (no lighting shader yet), so state is stored but not consumed.
+ * bgfx light manager: records lighting state for a fixed bank of lights. The renderer has no lighting
+ * shader yet, so this state is stored for parity with the JOGL backend but not consumed.
  */
 public class BgfxLightManager implements LightManager {
 

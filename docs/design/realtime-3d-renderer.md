@@ -80,13 +80,20 @@ LWJGL + lwjgl-bgfx + lwjgl3-awt + the Layer-1 jar vendored into `thirdparty/` an
 and visual features.
 
 1. Harden Layer-1 into the reusable library (clean API + tests) — the reuse payoff.
-2. ✅ **DONE** — Scilab integration behind a flag: a bgfx canvas alongside `SwingScilabCanvas`
-   (proof cube in a real figure). **Next:** translate `graphic_objects` → a bgfx scene so a real
-   `surf`/`plot3d` renders through bgfx (Layer-3 — a `DrawerVisitor` equivalent; the bigger half).
-3. Rendering features: orbit/trackball camera → multiple lights → depth → **shadow maps** →
-   PBR-ish materials (the "amazing" look).
-4. Plot-type coverage: `surf`, `mesh`, `plot3d`, scatter, lines, text/axes (translate the
-   `graphic_objects` model / `scirenderer` draw calls to bgfx).
+2. ✅ **DONE** — Scilab integration behind a flag **and** a Preferences › General › Graphics checkbox:
+   a bgfx canvas alongside `SwingScilabCanvas`, falling back to JOGL on any error.
+3. ✅ **DONE (Layer-3)** — `graphic_objects` → bgfx scene via the *shared* `DrawerVisitor`: `surf`/
+   `plot3d` surfaces (colormap-textured, real depth test, correct face culling), lines, screen-aligned
+   text/mark sprites (with rotation), image plots (Matplot/Grayplot), mouse rotate/zoom, object
+   picking/datatips (HiDPI-correct), and figure resize. **Hardened to a production bar (2026-06-30):**
+   process-wide single-bgfx-context guard, render-thread shutdown/lifecycle safety (no use-after-free,
+   no lost-wakeup), GPU-texture-leak reclamation (render-thread deferred destroy), log-once render-error
+   throttling, and accurate docs. Verified by framebuffer dumps (never desktop capture).
+   **Not yet:** lighting/clipping shaders (state is recorded but not consumed); figure export/print GPU
+   readback (`dumpAsBufferedImage` returns null — use `-Dscilab.renderer.bgfx.shot`); **multiple
+   concurrent bgfx figures** (one at a time — additional figures fall back to JOGL; a shared context with
+   per-window framebuffers + one render thread is the future upgrade).
+4. Remaining "amazing look": multiple lights → **shadow maps** → PBR-ish materials.
 5. Make it default; validate portability (Linux→Vulkan, Windows→D3D, all via bgfx).
 
 ## Risks (front-loaded)

@@ -17,8 +17,8 @@ import org.scilab.forge.scirenderer.tranformations.Transformation;
 import org.scilab.forge.scirenderer.tranformations.Vector4d;
 
 /**
- * bgfx clipping plane: stores plane state. Clipping is not yet applied in the first slice (most
- * plots don't clip); a future pass can feed these as clip-distance uniforms to the shader.
+ * bgfx clipping plane: stores plane state. The renderer does not enforce clipping yet (most plots
+ * don't clip); a future pass can feed these as clip-distance uniforms to the shader.
  */
 public class BgfxClippingPlane implements ClippingPlane {
 

@@ -140,15 +140,19 @@ public class BgfxElementsBuffer implements DataBuffer, ElementsBuffer {
 
     @Override
     public void clear() {
-        if (data != null) {
-            data.clear();
+        // Under the same mutex as getData()/setData()/getSize(), so a concurrent reader never observes a
+        // half-cleared / null-straddling state (the render thread reads while the model rebuilds buffers).
+        synchronized (mutex) {
+            if (data != null) {
+                data.clear();
+            }
+            data = null;
         }
-        data = null;
     }
 
     private static class BadElementSizeException extends RuntimeException {
         BadElementSizeException(int size, int min, int max) {
-            super("Bad vertex elements size : " + size + ". Should be in [" + min + ", " + (max - 1) + "]");
+            super("Bad vertex elements size : " + size + ". Should be in [" + min + ", " + max + "]");
         }
     }
 }

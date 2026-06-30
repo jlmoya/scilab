@@ -129,9 +129,13 @@ final class BgfxShapeDrawer {
             // Fill.
             if (geom.getFillDrawingMode() != Geometry.FillDrawingMode.NONE) {
                 final int[] idx = fillIndices(geom, count);
-                final boolean spuriousFill =
+                // A TRIANGLES fill with no index buffer would have to be drawn as sequential triples.
+                // Scilab's triangle fills always carry indices (surfaces use TRIANGLE_STRIP/FAN), so a
+                // non-indexed TRIANGLES fill is a degenerate/empty case we skip rather than submit
+                // garbage. (JOGL submits it non-indexed; revisit with a concrete case if one needs it.)
+                final boolean nonIndexedTriangles =
                     geom.getFillDrawingMode() == Geometry.FillDrawingMode.TRIANGLES && idx == null;
-                if (!spuriousFill) {
+                if (!nonIndexedTriangles) {
                     final long pt = geom.getFillDrawingMode() == Geometry.FillDrawingMode.TRIANGLE_STRIP
                                     ? BGFX_STATE_PT_TRISTRIP : 0L;
                     final long cull = cullFlag(geom.getFaceCullingMode());
@@ -165,8 +169,9 @@ final class BgfxShapeDrawer {
     /**
      * Draw a texture as a screen-aligned sprite anchored at each of {@code positions} (scene
      * coordinates). Each position is projected to clip space, then a quad the size of the texture
-     * (in pixels) is placed relative to it per {@code anchor}. {@code auxColor} tints the sprite
-     * (null = white, i.e. use the rasterized glyph colours as-is). Rotation is not yet applied.
+     * (in pixels) is placed relative to it per {@code anchor} and rotated by {@code rotationDeg} about
+     * the anchor (+Z, CCW, degrees). {@code auxColor} tints the sprite (null = white, i.e. use the
+     * rasterized glyph colours as-is).
      */
     static void drawTexture(BgfxDrawingTools dt, Texture texture, AnchorPosition anchor,
                             ElementsBuffer positions, int offset, int stride, double rotationDeg, Color auxColor) {
@@ -188,13 +193,16 @@ final class BgfxShapeDrawer {
         final int es = Math.max(3, positions.getElementsSize());
         final int count = positions.getSize();
         final int step = Math.max(1, stride);
-        try (MemoryStack stack = stackPush()) {
-            for (int i = offset; i < count; i += step) {
-                final int b = i * es;
-                if (b + 2 >= pos.limit()) {
-                    break;
-                }
-                final float w = (es >= 4 && b + 3 < pos.limit()) ? pos.get(b + 3) : 1f;
+        for (int i = offset; i < count; i += step) {
+            final int b = i * es;
+            if (b + 2 >= pos.limit()) {
+                break;
+            }
+            final float w = (es >= 4 && b + 3 < pos.limit()) ? pos.get(b + 3) : 1f;
+            // Push/pop the stack PER sprite: submitSprite makes several stack allocations reclaimed only
+            // at pop, and LWJGL's per-thread MemoryStack is a fixed 64KB — one shared frame across the
+            // hundreds of marks a scatter/plot3d emits would overflow and drop every remaining sprite.
+            try (MemoryStack stack = stackPush()) {
                 submitSprite(stack, canvas, anchor, mvp, pos.get(b), pos.get(b + 1), pos.get(b + 2), w,
                              size, texHandle, auxColor, rotationDeg);
             }
@@ -372,6 +380,7 @@ final class BgfxShapeDrawer {
                                       long baseState) {
         final BGFXVertexLayout layout = canvas.layout();
         if (bgfx_get_avail_transient_vertex_buffer(count, layout) < count) {
+            warnTransientExhausted("vertex count", count);
             return;
         }
         final BGFXTransientVertexBuffer tvb = BGFXTransientVertexBuffer.malloc(stack);
@@ -408,6 +417,7 @@ final class BgfxShapeDrawer {
             return;
         }
         if (bgfx_get_avail_transient_vertex_buffer(count, layout) < count) {
+            warnTransientExhausted("vertex count", count);
             return;
         }
         final BGFXTransientVertexBuffer tvb = BGFXTransientVertexBuffer.malloc(stack);
@@ -445,12 +455,26 @@ final class BgfxShapeDrawer {
             return;
         }
         if (bgfx_get_avail_transient_index_buffer(idx.length, true) < idx.length) {
+            warnTransientExhausted("index count", idx.length);
             return;
         }
         final BGFXTransientIndexBuffer tib = BGFXTransientIndexBuffer.malloc(stack);
         bgfx_alloc_transient_index_buffer(tib, idx.length, true);
         tib.data().asIntBuffer().put(idx);
         bgfx_set_transient_index_buffer(tib, 0, idx.length);
+    }
+
+    // Warn once if a frame's geometry exceeds the bgfx transient buffer budget (shared across every draw
+    // in the frame). The excess is dropped — bgfx has no growable transient pool — so a very large or
+    // very busy figure can lose geometry; surface it once rather than silently render a partial plot.
+    private static volatile boolean transientWarned = false;
+
+    private static void warnTransientExhausted(String what, int needed) {
+        if (!transientWarned) {
+            transientWarned = true;
+            System.err.println("[scirenderer.bgfx] " + what + " (" + needed + ") exceeded the per-frame"
+                + " transient buffer; some geometry was not drawn this frame. (Shown once.)");
+        }
     }
 
     /** A vec4 uniform value: the given color, or opaque white when {@code null}. */
@@ -501,11 +525,16 @@ final class BgfxShapeDrawer {
     }
 
     private static long cullFlag(Geometry.FaceCullingMode mode) {
+        // FaceCullingMode names the faces to REMOVE, by winding. With BGFX_STATE_FRONT_CCW (STATE_COMMON)
+        // CCW triangles are front-facing. The JOGL backend maps CW -> glCullFace(FRONT) and
+        // CCW -> glCullFace(BACK); to match it, CW must cull the front (CCW) triangles and CCW the back
+        // (CW) triangles — so the bgfx cull flag is the OPPOSITE winding of the mode. (Getting this
+        // backwards renders opaque surf/plot3d surfaces inside-out.)
         switch (mode) {
             case CW:
-                return BGFX_STATE_CULL_CW;
-            case CCW:
                 return BGFX_STATE_CULL_CCW;
+            case CCW:
+                return BGFX_STATE_CULL_CW;
             case BOTH:
             default:
                 return 0L;
