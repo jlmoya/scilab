@@ -29,6 +29,8 @@ import com.jlmoya.gpu.NativeSurface;
 import org.scilab.forge.scirenderer.implementation.bgfx.BgfxCanvas;
 import org.scilab.forge.scirenderer.implementation.bgfx.BgfxCanvasFactory;
 import org.scilab.modules.graphic_objects.axes.AxesContainer;
+import org.scilab.modules.graphic_objects.graphicController.GraphicController;
+import org.scilab.modules.graphic_objects.graphicView.GraphicView;
 import org.scilab.modules.gui.canvas.AbstractScilabCanvas;
 import org.scilab.modules.gui.utils.Position;
 import org.scilab.modules.gui.utils.Size;
@@ -57,10 +59,14 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
     private static final int SURFACE_WAIT_TRIES = 500;
     private static final int SURFACE_WAIT_STEP_MS = 10;
 
+    /** Keep-alive cadence: redraw at least this often even without a model change (resize, screenshot). */
+    private static final long RENDER_KEEPALIVE_MS = 100L;
+
     private final AxesContainer figure;
     private final GpuSurfaceComponent surfaceComponent;
     private final BgfxCanvas bgfxCanvas;
     private final DrawerVisitor drawerVisitor;
+    private final RedrawNotifier redrawNotifier;
     private volatile boolean running;
     private volatile Thread renderThread;
 
@@ -79,7 +85,45 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
         this.drawerVisitor = new DrawerVisitor(surfaceComponent, bgfxCanvas, figure);
         bgfxCanvas.setMainDrawer(drawerVisitor);
 
+        // Wake the render thread on every model change. The graphic_objects model is mutated on the
+        // interpreter thread but read by our dedicated render thread with no shared lock; the
+        // DrawerVisitor only signals a redraw for a subset of changes (it ignores __GO_CHILDREN__
+        // updates on non-figure objects, so a surface added to an axes fires nothing). Registering
+        // this notifier makes wakeRedraw() run after each mutation, on the mutating thread — its
+        // redrawLock release then pairs with the render thread's awaitRedraw acquire to publish the
+        // mutation. Without it the render thread can read a stale child list indefinitely.
+        this.redrawNotifier = new RedrawNotifier(bgfxCanvas);
+        GraphicController.getController().register(redrawNotifier);
+
         startRenderThread();
+    }
+
+    /**
+     * Minimal {@link GraphicView} that forwards every model change to {@link BgfxCanvas#wakeRedraw()}.
+     * It carries no state and does no drawing — it exists solely to give the render thread a
+     * happens-before edge to model mutations (see the constructor for why this is necessary).
+     */
+    private static final class RedrawNotifier implements GraphicView {
+        private final BgfxCanvas canvas;
+
+        RedrawNotifier(BgfxCanvas canvas) {
+            this.canvas = canvas;
+        }
+
+        @Override
+        public void updateObject(Integer id, int property) {
+            canvas.wakeRedraw();
+        }
+
+        @Override
+        public void createObject(Integer id) {
+            canvas.wakeRedraw();
+        }
+
+        @Override
+        public void deleteObject(Integer id) {
+            canvas.wakeRedraw();
+        }
     }
 
     private void startRenderThread() {
@@ -97,6 +141,10 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
             running = true;
             try {
                 while (running) {
+                    // Block until the shared DrawerVisitor signals a model change (redraw), or a
+                    // keep-alive tick. This is the happens-before that lets the traversal below see
+                    // the latest graphic_objects model rather than a free-running, possibly stale read.
+                    bgfxCanvas.awaitRedraw(RENDER_KEEPALIVE_MS);
                     NativeSurface cur = surfaceComponent.surface();
                     if (cur != null && cur.handle() != 0L) {
                         bgfxCanvas.setSize(cur.width(), cur.height());
@@ -224,6 +272,8 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
     @Override
     public void close() {
         running = false;
+        GraphicController.getController().unregister(redrawNotifier);
+        bgfxCanvas.wakeRedraw();   // unblock the render thread if it is waiting on a redraw
         Thread t = renderThread;
         if (t != null) {
             try {

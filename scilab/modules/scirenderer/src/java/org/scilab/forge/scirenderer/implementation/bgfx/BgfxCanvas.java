@@ -89,6 +89,15 @@ public final class BgfxCanvas implements Canvas {
     private boolean shotRequested = false;
     private BgfxScreenShot screenShot;
 
+    // Redraw coordination. The render thread blocks in awaitRedraw() until the shared DrawerVisitor
+    // signals a model change via redraw()/redrawAndWait(); acquiring redrawLock there pairs with its
+    // release here to publish the latest graphic_objects model to the render thread. Without this
+    // happens-before a free-running read can keep seeing a stale child list and miss later mutations
+    // (e.g. a surf surface added to the axes children after the first frames). A keep-alive timeout
+    // still drives periodic frames for resize and the screenshot QA path.
+    private final Object redrawLock = new Object();
+    private boolean needsRedraw = true;
+
     BgfxCanvas(int width, int height) {
         this.dimension = new Dimension(Math.max(1, width), Math.max(1, height));
         this.buffersManager = new BgfxBuffersManager();
@@ -165,6 +174,25 @@ public final class BgfxCanvas implements Canvas {
             bgfx_vertex_layout_add(texLayout, BGFX_ATTRIB_TEXCOORD0, 4, BGFX_ATTRIB_TYPE_FLOAT, false, false);
             bgfx_vertex_layout_end(texLayout);
             sTexColor = bgfx_create_uniform("s_texColor", BGFX_UNIFORM_TYPE_SAMPLER, 1);
+        }
+    }
+
+    /**
+     * Block the render thread until a redraw is requested (a DrawerVisitor model change) or the
+     * keep-alive {@code timeoutMs} elapses, then clear the request. Acquiring {@code redrawLock}
+     * here pairs with its release in {@link #redraw()} / {@link #redrawAndWait()} so the model
+     * mutated on the calling thread is visible to this thread's subsequent {@link #renderFrame()}.
+     */
+    public void awaitRedraw(long timeoutMs) {
+        synchronized (redrawLock) {
+            if (!needsRedraw) {
+                try {
+                    redrawLock.wait(timeoutMs);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+            needsRedraw = false;
         }
     }
 
@@ -386,11 +414,24 @@ public final class BgfxCanvas implements Canvas {
 
     @Override
     public void redraw() {
-        // The gui-side render thread redraws continuously; nothing to schedule here.
+        wakeRedraw();
     }
 
     @Override
     public void redrawAndWait() {
+        // The model is mutated by the caller before this returns; signalling here publishes it to
+        // the render thread (lock pairing with awaitRedraw). We deliberately do not block the
+        // caller on frame completion — the model-construction thread issues many of these during
+        // figure build, and blocking each one serializes construction against the render thread.
+        wakeRedraw();
+    }
+
+    /** Request a redraw and unblock the render thread's {@link #awaitRedraw(long)} promptly. */
+    public void wakeRedraw() {
+        synchronized (redrawLock) {
+            needsRedraw = true;
+            redrawLock.notifyAll();
+        }
     }
 
     @Override
