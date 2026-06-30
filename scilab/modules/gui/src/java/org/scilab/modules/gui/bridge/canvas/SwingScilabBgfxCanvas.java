@@ -16,6 +16,8 @@ package org.scilab.modules.gui.bridge.canvas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -106,6 +108,17 @@ public class SwingScilabBgfxCanvas extends AbstractScilabCanvas {
         // mutation. Without it the render thread can read a stale child list indefinitely.
         this.redrawNotifier = new RedrawNotifier(bgfxCanvas);
         GraphicController.getController().register(redrawNotifier);
+
+        // Repaint promptly on resize. The render thread polls the surface size every frame, but only
+        // wakes on a model change or the keep-alive tick; a window drag-resize that doesn't touch the
+        // model would otherwise lag up to RENDER_KEEPALIVE_MS. componentResized fires after the AWT
+        // layout, so by the time we wake the surface already reports the new size.
+        surfaceComponent.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                bgfxCanvas.wakeRedraw();
+            }
+        });
 
         startRenderThread();
     }
