@@ -18,13 +18,17 @@ import org.scilab.forge.scirenderer.implementation.bgfx.texture.BgfxTexture;
 import org.scilab.forge.scirenderer.shapes.appearance.Appearance;
 import org.scilab.forge.scirenderer.shapes.appearance.Color;
 import org.scilab.forge.scirenderer.shapes.geometry.Geometry;
+import org.scilab.forge.scirenderer.texture.AnchorPosition;
+import org.scilab.forge.scirenderer.texture.Texture;
 import org.scilab.forge.scirenderer.tranformations.TransformationManager;
+import org.scilab.forge.scirenderer.tranformations.Vector3d;
 
 import org.lwjgl.bgfx.BGFXTransientIndexBuffer;
 import org.lwjgl.bgfx.BGFXTransientVertexBuffer;
 import org.lwjgl.bgfx.BGFXVertexLayout;
 import org.lwjgl.system.MemoryStack;
 
+import java.awt.Dimension;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -57,6 +61,16 @@ final class BgfxShapeDrawer {
 
     /** Sentinel for bgfx_set_texture telling it to use the texture's own sampler flags. */
     private static final int USE_TEXTURE_SAMPLER = 0xffffffff;
+
+    /**
+     * Screen-aligned sprite state (text labels, marks): alpha-blended, no depth write/test so a
+     * label is never depth-occluded by the back-planes and never occludes later draws. The quad is
+     * already in clip space (perspective divide done on the CPU), so it is submitted with an
+     * identity transform.
+     */
+    private static final long STATE_SPRITE =
+          BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A
+        | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA);
 
     private BgfxShapeDrawer() { }
 
@@ -124,6 +138,141 @@ final class BgfxShapeDrawer {
                 }
             }
         }
+    }
+
+    // ---- Sprites (text labels, marks): screen-aligned textured quads ---------
+
+    /**
+     * Draw a texture as a screen-aligned sprite anchored at each of {@code positions} (scene
+     * coordinates). Each position is projected to clip space, then a quad the size of the texture
+     * (in pixels) is placed relative to it per {@code anchor}. {@code auxColor} tints the sprite
+     * (null = white, i.e. use the rasterized glyph colours as-is). Rotation is not yet applied.
+     */
+    static void drawTexture(BgfxDrawingTools dt, Texture texture, AnchorPosition anchor,
+                            ElementsBuffer positions, int offset, int stride, Color auxColor) {
+        if (positions == null) {
+            return;
+        }
+        final float[] mvp = spriteSetup(dt, texture);
+        if (mvp == null) {
+            return;
+        }
+        final BgfxCanvas canvas = dt.getCanvas();
+        final BgfxTexture tex = (BgfxTexture) texture;
+        final short texHandle = tex.ensureUploaded();
+        final Dimension size = texture.getDataProvider().getTextureSize();
+        final FloatBuffer pos = positions.getData();
+        if (texHandle == BgfxTexture.INVALID || size == null || pos == null) {
+            return;
+        }
+        final int es = Math.max(3, positions.getElementsSize());
+        final int count = positions.getSize();
+        final int step = Math.max(1, stride);
+        try (MemoryStack stack = stackPush()) {
+            for (int i = offset; i < count; i += step) {
+                final int b = i * es;
+                if (b + 2 >= pos.limit()) {
+                    break;
+                }
+                final float w = (es >= 4 && b + 3 < pos.limit()) ? pos.get(b + 3) : 1f;
+                submitSprite(stack, canvas, anchor, mvp, pos.get(b), pos.get(b + 1), pos.get(b + 2), w,
+                             size, texHandle, auxColor);
+            }
+        }
+    }
+
+    /** Single-position sprite (the Vector3d draw overloads). */
+    static void drawTexture(BgfxDrawingTools dt, Texture texture, AnchorPosition anchor, Vector3d position) {
+        final float[] mvp = spriteSetup(dt, texture);
+        if (mvp == null || position == null) {
+            return;
+        }
+        final BgfxCanvas canvas = dt.getCanvas();
+        final BgfxTexture tex = (BgfxTexture) texture;
+        final short texHandle = tex.ensureUploaded();
+        final Dimension size = texture.getDataProvider().getTextureSize();
+        if (texHandle == BgfxTexture.INVALID || size == null) {
+            return;
+        }
+        try (MemoryStack stack = stackPush()) {
+            submitSprite(stack, canvas, anchor, mvp, (float) position.getX(), (float) position.getY(),
+                         (float) position.getZ(), 1f, size, texHandle, null);
+        }
+    }
+
+    /** Common guard + scene-to-clip matrix for the sprite draws, or null if sprites can't be drawn. */
+    private static float[] spriteSetup(BgfxDrawingTools dt, Texture texture) {
+        final BgfxCanvas canvas = dt.getCanvas();
+        if (!(texture instanceof BgfxTexture)
+                || canvas.texProgram() == BgfxCanvas.INVALID_HANDLE
+                || canvas.texLayout() == null
+                || texture.getDataProvider() == null) {
+            return null;
+        }
+        final TransformationManager tm = dt.getTransformationManager();
+        final double[] sceneToClip = tm.isUsingSceneCoordinate()
+                                     ? tm.getTransformation().getMatrix()
+                                     : tm.getWindowTransformation().getMatrix();
+        return BgfxMat.toClip(sceneToClip, canvas.homogeneousDepth());
+    }
+
+    private static void submitSprite(MemoryStack stack, BgfxCanvas canvas, AnchorPosition anchor,
+                                     float[] mvp, float px, float py, float pz, float pw,
+                                     Dimension size, short texHandle, Color color) {
+        // Project the anchor point to clip, then NDC (drop sprites behind the camera).
+        final float cw = mvp[3] * px + mvp[7] * py + mvp[11] * pz + mvp[15] * pw;
+        if (cw <= 0f) {
+            return;
+        }
+        final float nx = (mvp[0] * px + mvp[4] * py + mvp[8] * pz + mvp[12] * pw) / cw;
+        final float ny = (mvp[1] * px + mvp[5] * py + mvp[9] * pz + mvp[13] * pw) / cw;
+        final float nz = (mvp[2] * px + mvp[6] * py + mvp[10] * pz + mvp[14] * pw) / cw;
+
+        // Texture size in NDC units (y up).
+        final float wn = 2f * size.width / Math.max(1, canvas.getWidth());
+        final float hn = 2f * size.height / Math.max(1, canvas.getHeight());
+
+        // Bottom-left corner of the quad in NDC, from the anchor position.
+        float bx = nx;
+        float by = ny;
+        switch (anchor) {
+            case UPPER_LEFT:  by = ny - hn; break;
+            case UPPER_RIGHT: bx = nx - wn; by = ny - hn; break;
+            case LOWER_RIGHT: bx = nx - wn; break;
+            case CENTER:      bx = nx - wn / 2f; by = ny - hn / 2f; break;
+            case LEFT:        by = ny - hn / 2f; break;
+            case RIGHT:       bx = nx - wn; by = ny - hn / 2f; break;
+            case UP:          bx = nx - wn / 2f; by = ny - hn; break;
+            case DOWN:        bx = nx - wn / 2f; break;
+            case LOWER_LEFT:
+            default:          break;
+        }
+
+        final BGFXVertexLayout layout = canvas.texLayout();
+        if (bgfx_get_avail_transient_vertex_buffer(4, layout) < 4) {
+            return;
+        }
+        final BGFXTransientVertexBuffer tvb = BGFXTransientVertexBuffer.malloc(stack);
+        bgfx_alloc_transient_vertex_buffer(tvb, 4, layout);
+        final ByteBuffer vb = tvb.data();
+        // BL, BR, TR, TL — texcoord v=0 is the top of the rasterized glyph (Java2D origin).
+        putSpriteVertex(vb, bx,      by,      nz, 0f, 1f);
+        putSpriteVertex(vb, bx + wn, by,      nz, 1f, 1f);
+        putSpriteVertex(vb, bx + wn, by + hn, nz, 1f, 0f);
+        putSpriteVertex(vb, bx,      by + hn, nz, 0f, 0f);
+
+        setTransform(stack, BgfxMat.identity());
+        bgfx_set_transient_vertex_buffer(0, tvb, 0, 4);
+        bindIndices(stack, new int[] {0, 1, 2, 0, 2, 3});
+        bgfx_set_texture(0, canvas.uniformTexColor(), texHandle, USE_TEXTURE_SAMPLER);
+        bgfx_set_uniform(canvas.uniformColor(), colorVec(stack, color), 1);
+        bgfx_set_state(STATE_SPRITE, 0);
+        bgfx_submit(canvas.viewId(), canvas.texProgram(), 0, BGFX_DISCARD_ALL);
+    }
+
+    private static void putSpriteVertex(ByteBuffer vb, float x, float y, float z, float u, float v) {
+        vb.putFloat(x).putFloat(y).putFloat(z).putFloat(1f);
+        vb.putFloat(u).putFloat(v).putFloat(0f).putFloat(1f);
     }
 
     private static void submitColored(MemoryStack stack, BgfxCanvas canvas, FloatBuffer verts,
