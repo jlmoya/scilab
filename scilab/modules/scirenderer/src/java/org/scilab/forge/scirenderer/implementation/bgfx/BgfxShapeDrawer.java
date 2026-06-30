@@ -221,6 +221,61 @@ final class BgfxShapeDrawer {
         }
     }
 
+    /**
+     * Draw a texture as a quad {@code (0,0)-(w,h)} in model space — the Matplot image path
+     * ({@code drawingTools.draw(Texture)}). Unlike a sprite this is NOT screen-aligned: it is placed
+     * by the current scene-to-clip transform (the Matplot scale/translate pushed on the modelView
+     * stack maps the unit-pixel quad to data coordinates). w,h are the texture's pixel dimensions and
+     * the texcoords cover the whole texture ({@link BgfxTexture} has already transposed any
+     * column-major source to row-major, so a single straight mapping suffices; v=0 is the first row).
+     */
+    static void drawImage(BgfxDrawingTools dt, Texture texture) {
+        final BgfxCanvas canvas = dt.getCanvas();
+        if (!(texture instanceof BgfxTexture)
+                || canvas.texProgram() == BgfxCanvas.INVALID_HANDLE
+                || canvas.texLayout() == null
+                || texture.getDataProvider() == null) {
+            return;
+        }
+        final BgfxTexture tex = (BgfxTexture) texture;
+        final short texHandle = tex.ensureUploaded();
+        final Dimension size = texture.getDataProvider().getTextureSize();
+        if (texHandle == BgfxTexture.INVALID || size == null || size.width <= 0 || size.height <= 0) {
+            return;
+        }
+        final TransformationManager tm = dt.getTransformationManager();
+        final double[] sceneToClip = tm.isUsingSceneCoordinate()
+                                     ? tm.getTransformation().getMatrix()
+                                     : tm.getWindowTransformation().getMatrix();
+        final float[] mvp = BgfxMat.toClip(sceneToClip, canvas.homogeneousDepth());
+
+        final float w = size.width;
+        final float h = size.height;
+
+        try (MemoryStack stack = stackPush()) {
+            final BGFXVertexLayout layout = canvas.texLayout();
+            if (bgfx_get_avail_transient_vertex_buffer(4, layout) < 4) {
+                return;
+            }
+            final BGFXTransientVertexBuffer tvb = BGFXTransientVertexBuffer.malloc(stack);
+            bgfx_alloc_transient_vertex_buffer(tvb, 4, layout);
+            final ByteBuffer vb = tvb.data();
+            // Quad corners (0,0),(w,0),(w,h),(0,h); v=0 (texture top, first row) at the +y edge.
+            putSpriteVertex(vb, 0f, 0f, 0f, 0f, 1f);
+            putSpriteVertex(vb, w,  0f, 0f, 1f, 1f);
+            putSpriteVertex(vb, w,  h,  0f, 1f, 0f);
+            putSpriteVertex(vb, 0f, h,  0f, 0f, 0f);
+
+            setTransform(stack, mvp);
+            bgfx_set_transient_vertex_buffer(0, tvb, 0, 4);
+            bindIndices(stack, new int[] {0, 1, 2, 0, 2, 3});
+            bgfx_set_texture(0, canvas.uniformTexColor(), texHandle, USE_TEXTURE_SAMPLER);
+            bgfx_set_uniform(canvas.uniformColor(), colorVec(stack, null), 1);   // white = texture as-is
+            bgfx_set_state(STATE_SCENE, 0);
+            bgfx_submit(canvas.viewId(), canvas.texProgram(), 0, BGFX_DISCARD_ALL);
+        }
+    }
+
     /** Common guard + scene-to-clip matrix for the sprite draws, or null if sprites can't be drawn. */
     private static float[] spriteSetup(BgfxDrawingTools dt, Texture texture) {
         final BgfxCanvas canvas = dt.getCanvas();

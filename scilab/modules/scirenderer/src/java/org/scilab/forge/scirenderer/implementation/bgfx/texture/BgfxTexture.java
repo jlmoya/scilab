@@ -61,9 +61,26 @@ public class BgfxTexture extends AbstractTexture {
         final int h = size.height;
 
         data.rewind();
-        final ByteBuffer buf = MemoryUtil.memAlloc(data.remaining());
-        buf.put(data);
-        buf.flip();
+        final ByteBuffer buf = MemoryUtil.memAlloc(w * h * 4);
+        if (provider.isRowMajorOrder()) {
+            buf.put(data);
+            buf.flip();
+        } else {
+            // Column-major source (a Scilab matrix, e.g. Matplot): src(r,c) is at c*h + r. Transpose
+            // into a row-major w*h texture so the rest of the pipeline treats it like any other image.
+            for (int r = 0; r < h; r++) {
+                for (int c = 0; c < w; c++) {
+                    final int s = (c * h + r) * 4;
+                    final int d = (r * w + c) * 4;
+                    buf.put(d,     data.get(s));
+                    buf.put(d + 1, data.get(s + 1));
+                    buf.put(d + 2, data.get(s + 2));
+                    buf.put(d + 3, data.get(s + 3));
+                }
+            }
+            buf.position(w * h * 4);
+            buf.flip();
+        }
 
         if (handle != INVALID) {
             bgfx_destroy_texture(handle);

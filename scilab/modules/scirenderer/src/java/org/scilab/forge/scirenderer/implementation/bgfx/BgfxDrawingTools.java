@@ -118,10 +118,11 @@ public class BgfxDrawingTools implements DrawingTools {
     // ---- Texture draws: screen-aligned sprites (text labels, marks) ----------
     // Each overload funnels to BgfxShapeDrawer.drawTexture (mirrors the JoGL TextureManager.draw
     // funnel). rotationAngle is in degrees (+Z CCW), as the text/label managers pass it. draw(Texture)
-    // alone (full-frame image plots) is not handled yet.
+    // alone is the Matplot image path (a model-space quad, not a sprite).
 
     @Override
     public void draw(Texture texture) throws SciRendererException {
+        BgfxShapeDrawer.drawImage(this, texture);
     }
 
     @Override
