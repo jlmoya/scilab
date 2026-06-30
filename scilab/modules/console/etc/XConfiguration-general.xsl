@@ -374,5 +374,23 @@
             </Grid>
         </Title>
     </xsl:template>
+    <xsl:template match="rendering" mode="tooltip">Experimental figure renderer</xsl:template>
+    <xsl:template match="rendering">
+        <Title text="_(3D renderer (experimental, macOS only))">
+            <Grid>
+                <Checkbox
+                      gridx="1"
+                      gridy="1"
+                      listener="ActionListener"
+                      checked="{@renderer-bgfx}"
+                      text="_(Render figures with the bgfx/Metal backend (applies to newly-created figures))"
+                      >
+                    <actionPerformed choose="renderer-bgfx">
+                        <xsl:call-template name="context"/>
+                    </actionPerformed>
+                </Checkbox>
+            </Grid>
+        </Title>
+    </xsl:template>
 
 </xsl:stylesheet>
