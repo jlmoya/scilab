@@ -56,9 +56,9 @@ final class BgfxMat {
     }
 
     /**
-     * Remap a GL-clip-space matrix (z in [-1, 1]) to Metal/D3D clip space (z in [0, 1]) by
-     * premultiplying with z' = (z + w) / 2. Returns the matrix unchanged when the renderer already
-     * uses homogeneous (GL) depth.
+     * Remap a GL-clip-space matrix (z in [-1, 1], near = -1) to Metal/D3D clip space (z in [0, 1])
+     * by premultiplying with z' = 0.5 z + 0.5 w. Monotonic, so it preserves the depth ordering the
+     * JOGL backend gets from GL. Returns the matrix unchanged on renderers with homogeneous (GL) depth.
      */
     static float[] toClip(double[] sceneToGlClip, boolean homogeneousDepth) {
         float[] m = toFloat(sceneToGlClip);

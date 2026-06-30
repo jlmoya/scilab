@@ -48,15 +48,32 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  */
 final class BgfxShapeDrawer {
 
-    private static final long STATE_BASE =
+    private static final long STATE_COMMON =
           BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A | BGFX_STATE_WRITE_Z
-        // First slice draws lines/wireframes/curves; Scilab submits roughly back-to-front, so
-        // paint order (DEPTH_TEST_ALWAYS) is visually correct here and avoids the bg-colored axes
-        // back-planes depth-occluding interior curves. When opaque surfaces (textured) land, this
-        // becomes DEPTH_TEST_LESS once the depth-sign / winding conventions are pinned against a
-        // real surface to look at.
-        | BGFX_STATE_DEPTH_TEST_ALWAYS
         | BGFX_STATE_FRONT_CCW
+        | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA);
+
+    /**
+     * The 3D scene (data surfaces, curves, box edges, ticks, surface wireframe): real z-buffer. The
+     * scene-to-clip matrix carries the projection (GL z in [-1, 1], remapped to Metal [0, 1] in
+     * {@link BgfxMat#toClip}), so nearer fragments get smaller z. {@code LEQUAL} (not LESS) matches
+     * the JOGL backend so a wire overlay drawn right after its fill — or a grid line on a back-plane —
+     * sits on top instead of z-fighting.
+     */
+    private static final long STATE_SCENE = STATE_COMMON | BGFX_STATE_DEPTH_TEST_LEQUAL;
+
+    /**
+     * Flat-colored fills with neither texture nor per-vertex colors — in practice the axes background
+     * cube ({@code drawBackground}). It is a full 6-face cube, so depth-writing it would let its near
+     * faces occlude the data (the surface disappears). We paint it as a pure backdrop: write color
+     * only, no depth write, always pass. Drawn first, the data and lines then draw over it with real
+     * depth, and only the far ("back-wall") faces remain visible where there is no data — matching the
+     * usual Scilab look.
+     */
+    private static final long STATE_BACKDROP =
+          BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A
+        | BGFX_STATE_FRONT_CCW
+        | BGFX_STATE_DEPTH_TEST_ALWAYS
         | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA);
 
     /** Sentinel for bgfx_set_texture telling it to use the texture's own sampler flags. */
@@ -119,10 +136,13 @@ final class BgfxShapeDrawer {
                                     ? BGFX_STATE_PT_TRISTRIP : 0L;
                     final long cull = cullFlag(geom.getFaceCullingMode());
                     if (textured) {
-                        submitTextured(stack, canvas, verts, texcoords, count, idx, pt, texHandle, mvp, cull);
+                        submitTextured(stack, canvas, verts, texcoords, count, idx, pt, texHandle, mvp, cull, STATE_SCENE);
                     } else {
+                        // A flat fill with no per-vertex colors is the axes background cube: paint it
+                        // as a backdrop (no depth write) so its near faces can't occlude the data.
+                        final long fillState = (colors != null) ? STATE_SCENE : STATE_BACKDROP;
                         submitColored(stack, canvas, verts, colors, count, idx, pt,
-                                      colors != null, app.getFillColor(), mvp, cull);
+                                      colors != null, app.getFillColor(), mvp, cull, fillState);
                     }
                 }
             }
@@ -134,7 +154,7 @@ final class BgfxShapeDrawer {
                 if (lineColor != null || colors != null) {
                     final int[] idx = lineIndices(geom, count);
                     submitColored(stack, canvas, verts, colors, count, idx,
-                                  linePt(geom.getLineDrawingMode()), useVtx, lineColor, mvp, 0L);
+                                  linePt(geom.getLineDrawingMode()), useVtx, lineColor, mvp, 0L, STATE_SCENE);
                 }
             }
         }
@@ -277,7 +297,8 @@ final class BgfxShapeDrawer {
 
     private static void submitColored(MemoryStack stack, BgfxCanvas canvas, FloatBuffer verts,
                                       FloatBuffer colors, int count, int[] idx, long primType,
-                                      boolean useVertexColor, Color flatColor, float[] mvp, long cull) {
+                                      boolean useVertexColor, Color flatColor, float[] mvp, long cull,
+                                      long baseState) {
         final BGFXVertexLayout layout = canvas.layout();
         if (bgfx_get_avail_transient_vertex_buffer(count, layout) < count) {
             return;
@@ -304,13 +325,13 @@ final class BgfxShapeDrawer {
         bgfx_set_uniform(canvas.uniformParams(), params, 1);
         bgfx_set_uniform(canvas.uniformColor(), colorVec(stack, flatColor), 1);
 
-        bgfx_set_state(STATE_BASE | primType | cull, 0);
+        bgfx_set_state(baseState | primType | cull, 0);
         bgfx_submit(canvas.viewId(), canvas.program(), 0, BGFX_DISCARD_ALL);
     }
 
     private static void submitTextured(MemoryStack stack, BgfxCanvas canvas, FloatBuffer verts,
                                        FloatBuffer texcoords, int count, int[] idx, long primType,
-                                       short texHandle, float[] mvp, long cull) {
+                                       short texHandle, float[] mvp, long cull, long baseState) {
         final BGFXVertexLayout layout = canvas.texLayout();
         if (layout == null) {
             return;
@@ -338,7 +359,7 @@ final class BgfxShapeDrawer {
         bgfx_set_texture(0, canvas.uniformTexColor(), texHandle, USE_TEXTURE_SAMPLER);
         bgfx_set_uniform(canvas.uniformColor(), colorVec(stack, null), 1);   // white = colormap REPLACE
 
-        bgfx_set_state(STATE_BASE | primType | cull, 0);
+        bgfx_set_state(baseState | primType | cull, 0);
         bgfx_submit(canvas.viewId(), canvas.texProgram(), 0, BGFX_DISCARD_ALL);
     }
 
