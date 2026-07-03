@@ -128,7 +128,10 @@ public class VulkanMotor {
         }
         final FloatBuffer vb = vertices.getData();
         final int vStride = vertices.getElementsSize();
-        final int vertexCount = vb.capacity() / vStride;
+        // sizes come from limit(), not capacity(): scirenderer hands out DIRECT buffers whose
+        // valid data is [0, limit) — e.g. a polyline's (unfilled) fill-index buffer has
+        // limit 0 with a larger capacity; reading by capacity() runs off the data
+        final int vertexCount = vb.limit() / vStride;
 
         final ElementsBuffer colorBuffer = geometry.getColors();
         final FloatBuffer cb = (colorBuffer != null) ? colorBuffer.getData() : null;
@@ -165,19 +168,24 @@ public class VulkanMotor {
             }
         }
 
-        // lines: explicit wire edges, or the geometry itself is a polyline
-        final float[] lineColor = rgba(appearance == null ? null : appearance.getLineColor());
-        final IndicesBuffer wire = geometry.getWireIndices();
-        if (wire != null && wire.getData() != null) {
-            emitSegments(wire.getData(), vb, vStride, cb, cStride, lineColor);
-        } else if (geometry.getLineDrawingMode() != Geometry.LineDrawingMode.NONE) {
-            emitPolyline(vertexCount, geometry.getLineDrawingMode(), vb, vStride, cb, cStride, lineColor);
+        // lines — honouring getLineDrawingMode() exactly (JOGL semantics): wire indices can encode
+        // segment PAIRS (mesh edges) or a STRIP/LOOP (polylines) — pairing a strip drops every
+        // other joint and renders a solid curve as dashes
+        final Geometry.LineDrawingMode lineMode = geometry.getLineDrawingMode();
+        if (lineMode != Geometry.LineDrawingMode.NONE) {
+            final float[] lineColor = rgba(appearance == null ? null : appearance.getLineColor());
+            final IndicesBuffer wire = geometry.getWireIndices();
+            if (wire != null && wire.getData() != null) {
+                emitIndexedLines(wire.getData(), lineMode, vb, vStride, cb, cStride, lineColor);
+            } else {
+                emitPolyline(vertexCount, lineMode, vb, vStride, cb, cStride, lineColor);
+            }
         }
     }
 
     private void emitTriangles(FloatArena target, IntBuffer ib, Geometry.FillDrawingMode mode, FloatBuffer vb, int vs,
                                FloatBuffer cb, int cs, float[] fill) {
-        final int n = ib.capacity();
+        final int n = ib.limit();
         switch (mode) {
             case TRIANGLE_STRIP:
                 for (int i = 2; i < n; i++) {
@@ -293,7 +301,7 @@ public class VulkanMotor {
         }
         final FloatBuffer pb = positions.getData();
         final int ps = positions.getElementsSize();
-        final int count = pb.capacity() / ps;
+        final int count = pb.limit() / ps;
         final int step = Math.max(1, stride);
         for (int i = Math.max(0, offset); i < count; i += step) {
             emitSprite(drawingTools, texture, handle, anchor,
@@ -530,6 +538,9 @@ public class VulkanMotor {
             final int w = strip.getWidth();
             final FloatBuffer tc = texCoords.getData();
             final int ts = texCoords.getElementsSize();
+            if (tc.limit() < vertexCount * ts) {
+                return null;
+            }
             final float[] out = new float[vertexCount * 4];
             for (int i = 0; i < vertexCount; i++) {
                 float u = tc.get(i * ts);
@@ -562,10 +573,26 @@ public class VulkanMotor {
         }
     }
 
-    private void emitSegments(IntBuffer ib, FloatBuffer vb, int vs, FloatBuffer cb, int cs, float[] lineColor) {
-        final int n = ib.capacity();
-        for (int i = 0; i + 1 < n; i += 2) {
-            seg(ib.get(i), ib.get(i + 1), vb, vs, cb, cs, lineColor);
+    private void emitIndexedLines(IntBuffer ib, Geometry.LineDrawingMode mode, FloatBuffer vb, int vs,
+                                  FloatBuffer cb, int cs, float[] lineColor) {
+        final int n = ib.limit();
+        switch (mode) {
+            case SEGMENTS:
+                for (int i = 0; i + 1 < n; i += 2) {
+                    seg(ib.get(i), ib.get(i + 1), vb, vs, cb, cs, lineColor);
+                }
+                break;
+            case SEGMENTS_LOOP:
+                for (int i = 0; i < n; i++) {
+                    seg(ib.get(i), ib.get((i + 1) % n), vb, vs, cb, cs, lineColor);
+                }
+                break;
+            case SEGMENTS_STRIP:
+            default:
+                for (int i = 0; i + 1 < n; i++) {
+                    seg(ib.get(i), ib.get(i + 1), vb, vs, cb, cs, lineColor);
+                }
+                break;
         }
     }
 
@@ -612,7 +639,7 @@ public class VulkanMotor {
             clip[r] = (float) (m[r] * x + m[4 + r] * y + m[8 + r] * z + m[12 + r] * w);
         }
         float cr = flat[0], cg = flat[1], cbb = flat[2], ca = flat[3];
-        if (cb != null && (i + 1) * cs <= cb.capacity()) {
+        if (cb != null && (i + 1) * cs <= cb.limit()) {
             cr = cb.get(i * cs);
             cg = cs > 1 ? cb.get(i * cs + 1) : cr;
             cbb = cs > 2 ? cb.get(i * cs + 2) : cr;

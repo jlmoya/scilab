@@ -31,6 +31,7 @@ import org.scilab.forge.scirenderer.implementation.vulkan.VulkanCanvas;
 import org.scilab.forge.scirenderer.implementation.vulkan.VulkanCanvasFactory;
 import org.scilab.forge.scirenderer.implementation.vulkan.VulkanSceneRenderer;
 import org.scilab.modules.graphic_objects.axes.AxesContainer;
+import org.scilab.modules.graphic_objects.figure.Figure;
 import org.scilab.modules.graphic_objects.graphicController.GraphicController;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.graphic_objects.graphicView.GraphicView;
@@ -174,7 +175,7 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
             });
             System.out.println("[scilab.vulkan] canvas ready: " + surface.width() + "x" + surface.height());
 
-            final String shot = System.getProperty("scilab.renderer.vulkan.shot");
+            final String shot = perFigurePath(System.getProperty("scilab.renderer.vulkan.shot"));
             while (!stopRequested) {
                 awaitRedraw(KEEP_ALIVE_MS);
                 if (stopRequested) {
@@ -211,6 +212,19 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 scene.dispose();
             }
         }
+    }
+
+    /**
+     * Make the capture path unique per figure ("/tmp/x.png" -> "/tmp/x-0.png") so multi-figure
+     * runs don't overwrite each other's shots.
+     */
+    private String perFigurePath(String path) {
+        if (path == null) {
+            return null;
+        }
+        int fid = (figure instanceof Figure) ? ((Figure) figure).getId() : figure.getIdentifier();
+        int dot = path.lastIndexOf('.');
+        return (dot > 0) ? path.substring(0, dot) + "-" + fid + path.substring(dot) : path + "-" + fid;
     }
 
     private NativeSurface waitForSurface() throws InterruptedException {
