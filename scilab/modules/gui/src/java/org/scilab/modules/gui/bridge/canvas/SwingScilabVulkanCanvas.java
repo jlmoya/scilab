@@ -397,6 +397,32 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
     }
 
     // ---- event-handler plumbing (mirrors the JOGL canvas) ----
+    //
+    // Event-handler listeners (picking, figure editor, datatip create) consume ABSOLUTE
+    // coordinates that are compared against the renderer's projection — which runs at the
+    // PHYSICAL framebuffer size (2x on Retina), while AWT events are LOGICAL points. Wrap these
+    // listeners to scale coordinates by the canvas/component ratio (1.0 = pass-through).
+    // Rotate/zoom listeners attach directly to the component and use deltas, so they stay in
+    // logical space (a uniform scale would make rotation twitchy on Retina).
+
+    private final java.util.Map<MouseListener, MouseListener> wrappedMouse =
+        new java.util.HashMap<MouseListener, MouseListener>();
+    private final java.util.Map<MouseMotionListener, MouseMotionListener> wrappedMotion =
+        new java.util.HashMap<MouseMotionListener, MouseMotionListener>();
+
+    private java.awt.event.MouseEvent scaled(java.awt.event.MouseEvent e) {
+        int cw = rendererCanvas.getWidth();
+        int ch = rendererCanvas.getHeight();
+        int lw = surfaceComponent.getWidth();
+        int lh = surfaceComponent.getHeight();
+        if (lw <= 0 || lh <= 0 || (cw == lw && ch == lh)) {
+            return e;
+        }
+        int sx = (int) Math.round(e.getX() * (cw / (double) lw));
+        int sy = (int) Math.round(e.getY() * (ch / (double) lh));
+        return new java.awt.event.MouseEvent((java.awt.Component) e.getSource(), e.getID(), e.getWhen(),
+                e.getModifiersEx(), sx, sy, e.getClickCount(), e.isPopupTrigger(), e.getButton());
+    }
 
     @Override
     public void addEventHandlerKeyListener(KeyListener listener) {
@@ -409,23 +435,64 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
     }
 
     @Override
-    public void addEventHandlerMouseListener(MouseListener listener) {
-        surfaceComponent.addMouseListener(listener);
+    public void addEventHandlerMouseListener(final MouseListener listener) {
+        MouseListener wrapper = new MouseListener() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                listener.mouseClicked(scaled(e));
+            }
+
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent e) {
+                listener.mousePressed(scaled(e));
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent e) {
+                listener.mouseReleased(scaled(e));
+            }
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                listener.mouseEntered(scaled(e));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                listener.mouseExited(scaled(e));
+            }
+        };
+        wrappedMouse.put(listener, wrapper);
+        surfaceComponent.addMouseListener(wrapper);
     }
 
     @Override
     public void removeEventHandlerMouseListener(MouseListener listener) {
-        surfaceComponent.removeMouseListener(listener);
+        MouseListener wrapper = wrappedMouse.remove(listener);
+        surfaceComponent.removeMouseListener(wrapper != null ? wrapper : listener);
     }
 
     @Override
-    public void addEventHandlerMouseMotionListener(MouseMotionListener listener) {
-        surfaceComponent.addMouseMotionListener(listener);
+    public void addEventHandlerMouseMotionListener(final MouseMotionListener listener) {
+        MouseMotionListener wrapper = new MouseMotionListener() {
+            @Override
+            public void mouseDragged(java.awt.event.MouseEvent e) {
+                listener.mouseDragged(scaled(e));
+            }
+
+            @Override
+            public void mouseMoved(java.awt.event.MouseEvent e) {
+                listener.mouseMoved(scaled(e));
+            }
+        };
+        wrappedMotion.put(listener, wrapper);
+        surfaceComponent.addMouseMotionListener(wrapper);
     }
 
     @Override
     public void removeEventHandlerMouseMotionListener(MouseMotionListener listener) {
-        surfaceComponent.removeMouseMotionListener(listener);
+        MouseMotionListener wrapper = wrappedMotion.remove(listener);
+        surfaceComponent.removeMouseMotionListener(wrapper != null ? wrapper : listener);
     }
 
     @Override

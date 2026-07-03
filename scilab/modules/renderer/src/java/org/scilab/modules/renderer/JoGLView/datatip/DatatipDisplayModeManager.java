@@ -28,6 +28,8 @@ import org.scilab.modules.graphic_objects.datatip.Datatip;
 import org.scilab.modules.renderer.JoGLView.axes.AxesDrawer;
 
 import java.awt.Component;
+
+import org.scilab.forge.scirenderer.Canvas;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.AWTEvent;
@@ -54,23 +56,47 @@ public class DatatipDisplayModeManager {
 
     private Map<Integer, Position> datatips = new HashMap<Integer, Position>();
 
-    public DatatipDisplayModeManager(Component component) {
+    private final Canvas canvas;
+    private final Component component;
+
+    public DatatipDisplayModeManager(Canvas canvas, Component component) {
+        this.canvas = canvas;
+        this.component = component;
 
         if (component != null) {
             component.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent event) {
-                    onMouseClick(event.getX(), event.getY());
+                    onMouseClick(scaleX(event.getX()), scaleY(event.getY()));
                 }
             });
 
             component.addMouseMotionListener(new MouseAdapter() {
                 @Override
                 public void mouseMoved(MouseEvent event) {
-                    onMouseMove(event.getX(), event.getY());
+                    onMouseMove(scaleX(event.getX()), scaleY(event.getY()));
                 }
             });
         }
+    }
+
+    /**
+     * AWT events are in LOGICAL component points, while datatip positions come from the
+     * renderer's projection in PHYSICAL canvas pixels (HiDPI: 2x on Retina) — scale by the
+     * canvas/component ratio (1.0 when they match, so non-HiDPI backends are unaffected).
+     */
+    private int scaleX(int x) {
+        if (canvas == null || component == null || component.getWidth() <= 0) {
+            return x;
+        }
+        return (int) Math.round(x * (canvas.getWidth() / (double) component.getWidth()));
+    }
+
+    private int scaleY(int y) {
+        if (canvas == null || component == null || component.getHeight() <= 0) {
+            return y;
+        }
+        return (int) Math.round(y * (canvas.getHeight() / (double) component.getHeight()));
     }
 
     public void add(Integer uid) {
