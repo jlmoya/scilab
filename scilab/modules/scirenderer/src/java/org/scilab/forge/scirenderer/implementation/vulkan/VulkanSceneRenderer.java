@@ -31,17 +31,20 @@ public interface VulkanSceneRenderer {
     /** Begin a frame: clear to the given colour and start recording. */
     void beginFrame(float r, float g, float b, float a);
 
-    /**
-     * Append backdrop triangles — flat scenery (like the axes background box) drawn FIRST with no
-     * depth test/write, so it can never occlude real data.
-     */
-    void backdrop(float[] clipPosColor, int floatCount);
-
     /** Append filled triangles (3N vertices, {@code floatCount} = 8 * vertexCount). */
     void triangles(float[] clipPosColor, int floatCount);
 
     /** Append line segments (2N vertices, {@code floatCount} = 8 * vertexCount). */
     void lines(float[] clipPosColor, int floatCount);
+
+    /**
+     * Depth epochs: the boundaries at each {@code clearDepthBuffer()} call, matching JOGL, which
+     * draws the axes box then clears depth so data draws over it. {@code splits} holds 3 ints per
+     * clear point — {triVertex, lineVertex, imageIndex} counts at that boundary — so the renderer
+     * replays each epoch depth-tested and clears the depth buffer (preserving colour) between them.
+     * Empty = one epoch (no clears). Must be set before {@link #endFrame}.
+     */
+    void depthEpochs(int[] splits);
 
     /**
      * Upload an RGBA8 image (glyph sprite, mark, colormap strip, image plot) and return a handle
@@ -84,15 +87,15 @@ public interface VulkanSceneRenderer {
         }
 
         @Override
-        public void backdrop(float[] clipPosColor, int floatCount) {
-        }
-
-        @Override
         public void triangles(float[] clipPosColor, int floatCount) {
         }
 
         @Override
         public void lines(float[] clipPosColor, int floatCount) {
+        }
+
+        @Override
+        public void depthEpochs(int[] splits) {
         }
 
         @Override

@@ -132,11 +132,6 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 }
 
                 @Override
-                public void backdrop(float[] clipPosColor, int floatCount) {
-                    s.backdrop(clipPosColor, floatCount);
-                }
-
-                @Override
                 public void triangles(float[] clipPosColor, int floatCount) {
                     s.triangles(clipPosColor, floatCount);
                 }
@@ -144,6 +139,11 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 @Override
                 public void lines(float[] clipPosColor, int floatCount) {
                     s.lines(clipPosColor, floatCount);
+                }
+
+                @Override
+                public void depthEpochs(int[] splits) {
+                    s.depthEpochs(splits);
                 }
 
                 @Override

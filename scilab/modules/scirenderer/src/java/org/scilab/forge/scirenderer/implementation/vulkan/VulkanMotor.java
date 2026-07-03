@@ -53,9 +53,13 @@ public class VulkanMotor {
     private final VulkanCanvas canvas;
     private VulkanSceneRenderer renderer = VulkanSceneRenderer.NOOP;
 
-    private final FloatArena backdrop = new FloatArena();
     private final FloatArena triangles = new FloatArena();
     private final FloatArena lines = new FloatArena();
+
+    // depth epochs: each clearDepthBuffer() (JOGL clears depth after the axes box so data draws over
+    // it) records the {tri-vertex, line-vertex, image} counts at that point; the renderer replays
+    // each epoch depth-tested and clears depth between them. See VulkanSceneRenderer#depthEpochs.
+    private final List<int[]> epochSplits = new ArrayList<int[]>();
 
     // sprites staged during the traversal, forwarded inside beginFrame/endFrame at flush
     private final List<long[]> spriteRefs = new ArrayList<long[]>();      // {textureHandle}
@@ -91,9 +95,9 @@ public class VulkanMotor {
             clearB = color.getBlueAsFloat();
             clearA = color.getAlphaAsFloat();
         }
-        backdrop.reset();
         triangles.reset();
         lines.reset();
+        epochSplits.clear();
         spriteRefs.clear();
         spriteQuads.clear();
         spriteTints.clear();
@@ -108,9 +112,9 @@ public class VulkanMotor {
             clearB = color.getBlue() / 255f;
             clearA = color.getAlpha() / 255f;
         }
-        backdrop.reset();
         triangles.reset();
         lines.reset();
+        epochSplits.clear();
         spriteRefs.clear();
         spriteQuads.clear();
         spriteTints.clear();
@@ -119,7 +123,11 @@ public class VulkanMotor {
     }
 
     public void clearDepth() {
-        // Depth is cleared once per frame by the renderer; nothing to accumulate here.
+        // Record a depth-epoch boundary at the current geometry counts. JOGL's AxesDrawer draws the
+        // axes box then calls clearDepthBuffer() so subsequent data draws over it regardless of the
+        // box's depth; the renderer replays each epoch depth-tested and clears depth between them.
+        // (8 floats per vertex; images are staged 6-vert quads counted per-quad.)
+        epochSplits.add(new int[] {triangles.count / 8, lines.count / 8, imageQuads.size()});
     }
 
     // ---- geometry ----
@@ -145,32 +153,26 @@ public class VulkanMotor {
 
         System.arraycopy(drawingTools.getTransformationManager().getTransformation().getMatrix(), 0, m, 0, 16);
 
-        // fills — classified into scene vs backdrop (the proven anti-occlusion split):
-        //  * colormap-textured (surf/Fac3d): resolve per-vertex colours from the strip on the CPU
-        //    (texcoord.x = colormap position) -> depth-tested scene triangles
-        //  * per-vertex coloured -> depth-tested scene triangles
-        //  * flat-coloured with neither (== the axes background cube, FaceCullingMode.BOTH):
-        //    backdrop — no depth, drawn first — otherwise its near faces occlude the whole scene
+        // fills — ALL depth-tested triangles. Colours come from (in priority): the colormap strip
+        // resolved per-vertex on the CPU (surf/Fac3d; texcoord.x = colormap position), an explicit
+        // per-vertex colour buffer, or the flat fill colour. The axes background box is just a flat
+        // fill; it no longer needs a no-depth "backdrop" pass to avoid occluding the scene —
+        // clearDepthBuffer() (recorded as a depth epoch) wipes the box's depth so data draws over it,
+        // and real flat polygons (xfpoly, bars, histograms, flat patches) now depth-test correctly.
         if (geometry.getFillDrawingMode() != Geometry.FillDrawingMode.NONE) {
             FloatBuffer colorSource = cb;
             int colorStride = cStride;
-            FloatArena target;
             final float[] fill = rgba(appearance == null ? null : appearance.getFillColor());
             final FloatBuffer resolved = resolveColormapColors(geometry, appearance, vertexCount);
             if (resolved != null) {
                 colorSource = resolved;
                 colorStride = 4;
-                target = triangles;
-            } else if (cb != null) {
-                target = triangles;
-            } else {
-                target = backdrop;
             }
             final IndicesBuffer indices = geometry.getIndices();
             if (indices != null && indices.getData() != null) {
-                emitTriangles(target, indices.getData(), geometry.getFillDrawingMode(), vb, vStride, colorSource, colorStride, fill);
+                emitTriangles(triangles, indices.getData(), geometry.getFillDrawingMode(), vb, vStride, colorSource, colorStride, fill);
             } else {
-                emitTrianglesSequential(target, vertexCount, geometry.getFillDrawingMode(), vb, vStride, colorSource, colorStride, fill);
+                emitTrianglesSequential(triangles, vertexCount, geometry.getFillDrawingMode(), vb, vStride, colorSource, colorStride, fill);
             }
         }
 
@@ -708,9 +710,9 @@ public class VulkanMotor {
 
     public void flush() {
         if (DEBUG) {
-            System.out.println("[vulkan.motor] flush: " + (backdrop.count / 8) + " backdrop verts, "
-                               + (triangles.count / 8) + " tri verts, "
+            System.out.println("[vulkan.motor] flush: " + (triangles.count / 8) + " tri verts, "
                                + (lines.count / 8) + " line verts, "
+                               + epochSplits.size() + " depth epochs, "
                                + spriteQuads.size() + " sprites, canvas " + canvas.getWidth() + "x" + canvas.getHeight());
         }
         // frames are synchronous, so nothing is in flight here — safe point for GPU disposal
@@ -721,9 +723,6 @@ public class VulkanMotor {
         }
         renderer.resize(canvas.getWidth(), canvas.getHeight());
         renderer.beginFrame(clearR, clearG, clearB, clearA);
-        if (backdrop.count > 0) {
-            renderer.backdrop(backdrop.data, backdrop.count);
-        }
         if (triangles.count > 0) {
             renderer.triangles(triangles.data, triangles.count);
         }
@@ -733,10 +732,28 @@ public class VulkanMotor {
         for (int i = 0; i < imageQuads.size(); i++) {
             renderer.image(imageRefs.get(i)[0], imageQuads.get(i));
         }
+        renderer.depthEpochs(flattenEpochs());
         for (int i = 0; i < spriteQuads.size(); i++) {
             renderer.sprite(spriteRefs.get(i)[0], spriteQuads.get(i), spriteTints.get(i));
         }
         renderer.endFrame();
+    }
+
+    private static final int[] EMPTY_EPOCHS = new int[0];
+
+    /** Flatten the per-clearDepthBuffer boundaries into the 3-ints-per-epoch layout the seam takes. */
+    private int[] flattenEpochs() {
+        if (epochSplits.isEmpty()) {
+            return EMPTY_EPOCHS;
+        }
+        int[] flat = new int[epochSplits.size() * 3];
+        for (int i = 0; i < epochSplits.size(); i++) {
+            int[] e = epochSplits.get(i);
+            flat[i * 3] = e[0];
+            flat[i * 3 + 1] = e[1];
+            flat[i * 3 + 2] = e[2];
+        }
+        return flat;
     }
 
     public void clean() {
