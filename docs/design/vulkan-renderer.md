@@ -66,9 +66,18 @@ lifetime and synchronization simple, and matches the `DrawerVisitor` being drive
   image plots). Vulkan clip-space depth is **[0,1]** — the projection matrix targets [0,1] directly.
 
 - **Pipelines**: pipeline state (topology, depth-test, cull, blend) is baked into `VkPipeline` objects.
-  Keep a **small pipeline cache keyed by (program, topology, depth/blend/cull state)**, created on
-  demand — a handful of combinations (scene-fill, backdrop, lines, sprite, image). Viewport/scissor
-  stay dynamic. (If MoltenVK exposes `VK_EXT_extended_dynamic_state` we can collapse some; not assumed.)
+  A **small fixed set** — depth-tested triangles, depth-tested lines, sprite (no depth), image (depth) —
+  created once on the shared context. Viewport/scissor stay dynamic. (If MoltenVK exposes
+  `VK_EXT_extended_dynamic_state` we can collapse some; not assumed.)
+
+- **Depth epochs (honoring `clearDepthBuffer`)**: JOGL draws the axes box, then clears the depth buffer
+  so data draws over it. The renderer mirrors this exactly: every `clearDepthBuffer()` records an epoch
+  boundary (tri-vertex / line-vertex / image counts), and one render pass replays the frame epoch by
+  epoch — each depth-tested — clearing only the depth aspect (colour preserved) between epochs with
+  `vkCmdClearAttachments`. So **all fills are depth-tested triangles** (an earlier no-depth "backdrop"
+  pass was dropped): the axes box is an ordinary flat fill, and real flat polygons — bars, histograms,
+  `xfpoly`, flat 3D facets — now depth-test and self-occlude correctly. Handles subplots (each axes'
+  box → clear → data) in the single pass.
 
 - **Geometry (immediate mode)**: the `DrawerVisitor` re-submits geometry per frame. Use a **per-frame
   arena** — a large host-visible (or staged device-local) vertex/index buffer written each frame,
@@ -88,11 +97,14 @@ lifetime and synchronization simple, and matches the `DrawerVisitor` being drive
 - **Export/readback**: GPU readback is proven, so `dumpAsBufferedImage` is **properly supported** — copy
   the presented image to a host-visible buffer and hand back a `BufferedImage`.
 
-- **MoltenVK provisioning**: dev uses the LunarG SDK loader + `MoltenVK_icd.json`. The **packaged app
-  must bundle MoltenVK** (`libMoltenVK.dylib` as the ICD, or the loader + ICD) and point LWJGL at it
-  (`Configuration.VULKAN_LIBRARY_NAME`) — a shipping task, not a dev blocker. Instance needs
-  `VK_KHR_portability_enumeration` (+ the enumerate-portability flag); device needs `VK_KHR_swapchain`
-  + `VK_KHR_portability_subset`.
+- **MoltenVK provisioning** (implemented): the packaged app ships `libMoltenVK.dylib` in `thirdparty/`
+  (the prebuild copies it from `$VULKAN_SDK`); the canvas factory resolves it **SCI-relative** and points
+  LWJGL at it via `-Dvk.loader` → `Configuration.VULKAN_LIBRARY_NAME`, so no SDK/env is needed at runtime.
+  Loader priority: `-Dvk.loader` → `$VULKAN_SDK` (dev) → the system default (fails cleanly to JOGL). We
+  drive MoltenVK **directly** (no loader), so `VK_KHR_portability_enumeration` is a loader-only feature
+  and is requested **only if the instance advertises it** (queried, conditional); device needs
+  `VK_KHR_swapchain` + `VK_KHR_portability_subset`. Verified end-to-end with no SDK env: LWJGL loads the
+  bundled dylib and a `surf` renders.
 
 - **Scilab integration**: a `VulkanCanvas extends AbstractScilabCanvas` selected by a canvas factory
   (JOGL default; Vulkan when enabled), plus LWJGL `lwjgl-vulkan` vendoring + `classpath.xml` wiring.
@@ -112,8 +124,26 @@ when needed.
   picking/datatips; resize.
 - **M6 — Scilab integration**: `VulkanCanvas` + factory + vendoring on `feature/vulkan-renderer`;
   a real Scilab figure renders through Vulkan.
-- **M7 — production-hardening pass**: full audit (leaks, thread-safety, silent failures, docs) + MoltenVK
-  bundling for the packaged app.
+- **M7 — production-hardening pass** *(done)*: four audits (leaks, thread-safety, silent failures,
+  correctness) + fixes; the C1 depth-epoch redesign above; MoltenVK bundling for the packaged app;
+  docs. All verified by GPU readback.
+
+## Status (M7 complete)
+
+M1–M7 are done and verified via readback: `surf`, `plot2d`, `param3d`, scatter/marks, text/labels,
+`Matplot` image plots (single + multi-figure), bars/histograms/flat-3D (depth epochs), figure export,
+picking, preferences, and the bundled-MoltenVK packaged-app path. Every commit is authored plainly with
+no AI-attribution trailers.
+
+**Known gaps / deferred to a later milestone (M8):**
+- **User clipping** (`clip_state`/`clip_box`, `clipgrf`): the seam exists (`VulkanClippingManager` stub);
+  the correct implementation bakes per-vertex clip distances into the vertex stream at emit time (a
+  vertex-format + shader change). Not a hardening item — a feature.
+- **Lighting**: Scilab's default shading is colormap/flat (already covered); light sources need normals
+  + a shading model. Cosmetic, deferred.
+- **`grayplot`**: renders blank — its mesh geometry (`dataManager.getVertexBuffer`) arrives empty, so
+  nothing reaches the motor. Reproduces in the headless PNG export too, i.e. **upstream of the renderer**
+  and not Vulkan-specific; tracked separately.
 
 ## Risks
 
