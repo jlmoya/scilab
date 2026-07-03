@@ -69,6 +69,7 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
     private boolean needsRedraw = true;
     private volatile boolean stopRequested;
     private final Thread renderThread;
+    private volatile VulkanScene scene;
 
     private Integer id;
 
@@ -108,7 +109,6 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
     // ---- render thread ----
 
     private void renderLoop() {
-        VulkanScene scene = null;
         try {
             NativeSurface surface = waitForSurface();
             if (surface == null) {
@@ -208,8 +208,10 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
             System.err.println("[scilab.vulkan] render thread failed: " + t);
             t.printStackTrace();
         } finally {
-            if (scene != null) {
-                scene.dispose();
+            VulkanScene sc = scene;
+            scene = null;
+            if (sc != null) {
+                sc.dispose();
             }
         }
     }
@@ -370,8 +372,10 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
 
     @Override
     public BufferedImage dumpAsBufferedImage() {
-        // Figure export through the Vulkan readback is a later slice; exports fall back to G2D.
-        return null;
+        // The scene's readback buffer always holds the last presented frame; snapshot() is
+        // GPU-locked, so this is safe from the EDT / interpreter thread.
+        VulkanScene sc = scene;
+        return (sc != null) ? sc.snapshot() : null;
     }
 
     @Override
