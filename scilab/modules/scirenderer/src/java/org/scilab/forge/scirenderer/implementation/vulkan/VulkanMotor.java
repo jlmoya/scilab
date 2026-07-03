@@ -522,7 +522,10 @@ public class VulkanMotor {
         final int h = size.height;
         if (!provider.isRowMajorOrder()) {
             final ByteBuffer src = provider.getData();
-            if (src != null && src.capacity() >= w * h * 4) {
+            // guard with limit(), not capacity(): the absolute src.get(index) below bounds-checks
+            // against the buffer's LIMIT, so a buffer with spare capacity but a smaller limit would
+            // throw mid-transpose and abort the frame
+            if (src != null && src.limit() >= w * h * 4) {
                 // column-major RGBA: element (row r, col c) at src index (c*h + r)
                 final ByteBuffer rgba = ByteBuffer.allocate(w * h * 4);
                 for (int r = 0; r < h; r++) {
