@@ -22,9 +22,9 @@ import java.awt.image.BufferedImage;
 
 import com.jogamp.opengl.GL;
 
-import com.jlmoya.gpu.GpuSurfaceComponent;
-import com.jlmoya.gpu.NativeSurface;
-import com.jlmoya.gpu.VulkanScene;
+import cc.sosonline.gpu.GpuSurfaceComponent;
+import cc.sosonline.gpu.NativeSurface;
+import cc.sosonline.gpu.VulkanScene;
 
 import org.scilab.forge.scirenderer.Canvas;
 import org.scilab.forge.scirenderer.implementation.vulkan.VulkanCanvas;

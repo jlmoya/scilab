@@ -1078,7 +1078,7 @@ if test "$with_javasci" != no -o "$with_gui" != no -o "$enable_build_help" != no
                 AC_JAVA_CHECK_JAR([lwjgl],[org.lwjgl.system.MemoryStack],[Scilab Vulkan renderer - LWJGL core])
                 LWJGL=$PACKAGE_JAR_FILE
                 AC_SUBST(LWJGL)
-                AC_JAVA_CHECK_JAR([swing-gpu-surface],[com.jlmoya.gpu.VulkanScene],[Scilab Vulkan renderer - Swing GPU surface (Layer-1)])
+                AC_JAVA_CHECK_JAR([swing-gpu-surface],[cc.sosonline.gpu.VulkanScene],[Scilab Vulkan renderer - Swing GPU surface (Layer-1)])
                 SWING_GPU_SURFACE=$PACKAGE_JAR_FILE
                 AC_SUBST(SWING_GPU_SURFACE)
 
