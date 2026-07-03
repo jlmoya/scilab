@@ -12,18 +12,28 @@
 
 package org.scilab.forge.scirenderer.implementation.vulkan;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.scilab.forge.scirenderer.DrawingTools;
 import org.scilab.forge.scirenderer.buffers.ElementsBuffer;
 import org.scilab.forge.scirenderer.buffers.IndicesBuffer;
+import org.scilab.forge.scirenderer.implementation.vulkan.texture.VulkanTexture;
 import org.scilab.forge.scirenderer.shapes.appearance.Appearance;
 import org.scilab.forge.scirenderer.shapes.appearance.Color;
 import org.scilab.forge.scirenderer.shapes.geometry.Geometry;
+import org.scilab.forge.scirenderer.texture.AnchorPosition;
 import org.scilab.forge.scirenderer.texture.Texture;
+import org.scilab.forge.scirenderer.tranformations.Transformation;
+import org.scilab.forge.scirenderer.tranformations.TransformationManager;
+import org.scilab.forge.scirenderer.tranformations.Vector3d;
 
 /**
  * The Vulkan backend's rendering engine — the counterpart of g2d's {@code Motor3D}, but instead of
@@ -46,6 +56,13 @@ public class VulkanMotor {
     private final FloatArena backdrop = new FloatArena();
     private final FloatArena triangles = new FloatArena();
     private final FloatArena lines = new FloatArena();
+
+    // sprites staged during the traversal, forwarded inside beginFrame/endFrame at flush
+    private final List<long[]> spriteRefs = new ArrayList<long[]>();      // {textureHandle}
+    private final List<float[]> spriteQuads = new ArrayList<float[]>();   // 6 verts x (x,y,u,v)
+
+    // texture handles queued for GPU disposal (any thread) — drained on the render thread at flush
+    private final ConcurrentLinkedQueue<Long> disposedTextures = new ConcurrentLinkedQueue<Long>();
 
     private float clearR = 1f, clearG = 1f, clearB = 1f, clearA = 1f;
 
@@ -72,6 +89,8 @@ public class VulkanMotor {
         backdrop.reset();
         triangles.reset();
         lines.reset();
+        spriteRefs.clear();
+        spriteQuads.clear();
     }
 
     public void reset(java.awt.Color color) {
@@ -84,6 +103,8 @@ public class VulkanMotor {
         backdrop.reset();
         triangles.reset();
         lines.reset();
+        spriteRefs.clear();
+        spriteQuads.clear();
     }
 
     public void clearDepth() {
@@ -197,6 +218,199 @@ public class VulkanMotor {
                     tri(target, i, i + 1, i + 2, vb, vs, cb, cs, fill);
                 }
                 break;
+        }
+    }
+
+    // ---- sprites (text labels, tick numbers, marks) ----
+
+    /**
+     * Draw a texture as screen-aligned sprites at each position (mirrors the JOGL texture
+     * manager): project the anchor to WINDOW PIXELS via {@code canvasProjection} (positions are
+     * already window coords when not in scene-coordinate mode), offset the quad's lower-left
+     * corner from the anchor per {@link AnchorPosition}, rotate about the anchor (degrees, CCW —
+     * the rotation applies to the anchor offset too), then convert pixels to GL-convention NDC.
+     */
+    public void drawSprite(DrawingTools drawingTools, Texture texture, AnchorPosition anchor,
+                           ElementsBuffer positions, int offset, int stride, double rotationAngle) {
+        if (positions == null || positions.getData() == null) {
+            return;
+        }
+        final long handle = ensureUploaded(texture);
+        if (handle == 0) {
+            return;
+        }
+        final FloatBuffer pb = positions.getData();
+        final int ps = positions.getElementsSize();
+        final int count = pb.capacity() / ps;
+        final int step = Math.max(1, stride);
+        for (int i = Math.max(0, offset); i < count; i += step) {
+            emitSprite(drawingTools, texture, handle, anchor,
+                       new Vector3d(pb.get(i * ps), pb.get(i * ps + 1), ps > 2 ? pb.get(i * ps + 2) : 0),
+                       rotationAngle);
+        }
+    }
+
+    /** Single-position variant. */
+    public void drawSprite(DrawingTools drawingTools, Texture texture, AnchorPosition anchor,
+                           Vector3d position, double rotationAngle) {
+        final long handle = ensureUploaded(texture);
+        if (handle != 0) {
+            emitSprite(drawingTools, texture, handle, anchor, position, rotationAngle);
+        }
+    }
+
+    private void emitSprite(DrawingTools drawingTools, Texture texture, long handle,
+                            AnchorPosition anchor, Vector3d position, double rotationAngle) {
+        final TransformationManager tm = drawingTools.getTransformationManager();
+        final Vector3d projected;
+        if (tm.isUsingSceneCoordinate()) {
+            Transformation canvasProjection = tm.getCanvasProjection();
+            projected = canvasProjection.project(position);
+        } else {
+            projected = position;
+        }
+        final Dimension texSize = texture.getDataProvider().getTextureSize();
+        if (texSize == null) {
+            return;
+        }
+        final double tw = texSize.getWidth();
+        final double th = texSize.getHeight();
+        final double dx = anchorDeltaX(anchor, tw);
+        final double dy = anchorDeltaY(anchor, th);
+        final double px = Math.round(projected.getX());
+        final double py = Math.round(projected.getY());
+
+        // quad corners relative to the anchor (pixels, y-up), rotation applied about the anchor
+        final double[][] local = {
+            {dx, dy}, {dx + tw, dy}, {dx + tw, dy + th},
+            {dx, dy}, {dx + tw, dy + th}, {dx, dy + th},
+        };
+        // texture v: image row 0 = glyph top -> v=0 at the quad's TOP edge (y-up: top = dy + th)
+        final float[][] uv = {
+            {0, 1}, {1, 1}, {1, 0},
+            {0, 1}, {1, 0}, {0, 0},
+        };
+        final double rad = Math.toRadians(rotationAngle);
+        final double cos = Math.cos(rad);
+        final double sin = Math.sin(rad);
+        final int w = canvas.getWidth();
+        final int h = canvas.getHeight();
+        final float[] quad = new float[24];
+        for (int v = 0; v < 6; v++) {
+            final double lx = local[v][0];
+            final double ly = local[v][1];
+            final double rx = px + lx * cos - ly * sin;
+            final double ry = py + lx * sin + ly * cos;
+            quad[v * 4] = (float) (rx / w * 2.0 - 1.0);
+            quad[v * 4 + 1] = (float) (ry / h * 2.0 - 1.0);
+            quad[v * 4 + 2] = uv[v][0];
+            quad[v * 4 + 3] = uv[v][1];
+        }
+        if (DEBUG && spriteQuads.size() < 3) {
+            System.out.println("[vulkan.motor] sprite tex=" + handle + " size=" + tw + "x" + th
+                               + " anchor=" + anchor + " projected=(" + px + "," + py + ")"
+                               + " ndc0=(" + quad[0] + "," + quad[1] + ")");
+        }
+        spriteRefs.add(new long[] {handle});
+        spriteQuads.add(quad);
+    }
+
+    /** X offset of the quad's lower-left corner from the anchor point (JOGL semantics). */
+    private static double anchorDeltaX(AnchorPosition anchor, double w) {
+        switch (anchor) {
+            case LEFT:
+            case LOWER_LEFT:
+            case UPPER_LEFT:
+                return 0;
+            case UP:
+            case CENTER:
+            case DOWN:
+                return -w / 2.0;
+            case RIGHT:
+            case LOWER_RIGHT:
+            case UPPER_RIGHT:
+                return -w;
+            default:
+                return 0;
+        }
+    }
+
+    /** Y offset of the quad's lower-left corner from the anchor point (JOGL semantics, y-up). */
+    private static double anchorDeltaY(AnchorPosition anchor, double h) {
+        switch (anchor) {
+            case UPPER_LEFT:
+            case UP:
+            case UPPER_RIGHT:
+                return -h;
+            case LEFT:
+            case CENTER:
+            case RIGHT:
+                return -h / 2.0;
+            case LOWER_LEFT:
+            case DOWN:
+            case LOWER_RIGHT:
+                return 0;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * Lazily upload a texture's current data to the GPU (RGBA8, via the provider's format-proof
+     * {@code getImage()}). Re-uploads when the provider reports new data ({@code dataUpdated}
+     * flips {@code upToDate}); the stale handle is destroyed first.
+     */
+    private long ensureUploaded(Texture texture) {
+        if (!(texture instanceof VulkanTexture) || !texture.isValid()) {
+            return 0;
+        }
+        final VulkanTexture vt = (VulkanTexture) texture;
+        if (vt.isUpToDate() && vt.getGpuHandle() != 0) {
+            return vt.getGpuHandle();
+        }
+        try {
+            final BufferedImage img = vt.getDataProvider().getImage();
+            if (img == null) {
+                return 0;
+            }
+            if (vt.getGpuHandle() != 0) {
+                renderer.destroyTexture(vt.getGpuHandle());
+            }
+            final int w = img.getWidth();
+            final int h = img.getHeight();
+            final int[] argb = img.getRGB(0, 0, w, h, null, 0, w);
+            final ByteBuffer rgba = ByteBuffer.allocate(w * h * 4);
+            for (int p : argb) {
+                rgba.put((byte) ((p >> 16) & 0xff));
+                rgba.put((byte) ((p >> 8) & 0xff));
+                rgba.put((byte) (p & 0xff));
+                rgba.put((byte) ((p >>> 24) & 0xff));
+            }
+            rgba.flip();
+            if (DEBUG) {
+                int opaque = 0;
+                for (int i = 3; i < rgba.limit(); i += 4) {
+                    if (rgba.get(i) != 0) {
+                        opaque++;
+                    }
+                }
+                System.out.println("[vulkan.motor] upload tex " + w + "x" + h + " opaquePx=" + opaque + "/" + (w * h));
+            }
+            final long handle = renderer.uploadTexture(w, h, rgba);
+            if (handle != 0) {
+                vt.setGpuHandle(handle);
+            }
+            return handle;
+        } catch (Throwable t) {
+            logOnce(t);
+            return 0;
+        }
+    }
+
+    /** Queue a GPU texture for disposal (any thread); drained on the render thread at flush. */
+    public void queueTextureDispose(long handle) {
+        if (handle != 0) {
+            disposedTextures.add(handle);
         }
     }
 
@@ -327,7 +541,13 @@ public class VulkanMotor {
         if (DEBUG) {
             System.out.println("[vulkan.motor] flush: " + (backdrop.count / 8) + " backdrop verts, "
                                + (triangles.count / 8) + " tri verts, "
-                               + (lines.count / 8) + " line verts, canvas " + canvas.getWidth() + "x" + canvas.getHeight());
+                               + (lines.count / 8) + " line verts, "
+                               + spriteQuads.size() + " sprites, canvas " + canvas.getWidth() + "x" + canvas.getHeight());
+        }
+        // frames are synchronous, so nothing is in flight here — safe point for GPU disposal
+        Long dead;
+        while ((dead = disposedTextures.poll()) != null) {
+            renderer.destroyTexture(dead);
         }
         renderer.resize(canvas.getWidth(), canvas.getHeight());
         renderer.beginFrame(clearR, clearG, clearB, clearA);
@@ -339,6 +559,9 @@ public class VulkanMotor {
         }
         if (lines.count > 0) {
             renderer.lines(lines.data, lines.count);
+        }
+        for (int i = 0; i < spriteQuads.size(); i++) {
+            renderer.sprite(spriteRefs.get(i)[0], spriteQuads.get(i));
         }
         renderer.endFrame();
     }

@@ -43,6 +43,22 @@ public interface VulkanSceneRenderer {
     /** Append line segments (2N vertices, {@code floatCount} = 8 * vertexCount). */
     void lines(float[] clipPosColor, int floatCount);
 
+    /**
+     * Upload an RGBA8 image (glyph sprite, mark, colormap strip, image plot) and return a handle
+     * (0 = failed). May be called outside beginFrame/endFrame, on the render thread.
+     */
+    long uploadTexture(int width, int height, java.nio.ByteBuffer rgba);
+
+    /** Destroy a texture previously returned by {@link #uploadTexture}. Render thread only. */
+    void destroyTexture(long handle);
+
+    /**
+     * Append one screen-aligned textured sprite quad: 6 vertices x (x, y, u, v), positions in
+     * GL-convention NDC (y-up). Sprites draw LAST, alpha-blended, with no depth test — labels are
+     * never occluded by geometry.
+     */
+    void sprite(long textureHandle, float[] posUv24);
+
     /** Finish the frame: submit + present (and read back for figure export). */
     void endFrame();
 
@@ -69,6 +85,19 @@ public interface VulkanSceneRenderer {
 
         @Override
         public void lines(float[] clipPosColor, int floatCount) {
+        }
+
+        @Override
+        public long uploadTexture(int width, int height, java.nio.ByteBuffer rgba) {
+            return 0;
+        }
+
+        @Override
+        public void destroyTexture(long handle) {
+        }
+
+        @Override
+        public void sprite(long textureHandle, float[] posUv24) {
         }
 
         @Override

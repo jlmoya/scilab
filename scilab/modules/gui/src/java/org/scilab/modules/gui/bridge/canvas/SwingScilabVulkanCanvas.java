@@ -143,6 +143,21 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 }
 
                 @Override
+                public long uploadTexture(int width, int height, java.nio.ByteBuffer rgba) {
+                    return s.uploadTexture(width, height, rgba);
+                }
+
+                @Override
+                public void destroyTexture(long handle) {
+                    s.destroyTexture(handle);
+                }
+
+                @Override
+                public void sprite(long textureHandle, float[] posUv24) {
+                    s.sprite(textureHandle, posUv24);
+                }
+
+                @Override
                 public void endFrame() {
                     s.endFrame();
                 }
@@ -159,6 +174,12 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 awaitRedraw(KEEP_ALIVE_MS);
                 if (stopRequested) {
                     break;
+                }
+                // stop presenting once the component is torn down (window closing / app exit):
+                // the CAMetalLayer's backing scale collapses during disposal and keep-alive frames
+                // would render (and capture) degenerate logical-size frames
+                if (!surfaceComponent.isShowing()) {
+                    continue;
                 }
                 int pw = surface.width();
                 int ph = surface.height();

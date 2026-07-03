@@ -14,15 +14,23 @@ package org.scilab.forge.scirenderer.implementation.vulkan.texture;
 
 import java.util.Collection;
 
+import org.scilab.forge.scirenderer.implementation.vulkan.VulkanCanvas;
 import org.scilab.forge.scirenderer.texture.Texture;
 import org.scilab.forge.scirenderer.texture.TextureManager;
 
 /**
- * Vulkan texture factory. Textures (colormap strips, glyph/mark sprites, image plots) are created
+ * Vulkan texture factory. Textures (glyph/mark sprites, colormap strips, image plots) are created
  * here and filled by the DrawerVisitor via their data provider; the motor uploads them to the GPU
- * on demand. GPU-side disposal is handled by the scene renderer, so dispose is a CPU-side no-op.
+ * on demand. Disposal queues the GPU handle for destruction on the render thread (destroying it on
+ * the caller's thread would race the in-flight frame).
  */
 public class VulkanTextureManager implements TextureManager {
+
+    private final VulkanCanvas canvas;
+
+    public VulkanTextureManager(VulkanCanvas canvas) {
+        this.canvas = canvas;
+    }
 
     @Override
     public Texture createTexture() {
@@ -31,9 +39,19 @@ public class VulkanTextureManager implements TextureManager {
 
     @Override
     public void dispose(Texture texture) {
+        if (texture instanceof VulkanTexture) {
+            VulkanTexture vt = (VulkanTexture) texture;
+            if (vt.getGpuHandle() != 0) {
+                canvas.getMotor().queueTextureDispose(vt.getGpuHandle());
+                vt.clearGpuHandle();
+            }
+        }
     }
 
     @Override
     public void dispose(Collection<Texture> textures) {
+        for (Texture texture : textures) {
+            dispose(texture);
+        }
     }
 }

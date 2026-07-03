@@ -56,7 +56,7 @@ public final class VulkanCanvas implements Canvas {
         this.dimension = new Dimension(width, height);
         this.buffersManager = new VulkanBuffersManager();
         this.rendererManager = new VulkanRendererManager();
-        this.textureManager = new VulkanTextureManager();
+        this.textureManager = new VulkanTextureManager(this);
         this.motor = new VulkanMotor(this);
         this.drawingTools = new VulkanDrawingTools(this);
     }
@@ -76,7 +76,7 @@ public final class VulkanCanvas implements Canvas {
         this.redrawRequestListener = listener;
     }
 
-    VulkanMotor getMotor() {
+    public VulkanMotor getMotor() {
         return motor;
     }
 

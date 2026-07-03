@@ -34,6 +34,12 @@ public class VulkanTexture extends AbstractTexture {
         this.upToDate = true;
     }
 
+    /** Forget the GPU handle (after disposal) so a future use re-uploads. */
+    public void clearGpuHandle() {
+        this.gpuHandle = 0;
+        this.upToDate = false;
+    }
+
     public boolean isUpToDate() {
         return upToDate;
     }

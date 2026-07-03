@@ -110,41 +110,52 @@ public class VulkanDrawingTools implements DrawingTools {
         canvas.getMotor().draw(this, geometry, appearance);
     }
 
-    // ---- texture / sprite path: next slice (labels, ticks, marks, colormap, images) ----
+    // ---- texture / sprite path: all position variants funnel to the motor's sprite emitter.
+    //      (auxColor/colors modulation is not applied yet — glyph sprites carry their colour in
+    //      the texture itself, which covers text/labels/ticks; per-mark colour is a later slice.)
 
     @Override
     public void draw(Texture texture) throws SciRendererException {
+        // Image plots (Matplot): a textured quad in model space — next slice.
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions) throws SciRendererException {
+        canvas.getMotor().drawSprite(this, texture, anchor, positions, 0, 1, 0);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, double rotationAngle) throws SciRendererException {
+        canvas.getMotor().drawSprite(this, texture, anchor, positions, 0, 1, rotationAngle);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, Color auxColor, ElementsBuffer colors) throws SciRendererException {
+        canvas.getMotor().drawSprite(this, texture, anchor, positions, 0, 1, 0);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, double rotationAngle, Color auxColor, ElementsBuffer colors) throws SciRendererException {
+        canvas.getMotor().drawSprite(this, texture, anchor, positions, 0, 1, rotationAngle);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, int offset, int stride, double rotationAngle) throws SciRendererException {
+        canvas.getMotor().drawSprite(this, texture, anchor, positions, offset, stride, rotationAngle);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, ElementsBuffer positions, int offset, int stride, double rotationAngle, Color auxColor, ElementsBuffer colors) throws SciRendererException {
+        canvas.getMotor().drawSprite(this, texture, anchor, positions, offset, stride, rotationAngle);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, Vector3d position) throws SciRendererException {
+        canvas.getMotor().drawSprite(this, texture, anchor, position, 0);
     }
 
     @Override
     public void draw(Texture texture, AnchorPosition anchor, Vector3d position, double rotationAngle) throws SciRendererException {
+        canvas.getMotor().drawSprite(this, texture, anchor, position, rotationAngle);
     }
 }
