@@ -32,9 +32,8 @@ import org.scilab.forge.scirenderer.tranformations.Vector3d;
 /**
  * Vulkan implementation of the DrawingTools — a thin delegation layer, exactly like g2d's. Geometry
  * and clears go to the {@link VulkanMotor}; the transformation manager is the reusable core
- * {@link TransformationManagerImpl}. Texture / sprite draws (labels, tick numbers, marks, colormap,
- * image plots) are the next slice and are currently no-ops, so the first slice renders filled
- * surfaces + wireframe + axis lines.
+ * {@link TransformationManagerImpl}. Texture draws funnel to the motor's sprite/image emitters
+ * (labels, tick numbers, marks with per-point colours, image plots).
  */
 public class VulkanDrawingTools implements DrawingTools {
 
@@ -110,9 +109,9 @@ public class VulkanDrawingTools implements DrawingTools {
         canvas.getMotor().draw(this, geometry, appearance);
     }
 
-    // ---- texture / sprite path: all position variants funnel to the motor's sprite emitter.
-    //      (auxColor/colors modulation is not applied yet — glyph sprites carry their colour in
-    //      the texture itself, which covers text/labels/ticks; per-mark colour is a later slice.)
+    // ---- texture / sprite path: positioned variants funnel to the motor's sprite emitter
+    //      (auxColor + per-point colors ride along for the two-colour mark scheme); the
+    //      single-arg draw(Texture) is the model-space image-plot quad ----
 
     @Override
     public void draw(Texture texture) throws SciRendererException {

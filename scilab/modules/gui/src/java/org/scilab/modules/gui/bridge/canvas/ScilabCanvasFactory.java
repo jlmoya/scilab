@@ -12,20 +12,45 @@
 
 package org.scilab.modules.gui.bridge.canvas;
 
+import javax.xml.xpath.XPathFactory;
+
+import org.scilab.modules.commons.xml.XConfiguration;
 import org.scilab.modules.graphic_objects.axes.AxesContainer;
+import org.w3c.dom.Document;
 
 /**
  * Picks the rendering backend for a new figure canvas. The Vulkan canvas is opt-in via
- * {@code -Dscilab.renderer.vulkan=true}; any failure creating it (missing loader, no device, ...)
- * falls back to the JOGL canvas so a figure always renders.
+ * Preferences &gt; General &gt; Graphics, or the {@code -Dscilab.renderer.vulkan} property (which,
+ * when set, wins in both directions — launch override + tests). Read per figure creation, so
+ * toggling the preference applies to new figures without a restart. Any failure creating the
+ * Vulkan canvas (missing loader, no device, ...) falls back to the JOGL canvas so a figure
+ * always renders.
  */
 public final class ScilabCanvasFactory {
 
     private ScilabCanvasFactory() {
     }
 
+    private static boolean isVulkanRequested() {
+        String prop = System.getProperty("scilab.renderer.vulkan");
+        if (prop != null) {
+            return Boolean.parseBoolean(prop);
+        }
+        try {
+            Document doc = XConfiguration.getXConfigurationDocument();
+            if (doc != null) {
+                String state = XPathFactory.newInstance().newXPath()
+                               .evaluate("string(//general/graphics/body/rendering/@renderer-vulkan)", doc);
+                return "checked".equals(state);
+            }
+        } catch (Exception e) {
+            // unreadable configuration: stay on the default renderer
+        }
+        return false;
+    }
+
     public static AbstractScilabCanvas createCanvas(AxesContainer figure) {
-        if (Boolean.getBoolean("scilab.renderer.vulkan")) {
+        if (isVulkanRequested()) {
             try {
                 return new SwingScilabVulkanCanvas(figure);
             } catch (Throwable t) {

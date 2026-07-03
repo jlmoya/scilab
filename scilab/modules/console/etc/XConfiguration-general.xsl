@@ -340,6 +340,24 @@
         </Title>
     </xsl:template>
 
+    <xsl:template match="rendering">
+        <Title text="_(3D renderer)">
+            <Grid>
+                <Checkbox
+                      gridx="1"
+                      gridy="1"
+                      listener="ActionListener"
+                      checked="{@renderer-vulkan}"
+                      text="_(Use the Vulkan renderer for new figures (experimental, macOS only))"
+                      >
+                    <actionPerformed choose="renderer-vulkan">
+                        <xsl:call-template name="context"/>
+                    </actionPerformed>
+                </Checkbox>
+            </Grid>
+        </Title>
+    </xsl:template>
+
     <xsl:template match="demos">
         <Title text="_(Demos)">
             <Grid>
