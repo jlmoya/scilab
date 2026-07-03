@@ -60,6 +60,7 @@ public class VulkanMotor {
     // sprites staged during the traversal, forwarded inside beginFrame/endFrame at flush
     private final List<long[]> spriteRefs = new ArrayList<long[]>();      // {textureHandle}
     private final List<float[]> spriteQuads = new ArrayList<float[]>();   // 6 verts x (x,y,u,v)
+    private final List<float[]> spriteTints = new ArrayList<float[]>();   // rgba modulation
 
     // textured scene quads (image plots), staged like sprites but depth-tested
     private final List<long[]> imageRefs = new ArrayList<long[]>();       // {textureHandle}
@@ -95,6 +96,7 @@ public class VulkanMotor {
         lines.reset();
         spriteRefs.clear();
         spriteQuads.clear();
+        spriteTints.clear();
         imageRefs.clear();
         imageQuads.clear();
     }
@@ -111,6 +113,7 @@ public class VulkanMotor {
         lines.reset();
         spriteRefs.clear();
         spriteQuads.clear();
+        spriteTints.clear();
         imageRefs.clear();
         imageQuads.clear();
     }
@@ -291,7 +294,8 @@ public class VulkanMotor {
      * the rotation applies to the anchor offset too), then convert pixels to GL-convention NDC.
      */
     public void drawSprite(DrawingTools drawingTools, Texture texture, AnchorPosition anchor,
-                           ElementsBuffer positions, int offset, int stride, double rotationAngle) {
+                           ElementsBuffer positions, int offset, int stride, double rotationAngle,
+                           Color auxColor, ElementsBuffer colors) {
         if (positions == null || positions.getData() == null) {
             return;
         }
@@ -303,24 +307,48 @@ public class VulkanMotor {
         final int ps = positions.getElementsSize();
         final int count = pb.limit() / ps;
         final int step = Math.max(1, stride);
+        // per-point mark colours (scatter etc.): mirror the fixed-function two-colour scheme —
+        // BLEND mode with tint = colors[i] (or white) and aux = auxColor (or black); plain glyph
+        // sprites (no colours at all) use MODULATE with a white tint = pass-through
+        final FloatBuffer tints = (colors != null) ? colors.getData() : null;
+        final int ts = (colors != null) ? colors.getElementsSize() : 0;
+        final boolean blendMode = (tints != null) || (auxColor != null);
+        final float[] auxRgb = (auxColor != null)
+            ? new float[] {auxColor.getRedAsFloat(), auxColor.getGreenAsFloat(), auxColor.getBlueAsFloat()}
+            : new float[] {0f, 0f, 0f};
         for (int i = Math.max(0, offset); i < count; i += step) {
+            float[] block;
+            if (blendMode) {
+                float r = 1f, g = 1f, b = 1f, a = 1f;
+                if (tints != null && (i + 1) * ts <= tints.limit()) {
+                    r = tints.get(i * ts);
+                    g = ts > 1 ? tints.get(i * ts + 1) : 1f;
+                    b = ts > 2 ? tints.get(i * ts + 2) : 1f;
+                    a = ts > 3 ? tints.get(i * ts + 3) : 1f;
+                }
+                block = new float[] {r, g, b, a, auxRgb[0], auxRgb[1], auxRgb[2], 1f};
+            } else {
+                block = MODULATE_WHITE;
+            }
             emitSprite(drawingTools, texture, handle, anchor,
                        new Vector3d(pb.get(i * ps), pb.get(i * ps + 1), ps > 2 ? pb.get(i * ps + 2) : 0),
-                       rotationAngle);
+                       rotationAngle, block);
         }
     }
 
-    /** Single-position variant. */
+    private static final float[] MODULATE_WHITE = {1f, 1f, 1f, 1f, 0f, 0f, 0f, 0f};
+
+    /** Single-position variant (labels/titles — no colour modulation). */
     public void drawSprite(DrawingTools drawingTools, Texture texture, AnchorPosition anchor,
                            Vector3d position, double rotationAngle) {
         final long handle = ensureUploaded(texture);
         if (handle != 0) {
-            emitSprite(drawingTools, texture, handle, anchor, position, rotationAngle);
+            emitSprite(drawingTools, texture, handle, anchor, position, rotationAngle, MODULATE_WHITE);
         }
     }
 
     private void emitSprite(DrawingTools drawingTools, Texture texture, long handle,
-                            AnchorPosition anchor, Vector3d position, double rotationAngle) {
+                            AnchorPosition anchor, Vector3d position, double rotationAngle, float[] tint) {
         final TransformationManager tm = drawingTools.getTransformationManager();
         final Vector3d projected;
         if (tm.isUsingSceneCoordinate()) {
@@ -373,6 +401,7 @@ public class VulkanMotor {
         }
         spriteRefs.add(new long[] {handle});
         spriteQuads.add(quad);
+        spriteTints.add(tint);
     }
 
     /** X offset of the quad's lower-left corner from the anchor point (JOGL semantics). */
@@ -686,7 +715,7 @@ public class VulkanMotor {
             renderer.image(imageRefs.get(i)[0], imageQuads.get(i));
         }
         for (int i = 0; i < spriteQuads.size(); i++) {
-            renderer.sprite(spriteRefs.get(i)[0], spriteQuads.get(i));
+            renderer.sprite(spriteRefs.get(i)[0], spriteQuads.get(i), spriteTints.get(i));
         }
         renderer.endFrame();
     }

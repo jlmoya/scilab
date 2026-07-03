@@ -54,10 +54,12 @@ public interface VulkanSceneRenderer {
 
     /**
      * Append one screen-aligned textured sprite quad: 6 vertices x (x, y, u, v), positions in
-     * GL-convention NDC (y-up). Sprites draw LAST, alpha-blended, with no depth test — labels are
-     * never occluded by geometry.
+     * GL-convention NDC (y-up). {@code tintAux8} = tint rgba + aux rgba, where aux.w selects the
+     * colour mode: 0 = MODULATE texel*tint (glyphs/images; white tint = pass-through), 1 = the
+     * fixed-function two-colour BLEND for marks (black template texels take the per-point tint,
+     * white texels take aux, alpha keeps the shape). Sprites draw LAST, alpha-blended, no depth.
      */
-    void sprite(long textureHandle, float[] posUv24);
+    void sprite(long textureHandle, float[] posUv24, float[] tintAux8);
 
     /**
      * Append one textured SCENE quad (image plots): 6 vertices x (x, y, z, w, u, v), positions in
@@ -103,7 +105,7 @@ public interface VulkanSceneRenderer {
         }
 
         @Override
-        public void sprite(long textureHandle, float[] posUv24) {
+        public void sprite(long textureHandle, float[] posUv24, float[] tintAux8) {
         }
 
         @Override

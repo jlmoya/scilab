@@ -154,8 +154,8 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 }
 
                 @Override
-                public void sprite(long textureHandle, float[] posUv24) {
-                    s.sprite(textureHandle, posUv24);
+                public void sprite(long textureHandle, float[] posUv24, float[] tintAux8) {
+                    s.sprite(textureHandle, posUv24, tintAux8);
                 }
 
                 @Override
