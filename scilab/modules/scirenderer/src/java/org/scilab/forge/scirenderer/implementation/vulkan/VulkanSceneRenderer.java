@@ -31,6 +31,12 @@ public interface VulkanSceneRenderer {
     /** Begin a frame: clear to the given colour and start recording. */
     void beginFrame(float r, float g, float b, float a);
 
+    /**
+     * Append backdrop triangles — flat scenery (like the axes background box) drawn FIRST with no
+     * depth test/write, so it can never occlude real data.
+     */
+    void backdrop(float[] clipPosColor, int floatCount);
+
     /** Append filled triangles (3N vertices, {@code floatCount} = 8 * vertexCount). */
     void triangles(float[] clipPosColor, int floatCount);
 
@@ -51,6 +57,10 @@ public interface VulkanSceneRenderer {
 
         @Override
         public void beginFrame(float r, float g, float b, float a) {
+        }
+
+        @Override
+        public void backdrop(float[] clipPosColor, int floatCount) {
         }
 
         @Override

@@ -1062,6 +1062,26 @@ if test "$with_javasci" != no -o "$with_gui" != no -o "$enable_build_help" != no
                 DIRECTORY_WATCHER=$PACKAGE_JAR_FILE
                 AC_SUBST(DIRECTORY_WATCHER)
 
+                # Vulkan renderer stack: LWJGL bindings + the Layer-1 Swing native-surface library.
+                # Specific artifact names are checked before the plain [lwjgl] core so the glob
+                # cannot mis-resolve. The natives jar (lwjgl-*-natives-macos-arm64.jar) carries no
+                # classes, so it is referenced literally in classpath.xml.in rather than probed here.
+                AC_JAVA_CHECK_JAR([lwjgl-vulkan],[org.lwjgl.vulkan.VK10],[Scilab Vulkan renderer - LWJGL Vulkan bindings])
+                LWJGL_VULKAN=$PACKAGE_JAR_FILE
+                AC_SUBST(LWJGL_VULKAN)
+                AC_JAVA_CHECK_JAR([lwjgl-jawt],[org.lwjgl.system.jawt.JAWT],[Scilab Vulkan renderer - LWJGL JAWT bindings])
+                LWJGL_JAWT=$PACKAGE_JAR_FILE
+                AC_SUBST(LWJGL_JAWT)
+                AC_JAVA_CHECK_JAR([lwjgl3-awt],[org.lwjgl.awt.AWT],[Scilab Vulkan renderer - AWT native-surface bridge])
+                LWJGL3_AWT=$PACKAGE_JAR_FILE
+                AC_SUBST(LWJGL3_AWT)
+                AC_JAVA_CHECK_JAR([lwjgl],[org.lwjgl.system.MemoryStack],[Scilab Vulkan renderer - LWJGL core])
+                LWJGL=$PACKAGE_JAR_FILE
+                AC_SUBST(LWJGL)
+                AC_JAVA_CHECK_JAR([swing-gpu-surface],[com.jlmoya.gpu.VulkanScene],[Scilab Vulkan renderer - Swing GPU surface (Layer-1)])
+                SWING_GPU_SURFACE=$PACKAGE_JAR_FILE
+                AC_SUBST(SWING_GPU_SURFACE)
+
                 # JCEF (from https://github.com/jcefmaven/jcefmaven/releases)
                 AC_JAVA_CHECK_JAR([jcef],[org.cef.CefApp],[Scilab Embedded browser - Java Chromium Embedded Framework])
                 JCEF=$PACKAGE_JAR_FILE

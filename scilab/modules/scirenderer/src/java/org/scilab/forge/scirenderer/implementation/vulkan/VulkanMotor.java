@@ -12,6 +12,7 @@
 
 package org.scilab.forge.scirenderer.implementation.vulkan;
 
+import java.awt.image.BufferedImage;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import org.scilab.forge.scirenderer.buffers.IndicesBuffer;
 import org.scilab.forge.scirenderer.shapes.appearance.Appearance;
 import org.scilab.forge.scirenderer.shapes.appearance.Color;
 import org.scilab.forge.scirenderer.shapes.geometry.Geometry;
+import org.scilab.forge.scirenderer.texture.Texture;
 
 /**
  * The Vulkan backend's rendering engine — the counterpart of g2d's {@code Motor3D}, but instead of
@@ -41,6 +43,7 @@ public class VulkanMotor {
     private final VulkanCanvas canvas;
     private VulkanSceneRenderer renderer = VulkanSceneRenderer.NOOP;
 
+    private final FloatArena backdrop = new FloatArena();
     private final FloatArena triangles = new FloatArena();
     private final FloatArena lines = new FloatArena();
 
@@ -66,6 +69,7 @@ public class VulkanMotor {
             clearB = color.getBlueAsFloat();
             clearA = color.getAlphaAsFloat();
         }
+        backdrop.reset();
         triangles.reset();
         lines.reset();
     }
@@ -77,6 +81,7 @@ public class VulkanMotor {
             clearB = color.getBlue() / 255f;
             clearA = color.getAlpha() / 255f;
         }
+        backdrop.reset();
         triangles.reset();
         lines.reset();
     }
@@ -102,14 +107,32 @@ public class VulkanMotor {
 
         System.arraycopy(drawingTools.getTransformationManager().getTransformation().getMatrix(), 0, m, 0, 16);
 
-        // fills
+        // fills — classified into scene vs backdrop (the proven anti-occlusion split):
+        //  * colormap-textured (surf/Fac3d): resolve per-vertex colours from the strip on the CPU
+        //    (texcoord.x = colormap position) -> depth-tested scene triangles
+        //  * per-vertex coloured -> depth-tested scene triangles
+        //  * flat-coloured with neither (== the axes background cube, FaceCullingMode.BOTH):
+        //    backdrop — no depth, drawn first — otherwise its near faces occlude the whole scene
         if (geometry.getFillDrawingMode() != Geometry.FillDrawingMode.NONE) {
+            FloatBuffer colorSource = cb;
+            int colorStride = cStride;
+            FloatArena target;
             final float[] fill = rgba(appearance == null ? null : appearance.getFillColor());
+            final FloatBuffer resolved = resolveColormapColors(geometry, appearance, vertexCount);
+            if (resolved != null) {
+                colorSource = resolved;
+                colorStride = 4;
+                target = triangles;
+            } else if (cb != null) {
+                target = triangles;
+            } else {
+                target = backdrop;
+            }
             final IndicesBuffer indices = geometry.getIndices();
             if (indices != null && indices.getData() != null) {
-                emitTriangles(indices.getData(), geometry.getFillDrawingMode(), vb, vStride, cb, cStride, fill);
+                emitTriangles(target, indices.getData(), geometry.getFillDrawingMode(), vb, vStride, colorSource, colorStride, fill);
             } else {
-                emitTrianglesSequential(vertexCount, geometry.getFillDrawingMode(), vb, vStride, cb, cStride, fill);
+                emitTrianglesSequential(target, vertexCount, geometry.getFillDrawingMode(), vb, vStride, colorSource, colorStride, fill);
             }
         }
 
@@ -123,7 +146,7 @@ public class VulkanMotor {
         }
     }
 
-    private void emitTriangles(IntBuffer ib, Geometry.FillDrawingMode mode, FloatBuffer vb, int vs,
+    private void emitTriangles(FloatArena target, IntBuffer ib, Geometry.FillDrawingMode mode, FloatBuffer vb, int vs,
                                FloatBuffer cb, int cs, float[] fill) {
         final int n = ib.capacity();
         switch (mode) {
@@ -131,49 +154,102 @@ public class VulkanMotor {
                 for (int i = 2; i < n; i++) {
                     // keep winding consistent across the strip
                     if ((i & 1) == 0) {
-                        tri(ib.get(i - 2), ib.get(i - 1), ib.get(i), vb, vs, cb, cs, fill);
+                        tri(target, ib.get(i - 2), ib.get(i - 1), ib.get(i), vb, vs, cb, cs, fill);
                     } else {
-                        tri(ib.get(i - 1), ib.get(i - 2), ib.get(i), vb, vs, cb, cs, fill);
+                        tri(target, ib.get(i - 1), ib.get(i - 2), ib.get(i), vb, vs, cb, cs, fill);
                     }
                 }
                 break;
             case TRIANGLE_FAN:
                 for (int i = 2; i < n; i++) {
-                    tri(ib.get(0), ib.get(i - 1), ib.get(i), vb, vs, cb, cs, fill);
+                    tri(target, ib.get(0), ib.get(i - 1), ib.get(i), vb, vs, cb, cs, fill);
                 }
                 break;
             case TRIANGLES:
             default:
                 for (int i = 0; i + 2 < n; i += 3) {
-                    tri(ib.get(i), ib.get(i + 1), ib.get(i + 2), vb, vs, cb, cs, fill);
+                    tri(target, ib.get(i), ib.get(i + 1), ib.get(i + 2), vb, vs, cb, cs, fill);
                 }
                 break;
         }
     }
 
-    private void emitTrianglesSequential(int count, Geometry.FillDrawingMode mode, FloatBuffer vb, int vs,
+    private void emitTrianglesSequential(FloatArena target, int count, Geometry.FillDrawingMode mode, FloatBuffer vb, int vs,
                                          FloatBuffer cb, int cs, float[] fill) {
         switch (mode) {
             case TRIANGLE_STRIP:
                 for (int i = 2; i < count; i++) {
                     if ((i & 1) == 0) {
-                        tri(i - 2, i - 1, i, vb, vs, cb, cs, fill);
+                        tri(target, i - 2, i - 1, i, vb, vs, cb, cs, fill);
                     } else {
-                        tri(i - 1, i - 2, i, vb, vs, cb, cs, fill);
+                        tri(target, i - 1, i - 2, i, vb, vs, cb, cs, fill);
                     }
                 }
                 break;
             case TRIANGLE_FAN:
                 for (int i = 2; i < count; i++) {
-                    tri(0, i - 1, i, vb, vs, cb, cs, fill);
+                    tri(target, 0, i - 1, i, vb, vs, cb, cs, fill);
                 }
                 break;
             case TRIANGLES:
             default:
                 for (int i = 0; i + 2 < count; i += 3) {
-                    tri(i, i + 1, i + 2, vb, vs, cb, cs, fill);
+                    tri(target, i, i + 1, i + 2, vb, vs, cb, cs, fill);
                 }
                 break;
+        }
+    }
+
+    /**
+     * If this geometry is colormap-textured (surf/Fac3d: texture coordinates whose x is the
+     * position in an (N+2)x1 colormap strip), resolve each vertex's colour from the strip on the
+     * CPU and return them (4 floats/vertex); otherwise null. Real GPU texturing (needed for image
+     * plots and sprites) is a later slice — for a 1-D colormap, per-vertex resolution + Gouraud
+     * interpolation is visually equivalent.
+     */
+    private FloatBuffer resolveColormapColors(Geometry geometry, Appearance appearance, int vertexCount) {
+        final Texture texture = (appearance == null) ? null : appearance.getTexture();
+        final ElementsBuffer texCoords = geometry.getTextureCoordinates();
+        if (texture == null || texCoords == null || texCoords.getData() == null || !texture.isValid()) {
+            return null;
+        }
+        try {
+            final BufferedImage strip = texture.getDataProvider().getImage();
+            if (strip == null) {
+                return null;
+            }
+            final int w = strip.getWidth();
+            final FloatBuffer tc = texCoords.getData();
+            final int ts = texCoords.getElementsSize();
+            final float[] out = new float[vertexCount * 4];
+            for (int i = 0; i < vertexCount; i++) {
+                float u = tc.get(i * ts);
+                int px = (int) (u * w);
+                if (px < 0) {
+                    px = 0;
+                } else if (px >= w) {
+                    px = w - 1;
+                }
+                final int argb = strip.getRGB(px, 0);
+                out[i * 4] = ((argb >> 16) & 0xff) / 255f;
+                out[i * 4 + 1] = ((argb >> 8) & 0xff) / 255f;
+                out[i * 4 + 2] = (argb & 0xff) / 255f;
+                out[i * 4 + 3] = ((argb >>> 24) & 0xff) / 255f;
+            }
+            return FloatBuffer.wrap(out);
+        } catch (Throwable t) {
+            logOnce(t);
+            return null;
+        }
+    }
+
+    private String lastError;
+
+    private void logOnce(Throwable t) {
+        String key = String.valueOf(t);
+        if (!key.equals(lastError)) {
+            lastError = key;
+            System.err.println("[vulkan.motor] colormap resolve failed (logged once): " + t);
         }
     }
 
@@ -206,10 +282,10 @@ public class VulkanMotor {
         }
     }
 
-    private void tri(int a, int b, int c, FloatBuffer vb, int vs, FloatBuffer cb, int cs, float[] fill) {
-        vertex(triangles, a, vb, vs, cb, cs, fill);
-        vertex(triangles, b, vb, vs, cb, cs, fill);
-        vertex(triangles, c, vb, vs, cb, cs, fill);
+    private void tri(FloatArena target, int a, int b, int c, FloatBuffer vb, int vs, FloatBuffer cb, int cs, float[] fill) {
+        vertex(target, a, vb, vs, cb, cs, fill);
+        vertex(target, b, vb, vs, cb, cs, fill);
+        vertex(target, c, vb, vs, cb, cs, fill);
     }
 
     private void seg(int a, int b, FloatBuffer vb, int vs, FloatBuffer cb, int cs, float[] lineColor) {
@@ -245,9 +321,19 @@ public class VulkanMotor {
 
     // ---- present ----
 
+    private static final boolean DEBUG = Boolean.getBoolean("scilab.renderer.vulkan.debug");
+
     public void flush() {
+        if (DEBUG) {
+            System.out.println("[vulkan.motor] flush: " + (backdrop.count / 8) + " backdrop verts, "
+                               + (triangles.count / 8) + " tri verts, "
+                               + (lines.count / 8) + " line verts, canvas " + canvas.getWidth() + "x" + canvas.getHeight());
+        }
         renderer.resize(canvas.getWidth(), canvas.getHeight());
         renderer.beginFrame(clearR, clearG, clearB, clearA);
+        if (backdrop.count > 0) {
+            renderer.backdrop(backdrop.data, backdrop.count);
+        }
         if (triangles.count > 0) {
             renderer.triangles(triangles.data, triangles.count);
         }

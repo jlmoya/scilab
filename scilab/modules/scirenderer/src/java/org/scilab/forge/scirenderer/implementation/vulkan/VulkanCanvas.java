@@ -44,6 +44,7 @@ public final class VulkanCanvas implements Canvas {
     private int antiAliasingLevel = 0;
     private boolean drawEnabled = true;
     private Drawer mainDrawer;
+    private Runnable redrawRequestListener;
 
     private static final PickingManager PICKINGMANAGER = new PickingManager() {
         @Override
@@ -63,6 +64,16 @@ public final class VulkanCanvas implements Canvas {
     /** Inject the GPU renderer (backed by the swing-gpu-surface per-figure swapchain). */
     public void setSceneRenderer(VulkanSceneRenderer renderer) {
         motor.setRenderer(renderer);
+    }
+
+    /**
+     * Register the render-thread wake-up. All GPU work happens on ONE render thread; the
+     * {@code redraw()} contract ("asynchronous drawing") is fulfilled by signalling that thread,
+     * never by drawing inline on the caller's (interpreter) thread — two threads in
+     * {@code endFrame} would race on the mapped arena/readback memory.
+     */
+    public void setRedrawRequestListener(Runnable listener) {
+        this.redrawRequestListener = listener;
     }
 
     VulkanMotor getMotor() {
@@ -156,12 +167,17 @@ public final class VulkanCanvas implements Canvas {
 
     @Override
     public void redraw() {
-        draw();
+        Runnable listener = redrawRequestListener;
+        if (listener != null) {
+            listener.run();
+        }
     }
 
     @Override
     public void redrawAndWait() {
-        draw();
+        // Deliberately does NOT block on frame completion: this is issued many times while a
+        // figure is being built, and blocking each call would serialize construction.
+        redraw();
     }
 
     @Override

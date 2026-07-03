@@ -60,7 +60,7 @@ import org.scilab.modules.renderer.JoGLView.DrawerVisitor;
  * @author Marouane BEN JELLOUL
  * @author Jean-Baptiste Silvy
  */
-public class SwingScilabCanvas extends JPanel implements SimpleCanvas {
+public class SwingScilabCanvas extends AbstractScilabCanvas {
 
     private static final long serialVersionUID = 6101347094617535625L;
 
@@ -79,7 +79,7 @@ public class SwingScilabCanvas extends JPanel implements SimpleCanvas {
     private Integer id;
 
     public SwingScilabCanvas(final AxesContainer figure) {
-        super(new PanelLayout());
+        super(new PanelLayout());   // AbstractScilabCanvas -> JPanel
         this.figure = figure;
 
         int[] antiAliasingNumSamples = {0, 2, 4, 8, 16};

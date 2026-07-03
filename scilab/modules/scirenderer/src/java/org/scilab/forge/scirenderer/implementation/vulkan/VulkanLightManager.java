@@ -12,37 +12,53 @@
 
 package org.scilab.forge.scirenderer.implementation.vulkan;
 
+import org.scilab.forge.scirenderer.implementation.vulkan.lighting.VulkanLight;
 import org.scilab.forge.scirenderer.lightning.Light;
 import org.scilab.forge.scirenderer.lightning.LightManager;
 import org.scilab.forge.scirenderer.shapes.appearance.Material;
 
 /**
- * Lighting is disabled in the Vulkan backend for now: zero lights, so surfaces render with their
- * per-vertex / colormap colours (matching Scilab's default flat look). Real Phong lighting is a
- * later milestone (uniforms + normals are already carried by the geometry).
+ * Light registry (mirrors g2d): a fixed pool of light holders — the DrawerVisitor configures them
+ * unconditionally, so real objects must exist. The Vulkan motor does not evaluate lighting yet
+ * (a later milestone: Phong in the fragment shader; geometry already carries normals), so surfaces
+ * render with their per-vertex / colormap colours.
  */
 public class VulkanLightManager implements LightManager {
 
+    private static final int LIGHT_COUNT = 8;
+
+    private final VulkanLight[] lights = new VulkanLight[LIGHT_COUNT];
+    private boolean isLightningEnable = DEFAULT_LIGHTNING_STATUS;
+    private Material material;
+
     @Override
     public int getLightNumber() {
-        return 0;
+        return LIGHT_COUNT;
     }
 
     @Override
     public Light getLight(int i) {
-        return null;
+        if (i < 0 || i >= LIGHT_COUNT) {
+            return null;
+        }
+        if (lights[i] == null) {
+            lights[i] = new VulkanLight(i);
+        }
+        return lights[i];
     }
 
     @Override
     public void setLightningEnable(boolean isLightningEnable) {
+        this.isLightningEnable = isLightningEnable;
     }
 
     @Override
     public boolean isLightningEnable() {
-        return false;
+        return isLightningEnable;
     }
 
     @Override
     public void setMaterial(Material material) {
+        this.material = material;
     }
 }

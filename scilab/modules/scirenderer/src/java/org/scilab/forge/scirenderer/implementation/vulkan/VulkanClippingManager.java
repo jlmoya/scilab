@@ -12,27 +12,44 @@
 
 package org.scilab.forge.scirenderer.implementation.vulkan;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.scilab.forge.scirenderer.clipping.ClippingManager;
 import org.scilab.forge.scirenderer.clipping.ClippingPlane;
+import org.scilab.forge.scirenderer.implementation.vulkan.clipping.VulkanClippingPlane;
 
 /**
- * Clipping is not yet wired in the Vulkan backend: it reports zero active planes, so the
- * DrawerVisitor never requests one. User clipping planes are a later milestone (they map to
- * {@code gl_ClipDistance}-style shader clipping).
+ * Clipping-plane registry (mirrors g2d): planes are lazily created data holders — the DrawerVisitor
+ * configures them unconditionally while drawing axes, so real objects must exist. The Vulkan motor
+ * does not apply user clipping yet (a later milestone: clip distances in the vertex shader).
  */
 public class VulkanClippingManager implements ClippingManager {
 
+    private final List<ClippingPlane> clippingPlanes = new ArrayList<ClippingPlane>(6);
+
     @Override
     public int getClippingPlaneNumber() {
-        return 0;
+        return Integer.MAX_VALUE;
     }
 
     @Override
     public ClippingPlane getClippingPlane(int i) {
-        return null;
+        if (i < 0) {
+            return null;
+        }
+        while (clippingPlanes.size() <= i) {
+            clippingPlanes.add(new VulkanClippingPlane(clippingPlanes.size()));
+        }
+        return clippingPlanes.get(i);
     }
 
     @Override
     public void disableClipping() {
+        for (ClippingPlane clippingPlane : clippingPlanes) {
+            if (clippingPlane != null) {
+                clippingPlane.setEnable(false);
+            }
+        }
     }
 }

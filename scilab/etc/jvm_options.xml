@@ -23,6 +23,10 @@ $SCILAB : scilab path (SCI in Scilab)
     <!-- See https://gitlab.com/scilab/scilab/-/issues/17144 -->
     <option value="-Xshare:off"/>
 
+    <!-- Vulkan renderer (experimental, macOS): uncomment to enable for new figures.
+         scilab.renderer.vulkan.shot writes each presented frame to a PNG (figure only). -->
+    <!-- <option value="-Dscilab.renderer.vulkan=true" os="macosx"/> -->
+
     <!-- Needed for Linux version startup -->
     <option value="--add-opens=java.desktop/sun.awt.X11=ALL-UNNAMED" os="linux"/>
     <option value="-Djdk.lang.processReaperUseDefaultStackSize=true" os="linux"/>

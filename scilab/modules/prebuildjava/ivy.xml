@@ -6,7 +6,7 @@
  * For more information, see the COPYING file which you should have received
  * along with this program.
  -->
-<ivy-module version="2.0">
+<ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
     <info organisation="org.scilab" module="download-thirdparty"/>
     <dependencies>
         <!-- Use no conf when no useless dependencies are downloaded -->
@@ -34,6 +34,17 @@
         <!-- COPY --><!--<dependency org="" name="gluegen-rt" rev="2.5.0"/>-->
         <!-- COPY --><!--<dependency org="" name="jhall" rev="2.0"/>-->
         <!-- COPY --><!--<dependency org="" name="jrosetta-api" rev="1.0.4"/>-->
+
+        <!-- Vulkan renderer stack (LWJGL; the first-party swing-gpu-surface jar is copied from
+             modules/prebuildjava/firstparty by the download target) -->
+        <dependency org="org.lwjgl" name="lwjgl" rev="3.3.4" transitive="false" conf="*->default">
+            <artifact name="lwjgl" type="jar"/>
+            <artifact name="lwjgl" type="jar" m:classifier="natives-macos-arm64"/>
+        </dependency>
+        <dependency org="org.lwjgl" name="lwjgl-vulkan" rev="3.3.4" transitive="false" conf="*->default"/>
+        <dependency org="org.lwjgl" name="lwjgl-jawt" rev="3.3.4" transitive="false" conf="*->default"/>
+        <dependency org="org.lwjglx" name="lwjgl3-awt" rev="0.2.4" transitive="false" conf="*->default"/>
+
         <dependency org="org.apache.lucene" name="lucene-core" rev="9.10.0" conf="*->default"/>
         <dependency org="org.apache.lucene" name="lucene-queryparser" rev="9.10.0" conf="*->master"/>
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.10.0" conf="*->master"/>
