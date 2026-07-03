@@ -61,6 +61,10 @@ public class VulkanMotor {
     private final List<long[]> spriteRefs = new ArrayList<long[]>();      // {textureHandle}
     private final List<float[]> spriteQuads = new ArrayList<float[]>();   // 6 verts x (x,y,u,v)
 
+    // textured scene quads (image plots), staged like sprites but depth-tested
+    private final List<long[]> imageRefs = new ArrayList<long[]>();       // {textureHandle}
+    private final List<float[]> imageQuads = new ArrayList<float[]>();    // 6 verts x (clip xyzw, u, v)
+
     // texture handles queued for GPU disposal (any thread) — drained on the render thread at flush
     private final ConcurrentLinkedQueue<Long> disposedTextures = new ConcurrentLinkedQueue<Long>();
 
@@ -91,6 +95,8 @@ public class VulkanMotor {
         lines.reset();
         spriteRefs.clear();
         spriteQuads.clear();
+        imageRefs.clear();
+        imageQuads.clear();
     }
 
     public void reset(java.awt.Color color) {
@@ -105,6 +111,8 @@ public class VulkanMotor {
         lines.reset();
         spriteRefs.clear();
         spriteQuads.clear();
+        imageRefs.clear();
+        imageQuads.clear();
     }
 
     public void clearDepth() {
@@ -219,6 +227,50 @@ public class VulkanMotor {
                 }
                 break;
         }
+    }
+
+    // ---- image plots (single-arg draw(Texture): Matplot) ----
+
+    /**
+     * Draw a texture on the XY plane in MODEL coordinates — the rectangle
+     * {@code (0,0)-(width,height)}, positioned in data space by the Matplot scale/translate
+     * already on the modelView stack. The corners go through the CURRENT scene->clip matrix
+     * (like geometry, unlike screen-space sprites) and the quad is depth-tested.
+     */
+    public void drawImage(DrawingTools drawingTools, Texture texture) {
+        final long handle = ensureUploaded(texture);
+        if (handle == 0) {
+            return;
+        }
+        final Dimension texSize = texture.getDataProvider().getTextureSize();
+        if (texSize == null) {
+            return;
+        }
+        final float tw = (float) texSize.getWidth();
+        final float th = (float) texSize.getHeight();
+        System.arraycopy(drawingTools.getTransformationManager().getTransformation().getMatrix(), 0, m, 0, 16);
+
+        // model-space corners; v=0 at the TOP edge (y=th) — image row 0 is the matrix's first row
+        final float[][] corners = {
+            {0, 0}, {tw, 0}, {tw, th},
+            {0, 0}, {tw, th}, {0, th},
+        };
+        final float[][] uv = {
+            {0, 1}, {1, 1}, {1, 0},
+            {0, 1}, {1, 0}, {0, 0},
+        };
+        final float[] quad = new float[36];
+        for (int v = 0; v < 6; v++) {
+            final float x = corners[v][0];
+            final float y = corners[v][1];
+            for (int r = 0; r < 4; r++) {
+                quad[v * 6 + r] = (float) (m[r] * x + m[4 + r] * y + m[12 + r]);
+            }
+            quad[v * 6 + 4] = uv[v][0];
+            quad[v * 6 + 5] = uv[v][1];
+        }
+        imageRefs.add(new long[] {handle});
+        imageQuads.add(quad);
     }
 
     // ---- sprites (text labels, tick numbers, marks) ----
@@ -369,24 +421,16 @@ public class VulkanMotor {
             return vt.getGpuHandle();
         }
         try {
-            final BufferedImage img = vt.getDataProvider().getImage();
-            if (img == null) {
+            final ByteBuffer rgba = textureToRgba(vt);
+            if (rgba == null) {
                 return 0;
             }
             if (vt.getGpuHandle() != 0) {
                 renderer.destroyTexture(vt.getGpuHandle());
             }
-            final int w = img.getWidth();
-            final int h = img.getHeight();
-            final int[] argb = img.getRGB(0, 0, w, h, null, 0, w);
-            final ByteBuffer rgba = ByteBuffer.allocate(w * h * 4);
-            for (int p : argb) {
-                rgba.put((byte) ((p >> 16) & 0xff));
-                rgba.put((byte) ((p >> 8) & 0xff));
-                rgba.put((byte) (p & 0xff));
-                rgba.put((byte) ((p >>> 24) & 0xff));
-            }
-            rgba.flip();
+            final Dimension size = vt.getDataProvider().getTextureSize();
+            final int w = size.width;
+            final int h = size.height;
             if (DEBUG) {
                 int opaque = 0;
                 for (int i = 3; i < rgba.limit(); i += 4) {
@@ -396,7 +440,8 @@ public class VulkanMotor {
                 }
                 System.out.println("[vulkan.motor] upload tex " + w + "x" + h + " opaquePx=" + opaque + "/" + (w * h));
             }
-            final long handle = renderer.uploadTexture(w, h, rgba);
+            final boolean linear = vt.getMagnificationFilter() == Texture.Filter.LINEAR;
+            final long handle = renderer.uploadTexture(w, h, rgba, linear);
             if (handle != 0) {
                 vt.setGpuHandle(handle);
             }
@@ -412,6 +457,56 @@ public class VulkanMotor {
         if (handle != 0) {
             disposedTextures.add(handle);
         }
+    }
+
+    /**
+     * Convert a texture's current data to a row-major RGBA byte buffer. Row-major sources (glyph
+     * sprites, colormap strips) go through the provider's format-proof {@code getImage()};
+     * COLUMN-major sources (Matplot image data, {@code isRowMajorOrder()==false}) are transposed
+     * once here — the provider's linear {@code getImage()} would shear them — so the draw side
+     * always uses a straight texcoord map.
+     */
+    private ByteBuffer textureToRgba(VulkanTexture vt) {
+        final org.scilab.forge.scirenderer.texture.TextureDataProvider provider = vt.getDataProvider();
+        final Dimension size = provider.getTextureSize();
+        if (size == null || size.width <= 0 || size.height <= 0) {
+            return null;
+        }
+        final int w = size.width;
+        final int h = size.height;
+        if (!provider.isRowMajorOrder()) {
+            final ByteBuffer src = provider.getData();
+            if (src != null && src.capacity() >= w * h * 4) {
+                // column-major RGBA: element (row r, col c) at src index (c*h + r)
+                final ByteBuffer rgba = ByteBuffer.allocate(w * h * 4);
+                for (int r = 0; r < h; r++) {
+                    for (int c = 0; c < w; c++) {
+                        final int s = (c * h + r) * 4;
+                        rgba.put(src.get(s));
+                        rgba.put(src.get(s + 1));
+                        rgba.put(src.get(s + 2));
+                        rgba.put(src.get(s + 3));
+                    }
+                }
+                rgba.flip();
+                return rgba;
+            }
+            // fall through: unexpected layout — getImage() below at least renders something
+        }
+        final BufferedImage img = provider.getImage();
+        if (img == null) {
+            return null;
+        }
+        final int[] argb = img.getRGB(0, 0, w, h, null, 0, w);
+        final ByteBuffer rgba = ByteBuffer.allocate(w * h * 4);
+        for (int p : argb) {
+            rgba.put((byte) ((p >> 16) & 0xff));
+            rgba.put((byte) ((p >> 8) & 0xff));
+            rgba.put((byte) (p & 0xff));
+            rgba.put((byte) ((p >>> 24) & 0xff));
+        }
+        rgba.flip();
+        return rgba;
     }
 
     /**
@@ -559,6 +654,9 @@ public class VulkanMotor {
         }
         if (lines.count > 0) {
             renderer.lines(lines.data, lines.count);
+        }
+        for (int i = 0; i < imageQuads.size(); i++) {
+            renderer.image(imageRefs.get(i)[0], imageQuads.get(i));
         }
         for (int i = 0; i < spriteQuads.size(); i++) {
             renderer.sprite(spriteRefs.get(i)[0], spriteQuads.get(i));

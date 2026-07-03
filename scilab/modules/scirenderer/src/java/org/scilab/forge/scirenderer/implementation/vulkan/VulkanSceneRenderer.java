@@ -47,7 +47,7 @@ public interface VulkanSceneRenderer {
      * Upload an RGBA8 image (glyph sprite, mark, colormap strip, image plot) and return a handle
      * (0 = failed). May be called outside beginFrame/endFrame, on the render thread.
      */
-    long uploadTexture(int width, int height, java.nio.ByteBuffer rgba);
+    long uploadTexture(int width, int height, java.nio.ByteBuffer rgba, boolean linearFilter);
 
     /** Destroy a texture previously returned by {@link #uploadTexture}. Render thread only. */
     void destroyTexture(long handle);
@@ -58,6 +58,12 @@ public interface VulkanSceneRenderer {
      * never occluded by geometry.
      */
     void sprite(long textureHandle, float[] posUv24);
+
+    /**
+     * Append one textured SCENE quad (image plots): 6 vertices x (x, y, z, w, u, v), positions in
+     * GL clip space (scene transform pre-applied on the CPU). Depth-tested like scene geometry.
+     */
+    void image(long textureHandle, float[] clipPosUv36);
 
     /** Finish the frame: submit + present (and read back for figure export). */
     void endFrame();
@@ -88,7 +94,7 @@ public interface VulkanSceneRenderer {
         }
 
         @Override
-        public long uploadTexture(int width, int height, java.nio.ByteBuffer rgba) {
+        public long uploadTexture(int width, int height, java.nio.ByteBuffer rgba, boolean linearFilter) {
             return 0;
         }
 
@@ -98,6 +104,10 @@ public interface VulkanSceneRenderer {
 
         @Override
         public void sprite(long textureHandle, float[] posUv24) {
+        }
+
+        @Override
+        public void image(long textureHandle, float[] clipPosUv36) {
         }
 
         @Override

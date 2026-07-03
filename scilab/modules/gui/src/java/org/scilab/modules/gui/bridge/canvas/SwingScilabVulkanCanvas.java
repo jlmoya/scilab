@@ -143,8 +143,8 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 }
 
                 @Override
-                public long uploadTexture(int width, int height, java.nio.ByteBuffer rgba) {
-                    return s.uploadTexture(width, height, rgba);
+                public long uploadTexture(int width, int height, java.nio.ByteBuffer rgba, boolean linearFilter) {
+                    return s.uploadTexture(width, height, rgba, linearFilter);
                 }
 
                 @Override
@@ -155,6 +155,11 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 @Override
                 public void sprite(long textureHandle, float[] posUv24) {
                     s.sprite(textureHandle, posUv24);
+                }
+
+                @Override
+                public void image(long textureHandle, float[] clipPosUv36) {
+                    s.image(textureHandle, clipPosUv36);
                 }
 
                 @Override

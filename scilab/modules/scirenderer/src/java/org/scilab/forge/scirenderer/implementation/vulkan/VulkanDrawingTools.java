@@ -116,7 +116,8 @@ public class VulkanDrawingTools implements DrawingTools {
 
     @Override
     public void draw(Texture texture) throws SciRendererException {
-        // Image plots (Matplot): a textured quad in model space — next slice.
+        // Image plots (Matplot): a textured quad in model space, depth-tested with the scene.
+        canvas.getMotor().drawImage(this, texture);
     }
 
     @Override
