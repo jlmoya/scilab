@@ -23,7 +23,7 @@ import org.scilab.forge.scirenderer.texture.AbstractTexture;
 public class VulkanTexture extends AbstractTexture {
 
     /** Opaque handle into the GPU texture table owned by the scene renderer (0 = not uploaded). */
-    private long gpuHandle;
+    private volatile long gpuHandle;
 
     public long getGpuHandle() {
         return gpuHandle;

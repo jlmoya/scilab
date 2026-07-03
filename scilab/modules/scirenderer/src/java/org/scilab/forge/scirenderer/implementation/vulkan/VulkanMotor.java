@@ -67,7 +67,7 @@ public class VulkanMotor {
     private final List<float[]> imageQuads = new ArrayList<float[]>();    // 6 verts x (clip xyzw, u, v)
 
     // texture handles queued for GPU disposal (any thread) — drained on the render thread at flush
-    private final ConcurrentLinkedQueue<Long> disposedTextures = new ConcurrentLinkedQueue<Long>();
+    private final ConcurrentLinkedQueue<VulkanTexture> disposedTextures = new ConcurrentLinkedQueue<VulkanTexture>();
 
     private float clearR = 1f, clearG = 1f, clearB = 1f, clearA = 1f;
 
@@ -131,6 +131,9 @@ public class VulkanMotor {
         }
         final FloatBuffer vb = vertices.getData();
         final int vStride = vertices.getElementsSize();
+        if (vStride <= 0) {
+            return;   // malformed geometry — avoid a divide-by-zero that would abort the frame
+        }
         // sizes come from limit(), not capacity(): scirenderer hands out DIRECT buffers whose
         // valid data is [0, limit) — e.g. a polyline's (unfilled) fill-index buffer has
         // limit 0 with a larger capacity; reading by capacity() runs off the data
@@ -484,15 +487,19 @@ public class VulkanMotor {
             }
             return handle;
         } catch (Throwable t) {
-            logOnce(t);
+            logOnce("texture upload failed", t);
             return 0;
         }
     }
 
-    /** Queue a GPU texture for disposal (any thread); drained on the render thread at flush. */
-    public void queueTextureDispose(long handle) {
-        if (handle != 0) {
-            disposedTextures.add(handle);
+    /**
+     * Queue a texture for GPU disposal (interpreter thread, from VulkanTextureManager.dispose).
+     * The GPU handle is NOT read or cleared here — the render thread does both when it drains the
+     * queue at flush, keeping the handle render-thread-confined (no race vs ensureUploaded).
+     */
+    public void queueTextureDispose(VulkanTexture texture) {
+        if (texture != null) {
+            disposedTextures.add(texture);
         }
     }
 
@@ -562,12 +569,14 @@ public class VulkanMotor {
         try {
             final BufferedImage strip = texture.getDataProvider().getImage();
             if (strip == null) {
+                warnOnce("colormap texture present but its image is null; surface renders flat");
                 return null;
             }
             final int w = strip.getWidth();
             final FloatBuffer tc = texCoords.getData();
             final int ts = texCoords.getElementsSize();
             if (tc.limit() < vertexCount * ts) {
+                warnOnce("colormap texcoords shorter than vertex count; surface renders flat");
                 return null;
             }
             final float[] out = new float[vertexCount * 4];
@@ -587,18 +596,27 @@ public class VulkanMotor {
             }
             return FloatBuffer.wrap(out);
         } catch (Throwable t) {
-            logOnce(t);
+            logOnce("colormap resolve failed", t);
             return null;
         }
     }
 
     private String lastError;
+    private String lastWarn;
 
-    private void logOnce(Throwable t) {
-        String key = String.valueOf(t);
+    /** Log an exception once per (site, exception) so distinct sites don't suppress each other. */
+    private void logOnce(String where, Throwable t) {
+        String key = where + "|" + t;
         if (!key.equals(lastError)) {
             lastError = key;
-            System.err.println("[vulkan.motor] colormap resolve failed (logged once): " + t);
+            System.err.println("[vulkan.motor] " + where + " (logged once): " + t);
+        }
+    }
+
+    private void warnOnce(String msg) {
+        if (!msg.equals(lastWarn)) {
+            lastWarn = msg;
+            System.err.println("[vulkan.motor] " + msg);
         }
     }
 
@@ -696,9 +714,10 @@ public class VulkanMotor {
                                + spriteQuads.size() + " sprites, canvas " + canvas.getWidth() + "x" + canvas.getHeight());
         }
         // frames are synchronous, so nothing is in flight here — safe point for GPU disposal
-        Long dead;
+        VulkanTexture dead;
         while ((dead = disposedTextures.poll()) != null) {
-            renderer.destroyTexture(dead);
+            renderer.destroyTexture(dead.getGpuHandle());
+            dead.clearGpuHandle();
         }
         renderer.resize(canvas.getWidth(), canvas.getHeight());
         renderer.beginFrame(clearR, clearG, clearB, clearA);

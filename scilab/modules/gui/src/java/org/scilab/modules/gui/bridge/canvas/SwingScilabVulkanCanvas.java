@@ -58,6 +58,7 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
 
     private static final long serialVersionUID = 1L;
     private static final int KEEP_ALIVE_MS = 100;
+    private static final int MAX_CONSECUTIVE_FAILURES = 30;
 
     private final AxesContainer figure;
     private final GpuSurfaceComponent surfaceComponent;
@@ -112,7 +113,9 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
         try {
             NativeSurface surface = waitForSurface();
             if (surface == null) {
-                System.err.println("[scilab.vulkan] no native surface; figure will not render");
+                if (!stopRequested) {
+                    System.err.println("[scilab.vulkan] native surface unavailable; this figure will not render");
+                }
                 return;
             }
             scene = new VulkanScene(surface.handle(), surface.width(), surface.height());
@@ -176,6 +179,7 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
             System.out.println("[scilab.vulkan] canvas ready: " + surface.width() + "x" + surface.height());
 
             final String shot = perFigurePath(System.getProperty("scilab.renderer.vulkan.shot"));
+            int consecutiveFailures = 0;
             while (!stopRequested) {
                 awaitRedraw(KEEP_ALIVE_MS);
                 if (stopRequested) {
@@ -200,8 +204,16 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 }
                 try {
                     rendererCanvas.draw();
+                    consecutiveFailures = 0;
                 } catch (Throwable t) {
                     logOnce(t);
+                    // a persistent fatal error (device lost, surface lost) would otherwise be
+                    // retried every keep-alive tick forever — stop the loop after a run of them
+                    if (++consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+                        System.err.println("[scilab.vulkan] render thread stopping after "
+                            + consecutiveFailures + " consecutive failures; last: " + t);
+                        break;
+                    }
                 }
             }
         } catch (Throwable t) {
@@ -230,7 +242,7 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
     }
 
     private NativeSurface waitForSurface() throws InterruptedException {
-        for (int i = 0; i < 600 && !stopRequested; i++) {
+        for (int i = 0; i < 3000 && !stopRequested; i++) {
             NativeSurface s = surfaceComponent.surface();
             if (s != null && s.handle() != 0L && surfaceComponent.getWidth() > 0) {
                 return s;
@@ -372,9 +384,19 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
 
     @Override
     public BufferedImage dumpAsBufferedImage() {
-        // The scene's readback buffer always holds the last presented frame; snapshot() is
-        // GPU-locked, so this is safe from the EDT / interpreter thread.
+        // The scene's readback buffer holds the last presented frame; snapshot() is GPU-locked,
+        // so this is safe from the EDT / interpreter thread. Briefly wait out the async bring-up
+        // window (export called right after plot) so we return the frame rather than null.
         VulkanScene sc = scene;
+        for (int i = 0; sc == null && i < 100 && !stopRequested; i++) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+            sc = scene;
+        }
         return (sc != null) ? sc.snapshot() : null;
     }
 

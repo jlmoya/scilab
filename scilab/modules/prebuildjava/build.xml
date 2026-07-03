@@ -136,6 +136,12 @@ The main idea is to build at once all the var files
             <fileset dir="firstparty" includes="*.jar"/>
         </copy>
 
+        <!-- MoltenVK (Vulkan renderer, macOS): copied from the Vulkan SDK if present. Not on
+             Maven Central; the packaged app ships this dylib so it needs no external SDK. -->
+        <property environment="env"/>
+        <copy file="${env.VULKAN_SDK}/macOS/lib/libMoltenVK.dylib" tofile="${thirdparty.dir}/libMoltenVK.dylib"
+              failonerror="false" quiet="true"/>
+
         <delete>
             <fileset dir="${thirdparty.dir}">
                 <include name="batik-*.jar"/>

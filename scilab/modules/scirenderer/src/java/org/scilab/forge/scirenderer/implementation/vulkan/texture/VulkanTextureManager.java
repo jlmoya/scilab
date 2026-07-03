@@ -42,8 +42,10 @@ public class VulkanTextureManager implements TextureManager {
         if (texture instanceof VulkanTexture) {
             VulkanTexture vt = (VulkanTexture) texture;
             if (vt.getGpuHandle() != 0) {
-                canvas.getMotor().queueTextureDispose(vt.getGpuHandle());
-                vt.clearGpuHandle();
+                // Called on the INTERPRETER thread (DrawerVisitor.deleteObject). Only enqueue —
+                // do NOT read past this or clear the GPU handle here; the render thread's
+                // ensureUploaded owns the handle, and clearing it here would race that read.
+                canvas.getMotor().queueTextureDispose(vt);
             }
         }
     }

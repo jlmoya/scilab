@@ -12,8 +12,13 @@
 
 package org.scilab.modules.gui.bridge.canvas;
 
+import java.io.File;
+
 import javax.xml.xpath.XPathFactory;
 
+import cc.sosonline.gpu.VulkanScene;
+
+import org.scilab.modules.commons.ScilabConstants;
 import org.scilab.modules.commons.xml.XConfiguration;
 import org.scilab.modules.graphic_objects.axes.AxesContainer;
 import org.w3c.dom.Document;
@@ -52,12 +57,44 @@ public final class ScilabCanvasFactory {
     public static AbstractScilabCanvas createCanvas(AxesContainer figure) {
         if (isVulkanRequested()) {
             try {
+                // Bring up the shared Vulkan context HERE (synchronously) so a missing loader /
+                // device / shader throws now and falls through to JOGL. The Vulkan canvas otherwise
+                // does all its bring-up later on its own render thread, where a failure would leave
+                // the figure permanently blank instead of falling back.
+                resolveBundledLoader();
+                VulkanScene.ensureContext();
                 return new SwingScilabVulkanCanvas(figure);
             } catch (Throwable t) {
-                System.err.println("[scilab.vulkan] Vulkan canvas unavailable, falling back to JOGL: " + t);
-                t.printStackTrace();
+                System.err.println("[scilab.vulkan] Vulkan unavailable, using JOGL: " + t);
             }
         }
         return new SwingScilabCanvas(figure);
+    }
+
+    private static boolean loaderResolved;
+
+    /**
+     * If {@code -Dvk.loader} isn't set, point it at the MoltenVK dylib bundled next to the Scilab
+     * install (SCI-relative, covering dev + packaged layouts). If none is found, VulkanScene falls
+     * back to {@code $VULKAN_SDK} / its dev path.
+     */
+    private static synchronized void resolveBundledLoader() {
+        if (loaderResolved || System.getProperty("vk.loader") != null) {
+            loaderResolved = true;
+            return;
+        }
+        String sci = ScilabConstants.SCI.getPath();
+        String[] candidates = {
+            sci + "/thirdparty/libMoltenVK.dylib",
+            sci + "/../thirdparty/libMoltenVK.dylib",
+            sci + "/../../thirdparty/libMoltenVK.dylib",
+        };
+        for (String c : candidates) {
+            if (new File(c).exists()) {
+                System.setProperty("vk.loader", c);
+                break;
+            }
+        }
+        loaderResolved = true;
     }
 }
