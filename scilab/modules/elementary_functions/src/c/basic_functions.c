@@ -12,6 +12,7 @@
  * along with this program.
  *
  */
+#include <limits.h>
 #include "basic_functions.h"
 
 
@@ -71,16 +72,24 @@ double dfrexps(double _dblVal, double *_pdblExp)
 
 double durands(int* _iVal)
 {
-    static int ia = 0, ic = 0, itwo = 2, m2 = 0, m = 0, mic = 0;
+    static int ia = 0, ic = 0, itwo = 2, m2 = 0, mic = 0;
     static double halfm = 0, s = 0;
 
     if (m2 == 0)
     {
-        m = 1;
-        while (m > m2)
+        /*
+         * Largest power of two m2 such that 2*m2 still fits in a signed int.
+         * The original loop terminated by letting m = itwo*m2 overflow a signed
+         * int -- undefined behaviour that modern clang at -O2 (the shipped build)
+         * miscompiles: m2 stays 0, so halfm = 0 and s = 0.5/0 = +Inf, and EVERY
+         * durands()/rand() value becomes Inf (which silently blanks plots fed by
+         * rand, e.g. grayplot). Compute the same m2 (2^30 on 32-bit int) without
+         * ever overflowing.
+         */
+        m2 = 1;
+        while (m2 <= INT_MAX / itwo)
         {
-            m2 = m;
-            m = itwo * m2;
+            m2 = itwo * m2;
         }
         halfm = m2;
 
