@@ -127,23 +127,35 @@ when needed.
 - **M7 — production-hardening pass** *(done)*: four audits (leaks, thread-safety, silent failures,
   correctness) + fixes; the C1 depth-epoch redesign above; MoltenVK bundling for the packaged app;
   docs. All verified by GPU readback.
+- **M8 — user clipping + lighting** *(done)*:
+  - **Clipping** (`clip_state`/`clip_box`/`clipgrf`): the motor bakes up to 6 per-vertex clip distances
+    (`dot(plane, scene-vertex)`; the plane's transform cancels the geometry's) into a parallel vertex
+    buffer (binding 1); the fragment shader discards where any is negative. Handles 2D (4-plane) and the
+    3D box (6-plane). Verified: a curve clips to an axes box tighter than its range.
+  - **Lighting** (`light()` + material): CPU per-vertex ambient + diffuse (Gouraud) baked into the vertex
+    colour, in scene space with the raw vertex + normal, colorMaterial-aware — mirroring JOGL/g2d.
+    Specular is skipped (needs the eye in scene space). Verified against the g2d software renderer: the
+    shading gradient matches.
 
-## Status (M7 complete)
+## Status (M1–M8 complete)
 
-M1–M7 are done and verified via readback: `surf`, `plot2d`, `param3d`, scatter/marks, text/labels,
+Everything is done and verified via readback: `surf`, `plot2d`, `param3d`, scatter/marks, text/labels,
 `Matplot` image plots (single + multi-figure), bars/histograms/flat-3D (depth epochs), figure export,
-picking, preferences, and the bundled-MoltenVK packaged-app path. Every commit is authored plainly with
-no AI-attribution trailers.
+picking, preferences, the bundled-MoltenVK packaged-app path, user clipping, and lit surfaces. Every
+commit is authored plainly with no AI-attribution trailers.
 
-**Known gaps / deferred to a later milestone (M8):**
-- **User clipping** (`clip_state`/`clip_box`, `clipgrf`): the seam exists (`VulkanClippingManager` stub);
-  the correct implementation bakes per-vertex clip distances into the vertex stream at emit time (a
-  vertex-format + shader change). Not a hardening item — a feature.
-- **Lighting**: Scilab's default shading is colormap/flat (already covered); light sources need normals
-  + a shading model. Cosmetic, deferred.
+**Known limitations / follow-ups:**
+- **Clipping + lighting of image plots and text sprites**: images (`Matplot`) and screen-aligned sprites
+  use separate pipelines and are not clipped or lit yet. Rarely visible (images usually fit; labels sit
+  on top). A later refinement.
+- **Specular highlights**: skipped — the clip-space CPU transform doesn't carry the eye position in scene
+  space. Diffuse + ambient cover the dominant visual effect.
 - **`grayplot`**: renders blank — its mesh geometry (`dataManager.getVertexBuffer`) arrives empty, so
   nothing reaches the motor. Reproduces in the headless PNG export too, i.e. **upstream of the renderer**
   and not Vulkan-specific; tracked separately.
+- **Win/Linux**: the renderer is Vulkan (portable); only the Layer-1 Swing↔GPU surface (macOS
+  `CAMetalLayer`) and the MoltenVK bundling are macOS-specific. A Win/Linux surface + native Vulkan
+  loader are the remaining portability work.
 
 ## Risks
 
