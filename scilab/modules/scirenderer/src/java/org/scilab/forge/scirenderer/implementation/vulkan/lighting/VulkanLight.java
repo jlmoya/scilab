@@ -32,6 +32,7 @@ public class VulkanLight implements Light {
     private Vector3d spotDirection = new Vector3d(0, 0, -1);
     private Vector3d direction = new Vector3d(0, 0, 0);
     private float spotAngle = 180;
+    private boolean directional = true;   // Scilab's default light type is directional (0)
 
     public VulkanLight(int index) {
         this.index = index;
@@ -85,6 +86,7 @@ public class VulkanLight implements Light {
     @Override
     public void setPosition(Vector3d position) {
         this.position = position;
+        this.directional = false;
     }
 
     @Override
@@ -95,6 +97,12 @@ public class VulkanLight implements Light {
     @Override
     public void setDirection(Vector3d direction) {
         this.direction = direction;
+        this.directional = true;
+    }
+
+    /** True for a positional (point) light — the motor uses per-vertex rays; false = directional. */
+    public boolean isPoint() {
+        return !directional;
     }
 
     @Override

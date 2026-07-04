@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.scilab.forge.scirenderer.DrawingTools;
 import org.scilab.forge.scirenderer.buffers.ElementsBuffer;
+import org.scilab.forge.scirenderer.implementation.vulkan.lighting.VulkanLight;
 import org.scilab.forge.scirenderer.buffers.IndicesBuffer;
 import org.scilab.forge.scirenderer.implementation.vulkan.texture.VulkanTexture;
 import org.scilab.forge.scirenderer.shapes.appearance.Appearance;
@@ -64,6 +65,21 @@ public class VulkanMotor {
     private double[][] activeClip;
     private final float[] clipd = new float[8];
     private static final float CLIP_INSIDE = 1.0e30f;
+
+    // lighting: CPU per-vertex ambient + diffuse (Gouraud) baked into the vertex colour when a lit
+    // surface is drawn (specular skipped — it needs the eye in scene space). Captured per object in
+    // draw() from the light manager + the geometry's normals; nbuf/nStride index the normal buffer.
+    private boolean lit;
+    private boolean colorMaterial;
+    private FloatBuffer nbuf;
+    private int nStride;
+    private final float[] matAmbient = new float[3];
+    private final float[] matDiffuse = new float[3];
+    private float[][] lightAmb;    // per enabled light: ambient rgb
+    private float[][] lightDiff;   // per enabled light: diffuse rgb
+    private float[][] lightVec;    // per enabled light: direction (or position) in scene space
+    private boolean[] lightPoint;  // per enabled light: positional vs directional
+    private int nLights;
 
     // depth epochs: each clearDepthBuffer() (JOGL clears depth after the axes box so data draws over
     // it) records the {tri-vertex, line-vertex, image} counts at that point; the renderer replays
@@ -169,6 +185,9 @@ public class VulkanMotor {
         // capture this object's enabled user-clip planes; vertex() bakes per-vertex clip distances so
         // the fragment shader can discard outside them. null (the usual clip_state==off) => "inside".
         activeClip = clipPlanesOf(drawingTools);
+
+        // capture lighting (lit surfaces only); vertex() then shades each vertex colour on the CPU
+        captureLighting(drawingTools, geometry);
 
         // fills — ALL depth-tested triangles. Colours come from (in priority): the colormap strip
         // resolved per-vertex on the CPU (surf/Fac3d; texcoord.x = colormap position), an explicit
@@ -715,6 +734,50 @@ public class VulkanMotor {
             cbb = cs > 2 ? cb.get(i * cs + 2) : cr;
             ca = cs > 3 ? cb.get(i * cs + 3) : 1f;
         }
+
+        // CPU per-vertex ambient + diffuse shading (Gouraud) for lit surfaces, in scene space with
+        // the raw vertex + normal (both scaled by the axes factors, like the light direction). Matches
+        // the JOGL/g2d fixed-function model; specular is skipped (needs the eye in scene space).
+        if (lit && nbuf != null && (i + 1) * nStride <= nbuf.limit()) {
+            float nx = nbuf.get(i * nStride);
+            float ny = nbuf.get(i * nStride + 1);
+            float nz = nStride > 2 ? nbuf.get(i * nStride + 2) : 0f;
+            final float nl = (float) Math.sqrt(nx * nx + ny * ny + nz * nz);
+            if (nl > 1e-8f) {
+                nx /= nl; ny /= nl; nz /= nl;
+            }
+            float lr = 0f, lg = 0f, lb = 0f;
+            for (int k = 0; k < nLights; k++) {
+                float ldx, ldy, ldz;
+                if (lightPoint[k]) {
+                    ldx = lightVec[k][0] - x; ldy = lightVec[k][1] - y; ldz = lightVec[k][2] - z;
+                } else {
+                    ldx = lightVec[k][0]; ldy = lightVec[k][1]; ldz = lightVec[k][2];
+                }
+                final float ll = (float) Math.sqrt(ldx * ldx + ldy * ldy + ldz * ldz);
+                if (ll > 1e-8f) {
+                    ldx /= ll; ldy /= ll; ldz /= ll;
+                }
+                float ndotl = nx * ldx + ny * ldy + nz * ldz;
+                if (ndotl < 0f) {
+                    ndotl = 0f;
+                }
+                // colorMaterial (the usual surf case): the surface colour IS the material; otherwise
+                // the fixed material ambient/diffuse colours are used.
+                final float ar = colorMaterial ? cr : matAmbient[0];
+                final float ag = colorMaterial ? cg : matAmbient[1];
+                final float ab = colorMaterial ? cbb : matAmbient[2];
+                final float dr = colorMaterial ? cr : matDiffuse[0];
+                final float dg = colorMaterial ? cg : matDiffuse[1];
+                final float db = colorMaterial ? cbb : matDiffuse[2];
+                lr += ar * lightAmb[k][0] + ndotl * dr * lightDiff[k][0];
+                lg += ag * lightAmb[k][1] + ndotl * dg * lightDiff[k][1];
+                lb += ab * lightAmb[k][2] + ndotl * db * lightDiff[k][2];
+            }
+            cr = lr > 1f ? 1f : lr;
+            cg = lg > 1f ? 1f : lg;
+            cbb = lb > 1f ? 1f : lb;
+        }
         arena.vertex(clip[0], clip[1], clip[2], clip[3], cr, cg, cbb, ca);
 
         // parallel clip distances: dot(plane, [x,y,z,w]) on the RAW scene vertex — the plane's
@@ -735,6 +798,63 @@ public class VulkanMotor {
     private double[][] clipPlanesOf(DrawingTools dt) {
         org.scilab.forge.scirenderer.clipping.ClippingManager cm = dt.getClippingManager();
         return (cm instanceof VulkanClippingManager) ? ((VulkanClippingManager) cm).enabledEquations() : null;
+    }
+
+    /** Capture this object's lighting state; leaves {@code lit=false} unless lighting is enabled with a
+     *  material, per-vertex normals, and at least one enabled light (the lit-surface case). */
+    private void captureLighting(DrawingTools dt, Geometry geometry) {
+        lit = false;
+        org.scilab.forge.scirenderer.lightning.LightManager lm = dt.getLightManager();
+        if (!(lm instanceof VulkanLightManager)) {
+            return;
+        }
+        final VulkanLightManager vlm = (VulkanLightManager) lm;
+        final ElementsBuffer normals = geometry.getNormals();
+        final org.scilab.forge.scirenderer.shapes.appearance.Material mat = vlm.getMaterial();
+        if (!vlm.isLightningEnable() || mat == null || normals == null || normals.getData() == null) {
+            return;
+        }
+        int count = 0;
+        for (int i = 0; i < vlm.getLightNumber(); i++) {
+            org.scilab.forge.scirenderer.lightning.Light l = vlm.getLight(i);
+            if (l != null && l.isEnable()) {
+                count++;
+            }
+        }
+        if (count == 0) {
+            return;
+        }
+        if (lightAmb == null || lightAmb.length < count) {
+            lightAmb = new float[count][3];
+            lightDiff = new float[count][3];
+            lightVec = new float[count][3];
+            lightPoint = new boolean[count];
+        }
+        int k = 0;
+        for (int i = 0; i < vlm.getLightNumber() && k < count; i++) {
+            org.scilab.forge.scirenderer.lightning.Light l = vlm.getLight(i);
+            if (l == null || !l.isEnable()) {
+                continue;
+            }
+            final Color a = l.getAmbientColor();
+            final Color d = l.getDiffuseColor();
+            lightAmb[k][0] = a.getRedAsFloat(); lightAmb[k][1] = a.getGreenAsFloat(); lightAmb[k][2] = a.getBlueAsFloat();
+            lightDiff[k][0] = d.getRedAsFloat(); lightDiff[k][1] = d.getGreenAsFloat(); lightDiff[k][2] = d.getBlueAsFloat();
+            final boolean point = (l instanceof VulkanLight) && ((VulkanLight) l).isPoint();
+            lightPoint[k] = point;
+            final float[] v = (point ? l.getPosition() : l.getDirection()).getDataAsFloatArray();
+            lightVec[k][0] = v[0]; lightVec[k][1] = v[1]; lightVec[k][2] = v[2];
+            k++;
+        }
+        nLights = count;
+        final Color ma = mat.getAmbientColor();
+        final Color md = mat.getDiffuseColor();
+        matAmbient[0] = ma.getRedAsFloat(); matAmbient[1] = ma.getGreenAsFloat(); matAmbient[2] = ma.getBlueAsFloat();
+        matDiffuse[0] = md.getRedAsFloat(); matDiffuse[1] = md.getGreenAsFloat(); matDiffuse[2] = md.getBlueAsFloat();
+        colorMaterial = mat.isColorMaterialEnable();
+        nbuf = normals.getData();
+        nStride = normals.getElementsSize();
+        lit = true;
     }
 
     private static float[] rgba(Color color) {

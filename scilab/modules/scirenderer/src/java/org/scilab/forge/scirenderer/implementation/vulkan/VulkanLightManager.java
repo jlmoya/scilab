@@ -18,10 +18,11 @@ import org.scilab.forge.scirenderer.lightning.LightManager;
 import org.scilab.forge.scirenderer.shapes.appearance.Material;
 
 /**
- * Light registry (mirrors g2d): a fixed pool of light holders — the DrawerVisitor configures them
- * unconditionally, so real objects must exist. The Vulkan motor does not evaluate lighting yet
- * (a later milestone: Phong in the fragment shader; geometry already carries normals), so surfaces
- * render with their per-vertex / colormap colours.
+ * Light registry (mirrors g2d): a fixed pool of light holders configured by the DrawerVisitor
+ * (LightingUtils.setupLights) around lit surfaces. The motor reads {@link #isLightningEnable()},
+ * {@link #getMaterial()} and the enabled {@link #getLight lights} at emit time and bakes per-vertex
+ * ambient + diffuse shading into the vertex colours on the CPU (Gouraud), matching the JOGL/g2d
+ * fixed-function model; specular is not applied (it needs the eye position in scene space).
  */
 public class VulkanLightManager implements LightManager {
 
@@ -60,5 +61,10 @@ public class VulkanLightManager implements LightManager {
     @Override
     public void setMaterial(Material material) {
         this.material = material;
+    }
+
+    /** The current surface material (ambient/diffuse/specular/shininess), or null if unset. */
+    public Material getMaterial() {
+        return material;
     }
 }
