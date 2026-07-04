@@ -56,6 +56,15 @@ public class VulkanMotor {
     private final FloatArena triangles = new FloatArena();
     private final FloatArena lines = new FloatArena();
 
+    // user clipping: per-vertex clip distances baked parallel to triangles/lines (8 floats/vertex =
+    // 2 vec4, up to 6 planes). activeClip holds the current object's enabled plane equations (null =
+    // none, the common clip_state==off case); clipd is a scratch row reused per vertex.
+    private final FloatArena trianglesClip = new FloatArena();
+    private final FloatArena linesClip = new FloatArena();
+    private double[][] activeClip;
+    private final float[] clipd = new float[8];
+    private static final float CLIP_INSIDE = 1.0e30f;
+
     // depth epochs: each clearDepthBuffer() (JOGL clears depth after the axes box so data draws over
     // it) records the {tri-vertex, line-vertex, image} counts at that point; the renderer replays
     // each epoch depth-tested and clears depth between them. See VulkanSceneRenderer#depthEpochs.
@@ -97,6 +106,8 @@ public class VulkanMotor {
         }
         triangles.reset();
         lines.reset();
+        trianglesClip.reset();
+        linesClip.reset();
         epochSplits.clear();
         spriteRefs.clear();
         spriteQuads.clear();
@@ -114,6 +125,8 @@ public class VulkanMotor {
         }
         triangles.reset();
         lines.reset();
+        trianglesClip.reset();
+        linesClip.reset();
         epochSplits.clear();
         spriteRefs.clear();
         spriteQuads.clear();
@@ -152,6 +165,10 @@ public class VulkanMotor {
         final int cStride = (colorBuffer != null) ? colorBuffer.getElementsSize() : 0;
 
         System.arraycopy(drawingTools.getTransformationManager().getTransformation().getMatrix(), 0, m, 0, 16);
+
+        // capture this object's enabled user-clip planes; vertex() bakes per-vertex clip distances so
+        // the fragment shader can discard outside them. null (the usual clip_state==off) => "inside".
+        activeClip = clipPlanesOf(drawingTools);
 
         // fills — ALL depth-tested triangles. Colours come from (in priority): the colormap strip
         // resolved per-vertex on the CPU (surf/Fac3d; texcoord.x = colormap position), an explicit
@@ -681,7 +698,8 @@ public class VulkanMotor {
         vertex(lines, b, vb, vs, cb, cs, lineColor);
     }
 
-    /** Transform vertex {@code i} to clip space and append it (clip.xyzw + rgba) to {@code arena}. */
+    /** Transform vertex {@code i} to clip space and append it (clip.xyzw + rgba) to {@code arena},
+     *  plus its per-vertex user-clip distances to the parallel clip arena. */
     private void vertex(FloatArena arena, int i, FloatBuffer vb, int vs, FloatBuffer cb, int cs, float[] flat) {
         final float x = vb.get(i * vs);
         final float y = vb.get(i * vs + 1);
@@ -698,6 +716,25 @@ public class VulkanMotor {
             ca = cs > 3 ? cb.get(i * cs + 3) : 1f;
         }
         arena.vertex(clip[0], clip[1], clip[2], clip[3], cr, cg, cbb, ca);
+
+        // parallel clip distances: dot(plane, [x,y,z,w]) on the RAW scene vertex — the plane's
+        // transform cancels the geometry's (both are the current scene transform), matching JOGL.
+        // Unused slots = +LARGE so an object with no active plane is never discarded.
+        final double[][] planes = activeClip;
+        final int np = (planes == null) ? 0 : planes.length;
+        for (int p = 0; p < 8; p++) {
+            clipd[p] = (p < np)
+                ? (float) (planes[p][0] * x + planes[p][1] * y + planes[p][2] * z + planes[p][3] * w)
+                : CLIP_INSIDE;
+        }
+        final FloatArena clipArena = (arena == triangles) ? trianglesClip : linesClip;
+        clipArena.vertex(clipd[0], clipd[1], clipd[2], clipd[3], clipd[4], clipd[5], clipd[6], clipd[7]);
+    }
+
+    /** The enabled user-clip plane equations for the current object (null when clipping is off). */
+    private double[][] clipPlanesOf(DrawingTools dt) {
+        org.scilab.forge.scirenderer.clipping.ClippingManager cm = dt.getClippingManager();
+        return (cm instanceof VulkanClippingManager) ? ((VulkanClippingManager) cm).enabledEquations() : null;
     }
 
     private static float[] rgba(Color color) {
@@ -728,9 +765,11 @@ public class VulkanMotor {
         renderer.beginFrame(clearR, clearG, clearB, clearA);
         if (triangles.count > 0) {
             renderer.triangles(triangles.data, triangles.count);
+            renderer.triangleClips(trianglesClip.data, trianglesClip.count);
         }
         if (lines.count > 0) {
             renderer.lines(lines.data, lines.count);
+            renderer.lineClips(linesClip.data, linesClip.count);
         }
         for (int i = 0; i < imageQuads.size(); i++) {
             renderer.image(imageRefs.get(i)[0], imageQuads.get(i));

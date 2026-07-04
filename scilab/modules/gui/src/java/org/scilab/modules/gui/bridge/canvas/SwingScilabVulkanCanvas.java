@@ -147,6 +147,16 @@ public class SwingScilabVulkanCanvas extends AbstractScilabCanvas {
                 }
 
                 @Override
+                public void triangleClips(float[] clipDistances, int floatCount) {
+                    s.triangleClips(clipDistances, floatCount);
+                }
+
+                @Override
+                public void lineClips(float[] clipDistances, int floatCount) {
+                    s.lineClips(clipDistances, floatCount);
+                }
+
+                @Override
                 public long uploadTexture(int width, int height, java.nio.ByteBuffer rgba, boolean linearFilter) {
                     return s.uploadTexture(width, height, rgba, linearFilter);
                 }

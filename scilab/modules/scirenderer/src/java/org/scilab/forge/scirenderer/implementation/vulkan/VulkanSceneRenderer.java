@@ -38,6 +38,16 @@ public interface VulkanSceneRenderer {
     void lines(float[] clipPosColor, int floatCount);
 
     /**
+     * Per-vertex user-clipping distances parallel to {@link #triangles}/{@link #lines} — 8 floats
+     * (2 vec4, up to 6 clip planes; unused slots +LARGE) per geometry vertex, same order and count.
+     * The fragment shader discards where any distance is negative. Supplied every frame alongside the
+     * geometry so the scene pipeline's second vertex binding is always valid.
+     */
+    void triangleClips(float[] clipDistances, int floatCount);
+
+    void lineClips(float[] clipDistances, int floatCount);
+
+    /**
      * Depth epochs: the boundaries at each {@code clearDepthBuffer()} call, matching JOGL, which
      * draws the axes box then clears depth so data draws over it. {@code splits} holds 3 ints per
      * clear point — {triVertex, lineVertex, imageIndex} counts at that boundary — so the renderer
@@ -96,6 +106,14 @@ public interface VulkanSceneRenderer {
 
         @Override
         public void depthEpochs(int[] splits) {
+        }
+
+        @Override
+        public void triangleClips(float[] clipDistances, int floatCount) {
+        }
+
+        @Override
+        public void lineClips(float[] clipDistances, int floatCount) {
         }
 
         @Override
