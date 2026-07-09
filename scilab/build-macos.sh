@@ -41,6 +41,21 @@ sed -i '' \
   modules/helptools/Makefile
 # (c) spreadsheet: Apache Arrow 24 headers require C++20 (this module only)
 sed -i '' 's/-std=c++17/-std=c++20/g' modules/spreadsheet/Makefile
+# (d) Vulkan-renderer jars: configure.ac wires @LWJGL@/@SWING_GPU_SURFACE@ (AC_JAVA_CHECK_JAR ~1065)
+#     into scilab-lib.properties.in and etc/classpath.xml.in, but the committed generated `configure`
+#     predates that wiring, so a fresh configure leaves the tokens raw — javac then fails on
+#     cc.sosonline.gpu and the GUI falls back to JOGL. Substitute the real jar paths (idempotent).
+for f in scilab-lib.properties etc/classpath.xml; do
+  [ -f "$f" ] && sed -i '' \
+    -e "s|@LWJGL@|\$SCILAB/thirdparty/lwjgl-3.3.4.jar|g" \
+    -e "s|@LWJGL_VULKAN@|\$SCILAB/thirdparty/lwjgl-vulkan-3.3.4.jar|g" \
+    -e "s|@LWJGL_JAWT@|\$SCILAB/thirdparty/lwjgl-jawt-3.3.4.jar|g" \
+    -e "s|@LWJGL3_AWT@|\$SCILAB/thirdparty/lwjgl3-awt-0.2.4.jar|g" \
+    -e "s|@SWING_GPU_SURFACE@|\$SCILAB/thirdparty/swing-gpu-surface-0.1.0.jar|g" \
+    "$f"
+done
+# scilab-lib.properties feeds javac (no $SCILAB expansion there) — make its five entries absolute
+sed -i '' "s|=\$SCILAB/thirdparty/\(lwjgl[^ ]*\.jar\)|=$PWD/thirdparty/\1|; s|=\$SCILAB/thirdparty/\(swing-gpu-surface[^ ]*\.jar\)|=$PWD/thirdparty/\1|" scilab-lib.properties
 
 echo "[3/3] make -j$(sysctl -n hw.ncpu)…"
 make -j"$(sysctl -n hw.ncpu)"
