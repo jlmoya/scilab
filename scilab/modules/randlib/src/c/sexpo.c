@@ -89,7 +89,11 @@ S70:
         umin = ustar;
     }
     i += 1;
-    if (u > q[i - 1])
+    /* q[] has 8 entries and q[n] -> 1 as n grows while u < 1, so past the table the
+       continue-test is mathematically false: stop instead of reading q[8] (out of
+       bounds — reachable because u is double here, unlike the single-precision
+       Fortran original where u could never exceed q[7]). */
+    if (i <= 8 && u > q[i - 1])
     {
         goto S70;
     }

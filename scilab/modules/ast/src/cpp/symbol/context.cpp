@@ -86,7 +86,11 @@ void Context::scope_begin(types::InternalType* object, const std::wstring& metho
         varStack.push(new VarList());
     }
 
-    scope_object_begin(object->getAs<types::Object>(), method);
+    // object defaults to nullptr (plain scopes) — pass it through untouched. The old
+    // object->getAs<Object>() was a member call on a null this (UB an inliner may use to
+    // delete scope_object_begin's null check) and redundant: scope_object_begin takes the
+    // InternalType* and does its own checked isObject()/getAs.
+    scope_object_begin(object, method);
 }
 
 void Context::clearAll()

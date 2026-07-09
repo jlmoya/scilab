@@ -291,7 +291,10 @@ void MD5::processBuffer()
   if (paddedLength < BlockSize)
     addLength = m_buffer + paddedLength;
   else
-    addLength = extra + paddedLength - BlockSize;
+    // parenthesise the offset: `extra + paddedLength` forms the intermediate pointer extra+120,
+    // past one-past-the-end of extra[64] (UB), before -BlockSize brings it back to the valid
+    // extra+56. Computing the in-bounds offset first keeps the pointer inside the array.
+    addLength = extra + (paddedLength - BlockSize);
 
   // must be little endian
   *addLength++ = msgBits & 0xFF; msgBits >>= 8;

@@ -216,7 +216,10 @@ private :
 
     double get_double(void)
     {
-        double d = *(double*)buf;
+        // the byte buffer isn't 8-aligned, so *(double*)buf is a misaligned load (UB);
+        // memcpy compiles to the same unaligned load on arm64 but is well-defined.
+        double d;
+        memcpy(&d, buf, 8);
         buf += 8;
         return d;
     }

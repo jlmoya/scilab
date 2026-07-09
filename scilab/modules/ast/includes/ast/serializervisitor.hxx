@@ -177,7 +177,9 @@ private :
     void add_double(double d)
     {
         need(8);
-        *(double*)(buf + buflen) = d;
+        // buf+buflen isn't 8-aligned -> the plain store is a misaligned write (UB); memcpy is
+        // the well-defined equivalent (matched by get_double on the read side).
+        memcpy(buf + buflen, &d, 8);
         buflen += 8;
     }
 
