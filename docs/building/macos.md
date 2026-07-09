@@ -144,6 +144,18 @@ cd scilab/scilab
 A full build is ~45 min. Do **not** pass `--enable-stop-on-warning` (macOS emits warnings the
 build would otherwise reject); `--without-tk` is mandatory on macOS.
 
+> **Flag policy — `-fwrapv` (do not remove).** All C/C++/Fortran compiles at `-O2` with
+> `-fwrapv` (signed integer overflow wraps), set in `configure.ac` *and* the tracked generated
+> `configure`. Decades-old numerical code in this tree overflows signed integers; modern
+> clang/gcc at `-O2` miscompile that undefined behaviour — `rand()` returned `Inf` for every
+> element because `durands()`'s init loop terminated via signed overflow (see
+> `docs/design/modernization-assessment.md`). The flag removes the optimizer's licence to
+> exploit it, at zero measurable cost (compile-time delta on the worst TU: 3.74 s → 3.77 s).
+> It is deliberately `-fwrapv` and **not** `-fno-strict-overflow`: clang expands the latter to
+> `-fwrapv-pointer` as well, which explodes compile times on template-heavy TUs
+> (`ast/src/cpp/types/arguments.cpp`: 3.7 s → over an hour). CI (`guard:ub-miscompile`) greps
+> the policy into place and diffs a `durands` O0/O2 run so the class cannot silently return.
+
 ---
 
 ## 4. Build-time Makefile fixes (what `build-macos.sh` patches — and why)

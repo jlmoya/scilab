@@ -98,16 +98,27 @@ without overflowing — `m2 = 1; while (m2 <= INT_MAX/itwo) { m2 = itwo*m2; }` (
 correct; grayplot renders. (The renderers — g2d/Vulkan — were innocent: they correctly cull all-`Inf`
 facets.) `rand` is one of the most-used builtins, so this silently poisoned anything downstream of it.
 
-**Systemic implication — the whole tree is exposed.** The base C build is `-DNDEBUG -g1 -O2` and
-**`-fno-strict-overflow` / `-fwrapv` is set nowhere** (there is an opt-in `-fsanitize=address`, but no
-UBSan). `rand` is very unlikely to be the only such bug. Two class-level actions (both open):
+**Systemic implication — the whole tree was exposed.** The base C build is `-DNDEBUG -g1 -O2` and
+`-fno-strict-overflow` / `-fwrapv` was set nowhere (there is an opt-in `-fsanitize=address`, but no
+UBSan). `rand` is very unlikely to be the only such bug. Two class-level actions:
 
-1. **Add `-fno-strict-overflow` globally** (C/C++/Fortran flags in `configure.ac`) — makes signed
-   overflow wrap, would have prevented `durands` and any sibling, **zero risk to correct code** (it only
-   removes an optimizer license; standard for legacy-numerics codebases, e.g. the Linux kernel). Needs a
-   reconfigure + full rebuild (regenerates the macOS-patched Makefiles — validate).
+1. **Add `-fwrapv` globally** — **DONE (2026-07-09)**: the non-debug `DEBUG_CFLAGS` /
+   `DEBUG_CXXFLAGS` / `DEBUG_FFLAGS` in `configure.ac` (and the tracked generated `configure`, so no
+   autoreconf churn) now carry the flag for the gcc *and* clang branches; the live dev tree's 83
+   generated Makefiles were patched in place (avoiding a reconfigure that would clobber the macOS
+   OpenMP Makefile fixes) and all 3,600 native objects rebuilt with it. Signed overflow can no longer
+   be exploited by the optimizer anywhere in the tree — this would have prevented `durands` and
+   prevents any sibling. Zero risk to correct code (it defines wrapping semantics; standard for
+   legacy-numerics codebases, e.g. the Linux kernel) and zero measurable compile cost (worst TU:
+   3.74 s → 3.77 s). **Engineering note:** the first attempt used `-fno-strict-overflow`, which clang
+   expands to `-fwrapv -fwrapv-pointer`; the pointer-wrap variant sent an optimizer pass
+   quasi-exponential on template-heavy TUs (`ast/types/arguments.cpp`: 3.7 s → 60+ min), so the
+   policy is deliberately the integer-only `-fwrapv`. Pointer-overflow UB remains a *discovery*
+   item for the UBSan pass below. CI (`guard:ub-miscompile`) greps the policy into place and diffs a
+   `durands` O0/O2 run so the class can't silently return.
 2. **Run a UBSan pass** (`-fsanitize=undefined`) over the test suite to **enumerate** the remaining UB
-   (overflow, OOB, bad shifts, misalignment) and fix each — turning "unknown unknowns" into a work list.
+   (overflow, OOB, bad shifts, misalignment) and fix each — turning "unknown unknowns" into a work
+   list. *(Open — next.)*
 
 This is the "no pre-existing-error-is-not-mine" principle in practice: on this fork everything is ours
 to fix. It also strengthens the case for the FFM/native-boundary work (roadmap #4) — the more of this

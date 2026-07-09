@@ -6,7 +6,7 @@
 cd "$(dirname "$0")" || exit 1
 JDK=/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home
 
-echo "[1/6] deployment target -> macOS 11.0 (GUI/plotting main-thread assertion)"
+echo "[1/7] deployment target -> macOS 11.0 (GUI/plotting main-thread assertion)"
 for b in scilab-bin scilab-cli-bin; do
   if [ -f ".libs/$b" ]; then
     vtool -set-build-version macos 11.0 11.0 -replace -output ".libs/$b.tmp" ".libs/$b" \
@@ -15,7 +15,7 @@ for b in scilab-bin scilab-cli-bin; do
   fi
 done
 
-echo "[2/6] xlnt -> @loader_path (spreadsheet module)"
+echo "[2/7] xlnt -> @loader_path (spreadsheet module)"
 SP=modules/spreadsheet/.libs/libscispreadsheet.2027.dylib
 if [ -f "$SP" ]; then
   cp -f lib/thirdparty/libxlnt.1.6.1.dylib modules/spreadsheet/.libs/ 2>/dev/null \
@@ -24,7 +24,7 @@ if [ -f "$SP" ]; then
   codesign -f -s - "$SP" && echo "    patched libscispreadsheet"
 fi
 
-echo "[3/6] xcos -> scicos @loader_path"
+echo "[3/7] xcos -> scicos @loader_path"
 XC=modules/xcos/.libs/libscixcos.2027.dylib
 if [ -f "$XC" ]; then
   install_name_tool \
@@ -34,11 +34,28 @@ if [ -f "$XC" ]; then
   codesign -f -s - "$XC" && echo "    patched libscixcos"
 fi
 
-echo "[4/6] activate helptools module (help window)"
+echo "[4/7] activate helptools module (help window)"
 sed -i '' 's|<module name="helptools" activate="no"/>|<module name="helptools" activate="yes"/>|' etc/modules.xml 2>/dev/null \
   && echo "    helptools active"
 
-echo "[5/6] build all macros (genlib) — MUST run after the binary/dylib fixes above:"
+echo "[5/7] restore Vulkan-renderer jars in etc/classpath.xml (lost when config.status regenerates it)"
+# A reconfigure/config.status run regenerates etc/classpath.xml from classpath.xml.in with the
+# substitutions stored at the LAST full configure — which predate the Vulkan vendoring, so the
+# @LWJGL@/@SWING_GPU_SURFACE@ tokens come out raw and the GUI silently falls back to JOGL
+# (NoClassDefFoundError: cc/sosonline/gpu/VulkanScene). Substitute the real paths (idempotent).
+if grep -q '@SWING_GPU_SURFACE@' etc/classpath.xml 2>/dev/null; then
+  LC_ALL=C sed -i '' \
+    -e 's|@LWJGL@|$SCILAB/thirdparty/lwjgl-3.3.4.jar|g' \
+    -e 's|@LWJGL_VULKAN@|$SCILAB/thirdparty/lwjgl-vulkan-3.3.4.jar|g' \
+    -e 's|@LWJGL_JAWT@|$SCILAB/thirdparty/lwjgl-jawt-3.3.4.jar|g' \
+    -e 's|@LWJGL3_AWT@|$SCILAB/thirdparty/lwjgl3-awt-0.2.4.jar|g' \
+    -e 's|@SWING_GPU_SURFACE@|$SCILAB/thirdparty/swing-gpu-surface-0.1.0.jar|g' \
+    etc/classpath.xml && echo "    restored vulkan jar entries"
+else
+  echo "    classpath.xml already good"
+fi
+
+echo "[6/7] build all macros (genlib) — MUST run after the binary/dylib fixes above:"
 echo "      during 'make' the macro build runs too early and scilab-cli crashes, leaving a"
 echo "      0-byte modules/core/macros/lib that breaks every later startup. Rebuild it here."
 find modules -path '*/macros/lib' -size 0 -delete 2>/dev/null   # drop crash-truncated libs
@@ -48,7 +65,7 @@ if [ -x ./bin/scilab-cli ]; then
   echo "    macros built: $(ls modules/*/macros/lib 2>/dev/null | wc -l | tr -d ' ') libs  (log: /tmp/scilab-buildmacros.log)"
 fi
 
-echo "[6/6] menu-bar / Dock name -> Scilab-2027.0.0"
+echo "[7/7] menu-bar / Dock name -> Scilab-2027.0.0"
 NAME="Scilab-2027.0.0"
 if [ -f .libs/scilab-bin ]; then
   # .libs/$NAME is the same binary under a versioned name; the GUI process's

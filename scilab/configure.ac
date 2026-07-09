@@ -434,7 +434,7 @@ if test -n "$F77"; then
     done
     AC_LANG_POP([Fortran 77])
    else
-      DEBUG_FFLAGS="-DNDEBUG -g1 -O2"
+      DEBUG_FFLAGS="-DNDEBUG -g1 -O2 -fwrapv" # legacy code overflows signed ints; never let -O2 exploit it (-fwrapv, not -fno-strict-overflow: see the C flags note)
    fi
       case "$host" in
          x86_64-*-linux*)
@@ -529,7 +529,7 @@ g++-* | g++ | ccache*g++ | ccache*g++-* )
     if test "$enable_debug_CXX" = yes; then
         DEBUG_CXXFLAGS="-O0 -g3"
     else
-        DEBUG_CXXFLAGS="-DNDEBUG -g1 -O2"
+        DEBUG_CXXFLAGS="-DNDEBUG -g1 -O2 -fwrapv" # legacy code overflows signed ints; never let -O2 exploit it (-fwrapv, not -fno-strict-overflow: see the C flags note)
     fi
 
     WARNING_CXXFLAGS="-Wall -Wpedantic"
@@ -555,7 +555,7 @@ g++-* | g++ | ccache*g++ | ccache*g++-* )
     if test "$enable_debug_CXX" = yes; then
         DEBUG_CXXFLAGS="-O0 -g3"
     else
-        DEBUG_CXXFLAGS="-DNDEBUG -g1 -O2"
+        DEBUG_CXXFLAGS="-DNDEBUG -g1 -O2 -fwrapv" # legacy code overflows signed ints; never let -O2 exploit it (-fwrapv, not -fno-strict-overflow: see the C flags note)
     fi
     
     WARNING_CXXFLAGS="-Wall -Wpedantic"
@@ -635,7 +635,7 @@ gcc-* | gcc | ccache*gcc | ccache*gcc-* )
             ;;
         esac
     else
-        DEBUG_CFLAGS="-DNDEBUG -g1 -O2"
+        DEBUG_CFLAGS="-DNDEBUG -g1 -O2 -fwrapv" # legacy code overflows signed ints; never let -O2 exploit it (rand()/durands returned Inf). -fwrapv, NOT -fno-strict-overflow: clang expands that to -fwrapv-pointer too, which explodes compile times on template-heavy TUs (ast arguments.cpp: 3.7s -> >60min)
     fi
     
     WARNING_CFLAGS="-Wall -Wpedantic "
@@ -721,7 +721,7 @@ gcc-* | gcc | ccache*gcc | ccache*gcc-* )
         DEBUG_CFLAGS="-O0 -g3"
         # used to be -O0
     else
-        DEBUG_CFLAGS="-DNDEBUG -g1 -O2"
+        DEBUG_CFLAGS="-DNDEBUG -g1 -O2 -fwrapv" # legacy code overflows signed ints; never let -O2 exploit it (rand()/durands returned Inf). -fwrapv, NOT -fno-strict-overflow: clang expands that to -fwrapv-pointer too, which explodes compile times on template-heavy TUs (ast arguments.cpp: 3.7s -> >60min)
     fi
     
     WARNING_CFLAGS="-Wall -Wpedantic"
