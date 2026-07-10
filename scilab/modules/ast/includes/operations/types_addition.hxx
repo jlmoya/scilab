@@ -28,29 +28,10 @@ extern "C"
 #include "os_string.h"
 }
 
-#include <cmath>
-#include <type_traits>
-
-// (O)v where v is a floating scalar and O a narrow integer is UB for out-of-range / inf / nan v.
-// The historical code relied on the compiler's int-intermediate lowering (saturate to int32, then
-// narrow to O); reproduce that explicitly so every result is bit-for-bit unchanged. Identity for
-// every other type pair (compiles to a plain static_cast).
-template<typename O, typename V>
-inline static O castVal(V v)
-{
-    if constexpr (std::is_floating_point<V>::value && std::is_integral<O>::value)
-    {
-        double d = static_cast<double>(v);
-        int i = std::isnan(d) ? 0
-                : (d >= 2147483647.0 ? 2147483647
-                   : (d <= -2147483648.0 ? (-2147483647 - 1) : static_cast<int>(d)));
-        return static_cast<O>(i);
-    }
-    else
-    {
-        return static_cast<O>(v);
-    }
-}
+// castVal<O>(v): a defined narrow-int-from-float cast (see operations_cast.hxx). Every element
+// cast below goes through it so out-of-range / inf / nan doubles don't hit undefined behaviour;
+// identity (a plain static_cast) for all other type pairs, so results are bit-for-bit unchanged.
+#include "operations_cast.hxx"
 
 void fillAddFunction();
 
@@ -152,7 +133,7 @@ template<typename T, typename O> inline static void add(T* l, size_t size, T* r,
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O)r[i];
+        o[i] = castVal<O>(l[i]) + castVal<O>(r[i]);
     }
 }
 
@@ -170,7 +151,7 @@ template<typename T, typename U, typename O> inline static void add(T* l, size_t
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O)r[i];
+        o[i] = castVal<O>(l[i]) + castVal<O>(r[i]);
     }
 }
 
@@ -180,8 +161,8 @@ template<typename T, typename U, typename O> inline static void add(T* l, size_t
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O)r[i];
-        oc[i] = (O)rc[i];
+        o[i] = castVal<O>(l[i]) + castVal<O>(r[i]);
+        oc[i] = castVal<O>(rc[i]);
     }
 }
 
@@ -190,8 +171,8 @@ template<typename T, typename U, typename O> inline static void add(T* l, T* lc,
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O)r[i];
-        oc[i] = (O)lc[i];
+        o[i] = castVal<O>(l[i]) + castVal<O>(r[i]);
+        oc[i] = castVal<O>(lc[i]);
     }
 }
 
@@ -200,8 +181,8 @@ template<typename T, typename O> inline static void add(T* l, T* lc, size_t size
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O)r[i];
-        oc[i] = (O)lc[i] + (O)rc[i];
+        o[i] = castVal<O>(l[i]) + castVal<O>(r[i]);
+        oc[i] = castVal<O>(lc[i]) + castVal<O>(rc[i]);
     }
 }
 
@@ -210,7 +191,7 @@ template<typename T, typename O> inline static void add(T* l, size_t size, O* o)
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i];
+        o[i] = castVal<O>(l[i]);
     }
 }
 
@@ -219,8 +200,8 @@ template<typename T, typename O> inline static void add(T* l, T* lc, size_t size
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i];
-        oc[i] = (O)lc[i];
+        o[i] = castVal<O>(l[i]);
+        oc[i] = castVal<O>(lc[i]);
     }
 }
 
@@ -249,7 +230,7 @@ template<typename T, typename U, typename O> inline static void add(T* l, T* lc,
     for (size_t i = 0; i < size ; ++i)
     {
         o[i] = castVal<O>(l[i]) + castVal<O>(r);
-        oc[i] = (O)lc[i];
+        oc[i] = castVal<O>(lc[i]);
     }
 }
 
@@ -258,8 +239,8 @@ template<typename T, typename U, typename O> inline static void add(T* l, size_t
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O) r;
-        oc[i] = (O)rc;
+        o[i] = castVal<O>(l[i]) + castVal<O>(r);
+        oc[i] = castVal<O>(rc);
     }
 }
 
@@ -269,7 +250,7 @@ template<typename T, typename O> inline static void add(T* l, T* lc, size_t size
     for (size_t i = 0; i < size ; ++i)
     {
         o[i] = castVal<O>(l[i]) + castVal<O>(r);
-        oc[i] = (O)lc[i] + (O)rc;
+        oc[i] = castVal<O>(lc[i]) + castVal<O>(rc);
     }
 }
 
@@ -279,7 +260,7 @@ template<typename T, typename U, typename O> inline static void add(T l, size_t 
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l + (O)r[i];
+        o[i] = castVal<O>(l) + castVal<O>(r[i]);
     }
 }
 
@@ -297,8 +278,8 @@ template<typename T, typename U, typename O> inline static void add(T l, size_t 
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l + (O)r[i];
-        oc[i] = (O)rc[i];
+        o[i] = castVal<O>(l) + castVal<O>(r[i]);
+        oc[i] = castVal<O>(rc[i]);
     }
 }
 
@@ -307,8 +288,8 @@ template<typename T, typename U, typename O> inline static void add(T l, T lc, s
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l + (O)r[i];
-        oc[i] = (O)lc;
+        o[i] = castVal<O>(l) + castVal<O>(r[i]);
+        oc[i] = castVal<O>(lc);
     }
 }
 
@@ -317,8 +298,8 @@ template<typename T, typename O> inline static void add(T l, T /*lc*/, size_t si
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l + (O)r[i];
-        oc[i] = (O)rc[i];
+        o[i] = castVal<O>(l) + castVal<O>(r[i]);
+        oc[i] = castVal<O>(rc[i]);
     }
 }
 
@@ -327,12 +308,12 @@ template<typename T, typename O> inline static void add(T l, T /*lc*/, size_t si
 //same type
 template<typename T, typename O> inline static void add(T l, T r, O* o)
 {
-    *o = (O)l + (O)r;
+    *o = castVal<O>(l) + castVal<O>(r);
 }
 //x1 + x1
 template<typename T, typename U, typename O> inline static void add(T l, U r, O* o)
 {
-    *o = (O)l + (O)r;
+    *o = castVal<O>(l) + castVal<O>(r);
 }
 
 //string version
@@ -344,21 +325,21 @@ inline static void add(wchar_t* l, wchar_t* r, int length , wchar_t* o)
 //x1C + x1C
 template<typename T, typename U, typename O> inline static void add(T l, T lc, U r, U rc, O* o, O* oc)
 {
-    *o = (O)l + (O)r;
-    *oc = (O)lc + (O)rc;
+    *o = castVal<O>(l) + castVal<O>(r);
+    *oc = castVal<O>(lc) + castVal<O>(rc);
 }
 
 //x1 + [] and [] + x1
 template<typename T, typename O> inline static void add(T l, O* o)
 {
-    *o = (O)l;
+    *o = castVal<O>(l);
 }
 
 //x1c + [] and [] + x1c
 template<typename T, typename O> inline static void add(T l, T lc, O* o, O* oc)
 {
-    *o = (O)l;
-    *oc = (O)lc;
+    *o = castVal<O>(l);
+    *oc = castVal<O>(lc);
 }
 
 //[] + []

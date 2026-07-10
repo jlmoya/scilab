@@ -22,6 +22,10 @@
 #include "polynom.hxx"
 #include "sparse.hxx"
 
+// castVal<O>(v): defined narrow-int-from-float cast; every element cast below routes through it to
+// avoid out-of-range/inf/nan float->int UB. Identity for all other pairs (results unchanged).
+#include "operations_cast.hxx"
+
 void fillSubtractFunction();
 
 //define arrays on operation functions
@@ -109,7 +113,7 @@ template<typename T, typename O> inline static void sub(T* l, size_t size, T* r,
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O)r[i];
+        o[i] = castVal<O>(l[i]) - castVal<O>(r[i]);
     }
 }
 
@@ -118,7 +122,7 @@ template<typename T, typename U, typename O> inline static void sub(T* l, size_t
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O)r[i];
+        o[i] = castVal<O>(l[i]) - castVal<O>(r[i]);
     }
 }
 
@@ -128,8 +132,8 @@ template<typename T, typename U, typename O> inline static void sub(T* l, size_t
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O)r[i];
-        oc[i] = (O) - rc[i];
+        o[i] = castVal<O>(l[i]) - castVal<O>(r[i]);
+        oc[i] = castVal<O>(-rc[i]);
     }
 }
 
@@ -138,8 +142,8 @@ template<typename T, typename U, typename O> inline static void sub(T* l, T* lc,
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O)r[i];
-        oc[i] = (O)lc[i];
+        o[i] = castVal<O>(l[i]) - castVal<O>(r[i]);
+        oc[i] = castVal<O>(lc[i]);
     }
 }
 
@@ -148,8 +152,8 @@ template<typename T, typename O> inline static void sub(T* l, T* lc, size_t size
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O)r[i];
-        oc[i] = (O)lc[i] - (O)rc[i];
+        o[i] = castVal<O>(l[i]) - castVal<O>(r[i]);
+        oc[i] = castVal<O>(lc[i]) - castVal<O>(rc[i]);
     }
 }
 
@@ -159,7 +163,7 @@ template<typename T, typename U, typename O> inline static void sub(T* l, size_t
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O)r;
+        o[i] = castVal<O>(l[i]) - castVal<O>(r);
     }
 }
 
@@ -168,8 +172,8 @@ template<typename T, typename U, typename O> inline static void sub(T* l, T* lc,
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O)r;
-        oc[i] = (O)lc[i];
+        o[i] = castVal<O>(l[i]) - castVal<O>(r);
+        oc[i] = castVal<O>(lc[i]);
     }
 }
 
@@ -178,8 +182,8 @@ template<typename T, typename U, typename O> inline static void sub(T* l, size_t
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O) r;
-        oc[i] = (O) - rc;
+        o[i] = castVal<O>(l[i]) - castVal<O>(r);
+        oc[i] = castVal<O>(-rc);
     }
 }
 
@@ -188,8 +192,8 @@ template<typename T, typename O> inline static void sub(T* l, T* lc, size_t size
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] - (O)r;
-        oc[i] = (O)lc[i] - (O)rc;
+        o[i] = castVal<O>(l[i]) - castVal<O>(r);
+        oc[i] = castVal<O>(lc[i]) - castVal<O>(rc);
     }
 }
 
@@ -199,7 +203,7 @@ template<typename T, typename U, typename O> inline static void sub(T l, size_t 
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l - (O)r[i];
+        o[i] = castVal<O>(l) - castVal<O>(r[i]);
     }
 }
 
@@ -208,8 +212,8 @@ template<typename T, typename U, typename O> inline static void sub(T l, size_t 
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l - (O)r[i];
-        oc[i] = (O) - rc[i];
+        o[i] = castVal<O>(l) - castVal<O>(r[i]);
+        oc[i] = castVal<O>(-rc[i]);
     }
 }
 
@@ -218,8 +222,8 @@ template<typename T, typename U, typename O> inline static void sub(T l, T lc, s
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l - (O)r[i];
-        oc[i] = (O)lc;
+        o[i] = castVal<O>(l) - castVal<O>(r[i]);
+        oc[i] = castVal<O>(lc);
     }
 }
 
@@ -228,8 +232,8 @@ template<typename T, typename O> inline static void sub(T l, T lc, size_t size, 
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l - (O)r[i];
-        oc[i] = (O)lc - rc[i];
+        o[i] = castVal<O>(l) - castVal<O>(r[i]);
+        oc[i] = castVal<O>(lc) - rc[i];
     }
 }
 
@@ -238,32 +242,32 @@ template<typename T, typename O> inline static void sub(T l, T lc, size_t size, 
 //same type
 template<typename T, typename O> inline static void sub(T l, T r, O* o)
 {
-    *o = (O)l - (O)r;
+    *o = castVal<O>(l) - castVal<O>(r);
 }
 //x1 - x1
 template<typename T, typename U, typename O> inline static void sub(T l, U r, O* o)
 {
-    *o = (O)l - (O)r;
+    *o = castVal<O>(l) - castVal<O>(r);
 }
 
 //x1C - x1C
 template<typename T, typename U, typename O> inline static void sub(T l, T lc, U r, U rc, O* o, O* oc)
 {
-    *o = (O)l - (O)r;
-    *oc = (O)lc - (O)rc;
+    *o = castVal<O>(l) - castVal<O>(r);
+    *oc = castVal<O>(lc) - castVal<O>(rc);
 }
 
 //x1 - []
 template<typename T, typename O> inline static void sub(T l, O* o)
 {
-    *o = (O)l;
+    *o = castVal<O>(l);
 }
 
 //x1c - []
 template<typename T, typename O> inline static void sub(T l, T lc, size_t /*size*/, O* o, O* oc)
 {
-    *o = (O)l;
-    *oc = (O)lc;
+    *o = castVal<O>(l);
+    *oc = castVal<O>(lc);
 }
 
 //[] - []

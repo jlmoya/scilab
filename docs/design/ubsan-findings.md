@@ -61,10 +61,16 @@ stays 4, `+%nan` stays 5, `+300`=49, `+(-1)`=4), `integer` 34/34 ref, instrument
 
 ## Remaining (deferred / next batch, tracked)
 
-**Operator-family long tail (same `castVal` pattern):** `types_addition.hxx` still has the matrix+matrix
-`(O)r[i]` and complex-part `(O)rc` casts unconverted, and `types_subtraction.hxx` / `types_multiplication.hxx`
-/ … carry the identical latent (currently-benign) UB. Not flagged by the sweep (unexercised with
-out-of-range operands) — a mechanical follow-up once the pattern is proven on addition.
+**Operator-family long tail — FIXED (2026-07-10).** Extracted `castVal<O>()` into a shared header
+`ast/includes/operations/operations_cast.hxx` and routed **every** element cast in `types_addition.hxx`
+(45) and `types_subtraction.hxx` (48) through it — matrix+matrix, complex parts (incl. the unary-minus
+`(O) - rc[i]` forms), scalar broadcast, and the eye/empty specializations. `types_multiplication.hxx` /
+`types_divide.hxx` had **no** raw `(O)` casts (already double-routed). `castVal` is a plain `static_cast`
+for every non-(float→int) pair, so the change is behaviour-preserving. Verified: in-range double/int/
+complex arithmetic bit-for-bit unchanged; the matrix path now matches the (already-correct) scalar path
+for out-of-range operands (`[300.5 -1.5 128.9]+int8(1)` → `45 0 -127`, both directions); reference suites
+green — **integer 34/34, boolean 11/11** (+ double/elementary_functions/polynomials/sparse). The whole
+float→int UB class is now closed across the operator family.
 
 **Misalignment class (task #95) — ROOT-CAUSED + FIXED via an AddressSanitizer campaign.**
 The UBSan symptom was a **corrupted child pointer** (`0x…7e`) read while tearing down a
