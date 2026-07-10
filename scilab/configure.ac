@@ -196,6 +196,9 @@ case "$host" in
        # We need this to be passed to all linker commands
        LDFLAGS="$LDFLAGS -mmacosx-version-min=$MIN_MACOSX_VERSION"
     fi
+    # The executables additionally pin the SDK stamp to the deployment target (see the AppKit
+    # "linked on or after" comment above): Makefile.am appends -Wl,-platform_version using this.
+    AC_SUBST(MIN_MACOSX_VERSION)
     # libtool >= 2.5.4 records @rpath install-names for OS/toolchain libs (libc++, libcurl,
     # libgfortran, libquadmath). Add the rpaths that resolve them so the binaries run natively,
     # with no post-link install_name_tool fixup (was reapply-macos-fixes.sh [3b]). /usr/lib covers
@@ -208,6 +211,21 @@ case "$host" in
     fi
     ARCH_LDFLAGS="$ARCH_LDFLAGS $macos_rpaths"
     LDFLAGS="$LDFLAGS $macos_rpaths"
+    # Make a plain `./configure` self-sufficient on macOS: derive the Homebrew and out-of-tree
+    # xlnt search paths here instead of requiring them in the caller's environment. Anything the
+    # user does export still comes first (we only append), and because these are composed from
+    # scratch on every configure run, a `config.status --recheck` reproduces them identically.
+    if test -d "$srcdir/../xlnt-prefix/lib/pkgconfig"; then
+       macos_xlnt_pc=`cd "$srcdir/../xlnt-prefix/lib/pkgconfig" && pwd`
+       PKG_CONFIG_PATH="${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}$macos_xlnt_pc"
+    fi
+    macos_brew_prefix=`brew --prefix 2>/dev/null`
+    if test -n "$macos_brew_prefix" && test -d "$macos_brew_prefix"; then
+       PKG_CONFIG_PATH="${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}$macos_brew_prefix/opt/pcre2/lib/pkgconfig:$macos_brew_prefix/opt/openblas/lib/pkgconfig:$macos_brew_prefix/lib/pkgconfig"
+       CPPFLAGS="$CPPFLAGS -I$macos_brew_prefix/include -I$macos_brew_prefix/opt/libomp/include -I$macos_brew_prefix/opt/libarchive/include"
+       LDFLAGS="$LDFLAGS -L$macos_brew_prefix/lib -L$macos_brew_prefix/opt/libomp/lib -L$macos_brew_prefix/opt/libarchive/lib"
+    fi
+    export PKG_CONFIG_PATH
 ;;
 esac
 
@@ -901,6 +919,7 @@ if $WITH_DEVTOOLS; then # Scilab thirdparties
     XLNT_CFLAGS="-I$DEVTOOLS_INCDIR"
     XLNT_LDFLAGS="-L$DEVTOOLS_LIBDIR"
     XLNT_LIBS="-lxlnt"
+    XLNT_LIBDIR="$DEVTOOLS_LIBDIR"
 else
     AC_RUN_LOG([$PKG_CONFIG --exists --print-errors xlnt]) || {
         AC_MSG_ERROR([cannot find pkg-config package for xlnt])
@@ -908,10 +927,18 @@ else
     XLNT_CFLAGS=`$PKG_CONFIG --cflags xlnt`
     XLNT_LDFLAGS=`$PKG_CONFIG --libs-only-L xlnt`
     XLNT_LIBS=`$PKG_CONFIG --libs-only-l xlnt`
+    # The concrete directory holding libxlnt: the spreadsheet module uses it on macOS to rpath
+    # the out-of-tree library and keep a copy next to the module dylib (dev tree + packaged app).
+    # Not every hand-written xlnt.pc defines a libdir variable, so fall back to the first -L flag.
+    XLNT_LIBDIR=`$PKG_CONFIG --variable=libdir xlnt`
+    if test -z "$XLNT_LIBDIR"; then
+        XLNT_LIBDIR=`$PKG_CONFIG --libs-only-L xlnt | sed -e 's/^[ ]*-L//' -e 's/[ ].*//'`
+    fi
 fi
 AC_SUBST(XLNT_CFLAGS)
 AC_SUBST(XLNT_LDFLAGS)
 AC_SUBST(XLNT_LIBS)
+AC_SUBST(XLNT_LIBDIR)
 
 #######################
 ## ARROW LIBRARY (reading and writing ARROW files)

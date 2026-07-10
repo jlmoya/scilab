@@ -106,7 +106,7 @@ union of local `SciLabProjects/*` + a curated list. Verified-on-macOS rows pre-t
 
 ### Packager (`scilab/package-macos.sh`, next to build-macos.sh)
 
-1. Ensure the engine is built + runtime-fixed (warn if `reapply-macos-fixes.sh` is stale).
+1. Ensure the engine is built (a plain `./build-macos.sh` produces a fully runtime-correct tree; the old reapply-macos-fixes.sh is gone).
 2. `rsync -a --delete` the dev tree → `…app/Contents/Resources/scilab/` (skip `.git`, build
    intermediates). Incremental on refresh.
 3. Write `Contents/MacOS/Scilab-2027.0.0` launcher + `Info.plist` + icon.
@@ -121,7 +121,7 @@ First run (no manifest) auto-opens `tbxManager()` to seed.
 
 ```
 # in the dev repo, as today
-./build-macos.sh && ./reapply-macos-fixes.sh
+./build-macos.sh
 # refresh the app (seconds; toolboxes/config untouched)
 ./package-macos.sh                       # + --rebuild-toolboxes if core ABI changed
 ```

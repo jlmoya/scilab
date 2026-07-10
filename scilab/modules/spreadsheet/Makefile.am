@@ -86,6 +86,12 @@ libscispreadsheet_algo_la_SOURCES = $(SPREADSHEET_C_SOURCES) $(SPREADSHEET_CPP_S
 libscispreadsheet_la_SOURCES = $(GATEWAY_CXX_SOURCES) $(GATEWAY_C_SOURCES)
 libscispreadsheet_algo_la_CPPFLAGS = $(libscispreadsheet_la_CPPFLAGS)
 
+# Apache Arrow >= 24 headers require C++20. The project baseline is C++17, injected into $(CXX)
+# itself by AX_CXX_COMPILE_STDCXX; these per-target flags come later on the compile line, so the
+# -std=c++20 here wins for this module only.
+libscispreadsheet_la_CXXFLAGS = $(AM_CXXFLAGS) -std=c++20
+libscispreadsheet_algo_la_CXXFLAGS = $(AM_CXXFLAGS) -std=c++20
+
 # For the code check (splint)
 CHECK_SRC= $(SPREADSHEET_C_SOURCES) $(GATEWAY_CXX_SOURCES) $(SPREADSHEET_CPP_SOURCES) $(RIPOLE_SOURCES)
 INCLUDE_FLAGS = $(libscispreadsheet_la_CPPFLAGS)
@@ -93,6 +99,19 @@ INCLUDE_FLAGS = $(libscispreadsheet_la_CPPFLAGS)
 libscispreadsheet_la_LIBADD = libscispreadsheet-algo.la
 
 libscispreadsheet_la_LIBADD += $(XLNT_LDFLAGS) $(XLNT_LIBS) $(ARROW_LDFLAGS) $(ARROW_LIBS) $(PARQUET_LDFLAGS) $(PARQUET_LIBS)
+
+if IS_MACOSX
+# libxlnt lives out of tree (its install name is @rpath/libxlnt.*.dylib): give the module an
+# rpath to its own directory plus the build-time location, and keep a copy of the dylib next to
+# the module so both the dev tree and the relocated/packaged app resolve it. Replaces the old
+# post-link install_name_tool/copy fixup.
+libscispreadsheet_la_LDFLAGS = $(AM_LDFLAGS) -Wl,-rpath,@loader_path/ -Wl,-rpath,$(XLNT_LIBDIR)
+# ($(pkglib_LTLIBRARIES) orders the copy after the link under parallel make.)
+all-local: $(pkglib_LTLIBRARIES)
+	@if test -n "$(XLNT_LIBDIR)" && test -d "$(XLNT_LIBDIR)" && test -d .libs; then \
+	  cp -f "$(XLNT_LIBDIR)"/libxlnt.*.dylib .libs/ 2>/dev/null || true; \
+	fi
+endif
 
 #### Target ######
 modulename=spreadsheet

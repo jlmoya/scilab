@@ -173,6 +173,32 @@ libscixcos_la_LIBADD = libscixcos-algo.la \
 		$(LIBXML_LIBS) \
 		$(LIBARCHIVE_LIBS)
 
+if IS_MACOSX
+# libscixcos is dlopen'ed at runtime (scilab-bin does not link it), so unlike the always-loaded
+# modules its libsciscicos/libsciscicos_blocks deps cannot be resolved through the libtool
+# wrapper's DYLD_LIBRARY_PATH in an uninstalled tree — and they are recorded under their final
+# $(pkglibdir) install path, which does not exist there. Rewrite them to @rpath and give the
+# module rpaths covering every layout: the uninstalled build tree (@loader_path into the sibling
+# modules' .libs) and the installed/packaged flat directory ($(pkglibdir), @loader_path).
+# Replaces the old post-link install_name_tool fixup in reapply-macos-fixes.sh.
+libscixcos_la_LDFLAGS = $(AM_LDFLAGS) \
+		-Wl,-rpath,@loader_path/ \
+		-Wl,-rpath,@loader_path/../../scicos/.libs \
+		-Wl,-rpath,@loader_path/../../scicos_blocks/.libs \
+		-Wl,-rpath,$(pkglibdir)
+# ($(pkglib_LTLIBRARIES) orders the rewrite after the link under parallel make.)
+all-local: $(pkglib_LTLIBRARIES)
+	@v=`echo '$(SCILAB_LIBRARY_VERSION)' | cut -d: -f1`; \
+	xc=.libs/libscixcos.$$v.dylib; \
+	if test -f $$xc; then \
+	  install_name_tool \
+	    -change "$(pkglibdir)/libsciscicos.$$v.dylib" "@rpath/libsciscicos.$$v.dylib" \
+	    -change "$(pkglibdir)/libsciscicos_blocks.$$v.dylib" "@rpath/libsciscicos_blocks.$$v.dylib" \
+	    $$xc 2>/dev/null; \
+	  codesign -f -s - $$xc 2>/dev/null; \
+	fi
+endif
+
 #### xcos : gateway declaration ####
 libscixcos_la_sci_gatewaydir = $(mydatadir)/sci_gateway
 libscixcos_la_sci_gateway_DATA = sci_gateway/xcos_gateway.xml

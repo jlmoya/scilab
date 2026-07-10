@@ -106,21 +106,50 @@ momentarily-reinstalled `config/depcomp` (`Error 127`). A clean `autoreconf → 
 has bare `AM_MAINTAINER_MODE` (ON) and `--disable-maintainer-mode` is **not** committed anywhere — the
 normal git-checkout build (uniform mtimes) doesn't regen, so nothing to change there yet.
 
-### Still ahead
-- Confirm the rpath build result; if green, delete reapply `[3b]` and `[5/7]` + build-macos.sh patch (d).
-- Fold the remaining build-time patches into the source: (a) OpenMP Apple-clang flags
-  (`-Xpreprocessor -fopenmp` / `-lomp`), (b) helptools disable-stub gating, (c) spreadsheet C++20 — all
-  belong in `configure.ac`/`Makefile.am`, not a post-configure `sed`.
-- Then reapply's `[1/7]` deployment-target (already `-mmacosx-version-min=11.0` in `configure.ac` — verify
-  redundant), `[2/7]` xlnt / `[3/7]` xcos `@loader_path`, `[6/7]` macro-build ordering, `[7/7]` menu name.
-- Stage 2: commit the latest-tools regenerated baseline (`configure`, `Makefile.in`, `aclocal.m4`, m4/)
-  + pin the toolchain; confirm maintainer-mode ON reconfigures cleanly.
+## 2026-07-10 (later): Stage 1 COMPLETE — reapply-macos-fixes.sh deleted, everything in the build
+
+The remaining post-configure patches and every reapply step were folded into the source, verified by a
+full clean rebuild with **maintainer-mode ON**, a plain `./build-macos.sh` (thin wrapper: configure +
+make, **zero exported env, zero patches**), and **no reapply at all**:
+
+| Old fixup | Native replacement |
+|---|---|
+| build-macos.sh patch (a) OpenMP | already in `configure.ac` (Darwin branch) — the stale committed `configure` had merely never carried it |
+| patch (b) helptools stub | already in `modules/helptools/Makefile.am` — same stale-generated-file story |
+| patch (c) spreadsheet C++20 | per-target `libscispreadsheet*_la_CXXFLAGS = -std=c++20` in the module `Makefile.am` (comes after `$(CXX)`'s `-std=c++17`, so it wins; project baseline stays C++17) |
+| patch (d) Vulkan jar tokens | fresh `configure` substitutes `@LWJGL@`… natively (absolute paths; `package-macos.sh` relocates them for the app) |
+| reapply `[1/7]` deployment target (vtool) | `-Wl,-platform_version,macos,$(MIN_MACOSX_VERSION),$(MIN_MACOSX_VERSION)` on the two executables (top `Makefile.am`) — a duplicate `-platform_version` is accepted, last wins, sets minos **and the SDK stamp** (the actual AppKit gate). Verified: fresh `scilab-bin`/`scilab-cli-bin` are `minos 11.0 / sdk 11.0`. |
+| reapply `[2/7]` xlnt | one-time artifact fix (`install_name_tool -id @rpath/libxlnt.1.6.1.dylib` on `../xlnt-prefix/lib/…`, documented in docs/building/macos.md §1) + `modules/spreadsheet/Makefile.am`: rpaths (`@loader_path/`, `$(XLNT_LIBDIR)`) and an `all-local` copy of the dylib next to the module. `XLNT_LIBDIR` from `pkg-config --variable=libdir` with a `--libs-only-L` fallback (a hand-written .pc may lack the variable — that bit us). |
+| reapply `[3/7]` xcos→scicos | `modules/xcos/Makefile.am`: post-link rewrite of the two scicos deps to `@rpath/…` + rpaths for the uninstalled (`@loader_path/../../scicos*/.libs`) and installed (`$(pkglibdir)`) layouts. xcos is dlopen'ed, so the libtool wrapper's `DYLD_LIBRARY_PATH` can't resolve it like the always-linked modules. |
+| reapply `[3b]` @rpath OS libs | `configure.ac` rpaths (earlier this doc) |
+| reapply `[4/7]` helptools activation | `etc/modules.xml.in`: `activate="yes"` unconditionally (building docs ≠ running the help machinery) |
+| reapply `[5/7]` classpath restore | obsolete with a fresh `configure` (tokens substitute correctly) |
+| reapply `[6/7]` macro rebuild | the in-make `macros` target now works (the runtime it invokes is already fully resolved). 48 libs, zero 0-byte. Note: buildmacros exits rc=231 cosmetically (all libs fine, rule tolerates) — runtime bug, task #98. |
+| reapply `[7/7]` menu name | `macos-process-name` target in the top `Makefile.am` (runs on every `make`) |
+
+Also fixed on the way: `package-macos.sh` had a duplicated `if` line (syntax error — it could not have
+run at all); CI now `bash -n`s `package-macos.sh` instead of the deleted reapply script.
+
+**The from-scratch flow** (fresh clone / after toolchain changes):
+`autoreconf -fi && ./build-macos.sh` — or plain `./configure <flags> && make`; configure is
+self-sufficient on macOS (derives Homebrew + `../xlnt-prefix` paths itself). Verified end-to-end:
+deployment stamps, rpaths, xcos/xlnt resolution, macros, menu name, classpath, helptools, CLI runtime
+battery (42 / rand 0.2113 / sparse / xlsx gateway), and a null `make` with maintainer-mode ON
+regenerates **nothing**.
+
+### Remaining (Stage 2+, lower priority)
+- Pin/document the toolchain versions (autoconf 2.73, automake 1.18.1, libtool 2.5.4, pkgconf ≥ 0.29)
+  so any environment regenerates identical output; consider a `guard:` CI job asserting the committed
+  `configure` matches a fresh `autoreconf` run.
+- `make distclean` after in-tree autotools edits can die replaying a stale `config.status`
+  (`cannot find required auxiliary files`) — from-scratch means fresh clone/worktree, not distclean.
+  Harmless for the normal flow; fix opportunistically.
+- xlnt should eventually be a proper formula/standard prefix instead of `../xlnt-prefix` (tracked).
+- Stage 3 (long-term): CMake — no checked-in generated files, no tool-version drift, one build language.
 
 ## ⚠️ Constraints / gotchas
-- The xlnt pkg-config recheck death is **FIXED** (see progress #3). The general rule stands: anything the
-  build needs from the environment must be a *precious* autoconf var, or `config.status --recheck` drops
-  it. xlnt still lives out-of-tree in `../xlnt-prefix` (found via `PKG_CONFIG_PATH`) — a separate
-  reproducibility gap (should be a standard prefix / formula) tracked but not yet fixed.
+- Anything the build needs from the environment must be a *precious* autoconf var, or
+  `config.status --recheck` drops it (the old xlnt death). configure now composes its own macOS env.
 - Full ASan/instrumented builds get OOM-killed on this machine; normal builds are fine (proven — several
   full builds this session).
 - The `-fsanitize=address` worktree at `~/Projects/CLionProjects/scilab-ubsan` is a separate concern

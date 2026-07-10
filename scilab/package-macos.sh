@@ -8,7 +8,7 @@
 # dependency-vendored redistributable).
 #
 # Idempotent. First run creates the app; later runs rsync only the deltas, so a
-# refresh after `./build-macos.sh && ./reapply-macos-fixes.sh` takes seconds and
+# refresh after `./build-macos.sh` takes seconds and
 # never touches your toolboxes/config (those live outside the bundle).
 #
 #   ./package-macos.sh                       # build/refresh /Applications app
@@ -137,7 +137,6 @@ echo "[5/7] .scilab autoload startup…"
 # The toolbox manager is a core Scilab module (modules/toolbox_manager) — it is rsync'd
 # with the engine above, so the tbx* verbs load for free. .scilab only autoloads the
 # user's enabled toolboxes. Write it only if absent (preserve the user's own edits).
-if [ ! -f "$APP_SCIHOME/.scilab" ]; then
 if [ ! -f "$APP_SCIHOME/.scilab" ]; then
   cp "$DEV/macos-app/dot-scilab.template" "$APP_SCIHOME/.scilab"
   echo "      wrote $APP_SCIHOME/.scilab"

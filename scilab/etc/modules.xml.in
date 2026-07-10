@@ -76,7 +76,10 @@
 <module name="scinotes" activate="@GUI_ENABLE@"/>
 <module name="ui_data" activate="@GUI_ENABLE@"/>
 <module name="api_scilab" activate="yes"/>
-<module name="helptools" activate="@HELP_ENABLE@"/>
+<!-- helptools stays active even with disable-build-help: that option only skips *building* the
+     documentation, while the module provides the help() machinery at runtime (with a nogui stub
+     when Java is off). Gating it on @HELP_ENABLE@ forced a post-configure fixup to reactivate. -->
+<module name="helptools" activate="yes"/>
 <module name="graph" activate="@JAVA_ENABLE@"/>
 <module name="parallel" activate="no"/>
 <module name="modules_manager" activate="yes"/>

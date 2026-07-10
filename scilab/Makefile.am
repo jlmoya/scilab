@@ -71,6 +71,14 @@ endif
 
 if IS_MACOSX
 scilab_bin_LDFLAGS 		+= -framework Cocoa
+# Pin the executables' LC_BUILD_VERSION *SDK* stamp to the deployment target, not just minos.
+# macOS gates its strict main-thread AppKit assertions on the main executable's SDK stamp
+# ("linked on or after"); Scilab initializes graphics from a secondary thread, so a current-SDK
+# stamp SIGTRAPs on the first onscreen NSWindow. -mmacosx-version-min only sets minos; this
+# later -platform_version wins (last one on the link line) and sets both. Replaces the old
+# post-link `vtool -set-build-version` fixup.
+scilab_bin_LDFLAGS 		+= -Wl,-platform_version,macos,$(MIN_MACOSX_VERSION),$(MIN_MACOSX_VERSION)
+scilab_cli_bin_LDFLAGS 	+= -Wl,-platform_version,macos,$(MIN_MACOSX_VERSION),$(MIN_MACOSX_VERSION)
 endif
 
 scilab_bin_CPPFLAGS = \
@@ -189,6 +197,23 @@ endif
 
 if COMPILATION_TESTS
 TARGETS_ALL+=check-java
+endif
+
+if IS_MACOSX
+TARGETS_ALL+=macos-process-name
+# macOS shows the *executable filename* of the GUI process in the menu bar and Dock. Keep a
+# versioned hardlink of scilab-bin and point the (relinked-on-every-build) libtool wrapper at it,
+# so a terminal-launched GUI is named "Scilab-<version>" instead of "scilab-bin".
+# (The $(bin_PROGRAMS) prerequisite orders this after the link under parallel make.)
+macos-process-name: $(bin_PROGRAMS)
+	@if test -f $(top_builddir)/.libs/scilab-bin; then \
+	  name="Scilab-`echo '$(SCILAB_LIBRARY_VERSION)' | tr ':' '.'`"; \
+	  ln -f $(top_builddir)/.libs/scilab-bin "$(top_builddir)/.libs/$$name" 2>/dev/null \
+	    || { cp -f $(top_builddir)/.libs/scilab-bin "$(top_builddir)/.libs/$$name" && codesign -f -s - "$(top_builddir)/.libs/$$name"; }; \
+	  sed -i '' "s/program='scilab-bin'/program='$$name'/" $(top_builddir)/scilab-bin 2>/dev/null; \
+	  echo "  macOS process name: $$name"; \
+	fi
+.PHONY: macos-process-name
 endif
 
 # check is performed with scilab, so use the serial-tests on purpose

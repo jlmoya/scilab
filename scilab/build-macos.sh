@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 # Full from-source build of Scilab (branch 2027) on macOS arm64 with JDK 25.
 #
-# The dev branch's committed generated Makefiles are stale w.r.t. a few macOS fixes,
-# so this wraps: configure -> three build-time Makefile patches -> make. Afterwards run
-# ./reapply-macos-fixes.sh (runtime dylib/deployment-target fixes), then ./bin/scilab.
+# This is now a thin convenience wrapper: it just documents the feature flags and
+# dependency locations for this machine and runs a plain `./configure && make`.
+# configure is self-sufficient on macOS (it derives the Homebrew + ../xlnt-prefix
+# search paths and the rpaths itself), and every former post-configure Makefile
+# patch and post-build fixup lives in configure.ac / the Makefile.am files.
+# See docs/design/build-modernization.md.
 #
 # Run from the source root:  cd scilab/scilab && ./build-macos.sh
 set -e
 cd "$(dirname "$0")"
 
 JDK=/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home
-export JAVA_HOME="$JDK"
-export PKG_CONFIG_PATH="$PWD/../xlnt-prefix/lib/pkgconfig:$(brew --prefix)/opt/pcre2/lib/pkgconfig:$(brew --prefix)/opt/openblas/lib/pkgconfig:$(brew --prefix)/lib/pkgconfig"
-export CPPFLAGS="-I$(brew --prefix)/include -I$(brew --prefix)/opt/libomp/include -I$(brew --prefix)/opt/libarchive/include"
-export LDFLAGS="-L$(brew --prefix)/lib -L$(brew --prefix)/opt/libomp/lib -L$(brew --prefix)/opt/libarchive/lib"
+export JAVA_HOME="$JDK"   # ant + the java checks read it during configure/make
 
-echo "[1/3] configure (JDK 25)…"
+echo "[1/2] configure (JDK 25)…"
 ./configure --with-jdk="$JDK" --with-ant=/Users/josemoya/.sdkman/candidates/ant/current \
   --without-tk --without-modelica --disable-build-help --disable-ccache \
   --with-blas-library=/opt/homebrew/opt/openblas/lib --with-lapack-library=/opt/homebrew/opt/openblas/lib \
@@ -26,41 +26,10 @@ echo "[1/3] configure (JDK 25)…"
   --with-umfpack-include=/opt/homebrew/opt/suite-sparse/include/suitesparse --with-umfpack-library=/opt/homebrew/opt/suite-sparse/lib \
   --with-eigen-include=/opt/homebrew/opt/eigen/include/eigen3
 
-echo "[2/3] macOS build-time Makefile fixes…"
-export LC_ALL=C LANG=C
-# (a) OpenMP: Apple clang needs '-Xpreprocessor -fopenmp' and links '-lomp' (not -fopenmp/-lgomp)
-find . -name Makefile -exec sed -i '' \
-  -e 's/^OPENMP_CFLAGS = -fopenmp$/OPENMP_CFLAGS = -Xpreprocessor -fopenmp/' \
-  -e 's/^OPENMP_CXXFLAGS = -fopenmp$/OPENMP_CXXFLAGS = -Xpreprocessor -fopenmp/' \
-  -e 's/^OPENMP_LIBS = -lgomp$/OPENMP_LIBS = -lomp/' {} +
-# (b) helptools: the disable-stub lib is gated wrong for --disable-build-help; give it its
-#     source+object so it isn't empty (an empty .la fails to link on macOS: "no object files")
-sed -i '' \
-  -e 's|^#am__objects_2 = sci_gateway/nogui/libscihelptools_disable_la-nogui.lo|am__objects_2 = sci_gateway/nogui/libscihelptools_disable_la-nogui.lo|' \
-  -e 's|^#HELPTOOLS_DISABLE_CPP_SOURCES = sci_gateway/nogui/nogui.cpp|HELPTOOLS_DISABLE_CPP_SOURCES = sci_gateway/nogui/nogui.cpp|' \
-  modules/helptools/Makefile
-# (c) spreadsheet: Apache Arrow 24 headers require C++20 (this module only)
-sed -i '' 's/-std=c++17/-std=c++20/g' modules/spreadsheet/Makefile
-# (d) Vulkan-renderer jars: configure.ac wires @LWJGL@/@SWING_GPU_SURFACE@ (AC_JAVA_CHECK_JAR ~1065)
-#     into scilab-lib.properties.in and etc/classpath.xml.in, but the committed generated `configure`
-#     predates that wiring, so a fresh configure leaves the tokens raw — javac then fails on
-#     cc.sosonline.gpu and the GUI falls back to JOGL. Substitute the real jar paths (idempotent).
-for f in scilab-lib.properties etc/classpath.xml; do
-  [ -f "$f" ] && sed -i '' \
-    -e "s|@LWJGL@|\$SCILAB/thirdparty/lwjgl-3.3.4.jar|g" \
-    -e "s|@LWJGL_VULKAN@|\$SCILAB/thirdparty/lwjgl-vulkan-3.3.4.jar|g" \
-    -e "s|@LWJGL_JAWT@|\$SCILAB/thirdparty/lwjgl-jawt-3.3.4.jar|g" \
-    -e "s|@LWJGL3_AWT@|\$SCILAB/thirdparty/lwjgl3-awt-0.2.4.jar|g" \
-    -e "s|@SWING_GPU_SURFACE@|\$SCILAB/thirdparty/swing-gpu-surface-0.1.0.jar|g" \
-    "$f"
-done
-# scilab-lib.properties feeds javac (no $SCILAB expansion there) — make its five entries absolute
-sed -i '' "s|=\$SCILAB/thirdparty/\(lwjgl[^ ]*\.jar\)|=$PWD/thirdparty/\1|; s|=\$SCILAB/thirdparty/\(swing-gpu-surface[^ ]*\.jar\)|=$PWD/thirdparty/\1|" scilab-lib.properties
-
-echo "[3/3] make -j$(sysctl -n hw.ncpu)…"
+echo "[2/2] make -j$(sysctl -n hw.ncpu)…"
 make -j"$(sysctl -n hw.ncpu)"
 
 echo
-echo "Build complete. Next:"
-echo "  ./reapply-macos-fixes.sh                          # macOS runtime fixes"
-echo "  JAVA_HOME=$JDK ./bin/scilab                       # run the GUI from the terminal"
+echo "Build complete."
+echo "  Terminal:  JAVA_HOME=$JDK ./bin/scilab     # run the GUI"
+echo "  Package:   ./package-macos.sh              # build the /Applications app"

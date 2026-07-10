@@ -29,8 +29,8 @@ sanity:scripts:
     # the build entry points must at least parse
     - bash -n scilab/configure
     - bash -n scilab/build-macos.sh
-    - bash -n scilab/reapply-macos-fixes.sh
-    - shellcheck -S error scilab/build-macos.sh scilab/reapply-macos-fixes.sh
+    - bash -n scilab/package-macos.sh
+    - shellcheck -S error scilab/build-macos.sh
     # configs this fork edits must stay well-formed XML
     - xmllint --noout scilab/etc/jvm_options.xml
     - xmllint --noout scilab/modules/console/etc/XConfiguration-general.xml

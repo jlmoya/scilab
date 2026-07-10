@@ -145,7 +145,7 @@ Phases 3–4 may proceed in parallel with/after Phase 2.
 ## 6. Risks / watch-items
 - **PTY correctness (✅ done in spike):** `posix_openpt`+`posix_spawn` (not `forkpty`); controlling tty via `SETSID`+open-slave-as-fd0; `TIOCSWINSZ`/SIGWINCH resize; `waitpid` reaping; EOF on exit.
 - **arm64 JNA varargs (✅ fixed in spike):** variadic libc functions (`ioctl`, …) MUST be declared `Object...` in the JNA interface on Apple Silicon, or the misplaced arg corrupts the JVM heap → SIGBUS. Applies to any variadic C reached via JNA.
-- **macOS native libs:** JNA + JOGL precedent says runtime extraction + ad-hoc signing works; a C gateway's libtool lib still needs the `minos 11.0` + codesign step from `reapply-macos-fixes.sh`.
+- **macOS native libs:** JNA + JOGL precedent says runtime extraction + ad-hoc signing works; a C gateway's libtool lib gets `minos 11.0` + signing from the build itself (the old reapply-macos-fixes.sh steps are folded into configure.ac/Makefile.am — see docs/design/build-modernization.md).
 - **Interpreter reload:** only when idle (use the queue, never mutate Context from a watcher thread); respect `funcprot`; expect "finishes on old code" mid-call.
 - **Watcher hygiene:** debounce bursts; filter Scilab's own writes to avoid reload loops.
 - **Versions:** JediTerm + `kotlin-stdlib` must be JDK-25-compatible (Scilab now targets JDK 25
