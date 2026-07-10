@@ -119,6 +119,15 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
     <key>CFBundleVersion</key><string>2027.0.0</string>
     <key>NSHighResolutionCapable</key><true/>
     <key>LSMinimumSystemVersion</key><string>11.0</string>
+    <!-- Force native Apple-Silicon execution: refuse Rosetta and prefer the arm64 slice.
+         The whole stack (scilab-bin, all module dylibs, the JDK 25 JVM, JOGL/GlueGen/MoltenVK)
+         is already arm64; without these keys LaunchServices exposes an "Open using Rosetta"
+         toggle that would drag the entire single-arch JVM process through x86_64 translation. -->
+    <key>LSRequiresNativeExecution</key><true/>
+    <key>LSArchitecturePriority</key>
+    <array>
+        <string>arm64</string>
+    </array>
 </dict>
 </plist>
 PLIST

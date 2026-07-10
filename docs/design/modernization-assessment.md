@@ -124,6 +124,39 @@ This is the "no pre-existing-error-is-not-mine" principle in practice: on this f
 to fix. It also strengthens the case for the FFM/native-boundary work (roadmap #4) — the more of this
 code we can characterize and re-express safely, the fewer of these traps remain.
 
+## Native track — Apple-Silicon: 100% native, no Rosetta (2026-07-09)
+
+**Trigger:** the packaged `/Applications/Scilab-2027.0.0.app` exposed an "Open using Rosetta" toggle.
+Rosetta 2 is on Apple's deprecation path, so the goal is a guaranteed-native arm64 app.
+
+**Finding — nothing actually requires Rosetta; it was a packaging-metadata gap.** Every layer of the
+runtime is already arm64 (audited with `lipo -archs` / `file`):
+
+| Layer | Arch |
+|-------|------|
+| `scilab-bin` + all 160 module dylibs | arm64 |
+| JDK 25 JVM (`java`/`libjli`/`libjvm`) | arm64 |
+| Thirdparty (JOGL, GlueGen, MoltenVK) | universal (arm64 slice present) |
+| Every Homebrew/system dep in the link closure | arm64 slice present |
+| Installed toolboxes (`~/.Scilab`, 21 native libs) | arm64 |
+| Launcher script | no forced `arch -x86_64` |
+
+The only gap: our app's `Info.plist` lacked the two keys the **official** arm64 build
+(`scilab-2026.1.0.app`) carries — `LSRequiresNativeExecution=true` and `LSArchitecturePriority=[arm64]`.
+Without them LaunchServices *permits* the Rosetta toggle; because a process is single-arch, one flip
+drags the **entire** JVM (and every arm64 JNI lib it loads) through x86_64 translation.
+
+**Fix applied (2026-07-09):** added both keys to `package-macos.sh`'s Info.plist heredoc, and patched
+the installed app in place (`plutil -insert` → ad-hoc `codesign --force` → `lsregister -f`). No code
+changes, no library upgrades — the arm64 build/JDK/thirdparty work was already done.
+
+**The one ongoing risk is toolboxes:** an x86_64-only toolbox `.dylib`, once loaded, either fails
+(an arm64 process can't `dlopen` x86_64) or is the reason a user re-enables Rosetta. The installed set
+is clean; the porting campaign (finance/ATOMS ports) must keep enforcing arm64. Recommended: a
+`tbxInstall`/`package-macos.sh` arch gate that rejects/reports any non-arm64 native lib. (The stray
+`krisp`/`sci_gsl` `.so` in the dev tree are Linux ELF — never loaded by macOS.) If a JRE is ever
+bundled into the `.app` instead of using the system JDK, it must be arm64 too.
+
 ## Still to analyze (next discovery pass)
 
 - **Native track** (STARTED — see the finding above): C/C++/Fortran LOC + standards used; the deprecated
