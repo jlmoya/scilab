@@ -9,6 +9,7 @@
 
 package org.scilab.modules.gui.bridge.browser;
 
+import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefMessageRouter;
@@ -332,6 +333,13 @@ public class SwingScilabBrowser extends JPanel implements SwingViewObject, Widge
     @Override
     public void destroy() {
         ScilabSwingUtilities.removeFromParent(this);
+
+        // If CEF was already terminated by the JVM shutdown hook, the native
+        // browser is gone; browser_.close()/ScilabBrowser.release() would throw
+        // IllegalStateException("CefApp was terminated"). Nothing left to tear down.
+        if (CefApp.getState() == CefApp.CefAppState.TERMINATED) {
+            return;
+        }
 
         if (devToolsOpened == true) {
             browser_.closeDevTools();

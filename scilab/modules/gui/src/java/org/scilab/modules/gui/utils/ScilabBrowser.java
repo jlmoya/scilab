@@ -143,7 +143,22 @@ public final class ScilabBrowser {
         synchronized (activeClients) {
             activeClients.remove(client);
         }
-        client.dispose();
+
+        // The JVM shutdown hook (shutdown()) may already have run
+        // cefApp_.dispose(), terminating CEF, before the graphic-object tree
+        // teardown reaches this browser. Once CefApp is TERMINATED,
+        // CefClient.dispose() -> cleanupBrowser() -> CefApp.getInstance() throws
+        // IllegalStateException("CefApp was terminated"). The native browser is
+        // already gone in that case, so there is nothing left to release.
+        if (cefApp_ == null || CefApp.getState() == CefAppState.TERMINATED) {
+            return;
+        }
+        try {
+            client.dispose();
+        } catch (IllegalStateException e) {
+            // CefApp was terminated between the guard check and dispose(); the
+            // browser is being torn down natively. Nothing to do.
+        }
     }
 
     public static String getJcefVersion() {
