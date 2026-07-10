@@ -34,6 +34,26 @@ if [ -f "$XC" ]; then
   codesign -f -s - "$XC" && echo "    patched libscixcos"
 fi
 
+echo "[3b] @rpath system libs -> absolute (libtool >= 2.5.4 records @rpath for OS/toolchain libs;"
+echo "     the dev tree has no matching LC_RPATH, so dyld can't resolve them -> Abort trap 6)"
+# TEMPORARY post-link fixup. The durable fix (task #97) is to add the rpaths / keep system libs
+# absolute in the link itself (configure.ac LDFLAGS) so a plain `make` needs no post-processing.
+GCC="$(dirname "$(find /opt/homebrew/opt/gcc/lib/gcc/current -name libgfortran.5.dylib 2>/dev/null | head -1)" 2>/dev/null)"
+rpfix=0
+for img in .libs/scilab-cli-bin .libs/scilab-bin modules/.libs/*.2027.dylib modules/*/.libs/*.2027.dylib; do
+  [ -f "$img" ] || continue
+  CH=""
+  otool -L "$img" 2>/dev/null | grep -q "@rpath/libc++.1.dylib"      && CH="$CH -change @rpath/libc++.1.dylib /usr/lib/libc++.1.dylib"
+  otool -L "$img" 2>/dev/null | grep -q "@rpath/libcurl.4.dylib"     && CH="$CH -change @rpath/libcurl.4.dylib /usr/lib/libcurl.4.dylib"
+  otool -L "$img" 2>/dev/null | grep -q "@rpath/libjli.dylib"        && CH="$CH -change @rpath/libjli.dylib $JDK/lib/libjli.dylib"
+  if [ -n "$GCC" ]; then
+    otool -L "$img" 2>/dev/null | grep -q "@rpath/libgfortran.5.dylib" && CH="$CH -change @rpath/libgfortran.5.dylib $GCC/libgfortran.5.dylib"
+    otool -L "$img" 2>/dev/null | grep -q "@rpath/libquadmath.0.dylib" && CH="$CH -change @rpath/libquadmath.0.dylib $GCC/libquadmath.0.dylib"
+  fi
+  if [ -n "$CH" ]; then install_name_tool $CH "$img" 2>/dev/null && codesign -f -s - "$img" 2>/dev/null && rpfix=$((rpfix+1)); fi
+done
+echo "    pinned @rpath system libs on $rpfix image(s)"
+
 echo "[4/7] activate helptools module (help window)"
 sed -i '' 's|<module name="helptools" activate="no"/>|<module name="helptools" activate="yes"/>|' etc/modules.xml 2>/dev/null \
   && echo "    helptools active"
