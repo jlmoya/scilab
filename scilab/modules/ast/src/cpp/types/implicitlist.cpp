@@ -25,6 +25,23 @@
 #include "numericconstants.hxx"
 #include "doubleexp.hxx"
 
+// (int)floor(count) is UB when the range is huge or (for the unsigned branch) the subtraction
+// underflowed to ~2^64. Clamp: a negative/nan count -> empty (0), an over-INT_MAX count -> INT_MAX,
+// otherwise floor(count)+1. Matches the old std::max(0, (int)floor(...)+1) for every in-range value.
+static inline int clampImplicitSize(double dRawCount)
+{
+    double f = floor(dRawCount);
+    if (!(f >= 0.0))
+    {
+        return 0;
+    }
+    if (f >= 2147483647.0)
+    {
+        return 2147483647;
+    }
+    return static_cast<int>(f) + 1;
+}
+
 #ifndef NDEBUG
 #include "inspector.hxx"
 #endif
@@ -298,7 +315,7 @@ bool ImplicitList::compute()
                     m_bComputed = true;
                     return true;
                 }
-                m_iSize = std::max(0,static_cast<int>(floor( static_cast<double>((llEnd - llStart) /(llStep)) )) + 1);
+                m_iSize = clampImplicitSize(static_cast<double>((llEnd - llStart) / (llStep)));
             }
             else
             {
@@ -313,7 +330,7 @@ bool ImplicitList::compute()
                     m_bComputed = true;
                     return true;
                 }
-                m_iSize = std::max(0,static_cast<int>(floor( static_cast<double>((ullEnd - ullStart) /(ullStep)) )) + 1);
+                m_iSize = (ullEnd < ullStart) ? 0 : clampImplicitSize(static_cast<double>((ullEnd - ullStart) / (ullStep)));
             }
         }
         m_bComputed = true;

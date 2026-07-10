@@ -37,7 +37,7 @@ the docs (previously `fcvtz*` saturated, e.g. `int32(2^40)` gave `INT_MAX`; now 
 asserted an out-of-range result, so nothing regressed.
 | Site | UB | Fix |
 |------|----|-----|
-| `integer/sci_gateway/cpp/sci_int.cpp:114` — `intN()`/`uintN()` builtins | out-of-range `double`→narrow int | `#if …__aarch64__` wrap path (was `_M_ARM64`-only): route <0 through `int64_t`, ≥max+1 through `uint64_t`, let the narrowing cast wrap |
+| `integer/sci_gateway/cpp/sci_int.cpp` — `intN()`/`uintN()` builtins | out-of-range `double`→narrow int | shared `doubleToInt<T>()`: nan→0, inf→saturate, else narrow via **exact integer routing** — `int64_t` for `[-2^63, 2^63)`, `uint64_t` for `[2^63, 2^64)`, `fmod` only for `|d| ≥ 2^64`. (Corrected in the P2b pass: the fmod-only version first shipped here was UB for `uint64(-1)` — `2^64-1` rounds up to `2^64`.) |
 | `elementary_functions/includes/elem_func_gw.hxx:137` — `toInt()` (cumsum/cumprod with an int type) | same | shared `dblToInt<IntType>()` helper: nan→0, inf→saturate, finite→wrap (mirrors `convert_int`) |
 | `ast/types/tostring_common.cpp:291` (93×) + `:123` | `log10(0)`/`log10(-1)` = `-inf`/`nan` → `int` in display width calc | guard: only take `log10` for a positive argument; the value is pinned finite (dtoa gives `"0"` regardless) |
 | `ast/src/c/operations/matrix_power.c:50` | `(int)exp` for an out-of-range/inf/nan exponent | range-guard the cast (`exp >= INT_MIN && exp <= INT_MAX && …`) so huge exponents take the `pow` path |
@@ -48,13 +48,29 @@ asserted an out-of-range result, so nothing regressed.
 | `special_functions/src/cpp/faddeeva.cpp:{1149,1699}` — `erfcx_y100`/`w_im_y100` | `(int)NaN` for `erf/erfc/dawson(%nan)` | `if (y100 != y100) return y100;` before the switch (propagates NaN, which is the correct result) |
 | `sparse/sci_spzeros.cpp:{82,93}` + `sci_sparse.cpp:157` | `(unsigned int)` of a negative/nan dim in a validation check | `!(dim >= 0) || …` short-circuits before the cast (still errors cleanly) |
 
+## Fixed — batch 2b (2026-07-09, task #93 — surfaced by the batch-2 re-verify)
+
+Same float->int class, beyond the original catalog (the re-run exercised code the first sweep missed).
+Verified: 26-check behaviour test (the addition results are preserved **bit-for-bit** — `uint8(5)+%inf`
+stays 4, `+%nan` stays 5, `+300`=49, `+(-1)`=4), `integer` 34/34 ref, instrumented re-verify clean.
+| Site | UB | Fix |
+|------|----|-----|
+| `ast/types/types_tools.cpp:{132,215,331}` — index from a scalar | `(int)` of a `nan`/`inf`/out-of-range index (e.g. `x(%nan)`) | `indexToInt()` maps such values to 0, which the existing `== 0` / `< 0` index-validity checks already reject |
+| `ast/types/implicitlist.cpp:{301,316}` — `a:b:c` size | `(int)floor(count)` when the range is huge or the **unsigned** subtraction underflowed to ~2^64 | `clampImplicitSize()` (nan/neg->0, >INT_MAX->INT_MAX) + an `ullEnd < ullStart` empty-range guard on the unsigned branch |
+| `ast/operations/types_addition.hxx` — matrix + scalar workers | narrow-int cast of an out-of-range/`inf`/`nan` **double** — both the scalar `(O)r` and, when an int scalar makes `O` an int type, the double matrix element `(O)l[i]` (e.g. `[300.5 -1.5] + uint8(1)`) | `castVal<O>()` on both operands: reproduces the historical int-intermediate lowering (saturate to int32, then narrow) in a *defined* way — identity for every non-(float->int) pair |
+
 ## Remaining (deferred / next batch, tracked)
 
-**Newly surfaced by the batch-2 re-verify** (same float->int class, beyond the original catalog — the
-re-run exercised code the first sweep's coverage missed). Next UBSan increment:
-- `ast/types/types_tools.cpp:{132,215,331}` — `nan` -> `int`.
-- `ast/types/types_addition.hxx:209` — `-1` -> `unsigned char`.
-- `ast/types/implicitlist.cpp:316` — out-of-range (`2^64`) -> `int` in an implicit-list (`a:b:c`) bound.
+**Operator-family long tail (same `castVal` pattern):** `types_addition.hxx` still has the matrix+matrix
+`(O)r[i]` and complex-part `(O)rc` casts unconverted, and `types_subtraction.hxx` / `types_multiplication.hxx`
+/ … carry the identical latent (currently-benign) UB. Not flagged by the sweep (unexercised with
+out-of-range operands) — a mechanical follow-up once the pattern is proven on addition.
+
+**Misalignment class (task #95), surfaced by the P2b re-verify** — `std::__tree::destroy` on a
+`std::map/set<wstring, void*>` node at a **non-8-aligned address** (`0x…7e`; upcast/downcast/load/
+member-access, 4 reports). A heap container node should never be misaligned, so this is a container
+embedded in a misaligned struct / a custom allocator / pointer corruption — a real memory-safety bug
+needing the Scilab caller from the full stack. NOT float->int; its own investigation.
 
 **Deferred:**
 - `patched_sundials/.../sunmatrix_sparse.c:586` — member access / load at **address `0x9`** (a genuine

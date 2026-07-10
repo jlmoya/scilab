@@ -63,6 +63,18 @@ Double* convertIndex(T* pI)
     return pCurrentArg;
 }
 
+// A scalar index value can be nan/inf/out-of-range (e.g. x(%nan)); casting that straight to int is
+// UB. Map any such value to 0, which the callers' index-validity checks (== 0, or < 0 after -1)
+// already reject.
+static inline int indexToInt(double d)
+{
+    if (!(d >= -2147483648.0 && d <= 2147483647.0))
+    {
+        return 0;
+    }
+    return static_cast<int>(d);
+}
+
 double getIndex(InternalType* val)
 {
     switch (val->getType())
@@ -129,7 +141,7 @@ bool getArgsDims(typed_list* _pArgsIn, std::vector<int>& dims)
         //input arg type must be scalar double, int8, int16, ...
         if (in->isGenericType() && in->getAs<GenericType>()->isScalar())
         {
-            int ind = static_cast<int>(getIndex(in));
+            int ind = indexToInt(getIndex(in));
             if (ind == 0)
             {
                 return false;
@@ -212,7 +224,7 @@ bool getScalarIndex(GenericType* _pRef, typed_list* _pArgsIn, int* index)
         //input arg type must be scalar double, int8, int16, ...
         if (in->isGenericType() && in->getAs<GenericType>()->isScalar())
         {
-            ind[i] = static_cast<int>(getIndex(in)) - 1;
+            ind[i] = indexToInt(getIndex(in)) - 1;
             if (ind[i] < 0)
             {
                 return false;
@@ -328,7 +340,7 @@ bool getImplicitIndex(GenericType* _pRef, typed_list* _pArgsIn, std::vector<int>
         InternalType* in = (*_pArgsIn)[i];
         if (in->isGenericType() && in->getAs<GenericType>()->isScalar())
         {
-            int idx = static_cast<int>(getIndex(in)) - 1;
+            int idx = indexToInt(getIndex(in)) - 1;
             if (idx < 0)
             {
                 return false;

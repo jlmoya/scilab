@@ -28,6 +28,30 @@ extern "C"
 #include "os_string.h"
 }
 
+#include <cmath>
+#include <type_traits>
+
+// (O)v where v is a floating scalar and O a narrow integer is UB for out-of-range / inf / nan v.
+// The historical code relied on the compiler's int-intermediate lowering (saturate to int32, then
+// narrow to O); reproduce that explicitly so every result is bit-for-bit unchanged. Identity for
+// every other type pair (compiles to a plain static_cast).
+template<typename O, typename V>
+inline static O castVal(V v)
+{
+    if constexpr (std::is_floating_point<V>::value && std::is_integral<O>::value)
+    {
+        double d = static_cast<double>(v);
+        int i = std::isnan(d) ? 0
+                : (d >= 2147483647.0 ? 2147483647
+                   : (d <= -2147483648.0 ? (-2147483647 - 1) : static_cast<int>(d)));
+        return static_cast<O>(i);
+    }
+    else
+    {
+        return static_cast<O>(v);
+    }
+}
+
 void fillAddFunction();
 
 //define arrays on operation functions
@@ -206,7 +230,7 @@ template<typename T, typename U, typename O> inline static void add(T* l, size_t
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O)r;
+        o[i] = castVal<O>(l[i]) + castVal<O>(r);
     }
 }
 
@@ -224,7 +248,7 @@ template<typename T, typename U, typename O> inline static void add(T* l, T* lc,
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O)r;
+        o[i] = castVal<O>(l[i]) + castVal<O>(r);
         oc[i] = (O)lc[i];
     }
 }
@@ -244,7 +268,7 @@ template<typename T, typename O> inline static void add(T* l, T* lc, size_t size
 {
     for (size_t i = 0; i < size ; ++i)
     {
-        o[i] = (O)l[i] + (O)r;
+        o[i] = castVal<O>(l[i]) + castVal<O>(r);
         oc[i] = (O)lc[i] + (O)rc;
     }
 }

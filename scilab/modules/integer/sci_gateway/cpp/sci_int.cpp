@@ -97,13 +97,26 @@ static inline T doubleToInt(double d)
     {
         return static_cast<T>(d);
     }
-    double modulus = std::ldexp(1.0, static_cast<int>(sizeof(T) * 8));
-    double r = std::fmod(d, modulus);
-    if (r < 0.0)
+    // out of range, finite. Narrow with EXACT integer routing where possible; reducing in double
+    // (fmod) would lose precision at the 64-bit top (e.g. -1 -> uint64: 2^64-1 is unrepresentable
+    // and rounds up to 2^64, whose cast is UB). A value in [-2^63, 2^63) fits int64_t exactly and
+    // one in [2^63, 2^64) fits uint64_t exactly; the final narrowing cast to T then wraps (defined).
+    if (d >= -9223372036854775808.0 && d < 9223372036854775808.0)
     {
-        r += modulus;
+        return static_cast<T>(static_cast<int64_t>(d));
     }
-    return static_cast<T>(static_cast<uint64_t>(r));
+    if (d >= 9223372036854775808.0 && d < 18446744073709551616.0)
+    {
+        return static_cast<T>(static_cast<uint64_t>(d));
+    }
+    // |d| beyond the 64-bit range (astronomically outside any intN): reduce mod 2^64 with fmod.
+    // Such doubles are integer multiples of >= 2^11, so the result is exact and never rounds to 2^64.
+    double m = std::fmod(d, 18446744073709551616.0);
+    if (m < 0.0)
+    {
+        m += 18446744073709551616.0;
+    }
+    return static_cast<T>(static_cast<uint64_t>(m));
 }
 
 template <class T, class U>
