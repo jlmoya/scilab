@@ -196,6 +196,18 @@ case "$host" in
        # We need this to be passed to all linker commands
        LDFLAGS="$LDFLAGS -mmacosx-version-min=$MIN_MACOSX_VERSION"
     fi
+    # libtool >= 2.5.4 records @rpath install-names for OS/toolchain libs (libc++, libcurl,
+    # libgfortran, libquadmath). Add the rpaths that resolve them so the binaries run natively,
+    # with no post-link install_name_tool fixup (was reapply-macos-fixes.sh [3b]). /usr/lib covers
+    # the shared-cache OS libs; the Homebrew gcc runtime dir covers the Fortran runtime. (libjli is
+    # already resolved by the launcher's DYLD_LIBRARY_PATH.)
+    macos_gcc_runtime_dir="`brew --prefix gcc 2>/dev/null`/lib/gcc/current"
+    macos_rpaths="-Wl,-rpath,/usr/lib"
+    if test -d "$macos_gcc_runtime_dir"; then
+       macos_rpaths="$macos_rpaths -Wl,-rpath,$macos_gcc_runtime_dir"
+    fi
+    ARCH_LDFLAGS="$ARCH_LDFLAGS $macos_rpaths"
+    LDFLAGS="$LDFLAGS $macos_rpaths"
 ;;
 esac
 
@@ -1063,9 +1075,18 @@ if test "$with_javasci" != no -o "$with_gui" != no -o "$enable_build_help" != no
                 AC_SUBST(DIRECTORY_WATCHER)
 
                 # Vulkan renderer stack: LWJGL bindings + the Layer-1 Swing native-surface library.
-                # Specific artifact names are checked before the plain [lwjgl] core so the glob
-                # cannot mis-resolve. The natives jar (lwjgl-*-natives-macos-arm64.jar) carries no
-                # classes, so it is referenced literally in classpath.xml.in rather than probed here.
+                # Checked in DEPENDENCY ORDER — core [lwjgl] first. Each AC_JAVA_CHECK_JAR appends the
+                # resolved jar to ac_java_classpath, which becomes the parent classpath of the next
+                # check; the module jars extend core classes (e.g. org.lwjgl.system.jawt.JAWT extends
+                # org.lwjgl.system.Struct), so their class-load probe fails unless core is already on
+                # the classpath. The checker resolves each class to its *containing* jar
+                # (URLClassLoader.getResource), so the greedy lwjgl*.jar glob still pins [lwjgl] to the
+                # real core jar — checking it first is safe. swing-gpu-surface depends on all of them,
+                # so it is last. The natives jar (lwjgl-*-natives-macos-arm64.jar) carries no classes,
+                # so it is referenced literally in classpath.xml.in rather than probed here.
+                AC_JAVA_CHECK_JAR([lwjgl],[org.lwjgl.system.MemoryStack],[Scilab Vulkan renderer - LWJGL core])
+                LWJGL=$PACKAGE_JAR_FILE
+                AC_SUBST(LWJGL)
                 AC_JAVA_CHECK_JAR([lwjgl-vulkan],[org.lwjgl.vulkan.VK10],[Scilab Vulkan renderer - LWJGL Vulkan bindings])
                 LWJGL_VULKAN=$PACKAGE_JAR_FILE
                 AC_SUBST(LWJGL_VULKAN)
@@ -1075,9 +1096,6 @@ if test "$with_javasci" != no -o "$with_gui" != no -o "$enable_build_help" != no
                 AC_JAVA_CHECK_JAR([lwjgl3-awt],[org.lwjgl.awt.AWT],[Scilab Vulkan renderer - AWT native-surface bridge])
                 LWJGL3_AWT=$PACKAGE_JAR_FILE
                 AC_SUBST(LWJGL3_AWT)
-                AC_JAVA_CHECK_JAR([lwjgl],[org.lwjgl.system.MemoryStack],[Scilab Vulkan renderer - LWJGL core])
-                LWJGL=$PACKAGE_JAR_FILE
-                AC_SUBST(LWJGL)
                 AC_JAVA_CHECK_JAR([swing-gpu-surface],[cc.sosonline.gpu.VulkanScene],[Scilab Vulkan renderer - Swing GPU surface (Layer-1)])
                 SWING_GPU_SURFACE=$PACKAGE_JAR_FILE
                 AC_SUBST(SWING_GPU_SURFACE)
@@ -2283,9 +2301,15 @@ AH_BOTTOM([
 #endif /* MACHINE_H  */
 ])
 
-# Define the standard extension of a dynamic library
-AC_DEFINE_UNQUOTED([SHARED_LIB_EXT],["$shrext_cmds"],[Extension of a shared library])
-AC_DEFINE_UNQUOTED([SHARED_LIB_EXTW],[L"$shrext_cmds"],[Extension of a shared library ( wide string )])
+# Define the standard extension of a dynamic library.
+# libtool >= 2.5.4 sets $shrext_cmds to a shell *expression* (module ? .so : .dylib) rather than a
+# plain string as older libtool did, so evaluate it as a normal (non-module) shared library to get
+# the real extension. Baking the raw `test .$module = .yes && echo .so || echo .dylib` string into
+# the C define makes the dynamic-library loader build garbage filenames (e.g. libsci...`test...`).
+module=no
+eval "scilab_shrext=\"$shrext_cmds\""
+AC_DEFINE_UNQUOTED([SHARED_LIB_EXT],["$scilab_shrext"],[Extension of a shared library])
+AC_DEFINE_UNQUOTED([SHARED_LIB_EXTW],[L"$scilab_shrext"],[Extension of a shared library ( wide string )])
 
 
 #########
