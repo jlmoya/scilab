@@ -147,28 +147,37 @@ host_triplet = @host@
 # Clang (for example) needs an explicit reference to the lib
 @USE_STATIC_SYSTEM_LIB_FALSE@@WITH_DEVTOOLS_FALSE@am__append_6 = -lstdc++ -lgfortran
 @USE_STATIC_SYSTEM_LIB_FALSE@@WITH_DEVTOOLS_FALSE@am__append_7 = -lstdc++ -lgfortran
-@IS_MACOSX_TRUE@am__append_8 = -framework Cocoa
-@NEED_JAVA_TRUE@am__append_9 = \
+# Pin the executables' LC_BUILD_VERSION *SDK* stamp to the deployment target, not just minos.
+# macOS gates its strict main-thread AppKit assertions on the main executable's SDK stamp
+# ("linked on or after"); Scilab initializes graphics from a secondary thread, so a current-SDK
+# stamp SIGTRAPs on the first onscreen NSWindow. -mmacosx-version-min only sets minos; this
+# later -platform_version wins (last one on the link line) and sets both. Replaces the old
+# post-link `vtool -set-build-version` fixup.
+@IS_MACOSX_TRUE@am__append_8 = -framework Cocoa \
+@IS_MACOSX_TRUE@	-Wl,-platform_version,macos,$(MIN_MACOSX_VERSION),$(MIN_MACOSX_VERSION)
+@IS_MACOSX_TRUE@am__append_9 = -Wl,-platform_version,macos,$(MIN_MACOSX_VERSION),$(MIN_MACOSX_VERSION)
+@NEED_JAVA_TRUE@am__append_10 = \
 @NEED_JAVA_TRUE@			$(top_builddir)/modules/console/libsciconsole.la \
 @NEED_JAVA_TRUE@			$(top_builddir)/modules/jvm/libscijvm.la \
 @NEED_JAVA_TRUE@			$(top_builddir)/modules/commons/libscicommons.la
 
-@NEED_JAVA_FALSE@am__append_10 = \
+@NEED_JAVA_FALSE@am__append_11 = \
 @NEED_JAVA_FALSE@			$(top_builddir)/modules/console/libsciconsole-minimal.la \
 @NEED_JAVA_FALSE@			$(top_builddir)/modules/jvm/libscijvm-disable.la
 
-@MPI_TRUE@am__append_11 = modules/startup/src/c/initMPI.c
-@MPI_TRUE@am__append_12 = $(OPENMPI_CXXFLAGS)
-@MPI_TRUE@am__append_13 = modules/startup/src/c/initMPI.c
-@MPI_TRUE@am__append_14 = $(OPENMPI_CXXFLAGS)
+@MPI_TRUE@am__append_12 = modules/startup/src/c/initMPI.c
+@MPI_TRUE@am__append_13 = $(OPENMPI_CXXFLAGS)
+@MPI_TRUE@am__append_14 = modules/startup/src/c/initMPI.c
+@MPI_TRUE@am__append_15 = $(OPENMPI_CXXFLAGS)
 
 # Don't do it for scilab_cli_bin. We want to be able to call it without
 # the java libs
-@NEED_JAVA_TRUE@am__append_15 = $(JAVA_JNI_LIBS)
+@NEED_JAVA_TRUE@am__append_16 = $(JAVA_JNI_LIBS)
 
 #  The user wants to compile the localization files
-@GENERATE_LOCALIZATION_FILES_TRUE@am__append_16 = localization
-@COMPILATION_TESTS_TRUE@am__append_17 = check-java
+@GENERATE_LOCALIZATION_FILES_TRUE@am__append_17 = localization
+@COMPILATION_TESTS_TRUE@am__append_18 = check-java
+@IS_MACOSX_TRUE@am__append_19 = macos-process-name
 check_PROGRAMS = call_scilab_c_simple$(EXEEXT) call_scilab_c$(EXEEXT) \
 	call_scilab_c_getlastjob$(EXEEXT) \
 	call_scilab_c_DisableInteractiveMode$(EXEEXT) \
@@ -297,8 +306,8 @@ am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
 @NEED_JAVA_TRUE@am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1)
 scilab_bin_DEPENDENCIES = $(top_builddir)/modules/libscilab.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1) $(am__append_9) \
-	$(am__append_10) $(top_builddir)/modules/libscilab.la \
+	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1) $(am__append_10) \
+	$(am__append_11) $(top_builddir)/modules/libscilab.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_3)
 scilab_bin_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
@@ -766,6 +775,7 @@ MANIFEST_TOOL = @MANIFEST_TOOL@
 MATIO_CFLAGS = @MATIO_CFLAGS@
 MATIO_ENABLE = @MATIO_ENABLE@
 MATIO_LIBS = @MATIO_LIBS@
+MIN_MACOSX_VERSION = @MIN_MACOSX_VERSION@
 MKDIR_P = @MKDIR_P@
 MPI_ENABLE = @MPI_ENABLE@
 MSGCAT = @MSGCAT@
@@ -861,6 +871,7 @@ XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XLNT_CFLAGS = @XLNT_CFLAGS@
 XLNT_LDFLAGS = @XLNT_LDFLAGS@
+XLNT_LIBDIR = @XLNT_LIBDIR@
 XLNT_LIBS = @XLNT_LIBS@
 XMKMF = @XMKMF@
 XMLGRAPHICS_COMMONS = @XMLGRAPHICS_COMMONS@
@@ -954,7 +965,7 @@ AM_LDFLAGS = $(SCI_LDFLAGS)
 scilab_bin_LDFLAGS = $(AM_LDFLAGS) $(OPENMPI_LIBS) $(am__append_2) \
 	$(am__append_4) $(am__append_6) $(am__append_8)
 scilab_cli_bin_LDFLAGS = $(AM_LDFLAGS) $(OPENMPI_LIBS) $(am__append_3) \
-	$(am__append_5) $(am__append_7)
+	$(am__append_5) $(am__append_7) $(am__append_9)
 scilab_bin_CPPFLAGS = -I$(top_srcdir)/modules/ast/includes/ast/ \
 	-I$(top_srcdir)/modules/ast/includes/exps/ \
 	-I$(top_srcdir)/modules/ast/includes/operations/ \
@@ -975,7 +986,7 @@ scilab_bin_CPPFLAGS = -I$(top_srcdir)/modules/ast/includes/ast/ \
 	-I$(top_srcdir)/modules/core/src/c/ \
 	-I$(top_srcdir)/modules/dynamic_link/includes/ \
 	-I$(top_srcdir)/modules/startup/src/c/ $(AM_CPPFLAGS) \
-	$(am__append_12)
+	$(am__append_13)
 
 # --no-undefined --relax
 
@@ -983,7 +994,7 @@ scilab_bin_CPPFLAGS = -I$(top_srcdir)/modules/ast/includes/ast/ \
 # (causing issues on some platform)
 COMMON_LIBS = $(LTLIBINTL)
 scilab_bin_SOURCES = modules/startup/src/cpp/scilab.cpp \
-	$(am__append_11)
+	$(am__append_12)
 
 # the scilab-bin object file itself uses symbols from at least libscilab-cli.la,
 # libsciconsole-minimal.la and libscijvm-disable.la, so we have to link with these
@@ -995,15 +1006,15 @@ scilab_bin_SOURCES = modules/startup/src/cpp/scilab.cpp \
 # xerbla function
 scilab_bin_LDADD = $(top_builddir)/modules/libscilab.la \
 	$(OPENMPI_LIBS) $(XML_LIBS) $(COMMON_LIBS) $(FLIBS) \
-	$(am__append_9) $(am__append_10) \
+	$(am__append_10) $(am__append_11) \
 	$(top_builddir)/modules/libscilab.la $(BLAS_LIBS) \
-	$(LAPACK_LIBS) $(FLIBS) $(am__append_15)
+	$(LAPACK_LIBS) $(FLIBS) $(am__append_16)
 
 # Match scilab -nwni (ie command line without graphics)
 scilab_cli_bin_SOURCES = modules/startup/src/cpp/scilab.cpp \
-	$(am__append_13)
-scilab_cli_bin_CPPFLAGS = -DWITHOUT_GUI $(scilab_bin_CPPFLAGS) \
 	$(am__append_14)
+scilab_cli_bin_CPPFLAGS = -DWITHOUT_GUI $(scilab_bin_CPPFLAGS) \
+	$(am__append_15)
 @IS_MACOSX_FALSE@scilab_cli_bin_LDADD = $(COMMON_LIBS) $(top_builddir)/modules/libscilab-cli.la $(BLAS_LIBS) $(LAPACK_LIBS) $(FLIBS)
 
 # See the comment about scilab_bin_LDADD (relative to BLAS_LIBS & LAPACK_LIBS)
@@ -1025,7 +1036,8 @@ scilab_cli_bin_CPPFLAGS = -DWITHOUT_GUI $(scilab_bin_CPPFLAGS) \
 @IS_MACOSX_TRUE@    $(BLAS_LIBS) $(LAPACK_LIBS) $(FLIBS)
 
 LANG_DOMAIN = scilab
-TARGETS_ALL = macros $(am__append_16) $(am__append_17)
+TARGETS_ALL = macros $(am__append_17) $(am__append_18) \
+	$(am__append_19)
 
 # check is performed with scilab, so use the serial-tests on purpose
 TESTS_ENVIRONMENT = LANG=C HOME=/tmp $(top_builddir)/bin/scilab-cli -nb -noatomsautoload -nouserstartup -f
@@ -2283,6 +2295,19 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 
 # The binary itself needs this dep
 @IS_SOLARIS_TRUE@	scilab_bin_LDADD += $(BLAS_LIBS)
+# macOS shows the *executable filename* of the GUI process in the menu bar and Dock. Keep a
+# versioned hardlink of scilab-bin and point the (relinked-on-every-build) libtool wrapper at it,
+# so a terminal-launched GUI is named "Scilab-<version>" instead of "scilab-bin".
+# (The $(bin_PROGRAMS) prerequisite orders this after the link under parallel make.)
+@IS_MACOSX_TRUE@macos-process-name: $(bin_PROGRAMS)
+@IS_MACOSX_TRUE@	@if test -f $(top_builddir)/.libs/scilab-bin; then \
+@IS_MACOSX_TRUE@	  name="Scilab-`echo '$(SCILAB_LIBRARY_VERSION)' | tr ':' '.'`"; \
+@IS_MACOSX_TRUE@	  ln -f $(top_builddir)/.libs/scilab-bin "$(top_builddir)/.libs/$$name" 2>/dev/null \
+@IS_MACOSX_TRUE@	    || { cp -f $(top_builddir)/.libs/scilab-bin "$(top_builddir)/.libs/$$name" && codesign -f -s - "$(top_builddir)/.libs/$$name"; }; \
+@IS_MACOSX_TRUE@	  sed -i '' "s/program='scilab-bin'/program='$$name'/" $(top_builddir)/scilab-bin 2>/dev/null; \
+@IS_MACOSX_TRUE@	  echo "  macOS process name: $$name"; \
+@IS_MACOSX_TRUE@	fi
+@IS_MACOSX_TRUE@.PHONY: macos-process-name
 
 all-local: $(TARGETS_ALL)
 

@@ -240,6 +240,10 @@ am__objects_4 = sci_gateway/cpp/libscixcos_la-sci_Xcos.lo \
 	sci_gateway/cpp/libscixcos_la-sci_xcosSimulationStarted.lo
 am_libscixcos_la_OBJECTS = $(am__objects_3) $(am__objects_4)
 libscixcos_la_OBJECTS = $(am_libscixcos_la_OBJECTS)
+libscixcos_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(AM_CXXFLAGS) $(CXXFLAGS) $(libscixcos_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
 @GUI_TRUE@@XCOS_TRUE@am_libscixcos_la_rpath = -rpath $(pkglibdir)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -540,6 +544,7 @@ MANIFEST_TOOL = @MANIFEST_TOOL@
 MATIO_CFLAGS = @MATIO_CFLAGS@
 MATIO_ENABLE = @MATIO_ENABLE@
 MATIO_LIBS = @MATIO_LIBS@
+MIN_MACOSX_VERSION = @MIN_MACOSX_VERSION@
 MKDIR_P = @MKDIR_P@
 MPI_ENABLE = @MPI_ENABLE@
 MSGCAT = @MSGCAT@
@@ -635,6 +640,7 @@ XGETTEXT = @XGETTEXT@
 XGETTEXT_015 = @XGETTEXT_015@
 XLNT_CFLAGS = @XLNT_CFLAGS@
 XLNT_LDFLAGS = @XLNT_LDFLAGS@
+XLNT_LIBDIR = @XLNT_LIBDIR@
 XLNT_LIBS = @XLNT_LIBS@
 XMKMF = @XMKMF@
 XMLGRAPHICS_COMMONS = @XMLGRAPHICS_COMMONS@
@@ -848,6 +854,20 @@ libscixcos_la_LIBADD = libscixcos-algo.la \
 		$(top_builddir)/modules/jvm/libscijvm.la \
 		$(LIBXML_LIBS) \
 		$(LIBARCHIVE_LIBS)
+
+
+# libscixcos is dlopen'ed at runtime (scilab-bin does not link it), so unlike the always-loaded
+# modules its libsciscicos/libsciscicos_blocks deps cannot be resolved through the libtool
+# wrapper's DYLD_LIBRARY_PATH in an uninstalled tree — and they are recorded under their final
+# $(pkglibdir) install path, which does not exist there. Rewrite them to @rpath and give the
+# module rpaths covering every layout: the uninstalled build tree (@loader_path into the sibling
+# modules' .libs) and the installed/packaged flat directory ($(pkglibdir), @loader_path).
+# Replaces the old post-link install_name_tool fixup in reapply-macos-fixes.sh.
+@IS_MACOSX_TRUE@libscixcos_la_LDFLAGS = $(AM_LDFLAGS) \
+@IS_MACOSX_TRUE@		-Wl,-rpath,@loader_path/ \
+@IS_MACOSX_TRUE@		-Wl,-rpath,@loader_path/../../scicos/.libs \
+@IS_MACOSX_TRUE@		-Wl,-rpath,@loader_path/../../scicos_blocks/.libs \
+@IS_MACOSX_TRUE@		-Wl,-rpath,$(pkglibdir)
 
 
 #### xcos : gateway declaration ####
@@ -1418,7 +1438,7 @@ sci_gateway/cpp/libscixcos_la-sci_xcosSimulationStarted.lo:  \
 	sci_gateway/cpp/$(DEPDIR)/$(am__dirstamp)
 
 libscixcos.la: $(libscixcos_la_OBJECTS) $(libscixcos_la_DEPENDENCIES) $(EXTRA_libscixcos_la_DEPENDENCIES) 
-	$(AM_V_CXXLD)$(CXXLINK) $(am_libscixcos_la_rpath) $(libscixcos_la_OBJECTS) $(libscixcos_la_LIBADD) $(LIBS)
+	$(AM_V_CXXLD)$(libscixcos_la_LINK) $(am_libscixcos_la_rpath) $(libscixcos_la_OBJECTS) $(libscixcos_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -1931,6 +1951,7 @@ check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) check-local
 check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
+@IS_MACOSX_FALSE@all-local:
 all-am: Makefile $(LTLIBRARIES) $(DATA) all-local
 installdirs:
 	for dir in "$(DESTDIR)$(pkglibdir)" "$(DESTDIR)$(libscixcos_la_etcdir)" "$(DESTDIR)$(libscixcos_la_rootdir)" "$(DESTDIR)$(libscixcos_la_sci_gatewaydir)" "$(DESTDIR)$(libscixcos_la_imagesdir)"; do \
@@ -2140,6 +2161,17 @@ uninstall-am: uninstall-libscixcos_la_etcDATA \
 
 .PRECIOUS: Makefile
 
+# ($(pkglib_LTLIBRARIES) orders the rewrite after the link under parallel make.)
+@IS_MACOSX_TRUE@all-local: $(pkglib_LTLIBRARIES)
+@IS_MACOSX_TRUE@	@v=`echo '$(SCILAB_LIBRARY_VERSION)' | cut -d: -f1`; \
+@IS_MACOSX_TRUE@	xc=.libs/libscixcos.$$v.dylib; \
+@IS_MACOSX_TRUE@	if test -f $$xc; then \
+@IS_MACOSX_TRUE@	  install_name_tool \
+@IS_MACOSX_TRUE@	    -change "$(pkglibdir)/libsciscicos.$$v.dylib" "@rpath/libsciscicos.$$v.dylib" \
+@IS_MACOSX_TRUE@	    -change "$(pkglibdir)/libsciscicos_blocks.$$v.dylib" "@rpath/libsciscicos_blocks.$$v.dylib" \
+@IS_MACOSX_TRUE@	    $$xc 2>/dev/null; \
+@IS_MACOSX_TRUE@	  codesign -f -s - $$xc 2>/dev/null; \
+@IS_MACOSX_TRUE@	fi
 
 # This target enables tests for Scilab
 check-local: $(top_builddir)/scilab-bin test
