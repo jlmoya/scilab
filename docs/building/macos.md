@@ -17,17 +17,22 @@ The official reference is the GitLab wiki
 
 ---
 
-## TL;DR — the whole build
+## TL;DR — the whole build (fresh clone)
 
 ```sh
 cd scilab/scilab
-./build-macos.sh            # = plain ./configure <flags> && make    (~45 min)
+./fetch-thirdparty.sh       # one-time: pinned third-party payload (jars, dylibs, xlnt)  (~5 min)
+./build-macos.sh            # = plain ./configure <flags> && make                        (~45 min)
 JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home ./bin/scilab   # run the GUI
 ```
 
-`build-macos.sh` is a thin convenience wrapper: it only pins `JAVA_HOME` and documents this
-machine's `--with-…` dependency locations, then runs a plain `./configure && make`. Nothing is
-patched before, during, or after the build. The one-time prerequisites (§1–§2) must be in place.
+`fetch-thirdparty.sh` populates everything git doesn't carry — `thirdparty/`, `lib/thirdparty/`,
+and the out-of-tree `../xlnt-prefix` (which it builds from source) — from version-pinned,
+sha256-verified URLs, with an offline cache in `~/.cache/scilab-thirdparty`. Run it again anytime
+(`--verify-only` audits the payload; `--force` reinstalls). `build-macos.sh` is a thin convenience
+wrapper: it only pins `JAVA_HOME` and documents this machine's `--with-…` dependency locations,
+then runs a plain `./configure && make`. Nothing is patched before, during, or after the build.
+The Homebrew toolchain (§1) must be installed once.
 
 ---
 
@@ -55,7 +60,7 @@ Everything macOS needs is part of the build itself:
 
 ```sh
 brew install gcc            # provides gfortran
-brew install autoconf automake libtool pkg-config
+brew install autoconf automake libtool pkg-config cmake gettext
 brew install openblas arpack fftw hdf5 pcre2 suite-sparse eigen
 brew install libmatio apache-arrow libomp libarchive fast_float
 ```
@@ -67,74 +72,38 @@ Notes:
   (bumping it globally breaks C++17-only code in `ast`/`sparse`).
 - `libomp`, `libarchive` are **keg-only** — configure adds their `include`/`lib` paths itself.
 - `fast_float` is a new, undeclared `scicos` dependency (header-only).
-
-### xlnt 1.6.1 (no Homebrew formula)
-
-xlnt has no formula. Build a small pkg-config prefix at the repo root (`../xlnt-prefix`
-relative to the source root), pairing the headers with a prebuilt dylib:
-
-```sh
-PREFIX="$PWD/../xlnt-prefix"; mkdir -p "$PREFIX"/{include,lib/pkgconfig}
-curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/xlnt-1.6.1_with_submodules.tar.gz
-tar -xzf xlnt-1.6.1_with_submodules.tar.gz
-cp -R xlnt-1.6.1/include/xlnt "$PREFIX/include/"
-# The CMake-generated export header is not in the source tarball; recreate it:
-cat > "$PREFIX/include/xlnt/utils/xlnt_cmake_export.h" <<'EOF'
-#ifndef XLNT_API_H
-#define XLNT_API_H
-#ifndef XLNT_API
-#  define XLNT_API __attribute__((visibility("default")))
-#endif
-#ifndef XLNT_NO_EXPORT
-#  define XLNT_NO_EXPORT __attribute__((visibility("hidden")))
-#endif
-#ifndef XLNT_DEPRECATED
-#  define XLNT_DEPRECATED __attribute__ ((__deprecated__))
-#endif
-#endif /* XLNT_API_H */
-EOF
-cp /Applications/scilab-*.app/Contents/lib/thirdparty/libxlnt.1.6.1.dylib "$PREFIX/lib/"   # from any installed Scilab release
-# REQUIRED: give the dylib a modern @rpath install name (the spreadsheet module links against
-# it and resolves it via rpaths at runtime — a bare install name cannot be resolved):
-install_name_tool -id @rpath/libxlnt.1.6.1.dylib "$PREFIX/lib/libxlnt.1.6.1.dylib"
-codesign -f -s - "$PREFIX/lib/libxlnt.1.6.1.dylib"
-ln -sf libxlnt.1.6.1.dylib "$PREFIX/lib/libxlnt.dylib"
-cat > "$PREFIX/lib/pkgconfig/xlnt.pc" <<EOF
-prefix=$PREFIX
-libdir=\${prefix}/lib
-Name: xlnt
-Version: 1.6.1
-Cflags: -I\${prefix}/include
-Libs: -L\${prefix}/lib -lxlnt
-EOF
-```
+- `cmake` is used once by `fetch-thirdparty.sh` to build xlnt from source (§2).
 
 ---
 
-## 2. Java / JOGL / JavaFX prerequisites
+## 2. Third-party payload — `fetch-thirdparty.sh`
 
-The GUI needs legacy jars + JOGL native dylibs (incl. **`libgluegen_rt.dylib`**, loaded via
-`java.library.path` — see §6). Download the official macOS bundle and add JavaFX 17.0.8:
-
-```sh
-cd scilab/scilab     # the source root
-curl -LO https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements/prerequirements-scilab-branch-main-macosx.tar.xz
-tar -xJf prerequirements-scilab-branch-main-macosx.tar.xz      # -> thirdparty/ and lib/thirdparty/
-
-curl -LO https://download2.gluonhq.com/openjfx/17.0.8/openjfx-17.0.8_osx-aarch64_bin-sdk.zip
-unzip -q openjfx-17.0.8_osx-aarch64_bin-sdk.zip
-cp javafx-sdk-17.0.8/lib/*.dylib lib/thirdparty/
-cp javafx-sdk-17.0.8/lib/javafx.{base,graphics,swing}.jar thirdparty/
-```
-
-The configure check `lucene-analyzers-common` looks for `StandardAnalyzer`, which moved to
-`lucene-core` in Lucene 9. Provide a name alias:
+Everything git doesn't carry is installed by one script, from **version-pinned, sha256-verified**
+sources (downloads cached in `~/.cache/scilab-thirdparty`; idempotent; `--verify-only` audits,
+`--force` reinstalls):
 
 ```sh
-ln -sf lucene-core-9.10.0.jar thirdparty/lucene-analyzers-common-9.10.0.jar
+cd scilab/scilab
+./fetch-thirdparty.sh
 ```
 
-> `make clean` does **not** remove `lib/thirdparty/`, so these survive rebuilds.
+What it installs, and from where:
+
+| Payload | Source |
+|---------|--------|
+| `thirdparty/*.jar` bulk (JOGL, flexdock, batik/fop, lucene, …) + `fonts/`, `docbook/` + JOGL dylibs in `lib/thirdparty/` | the official Scilab **prerequirements** tarball (pinned; the script strips its duplicate versioned JavaFX/jcef jars) |
+| **JavaFX 25.0.2** — `javafx.{base,graphics,swing}.jar` + all JavaFX dylibs (incl. `libprism_mtl`) | Gluon SDK zip. Kept at **JDK parity** (the JVM is JDK 25); its one consumer is `JFXScilabFileChooser`. |
+| JediTerm 3.70 (terminal), gson, jna, kotlin-stdlib, annotations, directory-watcher, slf4j | Maven Central + JetBrains intellij-dependencies |
+| LWJGL 3.3.4 (core/vulkan/jawt/natives) + lwjgl3-awt 0.2.4 (Vulkan renderer) | Maven Central |
+| `libMoltenVK.dylib` 1.4.1 (universal) | Khronos MoltenVK GitHub release |
+| `jcef-api.jar` + the CEF framework/helpers under `lib/thirdparty/jcef/` (embedded browser) | Maven Central (`me.friwi:jcef-api`) + jcefbuild 1.0.66 — same release tag, so the jar and natives always match |
+| `swing-gpu-surface-0.1.0.jar` (first-party Layer-1 GPU surface) | vendored **in this repo** (`modules/prebuildjava/firstparty/`) |
+| compatibility symlinks (`lucene-analyzers-common` → `lucene-core` for the Lucene-9 class move, `jogl2`/`gluegen2-rt` aliases) | created by the script |
+| `../xlnt-prefix` — headers, `libxlnt.1.6.1.dylib` with an `@rpath` install name, correct `xlnt.pc` | **built from source** (pinned xlnt 1.6.1 tarball, cmake ≈1 min) — no installed-Scilab dependency, and it fixes xlnt 1.6.1's two packaging bugs (ignored `INSTALL_NAME_DIR`, relative `libdir` in its .pc) |
+
+> The prerequirements URL is a *mutable* "branch-main" artifact — pinned by sha256, so an upstream
+> republish fails loudly instead of drifting silently; bump the pin deliberately.
+> `make clean` does **not** remove `thirdparty/` or `lib/thirdparty/`, so the payload survives rebuilds.
 
 ---
 
@@ -408,6 +377,6 @@ build** trap, so use it only for diagnosis.
 | `modules/console/src/c/cmdLine/termcapManagement.c` | `(char *)` cast for macOS's non-const `tgetstr`. |
 | `modules/jvm/src/java/org/scilab/modules/jvm/LibraryPath.java` | JDK-25 `java.library.path` patch via `Unsafe` instead of a `static final` reflective write (§6). |
 
-> Helper scripts in the source root: **`build-macos.sh`** (thin configure+make wrapper) and
-> **`package-macos.sh`** (the relocatable app). The old `reapply-macos-fixes.sh` is gone —
-> its every step moved into the build (see §4).
+> Helper scripts in the source root: **`fetch-thirdparty.sh`** (pinned third-party payload, §2),
+> **`build-macos.sh`** (thin configure+make wrapper), and **`package-macos.sh`** (the relocatable
+> app). The old `reapply-macos-fixes.sh` is gone — its every step moved into the build (see §4).

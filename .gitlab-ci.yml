@@ -30,7 +30,10 @@ sanity:scripts:
     - bash -n scilab/configure
     - bash -n scilab/build-macos.sh
     - bash -n scilab/package-macos.sh
-    - shellcheck -S error scilab/build-macos.sh
+    - bash -n scilab/fetch-thirdparty.sh
+    - shellcheck -S error scilab/build-macos.sh scilab/fetch-thirdparty.sh
+    # pinned-payload hygiene: no unbaked checksums may be committed
+    - '! grep -n ''="PENDING"'' scilab/fetch-thirdparty.sh'
     # configs this fork edits must stay well-formed XML
     - xmllint --noout scilab/etc/jvm_options.xml
     - xmllint --noout scilab/modules/console/etc/XConfiguration-general.xml

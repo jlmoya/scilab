@@ -137,6 +137,26 @@ deployment stamps, rpaths, xcos/xlnt resolution, macros, menu name, classpath, h
 battery (42 / rand 0.2113 / sparse / xlsx gateway), and a null `make` with maintainer-mode ON
 regenerates **nothing**.
 
+## 2026-07-10 (later still): fetch-thirdparty.sh — the payload is scripted and pinned
+
+The last non-reproducible piece (the untracked `thirdparty/` + `lib/thirdparty/` + `../xlnt-prefix`
+payload, previously hand-collected across sessions) is now **`fetch-thirdparty.sh`**: version-pinned,
+sha256-verified, cached, idempotent, with `--verify-only` and a hard CI ban on unbaked pins. Verified by
+a fresh-clone simulation (empty dest → `RESULT: payload complete`, pinned jars byte-identical to the
+working tree). Provenance nailed down for every artifact: official prerequirements tarball (mutable URL,
+sha-pinned deliberately), Gluon JavaFX, Maven Central + JetBrains intellij-dependencies (JediTerm),
+Khronos MoltenVK 1.4.1, jcefbuild 1.0.66 (+ `me.friwi:jcef-api` at the *same release tag* — jar and
+natives always match), and **xlnt built from source** (cmake ≈1 min, `@rpath` id, correct `.pc` — the
+prerequirements tarball does *not* ship the dylib, and this removes the old dependency on an installed
+Scilab release). JavaFX bumped 17.0.8 → **25.0.2** for JDK-25 parity (single consumer:
+`JFXScilabFileChooser`); the script strips the tarball's duplicate versioned JavaFX/jcef jars so
+configure's jar globs stay deterministic. Fresh-clone flow is now exactly:
+`git clone … && ./fetch-thirdparty.sh && ./build-macos.sh`.
+
+Bycatch: the buildmacros rc=231 mystery (#98) root-caused — `modules/toolbox_manager/macros/` lacked
+the standard per-module `buildmacros.sce`, so the global loop's `exec()` failed (all other libs still
+built). Fixed by adding the standard file.
+
 ### Remaining (Stage 2+, lower priority)
 - Pin/document the toolchain versions (autoconf 2.73, automake 1.18.1, libtool 2.5.4, pkgconf ≥ 0.29)
   so any environment regenerates identical output; consider a `guard:` CI job asserting the committed
@@ -144,7 +164,6 @@ regenerates **nothing**.
 - `make distclean` after in-tree autotools edits can die replaying a stale `config.status`
   (`cannot find required auxiliary files`) — from-scratch means fresh clone/worktree, not distclean.
   Harmless for the normal flow; fix opportunistically.
-- xlnt should eventually be a proper formula/standard prefix instead of `../xlnt-prefix` (tracked).
 - Stage 3 (long-term): CMake — no checked-in generated files, no tool-version drift, one build language.
 
 ## ⚠️ Constraints / gotchas
