@@ -66,11 +66,21 @@ stays 4, `+%nan` stays 5, `+300`=49, `+(-1)`=4), `integer` 34/34 ref, instrument
 / … carry the identical latent (currently-benign) UB. Not flagged by the sweep (unexercised with
 out-of-range operands) — a mechanical follow-up once the pattern is proven on addition.
 
-**Misalignment class (task #95), surfaced by the P2b re-verify** — `std::__tree::destroy` on a
-`std::map/set<wstring, void*>` node at a **non-8-aligned address** (`0x…7e`; upcast/downcast/load/
-member-access, 4 reports). A heap container node should never be misaligned, so this is a container
-embedded in a misaligned struct / a custom allocator / pointer corruption — a real memory-safety bug
-needing the Scilab caller from the full stack. NOT float->int; its own investigation.
+**Misalignment class (task #95), surfaced by the P2b re-verify — INVESTIGATED, needs ASan.**
+`std::__tree::destroy` reads a **corrupted child pointer** (`0x…7e`, not 8-aligned; upcast/downcast/
+load/member-access, 4 reports) while tearing down a **`std::set<std::wstring>`** (the tree is
+`__tree<wstring, less<wstring>, allocator<wstring>>` — a *set*, not a map; the `void*` is just libc++'s
+allocator void-ptr type). Findings: (1) nodes are allocator-aligned when created, so this is a **write
+over a node's pointer / a UAF**, not a lifecycle slip; (2) it appears **only at `destroy`** and is
+**heap-layout-dependent / non-deterministic** — it fired once in a partial re-verify, then NOT in the
+clean full run nor in 3 targeted `ast`-suite reruns; (3) candidate sets: `Symbol::_set` (static
+intern table, insert-only, pervasive — prime suspect), `ArgumentVisitor::funcs` (stack-local member,
+`macro.cpp:1436`), `FuncManager::m_NonNwniCompatible` (heap singleton). No obvious init-order / lifecycle
+bug on inspection (`Context` is a lazy runtime singleton; nothing builds Symbols at static-init).
+**Next step:** an **AddressSanitizer** build of the worktree (`CFLAGS/CXXFLAGS=-fsanitize=address`) —
+ASan catches the corrupting write / UAF directly, which UBSan (symptom only) and the flaky repro cannot.
+Do NOT blind-fix (a `Symbol::_set` construct-on-first-use hardening is defensible but unconfirmed as the
+cause, and the "only at destroy" symptom argues against init-order). NOT float->int.
 
 **Deferred:**
 - `patched_sundials/.../sunmatrix_sparse.c:586` — member access / load at **address `0x9`** (a genuine
