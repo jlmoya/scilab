@@ -19,6 +19,15 @@ function ok = tbxInstall(name, source)
         mprintf("  building...\n");
         if ~tbx_build(path) then mprintf("  build FAILED for %s\n", name); ok = %f; return; end
     end
+    // native-arm64 gate: refuse a toolbox that ships non-arm64 native libs (would need Rosetta)
+    [archok, bad] = tbx_arch_check(path);
+    if ~archok then
+        mprintf("  ARCH GATE: %s ships non-arm64 native libs; not installing (needs an arm64 rebuild):\n", name);
+        for i = 1:size(bad, "*")
+            mprintf("    %s\n", bad(i));
+        end
+        ok = %f; return;
+    end
     // register (autoload = 1)
     M = tbx_manifest_read(); k = tbx_find(M, name);
     if k == 0 then

@@ -5,6 +5,15 @@ function ok = tbxLoad(name)
     if ~isfile(ldr) then
         mprintf("tbxLoad: %s not built (no loader.sce at %s)\n", name, path); ok = %f; return;
     end
+    // native-arm64 gate: an x86_64-only toolbox lib cannot dlopen into the arm64 process
+    [archok, bad] = tbx_arch_check(path);
+    if ~archok then
+        mprintf("tbxLoad: %s ships non-arm64 native libs; refusing (needs an arm64 rebuild):\n", name);
+        for i = 1:size(bad, "*")
+            mprintf("    %s\n", bad(i));
+        end
+        ok = %f; return;
+    end
     // IMPORTANT: exec the loader DIRECTLY (not via execstr). A direct exec lets the
     // toolbox's macro library (loaded with lib()) propagate to the global scope; an
     // execstr() wrapper traps it in a temporary eval scope so macros vanish on return

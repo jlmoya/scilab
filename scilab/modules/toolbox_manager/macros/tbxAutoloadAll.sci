@@ -7,9 +7,14 @@ function tbxAutoloadAll()
         if M.autoload(i) == 1 then
             ldr = fullfile(M.path(i), "loader.sce");
             if isfile(ldr) then
-                ok = %t; try, exec(ldr, -1); catch, ok = %f; end
-                if ok then n = n + 1; mprintf("  loaded  %s\n", M.name(i));
-                else mprintf("  FAILED  %s\n", M.name(i)); end
+                [archok, bad] = tbx_arch_check(M.path(i));
+                if ~archok then
+                    mprintf("  skip    %s (non-arm64 native libs — needs an arm64 rebuild)\n", M.name(i));
+                else
+                    ok = %t; try, exec(ldr, -1); catch, ok = %f; end
+                    if ok then n = n + 1; mprintf("  loaded  %s\n", M.name(i));
+                    else mprintf("  FAILED  %s\n", M.name(i)); end
+                end
             else
                 mprintf("  skip    %s (not built)\n", M.name(i));
             end

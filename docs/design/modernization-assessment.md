@@ -151,11 +151,16 @@ the installed app in place (`plutil -insert` → ad-hoc `codesign --force` → `
 changes, no library upgrades — the arm64 build/JDK/thirdparty work was already done.
 
 **The one ongoing risk is toolboxes:** an x86_64-only toolbox `.dylib`, once loaded, either fails
-(an arm64 process can't `dlopen` x86_64) or is the reason a user re-enables Rosetta. The installed set
-is clean; the porting campaign (finance/ATOMS ports) must keep enforcing arm64. Recommended: a
-`tbxInstall`/`package-macos.sh` arch gate that rejects/reports any non-arm64 native lib. (The stray
-`krisp`/`sci_gsl` `.so` in the dev tree are Linux ELF — never loaded by macOS.) If a JRE is ever
-bundled into the `.app` instead of using the system JDK, it must be arm64 too.
+(an arm64 process can't `dlopen` x86_64) or is the reason a user re-enables Rosetta. **Arch gate now
+implemented** (`toolbox_manager/macros/tbx_arch_check.sci`): every loader-exec path — `tbxInstall`,
+`tbxLoad`, `tbxUpdate`, `tbxAutoloadAll` — scans the toolbox tree with `lipo -archs` and refuses any
+native `.dylib`/`.so` lacking an arm64 slice (universal passes), with a clear message instead of a
+cryptic `dlopen` failure. `package-macos.sh --rebuild-toolboxes` inherits it via `tbxUpdate`. (The
+stray `krisp`/`sci_gsl` `.so` in the dev tree are Linux ELF — never loaded by macOS; verified rejected
+by the gate.) If a JRE is ever bundled into the `.app` instead of using the system JDK, it must be
+arm64 too. **Relaunch config verified** on the installed app: `LSRequiresNativeExecution=true`,
+`LSArchitecturePriority=[arm64]`, main exec arm64, 0 x86_64-only dylibs, signature valid — it will
+launch native (the "Open using Rosetta" toggle is now forbidden).
 
 ## Still to analyze (next discovery pass)
 
