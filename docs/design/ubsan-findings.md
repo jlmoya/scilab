@@ -66,21 +66,22 @@ stays 4, `+%nan` stays 5, `+300`=49, `+(-1)`=4), `integer` 34/34 ref, instrument
 / … carry the identical latent (currently-benign) UB. Not flagged by the sweep (unexercised with
 out-of-range operands) — a mechanical follow-up once the pattern is proven on addition.
 
-**Misalignment class (task #95), surfaced by the P2b re-verify — INVESTIGATED, needs ASan.**
-`std::__tree::destroy` reads a **corrupted child pointer** (`0x…7e`, not 8-aligned; upcast/downcast/
-load/member-access, 4 reports) while tearing down a **`std::set<std::wstring>`** (the tree is
-`__tree<wstring, less<wstring>, allocator<wstring>>` — a *set*, not a map; the `void*` is just libc++'s
-allocator void-ptr type). Findings: (1) nodes are allocator-aligned when created, so this is a **write
-over a node's pointer / a UAF**, not a lifecycle slip; (2) it appears **only at `destroy`** and is
-**heap-layout-dependent / non-deterministic** — it fired once in a partial re-verify, then NOT in the
-clean full run nor in 3 targeted `ast`-suite reruns; (3) candidate sets: `Symbol::_set` (static
-intern table, insert-only, pervasive — prime suspect), `ArgumentVisitor::funcs` (stack-local member,
-`macro.cpp:1436`), `FuncManager::m_NonNwniCompatible` (heap singleton). No obvious init-order / lifecycle
-bug on inspection (`Context` is a lazy runtime singleton; nothing builds Symbols at static-init).
-**Next step:** an **AddressSanitizer** build of the worktree (`CFLAGS/CXXFLAGS=-fsanitize=address`) —
-ASan catches the corrupting write / UAF directly, which UBSan (symptom only) and the flaky repro cannot.
-Do NOT blind-fix (a `Symbol::_set` construct-on-first-use hardening is defensible but unconfirmed as the
-cause, and the "only at destroy" symptom argues against init-order). NOT float->int.
+**Misalignment class (task #95) — ROOT-CAUSED + FIXED via an AddressSanitizer campaign.**
+The UBSan symptom was a **corrupted child pointer** (`0x…7e`) read while tearing down a
+`std::set<std::wstring>` — non-deterministic (heap-layout-dependent), appearing only at `destroy`, so it
+was a *downstream* effect of a heap-buffer-overflow scribbling over whatever allocation sat next to a
+set node. UBSan shows only the symptom, so I built the worktree with `-fsanitize=address` (poisons
+redzones → reports the overflow *at the write*). ASan caught it **deterministically (3×)**:
+**`operations/types_power.cpp:408` `DotPowerSpaseByDouble` — a heap-buffer-overflow in `sparse .^ double`.**
+Scilab's `Sparse` is Eigen **row-major**; `getNbItemByRow()` reads `outerIndexPtr()` (allocated slots),
+which for an **uncompressed** matrix sums to more than `nonZeros()`, so the position-walk loop runs past
+`Col[]`/`iPositVal[]` (both `new int[nonZeros()]`), and `getColPos()` reads gappy `innerIndexPtr()` too.
+Trigger is literally `ast/tests/nonreg_tests/bug_14500.tst`: `sprand(100,100,0.001).^2` — a known crash
+whose original fix was incomplete. **Fix:** new `Sparse::makeCompressed()` (pure compression, no
+prune — unlike `finalize()`) called before the walk, so `nonZeros()`/`getNbItemByRow()`/`getColPos()`
+are consistent; plus `i < iSize && j < iRows` loop bounds as defense. Verified: `sparse.^` correct incl.
+uncompressed matrices; ASan re-run clean at `types_power.cpp`. **Lesson: keep the ASan worktree — it
+finds heap-corruption UBSan can't.**
 
 **Deferred:**
 - `patched_sundials/.../sunmatrix_sparse.c:586` — member access / load at **address `0x9`** (a genuine

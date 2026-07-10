@@ -393,19 +393,29 @@ int DotPowerSpaseByDouble(Sparse* _pSp, Double* _pDouble, InternalType** _pOut)
         return 0;
     }
 
+    // The position walk below assumes nnz == sum of per-row counts, which only holds for a COMPRESSED
+    // matrix: getNbItemByRow() reads outerIndexPtr() (allocated slots per row) and getColPos() reads
+    // innerIndexPtr() contiguously, so an UNCOMPRESSED matrix (e.g. from sprand — bug 14500) over-counts
+    // and the loop runs past Col[]/iPositVal[] (heap-buffer-overflow, caught by ASan). Compress first so
+    // nnz, the per-row counts and the column positions are all consistent.
+    _pSp->makeCompressed();
+
+    int iRows = _pSp->getRows();
     size_t iSize = _pSp->nonZeros();
     int* Col = new int[iSize];
-    int* Row = new int[_pSp->getRows()];
+    int* Row = new int[iRows];
     _pSp->getColPos(Col);
     _pSp->getNbItemByRow(Row);
     int* iPositVal = new int[iSize];
 
     int j = 0;
-    for (int i = 0; i < iSize;  j++)
+    // bounds on both i and j are belt-and-suspenders: after makeCompressed() sum(Row) == iSize, but
+    // never let the walk read Row[] past its iRows entries or write Col[]/iPositVal[] past iSize.
+    for (int i = 0; i < iSize && j < iRows; j++)
     {
-        for (int k = 0; k < Row[j]; k++)
+        for (int k = 0; k < Row[j] && i < iSize; k++)
         {
-            iPositVal[i] = (Col[i] - 1) * _pSp->getRows() + j;
+            iPositVal[i] = (Col[i] - 1) * iRows + j;
             i++;
         }
     }

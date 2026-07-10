@@ -768,6 +768,18 @@ void Sparse::finalize()
 
 }
 
+void Sparse::makeCompressed()
+{
+    if (isComplex())
+    {
+        matrixCplx->makeCompressed();
+    }
+    else
+    {
+        matrixReal->makeCompressed();
+    }
+}
+
 bool Sparse::neg(InternalType *& out)
 {
     SparseBool * _out = new SparseBool(getRows(), getCols());

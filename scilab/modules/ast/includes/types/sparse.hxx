@@ -86,7 +86,12 @@ struct EXTERN_AST Sparse : GenericType
     }
 
     void finalize();
-    
+
+    // Compress the storage in place (remove Eigen's allocation gaps) without pruning any entry, so
+    // nonZeros(), getNbItemByRow() and getColPos() become mutually consistent. Unlike finalize(),
+    // which prunes explicit zeros, this preserves the exact stored structure.
+    void makeCompressed();
+
     bool getMemory(long long *_piSize, long long* _piSizePlusType);
 
     /*data management member function defined for compatibility with the Double API*/
