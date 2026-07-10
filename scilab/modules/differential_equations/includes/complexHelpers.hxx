@@ -29,6 +29,14 @@ extern "C"
 #include <sunmatrix/sunmatrix_sparse.h> /* access to band SUNmatrix       */
 #include <Eigen/Sparse>
 
+// Offset a possibly-null pointer without forming a `null + n` pointer (UB): the sensitivity code
+// passes pDbl->getImg()+off for real data, where getImg() is null and the callee ignores the
+// argument (bComplex == false). Keep the pointer null instead of computing null+off.
+static inline double* offsetOrNull(double* p, int off)
+{
+    return p ? p + off : nullptr;
+}
+
 DIFFERENTIAL_EQUATIONS_IMPEXP void copyRealImgToComplexVector(double* pdblReal, double* pdblImg, double* pdblComplexVector, int iSize, bool bComplex);
 DIFFERENTIAL_EQUATIONS_IMPEXP void copyComplexVectorToRealImg(double* pdblRealState, types::Double *pDbl, int iPos, int iSize);
 DIFFERENTIAL_EQUATIONS_IMPEXP void copyComplexVectorToDouble(double* pdblRealState, double* pdblReal, double* pdblImg, int iSize, bool bComplex);

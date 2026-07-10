@@ -24,6 +24,7 @@
 #include "sci_malloc.h"
 #include "sci_string_matrix.h"
 #include <string.h>
+#include <limits.h>
 
 #include "api_scilab.h"
 #include "Sciwarning.h"
@@ -178,7 +179,9 @@ int checkInteger(int row, int col, double *data, int pos, char const * const fna
     int i;
     for (i = 0 ; i < row * col ; i++)
     {
-        if ((int)data[i] - data[i] != 0)
+        // (int)data[i] is UB when data[i] is inf/nan or outside int range; such values are not
+        // valid whole-number arguments anyway, so treat them as "not an integer" (return 1).
+        if (!(data[i] >= (double)INT_MIN && data[i] <= (double)INT_MAX) || (int)data[i] - data[i] != 0)
         {
             return 1;
         }

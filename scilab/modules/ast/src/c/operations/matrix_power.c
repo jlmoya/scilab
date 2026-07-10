@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <limits.h>
 #include <string.h>
 #include "matrix_power.h"
 #include "matrix_multiplication.h"
@@ -46,8 +47,8 @@ int iPowerRealScalarByRealScalar(
     double _dblReal2,
     double *_pdblRealOut, double *_pdblImgOut, int *_piComplex)
 {
-    //exposant is an integer
-    if ((int)_dblReal2 == _dblReal2)
+    //exposant is an integer (guard the cast: (int) of an out-of-range / inf / nan double is UB)
+    if (_dblReal2 >= (double)INT_MIN && _dblReal2 <= (double)INT_MAX && (int)_dblReal2 == _dblReal2)
     {
         //dipowe
         int iReal2 = (int)_dblReal2;

@@ -1146,6 +1146,11 @@ finish:
    compared to fitting the whole [0,1] interval with a single polynomial. */
 static double erfcx_y100(double y100)
 {
+    // (int) of a NaN is UB; y100 = 400/(4±x) is NaN only for NaN input, where erfcx(x) is NaN.
+    if (y100 != y100)
+    {
+        return y100;
+    }
     switch ((int) y100)
     {
         case 0:
@@ -1696,6 +1701,11 @@ double FADDEEVA_RE(erfcx)(double x)
    compared to fitting the whole [0,1] interval with a single polynomial. */
 static double w_im_y100(double y100, double x)
 {
+    // (int) of a NaN is UB; propagate NaN (the Dawson integral of NaN is NaN).
+    if (y100 != y100)
+    {
+        return y100;
+    }
     switch ((int) y100)
     {
         case 0:

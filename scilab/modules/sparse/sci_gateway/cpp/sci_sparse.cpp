@@ -154,7 +154,7 @@ types::Function::ReturnValue sci_sparse(types::typed_list &in, int _piRetCount, 
                 return types::Function::Error;
             }
 
-            if (pDdims->get(0) != (double) ( (unsigned int) pDdims->get(0) ) || pDdims->get(1) != (double) ( (unsigned int) pDdims->get(1) ))
+            if (!(pDdims->get(0) >= 0) || !(pDdims->get(1) >= 0) || pDdims->get(0) != (double) ( (unsigned int) pDdims->get(0) ) || pDdims->get(1) != (double) ( (unsigned int) pDdims->get(1) ))
             {
                 Scierror(999, _("%s: Wrong values for input argument #%d: Positive integers expected.\n"), "sparse", 3);
                 return types::Function::Error;

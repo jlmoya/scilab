@@ -3,7 +3,7 @@
  *  Copyright (C) 2013 - Scilab Enterprises - Calixte DENIZET
  *  Copyright (C) 2013 - Scilab Enterprises - Cedric Delamarre
  *  Copyright (C) 2015 - Scilab Enterprises - Antoine ELIAS
- *  Copyright (C) 2025 - Dassault Systèmes S.E. - Vincent COUVERT
+ *  Copyright (C) 2025 - Dassault Systï¿½mes S.E. - Vincent COUVERT
  *
  * Copyright (C) 2012 - 2016 - Scilab Enterprises
  *
@@ -529,7 +529,9 @@ wchar_t** scilab_sprintf(const std::string& funcname, const wchar_t* _pwstInput,
                 {
                     wchar_t pwstTemp[bsiz];
                     double dblVal = in[tok->pos]->getAs<types::Double>()->get(j, tok->col);
-                    long long iVal = (long long)dblVal;
+                    // (long long) of a non-finite double is UB; iVal is unused on the !isfinite
+                    // path (print_nan_or_inf handles it below).
+                    long long iVal = std::isfinite(dblVal) ? (long long)dblVal : 0;
 
                     if (std::isfinite(dblVal))
                     {
@@ -568,21 +570,18 @@ wchar_t** scilab_sprintf(const std::string& funcname, const wchar_t* _pwstInput,
                 {
                     wchar_t pwstTemp[bsiz];
                     double dblVal = in[tok->pos]->getAs<types::Double>()->get(j, tok->col);
-                    unsigned long long iVal;
+                    unsigned long long iVal = 0;
 
-#ifdef _M_ARM64
-                    if (dblVal < 0)
+                    // (unsigned long long) of a negative or non-finite double is UB (arm64 fcvtzu
+                    // saturates negatives to 0). Only convert finite values; route negatives through
+                    // int64_t for the usual two's-complement %llu semantics. iVal stays unused on the
+                    // !isfinite path, where print_nan_or_inf handles output below.
+                    if (std::isfinite(dblVal))
                     {
-                        int64_t temp = static_cast<int64_t>(dblVal);
-                        iVal = static_cast<unsigned long long>(temp);
+                        iVal = (dblVal < 0)
+                             ? static_cast<unsigned long long>(static_cast<int64_t>(dblVal))
+                             : static_cast<unsigned long long>(dblVal);
                     }
-                    else
-                    {
-                        iVal = (unsigned long long)dblVal;
-                    }
-#else
-                    iVal = (unsigned long long)dblVal;
-#endif
 
                     if (std::isfinite(dblVal))
                     {

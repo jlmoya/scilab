@@ -79,7 +79,7 @@ bool CVODEManager::initialize(char *errorMsg)
         // copy each column of S(0) in vectors m_NVArrayYS[j], j=0...
         for (int j=0; j<getNbSensPar(); j++)
         {
-            copyRealImgToComplexVector(m_pDblYS0->get()+j*m_iNbEq, m_pDblYS0->getImg()+j*m_iNbEq, 
+            copyRealImgToComplexVector(m_pDblYS0->get()+j*m_iNbEq, offsetOrNull(m_pDblYS0->getImg(), j*m_iNbEq), 
                 N_VGetArrayPointer(m_NVArrayYS[j]), m_iNbEq, m_odeIsComplex);
         }
         //initialize solver Sensitivity mode with user provided sensitivity rhs or finite difference mode :
@@ -438,8 +438,8 @@ int CVODEManager::sensRhs(int Ns, sunrealtype t, N_Vector N_VectorY, N_Vector N_
         types::Double *pDblS = new types::Double(iNbEq,manager->getNbSensPar(),manager->isComplex());
         for (int j=0; j<manager->getNbSensPar(); j++)
         {
-            // pDblS->getImg()+j*m_iNbEq with pDblS->getImg()==NULL is not used when m_odeIsComplex == false !
-            copyComplexVectorToDouble(N_VGetArrayPointer(yS[j]), pDblS->get()+j*iNbEq, pDblS->getImg()+j*iNbEq, iNbEq, manager->isComplex());            
+            // offsetOrNull(pDblS->getImg(), j*m_iNbEq) with pDblS->getImg()==NULL is not used when m_odeIsComplex == false !
+            copyComplexVectorToDouble(N_VGetArrayPointer(yS[j]), pDblS->get()+j*iNbEq, offsetOrNull(pDblS->getImg(), j*iNbEq), iNbEq, manager->isComplex());            
         }
         in.push_back(pDblS);
         manager->callClosing(what, in, {1}, out);
@@ -458,7 +458,7 @@ int CVODEManager::sensRhs(int Ns, sunrealtype t, N_Vector N_VectorY, N_Vector N_
         // copy each column of S matrix in ySdot[j], j=0...getNbSensPar()-1
         for (int j=0; j<manager->getNbSensPar(); j++)
         {
-            copyRealImgToComplexVector(pDblOut->get()+j*iNbEq, pDblOut->getImg()+j*iNbEq, N_VGetArrayPointer(ySdot[j]), iNbEq, manager->isComplex());
+            copyRealImgToComplexVector(pDblOut->get()+j*iNbEq, offsetOrNull(pDblOut->getImg(), j*iNbEq), N_VGetArrayPointer(ySdot[j]), iNbEq, manager->isComplex());
         }
         out[0]->DecreaseRef();
         out[0]->killMe();

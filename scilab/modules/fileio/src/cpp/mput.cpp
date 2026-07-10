@@ -77,7 +77,7 @@ extern "C"
 /** used for char **/
 #define MPUT_CHAR(Type) {			\
     for ( i=0; i< n; i++) {			\
-      Type  val = (char) *res++;		\
+      Type  val = (Type)(int) *res++;		\
       fwrite(&val,sizeof(Type),1,fa);		\
     }						\
   }

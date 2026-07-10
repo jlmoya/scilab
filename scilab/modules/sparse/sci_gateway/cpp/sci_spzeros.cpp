@@ -79,7 +79,7 @@ types::Function::ReturnValue sci_spzeros(types::typed_list &in, int _iRetCount, 
             Scierror(999, _("%s: Wrong value for input argument #%d: Must be less than %d.\n"), "spzeros", 1,INT_MAX);
             return types::Function::Error;
         }
-        if (dblRows != (double) ((unsigned int) dblRows))
+        if (!(dblRows >= 0) || dblRows != (double) ((unsigned int) dblRows))
         {
             Scierror(999, _("%s: Wrong value for input argument #%d: Scalar positive integer expected.\n"), "spzeros", 1);
             return types::Function::Error;
@@ -90,7 +90,7 @@ types::Function::ReturnValue sci_spzeros(types::typed_list &in, int _iRetCount, 
             Scierror(999, _("%s: Wrong value for input argument #%d: Must be less than %d.\n"), "spzeros", 2,INT_MAX);
             return types::Function::Error;
         }
-        if (dblCols != (double) ((unsigned int) dblCols))
+        if (!(dblCols >= 0) || dblCols != (double) ((unsigned int) dblCols))
         {
             Scierror(999, _("%s: Wrong value for input argument #%d: Scalar positive integer expected.\n"), "spzeros", 2);
             return types::Function::Error;

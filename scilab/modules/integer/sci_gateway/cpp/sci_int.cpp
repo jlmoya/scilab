@@ -13,6 +13,9 @@
  */
 /*--------------------------------------------------------------------------*/
 #include <limits>
+#include <cmath>
+#include <cstdint>
+#include <type_traits>
 
 #include "int.hxx"
 #include "double.hxx"
@@ -70,49 +73,52 @@ CONVERT_STATUS convert_fromString(wchar_t** strs, int size, T* out)
     return OK;
 }
 
+// Convert a double to a narrow integer type with Scilab's documented int8()/uint8()/... semantics
+// while avoiding UB: nan -> 0, inf -> saturate to the type's bounds, and any finite out-of-range
+// value wraps modulo 2^N. A straight cast of an out-of-range double is UB; arm64 fcvtz* saturates
+// instead of wrapping; and routing through int64_t/uint64_t still traps at the 2^63/2^64 boundary
+// (e.g. (uint64_t)2^64). So reduce modulo 2^N with fmod first — exact for the integer-valued doubles
+// these builtins receive — which is portable and correct at every width.
+template <class T>
+static inline T doubleToInt(double d)
+{
+    if (std::isnan(d))
+    {
+        return 0;
+    }
+    if (std::isinf(d))
+    {
+        return d > 0 ? std::numeric_limits<T>::max() : std::numeric_limits<T>::min();
+    }
+    // in range -> a direct cast is already well-defined (max + 1 is a power of two, exactly
+    // representable, so the half-open upper bound is exact)
+    if (d >= static_cast<double>(std::numeric_limits<T>::min()) &&
+        d <  static_cast<double>(std::numeric_limits<T>::max()) + 1.0)
+    {
+        return static_cast<T>(d);
+    }
+    double modulus = std::ldexp(1.0, static_cast<int>(sizeof(T) * 8));
+    double r = std::fmod(d, modulus);
+    if (r < 0.0)
+    {
+        r += modulus;
+    }
+    return static_cast<T>(static_cast<uint64_t>(r));
+}
+
 template <class T, class U>
 bool convert_int(U* _pIn, int _iSize, T* _pOut)
 {
-    static T minval = std::numeric_limits<T>::min();
-    static T maxval = std::numeric_limits<T>::max();
-
     for (int i = 0 ; i < _iSize ; i++)
     {
-        if (std::isnan((double)_pIn[i]))
+        if constexpr (std::is_floating_point<U>::value)
         {
-            _pOut[i] = 0;
-        }
-        else if (std::isinf((double)_pIn[i]))
-        {
-            if ((double)_pIn[i] > 0)
-            {
-                _pOut[i] = maxval;
-            }
-            else
-            {
-                _pOut[i] = minval;
-            }
+            _pOut[i] = doubleToInt<T>((double)_pIn[i]);
         }
         else
         {
-#ifdef _M_ARM64
-            if (_pIn[i] < 0.0)
-            {
-                int64_t tmp = static_cast<int64_t>(_pIn[i]);
-                _pOut[i] = (T)tmp;
-            }
-            else if (_pIn[i] >= static_cast<double>(std::numeric_limits<T>::max()) + 1.0)
-            {
-                uint64_t tmp = static_cast<uint64_t>(_pIn[i]);
-                _pOut[i] = (T)tmp;
-            }
-            else
-            {
-                _pOut[i] = (T)_pIn[i];
-            }
-#else
-            _pOut[i] = (T)_pIn[i];
-#endif
+            // integer / bool input: integer -> integer narrowing is already well-defined
+            _pOut[i] = static_cast<T>(_pIn[i]);
         }
     }
 

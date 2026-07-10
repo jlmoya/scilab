@@ -104,9 +104,9 @@ bool IDAManager::initialize(char *errorMsg)
         // copy each column of S(0), S'(0) in vectors m_NVArrayYS[j],  m_NVArrayYpS[j], j=0...
         for (int j=0; j<getNbSensPar(); j++)
         {
-            copyRealImgToComplexVector(m_pDblYS0->get()+j*m_iNbEq, m_pDblYS0->getImg()+j*m_iNbEq, 
+            copyRealImgToComplexVector(m_pDblYS0->get()+j*m_iNbEq, offsetOrNull(m_pDblYS0->getImg(), j*m_iNbEq), 
                 N_VGetArrayPointer(m_NVArrayYS[j]), m_iNbEq, m_odeIsComplex);
-            copyRealImgToComplexVector(m_pDblYpS0->get()+j*m_iNbEq, m_pDblYpS0->getImg()+j*m_iNbEq, 
+            copyRealImgToComplexVector(m_pDblYpS0->get()+j*m_iNbEq, offsetOrNull(m_pDblYpS0->getImg(), j*m_iNbEq), 
                 N_VGetArrayPointer(m_NVArrayYpS[j]), m_iNbEq, m_odeIsComplex);
         }
 
@@ -515,8 +515,8 @@ int IDAManager::sensRes(int Ns, sunrealtype t, N_Vector N_VectorY, N_Vector N_Ve
         types::Double *pDblYS = new types::Double(iNbEq,manager->getNbSensPar(),manager->isComplex());
         for (int j=0; j<manager->getNbSensPar(); j++)
         {
-            // pDblS->getImg()+j*m_iNbEq with pDblS->getImg()==NULL is not used when m_odeIsComplex == false !
-            copyComplexVectorToDouble(N_VGetArrayPointer(yS[j]), pDblYS->get()+j*iNbEq, pDblYS->getImg()+j*iNbEq, iNbEq, manager->isComplex());            
+            // offsetOrNull(pDblS->getImg(), j*m_iNbEq) with pDblS->getImg()==NULL is not used when m_odeIsComplex == false !
+            copyComplexVectorToDouble(N_VGetArrayPointer(yS[j]), pDblYS->get()+j*iNbEq, offsetOrNull(pDblYS->getImg(), j*iNbEq), iNbEq, manager->isComplex());            
         }
         in.push_back(pDblYS);
 
@@ -525,8 +525,8 @@ int IDAManager::sensRes(int Ns, sunrealtype t, N_Vector N_VectorY, N_Vector N_Ve
         types::Double *pDblYpS = new types::Double(iNbEq,manager->getNbSensPar(),manager->isComplex());
         for (int j=0; j<manager->getNbSensPar(); j++)
         {
-            // pDblS->getImg()+j*m_iNbEq with pDblS->getImg()==NULL is not used when m_odeIsComplex == false !
-            copyComplexVectorToDouble(N_VGetArrayPointer(ySdot[j]), pDblYpS->get()+j*iNbEq, pDblYpS->getImg()+j*iNbEq, iNbEq, manager->isComplex());            
+            // offsetOrNull(pDblS->getImg(), j*m_iNbEq) with pDblS->getImg()==NULL is not used when m_odeIsComplex == false !
+            copyComplexVectorToDouble(N_VGetArrayPointer(ySdot[j]), pDblYpS->get()+j*iNbEq, offsetOrNull(pDblYpS->getImg(), j*iNbEq), iNbEq, manager->isComplex());            
         }
         in.push_back(pDblYpS);
 
@@ -546,7 +546,7 @@ int IDAManager::sensRes(int Ns, sunrealtype t, N_Vector N_VectorY, N_Vector N_Ve
         // copy each column of residual matrix in resvalS[j], j=0...getNbSensPar()-1
         for (int j=0; j<manager->getNbSensPar(); j++)
         {
-            copyRealImgToComplexVector(pDblOut->get()+j*iNbEq, pDblOut->getImg()+j*iNbEq, N_VGetArrayPointer(resvalS[j]), iNbEq, manager->isComplex());
+            copyRealImgToComplexVector(pDblOut->get()+j*iNbEq, offsetOrNull(pDblOut->getImg(), j*iNbEq), N_VGetArrayPointer(resvalS[j]), iNbEq, manager->isComplex());
         }
         out[0]->DecreaseRef();
         out[0]->killMe();

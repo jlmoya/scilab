@@ -120,7 +120,11 @@ void getDoubleFormat(double _dblVal, DoubleFormat * _pDF)
         {
             //exponant
             _pDF->bExp = true;
-            iTotalLen = iBlankSize + 1 /*integer before dot */  + POINT_SIZE + EXPOSANT_SIZE + std::max(((int)log10((double)iNbDigit)) + 1, 2);
+            // iNbDigit is -1 when the value is exactly 0; log10(<= 0) is -inf/nan and casting
+            // that to int is UB. The exponent-digit count is only meaningful for iNbDigit > 0
+            // (std::max pins the result to >= 2 regardless, which is what the UB path produced).
+            int iExpDigits = (iNbDigit > 0) ? ((int)log10((double)iNbDigit) + 1) : 1;
+            iTotalLen = iBlankSize + 1 /*integer before dot */  + POINT_SIZE + EXPOSANT_SIZE + std::max(iExpDigits, 2);
             _pDF->iWidth = iPrecNeeded;
             _pDF->iPrec = iPrecNeeded - iTotalLen;
             return;
@@ -288,7 +292,11 @@ void addDoubleValue(std::wostringstream * _postr, double _dblVal, DoubleFormat *
         int iSign = 0;
         int iWidth = _pDF->iWidth;
         char *pRve = nullptr;
-        char *pDtoaStr = dtoa(fabs(_dblVal), 2, std::floor(log10(fabs(_dblVal))) + _pDF->iPrec + 1, &iDecpt, &iSign, &pRve);
+        // for _dblVal == 0, log10(0) = -inf and the ndigits arg becomes -inf -> casting it to dtoa's
+        // int parameter is UB. dtoa(0, ...) yields "0" for any ndigits, so pin it to a finite value.
+        double dExp = std::floor(log10(fabs(_dblVal)));
+        int iNdigits = std::isfinite(dExp) ? (int)(dExp + _pDF->iPrec + 1) : (_pDF->iPrec + 1);
+        char *pDtoaStr = dtoa(fabs(_dblVal), 2, iNdigits, &iDecpt, &iSign, &pRve);
 
         std::string str(pDtoaStr);
         freedtoa(pDtoaStr);

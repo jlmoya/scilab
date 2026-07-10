@@ -18,6 +18,10 @@
 #ifndef __ELEM_FUNC_GW_HXX__
 #define __ELEM_FUNC_GW_HXX__
 
+#include <cmath>
+#include <limits>
+#include <cstdint>
+
 #include "cpp_gateway_prototype.hxx"
 #include "double.hxx"
 #include "complex"
@@ -125,6 +129,38 @@ types::Double* getAsDouble(T* _val)
     return dbl;
 }
 
+// Convert a double to a narrow integer type with Scilab's documented int8()/uint8()/... semantics
+// while avoiding UB: nan -> 0, inf -> saturate to the type's bounds, and any finite out-of-range
+// value wraps modulo 2^N. A straight static_cast<IntType>(double) of an out-of-range value is UB;
+// arm64 fcvtz* saturates instead of wrapping; and routing through int64_t/uint64_t still traps at
+// the 2^63/2^64 boundary. So reduce modulo 2^N with fmod first — exact for the integer-valued
+// doubles here — which is portable and correct at every width. Mirrors doubleToInt() in
+// integer/sci_gateway/cpp/sci_int.cpp.
+template <class IntType>
+static inline IntType dblToInt(double d)
+{
+    if (std::isnan(d))
+    {
+        return 0;
+    }
+    if (std::isinf(d))
+    {
+        return d > 0 ? std::numeric_limits<IntType>::max() : std::numeric_limits<IntType>::min();
+    }
+    if (d >= static_cast<double>(std::numeric_limits<IntType>::min()) &&
+        d <  static_cast<double>(std::numeric_limits<IntType>::max()) + 1.0)
+    {
+        return static_cast<IntType>(d);
+    }
+    double modulus = std::ldexp(1.0, static_cast<int>(sizeof(IntType) * 8));
+    double r = std::fmod(d, modulus);
+    if (r < 0.0)
+    {
+        r += modulus;
+    }
+    return static_cast<IntType>(static_cast<uint64_t>(r));
+}
+
 template <class T>
 T* toInt(types::Double* _dbl)
 {
@@ -134,7 +170,7 @@ T* toInt(types::Double* _dbl)
     int size = _dbl->getSize();
     for (int i = 0; i < size; i++)
     {
-        p[i] = static_cast<typename T::type>(pdbl[i]);
+        p[i] = dblToInt<typename T::type>(pdbl[i]);
     }
 
     return pI;

@@ -149,7 +149,9 @@ types::String* TypeToString(T* _pI)
         }
         else
         {
-            pcText[out_index++] = static_cast<char>(p[i]);
+            // p[i] is in [1, MAX_ASCII] here (the !valid case broke out above); route through
+            // unsigned char so the byte value is well-defined (double -> signed char is UB > 127).
+            pcText[out_index++] = static_cast<char>(static_cast<unsigned char>(p[i]));
         }
 
     }
