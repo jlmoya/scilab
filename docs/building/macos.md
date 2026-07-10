@@ -168,9 +168,9 @@ JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home \
 about to *build*. A healthy run produces ~49 `macros/lib` files. For a **single** module from
 inside Scilab: `genlib("foolib", SCI+"/modules/foo/macros", %t)`.
 
-> Known cosmetic issue: the full buildmacros run currently exits with a nonzero status even
-> though every library builds correctly (the `macros` make target tolerates it). Tracked as a
-> runtime bug, not a build defect.
+> (Historical note: this run used to exit nonzero (231) with all libraries built — the
+> `toolbox_manager` module lacked its per-module `buildmacros.sce`, so the loop's `exec()` failed.
+> Fixed; both the make `macros` step and the standalone run now exit 0.)
 
 ---
 
@@ -321,8 +321,8 @@ tree and the packaged app show **Scilab-2027.0.0**.
 
 | Symptom | Cause → fix |
 |---------|-------------|
-| `configure: error: cannot find pkg-config package for xlnt` | `../xlnt-prefix` missing → §1 (configure finds it there by itself). |
-| `Library not loaded: @rpath/libxlnt.1.6.1.dylib` | The prefix dylib still has its old bare install name → §1 (`install_name_tool -id @rpath/… + codesign`), then relink spreadsheet (`touch modules/spreadsheet/src/c/*.c && make`). |
+| `configure: error: cannot find pkg-config package for xlnt` | `../xlnt-prefix` missing → run `./fetch-thirdparty.sh` (§2 — it builds the prefix; configure then finds it by itself). |
+| `Library not loaded: @rpath/libxlnt.1.6.1.dylib` | Stale/bare-install-name prefix dylib → `rm ../xlnt-prefix/lib/pkgconfig/xlnt.pc && ./fetch-thirdparty.sh` (rebuilds xlnt with the `@rpath` id), then `make -C modules/spreadsheet clean && make`. |
 | `error: no template named 'span' …apache-arrow…` | Arrow 24 needs C++20 → already per-target in `modules/spreadsheet/Makefile.am`; make sure the tree is reconfigured (fresh `./configure`). |
 | `no matching function for call to 'cwiseOp'` in `ast/sparse` | C++20 applied **globally** → keep it module-local to spreadsheet. |
 | GUI traps `SIGTRAP`/`EXC_BREAKPOINT` at startup or first `plot()` | Deployment target/SDK stamp too new → Appendix A. Fresh binaries are stamped 11.0/11.0 natively; check with `otool -l .libs/scilab-bin \| grep -A4 LC_BUILD_VERSION`. |
