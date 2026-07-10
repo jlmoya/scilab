@@ -38,6 +38,12 @@ class XML_SCILAB_IMPEXP XMLNodeList: public XMLList
     xmlNode *parent;
     int prev;
     xmlNode *prevNode;
+    /* The exact libxml pointer registered in the scope (== parent->children at each
+     * (re)registration). Cached so the destructor unregisters with the stored key
+     * instead of dereferencing the borrowed parent node, which may already be freed
+     * during document teardown (heap-use-after-free). Kept in sync at every
+     * registerPointers() call site. Mirrors how XMLElement caches `node`. */
+    xmlNode *registeredFirstChild;
 
 public:
     /**

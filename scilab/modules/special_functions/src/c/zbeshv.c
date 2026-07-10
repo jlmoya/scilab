@@ -77,7 +77,10 @@ L5:
 L10:
         ++n;
         j = l + n;
-        if (j <= *na && (dTmp = alpha[j] + 1 - alpha[j - 1], fabs(dTmp)) <= eps)
+        /* 1-based j -> 0-based subscripts: this was the C port's one spot missing the
+         * shift — alpha[j] read one past the end when j == *na. Matches the Fortran
+         * original (zbesig.f, zbesiv): abs((1+alpha(j-1)) - alpha(j)) <= eps. */
+        if (j <= *na && (dTmp = alpha[j - 2] + 1 - alpha[j - 1], fabs(dTmp)) <= eps)
         {
             goto L10;
         }

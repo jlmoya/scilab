@@ -104,20 +104,56 @@ the extraction (+ loop bounds where a walk is involved):
   of *any* sparse fails with "No variable read" (dense round-trips fine) — a matio-sparse save-format /
   round-trip defect, own follow-up.
 
-**DEFERRED — need individual (non-mechanical) investigation, do NOT blind-fix:**
-- `console/cmdLine/getKey.c:343` `getCmdLine` heap-buffer-overflow — the multi-command scan overreads
-  when `nextLineLocationInWideString` desyncs from the (grown) buffer. Intricate readline editor.
-- `special_functions/zbeshv.c:80` heap-buffer-overflow — `alpha[j]` with `j` up to `*na` (off-by-one)
-  in f2c-translated `besselh` multi-order code; 1-based-index subtlety.
-- `fileio/fscanfMat.c` `itCanBeMatrixLine` heap-buffer-overflow — matrix-line parse reads past a line.
-- `xml/XMLNodeList.cpp:39` `~XMLNodeList` heap-use-after-free — `parent->children` used after the doc
-  is freed; XML object-lifetime/ownership issue.
+**FIXED — the previously-deferred individual sites (2026-07-10, agent-diagnosed, rebuilt + behaviorally
+verified on the normal build):**
+- `console/cmdLine/getKey.c` `getCmdLine` heap-buffer-overflow — the fix: only advance
+  `nextLineLocationInWideString` past the consumed command when it was terminated by a newline; when the
+  scan ended on the final NUL, stay ON it (advancing past it read uninitialised heap beyond the
+  terminator and, if non-zero, scanned unbounded for a newline). Also frees `commandLine` before the
+  too-long early-return (was a leak) and resets the index. Verified: interactive console + multi-command
+  paste behave.
+- `special_functions/zbeshv.c:80` — off-by-one: the C port kept `l`/`j` **1-based** and applied `-1` at
+  every real array access *except* this consecutive-order test, so `alpha[j]` read one past a
+  `na`-element buffer when `j == na`. Fixed to `alpha[j-2]`/`alpha[j-1]` (matches the Fortran original
+  `zbesiv`: `abs((1+alpha(j-1))-alpha(j))`). Unique to the C `besselh` port; besseli/j/k/y call the
+  correct Fortran drivers. Verified: `besselh([0 1 2 3],1)` returns correct values, no OOB.
+- `xml/XMLNodeList.cpp` `~XMLNodeList` heap-use-after-free — the destructor dereferenced the **borrowed**
+  `parent->children` node, which the document may already have freed at teardown. Fix: cache the exact
+  registered libxml pointer (`registeredFirstChild`, kept in sync at every `registerPointers` call site)
+  and unregister with the cached key — mirrors how `XMLElement` caches `node`; the scope maps use the
+  pointer only as an opaque key. Verified: children+`xmlDelete`, `xmlRemove(list)` self-delete, and
+  multi-doc `xmlDelete("all")` all complete cleanly.
+- `patched_sundials/.../arkode/arkode_ls.c` `arkLsLinSys` (the wild pointer that surfaced as
+  `sunmatrix_sparse.c:586`, member load at address `~0x9`): `arkls_mem->savedJ` reaches `SUNMatCopy`
+  unallocated on the **sparse-Jacobian** path (`arkLsInitialize` clones savedJ only for dense/band A and
+  errors out earlier for a difference-quotient sparse Jacobian). Fix: lazily `SUNMatClone(A)` into savedJ
+  at the top of `arkLsLinSys` if NULL, mirroring `arkLsInitialize`. Root-cause fix in the ARKODE glue;
+  the vendored matrix primitive is untouched. Verified: `sundials_jacpattern.tst` runs to completion.
 
-**Deferred:**
-- `patched_sundials/.../sunmatrix_sparse.c:586` — member access / load at **address `0x9`** (a genuine
-  wild/uninitialised pointer, `arkls_mem->savedJ` in the ARKODE Jacobian-copy path). Needs investigation
-  of the calling path (likely a degenerate sparse matrix in a test); NOT a mechanical fix, and it lives
-  in vendored SUNDIALS — deferred rather than blind-patched.
+**NOT A BUG — investigated + dismissed:**
+- `fileio/fscanfMat.c` `itCanBeMatrixLine` — deep read (agent) found **no reachable overflow**: the
+  function is `sscanf` + `strdup` + bounded `strncmp` over NUL-terminated lines (`wide_string_to_UTF8`
+  guarantees termination). The original ASan hit was a false positive or an upstream non-terminated line.
+  Repro (empty / all-separator / special-token / no-trailing-newline lines) parses correctly, no fault.
+  Left unchanged (a needless `strncmp`→length "fix" would risk parse behaviour).
+- **matio sparse `.mat` "No variable read"** — was a regression in the matio *library* (the tree linked
+  Homebrew matio 1.5.30; Scilab's `mat_sparse_t` construction is correct). Resolved with the current
+  matio 1.5.30_1 after the full relink: `savematfile`/`loadmatfile` round-trip a sparse matrix in `-v6`,
+  `-v7`, and `-v7.3` (values verified). No Scilab change, no version pin — the "latest tools" outcome.
+  (A real but separate latent issue the agent noted: sparse **inside a struct/cell** is written
+  transposed because the top-level CSR-as-CSC + dims-swap is only compensated by savematfile's
+  top-level pre-transpose — tracked for a true-CSC follow-up, not the "No variable read" defect.)
+
+**grayplot blank (#102) — NOT a source defect; FIXED by a clean rebuild.** The data path (graphic_objects
+DataManager → NgonGridGrayplotDataDecomposer) is byte-identical to `main` and correct; the blank came
+from a **stale native `libscigraphic_objects` JNI lib vs the SWIG/Makefiles regenerated by the
+build-modernization commits**. A full rebuild resolves it: headless PNG is 14456 bytes vs 2153 for an
+empty figure (real content rendered).
+
+**Still deferred:**
+- `patched_sundials/.../sunmatrix_sparse.c:586` is now guarded by the arkode_ls fix above (savedJ is
+  always valid before the copy). If a *different* path ever feeds a corrupt SUNMatrix, add the
+  `A/B/content` NULL guard the agent proposed — cheap defense, not currently needed.
 
 **P3 — misaligned load (task #92):** covered by the deserializer fix above; re-scan for any siblings.
 

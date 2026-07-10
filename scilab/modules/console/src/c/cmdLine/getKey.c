@@ -314,6 +314,8 @@ char *getCmdLine(void)
 
     unsigned int cursorLocation = 0;
 
+    int endedOnNewline = 0;
+
     static wchar_t *commandLine = NULL;
 
     static int nextLineLocationInWideString = 0;
@@ -344,6 +346,7 @@ char *getCmdLine(void)
     {
         cursorLocation++;
     }
+    endedOnNewline = (commandLine[cursorLocation] == L'\n');
 
     commandLine[cursorLocation] = L'\0';
 
@@ -354,13 +357,28 @@ char *getCmdLine(void)
 
     multiByteString = wide_string_to_UTF8(&commandLine[nextLineLocationInWideString]);
 
-    nextLineLocationInWideString = cursorLocation + 1;
+    /* Advance past the consumed command only when it was terminated by a newline
+     * (more commands may follow in the buffer). When the scan ended on the final
+     * NUL, stay ON it: skipping past it made the next call read uninitialised
+     * heap beyond the terminator and, if that wchar happened to be non-zero,
+     * scan unbounded memory for a newline (heap-buffer-overflow) and replay
+     * garbage as a command. */
+    nextLineLocationInWideString = endedOnNewline ? (int)cursorLocation + 1 : (int)cursorLocation;
 
     appendLineToScilabHistory(multiByteString);
 
     setSearchedTokenInScilabHistory(NULL);
 
     setCharDisplay(DISP_RESET);
+
+    /* Release the buffer as soon as it is fully consumed — and do it before the
+     * too-long early return below, which used to skip this and leak it. */
+    if (commandLine[nextLineLocationInWideString] == L'\0')
+    {
+        FREE(commandLine);
+        commandLine = NULL;
+        nextLineLocationInWideString = 0;
+    }
 
     if (multiByteString && strlen(multiByteString) > 4096)
     {
@@ -369,11 +387,6 @@ char *getCmdLine(void)
         return NULL;
     }
 
-    if (commandLine[nextLineLocationInWideString] == L'\0')
-    {
-        FREE(commandLine);
-        commandLine = NULL;
-    }
     return multiByteString;
 }
 

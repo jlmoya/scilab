@@ -31,13 +31,17 @@ XMLNodeList::XMLNodeList(const XMLDocument & _doc, xmlNode * _parent): XMLList()
     size = getNodeListSize(parent->children);
     prev = 1;
     prevNode = parent->children;
-    scope->registerPointers(parent->children, this);
+    registeredFirstChild = parent->children;
+    scope->registerPointers(registeredFirstChild, this);
     id = scope->getVariableId(*this);
 }
 
 XMLNodeList::~XMLNodeList()
 {
-    scope->unregisterNodeListPointer(parent->children);
+    /* Use the cached registration key, NOT parent->children: at document teardown the
+     * borrowed parent node may already be freed, so dereferencing it here is a
+     * heap-use-after-free. The scope maps only use the pointer as an opaque key. */
+    scope->unregisterNodeListPointer(registeredFirstChild);
     scope->removeId(id);
 }
 
@@ -155,7 +159,8 @@ void XMLNodeList::removeElementAtPosition(int index)
                 parent->children = 0;
             }
             prevNode = parent->children;
-            scope->registerPointers(parent->children, this);
+            registeredFirstChild = parent->children;
+            scope->registerPointers(registeredFirstChild, this);
             prev = 1;
         }
         else
@@ -293,7 +298,8 @@ void XMLNodeList::replaceAtIndex(int index, const XMLElement & elem)
         cpy->next = next;
         if (index == 1)
         {
-            scope->registerPointers(parent->children, this);
+            registeredFirstChild = parent->children;
+            scope->registerPointers(registeredFirstChild, this);
         }
     }
 }
@@ -312,9 +318,10 @@ void XMLNodeList::insertAtBeginning(const XMLElement & elem)
     xmlNode *cpy = xmlCopyNode(elem.getRealNode(), 1);
 
     xmlUnlinkNode(cpy);
-    scope->unregisterNodeListPointer(parent->children);
+    scope->unregisterNodeListPointer(registeredFirstChild);
     xmlAddPrevSibling(parent->children, cpy);
-    scope->registerPointers(parent->children, this);
+    registeredFirstChild = parent->children;
+    scope->registerPointers(registeredFirstChild, this);
     size++;
 }
 

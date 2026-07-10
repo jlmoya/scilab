@@ -2895,6 +2895,24 @@ static int arkLsLinSys(sunrealtype t, N_Vector y, N_Vector fy, SUNMatrix A,
   retval = arkLs_AccessARKODELMem(arkode_mem, __func__, &ark_mem, &arkls_mem);
   if (retval != ARKLS_SUCCESS) { return (retval); }
 
+  /* Ensure the saved-Jacobian buffer exists before either copy below dereferences
+     it. arkLsInitialize only clones savedJ for dense/band A (it errors out earlier
+     for a difference-quotient sparse Jacobian), so a sparse-Jacobian path can reach
+     here with savedJ == NULL -> SUNMatCopy would deref a wild pointer. Clone lazily,
+     mirroring arkLsInitialize. (Scilab fork fix: ASan heap wild-pointer at
+     sunmatrix_sparse.c SUNMatCopy_Sparse, sundials_jacpattern.tst.) */
+  if (arkls_mem->savedJ == NULL)
+  {
+    arkls_mem->savedJ = SUNMatClone(A);
+    if (arkls_mem->savedJ == NULL)
+    {
+      arkProcessError(ark_mem, ARKLS_MEM_FAIL, __LINE__, __func__, __FILE__,
+                      MSG_LS_MEM_FAIL);
+      arkls_mem->last_flag = ARKLS_MEM_FAIL;
+      return (arkls_mem->last_flag);
+    }
+  }
+
   /* Check if Jacobian needs to be updated */
   if (jok)
   {
