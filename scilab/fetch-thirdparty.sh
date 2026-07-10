@@ -61,8 +61,14 @@ JAVAFX_SHA="2a44be17cf1b14001b386e9a4ff54ee69e354bcf20a68189b11186f65abf96c5"
 MOLTENVK_URL="https://github.com/KhronosGroup/MoltenVK/releases/download/v1.4.1/MoltenVK-macos.tar"
 MOLTENVK_SHA="5ea0c259df7ded9a275444820f09cced54d6e5a7c7a31d262de62a5cdb7e15cf"
 
-JCEF_NATIVES_URL="https://github.com/jcefmaven/jcefbuild/releases/download/1.0.66/macosx-arm64.tar.gz"
-JCEF_NATIVES_SHA="bdb7df4ed87d3fcd9471f672115fdbef907802c8e911183a40c532fb29459433"
+# jcefbuild release (embedded browser). 1.0.70 = CEF 146 / Chromium 146 (May 2026): the
+# older CEF 135 crashed the whole app on macOS 26 with a Chromium CHECK trap inside the
+# SkyLight HID-event decode path as soon as a browser uicontrol processed input.
+JCEF_VERSION="1.0.70"
+JCEF_TAG="jcef-d3de827+cef-146.0.10+g8219561+chromium-146.0.7680.179"
+JCEF_JCEF_URL="https://bitbucket.org/chromiumembedded/java-cef/commits/d3de827a4a4a4f4e9e6f381eb6a0997d4759bebe"
+JCEF_NATIVES_URL="https://github.com/jcefmaven/jcefbuild/releases/download/$JCEF_VERSION/macosx-arm64.tar.gz"
+JCEF_NATIVES_SHA="0a005c0362003d766f8cf4f4ac51b80332cf469d317e1f5a3767e224c743f26c"
 
 XLNT_SRC_URL="https://oos.eu-west-2.outscale.com/scilab-releases-dev/prerequirements-sources/xlnt-1.6.1_with_submodules.tar.gz"
 XLNT_SRC_SHA="93a7ca746acadc08ec1ea3b4368b2c0602007e2c1bac09480a840ae26acfbef8"
@@ -84,13 +90,13 @@ central org.lwjgl:lwjgl:3.3.4:natives-macos-arm64        9c524d760a82410306aa6f1
 central org.lwjgl:lwjgl-vulkan:3.3.4                     3dedd608a3597e4f895cbbc389fa9cc98cd5aba6c9cd9cfda1d30e842a629c34
 central org.lwjgl:lwjgl-jawt:3.3.4                       b69f4550e53fa424441b93fda5e605196a971e3ae55a26bd69e83afee7e3b4fc
 central org.lwjglx:lwjgl3-awt:0.2.4                      217cb3201a7c1acf844b20926393d081193297abde38b945f87f2597912f1de6
-central me.friwi:jcef-api:jcef-ca49ada+cef-135.0.20+ge7de5c3+chromium-135.0.7049.85 4c103b99cb5b95c0e7c4a3cea7e0bc75ab8ed955f620c101f343e30cd85a342a jcef-api.jar
+central me.friwi:jcef-api:jcef-d3de827+cef-146.0.10+g8219561+chromium-146.0.7680.179 b0271c8817cbdeb9e2e41420804d62e21c94acdf3b4d6072577fb19d546a4b08 jcef-api.jar
 "
 
 # The first-party Layer-1 GPU surface jar is *tracked* in this repo (vendored).
 SWING_GPU_SURFACE_SRC="$SCRIPT_DIR/modules/prebuildjava/firstparty/swing-gpu-surface-0.1.0.jar"
 
-PENDING_SEEN=0
+rm -f "$CACHE/.pending-seen" 2>/dev/null || true
 
 # ---------------------------------------------------------------------------
 # helpers
@@ -109,7 +115,7 @@ fetch() {
   got="$(sha256 "$f")"
   if [ "$pin" = "PENDING" ]; then
     echo "!!    PENDING PIN: $got  $name  <- bake this into the script" >&2
-    PENDING_SEEN=1
+    touch "$CACHE/.pending-seen"
   elif [ "$got" != "$pin" ]; then
     echo "ERROR: sha256 mismatch for $name" >&2
     echo "  expected: $pin" >&2
@@ -122,6 +128,7 @@ fetch() {
 # install_pinned <src> <dest> <sha256>  — copy iff missing/differing, then verify
 install_pinned() {
   local src="$1" dst="$2" pin="$3"
+  if [ "$pin" = "PENDING" ]; then cp -f "$src" "$dst"; return 0; fi   # first fetch: fetch() already reported the pin
   if [ "$FORCE" = 1 ] || [ ! -f "$dst" ] || [ "$(sha256 "$dst")" != "$pin" ]; then
     cp -f "$src" "$dst"
   fi
@@ -177,7 +184,7 @@ EOF
     jar="$a-$v${c:+-$c}.jar"
     [ -n "${dest:-}" ] || dest="$jar"
     url="$base/$(echo "$g" | tr . /)/$a/$v/$jar"
-    f="$(fetch "$url" "$pin" "$dest")"
+    f="$(fetch "$url" "$pin" "$jar")"
     install_pinned "$f" "$TP/$dest" "$pin"
     echo "      $dest"
   done <<< "$MAVEN_MANIFEST"
@@ -196,9 +203,9 @@ EOF
     echo "      present — skip"
   fi
 
-  echo "[5/8] JCEF natives (embedded browser, jcefbuild 1.0.66; the api jar came from Maven)…"
+  echo "[5/8] JCEF natives (embedded browser, jcefbuild $JCEF_VERSION; the api jar came from Maven)…"
   if [ "$FORCE" = 1 ] || [ ! -d "$LTP/jcef/Chromium Embedded Framework.framework" ]; then
-    JCEF_TGZ="$(fetch "$JCEF_NATIVES_URL" "$JCEF_NATIVES_SHA" "jcefbuild-1.0.66-macosx-arm64.tar.gz")"
+    JCEF_TGZ="$(fetch "$JCEF_NATIVES_URL" "$JCEF_NATIVES_SHA" "jcefbuild-$JCEF_VERSION-macosx-arm64.tar.gz")"
     JCEF_TMP="$(mktemp -d)"
     tar -xzf "$JCEF_TGZ" -C "$JCEF_TMP"
     mkdir -p "$LTP/jcef"
@@ -215,13 +222,13 @@ EOF
       src="$(find "$JCEF_TMP" -maxdepth 4 -name "$lic" | head -1)"
       [ -n "$src" ] && cp -f "$src" "$LTP/jcef/$lic"
     done
-    cat > "$LTP/jcef/build_meta.json" <<'META'
+    cat > "$LTP/jcef/build_meta.json" <<META
 {
-  "jcef_url": "https://bitbucket.org/chromiumembedded/java-cef/commits/ca49ada5c7e3fc98cd7058b6253b59f967530a65",
-  "release_tag": "jcef-ca49ada+cef-135.0.20+ge7de5c3+chromium-135.0.7049.85",
-  "release_url": "https://github.com/jcefmaven/jcefbuild/releases/tag/1.0.66",
+  "jcef_url": "$JCEF_JCEF_URL",
+  "release_tag": "$JCEF_TAG",
+  "release_url": "https://github.com/jcefmaven/jcefbuild/releases/tag/$JCEF_VERSION",
   "platform": "macosx-arm64",
-  "release_download_url": "https://github.com/jcefmaven/jcefbuild/releases/download/1.0.66/macosx-arm64.tar.gz"
+  "release_download_url": "$JCEF_NATIVES_URL"
 }
 META
     rm -rf "$JCEF_TMP"
@@ -320,7 +327,7 @@ if [ -f "$XLNT_PREFIX/lib/libxlnt.1.6.1.dylib" ]; then
     || { echo "  BAD install name (want @rpath/…): $XLNT_PREFIX/lib/libxlnt.1.6.1.dylib"; MISSING=1; }
 fi
 
-if [ "${PENDING_SEEN:-0}" = 1 ]; then
+if [ -f "$CACHE/.pending-seen" ]; then
   echo
   echo "RESULT: downloads OK but PENDING sha256 pins remain — bake the printed values into this script."
   exit 3
