@@ -712,6 +712,23 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
     }
 
     /**
+     * Ensure the File Browser tab exists so {@link #rebuildDefaultLayout} can dock
+     * it. Invoked reflectively to avoid a compile-time dependency on the ui_data
+     * module (every module jar is on the runtime classpath). Best-effort: if the
+     * class is unavailable or creation fails, the reset proceeds without it rather
+     * than aborting the whole re-dock.
+     */
+    private static void ensureFileBrowserPanel() {
+        try {
+            Class.forName("org.scilab.modules.ui_data.FileBrowser")
+            .getMethod("openFileBrowser").invoke(null);
+        } catch (Throwable t) {
+            // ui_data missing or open failed -- skip; rebuildDefaultLayout tolerates
+            // a null File Browser.
+        }
+    }
+
+    /**
      * Re-create the default desktop split layout in {@code main} from whichever
      * of the standard tool tabs are currently open, mirroring
      * {@code integratedConfiguration.xml}, then dock every open terminal south of
@@ -724,6 +741,17 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
             return; // nothing to anchor the layout on
         }
         SwingScilabDockablePanel fileBrowser = findDockedPanel(ID_FILEBROWSER);
+        if (fileBrowser == null) {
+            // The File Browser is frequently not a live docked panel: it restores
+            // lazily, and when ScilabFileBrowser.getFileBrowser() cannot restore its
+            // saved UUID it drops the panel into a standalone 500x500 window at (0,0)
+            // -- which hides behind a maximized main window on macOS ("File Browser
+            // missing"). Create/surface it so the reset re-docks it west instead of
+            // silently skipping it. closeEmptyDockingWindows() below reclaims the
+            // throwaway window it may have been created in.
+            ensureFileBrowserPanel();
+            fileBrowser = findDockedPanel(ID_FILEBROWSER);
+        }
         SwingScilabDockablePanel varBrowser  = findDockedPanel(ID_VARBROWSER);
         SwingScilabDockablePanel cmdHistory  = findDockedPanel(ID_CMDHISTORY);
         SwingScilabDockablePanel newsFeed    = findDockedPanel(ID_NEWSFEED);
