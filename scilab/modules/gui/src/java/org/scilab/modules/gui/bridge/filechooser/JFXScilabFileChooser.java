@@ -18,21 +18,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
-import java.awt.Toolkit;
-import java.awt.Dimension;
-import java.awt.Robot;
-
-
 import javafx.collections.ObservableList;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
-import javafx.stage.Stage;
-import javafx.stage.Modality;
-import javafx.stage.StageStyle;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.StageStyle;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -58,8 +49,6 @@ public class JFXScilabFileChooser implements SimpleFileChooser {
     private String[] selection; // Path + filenames
     private String selectionPath; // Path
     private String title;
-    private static Double xPos = Double.NaN;
-    private static Double yPos = Double.NaN;
     private String[] selectionFileNames; // Filenames
     private int selectionSize;
     private int filterIndex;
@@ -71,7 +60,6 @@ public class JFXScilabFileChooser implements SimpleFileChooser {
     private JFXPanel jfxpanel = new JFXPanel();
     private DirectoryChooser directoryChooser;
     private FileChooser fileChooser;
-    private Stage stage;
 
 
     public JFXScilabFileChooser() {
@@ -81,43 +69,34 @@ public class JFXScilabFileChooser implements SimpleFileChooser {
 
     class getChosenFile implements Callable<ArrayList<File>> {
         @Override public ArrayList<File> call() throws Exception {
-            // This method is invoked on the JavaFX thread
+            // This method is invoked on the JavaFX thread.
+            // The dialogs are shown with NO owner window: on macOS an owned
+            // NSOpenPanel/NSSavePanel is presented as a *sheet* attached to the owner —
+            // no title bar, impossible to move. (The previous code owned them with an
+            // invisible zero-size Stage, which is exactly that trap.) With a null owner
+            // the panel is a normal movable, titled dialog, it is still modal to the
+            // caller (displayAndWait blocks on the FutureTask), and AppKit remembers
+            // its last position by itself.
             ArrayList<File> theResult = new ArrayList<File>();
-            
-            if (!(stage instanceof Stage)) {
-                stage = new Stage();
-                stage.setMaxHeight(0);
-                stage.setWidth(0);
-                stage.setResizable(false);
-                stage.setAlwaysOnTop(true);
-                stage.initStyle(StageStyle.UNIFIED);
-                if (xPos.isNaN()) {
-                    Dimension d = Toolkit.getDefaultToolkit().getScreenSize(); // get screen size
-                    xPos = d.width/2-stage.getWidth()/2;
-                    yPos = (double)d.height/3;
-                }
-                stage.setX(xPos);
-                stage.setY(yPos);                    
-            }
-            stage.setTitle(title);
-            stage.initModality(Modality.APPLICATION_MODAL); 
-            stage.show(); //show stage because you wouldn't be able to get Height & width of the stage
-                
+
+            fileChooser.setTitle(title);
+            directoryChooser.setTitle(title);
+
             if (dialogType == JFXScilabFileChooser.OPEN_DIALOG) {
                 if (multipleSelection == false) {
                     if (directorySelectionOnly == false)  {
-                        File aFile = fileChooser.showOpenDialog(stage);
+                        File aFile = fileChooser.showOpenDialog(null);
                         if (aFile != null) {
                             theResult.add(aFile);
                         }
                     } else {
-                        File aFile = directoryChooser.showDialog(stage);
+                        File aFile = directoryChooser.showDialog(null);
                         if (aFile != null) {
                             theResult.add(aFile);
                         }
                     }
                 } else {
-                    List<File> files = fileChooser.showOpenMultipleDialog(stage);
+                    List<File> files = fileChooser.showOpenMultipleDialog(null);
                     if (files != null) {
                         for (int i=0; i<files.size(); i++) {
                             theResult.add(files.get(i));
@@ -149,15 +128,12 @@ public class JFXScilabFileChooser implements SimpleFileChooser {
                      } 
                 }
                 
-                File aFile  = fileChooser.showSaveDialog(stage);
+                File aFile  = fileChooser.showSaveDialog(null);
                 if (aFile != null) {
                     theResult.add(aFile);
                 }
             }
-            xPos = stage.getX();
-            yPos = stage.getY();
-            stage.close();
-            
+
             return theResult;
         }
     }
