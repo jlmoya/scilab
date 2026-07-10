@@ -88,6 +88,7 @@ types::Function::ReturnValue sci_lusolve(types::typed_list &in, int _iRetCount, 
             return types::Function::Error;
         }
 
+        pSpIn->makeCompressed();  // uncompressed -> nnz/values/col-positions disagree (heap UAF/overflow)
         nonZeros = (int)pSpIn->nonZeros();
         dbl = new double[nonZeros];
         pSpIn->outputValues(dbl, NULL);

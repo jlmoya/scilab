@@ -438,19 +438,25 @@ int RDivideSparseByDouble(types::Sparse* _pSp, types::Double* _pDouble, Internal
         return 0;
     }
 
+    // getNbItemByRow() reads outerIndexPtr() (allocated slots per row), which for an UNCOMPRESSED
+    // matrix sums to more than nonZeros(), so the walk below overruns Col[]/iPositVal[]
+    // (heap-buffer-overflow, ASan). Compress first so nnz/per-row-counts/col-positions agree.
+    _pSp->makeCompressed();
+
+    int iRows = _pSp->getRows();
     size_t iSize = _pSp->nonZeros();
     int* Col = new int[iSize];
-    int* Row = new int[_pSp->getRows()];
+    int* Row = new int[iRows];
     _pSp->getColPos(Col);
     _pSp->getNbItemByRow(Row);
     int* iPositVal = new int[iSize];
 
     int idx = 0;
-    for (int i = 0; i < _pSp->getRows(); i++)
+    for (int i = 0; i < iRows; i++)
     {
-        for (int j = 0; j < Row[i]; j++)
+        for (int j = 0; j < Row[i] && idx < iSize; j++)
         {
-            iPositVal[idx] = (Col[idx] - 1) * _pSp->getRows() + i;
+            iPositVal[idx] = (Col[idx] - 1) * iRows + i;
             ++idx;
         }
     }

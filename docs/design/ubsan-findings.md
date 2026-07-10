@@ -83,6 +83,36 @@ are consistent; plus `i < iSize && j < iRows` loop bounds as defense. Verified: 
 uncompressed matrices; ASan re-run clean at `types_power.cpp`. **Lesson: keep the ASan worktree — it
 finds heap-corruption UBSan can't.**
 
+## Broad ASan heap sweep (task #96) — inventory over 24 CLI modules
+
+After the `.^` fix, ran the ASan worktree over 24 modules (driver `scratchpad/asan-sweep-broad.sh`) to
+enumerate heap bugs. Found 8 distinct sites.
+
+**FIXED — the sparse "uncompressed matrix" class (same root cause as `.^`).** Every site extracts a
+sparse matrix's structure via `nonZeros()` + `getNbItemByRow()`/`getColPos()`/`outputValues()`/raw
+`outerIndexPtr()`, which disagree for an uncompressed Eigen matrix. Fix = `pSp->makeCompressed()` before
+the extraction (+ loop bounds where a walk is involved):
+- `ast/operations/types_divide.cpp:453` `RDivideSparseByDouble` (`sparse ./ double`) — fired **5×**.
+- `differential_equations/complexHelpers.cpp:244` `copyMatrixToSUNMatrix` — the CSR row-copy into the
+  SUNMatrix Jacobian overruns for an uncompressed input.
+- `sparse/sci_lusolve.cpp` + `sci_lufact.cpp` — inconsistent `dbl`/`itemsRow`/`colPos` handed to the
+  Fortran `lufact1`, which then mis-indexes (the `sci_lusolve` heap-use-after-free is this).
+- `matio/GetSparseVariable.cpp` (`GetSparseMatVar`) — same `iPositVal` walk, when saving a sparse var to
+  a `.mat`. Latent (the sweep's matio test didn't save an *uncompressed* sparse) but fixed proactively.
+  (`api_scilab` `getSparseVariable`/boolean twin use the same accessors — same latent risk, note.)
+  **Separate PRE-EXISTING bug (not from this change, confirmed by reverting):** `savematfile`+`loadmatfile`
+  of *any* sparse fails with "No variable read" (dense round-trips fine) — a matio-sparse save-format /
+  round-trip defect, own follow-up.
+
+**DEFERRED — need individual (non-mechanical) investigation, do NOT blind-fix:**
+- `console/cmdLine/getKey.c:343` `getCmdLine` heap-buffer-overflow — the multi-command scan overreads
+  when `nextLineLocationInWideString` desyncs from the (grown) buffer. Intricate readline editor.
+- `special_functions/zbeshv.c:80` heap-buffer-overflow — `alpha[j]` with `j` up to `*na` (off-by-one)
+  in f2c-translated `besselh` multi-order code; 1-based-index subtlety.
+- `fileio/fscanfMat.c` `itCanBeMatrixLine` heap-buffer-overflow — matrix-line parse reads past a line.
+- `xml/XMLNodeList.cpp:39` `~XMLNodeList` heap-use-after-free — `parent->children` used after the doc
+  is freed; XML object-lifetime/ownership issue.
+
 **Deferred:**
 - `patched_sundials/.../sunmatrix_sparse.c:586` — member access / load at **address `0x9`** (a genuine
   wild/uninitialised pointer, `arkls_mem->savedJ` in the ARKODE Jacobian-copy path). Needs investigation

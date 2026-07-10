@@ -110,6 +110,7 @@ types::Function::ReturnValue sci_lufact(types::typed_list &in, int _iRetCount, t
         return types::Function::Error;
     }
 
+    pSpIn->makeCompressed();  // uncompressed -> nnz/values/col-positions disagree (heap overflow)
     nonZeros = (int)pSpIn->nonZeros();
     dbl = new double[nonZeros];
     colPos = new int[nonZeros];

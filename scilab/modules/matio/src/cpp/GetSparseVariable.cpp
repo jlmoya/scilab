@@ -59,6 +59,10 @@ matvar_t* GetSparseMatVar(types::Sparse* pSparse, const char *name)
         return NULL;
     }
 
+    // uncompressed -> nnz/getNbItemByRow/getColPos disagree and the iPositVal walk below overruns
+    // (heap-buffer-overflow). Compress first. (NB: sparse .mat save has a separate pre-existing
+    // "No variable read" round-trip bug, tracked in docs/design/ubsan-findings.md.)
+    pSparse->makeCompressed();
     int nonZeros = pSparse->nonZeros();
     int* colPos = new int[nonZeros];
     int* itemsRow = new int[pSparse->getRows()];

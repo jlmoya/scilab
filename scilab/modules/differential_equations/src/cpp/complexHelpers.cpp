@@ -187,6 +187,9 @@ void copyMatrixToSUNMatrix(types::InternalType *pI, SUNMatrix SUNMat_J, int iDim
     {
         // Scilab format is CSR (compressed rows)
         types::Sparse *pSp = pI->getAs<types::Sparse>();
+        // an uncompressed Eigen matrix has gaps in inner/value arrays and outerIndexPtr counts
+        // allocated (not actual) slots — the row copy below would overrun the SUNMatrix arrays.
+        pSp->makeCompressed();
         int iNbRows = pSp->getRows();
         if (bComplex)
         {
