@@ -209,3 +209,7 @@ call_scilab_*
 #
 locale/*/*/*.mo
 locale/*/*/*.po
+# autopoint (gettext) scaffolding from autoreconf -fi — unused: configure uses AM_GNU_GETTEXT([external])
+/po/
+# CMA-ES optimizer runtime outputs (test junk written to the source root by cmaes runs)
+/outcmaes*.xml
