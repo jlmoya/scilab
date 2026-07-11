@@ -27,5 +27,18 @@
 */
 BOOL LoadLibrarypath(char *xmlfilename);
 
+/**
+* Build the PATH_SEPARATOR-joined java.library.path from SCI/etc/librarypath.xml,
+* including only directories that exist. Used to seed -Djava.library.path at JVM
+* creation: with those paths already present, the post-boot LoadLibrarypath()
+* additions short-circuit in LibraryPath.addPath() ("path already present")
+* instead of reaching the deprecated sun.misc.Unsafe patch of the JVM's cached
+* native search paths. A path we miss simply falls back to the old runtime
+* mechanism, so seeding can never break native-library loading.
+* @param sciPath the SCI path
+* @return a newly allocated string the caller must FREE, or NULL
+*/
+char *getLibrarypathString(char *sciPath);
+
 #endif /* __LOADLIBRARYPATH_H__ */
 /*--------------------------------------------------------------------------*/

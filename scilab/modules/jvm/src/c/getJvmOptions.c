@@ -29,6 +29,7 @@
 #include "getshortpathname.h"
 #include "BOOL.h"
 #include "getScilabPreference.h"
+#include "loadLibrarypath.h"
 
 static char * getJavaHeapSize(void);
 /*--------------------------------------------------------------------------*/
@@ -106,6 +107,39 @@ JavaVMOption * getJvmOptions(char *SCI_PATH, char *filename_xml_conf, int *size_
                             if (strstr(str, "-Xmx") == str && heapSize)
                             {
                                 jvm_option_string = os_strdup(heapSize);
+                            }
+                            else if (strstr(str, "-Djava.library.path=") == str)
+                            {
+                                /* Seed java.library.path at JVM creation from the same
+                                 * etc/librarypath.xml that LoadLibrarypath() uses after boot.
+                                 * With those directories already present, the post-boot
+                                 * LibraryPath.addPath() calls short-circuit ("already present")
+                                 * and never reach the deprecated sun.misc.Unsafe patch of the
+                                 * JVM's cached native search paths. Missing a path just falls
+                                 * back to that runtime mechanism, so this cannot break loading. */
+                                char *libpath = getLibrarypathString(SCI_PATH);
+                                if (libpath && strlen(libpath) > 0)
+                                {
+                                    jvm_option_string = (char *)MALLOC(sizeof(char) *
+                                        (strlen("-Djava.library.path=") + strlen(libpath) + 1));
+                                    if (jvm_option_string)
+                                    {
+                                        sprintf(jvm_option_string, "-Djava.library.path=%s", libpath);
+                                    }
+                                    else
+                                    {
+                                        jvm_option_string = os_strdup(str);
+                                    }
+                                }
+                                else
+                                {
+                                    jvm_option_string = os_strdup(str);
+                                }
+                                if (libpath)
+                                {
+                                    FREE(libpath);
+                                    libpath = NULL;
+                                }
                             }
                             else
                             {

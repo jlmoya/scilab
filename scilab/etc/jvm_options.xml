@@ -46,6 +46,13 @@ $SCILAB : scilab path (SCI in Scilab)
     <option value="--add-opens=java.desktop/sun.lwawt=ALL-UNNAMED" os="macosx"/>
     <option value="--add-opens=java.desktop/sun.lwawt.macosx=ALL-UNNAMED" os="macosx"/>
 
+    <!-- Grant native access to classpath code. Scilab is built on JNI: every native
+         module and toolbox loads its dylib through System.loadLibrary. JEP 472: since
+         JDK 24 an ungranted restricted native call only warns, but a future JDK will
+         BLOCK it, which would stop Scilab from loading any native library. Scilab runs
+         entirely on the classpath (the unnamed module), so grant ALL-UNNAMED. -->
+    <option value="--enable-native-access=ALL-UNNAMED"/>
+
     <option value="-Djava.util.logging.config.file=$SCILAB/etc/logging.properties"/>
 
     <!-- Set Java Heap space to 256mb -->
