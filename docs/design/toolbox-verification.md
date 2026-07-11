@@ -22,7 +22,6 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | scimax | TIMEOUT | 300s; scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-scimax-D3uSg9 |
 | accsum | FAIL | build failed |
 | csv-readwrite | FAIL | loader error 10000: startModule: error on line #23: "exec: Cannot open file /Users/josemoya/Projects/SciLabProjects/csv-readwrite/sci_gateway/loader_gateway.sce." |
-| krisp | FAIL | non-arm64 native lib: /Users/josemoya/Projects/SciLabProjects/krisp/sci_gateway/c/libkrisp_c.so, /Users/josemoya/Projects/SciLabProjects/krisp/sci_gateway/c/libskeleton_c.so |
 | anova | PASS | delta=1; smoke=none |
 | apifun | PASS | delta=1; smoke=OK |
 | arfit | PASS | delta=1; smoke=none |
@@ -42,6 +41,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | hypt | PASS | delta=1; smoke=none |
 | intprbs | PASS | delta=1; smoke=OK |
 | json | PASS | delta=1; smoke=none |
+| krisp | PASS | delta=3; smoke=OK |
 | libsvm | PASS | delta=1; smoke=none |
 | lowdisc | PASS | delta=1; smoke=none |
 | lsf_toolbox | PASS | delta=1; smoke=OK |
@@ -70,7 +70,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | stixbox | PASS | delta=1; smoke=none |
 | xlsx | PASS | delta=1; smoke=none |
 
-**Summary:** 46 PASS / 3 FAIL / 1 TIMEOUT / 0 CRASH of 50 total
+**Summary:** 47 PASS / 2 FAIL / 1 TIMEOUT / 0 CRASH of 50 total
 
 ## Per-toolbox notes
 
@@ -91,6 +91,8 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 **Error:** non-arm64 native lib: /Users/josemoya/Projects/SciLabProjects/krisp/sci_gateway/c/libkrisp_c.so, /Users/josemoya/Projects/SciLabProjects/krisp/sci_gateway/c/libskeleton_c.so
 
 **Analysis & fix lane:** Arch gate detected stale x86_64 binaries in `sci_gateway/c/`. **Planned:** remove stale artifacts, rebuild for arm64, and fix `corr_*` registration.
+
+**Resolved (Task 6):** Removed the two tracked stale non-arm64 build artifacts (`libkrisp_c.so`, a 32-bit x86 ELF; `libskeleton_c.so`, a dead unused legacy gateway-registration template never referenced by the actual builder) from `sci_gateway/c/`, clearing the arch gate. Rebuilt the `corr_*` native gateway from source in a clean room (`sci_gateway/c/builder_gateway_c.sce` with the standard `CPATH`/`LIBRARY_PATH` env recipe) and confirmed `c_corr_D`/`c_corr_X`/`c_corr_vector` register and compute correct values (`corr(0)=1`, closed-form gaussian kernel match) — the "natives build but don't register" issue logged in FINANCE-TOOLBOX-PORTING.md at port time no longer reproduces; the real blocker was purely the arch-gate artifacts. Added `tbx-smoke/krisp.sce` (RLHS bounds/shape check + a real `c_corr_D` call verified against the gateway's own closed-form kernel).
 
 ### parquet
 
