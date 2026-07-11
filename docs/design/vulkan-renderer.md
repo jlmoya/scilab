@@ -145,9 +145,19 @@ picking, preferences, the bundled-MoltenVK packaged-app path, user clipping, and
 commit is authored plainly with no AI-attribution trailers.
 
 **Known limitations / follow-ups:**
-- **Clipping + lighting of image plots and text sprites**: images (`Matplot`) and screen-aligned sprites
-  use separate pipelines and are not clipped or lit yet. Rarely visible (images usually fit; labels sit
-  on top). A later refinement.
+- **Text/mark sprites are clipped** (M8c): the sprite pass carries the active clip planes' baked distances
+  in its per-draw **push constant** (`tex.frag` discards where any <0). The motor bakes `dot(plane, anchor)`
+  once per glyph — the anchor is in scale-translated data space (`canvasProjection`'s input, same frame as
+  the planes), so a mark or label is kept/dropped as its anchor enters/leaves the clip region; window-space
+  chrome (tick labels, titles) is never clipped. Push-constant (per-draw), not a vertex attribute — an
+  earlier per-vertex-attribute attempt regressed all sprites on MoltenVK and was reverted. Verified by
+  readback (marks + line clip to a box tighter than the data; ticks stay).
+- **Image plots (`Matplot`) are NOT clipped yet**: the image pass shares `tex.frag` and pushes all-inside
+  clip (never discards). Correct clipping needs the corner in scale-translated data space, but the corners
+  are texture-pixel space and the axes camera transform to convert is not isolated at `drawImage`
+  (`getTransformation()` composes the Matplot's local pixel→data push). Rarely visible (images usually fit).
+- **Lighting of images/sprites is intentionally absent** — unlit texture overlays in Scilab (raw `Matplot`
+  pixels, fixed-colour text/marks), matching JOGL. Only geometry is lit.
 - **Specular highlights**: skipped — the clip-space CPU transform doesn't carry the eye position in scene
   space. Diffuse + ambient cover the dominant visual effect.
 - **`grayplot`**: renders blank — its mesh geometry (`dataManager.getVertexBuffer`) arrives empty, so

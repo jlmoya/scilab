@@ -442,7 +442,16 @@ public class VulkanMotor {
         }
         spriteRefs.add(new long[] {handle});
         spriteQuads.add(quad);
-        spriteTints.add(tint);
+        // Sprite push block = tint(4) + aux(4) + the anchor's baked clip distances(8). The anchor
+        // (position) is in scale-translated data space — canvasProjection's input, the same frame as
+        // the clip planes — so dot(plane, anchor) is the correct signed distance; baked into all clip
+        // slots so the whole glyph is kept or discarded together. Scene-coordinate mode only:
+        // window-space text (titles, tick labels) is never clipped (planes == null => +LARGE).
+        final double[][] planes = tm.isUsingSceneCoordinate() ? clipPlanesOf(drawingTools) : null;
+        final float[] block = new float[16];
+        System.arraycopy(tint, 0, block, 0, 8);
+        bakeClip(planes, position.getX(), position.getY(), position.getZ(), block, 8);
+        spriteTints.add(block);
     }
 
     /** X offset of the quad's lower-left corner from the anchor point (JOGL semantics). */
@@ -798,6 +807,21 @@ public class VulkanMotor {
     private double[][] clipPlanesOf(DrawingTools dt) {
         org.scilab.forge.scirenderer.clipping.ClippingManager cm = dt.getClippingManager();
         return (cm instanceof VulkanClippingManager) ? ((VulkanClippingManager) cm).enabledEquations() : null;
+    }
+
+    /**
+     * Bake 8 clip distances {@code dot(plane, [x,y,z,1])} for a single point (w=1) into
+     * {@code out[off..off+7]} — the sprite counterpart of the per-vertex geometry bake. Unused slots
+     * (no active plane, or {@code planes == null} when clip_state is off) get CLIP_INSIDE, so a sprite
+     * with no active clip plane is never discarded.
+     */
+    private void bakeClip(double[][] planes, double x, double y, double z, float[] out, int off) {
+        final int np = (planes == null) ? 0 : planes.length;
+        for (int p = 0; p < 8; p++) {
+            out[off + p] = (p < np)
+                           ? (float) (planes[p][0] * x + planes[p][1] * y + planes[p][2] * z + planes[p][3])
+                           : CLIP_INSIDE;
+        }
     }
 
     /** Capture this object's lighting state; leaves {@code lit=false} unless lighting is enabled with a
