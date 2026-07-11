@@ -13,6 +13,8 @@ function cfg = tbx_cfg()
     cfg.verified = ["sciDatabase" "parquet" "xlsx" "libsvm" "guibuilder" "scicv" ..
                     "cgal" "sndfile-toolbox" "sciSymPy" "sciTorch" "sciQuantLib" ..
                     "PIMS" "financial" "nan" "quapro" "json" "specfun" "distfun" ..
-                    "scidoe" "stixbox" "lowdisc"];
+                    "scidoe" "stixbox" "lowdisc" ..
+                    "apifun" "cma-es" "dataint" "fmincont" "FOSSEE-Optimization-toolbox" ..
+                    "grocer" "intprbs" "lsf_toolbox" "montesci" "nisp"];
     if ~isdir(cfg.tbxdir) then mkdir(cfg.tbxdir); end
 endfunction

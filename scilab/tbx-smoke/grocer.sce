@@ -1,0 +1,9 @@
+// grocer smoke: mlag/trimr/vec, the core econometric utilities recorded as "verified...
+// exact" at port time (FINANCE-TOOLBOX-PORTING.md), macros/basic/{mlag,trimr,vec}.sci.
+// Expected outputs hand-derived from each function's own (tiny, deterministic) definition.
+xlag  = mlag([1; 2; 3; 4; 5], 2);        // nobs x (nvar*n) matrix of lagged columns
+ztrim = trimr((1:10)', 2, 3);            // strip first 2 / last 3 rows
+vv    = vec([1 2; 3 4]);                 // stack columns (column-major)
+smoke_ok = isequal(xlag, [0 0; 1 0; 2 1; 3 2; 4 3]) ...
+    & isequal(ztrim, [3; 4; 5; 6; 7]) ...
+    & isequal(vv, [1; 3; 2; 4]);
