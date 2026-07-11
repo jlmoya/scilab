@@ -84,7 +84,8 @@ central org.jetbrains:annotations:24.0.1                 61666dbce7e42e6c85b43c0
 central io.methvin:directory-watcher:0.18.0              18f67869b0d31d39512623226220abeedd6bde486d5599e6256eab7975110754
 jb      org.jetbrains.jediterm:jediterm-core:3.70        d94732a512d4c328b1fd6ec9163428b2d4351a2828989e8240f1e575949d93d1
 jb      org.jetbrains.jediterm:jediterm-ui:3.70          d18e290da36d9dbc46e37683cc1dc9a3758b2af4cc9b458ffb9271b73d18c6d2
-central org.slf4j:slf4j-api:2.0.9                        0818930dc8d7debb403204611691da58e49d42c50b6ffcfdce02dadb7c3c2b6c
+central org.slf4j:slf4j-api:2.0.18                       44508fd1576500688c790b190acdd16fec4f8c79a3e0b900afd70503cf055f55
+central org.slf4j:slf4j-jdk14:2.0.18                     ab6ffe68caa8a0e3aed66022061b6cbabc76746784eff3c3ab4af0b0dd7dbb02
 central org.lwjgl:lwjgl:3.3.4                            6844ff591a4fa4175136416eb1d93ede336224fe3e2026ff29993a93a000b169
 central org.lwjgl:lwjgl:3.3.4:natives-macos-arm64        9c524d760a82410306aa6f11234d9b3f520444ae625a7a9843439b9dd32a0801
 central org.lwjgl:lwjgl-vulkan:3.3.4                     3dedd608a3597e4f895cbbc389fa9cc98cd5aba6c9cd9cfda1d30e842a629c34
@@ -299,7 +300,7 @@ need_arm64(){ need "$1"; [ -e "$1" ] && { lipo -archs "$1" 2>/dev/null | grep -q
 
 # fork additions + the tarball-provided jars configure hard-requires
 for j in gson-2.10.1 jna-5.14.0 kotlin-stdlib-2.1.21 annotations-24.0.1 \
-         directory-watcher-0.18.0 jediterm-core-3.70 jediterm-ui-3.70 slf4j-api-2.0.9 \
+         directory-watcher-0.18.0 jediterm-core-3.70 jediterm-ui-3.70 slf4j-api-2.0.18 slf4j-jdk14-2.0.18 \
          lwjgl-3.3.4 lwjgl-3.3.4-natives-macos-arm64 lwjgl-vulkan-3.3.4 lwjgl-jawt-3.3.4 \
          lwjgl3-awt-0.2.4 swing-gpu-surface-0.1.0 jcef-api \
          jogl-all-2.5.0 gluegen-rt-2.5.0 flexdock-1.2.5 jgraphx-2.1.0.7 skinlf-1.2.3 \
