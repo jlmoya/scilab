@@ -27,7 +27,6 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | parquet | FAIL | loader error 10000: exec: error on line #13: "link: The shared archive was not loaded: dlopen(/Users/josemoya/Projects/SciLabProjects/parquet/sci_gateway/cpp//../../src/cpp/libarrow.dylib, 0x000A): Library not loaded: /opt/homebrew/opt/apache-arrow/lib/libarrow.2400.dylib" |
 | PIMS | FAIL | loader registered no new library |
 | pso-toolbox | FAIL | loader error 10000: add_help_chapter: error on line #71: "add_help_chapter: Wrong value for input argument #2: An existing directory expected." |
-| regtools | FAIL | loader error 10000: exec: error on line #29: "Failed to install guimaker from atoms." |
 | sci_gsl | FAIL | non-arm64 native lib: /Users/josemoya/Projects/SciLabProjects/sci_gsl/sci_gateway/cpp/libMC_toolbox.so, /Users/josemoya/Projects/SciLabProjects/sci_gsl/sci_gateway/cpp/libsci_gsl.so |
 | sci-ipopt | FAIL | loader registered no new library |
 | anova | PASS | delta=1; smoke=none |
@@ -60,6 +59,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | number | PASS | delta=1; smoke=none |
 | ortpol | PASS | delta=5; smoke=none |
 | quapro | PASS | delta=1; smoke=none |
+| regtools | PASS | delta=1; smoke=OK |
 | scicv | PASS | delta=1; smoke=none |
 | sciDatabase | PASS | delta=1; smoke=none |
 | scidoe | PASS | delta=1; smoke=none |
@@ -70,7 +70,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | stixbox | PASS | delta=1; smoke=none |
 | xlsx | PASS | delta=1; smoke=none |
 
-**Summary:** 39 PASS / 9 FAIL / 1 TIMEOUT / 1 CRASH of 50 total
+**Summary:** 40 PASS / 8 FAIL / 1 TIMEOUT / 1 CRASH of 50 total
 
 ## Per-toolbox notes
 
@@ -115,6 +115,8 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 **Error:** loader error 10000: exec: error on line #29: "Failed to install guimaker from atoms."
 
 **Analysis & fix lane:** The loader auto-installs the `guimaker` toolbox from ATOMS as a dependency, but `guimaker` fails to build on 2027/arm64. This blocks regtools even though the batch functions don't inherently require guimaker. **Planned:** decouple guimaker; ensure batch functions work standalone.
+
+**Resolved (Task 5):** `etc/regtools.start` no longer auto-installs guimaker from ATOMS at load time (it just checks `isdef("guimaker")` and warns), and `linregr`/`nlinregr` now guard their own interactive-GUI entry points to raise a clear error at call time instead of a load-time failure, leaving `ff2n`/`fullfact` and command-line-mode `linregr`/`nlinregr` unaffected.
 
 ### sci_gsl
 

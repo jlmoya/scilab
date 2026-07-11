@@ -15,6 +15,6 @@ function cfg = tbx_cfg()
                     "PIMS" "financial" "nan" "quapro" "json" "specfun" "distfun" ..
                     "scidoe" "stixbox" "lowdisc" ..
                     "apifun" "cma-es" "dataint" "fmincont" "FOSSEE-Optimization-toolbox" ..
-                    "grocer" "intprbs" "lsf_toolbox" "montesci" "nisp"];
+                    "grocer" "intprbs" "lsf_toolbox" "montesci" "nisp" "regtools"];
     if ~isdir(cfg.tbxdir) then mkdir(cfg.tbxdir); end
 endfunction
