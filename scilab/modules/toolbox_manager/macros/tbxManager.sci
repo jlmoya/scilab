@@ -39,9 +39,15 @@ function tbxManager()
               "position", [152 44 90 26], "callback", "tbx_gui_preset(""none"")");
     uicontrol(f, "style", "pushbutton", "string", "Apply", ..
               "position", [15 8 90 28], "callback", "tbx_gui_apply(%f)");
+    // No custom colors: macOS Aqua ignores a button's backgroundcolor (it only
+    // halos around the face) while foregroundcolor IS applied — the old
+    // white-on-blue styling rendered as an unreadable white-on-white label.
     uicontrol(f, "style", "pushbutton", "string", "Apply & Relaunch", ..
-              "position", [112 8 160 28], "backgroundcolor", [0.2 0.5 0.9], ..
-              "foregroundcolor", [1 1 1], "callback", "tbx_gui_apply(%t)");
+              "position", [112 8 160 28], "callback", "tbx_gui_apply(%t)");
+    // delete(), not close(): a toolbox gateway can shadow the global close()
+    // (sciQuantLib's QuantLib close(x,y) did, breaking every 1-arg close in the
+    // session), and delete also accepts the vector findobj returns when the
+    // manager was opened more than once.
     uicontrol(f, "style", "pushbutton", "string", "Close", ..
-              "position", [W-90 8 75 28], "callback", "close(findobj(""tag"",""tbxmgr_fig""))");
+              "position", [W-90 8 75 28], "callback", "delete(findobj(""tag"",""tbxmgr_fig""))");
 endfunction
