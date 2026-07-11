@@ -1,6 +1,6 @@
 // ============================================================================
 // Scilab-app startup (~/.Scilab/scilab-app-2027/.scilab)
-// The toolbox manager is now a core Scilab module (modules/toolbox_manager), so the
+// The toolbox manager is a core Scilab module (modules/toolbox_manager), so the
 // tbx* verbs + tbxManager() are always available. This file only AUTOLOADS the
 // toolboxes you enabled (macros only become global when their loader runs at base
 // scope, i.e. here at .scilab's top level) and opens the picker on first run.
@@ -8,13 +8,17 @@
 // are preserved across re-packaging.
 // ============================================================================
 if isdef("tbxAutoloadList") then
-    // Suppress toolbox help-chapter loading during autoload: locally-built toolboxes
-    // have no built jar/ dir, and in NW/STD mode add_help_chapter() would error and
-    // abort the load. Shadow the help loaders as no-ops, then restore them.
-    function add_help_chapter(varargin), endfunction
-    function varargout = loadToolboxInlineHelp(varargin), varargout = list(); endfunction
+    // funcprot(0) for the loop: loaders exec at base scope and legitimately
+    // redefine their helper functions (startModule, ...) — silence the noise.
+    // Each loader runs in its own try/catch so one broken toolbox never blocks
+    // the rest. NOTE: no add_help_chapter shadowing here — a console-scope shadow
+    // is invisible inside loader functions (Scilab 6 scoping) and silently ate
+    // real help registration; toolboxes guard a missing help jar themselves with
+    // "if isdir(path_addchapter)" (the Scilab-6-correct form of the old idiom).
     tbx_autoload_paths = tbxAutoloadList();
     tbx_nload = 0;
+    tbx_funcprot = funcprot();
+    funcprot(0);
     for tbx_k = 1:size(tbx_autoload_paths, "*")
         try
             exec(tbx_autoload_paths(tbx_k), -1);
@@ -23,11 +27,11 @@ if isdef("tbxAutoloadList") then
             mprintf("[toolbox-manager] load error: %s\n", lasterror());
         end
     end
-    clear add_help_chapter loadToolboxInlineHelp;   // restore the real help functions
+    funcprot(tbx_funcprot);
     if tbx_nload > 0 then
         mprintf("[toolbox-manager] autoloaded %d toolbox(es).\n", tbx_nload);
     end
-    clear tbx_autoload_paths tbx_k tbx_nload;
+    clear tbx_autoload_paths tbx_k tbx_nload tbx_funcprot;
     // First run with no manifest + a GUI session -> open the seeding form.
     if ~isfile(fullfile(SCIHOME, "installed_toolboxes.tbx")) & ..
        or(getscilabmode() == ["NW" "STD"]) then

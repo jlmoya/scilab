@@ -1,4 +1,4 @@
-// Scilab toolbox_manager module — unload.
-if isdef("toolbox_managerlib") then
-    toolbox_managerlib = [];
-end
+// Scilab toolbox_manager module — quit hook.
+// Nothing to tear down: the macro library is dropped with the process, and
+// reassigning the library variable here (the old "toolbox_managerlib = []")
+// only triggered a "Redefining permanent variable" warning on every exit.
