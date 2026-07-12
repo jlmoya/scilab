@@ -3,7 +3,7 @@
 // which calls qpqpqp unconditionally on every rhs branch (no try/catch anywhere in the
 // macro, and no pure-Scilab QP reimplementation exists to fall back to -- a broken
 // native call surfaces as an undefined-function error, not a silently different
-// answer). quapro has no own tests; its 3 demos (optloc, multiflow) only exercise the
+// answer). quapro has no own tests; its 2 demos (optloc, multiflow) only exercise the
 // Q=0 special case via the linpro wrapper, so this smoke uses a genuine Q<>0 problem
 // instead, matching the shape of help/en_US/quapro.xml's own worked example.
 //
