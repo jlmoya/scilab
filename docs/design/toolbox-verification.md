@@ -23,7 +23,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | accsum | FAIL | build failed |
 | anova | PASS | delta=1; smoke=none |
 | apifun | PASS | delta=1; smoke=OK |
-| arfit | PASS | delta=1; smoke=none |
+| arfit | PASS | delta=1; smoke=OK |
 | casci | PASS | delta=1; smoke=none |
 | cgal | PASS | delta=1; smoke=none |
 | cma-es | PASS | delta=1; smoke=OK |
@@ -79,6 +79,14 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 **Error:** build failed
 
 **Analysis & fix lane:** Native C gateway was never ported to macOS arm64. The build step fails early, before loader execution. **Planned:** playbook port of the gateway module to arm64.
+
+### arfit
+
+**Error:** none (passes the generic load bar cleanly: `delta=1; smoke=none` at baseline).
+
+**Analysis & fix lane:** arfit loads cleanly and its top-level `arfit()` fitting function never hangs on its own — but the toolbox's other core functions (`arsim()`, the AR-process simulator; `arres()`, the residual/model-adequacy check), both part of the documented fit-and-diagnose workflow (`demos/ardem.sce`), call an undefined MATLAB-compatibility shim `mtlb_repmat()` (5 call sites: `macros/arsim.sci:82,104,134`, `macros/arres.sci:81,91`). Scilab's own m2sci converter (`modules/m2sci/macros/sci_files/sci_repmat.sci`) documents `mtlb_repmat()` as its runtime-emulation fallback for `repmat()` calls it can't statically type at MATLAB→Scilab conversion time, but core never shipped that runtime macro (unlike its `mtlb_sum`/`mtlb_triu`/`mtlb_mean` siblings in `modules/m2sci/macros/compat_functions/`). The resulting undefined-variable error is uncaught by the toolbox; raised from a bare, non-harness invocation (an interactive session, or any script without its own try/catch) it leaves the Scilab process blocked reading from console instead of exiting — externally observed as a hang, matching the port-time note ("core fns HANG under 2027, mtlb_-heavy"). **Planned:** add a local `mtlb_repmat` compat macro to the toolbox, forwarding to Scilab's native `repmat()` (argument-compatible at every call site).
+
+**Resolved (Task 8):** Added `macros/mtlb_repmat.sci` — a one-function shim (`B = mtlb_repmat(A, varargin); B = repmat(A, varargin(:));`) — and rebuilt the toolbox's macro library (`tbx_builder_macros`) so `mtlb_repmat.bin` is registered in `macros/lib` alongside the toolbox's other macros. Verified with a full-chain probe (`arsim` → `arfit` → `arres` → `arconf` → `armode`, exercising all 5 `mtlb_repmat` call sites) that now runs clean end to end and recovers known VAR(1) coefficients within tolerance. Note on the harness's own catch behavior: `tbxVerify()`'s smoke step wraps execution in `execstr(..., "errcatch")` (`tbxVerify.sci:32`), so replaying the pre-fix defect *through the official harness* actually produces a fast, clean `FAIL: smoke error: Undefined variable: mtlb_repmat` rather than a literal `TIMEOUT` — confirmed by a negative-control re-run with the fix backed out. The hang itself was independently reproduced and confirmed outside the errcatch-protected harness path (a bare, uncaught top-level script call into `arsim()`, run directly under `scilab-adv-cli -f`), which is the invocation shape the port-time note's "hang" almost certainly describes; both the harness's catchable FAIL and the raw hang share the identical root cause. Added `tbx-smoke/arfit.sce`: a known-coefficient VAR(1) simulate→fit→residual-check round trip (`arsim`+`arfit`+`arres`) that exercises every `mtlb_repmat` call site — the brief's originally-proposed bare `[w,A,C]=arfit(v,1,2)` smoke was confirmed to PASS even on the broken toolbox (`arfit()` itself never calls `mtlb_repmat`), so it would not have caught this defect.
 
 ### csv-readwrite
 
@@ -164,6 +172,6 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 ## Closure
 
-**arfit** passes the load bar (delta=1) but has a **known runtime hang** in its fitting core that was discovered post-load. Verification is gated on a smoke file (`scilab/tbx-smoke/arfit.sce`) that exercises the fitting loop — in progress as of this baseline.
+**arfit**'s runtime hang is resolved (Task 8) — see the `### arfit` note above. Root cause was an undefined `mtlb_repmat()` MATLAB-compatibility shim called by `arsim()`/`arres()` (not by `arfit()` itself, which is why the generic load bar and a naive smoke both missed it); fixed with a small local compat macro forwarding to Scilab's native `repmat()`. `cfg.verified` includes `arfit` as of this update.
 
 The **10 macro-only unknowns** (anova, casci, condnb, conint, dbldbl, hypt, makematrix, neuralnetwork, number, ortpol) all pass the generic load bar (each contributes delta≥1 macro library), and have not yet been smoke-tested. Task 9 will author the 10 smoke files and register them in cfg.verified.
