@@ -20,7 +20,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | Toolbox | Status | Detail |
 |---------|--------|--------|
 | scimax | TIMEOUT | 300s; scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-scimax-D3uSg9 |
-| accsum | FAIL | build failed |
+| accsum | PASS | delta=1; smoke=OK |
 | anova | PASS | delta=1; smoke=OK |
 | apifun | PASS | delta=1; smoke=OK |
 | arfit | PASS | delta=1; smoke=OK |
@@ -70,7 +70,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | stixbox | PASS | delta=1; smoke=none |
 | xlsx | PASS | delta=1; smoke=none |
 
-**Summary:** 48 PASS / 1 FAIL (accsum) / 1 TIMEOUT (scimax) / 0 CRASH of 50 total
+**Summary:** 49 PASS / 0 FAIL / 1 TIMEOUT (scimax) / 0 CRASH of 50 total
 
 ## Per-toolbox notes
 
@@ -79,6 +79,8 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 **Error:** build failed
 
 **Analysis & fix lane:** Native C gateway was never ported to macOS arm64. The build step fails early, before loader execution. **Planned:** playbook port of the gateway module to arm64.
+
+**Resolved (Task 10):** two build-time defects, both class-consistent with prior ports. (1) `src/c/builder_c.sce` had no Darwin branch: its Unix/else branch hardcodes `-mfpmath=sse -msse2` to force strict IEEE double semantics instead of x87's 80-bit extended-precision registers -- an x86-only concern that clang on Apple Silicon rejects outright (`unsupported option '-msse2' for target 'arm64-apple-darwin25.5.0'`); arm64's FPU has no equivalent extended-precision register class, so the flags simply don't apply and the new Darwin branch omits them. (2) all three gateway files (`sci_gateway/c/sci_accsum_f{dcs,scs,compsum}.c`) declared their entry point behind `#if SCI_VERSION_MAJOR < 6` / `#else`, but none of them include `core/includes/version.h` (only `machine.h`/`Scierror.h`/`api_scilab.h`/`localization.h`/`accsum.h`), so `SCI_VERSION_MAJOR` is invisible to the preprocessor there and the undefined macro evaluates to 0 in the `#if`, always selecting the legacy 1-arg signature (`char *fname`, no `pvApiCtx`); `api_stack_common.h`'s `Rhs`/`Lhs`/`LhsVar`/`CheckRhs`/`CheckLhs` macros unconditionally expand to reference a function-scope `pvApiCtx` identifier regardless of that gate, so the legacy signature failed with `use of undeclared identifier 'pvApiCtx'` (13 occurrences per file). Dropped the version conditional in all three files and kept only the modern `(char *fname, void *pvApiCtx)` signature -- this build always targets Scilab 6+/2027. Both produced dylibs are arm64 Mach-O (`file` confirmed) and link only against system libs plus real, resolvable Homebrew paths (`libgfortran.5.dylib`, `libquadmath.0.dylib` under `/opt/homebrew/opt/gcc/lib/gcc/current/`, matching `cfg.libpath`) -- no `@loader_path` rewriting needed; both are ad hoc-signed by the linker automatically (`codesign -f -s -` re-applied anyway per the playbook, no-op). Gateway functions are `accsum_fdcs`/`accsum_fscs`/`accsum_fcompsum` (confirmed from `sci_gateway/c/builder_gateway_c.sce`'s own `namelist` table), registered via `addinter` and callable immediately after `loader.sce` (`exists()` on all three returns 1). Verified with `tbx-smoke/accsum.sce`: exact small-vector cases lifted from the toolbox's own `tests/unit_tests/{fdcs,fscs,fcompsum}.tst`, plus its `accsum_wilkinson(10)` ill-conditioned-series discriminator (Higham SNAA Exercise 4.2, reproduced inline from `macros/accsum_wilkinson.sci`'s documented formula since the macro layer isn't reliably reachable through this harness's nested-exec shape -- `etc/accsum.start`'s `loadaccsumlib()` sometimes fails to propagate `lib()`'s registration to `librarieslist()` depending on exec-nesting depth in ad hoc manual probing, though the official harness run below shows `delta=1`, i.e. the macro library did register that run; the smoke avoids the dependency either way since gateway registration is what this task actually ports and is unaffected by it). The reference value confirms real compensated-vs-naive discrimination: `accsum_fdcs`/`fscs`/`fcompsum` all reproduce the toolbox's documented `s=1023.9999999999612, e=-3.7858605139717838e-14` (matching `assert_checkalmostequal(s,1024,1.e-12)` / `assert_checkalmostequal(e,-3.786e-14,[],1.e-10)`), while a plain `sum(x)` on the identical vector rounds to exactly `1024` -- silently losing the ~3.9e-11 correction that the compensated algorithms track explicitly.
 
 ### arfit
 
