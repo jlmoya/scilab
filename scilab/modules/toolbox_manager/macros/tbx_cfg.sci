@@ -19,6 +19,6 @@ function cfg = tbx_cfg()
                     "krisp" "csv-readwrite" "arfit" ..
                     "anova" "casci" "condnb" "conint" "dbldbl" "hypt" "makematrix" ..
                     "neuralnetwork" "number" "ortpol" ..
-                    "pso-toolbox" "sci_gsl" "sci-ipopt" "accsum"];
+                    "pso-toolbox" "sci_gsl" "sci-ipopt" "accsum" "scimax"];
     if ~isdir(cfg.tbxdir) then mkdir(cfg.tbxdir); end
 endfunction

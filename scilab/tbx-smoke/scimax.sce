@@ -1,9 +1,10 @@
-// STATUS: scimax is NOT verified today (docs/design/toolbox-verification.md,
-// ### scimax). This smoke is expected to hang/FAIL until the Maxima subprocess
-// IPC blocker documented there is fixed -- maxinit()'s handshake with the
-// forked `maxima` process never returns. Committed deliberately: without it,
-// the harness's delta>=1 criterion alone false-PASSes scimax (its loader
-// registers 2 macro libraries cleanly even though the CAS handshake hangs).
+// STATUS: RESOLVED -- the Maxima IPC handshake blocker was fixed in the scimax
+// repo (commit 32d984290e5: load-time flushing main-prompt in loader.lisp +
+// restored two-step handshake in maxinit.c, pipe-only, no pty) and this smoke
+// passes: scimax PASS delta=2; smoke=OK. It stays committed as the tripwire
+// for future Maxima/SBCL regressions: without it, the harness's delta>=1
+// criterion alone would false-PASS scimax (its loader registers 2 macro
+// libraries cleanly regardless of whether the CAS handshake works).
 //
 // scimax smoke: round-trip a symbolic derivative through the Maxima CAS
 // subprocess. Requires the `maxima` binary on PATH at runtime (gate loudly
