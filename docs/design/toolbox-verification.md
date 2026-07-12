@@ -21,7 +21,6 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 |---------|--------|--------|
 | scimax | TIMEOUT | 300s; scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-scimax-D3uSg9 |
 | accsum | FAIL | build failed |
-| csv-readwrite | FAIL | loader error 10000: startModule: error on line #23: "exec: Cannot open file /Users/josemoya/Projects/SciLabProjects/csv-readwrite/sci_gateway/loader_gateway.sce." |
 | anova | PASS | delta=1; smoke=none |
 | apifun | PASS | delta=1; smoke=OK |
 | arfit | PASS | delta=1; smoke=none |
@@ -30,6 +29,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | cma-es | PASS | delta=1; smoke=OK |
 | condnb | PASS | delta=1; smoke=none |
 | conint | PASS | delta=1; smoke=none |
+| csv-readwrite | PASS | delta=1; smoke=OK |
 | dataint | PASS | delta=1; smoke=OK |
 | dbldbl | PASS | delta=1; smoke=none |
 | distfun | PASS | delta=2; smoke=none |
@@ -85,6 +85,8 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 **Error:** loader error 10000: startModule: error on line #23: "exec: Cannot open file /Users/josemoya/Projects/SciLabProjects/csv-readwrite/sci_gateway/loader_gateway.sce."
 
 **Analysis & fix lane:** The gateway port was left ~80% complete. The loader references `loader_gateway.sce` which is missing or incomplete. **Planned:** finish the gateway port, or delist csv-readwrite as core-redundant (core Scilab ships `csvRead` / `csvWrite` natively).
+
+**Resolved (Task 7):** the real blocker wasn't the previously-recorded file-I/O API churn alone but a chain of five further issues never reached before: a mismatched-quote parse bug in `builder.sce` (line 37) that failed before any builder macro ran, an obsolete `getversion()`-based version gate that misfires under the year-based 2027 numbering, missing standard-library includes (`stddef.h`/`stdio.h`/`ctype.h`/`string.h`) that are hard errors under modern clang, a wholly-fictional `IsValidUTF8()` call in `latintoutf.c` (never a real API, replaced with a small local implementation), and two gateway files (`sci_csv_default.c`'s RHS-count helpers, `gw_csv_helpers.c`) whose bodies referenced a bare `pvApiCtx` that was never in scope; the mopen/mgetl/mclose narrow-to-wide rewrite in `csv_read.c` followed core's own modern `csvRead.c` as a template, and `sci_csv_write.c`'s `CheckLhs(1,1)` was loosened to `CheckLhs(0,1)` to match its void-return success path and the toolbox's own shipped test convention (bare, uncaptured `csv_write(x,filename)` call). Function names are `csv_read`/`csv_write`/`csv_textscan`/`csv_stringtodouble`/`csv_default`/`csv_isnum` (confirmed from `sci_gateway/c/builder_gateway_c.sce`'s own table) -- no collision with core's `csvRead`/`csvWrite`/`csvTextScan` (different case/underscore convention). Verified with a real round-trip smoke (`tbx-smoke/csv-readwrite.sce`): a 2x3 matrix written and read back via the toolbox's own `csv_write`/`csv_read` compares exactly equal.
 
 ### krisp
 
