@@ -21,37 +21,37 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 |---------|--------|--------|
 | scimax | TIMEOUT | 300s; scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-scimax-D3uSg9 |
 | accsum | FAIL | build failed |
-| anova | PASS | delta=1; smoke=none |
+| anova | PASS | delta=1; smoke=OK |
 | apifun | PASS | delta=1; smoke=OK |
 | arfit | PASS | delta=1; smoke=OK |
-| casci | PASS | delta=1; smoke=none |
+| casci | PASS | delta=1; smoke=OK |
 | cgal | PASS | delta=1; smoke=none |
 | cma-es | PASS | delta=1; smoke=OK |
-| condnb | PASS | delta=1; smoke=none |
-| conint | PASS | delta=1; smoke=none |
+| condnb | PASS | delta=1; smoke=OK |
+| conint | PASS | delta=1; smoke=OK |
 | csv-readwrite | PASS | delta=1; smoke=OK |
 | dataint | PASS | delta=1; smoke=OK |
-| dbldbl | PASS | delta=1; smoke=none |
+| dbldbl | PASS | delta=1; smoke=OK |
 | distfun | PASS | delta=2; smoke=none |
 | financial | PASS | delta=1; smoke=none |
 | fmincont | PASS | delta=3; smoke=OK |
 | FOSSEE-Optimization-toolbox | PASS | delta=1; smoke=OK |
 | grocer | PASS | delta=36; smoke=OK |
 | guibuilder | PASS | delta=1; smoke=none |
-| hypt | PASS | delta=1; smoke=none |
+| hypt | PASS | delta=1; smoke=OK |
 | intprbs | PASS | delta=1; smoke=OK |
 | json | PASS | delta=1; smoke=none |
 | krisp | PASS | delta=3; smoke=OK |
 | libsvm | PASS | delta=1; smoke=none |
 | lowdisc | PASS | delta=1; smoke=none |
 | lsf_toolbox | PASS | delta=1; smoke=OK |
-| makematrix | PASS | delta=1; smoke=none |
+| makematrix | PASS | delta=1; smoke=OK |
 | montesci | PASS | delta=1; smoke=OK |
 | nan | PASS | delta=1; smoke=none |
-| neuralnetwork | PASS | delta=5; smoke=none |
+| neuralnetwork | PASS | delta=5; smoke=OK |
 | nisp | PASS | delta=3; smoke=OK |
-| number | PASS | delta=1; smoke=none |
-| ortpol | PASS | delta=5; smoke=none |
+| number | PASS | delta=1; smoke=OK |
+| ortpol | PASS | delta=5; smoke=OK |
 | parquet | PASS | delta=1; smoke=OK |
 | PIMS | PASS | delta=0; smoke=OK |
 | pso-toolbox | PASS | delta=1; smoke=OK |
@@ -70,7 +70,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | stixbox | PASS | delta=1; smoke=none |
 | xlsx | PASS | delta=1; smoke=none |
 
-**Summary:** 47 PASS / 2 FAIL / 1 TIMEOUT / 0 CRASH of 50 total
+**Summary:** 48 PASS / 1 FAIL (accsum) / 1 TIMEOUT (scimax) / 0 CRASH of 50 total
 
 ## Per-toolbox notes
 
@@ -174,4 +174,4 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 **arfit**'s runtime hang is resolved (Task 8) — see the `### arfit` note above. Root cause was an undefined `mtlb_repmat()` MATLAB-compatibility shim called by `arsim()`/`arres()` (not by `arfit()` itself, which is why the generic load bar and a naive smoke both missed it); fixed with a small local compat macro forwarding to Scilab's native `repmat()`. `cfg.verified` includes `arfit` as of this update.
 
-The **10 macro-only unknowns** (anova, casci, condnb, conint, dbldbl, hypt, makematrix, neuralnetwork, number, ortpol) all pass the generic load bar (each contributes delta≥1 macro library), and have not yet been smoke-tested. Task 9 will author the 10 smoke files and register them in cfg.verified.
+The **10 macro-only unknowns** (anova, casci, condnb, conint, dbldbl, hypt, makematrix, neuralnetwork, number, ortpol) are smoke-tested as of Task 9; all 10 pass with `smoke=OK` and are now in `cfg.verified`. One of the ten, **casci**, turned out to be broken at runtime despite passing the generic load bar: its `macros/lib` was a stale partial build (only 14 of 186 macros compiled/registered — everything alphabetically before `bartlett` — because `builder.sce` had a mismatched-quote parse error and an obsolete `v(2)`-based version gate that misfires under the year-based 2027 numbering, both blocking `tbx_builder_macros` before it ever ran). Fixed both builder issues plus 8 macros hit by two 2027-parser-strictness patterns (an operator touching the `..` continuation token with no space; a multi-line ``""``-escaped-quote string left open across a continuation break); rebuilt cleanly, all 186 macros now compile.

@@ -16,6 +16,9 @@ function cfg = tbx_cfg()
                     "scidoe" "stixbox" "lowdisc" ..
                     "apifun" "cma-es" "dataint" "fmincont" "FOSSEE-Optimization-toolbox" ..
                     "grocer" "intprbs" "lsf_toolbox" "montesci" "nisp" "regtools" ..
-                    "krisp" "csv-readwrite" "arfit" "pso-toolbox" "sci_gsl" "sci-ipopt"];
+                    "krisp" "csv-readwrite" "arfit" ..
+                    "anova" "casci" "condnb" "conint" "dbldbl" "hypt" "makematrix" ..
+                    "neuralnetwork" "number" "ortpol" ..
+                    "pso-toolbox" "sci_gsl" "sci-ipopt"];
     if ~isdir(cfg.tbxdir) then mkdir(cfg.tbxdir); end
 endfunction
