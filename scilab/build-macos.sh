@@ -15,9 +15,9 @@ cd "$(dirname "$0")"
 JDK=/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home
 export JAVA_HOME="$JDK"   # ant + the java checks read it during configure/make
 
-echo "[1/2] configure (JDK 25)…"
+echo "[1/3] configure (JDK 25)…"
 ./configure --with-jdk="$JDK" --with-ant=/Users/josemoya/.sdkman/candidates/ant/current \
-  --without-tk --without-modelica --disable-build-help --disable-ccache \
+  --without-tk --without-modelica --disable-ccache \
   --with-blas-library=/opt/homebrew/opt/openblas/lib --with-lapack-library=/opt/homebrew/opt/openblas/lib \
   --with-arpack-library=/opt/homebrew/opt/arpack/lib \
   --with-fftw-include=/opt/homebrew/opt/fftw/include --with-fftw-library=/opt/homebrew/opt/fftw/lib \
@@ -26,8 +26,11 @@ echo "[1/2] configure (JDK 25)…"
   --with-umfpack-include=/opt/homebrew/opt/suite-sparse/include/suitesparse --with-umfpack-library=/opt/homebrew/opt/suite-sparse/lib \
   --with-eigen-include=/opt/homebrew/opt/eigen/include/eigen3
 
-echo "[2/2] make -j$(sysctl -n hw.ncpu)…"
+echo "[2/3] make -j$(sysctl -n hw.ncpu)…"
 make -j"$(sysctl -n hw.ncpu)"
+
+echo "[3/3] make doc (help browser content, all languages)…"
+make doc
 
 echo
 echo "Build complete."
