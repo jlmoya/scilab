@@ -36,9 +36,10 @@ for n in "${names[@]}"; do
         pass=$((pass+1)); rm -rf "$sch"
     else
         fail=$((fail+1))
+        echo "  scratch kept: $sch"
     fi
 done
 echo
-echo "== $pass PASS / $fail FAIL of ${#names[@]} =="
+echo "== $pass PASS / $fail non-PASS of ${#names[@]} =="
 echo "== PASS names (paste into cfg.verified) =="
 awk -F'\t' '$2=="PASS"{printf "\"%s\" ", $1}' "$OUT"; echo

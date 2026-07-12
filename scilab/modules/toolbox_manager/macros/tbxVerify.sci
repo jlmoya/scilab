@@ -22,6 +22,14 @@ function __tbxv_R = tbxVerify(name)
     __tbxv_R.archok = archok;
     if ~archok then __tbxv_R.err = "non-arm64 native lib: " + strcat(bad', ", "); return; end
     nbefore = size(librarieslist(), "*");
+    // execstr(..., "errcatch") here is fail-safe by construction (contrast
+    // tbxLoad.sci:17-20's IMPORTANT warning about this same shape trapping
+    // lib() registration in a temporary eval scope): this run is throwaway and
+    // consumes delta/smoke/smoke_ok entirely within itself, so a lost
+    // registration can only turn a would-be PASS into a loud FAIL, never a
+    // false PASS. A loader that registers its library as a pure function side
+    // effect (accsum's shape) may therefore read delta=0 here -- it verifies
+    // via its smoke instead.
     ie = execstr("exec(fullfile(path, ""loader.sce""), -1)", "errcatch");
     if ie <> 0 then __tbxv_R.err = "loader error " + string(ie) + ": " + lasterror(); return; end
     __tbxv_R.loaded = %t;
