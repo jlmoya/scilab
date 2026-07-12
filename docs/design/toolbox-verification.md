@@ -1,13 +1,20 @@
 # Toolbox Verification Baseline (2027.0.0-macos-dev.1)
 
-This document captures the toolbox-manager verification baseline for macOS arm64 Scilab 2027. **Final sweep: 2026-07-11, harness v1.1 -- 49/50 cataloged toolboxes verified.** The sole holdout is `scimax` (`TIMEOUT`): its build and load are fully ported, but a runtime blocker leaves it un-verified pending a user fix-vs-delist decision -- see its per-toolbox note and the delist ledger below. The harness establishes that a toolbox is ready for adoption when:
+This document captures the toolbox-manager verification baseline for macOS arm64 Scilab 2027. **Final sweep: 2026-07-12, harness v1.1 -- 49/50 cataloged toolboxes verified.** The sole holdout is `scimax` (`TIMEOUT`): its build and load are fully ported, but a runtime blocker leaves it un-verified pending a user fix-vs-delist decision -- see its per-toolbox note and the delist ledger below. The harness establishes that a toolbox is ready for adoption when:
 
 1. **Build succeeds** (if the toolbox has native gates; many are macro-only)
 2. **arm64 arch gate passes** (no stale non-arm64 `.so` / `.dylib` artifacts)
 3. **Loader executes cleanly** (`loader.sce` runs without error)
 4. **Registers ≥1 macro library** OR **smoke evidence proves functionality** — gateway-only toolboxes (those that register functions via `addinter` and produce zero macro-library delta) verify **exclusively via a smoke file** (`scilab/tbx-smoke/<name>.sce`) that must run clean and set `smoke_ok = %t`
 
-**Known limitation:** `delta>=1` proves a loader **registered** macro libraries, not that the toolbox **works** at runtime -- see `scimax` below, where a clean `delta=2` load coexists with a `maxinit()` handshake that never returns. Toolboxes with an external runtime dependency (a forked subprocess, a live service, a Python/PyPI environment) must carry a smoke to be honestly called verified; `delta>=1` alone is not evidence for that class.
+Smoke-author guidance, for the next toolbox added to the catalog:
+- Prefer calling native gateway entry points directly over wrapper macros that may silently fall back on native failure (see the `nan` and `sciTorch` notes below -- both cost a wave-2 rewrite for exactly this reason).
+- The `.sce` parser hard-errors on `'`-delimited strings containing a literal `"` ("Heterogeneous string detected") -- use `""`-doubling inside `"`-delimited strings instead.
+- Clean up any temp files the smoke creates; `unwind_protect` is nice-to-have, success-path cleanup is the current precedent.
+
+**Wave 2 closed the evidence gap:** every one of the 50 catalog entries now carries a smoke fixture in `scilab/tbx-smoke/`, including the 17 that previously passed on `delta>=1` alone. `(verified)` -- the tag `tbxManager()`'s GUI shows per row, driven by `cfg.verified` -- uniformly means a representative call actually executed on this build: for native/gateway-only toolboxes, specifically a call that crosses into the native gateway, not just a clean macro-library load.
+
+**Known limitation (historical):** `delta>=1` alone proves a loader **registered** macro libraries, not that the toolbox **works** at runtime -- see `scimax` below, where a clean `delta=2` load coexists with a `maxinit()` handshake that never returns. This was the whole-catalog gap wave 2 closed: every toolbox now carries a smoke, so `delta>=1` alone is no longer load-bearing evidence anywhere in the matrix. A subtler trap survives smoke coverage itself, and wave 2 hit it twice: a smoke built on a *wrapper macro* rather than a native entry point can still pass while the native path is dead, because the wrapper's own `try`/`catch` silently falls back to a pure-Scilab implementation on failure -- `nan`'s `sumskipnan.sci` falls back to a macro sum when its native `sumskipnan_mex` fails; `sciTorch`'s `etc/sciTorch.start` swallowed a failing gateway `link()` and reported a clean load with zero native functions actually registered. Both smokes were rewritten to call (or otherwise verify) the native path directly -- see their per-toolbox notes below. The rule going forward: a smoke for a native/gateway-backed toolbox must call the gateway entry point directly, or otherwise positively verify the native path is live -- not just observe that some top-level macro returned without error.
 
 To re-run the full sweep (50 toolboxes, budget ~1 hour):
 
@@ -21,35 +28,35 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 | Toolbox | Status | Detail |
 |---------|--------|--------|
-| scimax | TIMEOUT | 300s; scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-scimax-Bzi7b4 -- see note (build+load ported; runtime handshake blocked, decision pending) |
+| scimax | TIMEOUT | 300s; scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-scimax-fiHWo9 -- see note (build+load ported; runtime handshake blocked, decision pending) |
 | accsum | PASS | delta=1; smoke=OK |
 | anova | PASS | delta=1; smoke=OK |
 | apifun | PASS | delta=1; smoke=OK |
 | arfit | PASS | delta=1; smoke=OK |
 | casci | PASS | delta=1; smoke=OK |
-| cgal | PASS | delta=1; smoke=none |
+| cgal | PASS | delta=1; smoke=OK |
 | cma-es | PASS | delta=1; smoke=OK |
 | condnb | PASS | delta=1; smoke=OK |
 | conint | PASS | delta=1; smoke=OK |
 | csv-readwrite | PASS | delta=1; smoke=OK |
 | dataint | PASS | delta=1; smoke=OK |
 | dbldbl | PASS | delta=1; smoke=OK |
-| distfun | PASS | delta=2; smoke=none |
-| financial | PASS | delta=1; smoke=none |
+| distfun | PASS | delta=2; smoke=OK |
+| financial | PASS | delta=1; smoke=OK |
 | fmincont | PASS | delta=3; smoke=OK |
 | FOSSEE-Optimization-toolbox | PASS | delta=1; smoke=OK |
 | grocer | PASS | delta=36; smoke=OK |
-| guibuilder | PASS | delta=1; smoke=none |
+| guibuilder | PASS | delta=1; smoke=OK |
 | hypt | PASS | delta=1; smoke=OK |
 | intprbs | PASS | delta=1; smoke=OK |
-| json | PASS | delta=1; smoke=none |
+| json | PASS | delta=1; smoke=OK |
 | krisp | PASS | delta=3; smoke=OK |
-| libsvm | PASS | delta=1; smoke=none |
-| lowdisc | PASS | delta=1; smoke=none |
+| libsvm | PASS | delta=1; smoke=OK |
+| lowdisc | PASS | delta=1; smoke=OK |
 | lsf_toolbox | PASS | delta=1; smoke=OK |
 | makematrix | PASS | delta=1; smoke=OK |
 | montesci | PASS | delta=1; smoke=OK |
-| nan | PASS | delta=1; smoke=none |
+| nan | PASS | delta=1; smoke=OK |
 | neuralnetwork | PASS | delta=5; smoke=OK |
 | nisp | PASS | delta=3; smoke=OK |
 | number | PASS | delta=1; smoke=OK |
@@ -57,20 +64,20 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | parquet | PASS | delta=1; smoke=OK |
 | PIMS | PASS | delta=0; smoke=OK |
 | pso-toolbox | PASS | delta=1; smoke=OK |
-| quapro | PASS | delta=1; smoke=none |
+| quapro | PASS | delta=1; smoke=OK |
 | regtools | PASS | delta=1; smoke=OK |
-| scicv | PASS | delta=1; smoke=none |
-| sciDatabase | PASS | delta=1; smoke=none |
-| scidoe | PASS | delta=1; smoke=none |
+| scicv | PASS | delta=1; smoke=OK |
+| sciDatabase | PASS | delta=1; smoke=OK |
+| scidoe | PASS | delta=1; smoke=OK |
 | sci_gsl | PASS | delta=1; smoke=OK |
 | sci-ipopt | PASS | delta=0; smoke=OK |
 | sciQuantLib | PASS | delta=0; smoke=OK |
 | sciSymPy | PASS | delta=1; smoke=OK |
-| sciTorch | PASS | delta=1; smoke=none |
-| sndfile-toolbox | PASS | delta=1; smoke=none |
-| specfun | PASS | delta=1; smoke=none |
-| stixbox | PASS | delta=1; smoke=none |
-| xlsx | PASS | delta=1; smoke=none |
+| sciTorch | PASS | delta=1; smoke=OK |
+| sndfile-toolbox | PASS | delta=1; smoke=OK |
+| specfun | PASS | delta=1; smoke=OK |
+| stixbox | PASS | delta=1; smoke=OK |
+| xlsx | PASS | delta=1; smoke=OK |
 
 **Summary:** 49 PASS / 0 FAIL / 1 TIMEOUT (scimax, decision pending) / 0 CRASH of 50 total
 
@@ -100,6 +107,18 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 **Resolved (Task 7):** the real blocker wasn't the previously-recorded file-I/O API churn alone but a chain of five further issues never reached before: a mismatched-quote parse bug in `builder.sce` (line 37) that failed before any builder macro ran, an obsolete `getversion()`-based version gate that misfires under the year-based 2027 numbering, missing standard-library includes (`stddef.h`/`stdio.h`/`ctype.h`/`string.h`) that are hard errors under modern clang, a wholly-fictional `IsValidUTF8()` call in `latintoutf.c` (never a real API, replaced with a small local implementation), and two gateway files (`sci_csv_default.c`'s RHS-count helpers, `gw_csv_helpers.c`) whose bodies referenced a bare `pvApiCtx` that was never in scope; the mopen/mgetl/mclose narrow-to-wide rewrite in `csv_read.c` followed core's own modern `csvRead.c` as a template, and `sci_csv_write.c`'s `CheckLhs(1,1)` was loosened to `CheckLhs(0,1)` to match its void-return success path and the toolbox's own shipped test convention (bare, uncaptured `csv_write(x,filename)` call). Function names are `csv_read`/`csv_write`/`csv_textscan`/`csv_stringtodouble`/`csv_default`/`csv_isnum` (confirmed from `sci_gateway/c/builder_gateway_c.sce`'s own table) -- no collision with core's `csvRead`/`csvWrite`/`csvTextScan` (different case/underscore convention). Verified with a real round-trip smoke (`tbx-smoke/csv-readwrite.sce`): a 2x3 matrix written and read back via the toolbox's own `csv_write`/`csv_read` compares exactly equal.
 
+### distfun
+
+Smoke design note: `delta=2` is two separate `lib()` calls in `etc/distfun.start` (one for `macros/`, one for `macros/internals/`) -- both register the same toolbox, so the doubled delta is benign, not evidence of a second undiscovered library.
+
+### guibuilder
+
+guibuilder ships 0 tests and 0 demos and is inherently a GUI-construction toolbox; its smoke uses `guicheckprops` -- the one macro among its 50 that runs GUI-free (a property-value parser/sanitizer) -- exercised via a color/position shape check. Disclosed pre-existing toolbox bug found while building the smoke: `guicheckprops`'s color-range validation (`val_set<=1 | val_set>=0`) is a tautology (true for every real value), so only the smoke's shape check actually discriminates a broken call from a working one.
+
+### json
+
+`JSONWrite` is an empty stub in this toolbox -- it has no body -- so json is a JSON *parser* only here; the smoke exercises `JSONParse` (round-tripping a string+number+vector struct) and makes no `JSONWrite`/round-trip claim.
+
 ### krisp
 
 **Error:** non-arm64 native lib: /Users/josemoya/Projects/SciLabProjects/krisp/sci_gateway/c/libkrisp_c.so, /Users/josemoya/Projects/SciLabProjects/krisp/sci_gateway/c/libskeleton_c.so
@@ -108,13 +127,21 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 **Resolved (Task 6):** Removed the two tracked stale non-arm64 build artifacts (`libkrisp_c.so`, a 32-bit x86 ELF; `libskeleton_c.so`, a dead unused legacy gateway-registration template never referenced by the actual builder) from `sci_gateway/c/`, clearing the arch gate. Rebuilt the `corr_*` native gateway from source in a clean room (`sci_gateway/c/builder_gateway_c.sce` with the standard `CPATH`/`LIBRARY_PATH` env recipe) and confirmed `c_corr_D`/`c_corr_X`/`c_corr_vector` register and compute correct values (`corr(0)=1`, closed-form gaussian kernel match) — the "natives build but don't register" issue logged in FINANCE-TOOLBOX-PORTING.md at port time no longer reproduces; the real blocker was purely the arch-gate artifacts. Added `tbx-smoke/krisp.sce` (RLHS bounds/shape check + a real `c_corr_D` call verified against the gateway's own closed-form kernel).
 
+### lowdisc
+
+The smoke loads lowdisc's `apifun` and `number` sibling toolboxes first, per lowdisc's own README-documented dependency, before exercising lowdisc itself; that loading happens before lowdisc's own `delta` is measured, so it doesn't inflate lowdisc's pass criterion.
+
+### nan
+
+`nan_mean()`'s own call chain reaches `sumskipnan_mex` through `macros/sumskipnan.sci`, which wraps the native call in a `try`/`catch` that silently falls back to a pure-macro sum on any native failure -- so a smoke built on `nan_mean` alone would still pass with a broken or missing gateway. The smoke instead calls `sumskipnan_mex` directly, bypassing that fallback, so a broken gateway now produces an honest smoke FAIL instead of a silently-degraded PASS.
+
 ### parquet
 
 **Error:** loader error 10000: exec: error on line #13: "link: The shared archive was not loaded: dlopen(/Users/josemoya/Projects/SciLabProjects/parquet/sci_gateway/cpp//../../src/cpp/libarrow.dylib, 0x000A): Library not loaded: /opt/homebrew/opt/apache-arrow/lib/libarrow.2400.dylib"
 
 **Analysis & fix lane:** REGRESSION in a previously-verified toolbox. Homebrew's apache-arrow library has been bumped past the `libarrow.2400.dylib` ABI that the cached gateway was built against. **Planned:** rebuild the gateway against the current apache-arrow version.
 
-**Resolved (Task 4b):** re-ran `build_macos.sce` against the now-current Homebrew apache-arrow (v25.0.0, `libarrow.2500.dylib`); the Darwin builder branch links generically (`-larrow -lparquet` against whatever `/opt/homebrew/opt/apache-arrow` resolves to), so no source change was needed, only a rebuild of the gitignored native artifacts. Verified with a real round-trip smoke (`tbx-smoke/parquet.sce`): a mixed-type table (double/int32/string/bool) written to and read back from a `.parquet` file compares equal. Also surfaced (out of scope for this task, flagged for awareness): Scilab core's own `modules/spreadsheet` links the same old `libparquet.2400.dylib` and logs a non-fatal dlopen error at shutdown on every session — pre-existing, unrelated to the toolbox fix, not remediated here.
+**Resolved (Task 4b):** re-ran `build_macos.sce` against the now-current Homebrew apache-arrow (v25.0.0, `libarrow.2500.dylib`); the Darwin builder branch links generically (`-larrow -lparquet` against whatever `/opt/homebrew/opt/apache-arrow` resolves to), so no source change was needed, only a rebuild of the gitignored native artifacts. Verified with a real round-trip smoke (`tbx-smoke/parquet.sce`): a mixed-type table (double/int32/string/bool) written to and read back from a `.parquet` file compares equal. Also surfaced (out of scope for this task, flagged for awareness): Scilab core's own `modules/spreadsheet` links the same old `libparquet.2400.dylib` and logs a non-fatal dlopen error at shutdown on every session — pre-existing, unrelated to the toolbox fix, not remediated here. (Since resolved -- see Follow-ups item 3.)
 
 ### PIMS
 
@@ -139,6 +166,10 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 **Analysis & fix lane:** The loader auto-installs the `guimaker` toolbox from ATOMS as a dependency, but `guimaker` fails to build on 2027/arm64. This blocks regtools even though the batch functions don't inherently require guimaker. **Planned:** decouple guimaker; ensure batch functions work standalone.
 
 **Resolved (Task 5):** `etc/regtools.start` no longer auto-installs guimaker from ATOMS at load time (it just checks `isdef("guimaker")` and warns), and `linregr`/`nlinregr` now guard their own interactive-GUI entry points to raise a clear error at call time instead of a load-time failure, leaving `ff2n`/`fullfact` and command-line-mode `linregr`/`nlinregr` unaffected.
+
+### scidoe
+
+The smoke calls `scidoe_pdist` -- the toolbox's only native entry point (63 of its macros are pure Scilab; this is the one that crosses into C) -- making it the discriminating call for this toolbox's native gateway rather than an arbitrary pick.
 
 ### sci_gsl
 
@@ -186,6 +217,10 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 **Resolved:** authored `tbx-smoke/sciSymPy.sce`, modeled directly on the toolbox's own regression test (`tests/unit_tests/sympy.tst`). sciSymPy's `loader.sce` does not load PIMS itself, so the smoke loads it first (same sibling-toolbox pattern already used by `fmincont` -> `sci-ipopt` and `pso-toolbox` -> `apifun`), then: `sp = sympy(); x = symbol("x"); d = sp.diff(sp.sympify("x**2"), x)`, and checks `pystr(d)` contains `2*x`. Runs clean through the real harness (`smoke=OK`) and was cross-checked manually outside the harness (`RESULT=[2*x]`). First run through a fresh, isolated `-scihome` (matching the harness's own per-toolbox isolation) completed in ~7s total, including two lazy `uv sync` provisions triggered along the way (PIMS' shared `_base` env, and sciSymPy's own `sympy`+`mpmath` env) -- both resolved from a warm local `uv` cache with no network fetch, so the smoke stays fast under the harness's default `TBX_TIMEOUT`.
 
+### sciTorch
+
+**Repaired** (toolbox commit `b8d63183d27` on the jlmoya mirrors -- the fix lives in the toolbox repo, not this one). Root cause was a stray hardcoded `link()` call in `sci_gateway/cpp/loader.sce` pointing at a *different* Scilab app bundle's IPCV library (version-pinned, absolute path); it failed, and `etc/sciTorch.start`'s `try`/`catch` swallowed the failure and reported a clean load with zero native functions actually registered -- `delta=1` (the macro library) hid a fully-dead gateway, the same wrapper-swallows-failure class as `nan` above, one level up at whole-toolbox startup. Fixed: the stray IPCV `link()` removed; the toolbox's OpenCV closure vendored self-contained; the swallowed-error `catch` now warns instead of silently returning. Fixing the link also exposed that the load chain had been masking unimplemented gateway helpers (`GetDouble`/`GetImage`/`GetString` -- now implemented) and that the bundled model was a 2019 TorchScript export a modern libtorch refuses to load (regenerated -- honestly untrained, exercising the load/list/props/unload surface only, no accuracy claim). Known gap: the untracked ~51MB vendored opencv+ffmpeg closure has no fetch script yet (extends the pre-existing libtorch fetch gap) -- fresh clones need manual staging. Reviewer follow-up worth recording for the toolbox repo (not a harness matter): the pre-existing gateway callers (`sci_int_torch_*.cpp`) dereference `GetDouble`/`GetString` outputs without checking the return code -- newly reachable now that the gateway actually registers, so a wrong-typed argument to a `torch_*` call can NULL-deref instead of raising a clean `Scierror`.
+
 ## Delist ledger
 
 - **scidb** — deleted 2026-07-11 by user decision. Legacy Qt4-based database toolbox, superseded by sciDatabase (Qt5/6-compatible). Unbuildable on modern macOS. Its final local commit (75f5bc6) was not on the mirrors at deletion time; it was pushed to the jlmoya GitLab and GitHub mirrors first, so the source survives.
@@ -200,8 +235,8 @@ Pre-existing checkouts that pull the commits from this verification campaign ser
 
 ## Follow-ups
 
-Recorded for the record, per the final review pass -- **not** undertaken now:
+Recorded for the record, per the final review pass, updated as of wave 2 (2026-07-12):
 
-1. **Smoke coverage for external-dependency toolboxes.** 17 of the 49 PASS rows still carry no smoke and passed on `delta>=1` alone: cgal, distfun, financial, guibuilder, json, libsvm, lowdisc, nan, quapro, scicv, sciDatabase, scidoe, sciTorch, sndfile-toolbox, specfun, stixbox, xlsx. (sciSymPy was an 18th; it now has a real smoke -- see `### sciSymPy` above -- because `scimax` proved `delta>=1` alone is not evidence a toolbox works, and it is most dangerous exactly for toolboxes that depend on an external process or service.) Two of the remaining 17 are in that same higher-risk class and should get a smoke next: **sciTorch** (needs `torch` importable) and **sciDatabase** (needs live engines; local test ports PG :5433, MySQL :3307, Mongo :27018, Redis :6380). Consider hardening the other 15 delta-only rows too, lower priority since they have no live external dependency to silently fail against.
-2. **Harness:** swap `execstr("exec(...)", "errcatch")` -> the module's own `try, exec(...); catch` idiom at `tbxVerify.sci:33` and `:40` (see the comment added above the first call site in this pass for why the current shape is fail-safe as shipped), and sanitize the TSV `detail` field (strip `ascii(9)`/`ascii(10)` from `lasterror()` text) in `tbx-verify-one.sce`. Acceptance for that change is a full 50-name re-sweep.
-3. **Core bugs surfaced by this campaign** (belong to the UB/hardening campaign, not here): `scivprint()` writes an unbounded `vsprintf` into a static 4096-byte buffer on POSIX (`modules/output_stream/src/c/sciprint.c:81-105`; the Windows branch is bounded) -- this was the sciQuantLib SIGTRAP mechanism; and `modules/spreadsheet` still links the stale `libparquet.2400.dylib`.
+1. **Smoke coverage for external-dependency toolboxes -- RESOLVED (wave 2).** All 17 rows that used to carry no smoke and pass on `delta>=1` alone (cgal, distfun, financial, guibuilder, json, libsvm, lowdisc, nan, quapro, scicv, sciDatabase, scidoe, sciTorch, sndfile-toolbox, specfun, stixbox, xlsx) now have a real smoke -- see the Matrix above and their per-toolbox notes. Every one of the 50 catalog entries carries a smoke fixture as of this update (`scilab/tbx-smoke/`); there is no remaining delta-only PASS row. Two of the seventeen were in the higher-risk external-dependency class this item flagged: **sciTorch** (its smoke found the toolbox's native gateway was actually dead -- see its note above, now fixed and passing) and **sciDatabase** (smoke drives the toolbox's own connection path against the local test engines).
+2. **Harness (still open, not undertaken):** swap `execstr("exec(...)", "errcatch")` -> the module's own `try, exec(...); catch` idiom at `tbxVerify.sci:33` and `:40` (see the comment added above the first call site in this pass for why the current shape is fail-safe as shipped), and sanitize the TSV `detail` field (strip `ascii(9)`/`ascii(10)` from `lasterror()` text) in `tbx-verify-one.sce`. Acceptance for that change is a full 50-name re-sweep.
+3. **Core bugs surfaced by this campaign** (belong to the UB/hardening campaign, not here): `scivprint()` writes an unbounded `vsprintf` into a static 4096-byte buffer on POSIX (`modules/output_stream/src/c/sciprint.c:81-105`; the Windows branch is bounded) -- this was the sciQuantLib SIGTRAP mechanism; **still open**. `modules/spreadsheet`'s stale `libparquet.2400.dylib` link is **RESOLVED**: rebuilt against the current Homebrew `apache-arrow` (v25, now linking `libparquet.2500.dylib`) during the help-build work (commit b7457457475 context); confirmed via `otool -L` on the rebuilt module.
