@@ -1,6 +1,6 @@
-# Toolbox Verification Baseline (2027-0.0.0-macos-dev.1)
+# Toolbox Verification Baseline (2027.0.0-macos-dev.1)
 
-This document captures the toolbox-manager verification baseline for macOS arm64 Scilab 2027 on the date of the sweep (2026-07-11). The verification harness (v1.1) establishes that a toolbox is ready for adoption when:
+This document captures the toolbox-manager verification baseline for macOS arm64 Scilab 2027. **Final sweep: 2026-07-11, harness v1.1 -- 49/50 cataloged toolboxes verified.** The sole holdout is `scimax` (`TIMEOUT`): its build and load are fully ported, but a runtime blocker leaves it un-verified pending a user fix-vs-delist decision -- see its per-toolbox note and the delist ledger below. The harness establishes that a toolbox is ready for adoption when:
 
 1. **Build succeeds** (if the toolbox has native gates; many are macro-only)
 2. **arch64 gate passes** (no stale non-arm64 `.so` / `.dylib` artifacts)
@@ -19,7 +19,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 | Toolbox | Status | Detail |
 |---------|--------|--------|
-| scimax | TIMEOUT | 300s; scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-scimax-D3uSg9 |
+| scimax | TIMEOUT | 300s; scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-scimax-Bzi7b4 -- see note (build+load ported; runtime handshake blocked, decision pending) |
 | accsum | PASS | delta=1; smoke=OK |
 | anova | PASS | delta=1; smoke=OK |
 | apifun | PASS | delta=1; smoke=OK |
@@ -70,7 +70,7 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 | stixbox | PASS | delta=1; smoke=none |
 | xlsx | PASS | delta=1; smoke=none |
 
-**Summary:** 49 PASS / 0 FAIL / 1 TIMEOUT (scimax) / 0 CRASH of 50 total
+**Summary:** 49 PASS / 0 FAIL / 1 TIMEOUT (scimax, decision pending) / 0 CRASH of 50 total
 
 ## Per-toolbox notes
 
@@ -160,6 +160,12 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 **Analysis & fix lane:** The builder errors into an interactive REPL prompt loop, which the harness cannot exit; the 300-second timeout is exceeded. **Planned:** run the builder with `mode(3)` to locate the failing line; also requires Homebrew maxima at runtime.
 
+**Status after Task 12 (partial -- build+load ported, runtime blocked, DONE_WITH_CONCERNS):** The builder/loader issues above are fully fixed. This toolbox's `src/c` was written against the pre-2011 raw flat-stack Scilab API (`stack-c.h`/`GetRhsVar`/`CreateVar`), fully removed from core in 2015 with no compat shim; the marshaling layer was rewritten from scratch against modern `api_scilab` position-based accessors. The native gateway now builds, links, and loads cleanly via `addinter()`, and the `newfun()`-registered operator overloads (`x^2` etc.) resolve correctly. WIP commit `04977b5` (`macOS/2027: partial port (WIP) — build+load fixed, runtime blocked on subprocess fork`) is pushed to both jlmoya mirrors (GitLab + GitHub); no scilab-repo changes were committed for this work, per the task's time-box protocol.
+
+The remaining blocker is runtime, not build: Maxima 5.49 (SBCL-hosted, via Homebrew) fully buffers its own stdout once it isn't attached to a tty, so `maxinit()`'s `<BO>E...` handshake response sits unread in Maxima's own process memory and the harness's bounded wait never returns -- root-caused with a standalone `fork()`+`pipe()` harness outside Scilab entirely (one isolated trial round-tripped after ~45s once some unrelated internal event, e.g. GC, forced a flush; another identical-looking trial never resolved inside 280s). Not a deadlock, but neither a bounded delay. The textbook fix (`openpty()` instead of `pipe()`, keeping the child's `isatty()` true) was tried and reverted: it reliably broke the *parent* Scilab session's own console instead of fixing the child's buffering. Estimated 2-4h of further fork/IPC iteration to close (a `select()`/`poll()`-based non-blocking read loop, or an SBCL/Lisp flag forcing unbuffered output, are the next things to try).
+
+**A user decision (fix vs. delist) is pending.** scimax is the only toolbox in the 50-entry catalog that forks a live external CAS subprocess at runtime -- a materially different, ongoing maintenance burden (tied to whatever Maxima/SBCL ships next) than the rest of the verified set. Worth weighing against **sciSymPy**, already in this catalog (`smoke=OK`, no subprocess-IPC fragility): it covers symbolic-CAS use cases via a Python/SymPy bridge over PIMS, which is arguably a supersession case for scimax analogous to sciDatabase superseding scidb. Until the decision lands, the matrix row stays `TIMEOUT` and `cfg.verified` excludes `scimax`.
+
 ### sciQuantLib
 
 **Error:** CRASH (rc=133 = SIGTRAP); scratch=/var/folders/9g/wdn7gl9s15b3_r5vggg4yzvc0000gn/T//tbxverify-sciQuantLib-wV7nAM
@@ -170,10 +176,12 @@ Environment: `JAVA_HOME` is auto-resolved by the script; per-toolbox timeout is 
 
 ## Delist ledger
 
-- **scidb** — deleted 2026-07-11 by user decision. Legacy Qt4-based database toolbox, superseded by sciDatabase (Qt5/6-compatible). Unbuildable on modern macOS. A local unpushed commit (75f5bc6) preserving the deletion snapshot has been pushed to jlmoya GitLab and GitHub mirrors for provenance.
+- **scidb** — deleted 2026-07-11 by user decision. Legacy Qt4-based database toolbox, superseded by sciDatabase (Qt5/6-compatible). Unbuildable on modern macOS. Its final local commit (75f5bc6) was not on the mirrors at deletion time; it was pushed to the jlmoya GitLab and GitHub mirrors first, so the source survives.
 
 ## Closure
 
 **arfit**'s runtime hang is resolved (Task 8) — see the `### arfit` note above. Root cause was an undefined `mtlb_repmat()` MATLAB-compatibility shim called by `arsim()`/`arres()` (not by `arfit()` itself, which is why the generic load bar and a naive smoke both missed it); fixed with a small local compat macro forwarding to Scilab's native `repmat()`. `cfg.verified` includes `arfit` as of this update.
 
 The **10 macro-only unknowns** (anova, casci, condnb, conint, dbldbl, hypt, makematrix, neuralnetwork, number, ortpol) are smoke-tested as of Task 9; all 10 pass with `smoke=OK` and are now in `cfg.verified`. One of the ten, **casci**, turned out to be broken at runtime despite passing the generic load bar: its `macros/lib` was a stale partial build (only 14 of 186 macros compiled/registered — everything alphabetically before `bartlett` — because `builder.sce` had a mismatched-quote parse error and an obsolete `v(2)`-based version gate that misfires under the year-based 2027 numbering, both blocking `tbx_builder_macros` before it ever ran). Fixed both builder issues plus 8 macros hit by two 2027-parser-strictness patterns (an operator touching the `..` continuation token with no space; a multi-line ``""``-escaped-quote string left open across a continuation break); rebuilt cleanly, all 186 macros now compile.
+
+Pre-existing checkouts that pull the commits from this verification campaign serve a **stale** `toolbox_manager` macro lib (missing `tbxVerify` and friends) until a `make` or a manual `genlib` is run: the module's `.start` only regenerates `macros/lib` when it's absent, not when the `.sci` sources are newer.

@@ -1,15 +1,25 @@
 // accsum smoke: the ported native C gateway (accsum_fdcs/accsum_fscs/accsum_fcompsum,
 // registered via addinter -- see sci_gateway/c/builder_gateway_c.sce's namelist) is
-// gateway-only from tbxVerify's point of view: the toolbox's macro library never reaches
-// librarieslist() when loaded through THIS harness's exec(execstr("exec(loader.sce,-1)"))
-// nesting (etc/accsum.start's loadaccsumlib() calls lib() one exec-level too deep --
-// exec(loader.sce) -> exec(etc/accsum.start) -> loadaccsumlib(); confirmed by calling
-// etc/accsum.start directly, one level shallower, where it registers fine; see the
-// "toolbox macros load to global scope ONLY via top-level exec" note -- a pre-existing,
-// separate-class defect in accsum's OWN loader plumbing, left unfixed here as out of
-// scope for a native-gateway port). The addinter-registered gateway functions are
-// unaffected (gateways are global regardless of exec depth) and are what this task
-// actually ports, so this smoke calls them directly without depending on the macro layer.
+// verified here without depending on the macro layer -- but NOT because the harness is
+// known to keep accsum's macro library from reaching librarieslist(). That was once
+// suspected (an ad hoc manual probe saw delta=0, pointing at etc/accsum.start's
+// loadaccsumlib() -> lib() call sitting one exec-level "too deep": exec(loader.sce) ->
+// exec(etc/accsum.start) -> loadaccsumlib()), but the harness itself has since recorded
+// delta=1 (macro library registered) on every run, this final sweep included -- see the
+// ### accsum note in docs/design/toolbox-verification.md.
+//
+// The likelier explanation for that one delta=0 sample is scope, not exec depth: the
+// manual probe reached the loader through execstr()-wrapped exec, same as the harness --
+// but neither matches how the real running app loads toolboxes. tbxLoad.sci:17-20 and
+// tbxAutoloadAll.sci:2-3 both exec() the loader DIRECTLY, specifically so macro libraries
+// propagate to the global scope; an execstr() wrapper traps them in a temporary eval
+// scope instead. Since both the manual probe and the harness use the execstr shape, a
+// single ad hoc sample from that shape isn't strong evidence of a real accsum defect
+// either way -- it's flagged here as unsettled, not asserted as fact.
+//
+// None of this affects what this task actually ports: the addinter-registered gateway
+// functions are global regardless of exec depth or scope, so this smoke calls them
+// directly rather than through the macro layer.
 //
 // Ground truth is lifted verbatim from the toolbox's own regression tests:
 //   tests/unit_tests/fdcs.tst, fscs.tst, fcompsum.tst (small exact cases +
