@@ -1063,6 +1063,12 @@ $(top_builddir)/Version.incl
 valgrinddir = $(pkgdatadir)/tools/profiling
 valgrind_DATA = $(top_srcdir)/tools/profiling/valgrind.supp
 
+# The master help document aggregates ~2700 XML files through entity references,
+# which blows past the JAXP security limits JDK 23+ enables by default (100k for
+# totalEntitySizeLimit and entityReplacementLimit — both proven to trip here).
+# Unlimited is safe for this build step: the parsed content is our own source tree.
+DOC_JAVA_XML_OPTS = -Djdk.xml.totalEntitySizeLimit=0 -Djdk.xml.entityExpansionLimit=0 -Djdk.xml.maxGeneralEntitySizeLimit=0 -Djdk.xml.entityReplacementLimit=0 -Djdk.xml.maxParameterEntitySizeLimit=0 -Djdk.xml.elementAttributeLimit=0 -Djdk.xml.maxElementDepth=0
+
 # Used for mac os x because it needs to remove the charset=UTF-8 because it is breaking the accents.
 @IS_MACOSX_TRUE@MACOSX = 1
 
@@ -2423,8 +2429,8 @@ doc: function-list javadoc $(top_builddir)/scilab-bin $(top_builddir)/bin/scilab
 @BUILD_HELP_TRUE@		for l in $(ALL_LINGUAS_DOC); do \
 @BUILD_HELP_TRUE@			echo "-- Building documentation ($$l) --"; \
 @BUILD_HELP_TRUE@			COMMAND="try xmltojar([],[],'$$l');catch disp(lasterror()); exit(-1);end;exit(0);"; \
-@BUILD_HELP_TRUE@			echo "LANG=$$l.UTF-8 LC_ALL=C.UTF-8 SCI_DISABLE_TK=1 SCI_JAVA_ENABLE_HEADLESS=1 _JAVA_OPTIONS='-Djava.awt.headless=true' HOME=/tmp $(top_builddir)/bin/scilab-adv-cli -noatomsautoload -nb -l $$l -nouserstartup -e \"$$COMMAND\"";\
-@BUILD_HELP_TRUE@			LANG=$$l.UTF-8 LC_ALL=C.UTF-8 SCI_DISABLE_TK=1 SCI_JAVA_ENABLE_HEADLESS=1 _JAVA_OPTIONS='-Djava.awt.headless=true' HOME=/tmp $(top_builddir)/bin/scilab-adv-cli -noatomsautoload -nb -l $$l -nouserstartup -e "$$COMMAND" || exit 1;\
+@BUILD_HELP_TRUE@			echo "LANG=$$l.UTF-8 LC_ALL=C.UTF-8 SCI_DISABLE_TK=1 SCI_JAVA_ENABLE_HEADLESS=1 _JAVA_OPTIONS='-Djava.awt.headless=true $(DOC_JAVA_XML_OPTS)' HOME=/tmp $(top_builddir)/bin/scilab-adv-cli -noatomsautoload -nb -l $$l -nouserstartup -e \"$$COMMAND\"";\
+@BUILD_HELP_TRUE@			LANG=$$l.UTF-8 LC_ALL=C.UTF-8 SCI_DISABLE_TK=1 SCI_JAVA_ENABLE_HEADLESS=1 _JAVA_OPTIONS='-Djava.awt.headless=true $(DOC_JAVA_XML_OPTS)' HOME=/tmp $(top_builddir)/bin/scilab-adv-cli -noatomsautoload -nb -l $$l -nouserstartup -e "$$COMMAND" || exit 1;\
 @BUILD_HELP_TRUE@		done; \
 @BUILD_HELP_TRUE@	else \
 @BUILD_HELP_TRUE@		echo "Cannot find scilab-adv-cli binary"; \
@@ -2437,8 +2443,8 @@ doc-web: function-list javadoc $(top_builddir)/scilab-bin $(top_builddir)/bin/sc
 @BUILD_HELP_TRUE@		for l in $(ALL_LINGUAS_DOC); do \
 @BUILD_HELP_TRUE@			echo "-- Building documentation ($$l) --"; \
 @BUILD_HELP_TRUE@			COMMAND="try xmltoweb([],[],'$$l');catch exit(-1);end;exit(0);";\
-@BUILD_HELP_TRUE@			echo "LANG=$$l.UTF-8 SCI_DISABLE_TK=1 SCI_JAVA_ENABLE_HEADLESS=1 HOME=/tmp $(top_builddir)/bin/scilab-adv-cli -nb -l $$l -noatomsautoload -nouserstartup -e \"$$COMMAND\"";\
-@BUILD_HELP_TRUE@			LANG=$$l.UTF-8 SCI_DISABLE_TK=1 SCI_JAVA_ENABLE_HEADLESS=1 HOME=/tmp $(top_builddir)/bin/scilab-adv-cli -nb -l $$l -noatomsautoload -nouserstartup -e "$$COMMAND" || exit 1;\
+@BUILD_HELP_TRUE@			echo "LANG=$$l.UTF-8 SCI_DISABLE_TK=1 SCI_JAVA_ENABLE_HEADLESS=1 _JAVA_OPTIONS='$(DOC_JAVA_XML_OPTS)' HOME=/tmp $(top_builddir)/bin/scilab-adv-cli -nb -l $$l -noatomsautoload -nouserstartup -e \"$$COMMAND\"";\
+@BUILD_HELP_TRUE@			LANG=$$l.UTF-8 SCI_DISABLE_TK=1 SCI_JAVA_ENABLE_HEADLESS=1 _JAVA_OPTIONS='$(DOC_JAVA_XML_OPTS)' HOME=/tmp $(top_builddir)/bin/scilab-adv-cli -nb -l $$l -noatomsautoload -nouserstartup -e "$$COMMAND" || exit 1;\
 @BUILD_HELP_TRUE@			JAVADOC_TARGET=$(top_builddir)/modules/helptools/web/$$l/javasci; \
 @BUILD_HELP_TRUE@			if test ! -d $$JAVADOC_TARGET; then \
 @BUILD_HELP_TRUE@				mkdir $$JAVADOC_TARGET; \

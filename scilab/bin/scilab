@@ -635,9 +635,12 @@ detect_java_vm() {
     # Bug https://gitlab.com/scilab/scilab/-/issues/14290 -
     # Never run headless on Mac (unless explicitly asked through
     # the SCI_JAVA_ENABLE_HEADLESS option -- which will not work anyway)
+    # Append rather than overwrite: callers (e.g. the make-doc recipe) pass their
+    # own -D properties via _JAVA_OPTIONS; for a duplicated property the last
+    # occurrence wins, so headless=false stays authoritative on macOS.
     case $OS in
         *darwin* | *Darwin*) # MacOS X
-            export _JAVA_OPTIONS="-Djava.awt.headless=false"
+            export _JAVA_OPTIONS="${_JAVA_OPTIONS:+${_JAVA_OPTIONS} }-Djava.awt.headless=false"
     ;;
     esac
 
