@@ -120,7 +120,16 @@ public abstract class SwingScilabWindow extends JFrame implements SimpleWindow {
             taskbar.setIconImage(new ImageIcon(FindIconHelper.findIcon("scilabMacOS", "256x256")).getImage());
             desktop.setAboutHandler(e->InterpreterManagement.requestScilabExec("about();"));
             desktop.setPreferencesHandler(e ->InterpreterManagement.requestScilabExec("preferences();"));
-            desktop.setQuitHandler((e,r)->InterpreterManagement.requestScilabExec("exit();"));
+            // The AWT contract requires the QuitResponse to be answered with
+            // performQuit() or cancelQuit(); leaving it unanswered keeps the macOS
+            // quit request pending forever and the application never exits.
+            // Scilab shuts itself down (exit() terminates the process), so cancel
+            // the AWT-level quit -- that releases macOS -- and let the interpreter
+            // run the real shutdown instead of letting AWT kill the VM under it.
+            desktop.setQuitHandler((e, r) -> {
+                InterpreterManagement.requestScilabExec("exit();");
+                r.cancelQuit();
+            });
         }
 
         /* defining the Layout */

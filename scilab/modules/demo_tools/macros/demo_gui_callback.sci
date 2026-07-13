@@ -212,8 +212,12 @@ function path = demo_gui_resolve_path(path, parent_gateway_path)
     end
 
     // Resolve relative paths against the parent gateway directory.
+    // get_absolute_file_path() only resolves a file that is currently being
+    // exec'd; the parent gateway is not on the exec stack here, so it errors
+    // with "is not opened in scilab" and aborts the whole tree build. Take the
+    // gateway's directory with fileparts() instead.
     if parent_gateway_path <> "" then
-        base = get_absolute_file_path(parent_gateway_path);
+        [base, base_name, base_ext] = fileparts(parent_gateway_path);
         path3 = base + path;
         if isfile(path3) then
             path = path3;
