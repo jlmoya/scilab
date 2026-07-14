@@ -25,7 +25,11 @@ Every task's requirements implicitly include this section.
 **Architecture (from the spec, verbatim):**
 - **No SWIG pointer ever crosses into user code.** The facade takes Scilab natives, loops in C++, returns Scilab natives.
 - **Curves are data (an `mlist`), not handles.** The gateway reconstitutes the QuantLib object per call and reuses it across the vectorised batch.
-- **Mandatory on every gateway entry:** wrap the body in `try { ... } catch (const std::exception& e) { Scierror(999, "%s: %s\n", fname, e.what()); return 1; }`. An uncaught C++ exception across a C gateway boundary is UB → crash.
+- **Mandatory on every gateway entry:** wrap the body in `SCIFIN_TRY ... SCIFIN_CATCH(fname)` (from `sciFinance_gw.hpp`). An uncaught C++ exception across a C gateway boundary is UB → crash.
+  - **Corrected during Task 1 review (user-approved).** The boundary must rethrow Scilab's own exceptions *before* the generic catches:
+    `catch (const ast::ScilabException&) { throw; }` then `catch (const std::exception& e) { Scierror(...); return 1; }` then `catch (...)`.
+    `ast::InternalAbort` (**Ctrl-C**), `ast::InternalError` and `ast::RecursionException` all derive from `std::exception` via `ast::ScilabException`, and the runtime relies on them escaping a gateway (`runner.cpp` discriminates all three). A bare `catch (const std::exception&)` swallows **Ctrl-C** — fatal for the long-running P5 Monte Carlo gateway.
+  - Never write a raw try/catch in a gateway. Use the macro pair, so the rule is applied structurally.
 - QuantLib is linked **directly** (`/opt/homebrew/opt/quantlib`, v1.42.1) — *not* through the sciQuantLib SWIG binding.
 
 **Dates — verified this session, and a silent-corruption trap if ignored:**
@@ -39,7 +43,12 @@ Every task's requirements implicitly include this section.
 - `-I/opt/homebrew/opt/gettext/include` — macOS has no `libintl.h` on the default path and Scilab's `localization.h` needs it.
 - Homebrew gcc runtime `-L` dirs via the **version-independent** `/opt/homebrew/lib/gcc/current` symlink (a pinned `gcc/15` path goes stale on the next gcc bump).
 - Header locations (verified): `charEncoding.h` → `modules/localization/includes`; `sci_malloc.h` → `modules/core/includes`.
-- New code compiles with `-Wall -Wextra` (no `-w`, no `-fpermissive` — those are legacy-toolbox crutches).
+- New code compiles with `-Wall -Wextra` (no `-w`, no `-fpermissive` — those are legacy-toolbox crutches), and **zero warnings from our own sources**.
+- **Three things this plan's Task 1 draft got wrong; the working `build_macos.sce` in the repo is now the reference — copy it, don't re-derive it:**
+  1. `-I/opt/homebrew/opt/boost/include` is **required**. QuantLib's own `ql/qldefines.hpp` includes `<boost/config.hpp>`, but `QuantLib.pc` does not emit a boost `-I`.
+  2. `tbx_build_gateway(..., C_Flags, "", "g++")` — the trailing `g++` forces the CC. Scilab's `dynamic_link` build runs an autoconf **C**-compiler probe and would otherwise apply `-std=c++17` to a `.c` conftest and fail. This toolbox has zero `.c` files, so forcing `g++` costs nothing.
+  3. Four extra `-I` paths are needed for the exception boundary's `ast/scilabexception.hxx`: `modules/ast/includes`, `.../includes/ast`, `.../includes/exps`, `.../includes/system_env`.
+- `macros/buildmacros.sce` must **not** end with `quit` — `tbx_builder_macros` `exec`s it in-process mid-build, so a `quit` there kills the build before `tbx_build_loader` runs. (The "every batch `.sce` ends with `quit`" rule applies to scripts *you* launch, not ones the build `exec`s.)
 
 **Demos are the acceptance tests:**
 - Every demo renders in the Demonstrations window **and** runs headless in CI against goldens.

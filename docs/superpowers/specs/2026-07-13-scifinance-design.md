@@ -151,12 +151,23 @@ user
 > QuantLib throws C++ exceptions. An **uncaught C++ exception crossing a C gateway boundary is undefined
 > behaviour** — a hard crash.
 
-**Mandatory on every gateway entry point:**
+**Mandatory on every gateway entry point** (as the `SCIFIN_TRY` / `SCIFIN_CATCH` macro pair in `sciFinance_gw.hpp`, never hand-rolled):
 
 ```cpp
 try { /* ... */ }
+catch (const ast::ScilabException&) { throw; }   // see below -- MUST come first
 catch (const std::exception& e) { Scierror(999, "%s: %s\n", fname, e.what()); return 1; }
+catch (...)                     { Scierror(999, "%s: unknown C++ exception\n", fname); return 1; }
 ```
+
+> **Corrected 2026-07-14 during Task 1 review (user-approved).** This spec originally mandated a bare
+> `catch (const std::exception& e)`. That was wrong: **Scilab's own control-flow exceptions derive from
+> `std::exception`** — `ast::InternalAbort` (**Ctrl-C / user interrupt**), `ast::InternalError` and
+> `ast::RecursionException`, all via `ast::ScilabException`. The runtime *relies* on them escaping a gateway
+> (`modules/core/src/cpp/runner.cpp` discriminates all three; `WrapCFunction::call` rethrows `InternalError`).
+> Catching them turns **Ctrl-C into a silent `Scierror`** — which would make the long-running P5 Monte Carlo
+> gateway uninterruptible. The `ScilabException` rethrow must precede the generic catches, since a specific
+> catch placed after a base-class catch is unreachable.
 
 Additional rules:
 
