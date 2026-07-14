@@ -57,6 +57,7 @@ Every task's requirements implicitly include this section.
 - No bare `halt()` in a demo (it hangs CI).
 - Every batch `.sce` you launch ends by terminating. **Use `exit(n)`, never `quit(n)`, when the exit code matters** — verified: `quit(1)` silently ignores its argument and exits **0**, so a suite ending in `quit(1)` can never fail CI. `exit(1)` → rc 1, `exit(0)` → rc 0. (`quit` with no code is fine for a build script.)
 - A Scilab `global` must be declared in **every** scope that touches it, including the top level. `failures = 0` at top level + `global failures` inside `check()` are two *different* variables — the classic way a test suite silently always passes.
+- **No apostrophes inside double-quoted Scilab strings.** `'` is also a string delimiter, so `"QuantLib's calendar"` is a parse error (`Heterogeneous string detected, starting with " and ending with '`) that kills the *whole script* with rc=231. Write "the QuantLib calendar" instead. This bites innocuous-looking test messages and demo `mprintf` text.
 
 **Validation bar (a task is not done until all five pass):**
 1. Goldens match.
