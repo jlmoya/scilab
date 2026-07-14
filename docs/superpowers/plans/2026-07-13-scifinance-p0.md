@@ -55,7 +55,8 @@ Every task's requirements implicitly include this section.
 - **Every filename listed in a `.dem.gateway.sce` MUST exist.** A single missing file empties the *entire* Demonstrations window (this exact bug, `20796ca5bdf`).
 - Never call `stacksize()` — removed in Scilab 6.
 - No bare `halt()` in a demo (it hangs CI).
-- Every batch `.sce` ends with `quit`.
+- Every batch `.sce` you launch ends by terminating. **Use `exit(n)`, never `quit(n)`, when the exit code matters** — verified: `quit(1)` silently ignores its argument and exits **0**, so a suite ending in `quit(1)` can never fail CI. `exit(1)` → rc 1, `exit(0)` → rc 0. (`quit` with no code is fine for a build script.)
+- A Scilab `global` must be declared in **every** scope that touches it, including the top level. `failures = 0` at top level + `global failures` inside `check()` are two *different* variables — the classic way a test suite silently always passes.
 
 **Validation bar (a task is not done until all five pass):**
 1. Goldens match.
@@ -148,8 +149,8 @@ mprintf("\n--- link ---\n");
 check(finversion() == "1.42.1", "finversion() == 1.42.1 (QuantLib is linked)");
 
 mprintf("\n%d failure(s)\n", failures);
-if failures > 0 then quit(1); end
-quit(0);
+if failures > 0 then exit(1); end
+exit(0);
 ```
 
 - [ ] **Step 2: Run it to verify it fails**
@@ -864,10 +865,10 @@ mprintf("RSS before: %d kB\nRSS after : %d kB\ngrowth    : %d kB over 10000 call
 // A real per-call leak of even one Calendar would add megabytes over 10k calls.
 if growth > 1024 then
     mprintf("FAIL: RSS grew %d kB -- suspected leak\n", growth);
-    quit(1);
+    exit(1);
 end
 mprintf("PASS: RSS flat\n");
-quit(0);
+exit(0);
 ```
 
 - [ ] **Step 4: Run the leak check**
