@@ -1,171 +1,210 @@
-# Scilab modernization assessment (grounded, in progress)
+# Scilab modernization — the North Star
 
-Status: **discovery**, 2026-06-27; native track opened 2026-07-04. First-pass analysis of the actual
-codebase for the [[scilab-modernization-vision]] north-star.
+Status: **2026-07-14.** Opened as *discovery* on 2026-06-27. Discovery is over. Most of the
+original north star has landed, and in landing it the goal itself sharpened. This document is the
+living map: where we are, where we are going, and why the direction changed.
 
-> **Scope = the ENTIRE application, not just Java** (user, 2026-06-27): C, C++, Fortran, Tcl/Tk,
-> the `.sci` macro language, the build system, every dependency, CI/CD, and packaging. First pass
-> covered **2 of N tracks** (dependencies + Java). The **native (C/C++/Fortran)** track is now
-> **opened** with a critical, class-level finding (a `-O2` UB miscompilation — see below); **build +
-> CI** are still to run. The native + build half is the larger half and matters just as much.
+> **Scope = the ENTIRE application** (user, 2026-06-27): C, C++, Fortran, the `.sci` macro
+> language, Java, the build system, every dependency, CI/CD, packaging — and now the *capabilities*
+> the language exposes.
 >
 > **Operating principle** (user, 2026-07-04): there is no "pre-existing errors are not our
-> responsibility" — on this fork we own the whole application; if something is wrong, we fix it,
-> period. The goal is a bug-free application that performs with excellence.
+> responsibility." On this fork we own the whole application. If something is wrong, we fix it.
+> The goal is a bug-free application that performs with excellence.
 
-This is a *map*, not a plan — we prioritize, then do focused per-track plans
-(characterize → change one axis → prove parity).
+---
 
-## Scale (Java side, measured)
+## The North Star, restated
 
-- **1,505 `.java` files, ~312,600 LOC** (incl. SWIG/JFlex generated). 8 modules ≈ 85% of it;
-  `gui` (71.5k) + `xcos` (56k) alone ≈ 41%. Others: `scinotes` 35k, `graphic_objects` 32k,
-  `scirenderer` 19k, `renderer` 18k, `ui_data` 18k, `helptools` 15k.
-- Native (C/C++/Fortran) LOC: **not yet measured** (pending track).
+The original north star (2026-06-27) was **infrastructure**: Ant→Maven, kill
+`reapply-macos-fixes.sh`, update all libs, make the build just `./configure && make` everywhere.
 
-## Dependency health — 23 abandoned/EOL libs (~27%)
+**That was the right first goal, and it is now mostly done.** The build is plain
+`./configure && make`, the band-aid script is deleted, the libraries are current, and the app is
+100% native arm64. What is left of the original list is **Ant→Maven** — and honestly, it is the
+least valuable item on it.
 
-**Critical-path abandonware** (highest risk):
-- **JOGL / gluegen 2.5.0** — the graphics stack (→ being replaced by the bgfx work).
-- **Swing frameworks**: flexdock 1.2.5 (dead ~2008), skinlf 1.2.3 (~2002), jgoodies-looks 2.7.0,
-  jrosetta 1.0.4 (console, 2011) — **FlatLaf 3.4.1 is already bundled** as the modern replacement.
-- **Docs/math rendering**: jhall 2.0 (JavaHelp, dead), jeuclid 3.1.14 (2013), jlatexmath 1.0.7
-  (2014), freehep-* 2.4 (~2005) → MathJax/KaTeX + a browser/HTML help path.
-- **xcos**: JGraphX 2.1.0.7 (EOL → maxGraph) across 112 files.
-- **Test/build**: JUnit 4.10 (→ JUnit 5), cobertura 2.1.1 (dead → JaCoCo), asm 3.3.1 (→ 9.x),
-  commons-logging 1.1.1 (SLF4J 2.0.9 already present).
-- **Jakarta migration**: javax.activation 1.2.0 + jaxb 2.3.1 → jakarta.* (already partly present).
+Finishing that work exposed a better question, and the user asked it directly (2026-07-13):
 
-**Healthy** (keep/minor bumps): Saxon-HE 12.4, Lucene 9.10, Guava 33.2, ANTLR 4.13.1, gson,
-jna 5.14, FlatLaf 3.4.1, commons-io/codec, httpclient5, jediterm 3.70. Native numerics are
-current (OpenBLAS, FFTW3, HDF5, SuiteSparse, Eigen, PCRE2, Arrow).
+> *"What is truly missing in Scilab compared to, for example, MATLAB — which is a commercial
+> application — or Octave? Thinking about my Financial project, what could we add/update in Scilab
+> to add value?"*
 
-## Java code — a JDK-25 *compiler target* on a Java-6/7 *source dialect*
+That is a different north star. Not *"make the build modern"* but **"make Scilab excellent to
+use."** A perfect build system that ships a tool nobody can get work done in has modernized
+nothing.
 
-The build compiles at `source/target=25` but the source uses almost no post-Java-8 features:
-- **0** records, **0** sealed, **0** `var`, **0** switch-expressions, **0** text blocks (exact greps).
-- Old idioms dominant: **483** `Vector`, **280** anonymous `ActionListener` + **118** `Runnable`
-  (prime lambda targets), **50** deprecated boxing ctors (`new Integer(...)`), 39 `StringBuffer`.
-- **12** files override `finalize()` (deprecated-for-removal; the xcos SWIG `VectorOfX` wrappers).
-- **372** `printStackTrace()` + **158** empty `catch {}` — error-handling debt.
-- **God-classes**: `gui/.../ScilabBridge.java` 3,060 LOC / **323 static** dispatch methods;
-  `SwingView.java` 103 type-switch branches; `Axes` 2,939; `XcosDiagram` 2,671; `SciNotes` 2,592.
-  23 files > 1,000 LOC.
-- **Native interop**: 29 `native` methods + 61 SWIG-generated JNI files → **strong fit for the JDK
-  Foreign Function & Memory API (Panama, stable in 22+)**, starting with `javasci`/`call_scilab`
-  and the `graphic_objects` data-loader (hot vertex buffers).
+And then the sharpest correction of the whole project, from the user, one message later:
 
-## Prioritized roadmap (Java track; sequence by risk/leverage)
+> *"Aren't the business calendars and finance functions given by the sciQuantLib toolbox?"*
 
-| # | Work | Effort | Impact |
-|---|------|--------|--------|
-| 1 | Remove JDK-incompatible/dead deps (asm 3.3.1, cobertura, jgoodies/skinlf→FlatLaf; fix 50 boxing ctors) | S | High |
-| 2 | Eliminate `finalize()` (12 files) → `Cleaner`/FFM `Arena` | S–M | High |
-| 3 | Automated idiom pass (OpenRewrite): diamond, `var`, lambdas for 398 anon listeners, `Vector`→`ArrayList`, try-with-resources | M | High |
-| 4 | Port `javasci`/`call_scilab` JNI → Panama FFM (incremental), then the graphic_objects data path | L | High |
-| 5 | Sealed hierarchies + pattern-switch for `SwingView`/the widget taxonomy | M–L | Medium |
-| 6 | Decompose god-classes; collapse the static `gui.bridge` layer | L–XL | Medium |
-| 7 | Replace EOL UI frameworks (JGraphX→maxGraph, flexdock, JavaHelp) | XL | Medium |
-| 8 | Error-handling hygiene (printStackTrace/empty-catch → logging) | M | Low–Med |
+**Yes — they are.** sciQuantLib wraps all of QuantLib. But as a raw SWIG ABI: 21,840 exported
+symbols, **zero** macros, ~20 lines and 15 object constructions to price one European call,
+scalar-only, and nothing frees the handles. The capability was *already ours*. It was simply
+unusable.
 
-**Guardrails:** do **not** attempt a Swing→JavaFX rewrite (no runtime mandate, XL cost); the
-leverage is dead-framework removal + the FFM native boundary. Gate the L/XL items on regression
-tests (cobertura is dead — coverage is unknown).
+That reframed the entire program:
 
-## Native track — first finding: UB miscompiled at -O2 (CRITICAL, class-level)
+> **The job is usually not to build a new capability. It is to make usable the one we already own.**
 
-The native C/C++/Fortran is decades old and was written for a non-optimizing / "signed overflow
-wraps" compiler. Built with a **modern clang/gcc at `-O2`** (the shipped optimization level on this
-macOS-2027 arm64 fork), **undefined behaviour that was benign for 20 years now gets miscompiled** —
-silently, corrupting data, and invisible at `-O0`, so it passes casual testing. This is a *class* of
-latent bug, not a one-off.
+So the North Star now has **two axes**:
 
-**Confirmed + fixed instance — `rand()` returned `Inf` for every element** (2026-07-04). Discovery
-chain: `grayplot(1:20,1:20,rand(20,20))` rendered blank → its `z` was all `Inf` → **`rand` itself
-returns `Inf`** (default "uniform"). Root cause in `modules/elementary_functions/src/c/basic_functions.c`
-`durands()` (Malcolm-Moler uniform generator): the modulus-finding loop terminated by letting a signed
-`int` overflow —
+| Axis | Question it answers | State |
+|---|---|---|
+| **1 — Foundation** | Is it correct, fast, native, and buildable by anyone? | **Largely landed** |
+| **2 — Capability** | Can a 2027 user actually get their work done in it? | **Just opened** (sciFinance P0) |
 
-```c
-m = 1; while (m > m2) { m2 = m; m = itwo * m2; }   /* itwo == 2 */
-```
+Axis 1 was never the point. It was the *precondition* — you cannot credibly add capability on top
+of a codebase that miscompiles `rand()` at `-O2`. That debt is now paid, which is precisely why
+Axis 2 can start.
 
-Signed overflow is UB. clang `-O2` leaves `m2 = 0` → `halfm = 0` → `s = 0.5/halfm = +Inf` → every value
-`= (double)*_iVal * Inf = Inf`. At `-O0` it worked (`m2 = 2^30`), which is why it survived for years.
-Proven with a standalone repro (clang `-O0` correct, `-O2` → `s = inf`). **Fix**: compute the same `m2`
-without overflowing — `m2 = 1; while (m2 <= INT_MAX/itwo) { m2 = itwo*m2; }` (+ `<limits.h>`). Verified:
-`rand(1e5)` uniform (mean 0.4997, std 0.2884), normal (mean ~0, std 1.000), complex, and seed-repro all
-correct; grayplot renders. (The renderers — g2d/Vulkan — were innocent: they correctly cull all-`Inf`
-facets.) `rand` is one of the most-used builtins, so this silently poisoned anything downstream of it.
+---
 
-**Systemic implication — the whole tree was exposed.** The base C build is `-DNDEBUG -g1 -O2` and
-`-fno-strict-overflow` / `-fwrapv` was set nowhere (there is an opt-in `-fsanitize=address`, but no
-UBSan). `rand` is very unlikely to be the only such bug. Two class-level actions:
+## Principles we have earned (not borrowed)
 
-1. **Add `-fwrapv` globally** — **DONE (2026-07-09)**: the non-debug `DEBUG_CFLAGS` /
-   `DEBUG_CXXFLAGS` / `DEBUG_FFLAGS` in `configure.ac` (and the tracked generated `configure`, so no
-   autoreconf churn) now carry the flag for the gcc *and* clang branches; the live dev tree's 83
-   generated Makefiles were patched in place (avoiding a reconfigure that would clobber the macOS
-   OpenMP Makefile fixes) and all 3,600 native objects rebuilt with it. Signed overflow can no longer
-   be exploited by the optimizer anywhere in the tree — this would have prevented `durands` and
-   prevents any sibling. Zero risk to correct code (it defines wrapping semantics; standard for
-   legacy-numerics codebases, e.g. the Linux kernel) and zero measurable compile cost (worst TU:
-   3.74 s → 3.77 s). **Engineering note:** the first attempt used `-fno-strict-overflow`, which clang
-   expands to `-fwrapv -fwrapv-pointer`; the pointer-wrap variant sent an optimizer pass
-   quasi-exponential on template-heavy TUs (`ast/types/arguments.cpp`: 3.7 s → 60+ min), so the
-   policy is deliberately the integer-only `-fwrapv`. Pointer-overflow UB remains a *discovery*
-   item for the UBSan pass below. CI (`guard:ub-miscompile`) greps the policy into place and diffs a
-   `durands` O0/O2 run so the class can't silently return.
-2. **Run a UBSan pass** (`-fsanitize=undefined`) over the test suite to **enumerate** the remaining UB
-   (overflow, OOB, bad shifts, misalignment) and fix each — turning "unknown unknowns" into a work
-   list. *(Open — next.)*
+These were each paid for with a real bug. They are the house rules now.
 
-This is the "no pre-existing-error-is-not-mine" principle in practice: on this fork everything is ours
-to fix. It also strengthens the case for the FFM/native-boundary work (roadmap #4) — the more of this
-code we can characterize and re-express safely, the fewer of these traps remain.
+1. **Everything is ours to fix.** No upstream blame, no "that's pre-existing." The `rand()`
+   Inf bug had been shipping for years.
+2. **A guard you have not seen FAIL is not a guard.** Mutation-test every gate: delete the `FREE`,
+   comment out the assertion, strip the validation — and watch the suite go red. Several
+   "verified" gates on this project were pure theater until that was done. sciFinance's leak gate
+   was mathematically **incapable** of detecting the leak it was named after until it was proven by
+   fault injection.
+3. **Prove it on the machine, not in the argument.** The Rosetta "problem" was a two-line
+   `Info.plist` gap, not an architecture problem. The Quit bug was a stale jar, not the handler —
+   and "fixing" the handler on an unverified theory made it strictly worse.
+4. **Intermittent means real.** A prior toolbox SIGSEGV appeared in 2 runs out of 6. One green run
+   proves nothing about a memory bug. 10× or it did not happen.
 
-## Native track — Apple-Silicon: 100% native, no Rosetta (2026-07-09)
+---
 
-**Trigger:** the packaged `/Applications/Scilab-2027.0.0.app` exposed an "Open using Rosetta" toggle.
-Rosetta 2 is on Apple's deprecation path, so the goal is a guaranteed-native arm64 app.
+## Axis 1 — Foundation: the scoreboard
 
-**Finding — nothing actually requires Rosetta; it was a packaging-metadata gap.** Every layer of the
-runtime is already arm64 (audited with `lipo -archs` / `file`):
+### Landed
 
-| Layer | Arch |
-|-------|------|
-| `scilab-bin` + all 160 module dylibs | arm64 |
-| JDK 25 JVM (`java`/`libjli`/`libjvm`) | arm64 |
-| Thirdparty (JOGL, GlueGen, MoltenVK) | universal (arm64 slice present) |
-| Every Homebrew/system dep in the link closure | arm64 slice present |
-| Installed toolboxes (`~/.Scilab`, 21 native libs) | arm64 |
-| Launcher script | no forced `arch -x86_64` |
+| Item | Evidence |
+|---|---|
+| **Build is plain `./configure && make`** | `reapply-macos-fixes.sh` **deleted**; its 12 fixes folded into `configure.ac` / `Makefile.am`. `fetch-thirdparty.sh` gives a fresh clone a pinned, sha256-verified payload. Audit: `docs/design/build-modernization.md` |
+| **The `-O2` UB miscompile class — closed** | `-fwrapv` applied globally (all 3,600 native objects); CI guard (`guard:ub-miscompile`) greps the policy and diffs a `durands` O0/O2 run so the class cannot silently return |
+| **UBSan sweep — complete** | P0/P1/P2/P2b/P3 all fixed + pushed (null-`this` member calls, `sexpo.c`/`md5.cpp` OOB, sundials misaligned ptr, the float→int conversion cluster, misaligned double loads) |
+| **ASan sweep — complete** | Root-caused the `__tree` bug to a **heap-buffer-overflow in sparse `.^`** (`types_power.cpp`, upstream bug 14500); fixed via a new `Sparse::makeCompressed()` |
+| **100% native arm64, no Rosetta** | Nothing ever required it — a missing `LSRequiresNativeExecution` / `LSArchitecturePriority` pair in `Info.plist`. Plus a per-toolbox arch gate (`tbx_arch_check.sci`) that refuses any `.dylib` without an arm64 slice |
+| **Our own Vulkan/MoltenVK renderer** | Replaces the abandoned JOGL stack. M1–M8 + sprite clipping, readback-verified, **merged to main** (`d30f75059e5`). Design: `docs/design/vulkan-renderer.md` |
+| **macOS app + toolbox manager** | Independent `/Applications/Scilab-2027.0.0.app` (own SCIHOME, configurable JDK) + `tbxManager` GUI with a git-driven catalog |
+| **Toolbox catalog verified 50/50** | Every toolbox in the catalog builds, loads, and passes a runs-here smoke test (`tbxVerify` + `tbx-verify-all.sh`) |
+| **Toolbox gateway hardening** | Whole-suite C/C++ memory-safety audit across ~17 toolboxes. **sci-ipopt was the only one with a real bug** — the rest were clean |
+| **Help browser builds by default** | `make doc` works on JDK 25 (JAXP limits, `_JAVA_OPTIONS` append, per-language chapter registration) |
+| **Fork-native CI + releases** | Upstream CI needs Dassault runners and can never run here; the fork has its own pipeline, badges, and releases |
 
-The only gap: our app's `Info.plist` lacked the two keys the **official** arm64 build
-(`scilab-2026.1.0.app`) carries — `LSRequiresNativeExecution=true` and `LSArchitecturePriority=[arm64]`.
-Without them LaunchServices *permits* the Rosetta toggle; because a process is single-arch, one flip
-drags the **entire** JVM (and every arm64 JNI lib it loads) through x86_64 translation.
+### Still open
 
-**Fix applied (2026-07-09):** added both keys to `package-macos.sh`'s Info.plist heredoc, and patched
-the installed app in place (`plutil -insert` → ad-hoc `codesign --force` → `lsregister -f`). No code
-changes, no library upgrades — the arm64 build/JDK/thirdparty work was already done.
+| # | Item | Effort | Why it matters (or does not) |
+|---|---|---|---|
+| 1 | **Ant → Maven** (26 `build.xml`, **0 `pom.xml`**) | L | *The last original north-star item, and the weakest.* Ant works today. Do it for reproducibility and dependency hygiene, not because it is blocking anything. **Deliberately deprioritized below Axis 2.** |
+| 2 | **Vulkan renderer portability** — Windows/Linux Layer-1 surface + native loader | M–L | The renderer is macOS-only today. Blocks nobody here; blocks the fork being generally useful |
+| 3 | **Java idiom debt** — measured today, essentially unchanged | M | 375 `printStackTrace()`, 12 `finalize()` overrides, ~111 files still using `Vector`, **1** record in 1,505 files. A JDK-25 *target* on a Java-6 *dialect* |
+| 4 | **Dead Java dependencies** (~23 EOL libs) | S–XL | flexdock (2008), skinlf (2002), jgoodies, JavaHelp, JGraphX (→ maxGraph, 112 files), JUnit 4, cobertura. FlatLaf 3.4.1 is already bundled as the replacement for the Swing look-and-feel set |
+| 5 | **JNI → Panama (FFM)** | L | 29 `native` methods + 61 SWIG JNI files. Best entry: `javasci`/`call_scilab` and the `graphic_objects` hot vertex path |
+| 6 | Native long tail | M | Operator-family headers (sub/mul), a sundials wild pointer |
+| 7 | **GPU acceleration** (Metal-first fp32 offload of GEMM+FFT) | L | **PARKED.** Design at `docs/design/gpu-acceleration.md` |
 
-**The one ongoing risk is toolboxes:** an x86_64-only toolbox `.dylib`, once loaded, either fails
-(an arm64 process can't `dlopen` x86_64) or is the reason a user re-enables Rosetta. **Arch gate now
-implemented** (`toolbox_manager/macros/tbx_arch_check.sci`): every loader-exec path — `tbxInstall`,
-`tbxLoad`, `tbxUpdate`, `tbxAutoloadAll` — scans the toolbox tree with `lipo -archs` and refuses any
-native `.dylib`/`.so` lacking an arm64 slice (universal passes), with a clear message instead of a
-cryptic `dlopen` failure. `package-macos.sh --rebuild-toolboxes` inherits it via `tbxUpdate`. (The
-stray `krisp`/`sci_gsl` `.so` in the dev tree are Linux ELF — never loaded by macOS; verified rejected
-by the gate.) If a JRE is ever bundled into the `.app` instead of using the system JDK, it must be
-arm64 too. **Relaunch config verified** on the installed app: `LSRequiresNativeExecution=true`,
-`LSArchitecturePriority=[arm64]`, main exec arm64, 0 x86_64-only dylibs, signature valid — it will
-launch native (the "Open using Rosetta" toggle is now forbidden).
+**Guardrail (unchanged, and it has held):** do **not** attempt a Swing→JavaFX rewrite. No runtime
+mandate, XL cost. The leverage is dead-framework removal and the FFM boundary.
 
-## Still to analyze (next discovery pass)
+---
 
-- **Native track** (STARTED — see the finding above): C/C++/Fortran LOC + standards used; the deprecated
-  stack API (`__USE_DEPRECATED_STACK_FUNCTIONS__`); f2c Fortran; C++ modernization (C++20/23, RAII).
-  **Highest-priority native item: the `-fno-strict-overflow` + UBSan class-elimination above.**
-- **Build/CI track**: the Autotools/Ant → Maven/CMake path; the band-aid elimination
-  ([[scilab-modernization-vision]] root-cause notes); CI/CD + reproducibility across environments.
+## Axis 2 — Capability: what a 2027 user actually needs
+
+This is the new half, and it is where the remaining effort should go.
+
+### The discovery that shaped it
+
+Two assumptions I made were **wrong**, and the user corrected both:
+
+1. **"Scilab has no `datetime`/`table`."** It does. Scilab 2027 already ships `datetime`,
+   `duration`, `calendarDuration`, `table`, and **`timeseries`** (MATLAB's `timetable`), all as
+   macro-level mlists in `modules/spreadsheet/macros/`, with `retime`, `synchronize`, `readtable`,
+   `groupcounts`, `varfun`, `sortrows`, `pivot`, `join`.
+2. **"We need a finance library."** We have one — sciQuantLib, wrapping all of QuantLib. It is
+   just unusable as a raw SWIG ABI.
+
+**So the gap is rarely the capability. It is the ergonomics, the vectorization, and the lifetimes.**
+
+The genuinely missing verbs, once you look properly: `timerange`, `lag`, `resample`,
+`movmean`/`movstd`/`movsum`/`movmax`, `categorical`, `innerjoin` — plus the entire finance layer
+(`blsprice`, `bndprice`, `irr`, `npv`, `movavg`, `tick2ret`) and `parallel_run` / `gpuArray`.
+
+### The pattern (proven, and reusable well beyond finance)
+
+**sciFinance** is the first instance, and P0 — the architecture gate — is **complete and pushed**
+(`gitlab.com/jlmoya/sciFinance`, 18 commits, 80 checks green). Spec:
+`docs/superpowers/specs/2026-07-13-scifinance-design.md`.
+
+The rules it established are the template for *any* "make what we own usable" project:
+
+- **Link the C++ library directly. No SWIG pointer, no handle, ever crosses into user code.** The
+  facade takes Scilab natives, loops in C++, returns Scilab natives — which solves ergonomics,
+  vectorization, and object lifetimes in one move.
+- **Macros validate and unwrap; gateways do numerics.** (`datetime` is an *mlist* and can never
+  reach C — the macro decomposes it.)
+- **Data, not handles.** A curve is an mlist the gateway reconstitutes per call.
+- **The exception boundary is structural**, not a convention: a macro pair every gateway uses,
+  which rethrows Scilab's own control-flow exceptions first (so **Ctrl-C still works**) and
+  converts anything else to a clean error. An uncaught C++ exception across the C gateway boundary
+  is UB.
+- **The demos ARE the acceptance tests** — they render in the Demonstrations window *and* run
+  headless in CI against goldens.
+
+The Scilab-specific traps this uncovered are recorded, because every one of them silently produces
+a green test suite: `quit(n)` **ignores its argument** (always exits 0 — use `exit(n)`); a `global`
+must be declared in *every* scope or the counter you increment is not the one you print; `'` inside
+a double-quoted string kills the whole script; `add_demo()` is a no-op under `-nwni`.
+
+### Next on this axis
+
+**sciFinance P1–P6**, each its own plan, each written only once its predecessor is green — because
+they reuse patterns P0 *proved* rather than patterns P0 *assumed*:
+
+| Phase | Deliverable |
+|---|---|
+| P1 | `fin_calendar` — `holidays`, `busdays`, `busdayadj`, `busdayoffset`, `yearfrac` |
+| P2 | `fin_options` — `blsprice`, the greeks, `blsimpv` (on QuantLib's free `blackFormula` — no object graph) |
+| P3 | The **W2 data spine** — `movmean`/`movstd`/`movsum`/`movmax`, `timerange`, `lag`, `resample`. **Built here, then upstreamed into core `timeseries`** |
+| P4 | `fin_bonds` + `fin_curve` (curves as data) |
+| P5 | `fin_mc` — `gbmpaths` (Sobol/pseudo), Longstaff-Schwartz. Measured: **1,000,000 paths in 0.052 s** |
+| P6 | Portfolio + risk — efficient frontier on FOSSEE `quadprog`, VaR/ES |
+
+Note P3: the data-spine verbs are *core* gaps, not finance gaps. Building them inside a toolbox
+first and upstreaming once proven is how Axis 2 should generally work — it de-risks a core change
+by shipping it somewhere reversible first.
+
+---
+
+## Priority call
+
+**Axis 2 outranks the remaining Axis 1 work**, with one exception.
+
+The foundation is sound: it builds anywhere with `./configure && make`, it is native, the UB class
+is closed, the renderer is ours, and the toolbox catalog is verified. Further foundation work
+(Ant→Maven, Java idiom cleanup, dead-framework removal) is *hygiene* — real, worth doing, and
+invisible to every user.
+
+Capability work is what makes the fork worth having.
+
+**The exception: Vulkan renderer portability (Axis 1, item 2).** Everything else here is macOS-only
+by circumstance, but the renderer is macOS-only *by construction* — and it is the piece most likely
+to matter to anyone else who ever uses this fork.
+
+---
+
+## Reference
+
+- Build: `docs/design/build-modernization.md`
+- Renderer: `docs/design/vulkan-renderer.md`
+- GPU (parked): `docs/design/gpu-acceleration.md`
+- Packaging + toolbox manager: `docs/design/macos-app-packaging.md`
+- Toolbox verification: `docs/design/toolbox-verification.md`
+- UBSan findings: `docs/design/ubsan-findings.md`
+- sciFinance spec: `docs/superpowers/specs/2026-07-13-scifinance-design.md`
+- sciFinance P0 plan: `docs/superpowers/plans/2026-07-13-scifinance-p0.md`
