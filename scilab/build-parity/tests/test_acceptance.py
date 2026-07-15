@@ -1,7 +1,11 @@
 """Acceptance: the harness must be neither too loose nor too tight, on REAL captured data.
 
-Stability  -> capturing the same tree twice is byte-for-byte identical after normalization
-              (proves volatile symbol addresses do NOT cause false positives).
+Stability  -> capturing the same tree twice is identical (proves the capture pipeline is
+              deterministic on an unchanged tree -> no false positives from stray ordering,
+              PIDs, timestamps). Address-VALUE independence -- that a differently-linked build's
+              shifted symbol addresses don't trip parity -- is proven structurally by
+              test_parse_nm_strips_addresses_and_sorts (Task 1), which discards the address column
+              unconditionally; the two together substantiate "not too loose."
 Sensitivity -> a mutated real fingerprint is caught (proves no false negatives).
 """
 import copy
