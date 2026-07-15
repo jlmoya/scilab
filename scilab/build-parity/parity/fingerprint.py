@@ -1,5 +1,7 @@
 """Pure parsers and normalizers: text from nm/otool -> structured data. No I/O."""
 
+import re
+
 
 def parse_nm(output):
     """`nm -gU` output -> sorted list of "<type> <symbol>" (address dropped).
@@ -44,3 +46,18 @@ def parse_build_version(output):
             sdk = s.split()[1]
             break
     return {"minos": minos, "sdk": sdk}
+
+
+_VERSION_TOKEN = re.compile(r"\.\d{4}\.")
+
+
+def normalize_version(name):
+    """Collapse a 4-digit library version token: libsciX.2027.dylib -> libsciX.VER.dylib."""
+    return _VERSION_TOKEN.sub(".VER.", name)
+
+
+def normalize_path(text, roots):
+    """Replace absolute-path prefixes (longest first) with placeholders, then version-normalize."""
+    for prefix in sorted(roots, key=len, reverse=True):
+        text = text.replace(prefix, roots[prefix])
+    return normalize_version(text)

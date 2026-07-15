@@ -84,3 +84,20 @@ def test_parse_build_version():
 
 def test_parse_build_version_absent():
     assert parse_build_version("no build version here") == {"minos": None, "sdk": None}
+
+from parity.fingerprint import normalize_version, normalize_path
+
+def test_normalize_version():
+    assert normalize_version("libscistatistics.2027.dylib") == "libscistatistics.VER.dylib"
+    assert normalize_version("libsciaction_binding-disable.2027.dylib") == "libsciaction_binding-disable.VER.dylib"
+    assert normalize_version("libscistatistics.dylib") == "libscistatistics.dylib"
+
+def test_normalize_path_prefixes_and_version():
+    roots = {
+        "/Users/josemoya/Projects/CLionProjects/scilab/scilab": "$SCI",
+        "/Users/josemoya": "$HOME",
+    }
+    # Longest prefix wins, then the version token collapses.
+    s = "/Users/josemoya/Projects/CLionProjects/scilab/scilab/modules/x/.libs/libx.2027.dylib"
+    assert normalize_path(s, roots) == "$SCI/modules/x/.libs/libx.VER.dylib"
+    assert normalize_path("/Users/josemoya/other", roots) == "$HOME/other"
