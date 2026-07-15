@@ -93,11 +93,14 @@ def test_normalize_version():
     assert normalize_version("libscistatistics.dylib") == "libscistatistics.dylib"
 
 def test_normalize_path_prefixes_and_version():
+    # The SHORTER prefix ($HOME) is inserted FIRST on purpose: this only passes if
+    # normalize_path sorts by length (longest wins). Naive insertion-order iteration
+    # would rewrite $HOME first and never match the $SCI prefix -> test fails. That
+    # makes the sort itself testable, not just accidentally right for one ordering.
     roots = {
-        "/Users/josemoya/Projects/CLionProjects/scilab/scilab": "$SCI",
         "/Users/josemoya": "$HOME",
+        "/Users/josemoya/Projects/CLionProjects/scilab/scilab": "$SCI",
     }
-    # Longest prefix wins, then the version token collapses.
     s = "/Users/josemoya/Projects/CLionProjects/scilab/scilab/modules/x/.libs/libx.2027.dylib"
     assert normalize_path(s, roots) == "$SCI/modules/x/.libs/libx.VER.dylib"
     assert normalize_path("/Users/josemoya/other", roots) == "$HOME/other"
