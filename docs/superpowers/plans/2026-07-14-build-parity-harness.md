@@ -18,7 +18,9 @@
   - `otool -L <dylib>`: first line is `<path>:`, then tab-indented `\t<path> (compatibility version X, current version Y)`; the **first** such line is the dylib's own install name.
   - `otool -l <exe>` LC_BUILD_VERSION block (stripped): `cmd LC_BUILD_VERSION`, `minos 11.0`, `sdk 11.0`. **Both must read `11.0`** — this is the anti-SIGTRAP SDK stamp; a change here is a release-blocking regression.
   - Dylibs are named `libsci<module>.2027.dylib` (real) with a bare `libsci<module>.dylib` symlink; variant libs exist (`-disable`, `-minimal`).
-- **Built baseline tree exists now** at `scilab/` (`.libs/scilab-bin`, `.libs/scilab-cli-bin`, 132 module dylibs under `modules/*/.libs/`, 30 jars under `modules/*/jar/`).
+- **Built baseline tree exists now** at `scilab/` (`.libs/scilab-bin`, `.libs/scilab-cli-bin`, ~67
+  first-party module dylibs under `modules/*/.libs/` (132 dylib-named files there once you count the
+  bare-name symlinks), 30 jars under `modules/*/jar/`).
 - **No AI-attribution trailers** in any commit message (no `Co-Authored-By`, no `Claude-Session`, no "Generated with").
 - Commit on `main`. DRY, YAGNI, TDD, frequent commits.
 
@@ -712,8 +714,10 @@ Run:
 cd /Users/josemoya/Projects/CLionProjects/scilab/scilab/build-parity
 python3 -m parity.capture .. baseline-autotools.json autotools
 ```
-Expected output like: `captured 132 dylibs, 2 executables, 3 generated files -> baseline-autotools.json`
-(Numbers should be ~132 dylibs / 2 executables / 3 generated — matching the built tree. If dylibs is 0, the `.libs` walk or the build dir is wrong — stop and fix before continuing.)
+Expected output like: `captured 67 dylibs, 2 executables, 3 generated files -> baseline-autotools.json`
+(Numbers should be ~67 first-party dylibs / 2 executables / 3 generated — matching the built tree.
+132 is what you get if bare-name symlinks are counted too; the harness must not double-count them.
+If dylibs is 0, the `.libs` walk or the build dir is wrong — stop and fix before continuing.)
 
 - [ ] **Step 2: Write the acceptance test (stability + sensitivity)**
 

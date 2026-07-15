@@ -130,6 +130,17 @@ CMake becomes the master. It reproduces everything `make` does today, **includin
 per-module exactly as `Makefile.incl.am` does now.** The Java build, the help build, the codegen
 model, and the dependency-resolution *results* are all held constant.
 
+**Prerequisite — a compiler-flag manifest.** The Stage 0 fingerprint (symbols, link shape,
+`LC_BUILD_VERSION`, generated files) is provably blind to pure codegen-flag changes: a dropped
+`-fwrapv`, an `-O2`→`-O0` slip, or a missing OpenMP flag changes none of those (§9, §10). Before
+Stage 1 starts migrating modules, add a *semantic* compiler-flag check to the harness — does the
+effective flag set for a compiled object include `-fwrapv`? Is optimization `-O2` (not `-O0`, outside
+the deliberate `colnew.f` override)? Is the deployment target `11.0`? This must **NOT** be a raw
+flag-string diff: autotools and CMake spell equivalent flags differently (e.g.
+`-mmacosx-version-min=11.0` vs. `CMAKE_OSX_DEPLOYMENT_TARGET=11.0`, different flag order, `-O2`
+implied by a CMake build type instead of spelled literally), so a literal string comparison would
+false-positive on the migration itself — the one thing Stage 1 must prove clean.
+
 ### 1a. Detection + configuration layer (the real work)
 Translate `configure.ac`'s detection into CMake, targeting the platforms we actually build for
 (macOS arm64 now; Windows/Linux later), not the 1990s Unixes the legacy cascade supported.
@@ -160,8 +171,10 @@ Wave by wave along the dependency graph. Recurring hard parts, each handled once
 - **Variant libs** (`-disable`/`-minimal`/`-cli` selected by `GUI`/`IS_MACOSX` conditionals) →
   CMake options + `if()`; assert the same variant set is produced.
 - **Per-TU flag overrides** (e.g. `colnew.f` at `-O0` on macOS) → `set_source_files_properties`.
-  These are easy to silently lose — the symbol/behavior diff catches a regression, but grep them out
-  of the `Makefile.am`s explicitly so none is missed.
+  These are easy to silently lose — and the *symbol* diff does **NOT** catch a lost codegen flag (a
+  dropped `-O0`/`-fwrapv` changes neither the exported symbol set nor the link shape); only the
+  manual `.tst` behavior gate would notice, likely much later. So grep them out of the
+  `Makefile.am`s explicitly so none is missed.
 - **Fortran** (907 files, gfortran) → CMake `enable_language(Fortran)`; verify `FLIBS` linkage.
 - **Vendored SUNDIALS** ships 117 upstream `CMakeLists.txt` that build the *wrong* (unpatched)
   sources — **do not** point CMake at them; hand-list the patched set exactly as `Makefile.am` does.
@@ -288,8 +301,8 @@ a CMake post-build target through both stages. Say this in the POMs so nobody tr
 ## 9. Definition of done
 
 - **Stage 0:** `capture.sh` + `diff.sh` committed; `baseline-autotools.json` captured; the harness
-  demonstrably flags an injected regression (a dropped symbol, a stripped `-fwrapv`) — *a guard we
-  have not seen fail is not a guard*.
+  demonstrably flags an injected regression (a dropped symbol, an SDK-stamp downgrade, a `/tmp`
+  leak) — *a guard we have not seen fail is not a guard*.
 - **Stage 1:** CMake builds the whole tree; parity green module-by-module and whole-app; both
   executables stamped 11.0/11.0; full GUI checklist passes; autotools deleted; Ant untouched.
 - **Stage 2:** Maven builds every Java module via the reactor; dead libs resolved; JUnit 5; app
@@ -302,5 +315,8 @@ a CMake post-build target through both stages. Say this in the POMs so nobody tr
 
 Write and execute the **Stage 0 execution plan** (the parity harness) — it is the one piece that is
 fully concrete today (enumerate artifacts, capture symbol manifests, diff), and it is the
-prerequisite that makes every later stage provable. Its first proof is fault injection: strip
-`-fwrapv` from one object, or delete an exported symbol, and watch the harness go red.
+prerequisite that makes every later stage provable. Its first proof is fault injection: delete an
+exported symbol or downgrade the SDK stamp, and watch the harness go red. A stripped `-fwrapv` or an
+`-O` change does **NOT** move the fingerprint — it touches neither the exported symbol set, the link
+shape, nor `LC_BUILD_VERSION` — so the harness cannot catch it; that class of regression is caught
+only by the manual `.tst` behavior gate.

@@ -11,10 +11,20 @@ for the make->CMake / Ant->Maven migration (`docs/design/build-cmake-maven-migra
 ```
 
 ## What it compares
-Per dylib: the exported symbol set (addresses stripped) and the link/dependency shape.
-Per executable: the `LC_BUILD_VERSION` SDK stamp (must stay `minos 11.0 / sdk 11.0` — the
-anti-SIGTRAP fix) and the link shape. Plus: any non-relocatable `/tmp` path, and the normalized
-content hash of `etc/classpath.xml`, `machine.h`, `version.h`.
+Per dylib: the exported symbol set (addresses stripped) and the link/dependency shape (deps compare
+by path only — otool's `(compatibility version X, current version Y)` suffix is stripped, so a
+routine `brew upgrade` bumping a system lib's `current version` doesn't flood every dependent dylib
+with a false "link dependencies changed"). Per executable: the `LC_BUILD_VERSION` SDK stamp (must
+stay `minos 11.0 / sdk 11.0` — the anti-SIGTRAP fix) and the link shape. Plus: any non-relocatable
+`/tmp` path, the normalized content hash of `etc/classpath.xml`, `machine.h`, `version.h`, and a
+manifest hash over every compiled macro `.bin` path (presence, not content — cheap, and enough to
+catch a module's macros silently vanishing from a build).
+
+**Caveat — pure code-generation flag changes are invisible to this harness.** A dropped `-fwrapv`,
+an `-O2`→`-O0` slip, or a missing OpenMP flag do **NOT** alter the exported symbol set, the link
+shape, or the `LC_BUILD_VERSION` stamp — the fingerprint comes out byte-identical and this tool
+reports "PARITY OK" even though the generated code changed underneath. That class of regression is
+caught only by the manual `.tst` behavior gate below, never by this tool.
 
 ## Scope
 Stage 0 fingerprints **dylibs, executables, and generated files** only. **Jars are deliberately
@@ -38,3 +48,6 @@ Stage 2 starts.
 ## Refreshing the baseline
 Only when the autotools build itself legitimately changes:
 `./capture.sh .. baseline-autotools.json autotools` and commit the new baseline in the same change.
+A red `test_committed_baseline_matches_current_tree` right after a macOS/Homebrew update means
+REFRESH the baseline (it's toolchain drift, e.g. a system lib's dep path moving) — it is not, by
+itself, evidence of a Scilab regression.
