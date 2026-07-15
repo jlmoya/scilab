@@ -28,6 +28,15 @@ def test_missing_dylib_is_caught():
     assert r["ok"] is False
     assert any("libx.VER.dylib" in d and "missing" in d.lower() for d in r["differences"])
 
+def test_executable_install_name_change_is_caught():
+    # An executable's install_name holds its FIRST linked library; a Stage-1 link
+    # reorder that changes it must be caught (it was silently uncompared before).
+    cand = _fp(executables={"scilab-bin": {"build_version": {"minos": "11.0", "sdk": "11.0"},
+                                           "install_name": "DIFFERENT", "deps": [], "tmp_leak": False}})
+    r = diff_fingerprints(_fp(), cand)
+    assert r["ok"] is False
+    assert any("scilab-bin" in d and "install_name" in d for d in r["differences"])
+
 def test_sdk_stamp_change_is_caught():
     cand = _fp(executables={"scilab-bin": {"build_version": {"minos": "11.0", "sdk": "26.0"},
                                            "install_name": "n", "deps": [], "tmp_leak": False}})

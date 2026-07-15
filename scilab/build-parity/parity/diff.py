@@ -23,6 +23,12 @@ def diff_fingerprints(base, cand):
                        f"{b['build_version']} -> {c['build_version']}")
         if c["tmp_leak"]:
             out.append(f"executable {name}: non-relocatable /tmp path in link")
+        # An executable has no LC_ID_DYLIB, so parse_otool_libs records its FIRST
+        # linked library under install_name. Compare it (the dylib block does) or a
+        # Stage-1 CMake link-order change that reshuffles scilab-bin's first
+        # dependency is invisible -- it lands in the one field nobody checked.
+        if b["install_name"] != c["install_name"]:
+            out.append(f"executable {name}: install_name (first linked library) changed")
         if sorted(b["deps"]) != sorted(c["deps"]):
             out.append(f"executable {name}: link dependencies changed")
 
@@ -56,10 +62,16 @@ def _main(argv):
     if len(argv) != 3:
         print("usage: python -m parity.diff <baseline.json> <candidate.json>", file=sys.stderr)
         return 2
-    with open(argv[1]) as f:
-        base = json.load(f)
-    with open(argv[2]) as f:
-        cand = json.load(f)
+    # Exit 2 (not 1) if a file is missing/unreadable/malformed: a broken pipeline
+    # must be distinguishable from a genuine parity regression (exit 1) in CI.
+    try:
+        with open(argv[1]) as f:
+            base = json.load(f)
+        with open(argv[2]) as f:
+            cand = json.load(f)
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"error: could not read fingerprint file: {e}", file=sys.stderr)
+        return 2
     result = diff_fingerprints(base, cand)
     if result["ok"]:
         print("PARITY OK")
