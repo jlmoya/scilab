@@ -23,3 +23,42 @@ def test_parse_nm_ignores_blank_lines():
 
 def test_parse_nm_empty():
     assert parse_nm("") == []
+
+from parity.fingerprint import parse_otool_libs, parse_build_version
+
+# Real `otool -L libscistatistics.2027.dylib` output (verified 2026-07-14).
+OTOOL_L_FIXTURE = """\
+modules/statistics/.libs/libscistatistics.2027.dylib:
+\t/usr/local/lib/scilab/libscistatistics.2027.dylib (compatibility version 2028.0.0, current version 2028.0.0)
+\t/opt/homebrew/opt/gcc/lib/gcc/current/libgfortran.5.dylib (compatibility version 6.0.0, current version 6.0.0)
+\t/opt/homebrew/opt/gcc/lib/gcc/current/libquadmath.0.dylib (compatibility version 1.0.0, current version 1.0.0)
+"""
+
+def test_parse_otool_libs_splits_install_name_from_deps():
+    r = parse_otool_libs(OTOOL_L_FIXTURE)
+    assert r["install_name"] == "/usr/local/lib/scilab/libscistatistics.2027.dylib (compatibility version 2028.0.0, current version 2028.0.0)"
+    assert r["deps"] == [
+        "/opt/homebrew/opt/gcc/lib/gcc/current/libgfortran.5.dylib (compatibility version 6.0.0, current version 6.0.0)",
+        "/opt/homebrew/opt/gcc/lib/gcc/current/libquadmath.0.dylib (compatibility version 1.0.0, current version 1.0.0)",
+    ]
+    assert r["tmp_leak"] is False
+
+def test_parse_otool_libs_flags_tmp_path():
+    leaky = "x.dylib:\n\t/tmp/build/libx.dylib (compatibility version 1.0.0, current version 1.0.0)\n"
+    assert parse_otool_libs(leaky)["tmp_leak"] is True
+
+# Real `otool -l scilab-bin | grep -A5 LC_BUILD_VERSION` (verified 2026-07-14).
+OTOOL_LV_FIXTURE = """\
+      cmd LC_BUILD_VERSION
+  cmdsize 32
+ platform 1
+    minos 11.0
+      sdk 11.0
+   ntools 1
+"""
+
+def test_parse_build_version():
+    assert parse_build_version(OTOOL_LV_FIXTURE) == {"minos": "11.0", "sdk": "11.0"}
+
+def test_parse_build_version_absent():
+    assert parse_build_version("no build version here") == {"minos": None, "sdk": None}
