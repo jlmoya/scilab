@@ -14,6 +14,12 @@ GENERATED_FILES = [
     "modules/core/includes/version.h",
 ]
 
+# Key for the macro .bin *manifest* entry in the "generated" map (see
+# _macro_bin_manifest_hash): presence of the SET of compiled macro files, not
+# their content -- if a Stage-1 CMake bootstrap misses a module, its .bin files
+# vanish from this list and the manifest hash changes.
+MACRO_BIN_MANIFEST_KEY = "macros/*.bin (manifest)"
+
 
 def _subprocess_runner(cmd):
     return subprocess.run(cmd, capture_output=True, text=True, check=False).stdout
@@ -47,19 +53,34 @@ def _fingerprint_exe(path, roots, runner):
 
 def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="build"):
     dylibs = {}
+    macro_bins = []
     for root, _dirs, files in os.walk(build_dir):
-        if not root.endswith("/.libs"):
-            continue
-        for fn in files:
-            # Real versioned files only (skip the bare-name symlinks and non-dylibs).
-            if fn.endswith(".dylib") and normalize_version(fn) != fn:
-                key = normalize_version(fn)
-                if key in dylibs:
-                    raise ValueError(
-                        f"dylib key collision after version-normalization: {key} "
-                        f"(second file: {os.path.join(root, fn)}). Two libraries map to one "
-                        f"fingerprint key -- likely a stale artifact in .libs/; clean the build tree.")
-                dylibs[key] = fingerprint_dylib(os.path.join(root, fn), roots, runner)
+        posix_root = root.replace(os.sep, "/")
+        if posix_root.endswith("/.libs"):
+            for fn in files:
+                path = os.path.join(root, fn)
+                # Real files only (skip the bare-name symlinks and non-dylibs). Skip
+                # by symlink-ness, NOT by "does the name carry a 4-digit version
+                # token" -- that proxy silently dropped real built libs with
+                # non-Scilab version schemes (e.g. libxlnt.1.6.1.dylib, vendored,
+                # no 4-digit token).
+                if fn.endswith(".dylib") and not os.path.islink(path):
+                    key = normalize_version(fn)
+                    if key in dylibs:
+                        raise ValueError(
+                            f"dylib key collision after version-normalization: {key} "
+                            f"(second file: {path}). Two libraries map to one "
+                            f"fingerprint key -- likely a stale artifact in .libs/; clean the build tree.")
+                    dylibs[key] = fingerprint_dylib(path, roots, runner)
+        elif "/macros/" in posix_root + "/":
+            # Compiled macro .bin files (any depth under a macros/ dir, e.g.
+            # modules/assert/macros/assert/assert_checkerror.bin). Only the SET of
+            # paths is captured (see MACRO_BIN_MANIFEST_KEY below) -- cheap, and
+            # enough to catch a module's macros silently vanishing from the build.
+            for fn in files:
+                if fn.endswith(".bin"):
+                    rel = os.path.relpath(os.path.join(root, fn), build_dir)
+                    macro_bins.append(rel.replace(os.sep, "/"))
 
     executables = {}
     for name in ("scilab-bin", "scilab-cli-bin"):
@@ -74,6 +95,9 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             with open(p, "r", errors="replace") as f:
                 content = normalize_path(f.read(), roots)
             generated[rel] = hashlib.sha256(content.encode("utf-8", "replace")).hexdigest()
+
+    manifest = "\n".join(sorted(macro_bins))
+    generated[MACRO_BIN_MANIFEST_KEY] = hashlib.sha256(manifest.encode("utf-8")).hexdigest()
 
     return {"build_id": build_id, "executables": executables,
             "dylibs": dylibs, "generated": generated}

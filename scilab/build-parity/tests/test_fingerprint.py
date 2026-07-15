@@ -37,13 +37,17 @@ modules/statistics/.libs/libscistatistics.2027.dylib:
 """
 
 def test_parse_otool_libs_splits_install_name_from_deps():
+    # Expected values are PATH-ONLY: parse_otool_libs strips the trailing
+    # "(compatibility version X, current version Y)" so a routine `brew upgrade`
+    # bumping a system lib's `current version` doesn't flood every dependent
+    # dylib's diff with a false "link dependencies changed" (I3).
     r = parse_otool_libs(OTOOL_L_FIXTURE)
-    assert r["install_name"] == "/usr/local/lib/scilab/libscistatistics.2027.dylib (compatibility version 2028.0.0, current version 2028.0.0)"
+    assert r["install_name"] == "/usr/local/lib/scilab/libscistatistics.2027.dylib"
     assert r["deps"] == [
-        "/opt/homebrew/opt/gcc/lib/gcc/current/libgfortran.5.dylib (compatibility version 6.0.0, current version 6.0.0)",
-        "/opt/homebrew/opt/gcc/lib/gcc/current/libquadmath.0.dylib (compatibility version 1.0.0, current version 1.0.0)",
-        "/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)",
-        "/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 2100.43.0)",
+        "/opt/homebrew/opt/gcc/lib/gcc/current/libgfortran.5.dylib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current/libquadmath.0.dylib",
+        "/usr/lib/libSystem.B.dylib",
+        "/usr/lib/libc++.1.dylib",
     ]
     assert r["tmp_leak"] is False
 
@@ -56,8 +60,8 @@ def test_parse_otool_libs_sorts_deps():
            "\t/z/libz.dylib (compatibility version 1.0.0, current version 1.0.0)\n"
            "\t/a/liba.dylib (compatibility version 1.0.0, current version 1.0.0)\n")
     assert parse_otool_libs(out)["deps"] == [
-        "/a/liba.dylib (compatibility version 1.0.0, current version 1.0.0)",
-        "/z/libz.dylib (compatibility version 1.0.0, current version 1.0.0)",
+        "/a/liba.dylib",
+        "/z/libz.dylib",
     ]
 
 def test_parse_otool_libs_flags_tmp_path():
@@ -68,6 +72,28 @@ def test_parse_otool_libs_flags_tmp_in_install_name():
     # A /tmp path in the install name (the FIRST entry), not just a dep, still leaks.
     leaky = "x.dylib:\n\t/tmp/build/libx.dylib (compatibility version 1.0.0, current version 1.0.0)\n"
     assert parse_otool_libs(leaky)["tmp_leak"] is True
+
+def test_parse_otool_libs_ignores_current_version_only_change():
+    # I3: a routine `brew upgrade` bumps a system lib's `current version` with
+    # zero relation to Scilab. Same path, only `current version` differs -> the
+    # parsed entry must be identical (no false "link dependencies changed").
+    before = "x.dylib:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)\n"
+    after = "x.dylib:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1360.0.0)\n"
+    assert parse_otool_libs(before)["install_name"] == parse_otool_libs(after)["install_name"]
+    assert parse_otool_libs(before)["install_name"] == "/usr/lib/libSystem.B.dylib"
+
+def test_parse_otool_libs_still_distinguishes_different_paths():
+    # The de-noising must not swallow a REAL change: a different path is still caught.
+    a = "x.dylib:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)\n"
+    b = "x.dylib:\n\t/opt/homebrew/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1356.0.0)\n"
+    assert parse_otool_libs(a)["install_name"] != parse_otool_libs(b)["install_name"]
+
+def test_parse_otool_libs_preserves_unrelated_parentheticals():
+    # The strip is anchored on the exact otool "(compatibility version X, current
+    # version Y)" suffix -- it must NOT touch some other parenthetical, e.g. the
+    # synthetic "libc (v)" dep strings test_diff.py uses directly as fixture data.
+    out = "x.dylib:\n\t/self/libc (v)\n"
+    assert parse_otool_libs(out)["install_name"] == "/self/libc (v)"
 
 # Real `otool -l scilab-bin | grep -A5 LC_BUILD_VERSION` (verified 2026-07-14).
 OTOOL_LV_FIXTURE = """\

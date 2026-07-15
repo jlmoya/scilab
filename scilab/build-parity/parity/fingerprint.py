@@ -19,6 +19,18 @@ def parse_nm(output):
 
 _TMP_MARKERS = ("/tmp", "/private/var/folders")
 
+# otool -L's trailing "(compatibility version X, current version Y)". `current
+# version` bumps on a routine `brew upgrade` of a system lib -- zero relation to
+# Scilab -- which would otherwise flood every dependent dylib's diff with "link
+# dependencies changed". Stripped so deps/install_name compare by PATH only.
+# Anchored on the literal "compatibility version ..., current version ...)" text
+# so it never touches an unrelated parenthetical (e.g. a synthetic dep "libc (v)").
+_OTOOL_VERSION_SUFFIX = re.compile(r" \(compatibility version [^,]+, current version [^)]+\)$")
+
+
+def _strip_otool_version_suffix(entry):
+    return _OTOOL_VERSION_SUFFIX.sub("", entry)
+
 
 def parse_otool_libs(output):
     """`otool -L` output -> {install_name, deps (sorted, self excluded), tmp_leak}."""
@@ -26,9 +38,10 @@ def parse_otool_libs(output):
     for line in output.splitlines():
         if line.startswith("\t"):
             entries.append(line.strip())
+    tmp_leak = any(any(m in e for m in _TMP_MARKERS) for e in entries)
+    entries = [_strip_otool_version_suffix(e) for e in entries]
     install_name = entries[0] if entries else None
     deps = sorted(entries[1:])
-    tmp_leak = any(any(m in e for m in _TMP_MARKERS) for e in entries)
     return {"install_name": install_name, "deps": deps, "tmp_leak": tmp_leak}
 
 
