@@ -54,6 +54,11 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             # Real versioned files only (skip the bare-name symlinks and non-dylibs).
             if fn.endswith(".dylib") and normalize_version(fn) != fn:
                 key = normalize_version(fn)
+                if key in dylibs:
+                    raise ValueError(
+                        f"dylib key collision after version-normalization: {key} "
+                        f"(second file: {os.path.join(root, fn)}). Two libraries map to one "
+                        f"fingerprint key -- likely a stale artifact in .libs/; clean the build tree.")
                 dylibs[key] = fingerprint_dylib(os.path.join(root, fn), roots, runner)
 
     executables = {}
@@ -85,6 +90,14 @@ def _main(argv):
     build_dir, out = argv[1], argv[2]
     build_id = argv[3] if len(argv) > 3 else "build"
     fp = fingerprint_build(build_dir, _default_roots(build_dir), build_id=build_id)
+    if not fp["dylibs"] and not fp["executables"]:
+        # An empty tree is never a real Scilab build: either build_dir is wrong
+        # (e.g. a relative path resolved against the wrong cwd) or the .libs walk
+        # found nothing. Fail loudly instead of "succeeding" with an empty capture.
+        print(f"error: captured 0 dylibs and 0 executables from build dir '{build_dir}' -- "
+              f"the build dir is wrong or the .libs walk found nothing; refusing to write {out}",
+              file=sys.stderr)
+        return 2
     with open(out, "w") as f:
         json.dump(fp, f, indent=2, sort_keys=True)
     print(f"captured {len(fp['dylibs'])} dylibs, {len(fp['executables'])} executables, "
