@@ -44,13 +44,44 @@ include(cmake/ScilabModule.cmake)
 # into its modules/<name>/.libs/.
 add_custom_target(drop-in-all)
 
-# Migrated modules — grows as batches land (the 4 parity-proven exemplars +
-# Batch A's 8 simple leaves + Batch B's 10 variant-pair GUI modules + Batch C's
-# 17 external-dependency modules + Batch D's jvm (the JNI module — links the
-# JDK's libjli) are on scilab_module(); later tasks add the remaining catalog).
-# Each Batch-B dir declares TWO dylibs (main + `-disable` stub) in one
-# CMakeLists.txt; so do Batch C's console (`-minimal`), preferences (`-cli`),
-# scicos_blocks (`-cli`) and Batch D's jvm (`-disable`).
+# JAVA_HOME for the JDK-consuming Batch-E modules (helptools/types/
+# external_objects_java/xcos): parsed from the configured tree's config.status
+# (S["JAVA_HOME"]) — the EXACT JDK the autotools baseline used (jdk-25). The
+# /usr/libexec/java_home fallback answers jdk-26 on this machine, which is
+# precisely why config.status is the primary source. jvm (Task 8) predates
+# this shared variable and keeps its own identical discovery block.
+file(STRINGS ${SCILAB_SOURCE_DIR}/config.status _scilab_java_home_line
+     REGEX "^S\\[\"JAVA_HOME\"\\]=")
+string(REGEX REPLACE "^S\\[\"JAVA_HOME\"\\]=\"(.*)\"$" "\\1"
+       SCILAB_JAVA_HOME "${_scilab_java_home_line}")
+if(NOT SCILAB_JAVA_HOME OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
+  execute_process(COMMAND /usr/libexec/java_home
+                  OUTPUT_VARIABLE SCILAB_JAVA_HOME
+                  OUTPUT_STRIP_TRAILING_WHITESPACE
+                  RESULT_VARIABLE _scilab_java_home_rc)
+  if(NOT _scilab_java_home_rc EQUAL 0
+     OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
+    message(FATAL_ERROR "no JDK with lib/libjli.dylib found — config.status "
+                        "has no usable JAVA_HOME and /usr/libexec/java_home failed")
+  endif()
+  message(STATUS "config.status JAVA_HOME unusable; using /usr/libexec/java_home")
+endif()
+message(STATUS "JAVA_HOME = ${SCILAB_JAVA_HOME}")
+
+# Migrated modules — ALL 64 baseline module dylibs (the 4 parity-proven
+# exemplars + Batch A's 8 simple leaves + Batch B's 10 variant-pair GUI
+# modules + Batch C's 17 external-dependency modules + Batch D's jvm (the JNI
+# module — links the JDK's libjli) + Batch E's 6 inter-module-edge dirs) are
+# on scilab_module(). Each Batch-B dir declares TWO dylibs (main + `-disable`
+# stub) in one CMakeLists.txt; so do Batch C's console (`-minimal`),
+# preferences (`-cli`), scicos_blocks (`-cli`), Batch D's jvm (`-disable`) and
+# Batch E's helptools (`-disable`), scicos (`-cli`), xcos (`-disable`) and
+# differential_equations (whose SECOND dylib is the vendored libscisundials —
+# no modules/sundials/ dir exists). Batch E's MODULE_DEPS edges (diff_eq ->
+# sundials; helptools -> commons; types/external_objects_java -> commons+jvm;
+# scicos -> sundials+scicos_blocks[-cli]; xcos -> scicos+sundials+
+# scicos_blocks+commons+jvm) are CMake target links: CMake orders the build,
+# so the foreach order below is documentation, not a topo-sort.
 foreach(m
     sound parallel coverage interpolation                       # exemplars
     ast call_scilab completion external_objects functions       # Batch A
@@ -61,6 +92,8 @@ foreach(m
     preferences randlib scicos_blocks signal_processing slint   # Batch C
     special_functions spreadsheet statistics umfpack webtools   # Batch C
     xml                                                         # Batch C
-    jvm)                                                        # Batch D
+    jvm                                                         # Batch D
+    differential_equations helptools types                      # Batch E
+    external_objects_java scicos xcos)                          # Batch E
   add_subdirectory(modules/${m})
 endforeach()
