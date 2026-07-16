@@ -45,11 +45,14 @@ include(cmake/ScilabModule.cmake)
 add_custom_target(drop-in-all)
 
 # Migrated modules — grows as batches land (the 4 parity-proven exemplars +
-# Batch A's 8 simple leaves are on scilab_module(); later tasks add the
-# remaining catalog).
+# Batch A's 8 simple leaves + Batch B's 10 variant-pair GUI modules are on
+# scilab_module(); later tasks add the remaining catalog). Each Batch-B dir
+# declares TWO dylibs (main + `-disable` stub) in one CMakeLists.txt.
 foreach(m
     sound parallel coverage interpolation                       # exemplars
     ast call_scilab completion external_objects functions       # Batch A
-    functions_manager history_manager renderer)                 # Batch A
+    functions_manager history_manager renderer                  # Batch A
+    action_binding commons graphic_export graphic_objects       # Batch B
+    graphics gui history_browser scinotes tclsci ui_data)       # Batch B
   add_subdirectory(modules/${m})
 endforeach()
