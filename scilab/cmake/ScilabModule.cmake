@@ -7,7 +7,20 @@
 #     [SYSTEM_LIBS <lib>...]       # plain -l names resolved in the SDK sysroot
 #                                  # (xml2 z icucore ... — NOT find_package'd: Find
 #                                  # modules can resolve to Homebrew kegs, changing
-#                                  # the recorded dep path vs the /usr/lib baseline)
+#                                  # the recorded dep path vs the /usr/lib baseline).
+#                                  # Also accepts absolute dylib paths (pin a
+#                                  # Homebrew keg / bundled lib so the recorded dep
+#                                  # is that file's install_name — the libomp
+#                                  # pattern) and raw linker flags (-L<dir>) where
+#                                  # a module must reproduce autotools' search-path
+#                                  # side effects (webtools).
+#     [FRAMEWORKS <name>...]       # macOS frameworks: linked as `-framework <name>`,
+#                                  # the autotools spelling (localization's
+#                                  # `-framework Cocoa`). Recorded like any dep;
+#                                  # symbols resolved through an umbrella's
+#                                  # reexports additionally record the sub-framework
+#                                  # load command (Cocoa -> + CoreFoundation),
+#                                  # matching libtool's link exactly.
 #     [FIND_PACKAGES <pkg>...]     # CMake-resolved external deps (e.g. OpenMP)
 #     [MODULE_DEPS <target>...]    # sibling scilab_module targets (sci<dep>): orders
 #                                  # the build + records the sibling install_name
@@ -89,7 +102,7 @@ endfunction()
 
 function(scilab_module NAME)
   cmake_parse_arguments(M "" "CLASS;SYMBOLS"
-    "ALGO_SOURCES;GATEWAY_SOURCES;LANG;SYSTEM_LIBS;FIND_PACKAGES;MODULE_DEPS;EXTRA_INCLUDES" ${ARGN})
+    "ALGO_SOURCES;GATEWAY_SOURCES;LANG;SYSTEM_LIBS;FIND_PACKAGES;MODULE_DEPS;EXTRA_INCLUDES;FRAMEWORKS" ${ARGN})
   if(M_UNPARSED_ARGUMENTS)
     message(FATAL_ERROR "scilab_module(${NAME}): unparsed arguments: ${M_UNPARSED_ARGUMENTS}")
   endif()
@@ -117,11 +130,17 @@ function(scilab_module NAME)
   # _scilab_module_apply, not spelled as a -I flag here.)
   set(_fflags   -DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0)
 
-  # The C/C++ include set: module-local dirs (automake DEFAULT_INCLUDES' -I.
-  # plus la_CPPFLAGS' includes/ src/c src/cpp), the shared Scilab base, the
-  # module's extras, then the configure-detected Homebrew base. Order
-  # preserved; CMake de-duplicates repeats — same preprocessor result.
-  set(_incs ${_dir} ${_dir}/includes ${_dir}/src/c ${_dir}/src/cpp
+  # The C/C++ include set, in automake's order: DEFAULT_INCLUDES first —
+  # `-I. -I$(top_builddir)/modules/core/includes` PRECEDES every per-target
+  # CPPFLAGS dir on the automake compile line, so core/includes must beat the
+  # module-local dirs (load-bearing: console keeps a STALE local
+  # includes/initMacOSXEnv.h that core/includes' current one always shadowed) —
+  # then the la_CPPFLAGS dirs (includes/ src/c src/cpp, the shared Scilab base,
+  # the module's extras), then the configure-detected Homebrew base. CMake
+  # de-duplicates repeats keeping the first position — same preprocessor result
+  # (core/includes leads SCILAB_DEFAULT_INCLUDES too, so it simply collapses).
+  set(_incs ${_dir} ${SCILAB_SOURCE_DIR}/modules/core/includes
+            ${_dir}/includes ${_dir}/src/c ${_dir}/src/cpp
             ${SCILAB_DEFAULT_INCLUDES} ${M_EXTRA_INCLUDES} ${SCILAB_HOMEBREW_INCLUDES})
 
   # --- find_package deps (e.g. OpenMP) ---
@@ -177,6 +196,13 @@ function(scilab_module NAME)
   if("CXX" IN_LIST M_LANG OR "Fortran" IN_LIST M_LANG)
     set_target_properties(sci${NAME} PROPERTIES LINKER_LANGUAGE CXX)
   endif()
+
+  # Each FRAMEWORKS name becomes one `-framework <name>` link item (the single
+  # list element keeps the pair together; CMake emits it verbatim on the link
+  # line). Kept out of SYSTEM_LIBS so the call sites stay self-documenting.
+  foreach(fw IN LISTS M_FRAMEWORKS)
+    list(APPEND _link_libs "-framework ${fw}")
+  endforeach()
 
   target_link_libraries(sci${NAME} PRIVATE ${_link_libs} ${M_SYSTEM_LIBS} ${M_MODULE_DEPS})
 
