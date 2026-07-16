@@ -36,6 +36,9 @@ build without a big-bang cutover.
 - Building help under CMake — it stays an autotools post-step on the running app.
 - The `std=c++17` baseline re-capture / flag-source switch (needed only when CMake becomes the
   tree-wide flag source; in Stage 1e the whole-tree flag manifest still reads `config.status`).
+- **Raising the C++ standard** (c++17 → c++23, eventually c++26 once ratified) — a separate axis that
+  changes codegen and would break parity against the c++17 baseline. Deferred to its own step (§12);
+  Stage 1e stays at c++17 to match the current baseline.
 - **Config-header generation** (`machine.h`/`version.h`) — Stage 1e consumes the `configure`-generated
   headers as-is; replacing `configure`'s feature detection with CMake is a distinct later stage (§11).
 - Java-only modules (3) and macro/doc-only modules — they stay under autotools untouched.
@@ -227,3 +230,25 @@ generated header is diffed against the autotools one; and even a cosmetic textua
 semantically because a changed `HAVE_*` macro would alter compiled code → different module symbols/
 behavior, which the per-module dylib parity check would flag. So the takeover, when it comes, is as
 provable as every step before it.
+
+## 12. The C++ standard axis — raise c++17 → c++23 (deferred, its own step)
+
+The target C++ standard is **c++23** (Apple clang 21 accepts through c++26, and a real Scilab TU
+compiles clean at c++23; c++26 is still a draft with incomplete library support, so c++23 is the
+finalized latest — revisit c++26 once ratified). But the standard is a **codegen axis, not a
+build-system axis**: bumping it changes compiled output, so a CMake build at c++23 against a c++17
+autotools baseline fails parity two ways — the flag-fact `std` mismatches, and the codegen (hence
+symbols/behavior) can diverge. **Stage 1e therefore stays at c++17** and the standard bump is deferred
+to its own step.
+
+Clean sequence when it runs (change one axis at a time):
+1. Bump `AX_CXX_COMPILE_STDCXX(17,…)` → `(23,…)` in `configure.ac` (+ regenerate/patch the tracked
+   `configure`), a global change to the autotools build.
+2. Full `make` rebuild of all ~1,428 C++ TUs → fix whatever c++23 surfaces (removed/deprecated features)
+   → run the `.tst` suite. (One TU compiling at c++23 ≠ the whole tree; the blast radius is real work.)
+3. Re-capture the parity baseline at c++23.
+4. Flip the migration's C++ standard to match.
+
+**Payoff of the shared-helper decision (§4):** once the driver is in place, step 4 is a **one-line
+change** in `cmake/ScilabModule.cmake` (`-std=c++17` → `-std=c++23`), not an edit across 69 module
+files — the maintainability win the helper was chosen for, made concrete.
