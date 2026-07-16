@@ -325,6 +325,23 @@ a CMake post-build target through both stages. Say this in the POMs so nobody tr
   First real make→CMake module. CMake-built `libscisound.2027.dylib` dropped into `.libs/` →
   harness PARITY OK (same 3 symbols, libSystem-only deps, install_name), flag facts `O2/wrapv/11.0`,
   `beep()` works. Zero autotools changes; hybrid coexistence confirmed.
+- **`parallel` — DONE + parity-proven** (`f3d3a58fade`). Roll-out #2, the external-dependency exemplar:
+  1 C source, links `libomp` via `find_package(OpenMP)` + `OpenMP::OpenMP_C` (Homebrew keg via
+  `OpenMP_ROOT`, override-safe), dep recorded at the absolute keg path (not `@rpath`). `openmp=True`
+  flag fact. dlopen-only.
+- **`coverage` — DONE + parity-proven** (`6b43d012ae3`). Roll-out #3, the DOMINANT module shape: an
+  `-algo` **convenience lib → CMake OBJECT library** (`$<TARGET_OBJECTS:...>` folded into the SHARED
+  gateway — NOT STATIC, which would drop unreferenced algo symbols and break the 158-symbol parity);
+  first real **C++** module (links `libc++`, `-std=c++17`); multiple **system** deps linked explicitly
+  (`-lxml2 -lz -licucore`, NOT `find_package(LibXml2)` — it would resolve Homebrew's keg and change the
+  dep path). Engine-linked (`ENGINE_LIBS`).
+- **`interpolation` — DONE + parity-proven** (`531436d485a`). Roll-out #4, the **Fortran / mixed-language**
+  exemplar: `-algo` OBJECT lib mixes C + Fortran (per-language flags via `$<COMPILE_LANGUAGE:...>`
+  genexes; `enable_language(Fortran)`, gfortran); C++ gateway; the Fortran runtime `libgfortran.5` +
+  `libquadmath.0` come from CMake's implicit Fortran link info (linker language pinned CXX for `libc++`;
+  `emutls_w`/`heapt_w`/`gcc` are static `.a`, no dep). 64 symbols, dlopen-only. **All major build
+  dimensions (C/C++/Fortran, mixed-language link, convenience libs, external + system + Fortran-runtime
+  deps, both module classes) are now de-risked.**
 
 ### Beachhead learnings (apply when rolling out modules 2..N and building the top-level CMake)
 
@@ -332,6 +349,20 @@ a CMake post-build target through both stages. Say this in the POMs so nobody tr
   why the gateway's deps stay libSystem-only (its unresolved Scilab symbols bind at dlopen time).
   A module that is *linked* by others instead needs real inter-module deps; the harness's dep-shape
   check is the safety net.
+- **Linking class is a PER-MODULE fact — check `modules/Makefile.am`, never assume** (a roll-out brief
+  once wrongly generalized it and shipped a false comment). `ENGINE_LIBS` = linked into
+  libscilab/libscilab-cli + executables (drop-in safe via install_name + launcher DYLD-path
+  resolution); `ENGINE_LIBS_DYNAMIC_LOAD` = dlopen-only (drop-in safe because the engine dlopens from
+  `.libs/`). otool the built engine binaries to confirm (0 load-command refs ⇒ dynamic-load).
+- **Convenience `-algo` lib → OBJECT library**, never STATIC (STATIC drops algo symbols nothing in the
+  gateway references → symbol-set parity fail). **C++ modules** need the C++ link driver / pinned
+  `LINKER_LANGUAGE CXX` so `libc++` is pulled in. **System libs in `/usr/lib`** (libxml2, libz,
+  libicucore) are linked explicitly (`-l…`), NOT `find_package`'d — a `find_package` can resolve a
+  Homebrew keg and change the recorded dep path. **Fortran**: `enable_language(Fortran)` + gfortran,
+  per-language flags via `$<COMPILE_LANGUAGE:…>` genexes (the `-mmacosx-version-min` in the Fortran
+  genex is load-bearing — CMake's OSX_* vars do NOT reach Fortran TUs); the runtime (`libgfortran`/
+  `libquadmath`) rides in via CMake's implicit Fortran link info while `LINKER_LANGUAGE CXX` keeps
+  `libc++`.
 - **Force the filename** with `OUTPUT_NAME "sci<m>.2027"` + `SUFFIX ".dylib"` — CMake's `VERSION`
   would emit `libsci<m>.2027.0.0.dylib`, which mis-keys the harness (`\.\d{4}\.` tokenizer). Create
   the `libsci<m>.dylib` symlink; drop the *real* file into `.libs/` (the harness skips symlinks and
@@ -348,7 +379,11 @@ a CMake post-build target through both stages. Say this in the POMs so nobody tr
 
 ## 11. Immediate next step
 
-Roll out the pattern from `sound` to the next modules along the dependency graph — start with a
-second pure-native leaf that has ONE external dep (`parallel` → OpenMP, exercising
-`find_package`), then a module with an `-algo` convenience lib (`coverage`), each proven at parity.
-Then stand up the top-level CMake that drives the per-module builds + the Ant bridge (Stage 1e).
+Four exemplars (`sound`, `parallel`, `coverage`, `interpolation`) are DONE + parity-proven + pushed,
+covering every major build dimension (§10). The pattern is fully de-risked.
+
+**Next inflection: the top-level CMake driver + Ant bridge (Stage 1e)** — the orchestrator that drives
+all 81 per-module builds (encoding the inter-module dependency graph), bridges to Ant for the Java side
+(unchanged in Stage 1), and keeps the help build a post-step on the running app. This is a larger,
+whole-tree architectural task than a single module and warrants its own design/plan pass before
+implementation, rather than continuing to hand-port modules one at a time.
