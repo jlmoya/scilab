@@ -151,6 +151,15 @@ def test_parse_flag_facts_openmp_spellings():
     assert parse_flag_facts("-Xpreprocessor -fopenmp")["openmp"] is True
     assert parse_flag_facts("-O2 -fwrapv")["openmp"] is False
 
+def test_parse_flag_facts_negated_spellings_last_wins():
+    # Compilers apply -f flags last-wins: "-fwrapv … -fno-wrapv" is OFF. The
+    # classic append-drift shape (a stray -fno-wrapv appended after the good
+    # flags) must not read as enabled -- that would be a false parity green.
+    assert parse_flag_facts("-fwrapv -fno-wrapv")["wrapv"] is False
+    assert parse_flag_facts("-fno-wrapv -fwrapv")["wrapv"] is True
+    assert parse_flag_facts("-fopenmp -fno-openmp")["openmp"] is False
+    assert parse_flag_facts("-fno-openmp -fopenmp")["openmp"] is True
+
 def test_parse_flag_facts_std():
     assert parse_flag_facts("-std=gnu23 -O2")["std"] == "gnu23"
     assert parse_flag_facts("-std=c++17")["std"] == "c++17"

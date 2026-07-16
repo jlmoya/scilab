@@ -73,7 +73,9 @@ def parse_flag_facts(flagstring):
     differently (order/duplicates/spelling), so a raw-string compare would fail
     parity on the migration itself. Only the facts that change generated code
     are extracted. The LAST -O<x> token wins (a trailing -O0 downgrade overrides
-    an earlier -O2); no -O token at all means the compiler default, -O0.
+    an earlier -O2); no -O token at all means the compiler default, -O0. The
+    -f pairs are likewise last-wins, matching the compiler: "-fwrapv … -fno-wrapv"
+    is OFF (reading it as enabled would false-green the append-drift shape).
     """
     facts = {"opt": "O0", "wrapv": False, "min_macos": None,
              "openmp": False, "ndebug": False, "std": None}
@@ -83,11 +85,15 @@ def parse_flag_facts(flagstring):
             facts["opt"] = "O" + (m.group(1) or "1")   # bare -O means -O1
         elif tok == "-fwrapv":
             facts["wrapv"] = True
+        elif tok == "-fno-wrapv":
+            facts["wrapv"] = False
         elif tok.startswith("-mmacosx-version-min="):
             facts["min_macos"] = tok.split("=", 1)[1]
         elif tok == "-fopenmp" or tok.startswith("-fopenmp="):
             # Token-wise, so the clang "-Xpreprocessor -fopenmp" spelling counts too.
             facts["openmp"] = True
+        elif tok == "-fno-openmp":
+            facts["openmp"] = False
         elif tok == "-DNDEBUG":
             facts["ndebug"] = True
         elif tok.startswith("-std="):

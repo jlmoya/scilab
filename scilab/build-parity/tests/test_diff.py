@@ -101,6 +101,13 @@ def test_flags_block_missing_in_candidate_only_is_caught():
     del cand["flags"]
     assert diff_fingerprints(_fp(), cand)["ok"] is False
 
+def test_flags_block_missing_in_baseline_only_is_caught():
+    # The reverse direction: a pre-manifest BASELINE vs a manifest-bearing
+    # candidate exercises the "facts extra in candidate" branch -- flagged too.
+    base = _fp()
+    del base["flags"]
+    assert diff_fingerprints(base, _fp())["ok"] is False
+
 # THE fault-injection acceptance: the exact drift that sat green for days (all C
 # at -O0 / no -fwrapv; fixed in 516c57573cc), expressed with the REAL pre-fix and
 # post-fix SCI_CFLAGS values. A candidate with the regressed C facts MUST fail

@@ -49,7 +49,10 @@ def capture_flag_manifest(build_dir, reader=_file_reader):
     fingerprint stayed green while every C file compiled unoptimized (the
     regression fixed in 516c57573cc). v1 captures the GLOBAL per-language
     flags only -- known limitation: per-TU overrides (e.g. differential_equations
-    forcing colnew.f to -O0 on macOS) are invisible here.
+    forcing colnew.f to -O0 on macOS) are invisible under autotools, and under
+    CMake -- where the FIRST compile_commands.json entry per language stands in
+    for the global flags -- an overridden TU that happens to land first would be
+    MISTAKEN for the global fact, not merely missed.
 
     `reader(path) -> str | None` is injected for unit tests, mirroring the
     `runner` injection of the fingerprint functions.
@@ -58,8 +61,18 @@ def capture_flag_manifest(build_dir, reader=_file_reader):
     if text is not None:
         manifest = {"source": "autotools"}
         for lang, var in _SCI_FLAG_VARS.items():
-            m = re.search(r'S\["%s"\]="([^"]*)"' % var, text)
-            manifest[lang] = parse_flag_facts(m.group(1)) if m else None
+            # Autoconf splits any value longer than 148 chars across backslash-
+            # continuation lines -- `"…first…"\` newline `"…rest…"` -- and the cut
+            # lands MID-TOKEN, so the segments are joined by DIRECT concatenation
+            # (no space). A first-segment-only read would silently truncate
+            # SCI_CFLAGS the moment it crosses the cliff (140 chars today) and
+            # could split a token like -fwrapv into "-fwr"|"apv".
+            m = re.search(r'S\["%s"\]="([^"]*)"((?:\\\n"[^"]*")*)' % var, text)
+            if m:
+                value = m.group(1) + "".join(re.findall(r'"([^"]*)"', m.group(2)))
+                manifest[lang] = parse_flag_facts(value)
+            else:
+                manifest[lang] = None
         return manifest
 
     text = reader(os.path.join(build_dir, "compile_commands.json"))

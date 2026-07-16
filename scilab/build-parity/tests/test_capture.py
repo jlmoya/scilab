@@ -1,4 +1,5 @@
 import os
+import re
 
 import pytest
 
@@ -199,6 +200,45 @@ def test_capture_flag_manifest_autotools():
         assert m[lang]["opt"] == "O2"
         assert m[lang]["wrapv"] is True
         assert m[lang]["min_macos"] == "11.0"
+
+# Autoconf splits any S["..."]="..." value longer than 148 chars across
+# backslash-continuation lines -- `"…first…"\` newline `"…rest…"` -- and the cut
+# lands MID-TOKEN (the real FLIBS/LDFLAGS/PKG_CONFIG_PATH in config.status all
+# have this shape; first segment exactly 148 chars, verified 2026-07-15).
+# SCI_CFLAGS is 140 chars today, 8 under the cliff: the very next flag appended
+# would split it. Here the cut straddles -fwrapv itself ("-fwr" | "apv"), so a
+# first-segment-only read sees no -fwrapv at all; SCI_CXXFLAGS carries TWO
+# continuation lines (the FLIBS length) with -std=c++17 split at the second
+# boundary; SCI_FFLAGS stays unsplit -- both spellings coexist in one file.
+SPLIT_CONFIG_STATUS_SNIPPET = '''\
+S["SCI_FFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0"
+S["SCI_CXXFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0 -fno-stack-protector -Wall -Wpedantic -Wextra -Wno-deprecated-declarations -Wno-unused-parameter "\\
+"-Wno-sign-compare -Werror=return-type -fvisibility=hidden -fvisibility-inlines-hidden -fno-common -pipe -fPIC -Wformat=2 -Wshadow -Wpointer-arith -s"\\
+"td=c++17"
+S["SCI_CFLAGS"]="-DNDEBUG -g1 -O2 -mmacosx-version-min=11.0 -fno-stack-protector -Wall -Wpedantic -Werror=implicit -Werror=incompatible-pointer-types -std=gnu17 -fwr"\\
+"apv"
+'''
+
+def test_capture_flag_manifest_autotools_continuation_split():
+    # Fixture honesty: the first SCI_CFLAGS segment is exactly 148 chars (the
+    # real autoconf cliff) and ends mid-token in "-fwr" -- what a naive
+    # first-segment-only regex would hand to the parser.
+    seg1 = re.search(r'S\["SCI_CFLAGS"\]="([^"]*)"', SPLIT_CONFIG_STATUS_SNIPPET).group(1)
+    assert len(seg1) == 148 and seg1.endswith("-fwr")
+
+    m = capture_flag_manifest("/b", reader=fake_reader({"config.status": SPLIT_CONFIG_STATUS_SNIPPET}))
+    assert m["source"] == "autotools"
+    # -fwrapv straddles the boundary as "-fwr"|"apv": only a DIRECT (no-space)
+    # join of the continuation segments reassembles it.
+    assert m["c"]["wrapv"] is True
+    assert m["c"]["std"] == "gnu17"       # the tail before the cut still parses
+    assert m["c"]["opt"] == "O2"
+    # Two continuation lines, -std=c++17 split as "-s"|"td=c++17" at the SECOND
+    # boundary: every segment must be consumed, not just the first continuation.
+    assert m["cxx"]["std"] == "c++17"
+    assert m["cxx"]["wrapv"] is True
+    # The unsplit spelling in the same file still parses.
+    assert m["f"]["opt"] == "O2"
 
 def test_capture_flag_manifest_autotools_missing_language_is_none():
     m = capture_flag_manifest("/b", reader=fake_reader({"config.status": 'S["SCI_CFLAGS"]="-O2"\n'}))
