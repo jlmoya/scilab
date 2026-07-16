@@ -14,6 +14,7 @@ workflow:
 
 stages:
   - sanity
+  - parity
 
 default:
   interruptible: true
@@ -37,6 +38,61 @@ sanity:scripts:
     # configs this fork edits must stay well-formed XML
     - xmllint --noout scilab/etc/jvm_options.xml
     - xmllint --noout scilab/modules/console/etc/XConfiguration-general.xml
+
+# Stage-1e CMake driver guards (docs/design/build-cmake-driver.md).
+# Shared-runner half: the driver's foreach module list, the on-disk set of
+# modules/*/CMakeLists.txt, and the stage1e manifest must stay identical (a module
+# CMakeLists added-but-not-wired, or manifest drift, fails here), and the parity
+# harness's own unit suite must stay green (it is hermetic — pure stdlib + pytest;
+# the acceptance tests self-skip without a built macOS tree).
+sanity:cmake-driver:
+  stage: sanity
+  image: debian:bookworm-slim
+  script:
+    - apt-get update -qq && apt-get install -y -qq --no-install-recommends python3 python3-pytest > /dev/null
+    # GitLab runs all script items in ONE shell with cwd persisting between items, so
+    # cd into scilab ONCE and keep every path below relative to it (same model as
+    # parity:cmake-drop-in) — a second `cd scilab/...` would compound to scilab/scilab/... .
+    - cd scilab
+    - |
+      set -e   # a multi-line item's status is its LAST line's rc; without this an
+               # intermediate diff mismatch would be masked by the final `test` passing.
+      sed -n '/^foreach(m/,/^endforeach/p' CMakeLists.txt | sed 's/#.*//' | tr -s ' \t' '\n' \
+        | sed 's/)$//' | grep -vE '^$|^foreach\(m$|^add_subdirectory|^endforeach' | sort > /tmp/foreach.txt
+      ls modules/*/CMakeLists.txt | sed 's|modules/||; s|/CMakeLists.txt||' | sort > /tmp/dirs.txt
+      grep '^| libsci' cmake/stage1e-manifest.md | awk -F'|' '{print $3}' | tr -d ' ' | sort -u > /tmp/manifest.txt
+      diff /tmp/foreach.txt /tmp/dirs.txt
+      diff /tmp/foreach.txt /tmp/manifest.txt
+      test "$(grep -c '^| libsci' cmake/stage1e-manifest.md)" = 64
+    - cd build-parity && python3 -m pytest tests/ -q
+
+# Native half — the real Stage-1e gate: build all 64 module dylibs under CMake from the
+# configured tree, drop them into .libs/, and hold them at parity with the committed
+# autotools baseline (symbols/deps/install_name) + the per-TU flag facts from
+# compile_commands.json. Any regression fails the pipeline. Needs a self-hosted macOS
+# arm64 runner (shell executor) whose persistent workdir is configured + built per
+# docs/design/build-cmake-driver.md — shared gitlab.com runners can neither build nor
+# fingerprint Mach-O. Set the project variable SCILAB_NATIVE_RUNNER=1 only while such a
+# runner is registered; without it the job is not created (a tagged job with no runner
+# would sit stuck and break the pipeline badge — the failure mode this fork-native
+# pipeline exists to avoid).
+parity:cmake-drop-in:
+  stage: parity
+  rules:
+    - if: '$SCILAB_NATIVE_RUNNER == "1"'
+  tags:
+    - scilab-macos-arm64
+  variables:
+    GIT_CLEAN_FLAGS: none  # persistent tree — never git-clean config.status/.libs/build-cmake
+  script:
+    - cd scilab
+    - test -f config.status  # CMake consumes the configure-generated machine.h/version.h
+    - cmake -S . -B build-cmake -DCMAKE_Fortran_COMPILER=gfortran
+    - cmake --build build-cmake --target drop-in-all -j
+    - cd build-parity
+    - python3 -m parity.capture .. /tmp/cand-ci.json cand
+    - python3 -m parity.diff baseline-autotools.json /tmp/cand-ci.json
+    - python3 -m parity.flagfacts_check ../build-cmake/compile_commands.json
 
 # Regression guard for the UB-miscompile class: rand() returned Inf because
 # durands()'s modulus loop relied on signed-integer overflow, which clang/gcc
