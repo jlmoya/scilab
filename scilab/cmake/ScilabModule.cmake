@@ -12,9 +12,24 @@
 #     [MODULE_DEPS <target>...]    # sibling scilab_module targets (sci<dep>): orders
 #                                  # the build + records the sibling install_name
 #     [EXTRA_INCLUDES <dir>...]    # include dirs beyond SCILAB_DEFAULT_INCLUDES
-#     [CLASS ENGINE_LIBS|DYNAMIC_LOAD]  # linking class per modules/Makefile.am
-#                                  # (declarative metadata; both classes drop in
-#                                  # relink-free — see the exemplar rationale)
+#     [CLASS ENGINE_LIBS|DYNAMIC_LOAD|GUI_LIBS]  # linking class per modules/Makefile.am
+#                                  # (declarative metadata; all classes drop in
+#                                  # relink-free — see the exemplar rationale.
+#                                  # GUI_LIBS behaves like ENGINE_LIBS: its
+#                                  # dylib is a DIRECT dyld dependency of the
+#                                  # libscilab aggregate + the executables and
+#                                  # loads at process launch (verified by otool
+#                                  # -L on libscilab.2027.dylib/scilab-bin:
+#                                  # libscirenderer is a direct load; renderer
+#                                  # has no sci_gateway, is never dlopen'd). It
+#                                  # differs from ENGINE_LIBS only in living in
+#                                  # the GUI aggregate link list, not the engine
+#                                  # one. DYNAMIC_LOAD is the OPPOSITE — linked
+#                                  # into nothing, dlopen'd on demand. The
+#                                  # drop-in stays relink-free the same way
+#                                  # ENGINE_LIBS does: the dep is recorded by
+#                                  # install_name and the launcher's DYLD paths
+#                                  # resolve the leaf name to .libs/)
 #     [SYMBOLS <n>])               # expected exported-symbol count (documentation;
 #                                  # the parity harness is the enforcing check)
 #
@@ -81,9 +96,9 @@ function(scilab_module NAME)
   if(NOT M_GATEWAY_SOURCES)
     message(FATAL_ERROR "scilab_module(${NAME}): GATEWAY_SOURCES is required")
   endif()
-  if(M_CLASS AND NOT M_CLASS MATCHES "^(ENGINE_LIBS|DYNAMIC_LOAD)$")
-    message(FATAL_ERROR "scilab_module(${NAME}): CLASS must be ENGINE_LIBS or "
-                        "DYNAMIC_LOAD, got '${M_CLASS}'")
+  if(M_CLASS AND NOT M_CLASS MATCHES "^(ENGINE_LIBS|DYNAMIC_LOAD|GUI_LIBS)$")
+    message(FATAL_ERROR "scilab_module(${NAME}): CLASS must be ENGINE_LIBS, "
+                        "DYNAMIC_LOAD or GUI_LIBS, got '${M_CLASS}'")
   endif()
   set(_dir ${CMAKE_CURRENT_SOURCE_DIR})
 
