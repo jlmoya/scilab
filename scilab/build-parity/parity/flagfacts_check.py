@@ -20,15 +20,43 @@ _BASE = {"opt": "O2", "wrapv": True, "min_macos": "11.0"}
 DEFAULT_EXPECTED_BY_SUFFIX = {suffix: _BASE for suffix in
                               (".c", ".cpp", ".cxx", ".cc", ".f", ".F", ".f90")}
 
+# Per-FILE overrides of the per-suffix default, keyed by BASENAME (the compile-DB
+# path is absolute, and the rule is file-identity, not location). An override is
+# MERGED onto the suffix expectation (see check_flag_facts) so ONLY the named
+# facts are relaxed -- every other fact stays guarded, and every other file of
+# that suffix stays held to the default.
+#
+# colnew.f: compiled -O0 on macOS by an autotools per-file rule
+# (modules/differential_equations/Makefile.am, `if IS_MACOSX` "enforce -O0 for
+# some files") -- upstream a45812e728f (2019, "macOS: fix some crash while using
+# gfortran from homebrew") works around a gfortran -O2 miscompile of the bvode
+# collocation solver on Apple silicon. The CMake port reproduces the -O0
+# faithfully (dylib parity is green; the baseline object's DWARF producer reads
+# `-g1 -O2 -O0 -fwrapv`), so the check must EXPECT opt=O0 for this ONE file
+# instead of false-flagging it. Only `opt` is overridden: the workaround does
+# NOT drop -fwrapv or the -mmacosx-version-min stamp (both present on the
+# baseline -O0 line), so wrapv=True + min_macos=11.0 remain enforced here -- and
+# a future colnew.f compiled at -O2 (silently reverting the workaround) still
+# FAILS, now naming opt=O2 (want O0). colnew.f is the sole file of this name in
+# the tree (verified), so the basename key is unambiguous.
+FILE_EXPECTED_OVERRIDES = {"colnew.f": {"opt": "O0"}}
+
 def check_flag_facts(compile_commands_path, expected_by_suffix):
     with open(compile_commands_path) as f:
         entries = json.load(f)
     mismatches = []
     for e in entries:
         cmd = e.get("command") or " ".join(e.get("arguments", []))
+        override = FILE_EXPECTED_OVERRIDES.get(os.path.basename(e["file"]))
         for suffix, expected in expected_by_suffix.items():
             if not e["file"].endswith(suffix):
                 continue
+            # Per-file override wins over the per-suffix default, MERGED (not
+            # replaced): {**default, **override} keeps the non-overridden facts
+            # (wrapv, min_macos) under guard while relaxing only the named ones.
+            # A fresh dict every time -- never mutate the shared per-suffix dict.
+            if override:
+                expected = {**expected, **override}
             facts = parse_flag_facts(cmd)
             for k, want in expected.items():
                 if facts.get(k) != want:

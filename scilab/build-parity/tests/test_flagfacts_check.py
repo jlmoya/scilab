@@ -1,6 +1,7 @@
 import json, os, subprocess, sys
 import pytest
-from parity.flagfacts_check import check_flag_facts, DEFAULT_EXPECTED_BY_SUFFIX
+from parity.flagfacts_check import (check_flag_facts, DEFAULT_EXPECTED_BY_SUFFIX,
+                                    FILE_EXPECTED_OVERRIDES)
 
 # build-parity root (parent of tests/): the CWD the CLI is run from so that
 # `python -m parity.flagfacts_check` can import the parity package.
@@ -86,3 +87,73 @@ def test_cli_fails_on_unknown_suffix(tmp_path):
     r = _run_cli(cc)
     assert r.returncode != 0, r.stdout + r.stderr
     assert "unchecked compiled suffix" in r.stdout and ".rs" in r.stdout
+
+# --- I4: the per-FILE override (colnew.f -O0, the IS_MACOSX gfortran workaround)
+# must (a) STOP the false positive on the correct baseline, (b) still GUARD the
+# file (revert to -O2 -> FAIL), (c) still guard the file's OTHER facts (drop
+# -fwrapv -> FAIL), and (d) NOT weaken the general O2 rule for other .f files.
+# Same red->green rigor as the suffix guards: each case fails if the override is
+# removed OR if it is made too broad.
+
+def test_file_overrides_table_composition():
+    # Locks the exception table to its reviewed contents: any addition/removal is
+    # a deliberate change that must update this assertion (and get re-reviewed) --
+    # a blanket exemption cannot slip in silently. Mirrors
+    # test_map_covers_exactly_the_required_suffixes for the suffix map.
+    assert FILE_EXPECTED_OVERRIDES == {"colnew.f": {"opt": "O0"}}
+
+def test_colnew_o0_passes_via_file_exception(tmp_path):
+    # The real baseline shape: `-O2 -O0` (last-wins -> O0) + fwrapv + min_macos.
+    # With the per-file override this is CLEAN -- no false positive. Remove the
+    # override (or its colnew.f entry) and this goes red.
+    cc = _cc(tmp_path, [{"file": "/m/differential_equations/src/fortran/colnew.f",
+        "directory": "/m", "command": "gfortran -g1 -O2 -O0 -fwrapv "
+        "-mmacosx-version-min=11.0 -c colnew.f"}])
+    assert check_flag_facts(cc, DEFAULT_EXPECTED_BY_SUFFIX) == []
+
+def test_colnew_o2_still_fails_naming_opt(tmp_path):
+    # The guard that matters: if colnew.f is ever compiled -O2 (silently reverting
+    # the miscompile workaround), the override's opt=O0 expectation catches it.
+    cc = _cc(tmp_path, [{"file": "/m/differential_equations/src/fortran/colnew.f",
+        "directory": "/m", "command": "gfortran -g1 -O2 -fwrapv "
+        "-mmacosx-version-min=11.0 -c colnew.f"}])
+    out = check_flag_facts(cc, DEFAULT_EXPECTED_BY_SUFFIX)
+    assert any("opt" in m for m in out), out
+    assert not any("wrapv" in m or "min_macos" in m for m in out), out
+
+def test_colnew_exception_still_guards_wrapv(tmp_path):
+    # The override relaxes ONLY opt: colnew.f at -O0 but WITHOUT -fwrapv must
+    # still FAIL on wrapv (proves the override is a merge, not a blanket exempt).
+    cc = _cc(tmp_path, [{"file": "/m/differential_equations/src/fortran/colnew.f",
+        "directory": "/m", "command": "gfortran -g1 -O2 -O0 "
+        "-mmacosx-version-min=11.0 -c colnew.f"}])  # no -fwrapv
+    out = check_flag_facts(cc, DEFAULT_EXPECTED_BY_SUFFIX)
+    assert any("wrapv" in m for m in out), out
+    assert not any("opt" in m for m in out), out  # opt=O0 satisfies the override
+
+def test_non_exception_f_at_o0_still_fails_naming_opt(tmp_path):
+    # A DIFFERENT .f at -O0 (fwrapv + min_macos otherwise correct) must still FAIL
+    # on opt -- the override is scoped to colnew.f, it does not soften the global
+    # O2 rule for the other 847 Fortran TUs.
+    cc = _cc(tmp_path, [{"file": "/m/differential_equations/src/fortran/lsoda.f",
+        "directory": "/m", "command": "gfortran -g1 -O0 -fwrapv "
+        "-mmacosx-version-min=11.0 -c lsoda.f"}])
+    out = check_flag_facts(cc, DEFAULT_EXPECTED_BY_SUFFIX)
+    assert any("opt" in m for m in out), out
+
+def test_cli_exits_0_when_colnew_is_o0(tmp_path):
+    # End-to-end rc contract: the exception makes the real CLI exit 0 on a clean
+    # baseline colnew.f line (this is what closes the Task-9 flagfacts rc=1).
+    cc = _cc(tmp_path, [{"file": "/m/differential_equations/src/fortran/colnew.f",
+        "directory": "/m", "command": "gfortran -g1 -O2 -O0 -fwrapv "
+        "-mmacosx-version-min=11.0 -c colnew.f"}])
+    r = _run_cli(cc)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+def test_cli_exits_1_when_colnew_reverts_to_o2(tmp_path):
+    cc = _cc(tmp_path, [{"file": "/m/differential_equations/src/fortran/colnew.f",
+        "directory": "/m", "command": "gfortran -g1 -O2 -fwrapv "
+        "-mmacosx-version-min=11.0 -c colnew.f"}])
+    r = _run_cli(cc)
+    assert r.returncode == 1, r.stdout + r.stderr
+    assert "opt" in r.stdout
