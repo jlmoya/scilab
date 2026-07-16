@@ -36,6 +36,8 @@ build without a big-bang cutover.
 - Building help under CMake — it stays an autotools post-step on the running app.
 - The `std=c++17` baseline re-capture / flag-source switch (needed only when CMake becomes the
   tree-wide flag source; in Stage 1e the whole-tree flag manifest still reads `config.status`).
+- **Config-header generation** (`machine.h`/`version.h`) — Stage 1e consumes the `configure`-generated
+  headers as-is; replacing `configure`'s feature detection with CMake is a distinct later stage (§11).
 - Java-only modules (3) and macro/doc-only modules — they stay under autotools untouched.
 - Any change to `configure.ac`, any `Makefile.am`, or generated code.
 
@@ -54,9 +56,10 @@ scilab/
 - `cmake -S scilab -B scilab/build-cmake` configures; `cmake --build scilab/build-cmake` builds all 69
   (in parallel, honoring the §5 edges); `cmake --build … --target drop-in-all` copies each dylib into
   its `.libs/`.
-- The autotools tree must already be configured (so `configure`-generated headers — `machine.h`,
-  `version.h` in `modules/core/includes/` — exist for the CMake compiles to `-I` at). CMake does not
-  regenerate them.
+- The autotools tree must already be configured (so `configure`-generated headers — `machine.h`
+  (the autoconf `config.h`: ~186 `HAVE_*`/`SIZEOF_*` feature macros) and `version.h`, both in
+  `modules/core/includes/` — exist for the CMake compiles to `-I` at). CMake does **not** regenerate
+  them in Stage 1e; the config-detection axis is a separate, later stage (§11).
 - `cmake --build` builds the **native** tree; `make` still produces the final app. The two coexist;
   the CMakeLists files are invisible to automake.
 
@@ -198,3 +201,29 @@ dependents), each batch parity-gated, so any regression is localized to the modu
 - Each module's `CMakeLists.txt` is a single `scilab_module()` declaration; all policy lives in
   `ScilabModule.cmake`. A policy fix touches one file.
 - The autotools build remains fully functional (rollback path intact).
+
+## 11. The config-detection axis — generated headers (deferred, not ignored)
+
+`configure` generates two headers the compiles depend on, from `.in` templates:
+`modules/core/includes/machine.h` (the autoconf `config.h` — ~186 `HAVE_*` / `SIZEOF_*` /
+`PACKAGE` macros from `AC_CONFIG_HEADERS` + the feature probes in `configure.ac`) and `version.h`
+(the Scilab version, from `version.h.in`). **Stage 1e consumes them as-is** and `-I`s at them; it does
+not regenerate them, because config-detection is a *different axis* from compile/link and Stage 1e
+proves only the latter.
+
+**When `configure` itself is removed** (a distinct later stage, part of shedding autotools — it is NOT
+Stage 1e and NOT a footnote to it), CMake takes over generation the standard way:
+
+- `machine.h` → `configure_file(machine.h.in machine.h)` driven by CMake's platform-probe modules —
+  `CheckIncludeFile`, `CheckSymbolExists`, `CheckFunctionExists`, `CheckTypeSize`, `TestBigEndian` —
+  the direct analogs of autoconf's `AC_CHECK_HEADER` / `AC_CHECK_FUNC` / `AC_CHECK_SIZEOF`. Reproducing
+  the ~186 macros is "port `configure.ac`'s feature detection to CMake," a real body of work meriting
+  its own stage/plan.
+- `version.h` → `configure_file(version.h.in version.h)` — trivial variable substitution.
+
+**This is provable by the same harness.** The parity harness already fingerprints both generated
+headers (`generated` keys include `modules/core/includes/machine.h` and `version.h`), so a CMake-
+generated header is diffed against the autotools one; and even a cosmetic textual difference is caught
+semantically because a changed `HAVE_*` macro would alter compiled code → different module symbols/
+behavior, which the per-module dylib parity check would flag. So the takeover, when it comes, is as
+provable as every step before it.
