@@ -11488,7 +11488,10 @@ esac
 ############
 
 case "$CC" in
-gcc-* | gcc | ccache*gcc | ccache*gcc-* )
+# The space-forms (gcc\ *) match a compiler carrying appended flags, e.g. "gcc -std=gnu23":
+# autoconf >= 2.72 AC_PROG_CC appends -std= to $CC before this case runs. Without them the
+# GNU arm is skipped and DEBUG_CFLAGS loses -g1 -O2 -fwrapv (the UB-hardening) for all C code.
+gcc-* | gcc | gcc\ * | gcc-*\ * | ccache*gcc | ccache*gcc-* | ccache*gcc\ * )
     ## With GNU Compiler
 
     # enable the code coverage
