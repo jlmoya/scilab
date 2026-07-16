@@ -377,13 +377,20 @@ a CMake post-build target through both stages. Say this in the POMs so nobody tr
   inert unless a source `#ifdef PIC`s); automate the CMake-module flag-fact capture into the harness
   so per-module flag drift is watched, not manual.
 
-## 11. Immediate next step
+## 11. Status: Stage 1e DONE
 
-Four exemplars (`sound`, `parallel`, `coverage`, `interpolation`) are DONE + parity-proven + pushed,
-covering every major build dimension (§10). The pattern is fully de-risked.
+**Stage 1e (native drop-in) is COMPLETE** (2026-07-16, HEAD `7190b0c2474`, on main + both remotes;
+final review READY TO MERGE). All **64 native module dylibs** are built by a shared `scilab_module()`
+helper (`scilab/cmake/ScilabModule.cmake`) + top-level `scilab/CMakeLists.txt` driver; `cmake --build
+… --target drop-in-all` drops every CMake dylib into `.libs/` → whole-tree harness PARITY OK, the real
+app runs on the CMake dylibs, CI gate wired. Executed subagent-driven (10 tasks; spec + plan under
+`docs/superpowers/`, scope in `scilab/cmake/stage1e-manifest.md`, usage in
+`docs/design/build-cmake-driver.md`). The reusable helper patterns + the per-module linking-class rule
+are in §10.
 
-**Next inflection: the top-level CMake driver + Ant bridge (Stage 1e)** — the orchestrator that drives
-all 81 per-module builds (encoding the inter-module dependency graph), bridges to Ant for the Java side
-(unchanged in Stage 1), and keeps the help build a post-step on the running app. This is a larger,
-whole-tree architectural task than a single module and warrants its own design/plan pass before
-implementation, rather than continuing to hand-port modules one at a time.
+**Next inflection: Stage 1f (cutover surface).** Link the `scilab`/`scilab-cli` executables + the
+`libscilab`/`libscilab-cli` aggregate (with the ~22 convenience-lib/core modules — javasci,
+elementary_functions, … — that fold into it) under CMake; stand up the CMake→Ant bridge for the Java
+jars; move help to a CMake post-step; retire the autotools native path. Carries the two recorded
+follow-ups: add **LC_RPATH** to the parity fingerprint + re-baseline (rpath is harness-blind today),
+and hoist **JAVA_HOME** discovery into the driver. Then Stage 2 (Ant→Maven), then the FFI phase.
