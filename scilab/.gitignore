@@ -216,3 +216,6 @@ locale/*/*/*.po
 /po/
 # CMA-ES optimizer runtime outputs (test junk written to the source root by cmaes runs)
 /outcmaes*.xml
+
+# Stage-1 make->CMake driver build dir (hybrid coexistence with autotools)
+/build-cmake/
