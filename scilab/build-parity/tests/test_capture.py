@@ -2,7 +2,8 @@ import os
 
 import pytest
 
-from parity.capture import fingerprint_dylib, fingerprint_build, MACRO_BIN_MANIFEST_KEY
+from parity.capture import (fingerprint_dylib, fingerprint_build, capture_flag_manifest,
+                            MACRO_BIN_MANIFEST_KEY)
 
 def fake_runner(responses):
     def run(cmd):
@@ -174,3 +175,89 @@ def test_macro_bin_manifest_ignores_bin_files_outside_a_macros_dir(tmp_path):
     with_unrelated_bins_too = _bin_manifest(build_dir)
 
     assert with_only_macro == with_unrelated_bins_too
+
+
+def fake_reader(files):
+    """reader(path) -> str | None, keyed on the basename (config.status /
+    compile_commands.json) -- mirrors fake_runner's injection idea for file I/O."""
+    def read(path):
+        return files.get(os.path.basename(path))
+    return read
+
+
+# The real S["..."]= lines from the autotools config.status (verified 2026-07-15).
+CONFIG_STATUS_SNIPPET = '''\
+S["SCI_FFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0"
+S["SCI_CXXFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0 -fno-stack-protector -Wall -Wpedantic"
+S["SCI_CFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0 -fno-stack-protector -Wall -Wpedantic -Werror=implicit -Werror=incompatible-pointer-types"
+'''
+
+def test_capture_flag_manifest_autotools():
+    m = capture_flag_manifest("/b", reader=fake_reader({"config.status": CONFIG_STATUS_SNIPPET}))
+    assert m["source"] == "autotools"
+    for lang in ("c", "cxx", "f"):
+        assert m[lang]["opt"] == "O2"
+        assert m[lang]["wrapv"] is True
+        assert m[lang]["min_macos"] == "11.0"
+
+def test_capture_flag_manifest_autotools_missing_language_is_none():
+    m = capture_flag_manifest("/b", reader=fake_reader({"config.status": 'S["SCI_CFLAGS"]="-O2"\n'}))
+    assert m["source"] == "autotools"
+    assert m["c"]["opt"] == "O2"
+    assert m["cxx"] is None
+    assert m["f"] is None
+
+# A small CMake compile_commands.json: one "command" entry, one "arguments"
+# entry, extension-cased Fortran, and a non-compiled-language entry to skip.
+# (No CMake tree exists yet -- this is the fixture the brief prescribes.)
+COMPILE_COMMANDS_SNIPPET = '''\
+[
+  {"directory": "/b", "file": "/src/foo.c",
+   "command": "cc -DNDEBUG -O2 -fwrapv -mmacosx-version-min=11.0 -c /src/foo.c -o foo.o"},
+  {"directory": "/b", "file": "/src/bar.cpp",
+   "arguments": ["c++", "-O2", "-fwrapv", "-std=c++17", "-c", "/src/bar.cpp", "-o", "bar.o"]},
+  {"directory": "/b", "file": "/src/baz.F",
+   "command": "gfortran -O2 -fwrapv -c /src/baz.F -o baz.o"},
+  {"directory": "/b", "file": "/src/skip.s", "command": "as /src/skip.s"}
+]
+'''
+
+def test_capture_flag_manifest_cmake():
+    m = capture_flag_manifest("/b", reader=fake_reader({"compile_commands.json": COMPILE_COMMANDS_SNIPPET}))
+    assert m["source"] == "cmake"
+    assert m["c"]["opt"] == "O2"
+    assert m["c"]["wrapv"] is True
+    assert m["c"]["min_macos"] == "11.0"
+    assert m["c"]["ndebug"] is True
+    assert m["cxx"]["std"] == "c++17"     # the "arguments" (list) spelling works too
+    assert m["f"]["opt"] == "O2"          # .F (uppercase) grouped as fortran
+
+def test_capture_flag_manifest_config_status_wins_over_compile_commands():
+    # Precedence: an autotools tree that ALSO carries a stray compile_commands.json
+    # (a Stage-1 CMake experiment run inside it) still reports the autotools flags.
+    m = capture_flag_manifest("/b", reader=fake_reader({
+        "config.status": CONFIG_STATUS_SNIPPET,
+        "compile_commands.json": '[{"directory": "/b", "file": "/src/x.c", "command": "cc -O0 -c /src/x.c"}]',
+    }))
+    assert m["source"] == "autotools"
+    assert m["c"]["opt"] == "O2"
+
+def test_capture_flag_manifest_unknown_when_neither_exists():
+    assert capture_flag_manifest("/b", reader=fake_reader({})) == {
+        "source": "unknown", "c": None, "cxx": None, "f": None}
+
+def test_fingerprint_build_includes_flag_manifest(tmp_path):
+    # Wiring + the DEFAULT (real file) reader: a config.status in the tree surfaces
+    # as the top-level "flags" block of the fingerprint.
+    build_dir = str(tmp_path)
+    _touch(os.path.join(build_dir, "config.status"), CONFIG_STATUS_SNIPPET)
+    fp = fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path({}), build_id="t")
+    assert fp["flags"]["source"] == "autotools"
+    assert fp["flags"]["c"]["opt"] == "O2"
+    assert fp["flags"]["c"]["wrapv"] is True
+
+def test_fingerprint_build_flags_unknown_on_bare_tree(tmp_path):
+    # No config.status / compile_commands.json (every pre-existing tmp_path test's
+    # shape): the flags block degrades to source=unknown, never a crash.
+    fp = fingerprint_build(str(tmp_path), roots={}, runner=fake_runner_by_path({}), build_id="t")
+    assert fp["flags"] == {"source": "unknown", "c": None, "cxx": None, "f": None}

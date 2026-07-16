@@ -55,6 +55,27 @@ def diff_fingerprints(base, cand):
         if base["generated"][name] != cand["generated"][name]:
             out.append(f"generated file changed: {name}")
 
+    # Compiler-flag facts, per language. The `source` label (autotools vs cmake)
+    # is deliberately NOT compared -- flipping it is the migration itself; only
+    # the semantic codegen facts matter. .get(): fingerprints captured before
+    # the flag manifest existed lack the block entirely -- two old fingerprints
+    # diff clean, but a language present on one side only is a difference (a
+    # pre-manifest candidate must not silently skip the flag check).
+    bflags = base.get("flags") or {}
+    cflags = cand.get("flags") or {}
+    for lang in ("c", "cxx", "f"):
+        b, c = bflags.get(lang), cflags.get(lang)
+        if b is None and c is None:
+            continue
+        if c is None:
+            out.append(f"flags {lang}: facts missing in candidate")
+        elif b is None:
+            out.append(f"flags {lang}: facts extra in candidate")
+        elif b != c:
+            changed = sorted(k for k in set(b) | set(c) if b.get(k) != c.get(k))
+            out.append(f"flags {lang}: " + ", ".join(
+                f"{k} {b.get(k)!r} -> {c.get(k)!r}" for k in changed))
+
     return {"ok": not out, "differences": out}
 
 

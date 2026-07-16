@@ -20,11 +20,14 @@ stay `minos 11.0 / sdk 11.0` — the anti-SIGTRAP fix) and the link shape. Plus:
 manifest hash over every compiled macro `.bin` path (presence, not content — cheap, and enough to
 catch a module's macros silently vanishing from a build).
 
-**Caveat — pure code-generation flag changes are invisible to this harness.** A dropped `-fwrapv`,
-an `-O2`→`-O0` slip, or a missing OpenMP flag do **NOT** alter the exported symbol set, the link
-shape, or the `LC_BUILD_VERSION` stamp — the fingerprint comes out byte-identical and this tool
-reports "PARITY OK" even though the generated code changed underneath. That class of regression is
-caught only by the manual `.tst` behavior gate below, never by this tool.
+Plus the **compiler-flag manifest**: the effective per-language (C / C++ / Fortran) codegen facts —
+optimization level (last `-O<x>` wins), `-fwrapv`, `-mmacosx-version-min`, OpenMP, `-DNDEBUG`,
+`-std=` — read from `config.status` (autotools) or `compile_commands.json` (CMake) and compared
+*semantically*, so a dropped `-fwrapv` or an `-O2`→`-O0` slip fails parity even though it moves no
+symbol, link edge, or SDK stamp (exactly the regression that once sat green for days; fixed in
+`516c57573cc`). The `source` label itself is deliberately not compared — autotools→cmake is the
+migration. **Known limitation (v1):** only the GLOBAL per-language flags are captured; per-TU
+overrides (e.g. `differential_equations` forcing `colnew.f` to `-O0` on macOS) are invisible.
 
 ## Scope
 Stage 0 fingerprints **dylibs, executables, and generated files** only. **Jars are deliberately

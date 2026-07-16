@@ -68,3 +68,17 @@ def test_sensitivity_tmp_leak_is_caught():
     victim = sorted(mutated["dylibs"])[0]
     mutated["dylibs"][victim]["tmp_leak"] = True         # a reboot time-bomb sneaks in
     assert diff_fingerprints(base, mutated)["ok"] is False
+
+
+def test_sensitivity_wrapv_drop_is_caught():
+    # THE codegen blind spot the flag manifest closes: -fwrapv drops out of the C
+    # flags and NOTHING about symbols/link/stamp moves -- the exact class that sat
+    # green for days (fixed in 516c57573cc). Must now fail parity, naming wrapv.
+    base = _capture()
+    assert base["flags"]["source"] == "autotools"
+    assert base["flags"]["c"], "real tree must yield C flag facts"
+    mutated = copy.deepcopy(base)
+    mutated["flags"]["c"]["wrapv"] = False
+    r = diff_fingerprints(base, mutated)
+    assert r["ok"] is False
+    assert any("flags c" in d and "wrapv" in d for d in r["differences"])

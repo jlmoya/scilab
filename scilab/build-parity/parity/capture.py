@@ -2,11 +2,12 @@
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 
 from parity.fingerprint import (parse_nm, parse_otool_libs, parse_build_version,
-                                normalize_version, normalize_path)
+                                parse_flag_facts, normalize_version, normalize_path)
 
 GENERATED_FILES = [
     "etc/classpath.xml",
@@ -23,6 +24,57 @@ MACRO_BIN_MANIFEST_KEY = "macros/*.bin (manifest)"
 
 def _subprocess_runner(cmd):
     return subprocess.run(cmd, capture_output=True, text=True, check=False).stdout
+
+
+def _file_reader(path):
+    try:
+        with open(path, "r", errors="replace") as f:
+            return f.read()
+    except OSError:
+        return None
+
+
+# config.status spells the per-language flags as S["SCI_CFLAGS"]="..." lines.
+_SCI_FLAG_VARS = {"c": "SCI_CFLAGS", "cxx": "SCI_CXXFLAGS", "f": "SCI_FFLAGS"}
+# compile_commands.json groups by source-file extension (lowercased first).
+_CMAKE_EXT_LANG = {".c": "c", ".cc": "cxx", ".cpp": "cxx", ".cxx": "cxx",
+                   ".f": "f", ".f90": "f", ".f95": "f"}
+
+
+def capture_flag_manifest(build_dir, reader=_file_reader):
+    """Effective per-language compiler-flag facts: {"source", "c", "cxx", "f"}.
+
+    Closes the harness's codegen blind spot: a dropped -fwrapv or an -O2->-O0
+    slip changes no exported symbol, link edge, or SDK stamp, so the binary
+    fingerprint stayed green while every C file compiled unoptimized (the
+    regression fixed in 516c57573cc). v1 captures the GLOBAL per-language
+    flags only -- known limitation: per-TU overrides (e.g. differential_equations
+    forcing colnew.f to -O0 on macOS) are invisible here.
+
+    `reader(path) -> str | None` is injected for unit tests, mirroring the
+    `runner` injection of the fingerprint functions.
+    """
+    text = reader(os.path.join(build_dir, "config.status"))
+    if text is not None:
+        manifest = {"source": "autotools"}
+        for lang, var in _SCI_FLAG_VARS.items():
+            m = re.search(r'S\["%s"\]="([^"]*)"' % var, text)
+            manifest[lang] = parse_flag_facts(m.group(1)) if m else None
+        return manifest
+
+    text = reader(os.path.join(build_dir, "compile_commands.json"))
+    if text is not None:
+        manifest = {"source": "cmake", "c": None, "cxx": None, "f": None}
+        for entry in json.loads(text):
+            lang = _CMAKE_EXT_LANG.get(os.path.splitext(entry.get("file", ""))[1].lower())
+            if lang is None or manifest[lang] is not None:
+                continue   # one representative TU per language (global facts, v1)
+            cmd = entry.get("command") or " ".join(entry.get("arguments", []))
+            if cmd:
+                manifest[lang] = parse_flag_facts(cmd)
+        return manifest
+
+    return {"source": "unknown", "c": None, "cxx": None, "f": None}
 
 
 def _normalize_entry(entry, roots):
@@ -100,7 +152,8 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     generated[MACRO_BIN_MANIFEST_KEY] = hashlib.sha256(manifest.encode("utf-8")).hexdigest()
 
     return {"build_id": build_id, "executables": executables,
-            "dylibs": dylibs, "generated": generated}
+            "dylibs": dylibs, "generated": generated,
+            "flags": capture_flag_manifest(build_dir)}
 
 
 def _default_roots(build_dir):
@@ -125,7 +178,7 @@ def _main(argv):
     with open(out, "w") as f:
         json.dump(fp, f, indent=2, sort_keys=True)
     print(f"captured {len(fp['dylibs'])} dylibs, {len(fp['executables'])} executables, "
-          f"{len(fp['generated'])} generated files -> {out}")
+          f"{len(fp['generated'])} generated files, flags[{fp['flags']['source']}] -> {out}")
     return 0
 
 

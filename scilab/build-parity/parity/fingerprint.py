@@ -61,6 +61,40 @@ def parse_build_version(output):
     return {"minos": minos, "sdk": sdk}
 
 
+# -O<level> only: anchored + case-sensitive so "-o foo.o" (the output flag) and
+# "-ObjC" never match; the empty suffix is bare "-O" (which gcc/clang treat as -O1).
+_OPT_TOKEN = re.compile(r"^-O([0-9a-z]*)$")
+
+
+def parse_flag_facts(flagstring):
+    """Compiler-flag string (or full compile command) -> semantic codegen facts.
+
+    Semantic, NOT a raw string: autotools and CMake spell equivalent flag lines
+    differently (order/duplicates/spelling), so a raw-string compare would fail
+    parity on the migration itself. Only the facts that change generated code
+    are extracted. The LAST -O<x> token wins (a trailing -O0 downgrade overrides
+    an earlier -O2); no -O token at all means the compiler default, -O0.
+    """
+    facts = {"opt": "O0", "wrapv": False, "min_macos": None,
+             "openmp": False, "ndebug": False, "std": None}
+    for tok in flagstring.split():
+        m = _OPT_TOKEN.match(tok)
+        if m:
+            facts["opt"] = "O" + (m.group(1) or "1")   # bare -O means -O1
+        elif tok == "-fwrapv":
+            facts["wrapv"] = True
+        elif tok.startswith("-mmacosx-version-min="):
+            facts["min_macos"] = tok.split("=", 1)[1]
+        elif tok == "-fopenmp" or tok.startswith("-fopenmp="):
+            # Token-wise, so the clang "-Xpreprocessor -fopenmp" spelling counts too.
+            facts["openmp"] = True
+        elif tok == "-DNDEBUG":
+            facts["ndebug"] = True
+        elif tok.startswith("-std="):
+            facts["std"] = tok.split("=", 1)[1]
+    return facts
+
+
 _VERSION_TOKEN = re.compile(r"\.\d{4}\.")
 
 

@@ -111,6 +111,59 @@ def test_parse_build_version():
 def test_parse_build_version_absent():
     assert parse_build_version("no build version here") == {"minos": None, "sdk": None}
 
+from parity.fingerprint import parse_flag_facts
+
+# THE fault-injection pair — the exact regression this manifest exists to catch
+# (fixed in 516c57573cc): every C file compiled -O0 / no -fwrapv for days while
+# the harness sat green, because codegen-only flag drift moves no symbol, link
+# edge, or SDK stamp. REGRESSED is the real pre-fix SCI_CFLAGS; CORRECT is the
+# real post-fix value (verified against config.status 2026-07-15).
+REGRESSED_CFLAGS = ("-DNDEBUG -mmacosx-version-min=11.0 "
+                    "-Werror=implicit -Werror=incompatible-pointer-types")
+CORRECT_CFLAGS = ("-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0 -fno-stack-protector "
+                  "-Wall -Wpedantic -Werror=implicit -Werror=incompatible-pointer-types")
+
+def test_parse_flag_facts_regressed_cflags():
+    facts = parse_flag_facts(REGRESSED_CFLAGS)
+    assert facts["opt"] == "O0"          # no -O token at all => compiler default, -O0
+    assert facts["wrapv"] is False
+    assert facts["min_macos"] == "11.0"
+    assert facts["ndebug"] is True
+
+def test_parse_flag_facts_correct_cflags():
+    facts = parse_flag_facts(CORRECT_CFLAGS)
+    assert facts["opt"] == "O2"
+    assert facts["wrapv"] is True
+    assert facts["min_macos"] == "11.0"
+    assert facts["ndebug"] is True
+    assert facts["openmp"] is False
+    assert facts["std"] is None
+
+def test_parse_flag_facts_last_opt_wins():
+    # The per-TU downgrade shape (differential_equations appends -O0 after the
+    # global -O2 for colnew.f on macOS): the LAST -O token is the effective one.
+    assert parse_flag_facts("-O2 -g -O0")["opt"] == "O0"
+    assert parse_flag_facts("-O0 -O2")["opt"] == "O2"
+
+def test_parse_flag_facts_openmp_spellings():
+    assert parse_flag_facts("-fopenmp")["openmp"] is True
+    # clang spelling: -Xpreprocessor -fopenmp -- the -fopenmp token still appears.
+    assert parse_flag_facts("-Xpreprocessor -fopenmp")["openmp"] is True
+    assert parse_flag_facts("-O2 -fwrapv")["openmp"] is False
+
+def test_parse_flag_facts_std():
+    assert parse_flag_facts("-std=gnu23 -O2")["std"] == "gnu23"
+    assert parse_flag_facts("-std=c++17")["std"] == "c++17"
+
+def test_parse_flag_facts_empty():
+    assert parse_flag_facts("") == {"opt": "O0", "wrapv": False, "min_macos": None,
+                                    "openmp": False, "ndebug": False, "std": None}
+
+def test_parse_flag_facts_ignores_lowercase_output_flag():
+    # The cmake path feeds a FULL compile command in; "-o foo.o" (lowercase, the
+    # output flag) must not be mistaken for an optimization level.
+    assert parse_flag_facts("cc -c foo.c -o foo.o")["opt"] == "O0"
+
 from parity.fingerprint import normalize_version, normalize_path
 
 def test_normalize_version():
