@@ -311,12 +311,44 @@ a CMake post-build target through both stages. Say this in the POMs so nobody tr
 
 ---
 
-## 10. Immediate next step
+## 10. Progress
 
-Write and execute the **Stage 0 execution plan** (the parity harness) — it is the one piece that is
-fully concrete today (enumerate artifacts, capture symbol manifests, diff), and it is the
-prerequisite that makes every later stage provable. Its first proof is fault injection: delete an
-exported symbol or downgrade the SDK stamp, and watch the harness go red. A stripped `-fwrapv` or an
-`-O` change does **NOT** move the fingerprint — it touches neither the exported symbol set, the link
-shape, nor `LC_BUILD_VERSION` — so the harness cannot catch it; that class of regression is caught
-only by the manual `.tst` behavior gate.
+- **Stage 0 parity harness — DONE** (`scilab/build-parity/`, pushed). Symbols/link/SDK-stamp/
+  generated fingerprint + diff, fault-injection proven.
+- **Compiler-flag manifest — DONE.** Semantic per-language facts (opt/wrapv/min_macos/openmp/std)
+  from `config.status` (autotools) or `compile_commands.json` (CMake); the diff ignores the
+  autotools→cmake `source` label and compares facts. Closes the codegen blind spot. *(Building it
+  surfaced a real regression: all C had silently reverted to `-O0`/no-`-fwrapv` since the 2026-07-10
+  autotools regen — autoconf 2.72 appends `-std=gnu23` to `CC`, breaking the `case "$CC"` match.
+  Fixed in `516c57573cc`.)*
+- **Beachhead `sound` — DONE + parity-proven** (`scilab/modules/sound/CMakeLists.txt`, `38e81564f3f`).
+  First real make→CMake module. CMake-built `libscisound.2027.dylib` dropped into `.libs/` →
+  harness PARITY OK (same 3 symbols, libSystem-only deps, install_name), flag facts `O2/wrapv/11.0`,
+  `beep()` works. Zero autotools changes; hybrid coexistence confirmed.
+
+### Beachhead learnings (apply when rolling out modules 2..N and building the top-level CMake)
+
+- **`-undefined dynamic_lookup -no_fixup_chains`** is load-bearing for a dlopen-only gateway — it is
+  why the gateway's deps stay libSystem-only (its unresolved Scilab symbols bind at dlopen time).
+  A module that is *linked* by others instead needs real inter-module deps; the harness's dep-shape
+  check is the safety net.
+- **Force the filename** with `OUTPUT_NAME "sci<m>.2027"` + `SUFFIX ".dylib"` — CMake's `VERSION`
+  would emit `libsci<m>.2027.0.0.dylib`, which mis-keys the harness (`\.\d{4}\.` tokenizer). Create
+  the `libsci<m>.dylib` symlink; drop the *real* file into `.libs/` (the harness skips symlinks and
+  the runtime dlopen fallback hardcodes that dir).
+- **Set flags explicitly** (never `CMAKE_BUILD_TYPE`); `CMAKE_INSTALL_NAME_DIR /usr/local/lib/scilab`
+  + `BUILD_WITH_INSTALL_NAME_DIR TRUE` (CMake defaults to `@rpath` → parity fail); keep the C link a
+  C driver (a stray C++ TU/`LINKER_LANGUAGE CXX` adds `libc++` → parity fail).
+- **Roll-out items to fix at the superbuild stage** (not per-module): env `CFLAGS`/`LDFLAGS` leak
+  into `compile_commands`/`link.txt` (ordering differs from autotools — decide scrub-vs-absorb;
+  today it *protects* `-O2/-fwrapv` because CMake puts env flags first); hoist the hardcoded version
+  literal + Homebrew paths (discover, don't hardcode); `-DPIC` (libtool sets it, CMake doesn't —
+  inert unless a source `#ifdef PIC`s); automate the CMake-module flag-fact capture into the harness
+  so per-module flag drift is watched, not manual.
+
+## 11. Immediate next step
+
+Roll out the pattern from `sound` to the next modules along the dependency graph — start with a
+second pure-native leaf that has ONE external dep (`parallel` → OpenMP, exercising
+`find_package`), then a module with an `-algo` convenience lib (`coverage`), each proven at parity.
+Then stand up the top-level CMake that drives the per-module builds + the Ant bridge (Stage 1e).
