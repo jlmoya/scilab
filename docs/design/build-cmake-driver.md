@@ -98,6 +98,16 @@ without `clean` may *not* relink when the `.la` targets are already newer than t
   parity fingerprint + re-baseline (rpath is harness-blind today — a dropped/spurious rpath passes
   PARITY OK; jvm/JDK modules were hand-checked), and hoist the **JAVA_HOME** discovery from
   `modules/jvm/CMakeLists.txt` into the shared driver variable (`SCILAB_JAVA_HOME`).
+- **Modules that build no standalone dylib:** `javasci` and the ~21 convenience-lib-only / core
+  modules (`elementary_functions`, `string`, `io`, `linear_algebra`, …) fold their objects into the
+  `libscilab` aggregate rather than a `libsci<m>.dylib`, so they are not Stage-1e targets — they
+  migrate with the aggregate in Stage 1f. (Confirmed against the 64-dylib baseline in
+  `cmake/stage1e-manifest.md`.)
+- **Machine-specific absolute paths:** the per-module calls transcribe `config.status`-faithful
+  absolute paths (the jdk-25 lib dir, the Xcode SDK, Homebrew Cellar dirs incl. slint's versioned
+  `pcre2`, the from-source `xlnt-prefix`). These are parity-neutral (headers/`-L` only) but pin the
+  CMake build + native CI gate to this machine's layout; the de-autotools driver should derive them
+  all from the active toolchain (`xcrun --show-sdk-path`, `brew --prefix`, the configured JDK).
 - **Generated headers (spec §11):** `machine.h`/`version.h` stay `configure`-generated; CMake
   `-I`s at them. Porting configure's ~186 feature probes to CMake is its own stage, provable by
   the same harness (both headers are fingerprinted).
