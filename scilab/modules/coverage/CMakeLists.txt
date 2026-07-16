@@ -1,101 +1,41 @@
-# CMake build for the `coverage` module — Stage-1 make→CMake roll-out #3, the
-# C++/convenience-lib/multi-dep exemplar (the DOMINANT Scilab module shape).
+# CMake build for the `coverage` module — migrated onto the shared scilab_module()
+# helper (cmake/ScilabModule.cmake); built from the top-level scilab/CMakeLists.txt
+# driver, no longer a standalone project. HYBRID COEXISTENCE: this file is
+# invisible to automake; the autotools coverage is always recoverable with
+# `make -C modules/coverage`.
 #
-# HYBRID COEXISTENCE: the rest of the tree stays autotools; this standalone
-# project builds ONLY libscicoverage and its dylib is dropped into
-# modules/coverage/.libs/ in place of the autotools one. Unlike sound/parallel
-# (dlopen-only, ENGINE_LIBS_DYNAMIC_LOAD), `coverage` is an ENGINE_LIBS member:
-# it is LINKED INTO libscilab / libscilab-cli and the scilab-*-bin executables
-# (they record it as a load-command dependency). The drop-in is still safe with
-# no relink of anything else, because that dependency is recorded by install_name
-# (/usr/local/lib/scilab/libscicoverage.2027.dylib) and at runtime the launcher's
-# DYLD paths resolve the leaf name to modules/coverage/.libs/ — so replacing the
-# file there replaces the library for everyone that links it. (This install_name
-# + runtime-path argument, NOT "nothing links it", is what makes the hybrid
-# drop-in safe for the engine-linked modules that are most of the roll-out.)
-# This file is invisible to automake; the autotools coverage is always
-# recoverable with `make -C modules/coverage`.
+# LINKING CLASS (modules/Makefile.am): ENGINE_LIBS — linked into libscilab /
+# libscilab-cli and the scilab-*-bin executables. The drop-in swap is STILL
+# relink-free: the recorded dependency is an install_name
+# (/usr/local/lib/scilab/libscicoverage.2027.dylib) and at runtime the
+# launcher's DYLD paths resolve the leaf name to modules/coverage/.libs/ —
+# replacing the file there replaces the library for everything that links it.
 #
-# PARITY CONTRACT (arbitrated by build-parity/): the output must be
-# behaviorally identical to the autotools build —
+# PARITY CONTRACT (arbitrated by build-parity/):
 #   file:          libscicoverage.2027.dylib (+ libscicoverage.dylib symlink)
 #   install_name:  /usr/local/lib/scilab/libscicoverage.2027.dylib
 #   exports:       exactly 158 symbols (C++-mangled; incl. algo-only classes
-#                  like coverage::URLEncoder::pairs — see the OBJECT-lib note)
+#                  like coverage::URLEncoder::pairs — the helper's OBJECT lib
+#                  folds ALL algo objects in, like the noinst convenience .la)
 #   deps:          /usr/lib/libxml2.2.dylib   /usr/lib/libz.1.dylib
 #                  /usr/lib/libicucore.A.dylib /usr/lib/libc++.1.dylib
 #                  /usr/lib/libSystem.B.dylib
-# Every compiler/linker fact below is transcribed from the CONFIGURED autotools
-# build (modules/coverage/Makefile), not invented here.
 #
-# TWO patterns proven here for the whole roll-out:
-#   (A) automake's noinst convenience lib (libscicoverage-algo.la) becomes a
-#       CMake OBJECT library folded into the gateway dylib — NOT a STATIC lib
-#       (see the add_library block below for why).
-#   (B) system libs that live in /usr/lib (libxml2/libz/libicucore) are linked
-#       explicitly (-lxml2 -lz -licucore), NOT find_package'd — FindLibXml2
-#       can resolve to Homebrew's keg (/opt/homebrew/opt/libxml2/...), which
-#       changes the recorded dep path and links a different libxml2 than the
-#       shipping build. The SDK sysroot resolves the plain -l to the stubs
-#       whose install_names are the /usr/lib/... paths the baseline records.
-#
-# Build:    cmake -S . -B build-cmake && cmake --build build-cmake
-# Drop-in:  cmake --build build-cmake --target drop-in
-# Verify:   cd ../../build-parity && ./capture.sh .. /tmp/cand.json cand \
-#           && ./diff.sh baseline-autotools.json /tmp/cand.json
+# Sources: the 8 COVERAGE_CXX_SOURCES (the noinst algo lib) + the 8
+# GATEWAY_CXX_SOURCES, verbatim from Makefile.am.
+# SYSTEM_LIBS: XML_LIBS = -lxml2 -lz -licucore as plain -l names resolved in
+# the SDK sysroot — NOT find_package'd (FindLibXml2 can resolve to the Homebrew
+# keg, changing the recorded dep path vs the /usr/lib baseline). -lpthread/-lm
+# fold into libSystem; libc++ comes from the C++ link driver (LANG CXX).
+# EXTRA_INCLUDES beyond SCILAB_DEFAULT_INCLUDES: console, string,
+# fileio/{includes,src/c}, threads — plus XML_FLAGS' SDK usr/include (the SDK
+# ships the libxml/ headers directly under usr/include; listed before the
+# Homebrew dirs, preserving the autotools resolution). MACHINE-CONFIG-SPECIFIC:
+# an Xcode.app SDK path — a CLT-only machine differs; the future de-autotools
+# driver derives it from the active SDK (`xcrun --show-sdk-path`).
 
-cmake_minimum_required(VERSION 3.20)
-
-# Autotools compiles with CXX="g++ -arch arm64 -std=c++17" — on this platform
-# /usr/bin/g++ IS Apple clang++. Default to the same driver (honor an explicit
-# -DCMAKE_CXX_COMPILER= or $CXX override). The linker language being C++ is
-# load-bearing: the C++ driver links libc++ — one of the baseline's five deps.
-if(NOT DEFINED CMAKE_CXX_COMPILER AND NOT DEFINED ENV{CXX})
-    set(CMAKE_CXX_COMPILER g++)
-endif()
-set(CMAKE_OSX_ARCHITECTURES arm64)        # CXX's -arch arm64
-set(CMAKE_OSX_DEPLOYMENT_TARGET 11.0)     # -mmacosx-version-min=11.0 (compile + link)
-
-project(scilab-coverage CXX)
-
-# The parity harness reads the compile command from compile_commands.json to
-# verify the semantic flag facts (opt/wrapv/min_macos/ndebug/std).
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# Root of the Scilab source tree (this file lives in modules/coverage/).
-# Overridable so an out-of-tree checkout can still point at a configured tree
-# (machine.h/version.h below are generated by configure, not by us).
-set(SCILAB_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../.." CACHE PATH
-    "Scilab source tree root (must be autotools-configured: modules/core/includes/machine.h)")
-get_filename_component(SCILAB_SOURCE_DIR "${SCILAB_SOURCE_DIR}" ABSOLUTE)
-if(NOT EXISTS "${SCILAB_SOURCE_DIR}/modules/core/includes/machine.h")
-    message(FATAL_ERROR "SCILAB_SOURCE_DIR (${SCILAB_SOURCE_DIR}) is not a configured "
-                        "Scilab tree: modules/core/includes/machine.h not found. "
-                        "Run ./configure there first (machine.h is configure-generated).")
-endif()
-
-# libtool: -version-number $(SCILAB_LIBRARY_VERSION) with 2027:0:0 names the
-# file libscicoverage.2027.dylib and stamps Mach-O compat/current 2028.0.0
-# (darwin libtool uses major+minor+1). The 4-digit token in the FILENAME is
-# what the parity harness keys on (libscicoverage.VER.dylib) — it must be
-# exactly ".2027." with nothing after it before ".dylib".
-set(SCILAB_LIBRARY_VERSION_MAJOR 2027)
-math(EXPR _macho_version "${SCILAB_LIBRARY_VERSION_MAJOR} + 1")
-
-# PATTERN (A) — the automake convenience lib as an OBJECT library.
-#
-# Makefile.am: noinst_LTLIBRARIES = libscicoverage-algo.la, folded into the
-# gateway via libscicoverage_la_LIBADD. A libtool convenience lib means
-# "compile these sources, fold ALL their objects into whatever links me" —
-# the exact CMake equivalent is an OBJECT library consumed through
-# $<TARGET_OBJECTS:...>. Do NOT model it as add_library(... STATIC) + link:
-# a static archive only pulls members that resolve an outstanding reference,
-# so algo-only symbols nothing in the gateway references (URLEncoder::pairs,
-# CoverageModule::Load, ...) would be silently dropped — and the autotools
-# baseline exports ALL 158 symbols. OBJECT folds every object in
-# unconditionally, exactly like the convenience .la. This is the template for
-# every algo-lib module in the roll-out.
-add_library(scicoverage-algo OBJECT
+scilab_module(coverage
+  ALGO_SOURCES
     src/cpp/CoverModule.cpp
     src/cpp/InstrumentVisitor.cpp
     src/cpp/CoverResult.cpp
@@ -103,16 +43,8 @@ add_library(scicoverage-algo OBJECT
     src/cpp/CovHTMLCodePrinter.cpp
     src/cpp/CoverMacroInfo.cpp
     src/cpp/URLEncoder.cpp
-    src/cpp/CoverModule_interface.cpp)
-
-# No-op on darwin (PIC is the compiler default) but required on ELF targets
-# whenever object-lib objects fold into a SHARED lib — set it so the template
-# copies correctly to any future non-macOS roll-out.
-set_target_properties(scicoverage-algo PROPERTIES POSITION_INDEPENDENT_CODE ON)
-
-# The gateway dylib: 8 gateway sources + every algo object folded in.
-add_library(scicoverage SHARED
-    $<TARGET_OBJECTS:scicoverage-algo>
+    src/cpp/CoverModule_interface.cpp
+  GATEWAY_SOURCES
     sci_gateway/cpp/sci_covStart.cpp
     sci_gateway/cpp/sci_covWrite.cpp
     sci_gateway/cpp/sci_covStop.cpp
@@ -120,141 +52,15 @@ add_library(scicoverage SHARED
     sci_gateway/cpp/sci_profileGetInfo.cpp
     sci_gateway/cpp/sci_profileEnable.cpp
     sci_gateway/cpp/sci_profileDisable.cpp
-    sci_gateway/cpp/coverage_gw.cpp)
-
-# Both targets compile with IDENTICAL defines/includes/flags — automake says so
-# verbatim: libscicoverage_algo_la_CPPFLAGS = $(libscicoverage_la_CPPFLAGS).
-foreach(_tgt IN ITEMS scicoverage-algo scicoverage)
-    # DEFS from the autotools compile line.
-    target_compile_definitions(${_tgt} PRIVATE HAVE_CONFIG_H)
-
-    # Include order mirrors the autotools compile line exactly:
-    # $(DEFAULT_INCLUDES) $(libscicoverage_la_CPPFLAGS) $(CPPFLAGS). The
-    # Makefile repeats modules/core/includes and modules/string/includes inside
-    # la_CPPFLAGS; CMake de-duplicates — same preprocessor result.
-    target_include_directories(${_tgt} PRIVATE
-        # DEFAULT_INCLUDES: -I. -I$(top_builddir)/modules/core/includes
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${SCILAB_SOURCE_DIR}/modules/core/includes  # configure-GENERATED machine.h/version.h
-        # libscicoverage_la_CPPFLAGS:
-        ${CMAKE_CURRENT_SOURCE_DIR}/includes
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/cpp
-        ${SCILAB_SOURCE_DIR}/modules/ast/includes/ast
-        ${SCILAB_SOURCE_DIR}/modules/ast/includes/exps
-        ${SCILAB_SOURCE_DIR}/modules/ast/includes/operations
-        ${SCILAB_SOURCE_DIR}/modules/ast/includes/parse
-        ${SCILAB_SOURCE_DIR}/modules/ast/includes/symbol
-        ${SCILAB_SOURCE_DIR}/modules/ast/includes/system_env
-        ${SCILAB_SOURCE_DIR}/modules/ast/includes/types
-        ${SCILAB_SOURCE_DIR}/modules/console/includes
-        ${SCILAB_SOURCE_DIR}/modules/api_scilab/includes
-        ${SCILAB_SOURCE_DIR}/modules/localization/includes
-        ${SCILAB_SOURCE_DIR}/modules/output_stream/includes
-        ${SCILAB_SOURCE_DIR}/modules/string/includes
-        ${SCILAB_SOURCE_DIR}/modules/fileio/includes
-        ${SCILAB_SOURCE_DIR}/modules/fileio/src/c
-        ${SCILAB_SOURCE_DIR}/modules/dynamic_link/includes
-        ${SCILAB_SOURCE_DIR}/modules/threads/includes
-        # XML_FLAGS, transcribed verbatim from the configured Makefile. The SDK
-        # ships the libxml/ headers directly under usr/include (the autotools
-        # .deps files prove that is where <libxml/xmlreader.h> resolved), and
-        # listing it BEFORE the Homebrew dirs below preserves that resolution.
-        # MACHINE-CONFIG-SPECIFIC (this machine's configured Makefile — an
-        # Xcode.app SDK path; a CLT-only machine differs): the future top-level
-        # CMake driver derives it from the active SDK (`xcrun --show-sdk-path`)
-        # rather than hardcoding.
-        /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
-        # $(COVERAGE_FLAGS) and $(AM_CPPFLAGS)=$(SCI_CPPFLAGS) are both empty in
-        # the configured Makefile — nothing to carry.
-        # CPPFLAGS (configure-detected Homebrew paths; also machine-specific —
-        # the future driver derives these from the toolchain, not hardcoded):
-        /opt/homebrew/include
-        /opt/homebrew/opt/libomp/include
-        /opt/homebrew/opt/libarchive/include)
-
-    # CXX's -std=c++17, then SCI_CXXFLAGS VERBATIM from the configured Makefile
-    # (do NOT replace with CMAKE_BUILD_TYPE presets — parity is on these exact
-    # semantic facts: O2 + fwrapv + min_macos 11.0 + NDEBUG). NOTE two
-    # deliberate differences from the C modules (sound/parallel):
-    #   - SCI_CXXFLAGS has NO -Werror=implicit / -Werror=incompatible-pointer-types
-    #     (those are C-only diagnostics; the C++ flag set omits them);
-    #   - this module's CXXFLAGS is EMPTY (no trailing openssl -I like CFLAGS had).
-    # Do NOT add -fvisibility=hidden: autotools didn't, and it would drop
-    # exported symbols (the baseline records all 158).
-    target_compile_options(${_tgt} PRIVATE
-        -std=c++17
-        -DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0 -fno-stack-protector
-        -Wall -Wpedantic)
-
-    # Drop CMake's automatic <target>_EXPORTS define: autotools defines no such
-    # symbol (it would only matter under _MSC_VER anyway — dynlib_coverage.h).
-    # (A no-op for the OBJECT lib, which gets no such define; kept uniform in
-    # the foreach so the SHARED target — which DOES get one — is covered.)
-    set_target_properties(${_tgt} PROPERTIES DEFINE_SYMBOL "")
-endforeach()
-
-# PATTERN (B) — external system deps, linked explicitly.
-#
-# Autotools: libscicoverage_la_LIBADD = libscicoverage-algo.la $(XML_LIBS) with
-# XML_LIBS = -L<Xcode SDK>/usr/lib -lxml2 -lz -lpthread -licucore -lm. Plain
-# -l names resolve in the SDK sysroot to the system stubs, recording deps at
-# /usr/lib/libxml2.2.dylib, /usr/lib/libz.1.dylib, /usr/lib/libicucore.A.dylib
-# — exactly what the baseline pins. Deliberately NOT find_package(LibXml2):
-# with Homebrew's libxml2 installed it resolves to /opt/homebrew/opt/libxml2/...,
-# changing the dep path (parity FAIL) and the linked library. -lpthread and
-# -lm (and global LIBS=-ldl) fold into libSystem on macOS — no load command —
-# so they are omitted. libc++ comes from the C++ link driver. The autotools
-# link also carried -L dirs (the SDK's, plus configure's global LDFLAGS
-# -L/opt/homebrew/...); all are dropped here — with no -L, the plain -l names
-# can only resolve in the SDK sysroot, which is strictly safer than autotools
-# (a brew-linked libxml2/zlib in /opt/homebrew/lib cannot then shadow the
-# system libs the baseline pins).
-target_link_libraries(scicoverage PRIVATE xml2 z icucore)
-
-# libtool's darwin allow_undefined_flag, VERBATIM: the gateways call Scilab
-# API symbols (types::Function, Scierror, ...) that live in the hosting
-# process — they resolve when dyld loads this dylib (as an engine dependency at
-# process launch), never at static link time. This is precisely why the
-# autotools dylib's deps stop at the five system libs.
-# -no_fixup_chains rides along (dynamic_lookup is incompatible with chained
-# fixups; libtool disables them, and it changes the dyld load commands).
-target_link_options(scicoverage PRIVATE
-    "LINKER:-undefined,dynamic_lookup"
-    "LINKER:-no_fixup_chains"
-    # SCI_LDFLAGS rpaths — libtool stamped these two LC_RPATHs into the dylib.
-    "LINKER:-rpath,/usr/lib"
-    "LINKER:-rpath,/opt/homebrew/opt/gcc/lib/gcc/current")
-
-set_target_properties(scicoverage PROPERTIES
-    # EXACT filename libscicoverage.2027.dylib: version baked into OUTPUT_NAME.
-    # Deliberately NOT CMake VERSION/SOVERSION — those would name it
-    # libscicoverage.2027.0.0.dylib, which breaks the harness key.
-    OUTPUT_NAME "scicoverage.${SCILAB_LIBRARY_VERSION_MAJOR}"
-    SUFFIX ".dylib"
-    # libtool's `-rpath $(pkglibdir)` == absolute install_name, not @rpath.
-    INSTALL_NAME_DIR "/usr/local/lib/scilab"
-    BUILD_WITH_INSTALL_NAME_DIR TRUE
-    # libtool 2027:0:0 → compat/current 2028.0.0 (harness strips these, but
-    # match them anyway for bit-level load-command fidelity).
-    MACHO_COMPATIBILITY_VERSION "${_macho_version}.0.0"
-    MACHO_CURRENT_VERSION "${_macho_version}.0.0")
-
-# libtool also leaves an unversioned symlink next to the versioned dylib.
-add_custom_command(TARGET scicoverage POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E create_symlink
-            $<TARGET_FILE_NAME:scicoverage> ${CMAKE_CURRENT_BINARY_DIR}/libscicoverage.dylib
-    COMMENT "Symlinking libscicoverage.dylib -> $<TARGET_FILE_NAME:scicoverage>")
-
-# The hybrid drop-in: put the CMake-built dylib where the runtime dlopens it
-# (modules/coverage/.libs/ — hardcoded fallback path) and where the parity
-# harness fingerprints it. A REAL copy, not a symlink: the harness skips
-# symlinked dylibs, and the autotools original must remain recoverable by
-# simply rebuilding (`make -C modules/coverage`).
-add_custom_target(drop-in
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/.libs
-    COMMAND ${CMAKE_COMMAND} -E copy
-            $<TARGET_FILE:scicoverage> ${CMAKE_CURRENT_SOURCE_DIR}/.libs/$<TARGET_FILE_NAME:scicoverage>
-    COMMAND ${CMAKE_COMMAND} -E create_symlink
-            $<TARGET_FILE_NAME:scicoverage> ${CMAKE_CURRENT_SOURCE_DIR}/.libs/libscicoverage.dylib
-    DEPENDS scicoverage
-    COMMENT "Dropping CMake-built coverage into modules/coverage/.libs/ (hybrid coexistence)")
+    sci_gateway/cpp/coverage_gw.cpp
+  LANG CXX
+  SYSTEM_LIBS xml2 z icucore
+  EXTRA_INCLUDES
+    ${SCILAB_SOURCE_DIR}/modules/console/includes
+    ${SCILAB_SOURCE_DIR}/modules/string/includes
+    ${SCILAB_SOURCE_DIR}/modules/fileio/includes
+    ${SCILAB_SOURCE_DIR}/modules/fileio/src/c
+    ${SCILAB_SOURCE_DIR}/modules/threads/includes
+    /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
+  CLASS ENGINE_LIBS
+  SYMBOLS 158)

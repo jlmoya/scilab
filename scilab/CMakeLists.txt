@@ -44,9 +44,8 @@ include(cmake/ScilabModule.cmake)
 # into its modules/<name>/.libs/.
 add_custom_target(drop-in-all)
 
-# Migrated modules — grows as batches land (Task 2 moves parallel, coverage,
-# interpolation off their standalone exemplar CMakeLists onto scilab_module();
-# later tasks add the remaining catalog).
-foreach(m sound)
+# Migrated modules — grows as batches land (all 4 parity-proven exemplars are
+# on scilab_module(); later tasks add the remaining catalog).
+foreach(m sound parallel coverage interpolation)
   add_subdirectory(modules/${m})
 endforeach()
