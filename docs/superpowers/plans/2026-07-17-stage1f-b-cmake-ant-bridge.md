@@ -158,7 +158,7 @@ def fingerprint_jar(path, opener=zipfile.ZipFile):
 - [ ] **Step 5: Run to verify pass.**
 
 Run: `cd scilab/build-parity && python3 -m pytest tests/test_jar.py -q`
-Expected: PASS (7 tests).
+Expected: PASS (6 tests).
 
 - [ ] **Step 6: Commit.**
 
