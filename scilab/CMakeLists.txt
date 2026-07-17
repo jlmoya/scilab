@@ -36,8 +36,10 @@ if(NOT CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
                       "gfortran (Homebrew gcc). Pass -DCMAKE_Fortran_COMPILER=gfortran.")
 endif()
 
-# All per-module policy, once.
+# All per-module policy, once; the aggregate (libscilab/libscilab-cli) policy
+# lives in its own helper.
 include(cmake/ScilabModule.cmake)
+include(cmake/ScilabAggregate.cmake)
 
 # Modules register their drop-in-<name> targets onto this aggregate:
 # `cmake --build build-cmake --target drop-in-all` drops every migrated dylib
@@ -123,3 +125,12 @@ foreach(m
     windows_tools)
   add_subdirectory(modules/${m})
 endforeach()
+
+# THE AGGREGATES (Stage 1f) — libscilab + libscilab-cli on scilab_aggregate():
+# fold the 21 OBJECT libs above, link the Stage-1e module dylibs + system
+# libs. modules/CMakeLists.txt is deliberately added LAST: the aggregate
+# declarations validate every FOLD_OBJECTS/LINK_MODULES name against the
+# already-declared targets, and consume SCILAB_JAVA_HOME (libjli). Their
+# drop-ins land in modules/.libs/ (drop-in-libscilab, drop-in-libscilab-cli;
+# both also ride drop-in-all).
+add_subdirectory(modules)
