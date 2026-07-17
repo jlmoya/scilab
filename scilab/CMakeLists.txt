@@ -40,6 +40,7 @@ endif()
 # lives in its own helper.
 include(cmake/ScilabModule.cmake)
 include(cmake/ScilabAggregate.cmake)
+include(cmake/ScilabJava.cmake)
 
 # Modules register their drop-in-<name> targets onto this aggregate:
 # `cmake --build build-cmake --target drop-in-all` drops every migrated dylib
@@ -227,3 +228,10 @@ scilab_executable(scilab-bin
     -lopenblas -lemutls_w -lheapt_w -lgfortran -lquadmath -ljli -ldl -pthread
     "-framework Cocoa"
   ALIAS Scilab-${SCILAB_LIBRARY_VERSION_MAJOR}.0.0)
+
+# THE JAVA JARS (Stage 1f-b) — one target wrapping the prebuildjava Ant super-build
+# (cmake/ScilabJava.cmake). Rides drop-in-all so `--target drop-in-all` now builds
+# the whole native app AND the 24 jars. Jars land in modules/<m>/jar/ (drop-in is
+# automatic). The topo-sort/Ivy stay inside Ant (Stage 2's Maven reactor's job).
+scilab_java_bridge()
+add_dependencies(drop-in-all sci-java-all)
