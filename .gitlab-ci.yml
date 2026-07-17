@@ -39,12 +39,16 @@ sanity:scripts:
     - xmllint --noout scilab/etc/jvm_options.xml
     - xmllint --noout scilab/modules/console/etc/XConfiguration-general.xml
 
-# Stage-1e CMake driver guards (docs/design/build-cmake-driver.md).
-# Shared-runner half: the driver's foreach module list, the on-disk set of
-# modules/*/CMakeLists.txt, and the stage1e manifest must stay identical (a module
-# CMakeLists added-but-not-wired, or manifest drift, fails here), and the parity
-# harness's own unit suite must stay green (it is hermetic — pure stdlib + pytest;
-# the acceptance tests self-skip without a built macOS tree).
+# Stage-1f-a CMake driver guards (docs/design/build-cmake-driver.md).
+# Shared-runner half — a cheap wiring/manifest consistency check (no Mach-O needed)
+# plus the parity harness's own unit suite. Stage 1f-a made the driver two-tier: the
+# FIRST foreach block builds the 64 baseline module dylibs (46 dirs, tracked by the
+# stage1e manifest); the SECOND builds the 21 fold-in OBJECT libs that the
+# libscilab/libscilab-cli aggregates consume. Each tier is checked against its own
+# source of truth, so a module CMakeLists added-but-not-wired, a dylib/manifest drift,
+# a fold-in built-but-not-folded (or vice versa), or a deleted aggregate/executable
+# call all fail here. The unit suite is hermetic (pure stdlib + pytest; the acceptance
+# tests self-skip without a built macOS tree).
 sanity:cmake-driver:
   stage: sanity
   image: debian:bookworm-slim
@@ -57,19 +61,39 @@ sanity:cmake-driver:
     - |
       set -e   # a multi-line item's status is its LAST line's rc; without this an
                # intermediate diff mismatch would be masked by the final `test` passing.
-      sed -n '/^foreach(m/,/^endforeach/p' CMakeLists.txt | sed 's/#.*//' | tr -s ' \t' '\n' \
-        | sed 's/)$//' | grep -vE '^$|^foreach\(m$|^add_subdirectory|^endforeach' | sort > /tmp/foreach.txt
+      # Split the driver's foreach into its two blocks (blk 1 = dylib dirs, blk 2 =
+      # fold-in dirs), tagging each module token with its block number.
+      awk '/^foreach\(m/{blk++;inb=1;next} /^endforeach/{inb=0;next} inb{sub(/#.*/,"");if($0~/add_subdirectory/)next;gsub(/\)/," ");for(i=1;i<=NF;i++)print blk,$i}' CMakeLists.txt > /tmp/blocks.txt
+      awk '$1==1{print $2}' /tmp/blocks.txt | sort > /tmp/dylib_fe.txt
+      awk '$1==2{print $2}' /tmp/blocks.txt | sort > /tmp/foldin_fe.txt
+      cat /tmp/dylib_fe.txt /tmp/foldin_fe.txt | sort > /tmp/all_fe.txt
       ls modules/*/CMakeLists.txt | sed 's|modules/||; s|/CMakeLists.txt||' | sort > /tmp/dirs.txt
       grep '^| libsci' cmake/stage1e-manifest.md | awk -F'|' '{print $3}' | tr -d ' ' | sort -u > /tmp/manifest.txt
-      diff /tmp/foreach.txt /tmp/dirs.txt
-      diff /tmp/foreach.txt /tmp/manifest.txt
+      # fold-in truth = the aggregate's _scilab_fold_objects (sci<m>-obj -> <m>)
+      sed -n '/set(_scilab_fold_objects/,/)/p' modules/CMakeLists.txt | grep -oE 'sci[a-z_]+-obj' | sed 's/^sci//; s/-obj$//' | sort > /tmp/foldset.txt
+      # A. every add_subdirectory(modules/X) has a real modules/X/CMakeLists.txt (and vice versa)
+      diff /tmp/all_fe.txt /tmp/dirs.txt
+      # B. the dylib tier is exactly the manifest's dylib dirs ...
+      diff /tmp/dylib_fe.txt /tmp/manifest.txt
+      # C. ... and the fold-in tier is exactly what the aggregates fold in
+      diff /tmp/foldin_fe.txt /tmp/foldset.txt
+      # D. the manifest still enumerates exactly the 64 baseline dylibs
       test "$(grep -c '^| libsci' cmake/stage1e-manifest.md)" = 64
+      # E. both aggregates and both executables are still declared (a deleted call would
+      #    silently shrink the native app the parity job rebuilds). Anchored to call
+      #    sites (^ + optional indent), so comment mentions of the helpers do not count.
+      test "$(grep -cE '^[[:space:]]*scilab_aggregate\(' modules/CMakeLists.txt)" = 2
+      test "$(grep -cE '^[[:space:]]*scilab_executable\(' CMakeLists.txt)" = 2
     - cd build-parity && python3 -m pytest tests/ -q
 
-# Native half — the real Stage-1e gate: build all 64 module dylibs under CMake from the
-# configured tree, drop them into .libs/, and hold them at parity with the committed
-# autotools baseline (symbols/deps/install_name) + the per-TU flag facts from
-# compile_commands.json. Any regression fails the pipeline. Needs a self-hosted macOS
+# Native half — the real Stage-1f-a gate: build the WHOLE native app under CMake from
+# the configured tree (drop-in-all now also builds the libscilab/libscilab-cli
+# aggregates + the scilab-bin/scilab-cli-bin executables), drop it all into .libs/, and
+# hold it at parity with the committed autotools baseline — symbols/deps/install_name +
+# LC_RPATH (rpath-aware since Stage 1f-a) + the per-TU flag facts from
+# compile_commands.json. The aggregate/executable/rpath coverage is automatic: they
+# ride drop-in-all and the capture fingerprints every .libs/ artifact. Any regression
+# fails the pipeline. Needs a self-hosted macOS
 # arm64 runner (shell executor) whose persistent workdir is configured + built per
 # docs/design/build-cmake-driver.md — shared gitlab.com runners can neither build nor
 # fingerprint Mach-O. Set the project variable SCILAB_NATIVE_RUNNER=1 only while such a
