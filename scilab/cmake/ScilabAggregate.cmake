@@ -189,3 +189,181 @@ function(scilab_aggregate NAME)
     add_dependencies(drop-in-all drop-in-${NAME})
   endif()
 endfunction()
+
+# -----------------------------------------------------------------------------
+# scilab_executable(<name>          # scilab-bin | scilab-cli-bin
+#   SOURCES <src>...                # modules/startup/src/cpp/scilab.cpp (both;
+#                                   # +initMPI.c only under MPI — macOS-inert)
+#   LINK <target>...                # the scilab_aggregate target, preceded by
+#                                   # any module targets the LDADD names BEFORE
+#                                   # it (scilab-bin: sciconsole scijvm
+#                                   # scicommons libscilab — libtool's dedupe
+#                                   # kept the LAST libscilab.la occurrence, so
+#                                   # console/jvm/commons genuinely precede the
+#                                   # aggregate on the baseline link line)
+#   LDADD_LIBS <item>...            # the ordered tail of the link line: module
+#                                   # targets, -l<name>, -L<dir>, -framework
+#                                   # pairs — the scilab_module SYSTEM_LIBS
+#                                   # spelling conventions apply
+#   [LDFLAGS <opt>...]              # extra link options after the two base
+#                                   # rpaths (scilab-bin: the JDK LC_RPATH)
+#   [COMPILE_DEFINITIONS <def>...]  # scilab-cli-bin: WITHOUT_GUI
+#   [EXTRA_INCLUDES <dir>...]       # scilab_bin_CPPFLAGS dirs beyond the
+#                                   # shared Scilab include base
+#   [ALIAS <name>])                 # also drop a copy under this second name
+#                                   # (scilab-bin: Scilab-<version>, the
+#                                   # macos-process-name hardlink the top-level
+#                                   # libtool wrapper was sed'd to exec)
+#
+# Creates:  <name>            executable in the top build dir
+#           drop-in-<name>    copies it into <caller-source-dir>/.libs/ (the
+#                             executables are declared at the TOP level, so
+#                             .libs/ = the autotools bin_PROGRAMS location);
+#                             registered onto drop-in-all.
+#
+# THE LINK SHAPE (ground truth: `libtool --dry-run --mode=link` on the exact
+# `make scilab-cli-bin`/`make scilab-bin` invocations, then byte-identical
+# LC_LOAD_DYLIB/LC_RPATH/LC_BUILD_VERSION verified against .libs/* — libtool
+# REWRITES the automake LDADD, so the Makefile.am order alone is NOT the truth):
+#
+#  * `-Wl,-framework -Wl,CoreFoundation` FIRST. LTLIBINTL spells CoreFoundation
+#    as -Wl,* tokens, so libtool classifies it a linker FLAG (not a deplib) and
+#    emits it right after the objects — BEFORE every library. It is therefore
+#    the executables' first LC_LOAD_DYLIB, i.e. the fingerprint's install_name
+#    slot (executables have no LC_ID_DYLIB; the harness records the first dep
+#    there and diffs it). Emitted from LINK_OPTIONS: CMake places those before
+#    the objects, which preserves "first dylib mentioned".
+#
+#  * `-Wl,-bind_at_load`: libtool darwin appends it to every program link
+#    (hardcode_ld_flag). Kept for bit-level faithfulness.
+#
+#  * `-lstdc++` immediately after: from the executables' *_LDFLAGS (the
+#    "Clang needs an explicit reference" Makefile.am branch). The Apple clang++
+#    driver REWRITES -lstdc++ to -lc++ (verified via -###), which resolves in
+#    the -L path to miniconda's libc++ — recording @rpath/libc++.1.dylib as dep
+#    slot 2 (the same machine-config accident class as gfortran/curl, see the
+#    aggregate header) — then ld warns `ignoring duplicate libraries: '-lc++'`
+#    when the driver's own implicit -lc++ arrives at the end of the line. That
+#    warning is baseline-authentic noise, not a defect. The paired -lgfortran
+#    from the same LDFLAGS is NOT emitted here: libtool's dedupe kept only the
+#    FLIBS occurrence near the end of the line, so it belongs in LDADD_LIBS.
+#
+#  * LC_RPATH = /usr/lib, gcc/current (the SCI_LDFLAGS pair, order-checked by
+#    the harness), then any LDFLAGS extras (scilab-bin's JDK dir — JAVA_JNI_LIBS
+#    carries it as -Wl,-rpath, which libtool also hoists into linker_flags, so
+#    it lands third). SKIP_BUILD_RPATH keeps CMake from growing the list.
+#
+#  * LC_BUILD_VERSION minos=sdk=$(MIN_MACOSX_VERSION): the executables' own
+#    `-Wl,-platform_version,macos,min,min` (Makefile.am pins the SDK stamp to
+#    the deployment target — macOS gates AppKit main-thread assertions on the
+#    main executable's SDK stamp; a current-SDK stamp SIGTRAPs Scilab's
+#    off-main-thread graphics init). Last -platform_version on the line wins
+#    over the driver's computed one. MIN_MACOSX_VERSION == the toolchain's
+#    CMAKE_OSX_DEPLOYMENT_TARGET (11.0).
+#
+#  * No -undefined dynamic_lookup, no -nostdlib++: programs are NOT dylibs —
+#    libtool gave them neither; the C++ driver's implicit -lc++ is authentic
+#    here (it deduped against the -lstdc++ rewrite above).
+# -----------------------------------------------------------------------------
+function(scilab_executable NAME)
+  cmake_parse_arguments(E "" "ALIAS"
+    "SOURCES;LINK;LDADD_LIBS;LDFLAGS;COMPILE_DEFINITIONS;EXTRA_INCLUDES" ${ARGN})
+  if(E_UNPARSED_ARGUMENTS)
+    message(FATAL_ERROR "scilab_executable(${NAME}): unparsed arguments: ${E_UNPARSED_ARGUMENTS}")
+  endif()
+  if(NAME MATCHES "^lib")
+    message(FATAL_ERROR "scilab_executable(${NAME}): NAME is an executable, not a lib")
+  endif()
+  if(NOT E_SOURCES OR NOT E_LINK OR NOT E_LDADD_LIBS)
+    message(FATAL_ERROR "scilab_executable(${NAME}): SOURCES, LINK and LDADD_LIBS are required")
+  endif()
+  # Typo guard, same spirit as scilab_aggregate(): LINK entries are always
+  # targets; LDADD_LIBS entries that don't look like linker flags must be too.
+  foreach(t IN LISTS E_LINK E_LDADD_LIBS)
+    if(NOT t MATCHES "^-" AND NOT TARGET ${t})
+      message(FATAL_ERROR "scilab_executable(${NAME}): '${t}' is not a target — "
+                          "declare the executables after the aggregates")
+    endif()
+  endforeach()
+
+  add_executable(${NAME} ${E_SOURCES})
+
+  # Compile scilab.cpp with the ONE transcribed flag truth (SCI_CXXFLAGS facts:
+  # O2/fwrapv/g1/min-macos/NDEBUG/c++17) + the shared include machinery.
+  # _dir = the source root: automake's `-I.` on this in-tree build IS the top
+  # dir, and the _dir/includes|src/c|src/cpp extras it implies don't exist at
+  # the top level — harmless, exactly like modules that lack src/cpp.
+  set(_dir ${SCILAB_SOURCE_DIR})
+  set(M_EXTRA_INCLUDES ${E_EXTRA_INCLUDES})
+  _scilab_module_flag_env()
+  _scilab_module_apply(${NAME})
+  if(E_COMPILE_DEFINITIONS)
+    target_compile_definitions(${NAME} PRIVATE ${E_COMPILE_DEFINITIONS})
+  endif()
+
+  set_target_properties(${NAME} PROPERTIES
+    LINKER_LANGUAGE CXX      # scilab.cpp is C++; the CXX driver is load-bearing
+                             # (its implicit -lc++ dedupes the -lstdc++ rewrite)
+    SKIP_BUILD_RPATH TRUE)   # LC_RPATH is EXACTLY the list below, in order
+
+  target_link_options(${NAME} PRIVATE
+    "LINKER:-rpath,/usr/lib" "LINKER:-rpath,/opt/homebrew/opt/gcc/lib/gcc/current"
+    ${E_LDFLAGS}
+    "LINKER:-platform_version,macos,${CMAKE_OSX_DEPLOYMENT_TARGET},${CMAKE_OSX_DEPLOYMENT_TARGET}"
+    "LINKER:-framework,CoreFoundation"
+    "LINKER:-bind_at_load")
+
+  # Post-object order: -lstdc++, the LINK head (aggregate + its predecessors),
+  # then the transcribed LDADD tail — LC_LOAD_DYLIB order IS this order, and
+  # two-level-namespace symbol bindings follow it (the Makefile.am xerbla note:
+  # BLAS/LAPACK stay at the END).
+  #
+  # Targets are linked by $<TARGET_FILE:> path, NOT by name — deliberately.
+  # Linked by name they enter CMake's link-dependency graph, which reorders a
+  # library to sit AFTER every already-listed library that depends on it; the
+  # baseline order genuinely violates that rule (scilab-bin lists console/jvm/
+  # commons BEFORE their dependents libscilab/types-java/external_objects_java/
+  # helptools), so name-linking demonstrably shuffled those four to the end of
+  # the line (dep-SET-equal — the harness stayed green — but LC_LOAD_DYLIB
+  # order drifted from the baseline, and load order is what flat-namespace
+  # `dynamic_lookup` resolution searches when two images export one symbol:
+  # sciconsole must stay ahead of sciconsole-minimal). File-path items are
+  # emitted exactly where declared; the recorded dep is still the dylib's
+  # install_name, and add_dependencies() restores the build ordering that
+  # name-linking would have given.
+  set(_link_items "")
+  set(_link_dep_targets "")
+  foreach(t IN LISTS E_LINK E_LDADD_LIBS)
+    if(t MATCHES "^-")
+      list(APPEND _link_items "${t}")
+    else()
+      list(APPEND _link_items "$<TARGET_FILE:${t}>")
+      list(APPEND _link_dep_targets ${t})
+    endif()
+  endforeach()
+  target_link_libraries(${NAME} PRIVATE -lstdc++ ${_link_items})
+  add_dependencies(${NAME} ${_link_dep_targets})
+
+  # Drop-in: copy into the caller's .libs/ — the top-level .libs/ where
+  # automake's bin_PROGRAMS land and where the libtool wrapper scripts (and
+  # bin/scilab*) exec them. ALIAS additionally refreshes the process-name copy
+  # (.libs/Scilab-<version>): the GUI wrapper was sed'd by macos-process-name
+  # to exec THAT file, so without it a drop-in would leave a wrapper launching
+  # the stale autotools binary. The autotools originals are recoverable with
+  # `make scilab-bin scilab-cli-bin macos-process-name`.
+  set(_alias_copy "")
+  if(E_ALIAS)
+    set(_alias_copy COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_FILE:${NAME}> ${CMAKE_CURRENT_SOURCE_DIR}/.libs/${E_ALIAS})
+  endif()
+  add_custom_target(drop-in-${NAME}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/.libs
+    COMMAND ${CMAKE_COMMAND} -E copy
+            $<TARGET_FILE:${NAME}> ${CMAKE_CURRENT_SOURCE_DIR}/.libs/${NAME}
+    ${_alias_copy}
+    DEPENDS ${NAME} VERBATIM
+    COMMENT "Dropping CMake-built ${NAME} into .libs/ (hybrid coexistence)")
+  if(TARGET drop-in-all)
+    add_dependencies(drop-in-all drop-in-${NAME})
+  endif()
+endfunction()
