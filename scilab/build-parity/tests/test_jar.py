@@ -27,6 +27,25 @@ def test_normalize_manifest_keeps_stable_lines():
     assert normalize_manifest(m) == m
 
 
+def test_normalize_manifest_strips_dstamp_implementation_version():
+    # build.incl.xml stamps Implementation-Version with "${DSTAMP} ${TSTAMP}" --
+    # the build date + minute (e.g. "20260717 1645"). It is a Built-Date in
+    # disguise: any cross-minute rebuild changes it in every module jar.
+    m = ("Manifest-Version: 1.0\nImplementation-Title: org.scilab.modules.gui.jar\n"
+         "Implementation-Version: 20260717 1645\nClass-Path: a.jar\n")
+    assert normalize_manifest(m) == ("Manifest-Version: 1.0\n"
+                                     "Implementation-Title: org.scilab.modules.gui.jar\n"
+                                     "Class-Path: a.jar")
+
+
+def test_normalize_manifest_keeps_semantic_implementation_version():
+    # Only the DSTAMP/TSTAMP FORM is volatile. A real version string in
+    # Implementation-Version is a stable attribute -- if it ever changed
+    # between baseline and candidate, that is a regression to report.
+    m = "Manifest-Version: 1.0\nImplementation-Version: 2027.0.0\n"
+    assert normalize_manifest(m) == "Manifest-Version: 1.0\nImplementation-Version: 2027.0.0"
+
+
 def test_fingerprint_jar_hashes_entry_content(tmp_path):
     j = tmp_path / "a.jar"
     _make_jar(j, {"org/x/A.class": b"AAAA", "org/x/B.class": b"BBBB"})

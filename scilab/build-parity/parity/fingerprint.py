@@ -135,10 +135,20 @@ def normalize_path(text, roots):
 # make a jar's content hash Ant/JDK-version-dependent, defeating the point of
 # comparing bytecode. Stripped before hashing so the manifest compares by its
 # STABLE attributes only (Manifest-Version, Main-Class, Class-Path, package attrs).
-# The two-build reproducibility probe (plan Task 3) is what proves this list COMPLETE.
+#
+# Implementation-Version is Scilab's Built-Date in disguise: build.incl.xml:157
+# stamps it with "${DSTAMP} ${TSTAMP}" (build date + minute, e.g. "20260717 1645"),
+# so every cross-minute rebuild changes it in all 23 sectioned module jars. Matched
+# by FORM (8-digit date + 4-digit time) so a real semantic version in that
+# attribute still compares as a stable fact.
+#
+# The two-build reproducibility probe (plan Task 3) claimed this list complete,
+# but both probe builds ran within one minute — the Stage-1f-b cross-day jar
+# rebuild (2026-07-17) is what exposed the DSTAMP/TSTAMP gap.
 _MANIFEST_VOLATILE = re.compile(
     r"^(Ant-Version|Created-By|Built-By|Built-Date|Build-Jdk(-Spec)?|"
-    r"Bnd-LastModified|Archiver-Version):", re.IGNORECASE)
+    r"Bnd-LastModified|Archiver-Version):"
+    r"|^Implementation-Version: [0-9]{8} [0-9]{4}$", re.IGNORECASE)
 
 
 def normalize_manifest(text):
