@@ -128,3 +128,21 @@ def normalize_path(text, roots):
     for prefix in sorted(roots, key=len, reverse=True):
         text = text.replace(prefix, roots[prefix])
     return normalize_version(text)
+
+
+# MANIFEST.MF lines Ant/jar stamp with build-environment specifics (tool + JDK
+# versions/vendor). Identical across two runs on the same machine, but they would
+# make a jar's content hash Ant/JDK-version-dependent, defeating the point of
+# comparing bytecode. Stripped before hashing so the manifest compares by its
+# STABLE attributes only (Manifest-Version, Main-Class, Class-Path, package attrs).
+# The two-build reproducibility probe (plan Task 3) is what proves this list COMPLETE.
+_MANIFEST_VOLATILE = re.compile(
+    r"^(Ant-Version|Created-By|Built-By|Built-Date|Build-Jdk(-Spec)?|"
+    r"Bnd-LastModified|Archiver-Version):", re.IGNORECASE)
+
+
+def normalize_manifest(text):
+    """Drop build-environment-volatile lines from a jar's META-INF/MANIFEST.MF so
+    its content hash reflects only stable attributes. Line-oriented; preserves the
+    order of surviving lines."""
+    return "\n".join(l for l in text.splitlines() if not _MANIFEST_VOLATILE.match(l))

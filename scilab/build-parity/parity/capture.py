@@ -5,10 +5,11 @@ import os
 import re
 import subprocess
 import sys
+import zipfile
 
 from parity.fingerprint import (parse_nm, parse_otool_libs, parse_build_version,
                                 parse_flag_facts, parse_rpaths, normalize_version,
-                                normalize_path)
+                                normalize_path, normalize_manifest)
 
 GENERATED_FILES = [
     "etc/classpath.xml",
@@ -110,6 +111,24 @@ def fingerprint_dylib(path, roots, runner=_subprocess_runner):
         # tree has /Users/.../xlnt-prefix/lib) stays relocatable.
         "rpaths": [_normalize_entry(r, roots) for r in rpaths],
     }
+
+
+def fingerprint_jar(path, opener=zipfile.ZipFile):
+    """A jar (zip) -> {entry_name: sha256hex(content)}. Reads each entry's CONTENT,
+    NOT the zip container's per-entry timestamp or ordering, so two jars with
+    identical files but different build times / entry order fingerprint identically.
+    META-INF/MANIFEST.MF is normalize_manifest()'d first (strip tool-version lines).
+    Directory entries (no content) are skipped. `opener` is injected for tests."""
+    out = {}
+    with opener(path) as zf:
+        for name in sorted(zf.namelist()):
+            if name.endswith("/"):
+                continue
+            data = zf.read(name)
+            if name == "META-INF/MANIFEST.MF":
+                data = normalize_manifest(data.decode("utf-8", "replace")).encode("utf-8")
+            out[name] = hashlib.sha256(data).hexdigest()
+    return out
 
 
 def _fingerprint_exe(path, roots, runner):
