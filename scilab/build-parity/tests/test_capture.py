@@ -18,6 +18,7 @@ def test_fingerprint_dylib_combines_nm_and_otool():
         "-gU": "0000000000006c0c T _CdfBase\n0000000000000001 T _b\n",
         "-L": "x:\n\t/usr/local/lib/scilab/libx.2027.dylib (compatibility version 1.0.0, current version 1.0.0)\n"
               "\t/opt/homebrew/lib/libgfortran.5.dylib (compatibility version 6.0.0, current version 6.0.0)\n",
+        "-l": "",   # no LC_RPATH here; rpath capture itself is pinned in test_rpath.py
     }
     roots = {"/opt/homebrew": "$BREW"}
     fp = fingerprint_dylib("/any/.libs/libx.2027.dylib", roots, runner=fake_runner(responses))
@@ -67,6 +68,7 @@ def test_fingerprint_build_walks_dylibs_executables_and_generated(tmp_path):
         libz: {
             "-gU": "0000000000006c0c T _CdfBase\n",
             "-L": "x:\n\t/usr/local/lib/scilab/libz.2027.dylib (compatibility version 1.0.0, current version 1.0.0)\n",
+            "-l": "",
         },
         scilab_bin: {
             "-l": "      cmd LC_BUILD_VERSION\n    minos 11.0\n      sdk 11.0\n",
@@ -102,8 +104,8 @@ def test_fingerprint_build_raises_on_dylib_key_collision(tmp_path):
     _touch(libz_b)
 
     responses = {
-        libz_a: {"-gU": "0000000000006c0c T _A\n", "-L": "a:\n"},
-        libz_b: {"-gU": "0000000000006c0c T _B\n", "-L": "b:\n"},
+        libz_a: {"-gU": "0000000000006c0c T _A\n", "-L": "a:\n", "-l": ""},
+        libz_b: {"-gU": "0000000000006c0c T _B\n", "-L": "b:\n", "-l": ""},
     }
     with pytest.raises(ValueError):
         fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path(responses), build_id="t")
@@ -127,6 +129,7 @@ def test_fingerprint_build_captures_real_non_4digit_versioned_dylib_not_its_syml
         libxlnt: {
             "-gU": "0000000000006c0c T __ZN4xlnt3zip4x\n",
             "-L": "x:\n\t/usr/local/lib/scilab/libxlnt.1.6.1.dylib (compatibility version 1.0.0, current version 1.0.0)\n",
+            "-l": "",
         },
     }
     fp = fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path(responses), build_id="t")

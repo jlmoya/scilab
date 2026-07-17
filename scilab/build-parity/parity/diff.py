@@ -11,6 +11,22 @@ def _diff_named(kind, base, cand, out):
         out.append(f"{kind} extra in candidate: {name}")
 
 
+def _diff_rpaths(kind, name, b, c, out):
+    """LC_RPATH list, compared as an ORDERED list (dyld searches rpaths in
+    order -- a reorder can flip which library @rpath resolves to, so sorting
+    here would false-green a real behavioral change). A BASELINE entry with no
+    "rpaths" key predates rpath capture (the committed baseline until Task 2
+    re-captures it): skip -- not yet gated, not a failure. The reverse is NOT
+    tolerated: against an rpath-aware baseline, a candidate lacking the key
+    must not silently skip the gate (mirrors the flags-block rule below)."""
+    if "rpaths" not in b:
+        return
+    if "rpaths" not in c:
+        out.append(f"{kind} {name}: rpaths missing in candidate")
+    elif b["rpaths"] != c["rpaths"]:
+        out.append(f"{kind} {name}: rpaths {b['rpaths']} != {c['rpaths']}")
+
+
 def diff_fingerprints(base, cand):
     out = []
 
@@ -31,6 +47,7 @@ def diff_fingerprints(base, cand):
             out.append(f"executable {name}: install_name (first linked library) changed")
         if sorted(b["deps"]) != sorted(c["deps"]):
             out.append(f"executable {name}: link dependencies changed")
+        _diff_rpaths("executable", name, b, c, out)
 
     # Dylibs: presence + symbol set + deps + install name + tmp leak.
     _diff_named("dylib", base["dylibs"], cand["dylibs"], out)
@@ -46,6 +63,7 @@ def diff_fingerprints(base, cand):
             out.append(f"dylib {name}: install_name changed")
         if sorted(b["deps"]) != sorted(c["deps"]):
             out.append(f"dylib {name}: link dependencies changed")
+        _diff_rpaths("dylib", name, b, c, out)
         if c["tmp_leak"]:
             out.append(f"dylib {name}: non-relocatable /tmp path in link")
 

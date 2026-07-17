@@ -70,6 +70,21 @@ def test_sensitivity_tmp_leak_is_caught():
     assert diff_fingerprints(base, mutated)["ok"] is False
 
 
+def test_sensitivity_dropped_rpath_is_caught():
+    # Stage 1f: LC_RPATH is load-bearing for @rpath resolution (the jvm/JDK
+    # modules resolve libjvm through it). Dropping one moves no symbol, link
+    # edge, or SDK stamp -- only the rpath gate can catch it. Fault-injected on
+    # a REAL captured fingerprint, like the other sensitivity tests.
+    base = _capture()
+    mutated = copy.deepcopy(base)
+    victims = [n for n in sorted(mutated["dylibs"]) if mutated["dylibs"][n]["rpaths"]]
+    assert victims, "real tree must have at least one rpath-bearing dylib"
+    mutated["dylibs"][victims[0]]["rpaths"].pop()        # drop one LC_RPATH
+    r = diff_fingerprints(base, mutated)
+    assert r["ok"] is False
+    assert any("rpaths" in d for d in r["differences"])
+
+
 def test_sensitivity_wrapv_drop_is_caught():
     # THE codegen blind spot the flag manifest closes: -fwrapv drops out of the C
     # flags and NOTHING about symbols/link/stamp moves -- the exact class that sat

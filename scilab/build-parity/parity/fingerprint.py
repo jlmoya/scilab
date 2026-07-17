@@ -61,6 +61,20 @@ def parse_build_version(output):
     return {"minos": minos, "sdk": sdk}
 
 
+def parse_rpaths(otool_l_output):
+    """Ordered LC_RPATH paths from `otool -l <dylib>`. Order is significant (dyld
+    searches rpaths in order). Strips the trailing '(offset N)' otool annotation."""
+    rpaths, in_rpath = [], False
+    for line in otool_l_output.splitlines():
+        s = line.strip()
+        if s.startswith("cmd LC_RPATH"):
+            in_rpath = True
+        elif in_rpath and s.startswith("path "):
+            rpaths.append(re.sub(r"\s*\(offset \d+\)\s*$", "", s[len("path "):]).strip())
+            in_rpath = False
+    return rpaths
+
+
 # -O<level> only: anchored + case-sensitive so "-o foo.o" (the output flag) and
 # "-ObjC" never match; the empty suffix is bare "-O" (which gcc/clang treat as -O1).
 _OPT_TOKEN = re.compile(r"^-O([0-9a-z]*)$")

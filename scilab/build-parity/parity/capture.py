@@ -7,7 +7,8 @@ import subprocess
 import sys
 
 from parity.fingerprint import (parse_nm, parse_otool_libs, parse_build_version,
-                                parse_flag_facts, normalize_version, normalize_path)
+                                parse_flag_facts, parse_rpaths, normalize_version,
+                                normalize_path)
 
 GENERATED_FILES = [
     "etc/classpath.xml",
@@ -97,22 +98,33 @@ def _normalize_entry(entry, roots):
 def fingerprint_dylib(path, roots, runner=_subprocess_runner):
     syms = parse_nm(runner(["nm", "-gU", path]))
     libs = parse_otool_libs(runner(["otool", "-L", path]))
+    rpaths = parse_rpaths(runner(["otool", "-l", path]))
     return {
         "symbols": syms,
         "install_name": _normalize_entry(libs["install_name"], roots),
         "deps": sorted(_normalize_entry(d, roots) for d in libs["deps"]),
         "tmp_leak": libs["tmp_leak"],
+        # LC_RPATH list: ORDER preserved (dyld searches rpaths in order --
+        # deliberately NOT sorted, unlike deps), each entry roots-normalized
+        # like every other path field so a build-tree/$HOME rpath (the real
+        # tree has /Users/.../xlnt-prefix/lib) stays relocatable.
+        "rpaths": [_normalize_entry(r, roots) for r in rpaths],
     }
 
 
 def _fingerprint_exe(path, roots, runner):
-    bv = parse_build_version(runner(["otool", "-l", path]))
+    load_cmds = runner(["otool", "-l", path])   # one stream feeds build_version AND rpaths
+    bv = parse_build_version(load_cmds)
     libs = parse_otool_libs(runner(["otool", "-L", path]))
     return {
         "build_version": bv,
         "install_name": _normalize_entry(libs["install_name"], roots),
         "deps": sorted(_normalize_entry(d, roots) for d in libs["deps"]),
         "tmp_leak": libs["tmp_leak"],
+        # Same LC_RPATH treatment as fingerprint_dylib (order-significant,
+        # roots-normalized) -- executables are the rpath-load-bearing case
+        # (scilab-bin resolves @rpath JDK libs).
+        "rpaths": [_normalize_entry(r, roots) for r in parse_rpaths(load_cmds)],
     }
 
 
