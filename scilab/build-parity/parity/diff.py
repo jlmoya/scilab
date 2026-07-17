@@ -73,6 +73,25 @@ def diff_fingerprints(base, cand):
         if base["generated"][name] != cand["generated"][name]:
             out.append(f"generated file changed: {name}")
 
+    # Jars: presence + per-jar entry-content map. Transition rule mirrors rpaths/
+    # flags: a baseline with no "jars" section predates jar capture -> skip (not yet
+    # armed, not a failure). The reverse is NOT tolerated: against a jar-aware
+    # baseline, a candidate lacking the section must fail (not silently skip).
+    if "jars" in base:
+        if "jars" not in cand:
+            out.append("jars section missing in candidate")
+        else:
+            _diff_named("jar", base["jars"], cand["jars"], out)
+            for name in sorted(set(base["jars"]) & set(cand["jars"])):
+                b, c = base["jars"][name], cand["jars"][name]
+                for e in sorted(set(b) - set(c)):
+                    out.append(f"jar {name}: entry removed: {e}")
+                for e in sorted(set(c) - set(b)):
+                    out.append(f"jar {name}: entry added: {e}")
+                for e in sorted(set(b) & set(c)):
+                    if b[e] != c[e]:
+                        out.append(f"jar {name}: entry changed: {e}")
+
     # Compiler-flag facts, per language. The `source` label (autotools vs cmake)
     # is deliberately NOT compared -- flipping it is the migration itself; only
     # the semantic codegen facts matter. .get(): fingerprints captured before

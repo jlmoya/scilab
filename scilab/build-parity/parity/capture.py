@@ -149,6 +149,7 @@ def _fingerprint_exe(path, roots, runner):
 
 def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="build"):
     dylibs = {}
+    jars = {}
     macro_bins = []
     for root, _dirs, files in os.walk(build_dir):
         posix_root = root.replace(os.sep, "/")
@@ -177,6 +178,14 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
                 if fn.endswith(".bin"):
                     rel = os.path.relpath(os.path.join(root, fn), build_dir)
                     macro_bins.append(rel.replace(os.sep, "/"))
+        elif "/modules/" in posix_root + "/" and posix_root.endswith("/jar"):
+            # modules/<m>/jar/*.jar — the Ant-built module jars. Content manifest
+            # (fingerprint_jar), NOT byte hash: jars embed timestamps + non-det zip
+            # order. Only modules/*/jar (not thirdparty/ or a build-cache jar dir).
+            for fn in files:
+                if fn.endswith(".jar"):
+                    rel = os.path.relpath(os.path.join(root, fn), build_dir).replace(os.sep, "/")
+                    jars[rel] = fingerprint_jar(os.path.join(root, fn))
 
     executables = {}
     for name in ("scilab-bin", "scilab-cli-bin"):
@@ -196,7 +205,7 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     generated[MACRO_BIN_MANIFEST_KEY] = hashlib.sha256(manifest.encode("utf-8")).hexdigest()
 
     return {"build_id": build_id, "executables": executables,
-            "dylibs": dylibs, "generated": generated,
+            "dylibs": dylibs, "generated": generated, "jars": jars,
             "flags": capture_flag_manifest(build_dir)}
 
 
@@ -222,6 +231,7 @@ def _main(argv):
     with open(out, "w") as f:
         json.dump(fp, f, indent=2, sort_keys=True)
     print(f"captured {len(fp['dylibs'])} dylibs, {len(fp['executables'])} executables, "
+          f"{len(fp['jars'])} jars, "
           f"{len(fp['generated'])} generated files, flags[{fp['flags']['source']}] -> {out}")
     return 0
 
