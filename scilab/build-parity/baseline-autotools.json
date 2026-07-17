@@ -1,5 +1,5 @@
 {
-  "build_id": "autotools",
+  "build_id": "baseline",
   "dylibs": {
     "libjavasci2.VER.dylib": {
       "deps": [
@@ -65,6 +65,10 @@
         "@rpath/libquadmath.0.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libjavasci2.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _FindOpt",
         "T _FirstOpt",
@@ -960,6 +964,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciaction_binding-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [],
       "tmp_leak": false
     },
@@ -969,6 +977,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciaction_binding.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN39org_scilab_modules_action_binding_utils6Signal9initClassEP7JNIEnv_E3cls",
         "T _Java_org_scilab_modules_action_1binding_InterpreterManagementJNI_interruptScilab",
@@ -999,6 +1011,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciarnoldi.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _eigs",
         "T _process_dneupd_data",
@@ -1017,6 +1033,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciast.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZGVZN5Eigen8internal20manage_caching_sizesENS_6ActionEPlS2_S2_E12m_cacheSizes",
         "D __ZN14ConfigVariable10m_bVerboseE",
@@ -8316,6 +8336,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscicall_scilab.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _Call_ScilabOpen",
         "T _DisableInteractiveMode",
@@ -8346,6 +8370,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscicommons-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _getCWD",
         "T _isEmptyDirectory"
@@ -8358,6 +8386,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscicommons.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN30org_scilab_modules_commons_gui14FindIconHelper9initClassEP7JNIEnv_E3cls",
         "S __ZTIN13GiwsException12JniExceptionE",
@@ -8470,6 +8502,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscicompletion.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S __ZN22org_modules_completion13FieldsManager18typeToFieldsGetterE",
         "S __ZNSt3__119piecewise_constructE",
@@ -8588,6 +8624,10 @@
         "/usr/lib/libncurses.5.4.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciconsole-minimal.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _ClearTemporaryPrompt",
         "T _GetCurrentPrompt",
@@ -8653,6 +8693,10 @@
         "/usr/local/lib/scilab/libsciconsole-minimal.VER.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciconsole.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN29org_scilab_modules_gui_bridge16CallScilabBridge9initClassEP7JNIEnv_E3cls",
         "T _ClearConsole",
@@ -8702,6 +8746,10 @@
         "/usr/lib/libz.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscicoverage.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S __ZN8coverage10URLEncoder5pairsE",
         "S __ZN8coverage11CoverModule8instanceE",
@@ -8877,6 +8925,10 @@
         "/usr/local/lib/scilab/libscisundials.VER.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscidifferential_equations.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D _aa",
         "D _ierajf_ierror",
@@ -9392,6 +9444,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciexternal_objects.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZN28org_modules_external_objects13OptionsHelper5envIdE",
         "D __ZN28org_modules_external_objects13ScilabObjects5_EOBJE",
@@ -9534,6 +9590,10 @@
         "@rpath/libjli.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciexternal_objects_java.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZN40org_scilab_modules_external_objects_java21ScilabJavaEnvironment5envIdE",
         "D __ZN40org_scilab_modules_external_objects_java21ScilabJavaEnvironment6usableE",
@@ -9862,6 +9922,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscifunctions.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T __Z12createStringRNSt3__14listINS_12basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEENS4_IS6_EEEE",
         "T __Z5addInRN3ast15MacrovarVisitorEPNSt3__16vectorIPN6symbol8VariableENS2_9allocatorIS6_EEEE",
@@ -9884,6 +9948,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscifunctions_manager.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S __ZN10XcosModule9loadedDepE",
         "S __ZN11FuncManager2meE",
@@ -9986,6 +10054,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscigraphic_export-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _gw_graphic_export"
       ],
@@ -9997,6 +10069,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscigraphic_export.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN33org_scilab_modules_graphic_export12FileExporter9initClassEP7JNIEnv_E3cls",
         "D __ZZN33org_scilab_modules_graphic_export6Driver9initClassEP7JNIEnv_E3cls",
@@ -10046,6 +10122,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscigraphic_objects-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _cloneAxesModel",
         "T _createDataObject",
@@ -10077,6 +10157,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscigraphic_objects.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN34org_scilab_modules_graphic_objects13CallXmlLoader9initClassEP7JNIEnv_E3cls",
         "D __ZZN34org_scilab_modules_graphic_objects21CallGraphicController9initClassEP7JNIEnv_E3cls",
@@ -10824,6 +10908,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscigraphics-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _ChoixFormatE",
         "T _ComputeXIntervals",
@@ -10887,6 +10975,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscigraphics.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D _defcolors",
         "S __ZNSt3__119piecewise_constructE",
@@ -11600,6 +11692,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscigui-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _Click_menu",
         "T _GetScreenProperty",
@@ -11623,6 +11719,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscigui.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN22org_scilab_modules_gui9SwingView9initClassEP7JNIEnv_E3cls",
         "D __ZZN26org_scilab_modules_gui_ged8StartGED9initClassEP7JNIEnv_E3cls",
@@ -12150,6 +12250,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscihdf5.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZN16org_modules_hdf59H5Options10writeStyleE",
         "D __ZN16org_modules_hdf59H5Options9readStyleE",
@@ -12717,6 +12821,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscihelptools-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T __Z12sci_buildDocPcm",
         "T __ZN15HelptoolsModule4LoadEv",
@@ -12731,6 +12839,10 @@
         "/usr/local/lib/scilab/libscicommons.VER.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscihelptools.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN28org_scilab_modules_helptools10SciDocMain9initClassEP7JNIEnv_E3cls",
         "T __ZN28org_scilab_modules_helptools10SciDocMain11synchronizeEv",
@@ -12771,6 +12883,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscihistory_browser-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _CommandHistoryAppendLine",
         "T _CommandHistoryDeleteLine",
@@ -12788,6 +12904,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscihistory_browser.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN34org_scilab_modules_history_browser14CommandHistory9initClassEP7JNIEnv_E3cls",
         "T _CommandHistoryAppendLine",
@@ -12823,6 +12943,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscihistory_manager.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S __ZN14HistoryManager5m_pHME",
         "T _InitializeHistoryManager",
@@ -12975,6 +13099,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciinterpolation.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S _info_hermite_",
         "T _bchfac_",
@@ -13048,6 +13176,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscijvm-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _ExecuteInitialHooks",
         "T _InitializeJVM",
@@ -13071,6 +13203,11 @@
         "@rpath/libjli.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscijvm.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current",
+        "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/lib"
+      ],
       "symbols": [
         "T _ExecuteInitialHooks",
         "T _FindCreatedJavaVM",
@@ -13160,6 +13297,10 @@
         "@rpath/libquadmath.0.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscilab-cli.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D _FTab_fschur",
         "D _FTab_gshsel",
@@ -16770,6 +16911,10 @@
         "@rpath/libquadmath.0.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscilab.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D _FTab_fschur",
         "D _FTab_gshsel",
@@ -20326,6 +20471,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscilocalization.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _InitializeLocalization",
         "T _Java_org_scilab_modules_localization_LocaleToLCIDJNI_convert",
@@ -20371,6 +20520,10 @@
         "/usr/lib/libz.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscimatio.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _CreateBooleanVariable",
         "T _CreateCellVariable",
@@ -20421,6 +20574,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscioptimization.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D _exfsol_",
         "D _exlsqrsol_",
@@ -20585,6 +20742,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciparallel.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _gw_parallel",
         "T _parallelConcurrency",
@@ -20598,6 +20759,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscipreferences-cli.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T __Z14gw_preferencesv",
         "T __Z15sci_preferencesPcPv",
@@ -20623,6 +20788,10 @@
         "/usr/lib/libz.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscipreferences.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN30org_scilab_modules_preferences17ScilabPreferences9initClassEP7JNIEnv_E3cls",
         "T __Z15sci_preferencesPcPv",
@@ -20659,6 +20828,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscirandlib.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T __Z14clcg4_with_genv",
         "T __ZN5types7ArrayOfIPNS_10SinglePolyEE6setImgEiS2_",
@@ -20727,6 +20900,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscirenderer.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN27org_scilab_modules_renderer12CallRenderer9initClassEP7JNIEnv_E3cls",
         "T __ZN27org_scilab_modules_renderer12CallRenderer11synchronizeEv",
@@ -20804,6 +20981,10 @@
         "/usr/local/lib/scilab/libscisundials.VER.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciscicos-cli.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN10fast_float6detail17rounds_to_nearestEvE4fmin",
         "D _tabsim",
@@ -21427,6 +21608,10 @@
         "/usr/local/lib/scilab/libscisundials.VER.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciscicos.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN10fast_float6detail17rounds_to_nearestEvE4fmin",
         "D _tabsim",
@@ -22043,6 +22228,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciscicos_blocks-cli.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S _coshlt_",
         "S _costol_",
@@ -22442,6 +22631,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciscicos_blocks.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN29org_scilab_modules_xcos_block12AfficheBlock9initClassEP7JNIEnv_E3cls",
         "S _coshlt_",
@@ -22850,6 +23043,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciscinotes-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _gw_scinotes"
       ],
@@ -22861,6 +23058,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciscinotes.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN27org_scilab_modules_scinotes8SciNotes9initClassEP7JNIEnv_E3cls",
         "T _GetFunctionsName",
@@ -22899,6 +23100,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscisignal_processing.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D _FTab_dgetx",
         "D _FTab_dgety",
@@ -23022,6 +23227,10 @@
         "/usr/lib/libz.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscislint.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S __ZN5slint12SLintChecker9constantsE",
         "S __ZN5slint17DeprecatedChecker10deprecatedE",
@@ -23707,6 +23916,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscisound.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _doBeep",
         "T _sci_PlaySound",
@@ -23722,6 +23935,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscispecial_functions.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T __ZN8Faddeeva1wENSt3__17complexIdEEd",
         "T __ZN8Faddeeva3erfENSt3__17complexIdEEd",
@@ -23780,6 +23997,12 @@
         "@rpath/libxlnt.1.6.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscispreadsheet.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current",
+        "@loader_path/",
+        "$HOME/Projects/CLionProjects/scilab/xlnt-prefix/lib"
+      ],
       "symbols": [
         "D _EMPTY_STR",
         "D _OLE_id_v1",
@@ -23973,6 +24196,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscistatistics.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S __ZNSt3__119piecewise_constructE",
         "T _CdfBase",
@@ -24100,6 +24327,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscisundials.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S _.gomp_critical_user_.reduction.var",
         "S _.gomp_critical_user_.var",
@@ -26481,6 +26712,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscitclsci-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S _XTKsocket",
         "T _CloseTCLsci",
@@ -26501,6 +26736,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscitclsci.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S _XTKsocket",
         "T _CloseTCLsci",
@@ -26528,6 +26767,10 @@
         "@rpath/libjli.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscitypes-java.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZN17org_modules_types12ScilabToJava9refreshIdE",
         "D __ZZN24org_scilab_modules_types15ScilabVariables9initClassEP7JNIEnv_E3cls",
@@ -26616,6 +26859,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciui_data-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _FileBrowserChDir",
         "T _UpdateBrowseVar",
@@ -26629,6 +26876,10 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciui_data.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZZN26org_scilab_modules_ui_data11FileBrowser9initClassEP7JNIEnv_E3cls",
         "D __ZZN26org_scilab_modules_ui_data7EditVar9initClassEP7JNIEnv_E3cls",
@@ -26716,6 +26967,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciumfpack.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "S _ListCholFactors",
         "S _ListNumeric",
@@ -26770,6 +27025,10 @@
         "@rpath/libcurl.4.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciwebtools.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D __ZGVZN9rapidjson8internal11StrtodDiyFpEPKcmmiPdE6kPow10",
         "D __ZZN9rapidjson8internal11StrtodDiyFpEPKcmmiPdE6kPow10",
@@ -26851,6 +27110,10 @@
         "/usr/lib/libSystem.B.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscixcos-disable.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "T _gw_xcos"
       ],
@@ -26878,6 +27141,14 @@
         "@rpath/libsciscicos_blocks.VER.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscixcos.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current",
+        "@loader_path/",
+        "@loader_path/../../scicos/.libs",
+        "@loader_path/../../scicos_blocks/.libs",
+        "/usr/local/lib/scilab"
+      ],
       "symbols": [
         "D __ZZN23org_scilab_modules_xcos4Xcos9initClassEP7JNIEnv_E3cls",
         "D __ZZN31org_scilab_modules_xcos_palette7Palette9initClassEP7JNIEnv_E3cls",
@@ -27122,6 +27393,10 @@
         "/usr/lib/libz.1.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libscixml.VER.dylib",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "symbols": [
         "D _nodes_type",
         "S __ZN15org_modules_xml11XMLDocument11errorBufferE",
@@ -27466,6 +27741,7 @@
         "/usr/lib/libc++.1.dylib"
       ],
       "install_name": "@rpath/libxlnt.1.6.1.dylib",
+      "rpaths": [],
       "symbols": [
         "S __ZTIN4xlnt11unsupportedE",
         "S __ZTIN4xlnt12invalid_fileE",
@@ -29261,6 +29537,11 @@
         "@rpath/libquadmath.0.dylib"
       ],
       "install_name": "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current",
+        "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/lib"
+      ],
       "tmp_leak": false
     },
     "scilab-cli-bin": {
@@ -29327,6 +29608,10 @@
         "@rpath/libquadmath.0.dylib"
       ],
       "install_name": "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+      "rpaths": [
+        "/usr/lib",
+        "/opt/homebrew/opt/gcc/lib/gcc/current"
+      ],
       "tmp_leak": false
     }
   },
