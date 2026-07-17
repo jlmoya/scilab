@@ -84,15 +84,21 @@ sanity:cmake-driver:
       #    sites (^ + optional indent), so comment mentions of the helpers do not count.
       test "$(grep -cE '^[[:space:]]*scilab_aggregate\(' modules/CMakeLists.txt)" = 2
       test "$(grep -cE '^[[:space:]]*scilab_executable\(' CMakeLists.txt)" = 2
+      # F. the Java bridge is wired: scilab_java_bridge() called + sci-java-all on
+      #    drop-in-all (a deleted call would silently drop the 24 jars from the build the
+      #    parity job then fails to find).
+      grep -q 'scilab_java_bridge()' CMakeLists.txt
+      grep -q 'add_dependencies(drop-in-all sci-java-all)' CMakeLists.txt
     - cd build-parity && python3 -m pytest tests/ -q
 
-# Native half — the real Stage-1f-a gate: build the WHOLE native app under CMake from
-# the configured tree (drop-in-all now also builds the libscilab/libscilab-cli
-# aggregates + the scilab-bin/scilab-cli-bin executables), drop it all into .libs/, and
-# hold it at parity with the committed autotools baseline — symbols/deps/install_name +
-# LC_RPATH (rpath-aware since Stage 1f-a) + the per-TU flag facts from
-# compile_commands.json. The aggregate/executable/rpath coverage is automatic: they
-# ride drop-in-all and the capture fingerprints every .libs/ artifact. Any regression
+# Native half — the real Stage-1f-b gate: build the WHOLE app under CMake from the
+# configured tree (drop-in-all builds the libscilab/libscilab-cli aggregates + the
+# scilab-bin/scilab-cli-bin executables + the 24 Java jars via sci-java-all), drop it all
+# into place, and hold it at parity with the committed autotools baseline —
+# symbols/deps/install_name + LC_RPATH + the 24-jar content manifest + the per-TU flag
+# facts from compile_commands.json. The aggregate/executable/rpath/jar coverage is
+# automatic: they ride drop-in-all and the capture fingerprints every .libs/ artifact and
+# every modules/*/jar/*.jar (the runner has Ant + the JDK). Any regression
 # fails the pipeline. Needs a self-hosted macOS
 # arm64 runner (shell executor) whose persistent workdir is configured + built per
 # docs/design/build-cmake-driver.md — shared gitlab.com runners can neither build nor

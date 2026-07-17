@@ -1,7 +1,8 @@
-# The CMake native-build driver (Stage 1f-a — the whole native app)
+# The CMake native-build driver (Stage 1f-b — the whole native app + the Java jars)
 
 **Status:** DONE — verified end-to-end 2026-07-17 (from-scratch build → whole-tree
-**rpath-aware** PARITY OK → the real app runs on the CMake-built executable).
+**rpath-aware** PARITY OK **including the 24 Java jars** → the real GUI runs on the
+CMake-built app, jar-error-free).
 **What it is:** the top-level `scilab/CMakeLists.txt` + the helpers in `scilab/cmake/`
 (`ScilabModule.cmake`, `ScilabAggregate.cmake`, `ScilabToolchain.cmake`) that build the
 **entire native Scilab app** under CMake — the 64 baseline module dylibs, the 21 fold-in
@@ -15,12 +16,13 @@ design; what the harness proves is behavioral/link-shape equivalence. Strategy c
 `docs/superpowers/specs/2026-07-16-stage1f-a-aggregate-executables-design.md`;
 authoritative dylib list: `scilab/cmake/stage1e-manifest.md`.
 
-CMake is now the master of the **native** build end to end. This remains **hybrid
-coexistence**, not a full cutover: autotools still configures the tree, runs Ant for the
-jars, and builds help. The CMakeLists files are invisible to automake, so the autotools
-path is untouched and rollback is free (`make clean && make` recovers the entire native
-build — dylibs, aggregates, and executables). The Java (Ant→Maven) bridge is Stage 1f-b;
-help + retiring `configure` is Stage 1f-c.
+CMake now drives the whole build — the native app **and** the Java jars (via the
+`sci-java-all` target, which invokes the unchanged Ant to build them). This remains
+**hybrid coexistence**, not a full cutover: autotools still configures the tree and builds
+help. The CMakeLists files are invisible to automake, so the autotools path is untouched
+and rollback is free (`make clean && make` recovers the entire build — dylibs, aggregates,
+executables, and jars). The Ant→Maven cutover is Stage 2; help + retiring `configure` is
+Stage 1f-c.
 
 ## Usage
 
@@ -34,10 +36,11 @@ cd scilab && ./configure <usual flags> && make        # see docs/design/build-mo
 #    -DCMAKE_Fortran_COMPILER=gfortran (the driver hard-fails otherwise).
 cmake -S . -B build-cmake
 
-# 2. Build the whole native app + drop each artifact into modules/.../.libs/
+# 2. Build the whole app (native + jars) + drop each artifact into place
 cmake --build build-cmake --target drop-in-all -j
 #    Sub-targets: drop-in-<module> (one dylib), sci-foldin-all (the 21 OBJECT libs),
-#    drop-in-libscilab / drop-in-libscilab-cli (aggregates), scilab-bin / scilab-cli-bin.
+#    drop-in-libscilab / drop-in-libscilab-cli (aggregates), scilab-bin / scilab-cli-bin,
+#    sci-java-all / drop-in-jars (the 24 Java module jars, via Ant).
 
 # 3. The gate — parity vs the committed autotools baseline + per-TU flag facts
 cd build-parity
@@ -115,6 +118,40 @@ rpath previously passed `PARITY OK`; the jvm/JDK modules had been hand-checked).
 baseline (`baseline-autotools.json`) was re-captured rpath-aware from a pure-autotools
 rebuild, so every Stage-1e dylib was re-checked against it — a free rpath regression sweep.
 
+## The Java jars (Stage 1f-b)
+
+`sci-java-all` (in `scilab/cmake/ScilabJava.cmake`, one call to `scilab_java_bridge()`)
+builds the **24 Java module jars** by invoking the **unchanged** Ant. Approach: ONE target
+wrapping the existing `modules/prebuildjava` super-build (its `build.xml` `all` target
+hand-topo-sorts 23 module jars + drives Ivy), plus a second bare-ant for `modules/terminal`
+(the 24th jar — it is absent from `prebuildjava`'s list and autotools builds it via the
+per-module recipe; **GUI-gated**, matching `modules/terminal/Makefile.am`'s `if GUI`). The
+topo-sort and inter-module Java deps stay inside Ant — Stage 2's Maven reactor replaces them
+wholesale (and must list `terminal` explicitly). `ANT`, `NEED_JAVA`, and `GUI` come from
+`config.status`; `JAVA_HOME` from `SCILAB_JAVA_HOME` (1f-a). The Ant invocation is **bare**
+(no `-D`): `target-jar` defaults to `jar` and the conditionals resolve from the
+configure-substituted `build.incl.xml`. Jars land in `modules/<m>/jar/` (the same place Ant
+always writes them — drop-in is automatic), and `sci-java-all` rides `drop-in-all`.
+
+**Jar parity** is a new harness dimension (`jars` section): per jar, the sorted map of
+`entry-name → sha256(content)`, with volatile `META-INF/MANIFEST.MF` lines normalized out
+(`Ant-Version`, `Created-By`, …, and the `Implementation-Version: <DSTAMP> <TSTAMP>`
+build-date stamp — form-anchored so a real semantic version survives). This is the honest
+analog of native byte-shape parity — it changes only if the source, compile flags, JDK, or
+module set changes — without chasing jar timestamp nondeterminism. The baseline's `jars`
+section was captured from a pure-autotools jar rebuild; a two-build **cross-minute**
+reproducibility probe confirmed the normalize-list complete, and a fault-injection (mutate a
+jar entry) fails parity naming the jar + entry.
+
+### Java end-to-end proof (2026-07-17)
+
+From-scratch `drop-in-all` built the whole app + 24 jars; whole-tree **PARITY OK** (68 dylibs
++ 2 executables + 24 jars) + flag-facts rc=0. Headless `-nw` smoke (`bin/scilab -nw -nb -e
+"disp(1+1); exit(0)"`) started the JVM + jars, rc=0, jar-error-free. The full **GUI**
+(`bin/scilab`, `Scilab-2027.0.0` — UUID-matched to `build-cmake/scilab-bin`) launched on the
+CMake-built jars with a jar-error-free startup log. The autotools `make` still builds the
+jars via `prebuildjava` (coexistence).
+
 ## CI
 
 `.gitlab-ci.yml` (fork-native pipeline) carries two guards:
@@ -125,21 +162,24 @@ rebuild, so every Stage-1e dylib was re-checked against it — a free rpath regr
   `modules/X/CMakeLists.txt`; (B) the dylib block equals the manifest's 46 dylib dirs;
   (C) the fold-in block equals the aggregate's `_scilab_fold_objects` set; (D) the
   manifest still holds exactly 64 dylib rows; (E) both aggregate + both executable calls
-  are still declared — plus the parity-harness unit suite (`pytest build-parity/tests`,
-  hermetic; the acceptance tests self-skip without a built tree).
+  are still declared; (F) the Java bridge (`scilab_java_bridge()` + `add_dependencies(
+  drop-in-all sci-java-all)`) is still wired — plus the parity-harness unit suite (`pytest
+  build-parity/tests`, hermetic; the acceptance tests self-skip without a built tree).
 - **`parity:cmake-drop-in`** (self-hosted macOS arm64 runner, rule-gated on
   `$SCILAB_NATIVE_RUNNER == "1"`): the real gate — `drop-in-all` + rpath-aware parity diff
-  + flag facts on the built tree. Because the aggregates + executables ride `drop-in-all`
-  and the capture fingerprints every `.libs/` artifact (incl. `LC_RPATH`), this job now
-  gates the whole native app automatically. Set the project variable only while such a
+  + flag facts on the built tree. Because the aggregates + executables + the 24 jars ride
+  `drop-in-all` and the capture fingerprints every `.libs/` artifact (incl. `LC_RPATH`) and
+  every `modules/*/jar/*.jar`, this job now gates the whole app — native + jars —
+  automatically (the runner has Ant + the JDK). Set the project variable only while such a
   runner is registered; without it the job is not created (shared runners can neither build
   nor fingerprint Mach-O).
 
-## Deferred (deliberately out of Stage 1f-a)
+## Deferred (deliberately out of Stage 1f-b)
 
-- **Stage 1f-b — the CMake→Ant bridge:** CMake invokes Ant for the 24 Java modules' jars
-  (Stage 1 keeps Ant; the jars are byte-identical and deliberately not fingerprinted until
-  Stage 2's Ant→Maven).
+- **Stage 2 — Ant → Maven:** the `prebuildjava` topo-sort + Ivy → one Maven reactor (which
+  must list `modules/terminal` explicitly); jar byte-reproducibility (`SOURCE_DATE_EPOCH`);
+  the ~23 dead jars drop out. Stage 1f-b keeps Ant unchanged and fingerprints jar *content*
+  (not bytes).
 - **Stage 1f-c — help + retiring `configure`:** help generation stays a post-build step
   (it needs the running app); porting `configure`'s ~186 feature probes so CMake generates
   `machine.h`/`version.h` (spec §11) is its own stage, provable by the same harness (both
