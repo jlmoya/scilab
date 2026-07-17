@@ -15,7 +15,7 @@
 #
 # EXTRA_INCLUDES (libsciio_la_CPPFLAGS): functions_manager,
 # elementary_functions, fileio, string, threads, console, hdf5, tclsci,
-# jvm, then JAVA_JNI_INCLUDE (the driver's SCILAB_JAVA_HOME pair — the
+# jvm, then JAVA_JNI_INCLUDE (the toolchain's SCILAB_JAVA_HOME pair — the
 # config.status jdk-25) and XML_FLAGS' SDK usr/include.
 
 scilab_object_module(io

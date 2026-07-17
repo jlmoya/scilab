@@ -128,7 +128,7 @@ set(_scilab_engine_system_libs
 # libscilab — the GUI aggregate: ENGINE + jvm + GUI_LIBS, plus the GUI-only
 # system records (curses <- console chain; jli <- jvm's
 # -L$(JAVA_HOME)/lib -ljli, recorded at its @rpath/libjli.dylib install_name;
-# SCILAB_JAVA_HOME is the top-level driver's config.status-derived JDK).
+# SCILAB_JAVA_HOME is the toolchain's (ScilabToolchain.cmake) config.status-derived JDK).
 # Baseline: 59 deps, 3543 exported symbols.
 scilab_aggregate(libscilab
   FOLD_OBJECTS ${_scilab_fold_objects}

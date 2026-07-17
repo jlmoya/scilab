@@ -26,8 +26,8 @@
 # gateway = the 26 sci_j* gateways (automake lists them under the misnamed
 # GATEWAY_C_SOURCES — they are all .cpp; GATEWAY_CPP_SOURCES is empty). All
 # C++ -> LANG CXX. EXTRA_INCLUDES = the la_CPPFLAGS dirs beyond the helper
-# base. SCILAB_JAVA_HOME comes from the driver (config.status
-# S["JAVA_HOME"] — the configured jdk-25).
+# base. SCILAB_JAVA_HOME comes from the toolchain (cmake/ScilabToolchain.cmake
+# — config.status S["JAVA_HOME"], the configured jdk-25).
 
 scilab_module(external_objects_java
   ALGO_SOURCES

@@ -15,6 +15,35 @@ if(NOT EXISTS "${SCILAB_SOURCE_DIR}/modules/core/includes/machine.h")
   message(FATAL_ERROR "machine.h not found under ${SCILAB_SOURCE_DIR}; run ./configure there first.")
 endif()
 
+# SCILAB_JAVA_HOME: the ONE shared JDK location — consumed by every
+# JDK-touching CMakeLists (the libjli linkers jvm/types/external_objects_java/
+# xcos, the JNI-header includers helptools/io, the aggregates, scilab-bin).
+# Parsed from the configured tree's config.status (S["JAVA_HOME"]) — the EXACT
+# JDK the autotools baseline linked (jdk-25 here). The /usr/libexec/java_home
+# fallback answers jdk-26 on this machine, which is precisely why
+# config.status is the primary source (and why the fallback WARNS). The future
+# de-autotools driver must do its own JDK detection (FindJNI or equivalent) —
+# recorded as driver debt.
+file(STRINGS ${SCILAB_SOURCE_DIR}/config.status _scilab_java_home_line
+     REGEX "^S\\[\"JAVA_HOME\"\\]=")
+string(REGEX REPLACE "^S\\[\"JAVA_HOME\"\\]=\"(.*)\"$" "\\1"
+       SCILAB_JAVA_HOME "${_scilab_java_home_line}")
+if(NOT SCILAB_JAVA_HOME OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
+  execute_process(COMMAND /usr/libexec/java_home
+                  OUTPUT_VARIABLE SCILAB_JAVA_HOME
+                  OUTPUT_STRIP_TRAILING_WHITESPACE
+                  RESULT_VARIABLE _scilab_java_home_rc)
+  if(NOT _scilab_java_home_rc EQUAL 0
+     OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
+    message(FATAL_ERROR "no JDK with lib/libjli.dylib found — config.status "
+                        "has no usable JAVA_HOME and /usr/libexec/java_home failed")
+  endif()
+  message(WARNING "config.status JAVA_HOME unusable; falling back to "
+                  "/usr/libexec/java_home (${SCILAB_JAVA_HOME}) — may differ "
+                  "from the configured JDK the autotools baseline linked")
+endif()
+message(STATUS "SCILAB_JAVA_HOME = ${SCILAB_JAVA_HOME}")
+
 # Autotools compiles with CC="gcc -std=gnu23 -arch arm64" and CXX="g++ -arch
 # arm64 -std=c++17" — on this platform /usr/bin/gcc and /usr/bin/g++ ARE Apple
 # clang/clang++. Default to the same drivers (honor explicit -DCMAKE_*_COMPILER=

@@ -30,7 +30,7 @@
 # localization + jvm/includes + output_stream + api_scilab + commons/src/jni +
 # dynamic_link + string (+ AM_CPPFLAGS); the stub's CPPFLAGS is defined = the
 # main's, so both calls share one EXTRA_INCLUDES set (only the dirs beyond the
-# helper base are spelled). SCILAB_JAVA_HOME comes from the driver (parsed
+# helper base are spelled). SCILAB_JAVA_HOME comes from the toolchain (ScilabToolchain.cmake, parsed
 # from config.status S["JAVA_HOME"] — the configured jdk-25, NOT
 # /usr/libexec/java_home's jdk-26).
 

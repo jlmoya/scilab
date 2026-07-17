@@ -46,29 +46,10 @@ include(cmake/ScilabAggregate.cmake)
 # into its modules/<name>/.libs/.
 add_custom_target(drop-in-all)
 
-# JAVA_HOME for the JDK-consuming Batch-E modules (helptools/types/
-# external_objects_java/xcos): parsed from the configured tree's config.status
-# (S["JAVA_HOME"]) — the EXACT JDK the autotools baseline used (jdk-25). The
-# /usr/libexec/java_home fallback answers jdk-26 on this machine, which is
-# precisely why config.status is the primary source. jvm (Task 8) predates
-# this shared variable and keeps its own identical discovery block.
-file(STRINGS ${SCILAB_SOURCE_DIR}/config.status _scilab_java_home_line
-     REGEX "^S\\[\"JAVA_HOME\"\\]=")
-string(REGEX REPLACE "^S\\[\"JAVA_HOME\"\\]=\"(.*)\"$" "\\1"
-       SCILAB_JAVA_HOME "${_scilab_java_home_line}")
-if(NOT SCILAB_JAVA_HOME OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
-  execute_process(COMMAND /usr/libexec/java_home
-                  OUTPUT_VARIABLE SCILAB_JAVA_HOME
-                  OUTPUT_STRIP_TRAILING_WHITESPACE
-                  RESULT_VARIABLE _scilab_java_home_rc)
-  if(NOT _scilab_java_home_rc EQUAL 0
-     OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
-    message(FATAL_ERROR "no JDK with lib/libjli.dylib found — config.status "
-                        "has no usable JAVA_HOME and /usr/libexec/java_home failed")
-  endif()
-  message(STATUS "config.status JAVA_HOME unusable; using /usr/libexec/java_home")
-endif()
-message(STATUS "JAVA_HOME = ${SCILAB_JAVA_HOME}")
+# SCILAB_JAVA_HOME — the configured JDK for every JDK-consuming CMakeLists
+# (jvm/types/external_objects_java/xcos/helptools/io, the aggregates,
+# scilab-bin) — is resolved ONCE in cmake/ScilabToolchain.cmake (included
+# above): config.status S["JAVA_HOME"] first, /usr/libexec/java_home fallback.
 
 # Migrated modules — ALL 64 baseline module dylibs (the 4 parity-proven
 # exemplars + Batch A's 8 simple leaves + Batch B's 10 variant-pair GUI

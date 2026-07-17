@@ -36,7 +36,8 @@
 # Sources verbatim from Makefile.am (1 SWIG C wrapper + 4 C++); no algo lib.
 # EXTRA_INCLUDES = la_CPPFLAGS dirs beyond the helper base (the JNI pair,
 # src/jni, commons/src/jni, jvm/includes; la_CFLAGS' dirs are a subset).
-# SCILAB_JAVA_HOME comes from the driver (config.status S["JAVA_HOME"]).
+# SCILAB_JAVA_HOME comes from the toolchain (cmake/ScilabToolchain.cmake —
+# config.status S["JAVA_HOME"]).
 
 scilab_module(types-java
   GATEWAY_SOURCES

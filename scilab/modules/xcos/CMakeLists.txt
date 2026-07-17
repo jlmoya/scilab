@@ -53,8 +53,9 @@
 # Sources verbatim from Makefile.am (XCOS_CXX_SOURCES lists .hxx headers too —
 # only the compiled TUs are spelled here); EXTRA_INCLUDES = la_CPPFLAGS beyond
 # the helper base (incl. XML_FLAGS' SDK usr/include, LIBARCHIVE_CFLAGS'
-# openssl include, and the JNI pair). SCILAB_JAVA_HOME comes from the driver
-# (config.status S["JAVA_HOME"] — the configured jdk-25).
+# openssl include, and the JNI pair). SCILAB_JAVA_HOME comes from the
+# toolchain (cmake/ScilabToolchain.cmake — config.status S["JAVA_HOME"], the
+# configured jdk-25).
 
 scilab_module(xcos
   ALGO_SOURCES

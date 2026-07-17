@@ -24,28 +24,26 @@
 # verbatim below: raw -L + plain `jli` in SYSTEM_LIBS (the webtools search-path
 # pattern) + a post-call target_link_options rpath.
 #
-# JAVA_HOME is MACHINE-CONFIG-SPECIFIC — discovered, not hardcoded: read from
-# the configured tree's config.status (S["JAVA_HOME"]), i.e. the EXACT JDK the
-# autotools baseline linked (jdk-25 here). Fallback: /usr/libexec/java_home —
-# which on this machine answers jdk-26, NOT the configured jdk-25, which is
-# precisely why config.status is the primary source. The future de-autotools
-# driver must do its own JDK detection (FindJNI or equivalent) — recorded as
-# driver debt.
+# JAVA_HOME is MACHINE-CONFIG-SPECIFIC — discovered, not hardcoded:
+# SCILAB_JAVA_HOME comes from the shared toolchain (cmake/ScilabToolchain.cmake
+# — config.status S["JAVA_HOME"] first, i.e. the EXACT JDK the autotools
+# baseline linked, jdk-25 here; /usr/libexec/java_home fallback with a
+# warning). This module's own discovery block (Task 8, which predated the
+# shared variable) was hoisted there — Stage-1f-a Task 6.
 #
-# PARITY CONTRACT (arbitrated by build-parity/ — ONLY harness-gated facts:
-# file / install_name / exported symbols / recorded deps):
+# PARITY CONTRACT (arbitrated by build-parity/ — the harness-gated facts:
+# file / install_name / exported symbols / recorded deps / LC_RPATHs):
 #   libscijvm.2027.dylib          exports 42; deps @rpath/libjli.dylib,
 #                                 /usr/lib/lib{xml2.2,z.1,icucore.A,c++.1,System.B}
 #   libscijvm-disable.2027.dylib  exports 9; deps libSystem only (pure-C stub,
 #                                 C-driver link)
 #   install_names: /usr/local/lib/scilab/<that filename> (+ unversioned symlinks)
 #
-# NOT gated by the parity harness — verify BY HAND with
-# `otool -l libscijvm.2027.dylib | grep -A2 LC_RPATH`: the three LC_RPATHs
-# /usr/lib, /opt/homebrew/opt/gcc/lib/gcc/current, $(JAVA_HOME)/lib. The JDK
-# lib-dir rpath is LOAD-BEARING — @rpath/libjli.dylib resolves through it — but
-# the harness does not check rpaths, so a dropped/edited JDK rpath still prints
-# PARITY OK and only fails at JVM startup. Do NOT trust PARITY OK for this one.
+# The three LC_RPATHs — /usr/lib, /opt/homebrew/opt/gcc/lib/gcc/current,
+# $(JAVA_HOME)/lib — ARE harness-gated since Stage-1f-a (LC_RPATH is
+# fingerprinted order-significantly; the baseline was re-captured with it).
+# The JDK lib-dir rpath is LOAD-BEARING: @rpath/libjli.dylib resolves through
+# it, so a drop would now fail parity, not just JVM startup.
 #
 # Sources verbatim from Makefile.am: algo = the 18 JVM_C_SOURCES; gateway =
 # 2 GATEWAY_C_SOURCES + 2 GATEWAY_CPP_SOURCES; stub = src/nojvm/nojvm.c.
@@ -53,25 +51,6 @@
 # dirs not in SCILAB_DEFAULT_INCLUDES (call_scilab, string, functions_manager,
 # fileio, preferences) + XML_FLAGS' SDK usr/include. The stub's automake
 # include list is a subset needing only functions_manager beyond the base.
-
-# --- JDK discovery (see header) ---
-file(STRINGS ${SCILAB_SOURCE_DIR}/config.status _jvm_java_home_line
-     REGEX "^S\\[\"JAVA_HOME\"\\]=")
-string(REGEX REPLACE "^S\\[\"JAVA_HOME\"\\]=\"(.*)\"$" "\\1"
-       SCILAB_JVM_JAVA_HOME "${_jvm_java_home_line}")
-if(NOT SCILAB_JVM_JAVA_HOME OR NOT EXISTS "${SCILAB_JVM_JAVA_HOME}/lib/libjli.dylib")
-  execute_process(COMMAND /usr/libexec/java_home
-                  OUTPUT_VARIABLE SCILAB_JVM_JAVA_HOME
-                  OUTPUT_STRIP_TRAILING_WHITESPACE
-                  RESULT_VARIABLE _jvm_java_home_rc)
-  if(NOT _jvm_java_home_rc EQUAL 0
-     OR NOT EXISTS "${SCILAB_JVM_JAVA_HOME}/lib/libjli.dylib")
-    message(FATAL_ERROR "jvm: no JDK with lib/libjli.dylib found — config.status "
-                        "has no usable JAVA_HOME and /usr/libexec/java_home failed")
-  endif()
-  message(STATUS "jvm: config.status JAVA_HOME unusable; using /usr/libexec/java_home")
-endif()
-message(STATUS "jvm: JAVA_HOME = ${SCILAB_JVM_JAVA_HOME}")
 
 scilab_module(jvm
   ALGO_SOURCES
@@ -99,10 +78,10 @@ scilab_module(jvm
     sci_gateway/cpp/sci_system_getproperty.cpp
     sci_gateway/cpp/sci_system_setproperty.cpp
   LANG C CXX
-  SYSTEM_LIBS xml2 z icucore "-L${SCILAB_JVM_JAVA_HOME}/lib" jli
+  SYSTEM_LIBS xml2 z icucore "-L${SCILAB_JAVA_HOME}/lib" jli
   EXTRA_INCLUDES
-    ${SCILAB_JVM_JAVA_HOME}/include
-    ${SCILAB_JVM_JAVA_HOME}/include/darwin
+    ${SCILAB_JAVA_HOME}/include
+    ${SCILAB_JAVA_HOME}/include/darwin
     ${SCILAB_SOURCE_DIR}/modules/call_scilab/includes
     ${SCILAB_SOURCE_DIR}/modules/string/includes
     ${SCILAB_SOURCE_DIR}/modules/functions_manager/includes
@@ -114,7 +93,7 @@ scilab_module(jvm
 
 # JAVA_JNI_LIBS' -Wl,-rpath,$(JAVA_HOME)/lib — the third LC_RPATH the baseline
 # dylib carries (dyld resolves @rpath/libjli.dylib through it at run time).
-target_link_options(scijvm PRIVATE "LINKER:-rpath,${SCILAB_JVM_JAVA_HOME}/lib")
+target_link_options(scijvm PRIVATE "LINKER:-rpath,${SCILAB_JAVA_HOME}/lib")
 
 scilab_module(jvm-disable
   GATEWAY_SOURCES
