@@ -97,3 +97,29 @@ foreach(m
     external_objects_java scicos xcos)                          # Batch E
   add_subdirectory(modules/${m})
 endforeach()
+
+# FOLD-IN core modules (Stage 1f) — the 21 dirs that build NO standalone dylib
+# on macOS: automake declares their .la's noinst (MAINTAINER_MODE off), so ALL
+# their objects fold into the libscilab/libscilab-cli aggregates, which will
+# consume $<TARGET_OBJECTS:sci<m>-obj>. Each is one scilab_object_module()
+# declaration; every sci<m>-obj self-registers onto sci-foldin-all (declared
+# BEFORE the foreach so the registration sees it), the aggregating build/gate
+# target: `cmake --build build-cmake --target sci-foldin-all`.
+#
+# Deliberately ABSENT from the fold-in set:
+#   mpi     — macOS-inert: the MPI automake conditional is off, modules/mpi is
+#             not even in SUBDIRS and compiles ZERO objects in the baseline.
+#   javasci — its ONLY native output is libjavasci2 (pkglib, a SEPARATE
+#             baseline artifact that links AGAINST libscilab.la and is built
+#             AFTER it — modules/Makefile.am orders it last for exactly that
+#             reason). libscilab folds no javasci object and records no javasci
+#             dep (otool -L libscilab.2027.dylib: zero javasci entries), so
+#             javasci needs no fold-in OBJECT lib.
+add_custom_target(sci-foldin-all)
+foreach(m
+    api_scilab boolean cacsd core data_structures dynamic_link
+    elementary_functions fftw fileio integer io linear_algebra mexlib
+    output_stream parameters polynomials sparse string threads time
+    windows_tools)
+  add_subdirectory(modules/${m})
+endforeach()

@@ -51,6 +51,43 @@
 #           drop-in-<name>   copies the dylib into modules/<name>/.libs/ (+ its
 #                            unversioned symlink); registered onto drop-in-all.
 #
+#   scilab_object_module(<name>     # the FOLD-IN core modules (no dylib)
+#     SOURCES <src>...              # ALL the module's convenience-.la sources
+#     [LANG <C|CXX|Fortran>...]     # declarative metadata (compilation is
+#                                   # per-language via genexes; OBJECT libs
+#                                   # never link, so nothing to pin)
+#     [EXTRA_INCLUDES <dir>...]     # include dirs beyond SCILAB_DEFAULT_INCLUDES
+#     [C_FLAGS_OVERRIDE <flag>...]) # REPLACE the C compile flags (_cflags) for
+#                                   # THIS module's C TUs — reproduces the
+#                                   # automake per-target `_la_CFLAGS`-REPLACES-
+#                                   # AM_CFLAGS footgun a few core modules trip
+#                                   # (parameters/windows_tools/string set
+#                                   # `libsci<m>_la_CFLAGS` to a bare -I list,
+#                                   # which drops $(SCI_CFLAGS) entirely: their
+#                                   # baseline C objects are -O0, no -fwrapv, no
+#                                   # -g, host-default min-version — verified via
+#                                   # DWARF DW_AT_APPLE_optimized=0 + LC_BUILD_
+#                                   # VERSION on the rebuilt baseline .o's). The
+#                                   # 1f-a invariant is REPRODUCE, not improve, so
+#                                   # those modules pass their real (un-optimized)
+#                                   # flags here — the deliberate O2 fix is a
+#                                   # separate re-baselined step (restore
+#                                   # SCI_CFLAGS in the Makefile.am). C++/Fortran
+#                                   # TUs are unaffected (they never used the
+#                                   # per-target CFLAGS): string's C++ gateways
+#                                   # stay O2, matching their baseline.
+#
+# Creates:  sci<name>-obj    OBJECT library ONLY — no SHARED lib, no drop-in,
+#                            no install_name; registered onto sci-foldin-all.
+# On macOS these ~21 core modules' .la's are automake noinst convenience libs
+# (MAINTAINER_MODE off): they ship NO standalone dylib, ALL their objects fold
+# into the libscilab/libscilab-cli aggregates, which consume
+# $<TARGET_OBJECTS:sci<name>-obj>. Same flag/include machinery as
+# scilab_module() (ONE transcription of the autotools flag truth, via
+# _scilab_module_flag_env + _scilab_module_apply); their parity check is the
+# AGGREGATE dylib's fingerprint + the per-TU flag-facts gate — there is no
+# per-module dylib to fingerprint.
+#
 # PARITY CONTRACT (arbitrated by build-parity/ against baseline-autotools.json):
 # every fact below — flags, includes, defines, link options, naming — is
 # transcribed from the CONFIGURED autotools build (config.status SCI_*FLAGS +
@@ -100,21 +137,13 @@ function(_scilab_module_apply tgt)
     DEFINE_SYMBOL "" POSITION_INDEPENDENT_CODE ON)
 endfunction()
 
-function(scilab_module NAME)
-  cmake_parse_arguments(M "" "CLASS;SYMBOLS"
-    "ALGO_SOURCES;GATEWAY_SOURCES;LANG;SYSTEM_LIBS;FIND_PACKAGES;MODULE_DEPS;EXTRA_INCLUDES;FRAMEWORKS" ${ARGN})
-  if(M_UNPARSED_ARGUMENTS)
-    message(FATAL_ERROR "scilab_module(${NAME}): unparsed arguments: ${M_UNPARSED_ARGUMENTS}")
-  endif()
-  if(NOT M_GATEWAY_SOURCES)
-    message(FATAL_ERROR "scilab_module(${NAME}): GATEWAY_SOURCES is required")
-  endif()
-  if(M_CLASS AND NOT M_CLASS MATCHES "^(ENGINE_LIBS|DYNAMIC_LOAD|GUI_LIBS)$")
-    message(FATAL_ERROR "scilab_module(${NAME}): CLASS must be ENGINE_LIBS, "
-                        "DYNAMIC_LOAD or GUI_LIBS, got '${M_CLASS}'")
-  endif()
-  set(_dir ${CMAKE_CURRENT_SOURCE_DIR})
-
+# The per-language flag/include environment — sets _cflags/_cxxflags/_fflags/
+# _incs in the CALLER's scope (a macro, deliberately: _scilab_module_apply then
+# sees them by dynamic scoping). Reads the caller's _dir + M_EXTRA_INCLUDES.
+# Factored out so scilab_module() and scilab_object_module() transcribe ONE
+# flag truth — the fold-in OBJECT libs must compile exactly like the gateway
+# dylibs or the aggregate's objects drift from the baseline.
+macro(_scilab_module_flag_env)
   # --- flags, per language (transcribed SCI_*FLAGS; semantic parity facts:
   # O2 + fwrapv + min_macos 11.0 + NDEBUG). The -Werror pair is C-only (they
   # are C diagnostics; SCI_CXXFLAGS omits them). Language standards are pinned
@@ -142,6 +171,63 @@ function(scilab_module NAME)
   set(_incs ${_dir} ${SCILAB_SOURCE_DIR}/modules/core/includes
             ${_dir}/includes ${_dir}/src/c ${_dir}/src/cpp
             ${SCILAB_DEFAULT_INCLUDES} ${M_EXTRA_INCLUDES} ${SCILAB_HOMEBREW_INCLUDES})
+endmacro()
+
+# Fold-in core module -> OBJECT library sci<name>-obj, nothing else. See the
+# header comment. Consumers (the libscilab/libscilab-cli aggregates) fold the
+# objects via $<TARGET_OBJECTS:sci<name>-obj>.
+function(scilab_object_module NAME)
+  cmake_parse_arguments(M "" "" "SOURCES;LANG;EXTRA_INCLUDES;C_FLAGS_OVERRIDE" ${ARGN})
+  if(M_UNPARSED_ARGUMENTS)
+    message(FATAL_ERROR "scilab_object_module(${NAME}): unparsed arguments: ${M_UNPARSED_ARGUMENTS}")
+  endif()
+  if(NOT M_SOURCES)
+    message(FATAL_ERROR "scilab_object_module(${NAME}): SOURCES is required")
+  endif()
+  foreach(lang IN LISTS M_LANG)   # typo guard on the declarative metadata
+    if(NOT lang MATCHES "^(C|CXX|Fortran)$")
+      message(FATAL_ERROR "scilab_object_module(${NAME}): LANG must be C, CXX "
+                          "or Fortran, got '${lang}'")
+    endif()
+  endforeach()
+  set(_dir ${CMAKE_CURRENT_SOURCE_DIR})
+
+  _scilab_module_flag_env()
+  # C_FLAGS_OVERRIDE: reproduce the automake per-target `_la_CFLAGS`-replaces-
+  # AM_CFLAGS footgun by REPLACING _cflags wholesale for this module's C TUs
+  # (see the header). DEFINED (not truthiness) so an explicit empty override is
+  # honored. C++/Fortran flags untouched. -arch + -mmacosx-version-min still
+  # come from CMAKE_OSX_* (as they do from the CC driver / config in autotools);
+  # the include dirs still come from target_include_directories.
+  if(DEFINED M_C_FLAGS_OVERRIDE)
+    set(_cflags ${M_C_FLAGS_OVERRIDE})
+  endif()
+  add_library(sci${NAME}-obj OBJECT ${M_SOURCES})
+  _scilab_module_apply(sci${NAME}-obj)
+
+  if(TARGET sci-foldin-all)
+    add_dependencies(sci-foldin-all sci${NAME}-obj)
+  endif()
+endfunction()
+
+function(scilab_module NAME)
+  cmake_parse_arguments(M "" "CLASS;SYMBOLS"
+    "ALGO_SOURCES;GATEWAY_SOURCES;LANG;SYSTEM_LIBS;FIND_PACKAGES;MODULE_DEPS;EXTRA_INCLUDES;FRAMEWORKS" ${ARGN})
+  if(M_UNPARSED_ARGUMENTS)
+    message(FATAL_ERROR "scilab_module(${NAME}): unparsed arguments: ${M_UNPARSED_ARGUMENTS}")
+  endif()
+  if(NOT M_GATEWAY_SOURCES)
+    message(FATAL_ERROR "scilab_module(${NAME}): GATEWAY_SOURCES is required")
+  endif()
+  if(M_CLASS AND NOT M_CLASS MATCHES "^(ENGINE_LIBS|DYNAMIC_LOAD|GUI_LIBS)$")
+    message(FATAL_ERROR "scilab_module(${NAME}): CLASS must be ENGINE_LIBS, "
+                        "DYNAMIC_LOAD or GUI_LIBS, got '${M_CLASS}'")
+  endif()
+  set(_dir ${CMAKE_CURRENT_SOURCE_DIR})
+
+  # Per-language flags + the C/C++ include set (shared with
+  # scilab_object_module — see _scilab_module_flag_env).
+  _scilab_module_flag_env()
 
   # --- find_package deps (e.g. OpenMP) ---
   set(_link_libs "")

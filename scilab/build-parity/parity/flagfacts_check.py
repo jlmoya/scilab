@@ -39,7 +39,70 @@ DEFAULT_EXPECTED_BY_SUFFIX = {suffix: _BASE for suffix in
 # a future colnew.f compiled at -O2 (silently reverting the workaround) still
 # FAILS, now naming opt=O2 (want O0). colnew.f is the sole file of this name in
 # the tree (verified), so the basename key is unambiguous.
-FILE_EXPECTED_OVERRIDES = {"colnew.f": {"opt": "O0"}}
+#
+# The Stage-1f fold-in modules carry FIVE more files of exactly this class --
+# each forced -O0 by a LIVE `if IS_MACOSX` per-file rule in its Makefile.am
+# (rule target == the real subdir-objects .lo path; baseline DWARF producers
+# all read `-g1 -O2 -O0 -fwrapv`, verified 2026-07-17):
+#   sszer.f                     modules/cacsd ("enforce -O0 for some files")
+#   dtensbs.f                   modules/elementary_functions ("macOS crash")
+#   blkfct.f symfct.f ordmmd.f  modules/sparse ("macOS crash")
+# (elementary_functions' libdummy -O0 rules for hqror2/comqr3/pade/unsfdcopy/
+# icopy are NOT here on purpose: those handwritten rules target root-level
+# prefixed .lo names that subdir-objects never requests -- DEAD; the baseline
+# compiled all five at plain -O2, so the default expectation already matches.)
+# Every basename is unique tree-wide (verified), so the keys are unambiguous.
+FILE_EXPECTED_OVERRIDES = {basename: {"opt": "O0"} for basename in
+                           ("colnew.f", "sszer.f", "dtensbs.f",
+                            "blkfct.f", "symfct.f", "ordmmd.f")}
+
+# Per-DIRECTORY overrides for the automake `_la_CFLAGS`-REPLACES-AM_CFLAGS
+# footgun (distinct from the per-file -O0 class above -- this is a per-target
+# flag mistake, not a per-file workaround, so it is keyed by the C source tree
+# it applies to). A few Stage-1f fold-in core modules set `libsci<m>_la_CFLAGS`
+# to a bare -I list; automake's per-target _CFLAGS REPLACES $(AM_CFLAGS) =
+# $(SCI_CFLAGS) WHOLESALE, so those modules' C TUs compiled with NONE of the
+# SCI_CFLAGS codegen flags -- no -O2 (so -O0), no -fwrapv, no -g, no
+# -mmacosx-version-min (host-default min-version). VERIFIED 2026-07-17 on the
+# rebuilt baseline objects (DW_AT_APPLE_optimized=0 / no DWARF; LC_BUILD_VERSION
+# minos 26.0 vs 11.0 for a sibling SCI_CFLAGS TU):
+#   /modules/parameters/         -- 1 C TU (parameters.c)
+#   /modules/windows_tools/      -- 1 C TU (nowindows_tools.c)
+#   /modules/string/src/c/       -- 25 C TUs; string sets _CFLAGS but NOT
+#                                   _CXXFLAGS, so ONLY its C tree is footgunned
+#                                   (its C++ gateways keep SCI_CXXFLAGS = O2 and
+#                                   stay on the default expectation). Scoped to
+#                                   src/c/ so those C++ TUs are NOT relaxed.
+# The CMake port REPRODUCES this (1f-a invariant: same app, not a better one)
+# via scilab_object_module(... C_FLAGS_OVERRIDE -std=gnu23); the fold-in
+# aggregate parity (Task 4) is codegen-BLIND (symbol/dep/rpath), so THIS gate is
+# the only thing standing between "reproduced -O0" and "silently shipped -O2",
+# and it must EXPECT the real shape: opt=O0 + wrapv=False. min_macos is NOT
+# overridden -- CMAKE_OSX_DEPLOYMENT_TARGET stamps -mmacosx-version-min=11.0 on
+# these TUs (the baseline's host-default 26.0 was a non-portable artifact of the
+# dropped flag, and the folded object's min-version is set at aggregate link
+# time anyway), so 11.0 stays guarded. C-only (`.c`): a future C++/Fortran TU
+# added under these dirs must NOT inherit the C footgun. The deliberate O2 fix
+# (restore SCI_CFLAGS in the Makefile.am + re-baseline) is a separate step.
+DIR_EXPECTED_OVERRIDES = (
+    ("/modules/parameters/",    {"opt": "O0", "wrapv": False}),
+    ("/modules/windows_tools/", {"opt": "O0", "wrapv": False}),
+    ("/modules/string/src/c/",  {"opt": "O0", "wrapv": False}),
+)
+
+def _override_for(path):
+    """The expected-fact override for one compile-DB file, or None.
+
+    Per-FILE basename override (the -O0 workaround class) wins; else, for C
+    sources only, the first matching per-DIRECTORY override (the _CFLAGS
+    footgun). C-only because the footgun is a C-compile mistake -- C++/Fortran
+    TUs under the same dir keep the default."""
+    override = FILE_EXPECTED_OVERRIDES.get(os.path.basename(path))
+    if override is None and path.endswith(".c"):
+        for substr, facts in DIR_EXPECTED_OVERRIDES:
+            if substr in path:
+                return facts
+    return override
 
 def check_flag_facts(compile_commands_path, expected_by_suffix):
     with open(compile_commands_path) as f:
@@ -47,14 +110,14 @@ def check_flag_facts(compile_commands_path, expected_by_suffix):
     mismatches = []
     for e in entries:
         cmd = e.get("command") or " ".join(e.get("arguments", []))
-        override = FILE_EXPECTED_OVERRIDES.get(os.path.basename(e["file"]))
+        override = _override_for(e["file"])
         for suffix, expected in expected_by_suffix.items():
             if not e["file"].endswith(suffix):
                 continue
-            # Per-file override wins over the per-suffix default, MERGED (not
-            # replaced): {**default, **override} keeps the non-overridden facts
-            # (wrapv, min_macos) under guard while relaxing only the named ones.
-            # A fresh dict every time -- never mutate the shared per-suffix dict.
+            # Override wins over the per-suffix default, MERGED (not replaced):
+            # {**default, **override} keeps the non-overridden facts under guard
+            # while relaxing only the named ones. A fresh dict every time --
+            # never mutate the shared per-suffix dict.
             if override:
                 expected = {**expected, **override}
             facts = parse_flag_facts(cmd)

@@ -1,7 +1,7 @@
 import json, os, subprocess, sys
 import pytest
 from parity.flagfacts_check import (check_flag_facts, DEFAULT_EXPECTED_BY_SUFFIX,
-                                    FILE_EXPECTED_OVERRIDES)
+                                    FILE_EXPECTED_OVERRIDES, DIR_EXPECTED_OVERRIDES)
 
 # build-parity root (parent of tests/): the CWD the CLI is run from so that
 # `python -m parity.flagfacts_check` can import the parity package.
@@ -100,7 +100,71 @@ def test_file_overrides_table_composition():
     # a deliberate change that must update this assertion (and get re-reviewed) --
     # a blanket exemption cannot slip in silently. Mirrors
     # test_map_covers_exactly_the_required_suffixes for the suffix map.
-    assert FILE_EXPECTED_OVERRIDES == {"colnew.f": {"opt": "O0"}}
+    # Reviewed set (Stage 1f, 2026-07-17): colnew.f (differential_equations) +
+    # the five fold-in force-O0 files -- sszer.f (cacsd), dtensbs.f
+    # (elementary_functions), blkfct.f/symfct.f/ordmmd.f (sparse) -- each a LIVE
+    # `if IS_MACOSX` per-file -O0 rule in its Makefile.am, each relaxing ONLY opt.
+    assert FILE_EXPECTED_OVERRIDES == {
+        "colnew.f":  {"opt": "O0"},
+        "sszer.f":   {"opt": "O0"},
+        "dtensbs.f": {"opt": "O0"},
+        "blkfct.f":  {"opt": "O0"},
+        "symfct.f":  {"opt": "O0"},
+        "ordmmd.f":  {"opt": "O0"},
+    }
+
+def test_dir_overrides_table_composition():
+    # Locks the per-directory footgun table (automake _CFLAGS-replaces-AM_CFLAGS,
+    # C TUs only, opt=O0 + wrapv=False). Same review gate as the file table: any
+    # addition/removal must land here and be re-reviewed. string is scoped to
+    # src/c/ (its C++ gateways stay O2), parameters/windows_tools are whole-module
+    # (single C TU each).
+    assert DIR_EXPECTED_OVERRIDES == (
+        ("/modules/parameters/",    {"opt": "O0", "wrapv": False}),
+        ("/modules/windows_tools/", {"opt": "O0", "wrapv": False}),
+        ("/modules/string/src/c/",  {"opt": "O0", "wrapv": False}),
+    )
+
+# --- I5: the per-DIRECTORY footgun override (parameters/windows_tools/string-C
+# compiled -O0/no-fwrapv because the per-target _CFLAGS dropped SCI_CFLAGS) must
+# (a) stop the false positive on the real baseline shape, (b) still GUARD it
+# (revert to O2 -> FAIL), (c) apply ONLY to C files (a .cpp under the same dir
+# stays O2), and (d) not leak to other dirs.
+
+def _footgun_c(tmp_path, path):
+    # The real footgun C shape: bare -std=gnu23, CMake's auto -arch +
+    # -mmacosx-version-min=11.0, NO -O2 (=> O0), NO -fwrapv.
+    return _cc(tmp_path, [{"file": path, "directory": "/m",
+        "command": "gcc -std=gnu23 -arch arm64 -mmacosx-version-min=11.0 "
+        "-DHAVE_CONFIG_H -c " + os.path.basename(path)}])
+
+def test_footgun_c_o0_passes_via_dir_override(tmp_path):
+    for path in ("/m/modules/parameters/src/c/parameters.c",
+                 "/m/modules/windows_tools/src/nowindows_tools/nowindows_tools.c",
+                 "/m/modules/string/src/c/convstr.c"):
+        assert check_flag_facts(_footgun_c(tmp_path, path), DEFAULT_EXPECTED_BY_SUFFIX) == [], path
+
+def test_footgun_c_at_o2_still_fails(tmp_path):
+    # If any of these C TUs is ever compiled -O2 -fwrapv (silently reverting the
+    # reproduction), the override's opt=O0/wrapv=False expectation catches it.
+    cc = _cc(tmp_path, [{"file": "/m/modules/parameters/src/c/parameters.c",
+        "directory": "/m", "command": "gcc -std=gnu23 -arch arm64 -O2 -fwrapv "
+        "-mmacosx-version-min=11.0 -c parameters.c"}])
+    out = check_flag_facts(cc, DEFAULT_EXPECTED_BY_SUFFIX)
+    assert any("opt" in m for m in out) and any("wrapv" in m for m in out), out
+
+def test_footgun_dir_override_is_c_only(tmp_path):
+    # string's C++ gateways live under the module but keep SCI_CXXFLAGS (O2). A
+    # .cpp is NOT a .c, so the dir override must not touch it: an O2 .cpp under
+    # string passes on the default, and an O0 .cpp there would FAIL (not relaxed).
+    ok = _cc(tmp_path, [{"file": "/m/modules/string/sci_gateway/cpp/sci_strindex.cpp",
+        "directory": "/m", "command": "g++ -std=c++17 -O2 -fwrapv "
+        "-mmacosx-version-min=11.0 -c sci_strindex.cpp"}])
+    assert check_flag_facts(ok, DEFAULT_EXPECTED_BY_SUFFIX) == []
+    bad = _cc(tmp_path, [{"file": "/m/modules/string/src/cpp/os_wtoi.cpp",
+        "directory": "/m", "command": "g++ -std=c++17 -O0 "
+        "-mmacosx-version-min=11.0 -c os_wtoi.cpp"}])  # src/cpp, not src/c
+    assert any("opt" in m for m in check_flag_facts(bad, DEFAULT_EXPECTED_BY_SUFFIX))
 
 def test_colnew_o0_passes_via_file_exception(tmp_path):
     # The real baseline shape: `-O2 -O0` (last-wins -> O0) + fwrapv + min_macos.
