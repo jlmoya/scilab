@@ -53,7 +53,7 @@ jars, and the jars are proven content-equivalent to their autotools originals by
   captured + diffed + fault-injected + guarded by a two-build reproducibility probe.
 - A **re-baseline** of `baseline-autotools.json` with the jar section, captured from a
   pure-autotools rebuild.
-- The **acceptance**: whole-tree parity incl. jars + a headless `scilab-cli` JVM/jar smoke + a
+- The **acceptance**: whole-tree parity incl. jars + a headless `scilab -nw` JVM/jar smoke + a
   `bin/scilab` GUI launch verified by startup-log scan.
 - Docs (`build-cmake-driver.md`) + CI (`.gitlab-ci.yml`).
 
@@ -128,9 +128,14 @@ re-baseline (like the machine-path debt).
 
 1. **Whole-tree parity OK incl. the `jars` section** (24 jars, content-matched) after
    `drop-in-all`. This is the primary arbiter.
-2. **Headless smoke** (CI-able): the CMake-built `scilab-cli -nwni` initializes the JVM and loads
-   the core jars, and a Java-bridge call succeeds — proves the classpath wiring from a working
-   executable.
+2. **Headless smoke** (CI-able, on the macOS runner): the CMake-built app in **`-nw`** mode
+   (`bin/scilab -nw -nb -e "disp(1+1); exit(0)"`) starts the JVM, loads the startup jar set,
+   computes, and exits 0 with a startup log free of `ClassNotFound`/`NoClassDefFound`/`Exception`
+   — proving the JVM + jars wire up from a working build. (**`-nwni` cannot be used**: it disables
+   the JVM entirely — *"jimport function disabled in -nwni mode"* — so it loads no jars. `-nw` is
+   "no window, JVM on". A fragile `jimport` call is deliberately avoided: on a Java error `-nw`
+   drops to an interactive prompt and hangs, so the robust smoke is startup+compute+exit, and the
+   content manifest already proves each jar's content.)
 3. **GUI launch** (local): `bin/scilab` loads the full jar set (gui/scinotes/xcos/history_browser/
    …); the startup log is scanned for `ClassNotFoundException`/`NoClassDefFoundError`/jar-load
    errors (no screen-capture); a clean log passes and the instance is left open for user testing
@@ -175,8 +180,8 @@ re-baseline (like the machine-path debt).
   `modules/<m>/jar/`.
 - Whole-tree **PARITY OK including the `jars` section** (24 content-matched jars); the harness
   catches a mutated/added/removed jar entry and a JDK-bytecode drift.
-- The CMake-built `scilab-cli` passes the headless JVM/jar smoke; `bin/scilab` launches with a
-  jar-error-free startup log.
+- The CMake-built app passes the headless `-nw` JVM/jar smoke (rc=0, jar-error-free log);
+  `bin/scilab` launches with a jar-error-free startup log.
 - The autotools build still builds the jars via `make`.
 - The baseline is a jar-aware pure-autotools reference; the reproducibility probe has been seen to
   fail on an injected volatile entry.
