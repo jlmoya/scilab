@@ -134,3 +134,13 @@ def test_diff_candidate_missing_jars_against_armed_baseline_fails():
 def test_diff_identical_jars_ok():
     fp = _fp(jars={"m.jar": {"A.class": "h1", "B.class": "h2"}})
     assert diff_fingerprints(fp, _fp(jars={"m.jar": {"A.class": "h1", "B.class": "h2"}}))["ok"]
+
+
+def test_diff_detects_jar_entry_add_and_remove():
+    # a shared jar whose entry SET changed (B dropped, C appeared) — the canonical
+    # "a class vanished from a still-built jar" regression the jar dimension exists for.
+    base = _fp(jars={"m.jar": {"A.class": "1", "B.class": "2"}})
+    cand = _fp(jars={"m.jar": {"A.class": "1", "C.class": "3"}})
+    diffs = diff_fingerprints(base, cand)["differences"]
+    assert any("jar m.jar: entry removed: B.class" in d for d in diffs)
+    assert any("jar m.jar: entry added: C.class" in d for d in diffs)
