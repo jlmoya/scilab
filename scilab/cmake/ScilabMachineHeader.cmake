@@ -522,16 +522,44 @@ endif()
 # this tree), then libarchive.m4:61-62 captures `LIBARCHIVE_LIBS="$LIBS"` /
 # `LIBARCHIVE_CFLAGS="$CFLAGS"` AFTER AC_CHECK_HEADERS/AC_CHECK_LIB ran --
 # i.e. it snapshots the accumulated global state left behind by EVERY
-# earlier macro in configure.ac's own call order (an openssl -I fragment
-# and a -ldl fragment neither belongs to libarchive), not a fact about
-# libarchive itself. Verified empirically: `pkg-config --cflags --libs
-# libarchive` on this machine reports libarchive's OWN correct
-# "-I/opt/homebrew/opt/libarchive/include" / "-L.../lib -larchive" -- a
-# DIFFERENT string from the reference's captured value, so no clean tool
-# call reproduces it either. Transcribed instead, same rationale the plan
-# itself grants C2F/F2C/CNAME below ("ABI contract, not an invention" --
-# here, "shell-accumulation artifact, not an invention"). LIBARCHIVE_VERSION
-# is NOT in this same boat -- see its own real probe further down.
+# earlier macro in configure.ac's own call order, not a fact about
+# libarchive itself (a -ldl fragment is the other passenger in that
+# snapshot).
+#
+# The openssl -I fragment specifically is NOT produced by any Scilab or
+# libarchive detection at all. Traced further: config.log's own recorded
+# invocation line and its cached-variable dump (config.log:7 and :5814)
+# both show $CFLAGS STARTING this configure run already set to
+# '-I/opt/homebrew/opt/openssl/include' -- matching, verbatim, `export
+# CFLAGS="-I/opt/homebrew/opt/openssl/include"` in this developer's own
+# ~/.bash_profile:134 (set there for an unrelated build requirement, with
+# nothing to do with libarchive, openssl, or Scilab) that autoconf simply
+# inherited from the invoking shell. libarchive.m4 never clears $CFLAGS
+# before its snapshot, so that pre-existing fragment rides along for free.
+# CONSEQUENCE, and why this is more than a trivia correction: this
+# reference value is contingent on WHICH SHELL invoked `./configure` -- a
+# re-`./configure` run from a login shell that doesn't source
+# `.bash_profile`, from CI, or from zsh could legitimately produce a
+# DIFFERENT LIBARCHIVE_CFLAGS, breaking this macro's parity with no
+# CMake-side change involved. Keep that in mind before "fixing" a future
+# parity mismatch here by touching CMake -- check the invoking shell's
+# $CFLAGS first.
+#
+# Verified empirically: `pkg-config --cflags --libs libarchive` reports
+# libarchive's OWN correct "-I/opt/homebrew/opt/libarchive/include" /
+# "-L.../lib -larchive" -- a DIFFERENT string from the reference's captured
+# value, so no clean tool call reproduces it either. That command needs
+# PKG_CONFIG_PATH pointed at libarchive's .pc file to run at all, though:
+# libarchive is a keg-only Homebrew formula (like matio/omp/gettext
+# elsewhere in this file), so a PLAIN `pkg-config --cflags --libs
+# libarchive` in an unmodified shell FAILS ("Package libarchive was not
+# found in the pkg-config search path"). Reproduce via `PKG_CONFIG_PATH=
+# /opt/homebrew/opt/libarchive/lib/pkgconfig pkg-config --cflags --libs
+# libarchive` -- confirmed to print the string quoted above. Transcribed
+# instead, same rationale the plan itself grants C2F/F2C/CNAME below ("ABI
+# contract, not an invention" -- here, "shell-accumulation artifact, not an
+# invention"). LIBARCHIVE_VERSION is NOT in this same boat -- see its own
+# real probe further down.
 # ============================================================================
 
 find_program(SCILAB_CURL_CONFIG NAMES curl-config PATHS /Users/josemoya/miniconda3/bin)
