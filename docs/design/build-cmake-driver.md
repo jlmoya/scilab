@@ -172,7 +172,10 @@ dimension `machine.h` needs; `version.h` is byte-identical so it needs no such d
 `config.status`, NOT on `drop-in-all`): it runs the built `scilab-adv-cli` headless per
 `ALL_LINGUAS_DOC` locale (`xmltojar`), reproducing the top-level `Makefile`'s `doc:` recipe
 env exactly (incl. the seven `DOC_JAVA_XML_OPTS` jdk.xml limits). `--disable-build-localization`
-is handled (absent `ALL_LINGUAS_DOC` → a no-op `doc`, not a configure failure).
+is handled (absent `ALL_LINGUAS_DOC` → a no-op `doc`, not a configure failure). **Build
+`drop-in-all` first** — by its opt-in post-step design `doc` runs the app but does not build
+its prerequisites, so `cmake --build … --target doc` on an unbuilt tree fails at
+`scilab-adv-cli` rather than building it (unlike `make doc`, which depends on it).
 
 ### Headers + help end-to-end proof (2026-07-17)
 
