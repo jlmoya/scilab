@@ -575,7 +575,7 @@
 #endif
 
 /* Provide a macro to do isinf */
-#define isinf(x) @ISINF_BODY@
+@SCILAB_ISINF_LINE@
 
 
 
@@ -588,5 +588,7 @@
 	   #undef DIR_SEPARATORW
 #endif
 #define DIR_SEPARATORW L"/"
+
+#define bsiz 4096
 
 #endif /* MACHINE_H  */

@@ -43,6 +43,19 @@ include(CheckCXXSourceCompiles)
 # "-isysroot ${CMAKE_OSX_SYSROOT}" would pass a bare, argument-less -isysroot to every probe here
 # (breaking literally all of them) for fidelity autoconf itself doesn't have. Only add it if a
 # real path is actually configured (a differently-set-up tree, or a future Xcode-generator run).
+#
+# Save the file-scope CMAKE_REQUIRED_* this block is about to overwrite, and
+# restore them at file end (below the final configure_file() call). include()
+# does not open a new variable scope, so anything left set here would
+# otherwise leak into every module CMakeLists.txt loaded later via
+# add_subdirectory() -- the same save/restore discipline this file already
+# applies correctly to its own LOCAL excursions below (the C++17 flag, the
+# CoreFoundation framework, the per-header extra include dirs), just applied
+# to the file-scope values instead of a probe-local one.
+set(_scilab_outer_required_quiet ${CMAKE_REQUIRED_QUIET})
+set(_scilab_outer_required_flags ${CMAKE_REQUIRED_FLAGS})
+set(_scilab_outer_required_includes ${CMAKE_REQUIRED_INCLUDES})
+
 set(CMAKE_REQUIRED_QUIET TRUE)
 if(CMAKE_OSX_SYSROOT)
   set(CMAKE_REQUIRED_FLAGS "-isysroot ${CMAKE_OSX_SYSROOT}")
@@ -116,6 +129,23 @@ if(NOT HAVE_DIRENT_H AND NOT HAVE_SYS_NDIR_H)
 endif()
 if(NOT HAVE_DIRENT_H AND NOT HAVE_SYS_NDIR_H AND NOT HAVE_SYS_DIR_H)
   check_include_file(ndir.h HAVE_NDIR_H)
+endif()
+
+# $ac_header_dirent: the shell variable AC_HEADER_DIRENT itself sets to
+# whichever of the 4 headers above the chain actually stopped on (headers.m4's
+# `ac_header_dirent=$ac_hdr; break`). CLOSEDIR_VOID's probe (bucket 1e, below)
+# needs this exact same header -- autoconf's own AC_FUNC_CLOSEDIR_VOID
+# `#include`s `<$ac_header_dirent>`, not a fixed name -- so resolve it once
+# here, from THIS chain's own result, rather than hardcoding a guess a second
+# time at the CLOSEDIR_VOID site.
+if(HAVE_DIRENT_H)
+  set(_scilab_dirent_header "dirent.h")
+elseif(HAVE_SYS_NDIR_H)
+  set(_scilab_dirent_header "sys/ndir.h")
+elseif(HAVE_SYS_DIR_H)
+  set(_scilab_dirent_header "sys/dir.h")
+elseif(HAVE_NDIR_H)
+  set(_scilab_dirent_header "ndir.h")
 endif()
 
 # ============================================================================
@@ -279,11 +309,31 @@ check_type_size("long" SIZEOF_LONG)
 set(STDC_HEADERS 1)
 
 # HAVE_ISINF: configure.ac:1634 -- AC_DEFINE([HAVE_ISINF],[1],...) fires
-# UNCONDITIONALLY, with no AC_CHECK_* guarding it at all (the separate
-# AC_CHECK_FUNC([isinf]) right below it only controls the fallback isinf(x)
-# macro body, a non-probe/later-stage macro). Nothing to probe: reproduce the
-# same unconditional fact.
+# UNCONDITIONALLY, with no AC_CHECK_* guarding it at all. Nothing to probe:
+# reproduce the same unconditional fact.
 set(HAVE_ISINF 1)
+
+# isinf(x) fallback macro body: a SEPARATE, real probe from HAVE_ISINF above,
+# even though both come from the same two configure.ac lines (1634-1636).
+# AC_CHECK_FUNC([isinf],, [AC_DEFINE([isinf(x)],[(!finite(x) && x==x)], ...)])
+# only defines the fallback in ACTION-IF-NOT-FOUND -- i.e. only when the REAL
+# isinf symbol is ABSENT; ACTION-IF-FOUND is empty. AC_CHECK_FUNC's own test
+# (functions.m4's _AC_CHECK_FUNC_BODY -> AC_LANG_FUNC_LINK_TRY) links a bare
+# `extern char isinf (); isinf ();` with NO header -- exactly what
+# check_function_exists reproduces. check_symbol_exists would be the WRONG
+# probe here (same trap already called out for HAVE_BIND_TEXTDOMAIN_CODESET
+# above, just the opposite direction): it #includes <math.h>, where isinf is
+# also a C99 macro, so it could report "found" from macro visibility alone
+# without proving the real link-time symbol AC_CHECK_FUNC actually tested.
+# TRUE on this machine (a real linkable isinf symbol exists, confirmed by this
+# probe independently -- not by reading config.log's ac_cv_func_isinf=yes),
+# so the fallback line becomes the undef placeholder, matching the reference.
+check_function_exists(isinf _SCILAB_HAVE_ISINF_FUNC)
+if(_SCILAB_HAVE_ISINF_FUNC)
+  set(SCILAB_ISINF_LINE "/* #undef isinf */")
+else()
+  set(SCILAB_ISINF_LINE "#define isinf(x) (!finite(x) && x==x)")
+endif()
 
 # ============================================================================
 # bucket 1d: C++/framework probes needing their own compiler invocation
@@ -363,8 +413,13 @@ set(CMAKE_REQUIRED_LIBRARIES ${_scilab_saved_required_libraries})
 # CLOSEDIR_VOID: transcribed from AC_FUNC_CLOSEDIR_VOID (autoconf's
 # functions.m4:512-528) -- closedir()'s return value is used in a `return`
 # statement, which FAILS TO COMPILE exactly when closedir returns void.
+# #include <$ac_header_dirent> there, not a fixed <dirent.h> -- reuses
+# _scilab_dirent_header, resolved above from the SAME short-circuit chain
+# autoconf's own $ac_header_dirent comes from (dirent.h succeeds on this
+# machine, so the two happen to agree here, but the source is the chain's
+# result, not a repeated guess).
 check_c_source_compiles("
-#include <dirent.h>
+#include <${_scilab_dirent_header}>
 int main(void) { return closedir(0); }
 " _SCILAB_CLOSEDIR_RETURNS_INT)
 if(NOT _SCILAB_CLOSEDIR_RETURNS_INT)
@@ -423,3 +478,10 @@ endif()
 configure_file(${CMAKE_CURRENT_LIST_DIR}/machine.h.cmake.in
                ${SCILAB_GENERATED_INCLUDES}/machine.h)
 message(STATUS "CMake-generated machine.h -> ${SCILAB_GENERATED_INCLUDES}/machine.h")
+
+# Restore the CMAKE_REQUIRED_* this file overwrote at the top -- see the
+# comment there. Must stay the last thing this file does, so nothing below
+# this line (there is nothing) runs under this file's probe environment.
+set(CMAKE_REQUIRED_QUIET ${_scilab_outer_required_quiet})
+set(CMAKE_REQUIRED_FLAGS ${_scilab_outer_required_flags})
+set(CMAKE_REQUIRED_INCLUDES ${_scilab_outer_required_includes})
