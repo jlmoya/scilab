@@ -35,6 +35,10 @@ def parse_make_defs(text):
         while line.endswith("\\") and i + 1 < len(lines):
             i += 1
             line = line[:-1] + " " + lines[i].strip()
+        # Belt-and-braces, not load-bearing: _DEF's own `^[A-Za-z_]...` anchor
+        # already rejects a tab- or '#'-led line (neither starts with a defs
+        # identifier character), so this guard never changes which lines match --
+        # it just skips the regex attempt for recipe/disabled-conditional lines.
         if line and not line.startswith(("\t", "#")):
             m = _DEF.match(line)
             if m:
@@ -66,21 +70,44 @@ def makefile_tu_facts(text):
     assumed, so a directory that redefines AM_CFLAGS (modules/dynamic_link/src/scripts)
     reports its real default. "explicit" holds every TU with a per-object rule, which
     is where automake's per-target _CFLAGS override lands.
+
+    The compile-marker gate ("is this recipe a libtool compile at all?") is tested
+    against the EXPANDED recipe, never the raw text: real automake suffix rules route
+    the compile through a wrapper variable ($(LTCOMPILE)/$(LTCXXCOMPILE)/
+    $(LTF77COMPILE)), so the literal "--mode=compile" appears only after expansion --
+    gating on the raw text derives EMPTY defaults for every real Makefile (verified:
+    78/78). Expanded once per recipe and the same string reused for parse_flag_facts,
+    so the (potentially recursive) expansion never runs twice for one recipe.
     """
     defs, lines = parse_make_defs(text), text.splitlines()
     out = {"defaults": {}, "explicit": {}}
     for i, line in enumerate(lines):
         m = _SUFFIX_RULE.match(line)
         if m:
-            recipe = _recipe_after(lines, i)
-            if "--mode=compile" in recipe:
-                out["defaults"][LANG_BY_SUFFIX[m.group(1)]] = \
-                    parse_flag_facts(expand_make_value(recipe, defs))
+            expanded = expand_make_value(_recipe_after(lines, i), defs)
+            # .c.o:/.cpp.o:/.f.o: match this same regex (it does not distinguish
+            # the .lo/.o target) but route through $(COMPILE)/$(CXXCOMPILE)/
+            # $(F77COMPILE) -- plain compiler invocations with no libtool
+            # indirection -- so they legitimately never carry --mode=compile,
+            # expanded or not. That is not special-cased here: the gate below
+            # excludes them as a side effect of the same check, and only the
+            # .lo variant ever satisfies it. Nothing is lost by that exclusion:
+            # both variants are driven by the same $(AM_*FLAGS)/$(*FLAGS)
+            # lineage and derive identical facts on this tree (verified).
+            if "--mode=compile" in expanded:
+                out["defaults"][LANG_BY_SUFFIX[m.group(1)]] = parse_flag_facts(expanded)
             continue
         m = _EXPLICIT_RULE.match(line)
         if m:
-            recipe = _recipe_after(lines, i)
-            if "--mode=compile" in recipe:
-                out["explicit"][m.group(2)] = \
-                    parse_flag_facts(expand_make_value(recipe, defs))
+            expanded = expand_make_value(_recipe_after(lines, i), defs)
+            # A handful of check_PROGRAMS test-harness TUs tree-wide (4, e.g.
+            # modules/functions_manager/src/cpp/test-function.cpp) compile via a
+            # bare $(CXX)/$(CC) ... -c explicit rule with no libtool involved at
+            # all, so they never carry --mode=compile, expanded or not, and are
+            # silently excluded here too. Verified inert: `make check` harnesses
+            # are absent from build-cmake/compile_commands.json (CMake does not
+            # build them), so there is nothing on the CMake side for these TUs to
+            # be compared against -- an absent override, not a missed one.
+            if "--mode=compile" in expanded:
+                out["explicit"][m.group(2)] = parse_flag_facts(expanded)
     return out
