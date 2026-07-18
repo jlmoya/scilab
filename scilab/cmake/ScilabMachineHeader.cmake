@@ -6,13 +6,17 @@
 # semantic. ADDITIVE: the source-tree machine.h is untouched and still resolves first during
 # coexistence (ScilabModule.cmake keeps core/includes ahead); this copy activates at RC-e.
 #
-# Scope: this stage converges the ~125 HAVE_*/SIZEOF_*/STDC_HEADERS/CLOSEDIR_VOID "probe"
-# macros only (see build-parity/parity/fingerprint.py's probe() filter, mirrored in Step 5 of
-# the task brief). The pkg-config (CURL_*/LIBARCHIVE_*/LIBXML_*), Fortran name-mangling
-# (C2F/F2C/CNAME/WLU/WTU/F77_*), options (WITH_*/ENABLE_*/KLU_SUITESPARSE/...) and PACKAGE_*
-# buckets are computed nowhere here — their CMake variables stay unset, so the template's
-# #cmakedefine lines for them legitimately emit nothing (matching configure's `/* #undef X */`
-# shape) until a later stage fills them in.
+# Scope: Tasks 1-2 converged the ~125 HAVE_*/SIZEOF_*/STDC_HEADERS/CLOSEDIR_VOID "probe"
+# macros (see build-parity/parity/fingerprint.py's probe() filter). Task 3 (this pass) adds
+# the remaining 39: the pkg-config bucket (CURL_*/LIBARCHIVE_*/LIBXML_*), Fortran name-mangling
+# (C2F/F2C/CNAME/WLU/WTU, plus the G95_FORTRAN dialect probe that sits textually next to them
+# but tests something different), the configure OPTIONS bucket (WITH_*/ENABLE_NLS/
+# KLU_SUITESPARSE/UMFPACK_SUITESPARSE), PACKAGE_*/PACKAGE/VERSION, three "plain fact" macros
+# (INSTALLPREFIX/PATH_SEPARATOR/SHARED_LIB_EXT), a fifth, distinct *libtool* source (LT_OBJDIR),
+# and LSTAT_FOLLOWS_SLASHED_SYMLINK (a real runtime probe placed next to HAVE_STAT_EMPTY_STRING_BUG
+# in bucket 1e below, since both trace to the same _AC_FUNC_STAT call site). ENABLE_RELOCATABLE,
+# ENABLE_MPI, WITH_OCAML and WITH_TK stay deliberately unset — genuinely undef in the reference
+# too — see "Deliberately UNPROBED" near the end of this file.
 #
 # Every probe below is transcribed from where configure.ac ACTUALLY tests it — either directly,
 # or via the m4/*.m4 file it AC_REQUIREs, or (for the two runtime/compile-behavior quirks)
@@ -31,6 +35,7 @@ include(CheckTypeSize)
 include(CheckCSourceCompiles)
 include(CheckCSourceRuns)
 include(CheckCXXSourceCompiles)
+include(CheckFortranSourceCompiles)
 
 # Pin the probe environment to the CONFIGURED build so a probe's answer matches configure's
 # (different -isysroot/-I would flip HAVE_* silently). This is the single biggest fidelity lever.
@@ -443,6 +448,42 @@ if(NOT _SCILAB_STAT_EMPTY_STRING_OK)
   set(HAVE_STAT_EMPTY_STRING_BUG 1)
 endif()
 
+# LSTAT_FOLLOWS_SLASHED_SYMLINK: configure.ac:1657 calls AC_FUNC_STAT, whose
+# expansion (_AC_FUNC_STAT, autoconf's functions.m4:1606-1622 -- the SAME
+# call site that produces HAVE_STAT_EMPTY_STRING_BUG right above)
+# AC_REQUIREs AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK (functions.m4:924-963).
+# It landed outside Tasks 1-2 only because their convergence filter matched
+# on the HAVE_*/SIZEOF_* name pattern, not by any real scope decision -- it
+# belongs right here. A real runtime probe, transcribed from the macro's own
+# AC_RUN_IFELSE body (functions.m4:938-943): lstat() a path with a TRAILING
+# SLASH pointing at a symlink to a regular (non-directory) file. POSIX
+# requires this to FAIL (ENOTDIR); Linux and Darwin both get this right,
+# unlike the SVR4/Hurd-era systems the macro guards against. The upstream
+# test stages conftest.file/conftest.sym via a shell `ln -s` BEFORE invoking
+# the compiled probe; check_c_source_runs has no such pre-stage hook, so the
+# probe below creates and cleans up the exact same file+symlink itself (via
+# symlink(2), the same syscall `ln -s` wraps), then runs the IDENTICAL
+# return expression (`lstat(...) == 0`) the macro uses -- same pass/fail
+# polarity (exit 0 = AC_RUN_IFELSE success = lstat correctly FAILED).
+check_c_source_runs("
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdio.h>
+int main(void) {
+  struct stat sbuf;
+  int rv;
+  FILE *f = fopen(\"conftest.file\", \"w\");
+  if (f) fclose(f);
+  unlink(\"conftest.sym\");
+  if (symlink(\"conftest.file\", \"conftest.sym\") != 0) return 1;
+  rv = (lstat(\"conftest.sym/\", &sbuf) == 0);
+  unlink(\"conftest.sym\");
+  unlink(\"conftest.file\");
+  return rv;
+}
+" LSTAT_FOLLOWS_SLASHED_SYMLINK)
+
 # ============================================================================
 # bucket 1f: struct-member probes (real struct-layout facts, not copied).
 # HAVE_ST_BLOCKS is AC_STRUCT_ST_BLOCKS's deprecated alias for
@@ -455,6 +496,376 @@ check_struct_has_member("struct stat" st_blocks  "sys/types.h;sys/stat.h" HAVE_S
 if(HAVE_STRUCT_STAT_ST_BLOCKS)
   set(HAVE_ST_BLOCKS 1)
 endif()
+
+# ============================================================================
+# bucket 2: pkg-config-shaped values (8) -- CURL_*/LIBARCHIVE_*/LIBXML_*.
+#
+# MECHANISM, confirmed by reading m4/curl.m4, m4/libxml2.m4 and
+# m4/libarchive.m4 (NOT by reading config.status/machine.h for the values):
+# configure.ac never calls plain `pkg-config` for any of these. CURL_* comes
+# from `curl-config --cflags/--libs/--version` (m4/curl.m4:66-68); LIBXML_*
+# from `xml2-config --cflags/--libs` (m4/libxml2.m4:50-51) -- both real,
+# clean, single-tool computations, reproduced the same way below (both
+# verified byte-for-byte against modules/core/includes/machine.h's literal
+# text on this machine before being wired in here).
+#
+# LIBARCHIVE_CFLAGS/LIBARCHIVE_LIBS are DIFFERENT and NOT independently
+# computable: m4/libarchive.m4 never calls any config-tool for them when
+# archive.h/libarchive are already found on the default search path (true
+# here -- HAVE_ARCHIVE_H/HAVE_LIBARCHIVE above both already succeed, so the
+# `PKG_CHECK_MODULES(LIBARCHIVE, ...)` fallback at libarchive.m4:41 never
+# runs). Instead it captures whatever the GLOBAL $CFLAGS/$LIBS shell
+# accumulators happen to hold at that exact point in configure.ac's linear
+# run: libarchive.m4:33-34 does `LIBS="$LIBARCHIVE_LIBS $LIBS"` /
+# `CFLAGS="$LIBARCHIVE_CFLAGS $CFLAGS"` with LIBARCHIVE_LIBS/CFLAGS still
+# EMPTY at that point (no --with-libarchive-* flag, no $WITH_DEVTOOLS on
+# this tree), then libarchive.m4:61-62 captures `LIBARCHIVE_LIBS="$LIBS"` /
+# `LIBARCHIVE_CFLAGS="$CFLAGS"` AFTER AC_CHECK_HEADERS/AC_CHECK_LIB ran --
+# i.e. it snapshots the accumulated global state left behind by EVERY
+# earlier macro in configure.ac's own call order (an openssl -I fragment
+# and a -ldl fragment neither belongs to libarchive), not a fact about
+# libarchive itself. Verified empirically: `pkg-config --cflags --libs
+# libarchive` on this machine reports libarchive's OWN correct
+# "-I/opt/homebrew/opt/libarchive/include" / "-L.../lib -larchive" -- a
+# DIFFERENT string from the reference's captured value, so no clean tool
+# call reproduces it either. Transcribed instead, same rationale the plan
+# itself grants C2F/F2C/CNAME below ("ABI contract, not an invention" --
+# here, "shell-accumulation artifact, not an invention"). LIBARCHIVE_VERSION
+# is NOT in this same boat -- see its own real probe further down.
+# ============================================================================
+
+find_program(SCILAB_CURL_CONFIG NAMES curl-config PATHS /Users/josemoya/miniconda3/bin)
+if(SCILAB_CURL_CONFIG)
+  execute_process(COMMAND "${SCILAB_CURL_CONFIG}" --cflags
+                   OUTPUT_VARIABLE CURL_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(COMMAND "${SCILAB_CURL_CONFIG}" --libs
+                   OUTPUT_VARIABLE CURL_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(COMMAND "${SCILAB_CURL_CONFIG}" --version
+                   OUTPUT_VARIABLE CURL_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
+find_program(SCILAB_XML2_CONFIG NAMES xml2-config PATHS /usr/bin)
+if(SCILAB_XML2_CONFIG)
+  execute_process(COMMAND "${SCILAB_XML2_CONFIG}" --cflags
+                   OUTPUT_VARIABLE LIBXML_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+  execute_process(COMMAND "${SCILAB_XML2_CONFIG}" --libs
+                   OUTPUT_VARIABLE LIBXML_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
+endif()
+
+# LIBARCHIVE_CFLAGS/LIBS: transcribed (see the bucket comment above for why).
+# Spacing matches the reference's literal text exactly; parse_defines'
+# whitespace-collapsing normalization only needs at least one space in each
+# gap to agree, but the exact copy is kept for at-a-glance traceability.
+set(LIBARCHIVE_CFLAGS " -I/opt/homebrew/opt/openssl/include")
+set(LIBARCHIVE_LIBS "-larchive  -ldl  ")
+
+# LIBARCHIVE_VERSION, unlike its two siblings above, IS a real, independently
+# computable fact: m4/libarchive.m4:50-59's own AC_RUN_IFELSE compiles and
+# RUNS a tiny program that decodes ARCHIVE_VERSION_NUMBER (archive.h's own
+# encoded MMMmmmrrr version macro) into "major.minor.rev" via printf --
+# reproduced verbatim via try_run, whose RUN_OUTPUT_VARIABLE captures the
+# same stdout AC_RUN_IFELSE captures via `$(./conftest$EXEEXT)`. archive.h is
+# keg-only Homebrew (same header the HAVE_ARCHIVE_H probe above already
+# resolves); reuse this file's own ambient CMAKE_REQUIRED_INCLUDES (already
+# carries SCILAB_HOMEBREW_INCLUDES) instead of a fresh hardcoded path.
+try_run(_scilab_archive_version_run_rc _scilab_archive_version_compiled
+  SOURCE_FROM_CONTENT scilab_archive_version.c
+  "#include <archive.h>
+#include <stdio.h>
+int main(void) {
+  int major = ARCHIVE_VERSION_NUMBER / 1000000;
+  int minor = (ARCHIVE_VERSION_NUMBER % 1000000) / 1000;
+  int rev = ARCHIVE_VERSION_NUMBER % 1000;
+  printf(\"%d.%d.%d\\n\", major, minor, rev);
+  return 0;
+}
+"
+  CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${CMAKE_REQUIRED_INCLUDES}"
+  RUN_OUTPUT_VARIABLE LIBARCHIVE_VERSION)
+if(LIBARCHIVE_VERSION)
+  string(STRIP "${LIBARCHIVE_VERSION}" LIBARCHIVE_VERSION)
+endif()
+
+# ============================================================================
+# bucket 3: Fortran name mangling (6) -- C2F/F2C/CNAME/WLU/WTU, all genuinely
+# derived below from m4/fortran.m4's AC_CHECK_UNDERSCORE_FORTRAN (called at
+# configure.ac:1030), not hardcoded strings that happen to match. G95_FORTRAN
+# sits textually nearby in configure.ac (line ~291) but is a DIFFERENT test
+# (Fortran-90-syntax compatibility, not name-mangling) -- probed separately
+# right after this block, per the plan's own instruction not to fold it in.
+# ============================================================================
+
+# Step 1: leading/trailing underscore convention. m4/fortran.m4:29-56
+# compiles a trivial Fortran subroutine ("pipof") and greps `nm` output for
+# 3 patterns ("_pipof", "pipof_", "_pipof_") to detect leading/trailing
+# underscores. Reproduced here via execute_process, literally -- not
+# inferred from CMake's own FortranCInterface abstraction (included right
+# below as a CORROBORATING, independently-computed cross-check -- "confirms
+# the underscore convention matches"), because that abstraction reports only
+# the FORTRAN-specific half of the mangling (GLOBAL_SUFFIX/GLOBAL_PREFIX),
+# never the platform's blanket "every C symbol gets a leading underscore"
+# Mach-O convention. configure's raw grep-based test conflates the two: on
+# this machine `nm` shows the compiled symbol as literally "_pipof_" (leading
+# underscore from Mach-O, trailing from gfortran), so ALL THREE greps match
+# in sequence (substring, unanchored) and -- since the m4 code is 3
+# independent `if` blocks, not `if/elif` -- the LAST match wins, setting
+# BOTH FC_LEADING_UNDERSCORE and FC_TRAILING_UNDERSCORE to yes. Reproduced
+# bug-for-bug on purpose: the reference has WLU *and* WTU BOTH defined,
+# which is this grep-overlap artifact, not two independent Fortran ABI facts
+# (FortranCInterface's own clean GLOBAL_PREFIX comes back empty, confirming
+# it would NOT set WLU if used alone -- exactly why it is a cross-check
+# here, not the value source).
+include(FortranCInterface)
+if(NOT FortranCInterface_GLOBAL_SUFFIX STREQUAL "_")
+  message(WARNING "FortranCInterface reports no Fortran trailing-underscore "
+    "convention on this toolchain (GLOBAL_SUFFIX='${FortranCInterface_GLOBAL_SUFFIX}'); "
+    "the raw-nm C2F/F2C/CNAME/WLU/WTU probe below assumes gfortran's usual "
+    "trailing-underscore convention and was not re-verified for this case.")
+endif()
+
+set(_scilab_fmangle_dir "${CMAKE_BINARY_DIR}/CMakeFiles/ScilabFortranMangle")
+file(MAKE_DIRECTORY "${_scilab_fmangle_dir}")
+file(WRITE "${_scilab_fmangle_dir}/pipof.f" "       subroutine pipof\n       end\n")
+execute_process(
+  COMMAND "${CMAKE_Fortran_COMPILER}" -c pipof.f -o pipof.o
+  WORKING_DIRECTORY "${_scilab_fmangle_dir}"
+  RESULT_VARIABLE _scilab_fmangle_compile_rc
+  OUTPUT_QUIET ERROR_QUIET)
+set(_scilab_fc_leading_underscore FALSE)
+set(_scilab_fc_trailing_underscore FALSE)
+if(_scilab_fmangle_compile_rc EQUAL 0)
+  execute_process(
+    COMMAND nm "${_scilab_fmangle_dir}/pipof.o"
+    OUTPUT_VARIABLE _scilab_fmangle_nm_out
+    RESULT_VARIABLE _scilab_fmangle_nm_rc
+    ERROR_QUIET)
+  if(_scilab_fmangle_nm_rc EQUAL 0)
+    # Same 3 sequential (non-elif) checks as m4/fortran.m4:40-56, in order,
+    # last-match-wins -- deliberately reproducing the overlap described above.
+    if(_scilab_fmangle_nm_out MATCHES "_pipof")
+      set(_scilab_fc_leading_underscore TRUE)
+      set(_scilab_fc_trailing_underscore FALSE)
+    endif()
+    if(_scilab_fmangle_nm_out MATCHES "pipof_")
+      set(_scilab_fc_leading_underscore FALSE)
+      set(_scilab_fc_trailing_underscore TRUE)
+    endif()
+    if(_scilab_fmangle_nm_out MATCHES "_pipof_")
+      set(_scilab_fc_leading_underscore TRUE)
+      set(_scilab_fc_trailing_underscore TRUE)
+    endif()
+  endif()
+endif()
+if(_scilab_fc_leading_underscore)
+  set(WLU 1)
+endif()
+if(_scilab_fc_trailing_underscore)
+  set(WTU 1)
+endif()
+
+# Step 2: "sharp sign" (## token-paste) support in the C preprocessor --
+# m4/fortran.m4:75-92's AC_COMPILE_IFELSE, transcribed verbatim. AC_COMPILE_IFELSE
+# only compiles (never links) -- but check_c_source_compiles' underlying
+# try_compile BUILDS AN EXECUTABLE by default, so the test's own
+# `extern int C2F(toto)(void);` with no definition anywhere (faithful to the
+# original, which calls it but never defines it) fails at the LINK step
+# unconditionally, regardless of whether ## works -- a false negative caught
+# by testing (this probe reported "no" for BOTH generator target types until
+# corrected). CMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY is CMake's own
+# documented switch for exactly this "compile-only" case, scoped to this one
+# probe and restored immediately after -- same save/restore discipline this
+# file already applies to its other local excursions (C++17 flag,
+# CoreFoundation framework).
+set(_scilab_saved_try_compile_target_type ${CMAKE_TRY_COMPILE_TARGET_TYPE})
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+check_c_source_compiles("
+#define C2F(name) name##_
+extern int C2F(toto)(void);
+int main(void) {
+  C2F(toto)();
+  ;
+  return 0;
+}
+" _SCILAB_USE_SHARP_SIGN)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE ${_scilab_saved_try_compile_target_type})
+
+# Step 3: C2F/F2C/CNAME bodies -- m4/fortran.m4:86,94-109's own branching,
+# reproduced exactly (not hardcoded): CNAME always follows USE_SHARP_SIGN;
+# C2F/F2C follow FC_TRAILING_UNDERSCORE first, then USE_SHARP_SIGN. On this
+# machine (trailing underscore + sharp sign both true) this converges to
+# "name##_"/"name##_"/"name1##name2", matching the reference exactly.
+if(_SCILAB_USE_SHARP_SIGN)
+  set(CNAME_BODY "name1##name2")
+else()
+  set(CNAME_BODY "name1/**/name2")
+endif()
+if(_scilab_fc_trailing_underscore)
+  if(_SCILAB_USE_SHARP_SIGN)
+    set(C2F_BODY "name##_")
+    set(F2C_BODY "name##_")
+  else()
+    set(C2F_BODY "name/**/_")
+    set(F2C_BODY "name/**/_")
+  endif()
+else()
+  set(C2F_BODY "name")
+  set(F2C_BODY "name")
+endif()
+
+# G95_FORTRAN: configure.ac:280-308, AC_LANG_PUSH([Fortran 77]) +
+# AC_COMPILE_IFELSE compiling a Fortran-90-only construct (`select case` +
+# a numbered `continue`) through the F77 compiler frontend -- despite the
+# macro's name (written against the old G95 compiler), it is really an
+# "is $F77 secretly F90-compatible" probe; gfortran is, so this fires here.
+# Transcribed verbatim from the AC_LANG_PROGRAM body at configure.ac:291-303
+# (fixed-form column layout preserved -- check_fortran_source_compiles'
+# default .F extension matches the AC_LANG_PUSH([Fortran 77]) fixed form).
+check_fortran_source_compiles("
+      PROGRAM hello
+        do 50 i = 1, 5
+           select case ( i )
+              case (1)
+                 print*, \"case is 1, i is \", i
+              case ( 2 : 3 )
+                 print*, \"case is 2 to 3, i is \", i
+              case default
+                 print*, \"default case, i is \", i
+              end select
+ 50           continue
+      END
+" G95_FORTRAN)
+
+# ============================================================================
+# bucket 4: configure OPTIONS (11 here; WLU/WTU are the worklist's other 2
+# "options"-bucket entries but are Fortran ABI facts, already set above) --
+# ENABLE_NLS + KLU_SUITESPARSE/UMFPACK_SUITESPARSE + WITH_*. Each underlying
+# AC_DEFINE has NO conditional guard at its own call site (m4/hdf5.m4:204,
+# m4/eigen.m4:75, m4/fftw.m4:73, m4/klu.m4:110+113, m4/umfpack.m4 mirrors
+# klu.m4, m4/gettext.m4:268 for ENABLE_NLS): each library-detection macro
+# either finds its library and unconditionally AC_DEFINEs the WITH_* flag or
+# calls AC_MSG_ERROR and configure never finishes. So on any tree where
+# `./configure` completed (as it did here, producing the reference
+# machine.h), every one of these is simply "on" -- there is no separate
+# probe to run beyond the HAVE_LIB*/HAVE_GETTEXT facts bucket 1b-lib already
+# computed. CMake owns the DECISION of which optional modules to build from
+# here on (per the plan's own framing); real find_package()-driven
+# conditional module inclusion is a later stage's concern (the
+# modules/<name>/CMakeLists.txt files this task does not touch). For now
+# these mirror what this dev tree's own successful configure run already
+# established. ENABLE_MPI/ENABLE_RELOCATABLE/WITH_OCAML/WITH_TK are
+# deliberately left OFF -- genuinely undef in the reference too.
+#
+# KLU_SUITESPARSE/UMFPACK_SUITESPARSE (m4/klu.m4:109-111, umfpack.m4 mirrors
+# it) additionally depend on $SUITESPARSE=yes -- which of two KLU/UMFPACK
+# header layouts was found (SuiteSparse's own vs. a standalone copy); true
+# on this tree, same "CMake owns it from here" treatment as the WITH_* flags.
+# ============================================================================
+option(ENABLE_NLS   "Native Language Support"                  ON)
+option(WITH_GUI     "With the JAVA stuff (GUI, Console, JOGL...)" ON)
+option(WITH_XCOS    "with XCos"                                ON)
+option(WITH_EIGEN   "With the EIGEN library"                   ON)
+option(WITH_FFTW    "With the FFTW library"                    ON)
+option(WITH_HDF5    "With the HDF5 library"                    ON)
+option(WITH_KLU     "With the KLU library"                     ON)
+option(WITH_MATIO   "With the MATIO library"                   ON)
+option(WITH_UMFPACK "With the UMFPACK library"                 ON)
+set(KLU_SUITESPARSE 1)
+set(UMFPACK_SUITESPARSE 1)
+
+# ============================================================================
+# bucket 5: PACKAGE_* + PACKAGE + VERSION (9) -- all fall out of the single
+# `AC_INIT([Scilab],[6],[https://gitlab.com/scilab/scilab/-/issues])` call
+# (configure.ac:24) via autoconf's OWN fixed derivation rules: PACKAGE_NAME/
+# VERSION/PACKAGE_BUGREPORT are AC_INIT's 3 literal arguments; PACKAGE_TARNAME
+# defaults to lower-cased, non-alnum-stripped PACKAGE_NAME when the (omitted)
+# 4th argument is absent; PACKAGE_URL defaults to "" when the (omitted) 5th
+# argument is absent; PACKAGE = PACKAGE_TARNAME; PACKAGE_VERSION = VERSION;
+# PACKAGE_STRING = "PACKAGE_NAME VERSION". Reproduced as that SAME small
+# derivation (not 8 independent literals), so only 3 values are actually
+# transcribed from configure.ac's source text -- the rest are computed from
+# those 3 by CMake, exactly as autoconf itself computes them.
+#
+# Deliberately NOT wired to this project's OWN SCILAB_VERSION_MAJOR/MINOR/
+# MAINTENANCE (cmake/ScilabConfigure.cmake, Stage 1f-c, for version.h's
+# *different* "2027.0" fork/branch version): those are read from
+# config.status BY DESIGN -- version.h targets BYTE-identity, a different
+# contract than this file's SEMANTIC one (see that file's own header
+# comment) -- so reusing them here would launder a config.status read into
+# this bucket, and they are numerically wrong for this purpose regardless
+# (2027.0.0, not 6): AC_INIT's product version has been the literal "6"
+# since long before the 2027 branch existed; the two numbers are unrelated.
+# ============================================================================
+set(PACKAGE_NAME "Scilab")
+set(VERSION "6")
+set(PACKAGE_BUGREPORT "https://gitlab.com/scilab/scilab/-/issues")
+string(TOLOWER "${PACKAGE_NAME}" PACKAGE_TARNAME)
+set(PACKAGE "${PACKAGE_TARNAME}")
+set(PACKAGE_VERSION "${VERSION}")
+set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
+# AC_INIT's optional 5th arg (URL) was omitted -> "" -- see the PACKAGE_URL
+# line in machine.h.cmake.in: it is a plain #define, not #cmakedefine,
+# because CMake's if(PACKAGE_URL) treats an empty STRING as false, which
+# would wrongly emit "/* #undef PACKAGE_URL */" for a macro configure
+# always defines (just sometimes to "").
+set(PACKAGE_URL "")
+
+# ============================================================================
+# Three "plain always-on facts" CMake already knows, no probe needed:
+# ============================================================================
+
+# INSTALLPREFIX: configure.ac:95's AC_RELOCATABLE_LIBRARY fires
+# UNCONDITIONALLY (no ENABLE_RELOCATABLE guard -- confirmed by reading that
+# call site directly), substituting autoconf's own ${prefix}. CMake's
+# equivalent install-prefix variable defaults to the SAME "/usr/local" on
+# this unconfigured-prefix tree (confirmed: a fresh configure's own
+# CMakeCache.txt carries CMAKE_INSTALL_PREFIX:PATH=/usr/local).
+set(INSTALLPREFIX "${CMAKE_INSTALL_PREFIX}")
+
+# PATH_SEPARATOR: configure.ac:2309 substitutes a shell $PATH_SEPARATOR set
+# earlier by the AC_LIB_RPATH/gnulib machinery (the AC_RELOCATABLE_LIBRARY
+# family above) -- the standard gnulib rule is ':' on every Unix-family
+# host, ';' only on native-Windows/OS-2 (drive-letter paths). Computed from
+# CMake's own WIN32 platform test, not hardcoded to this one platform.
+if(WIN32)
+  set(PATH_SEPARATOR ";")
+else()
+  set(PATH_SEPARATOR ":")
+endif()
+
+# SHARED_LIB_EXT + SHARED_LIB_EXTW: configure.ac:2338-2342 substitutes
+# libtool's own $shrext_cmds into BOTH macros (the wide-string one just
+# L""-prefixes the same value). CMake's native per-platform equivalent is
+# CMAKE_SHARED_LIBRARY_SUFFIX (".dylib" on Darwin, computed by CMake's own
+# toolchain/platform detection). The template's SHARED_LIB_EXTW line is
+# `L"@SHARED_LIB_EXT@"` -- it substitutes SHARED_LIB_EXT's TEXT, but
+# #cmakedefine's own truthiness gate is keyed on the macro's OWN name
+# (SHARED_LIB_EXTW), a SEPARATE CMake variable from SHARED_LIB_EXT; setting
+# only the latter left SHARED_LIB_EXTW undef (caught by the fresh-build
+# convergence check -- fixed by setting both, from the one real value).
+set(SHARED_LIB_EXT "${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(SHARED_LIB_EXTW "${CMAKE_SHARED_LIBRARY_SUFFIX}")
+
+# ============================================================================
+# LT_OBJDIR: a FIFTH macro source the plan's four buckets never named --
+# pure libtool boilerplate (m4/libtool.m4:2176-2193, _LT_CHECK_OBJDIR), not
+# pkg-config, not Fortran, not an "option", not PACKAGE_*. Flagged here as
+# its own distinct *libtool* category for RC-b/RC-c, which will meet more of
+# these (m4/libtool.m4 alone is over 2000 lines). The real test: `mkdir
+# .libs`; if the filesystem allows a dot-prefixed directory name (every
+# modern Unix/macOS volume does -- the fallback exists only for MS-DOS-era
+# 8.3 filesystems that forbid leading dots), lt_cv_objdir=.libs, else _libs;
+# LT_OBJDIR is that value plus a trailing slash. Genuinely probed via
+# file(MAKE_DIRECTORY), not assumed from CMAKE_SYSTEM_NAME.
+# ============================================================================
+set(_scilab_ltobjdir_probe "${CMAKE_BINARY_DIR}/CMakeFiles/ScilabLtObjdirProbe/.libs")
+file(REMOVE_RECURSE "${_scilab_ltobjdir_probe}")
+file(MAKE_DIRECTORY "${_scilab_ltobjdir_probe}")
+if(IS_DIRECTORY "${_scilab_ltobjdir_probe}")
+  set(LT_OBJDIR ".libs/")
+else()
+  set(LT_OBJDIR "_libs/")
+endif()
+file(REMOVE_RECURSE "${_scilab_ltobjdir_probe}")
 
 # ============================================================================
 # Deliberately UNPROBED (left absent, matching the reference's undef):

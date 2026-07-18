@@ -2,10 +2,15 @@
    The CMake-computed counterpart of configure's modules/core/includes/machine.h.
    NOT byte-identical to autoconf's output by design; equivalence is proven
    SEMANTICALLY (the #define set) by the parity harness's header_defines dimension.
-   One line per macro in modules/core/includes/machine.h.in (184 total; see
-   cmake/ScilabMachineHeader.cmake for which ~125 are actually probed at this
-   stage — the rest are a later stage's pkg-config/Fortran-mangling/options/
-   PACKAGE_* buckets and legitimately stay undef here). */
+   One line per macro in modules/core/includes/machine.h.in (184 total slots).
+   As of Task 3, cmake/ScilabMachineHeader.cmake probes/sets all 148 of those
+   that the reference machine.h actually DEFINES on this dev tree's own
+   configure run; the remaining 36 (HAVE_MACH_O_DYLD_H, ENABLE_MPI, WITH_TK,
+   RAPIDJSON_MASTER, ...) are LEGITIMATELY left unset here too, because the
+   reference itself leaves them undef (options this task doesn't own, or
+   platform facts that are false on this host) — not because a later stage
+   hasn't reached them. See that file's own header comment for the full
+   per-bucket breakdown. */
 /* The include guard MUST be spelled MACHINE_H — it matches configure's header
    (modules/core/includes/machine.h:4-5) and the harness parses it as a real macro
    (`MACHINE_H` -> ""), so any other spelling is a spurious macro diff. */
@@ -473,7 +478,12 @@
 #cmakedefine PACKAGE_TARNAME "@PACKAGE_TARNAME@"
 
 /* Define to the home page for this package. */
-#cmakedefine PACKAGE_URL "@PACKAGE_URL@"
+/* Plain #define, not #cmakedefine: configure always defines this macro
+   (AC_INIT's optional 5th arg is just an empty string when omitted, as it
+   is here). CMake's #cmakedefine treats an empty-STRING variable as false,
+   which would wrongly comment this macro out as undefined instead of
+   emitting it defined-to-empty-string, as configure itself always does. */
+#define PACKAGE_URL "@PACKAGE_URL@"
 
 /* Define to the version of this package. */
 #cmakedefine PACKAGE_VERSION "@PACKAGE_VERSION@"
