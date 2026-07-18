@@ -92,6 +92,25 @@ def diff_fingerprints(base, cand):
                     if b[e] != c[e]:
                         out.append(f"jar {name}: entry changed: {e}")
 
+    # Semantic header parity (RC-a): machine.h compared by its #define SET, not bytes
+    # (a CMake-generated header is never byte-identical to autoconf's). Transition rule
+    # mirrors rpaths/jars: a baseline with no section predates RC-a -> skip; a candidate
+    # that LOST the section against an armed baseline must FAIL.
+    if "header_defines" in base:
+        if "header_defines" not in cand:
+            out.append("header_defines section missing in candidate")
+        else:
+            _diff_named("semantic header", base["header_defines"], cand["header_defines"], out)
+            for name in sorted(set(base["header_defines"]) & set(cand["header_defines"])):
+                b, c = base["header_defines"][name], cand["header_defines"][name]
+                for m in sorted(set(b) - set(c)):
+                    out.append(f"{name}: macro removed: {m}")
+                for m in sorted(set(c) - set(b)):
+                    out.append(f"{name}: macro added: {m}")
+                for m in sorted(set(b) & set(c)):
+                    if b[m] != c[m]:
+                        out.append(f"{name}: macro changed: {m} ({b[m]!r} -> {c[m]!r})")
+
     # Compiler-flag facts, per language. The `source` label (autotools vs cmake)
     # is deliberately NOT compared -- flipping it is the migration itself; only
     # the semantic codegen facts matter. .get(): fingerprints captured before

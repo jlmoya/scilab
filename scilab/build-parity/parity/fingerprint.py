@@ -156,3 +156,23 @@ def normalize_manifest(text):
     its content hash reflects only stable attributes. Line-oriented; preserves the
     order of surviving lines."""
     return "\n".join(l for l in text.splitlines() if not _MANIFEST_VOLATILE.match(l))
+
+
+# A generated C config header -> its {macro: value} #define SET. autoconf and CMake
+# spell the SAME configuration differently (comment style, `#define X 1` vs
+# `/* #undef X */`, ordering), exactly like they spell compiler flags differently —
+# so machine.h is compared SEMANTICALLY by this set, never byte-for-byte. Key is the
+# bare identifier (so a function-like C2F(name) keys as "C2F"); value is the rest of
+# the line, whitespace-collapsed. #undef / commented-out macros are simply ABSENT
+# from the map, which is exactly how "this feature is off" must compare.
+_DEFINE_RE = re.compile(r"^\s*#\s*define\s+([A-Za-z_][A-Za-z_0-9]*)\s*(.*?)\s*$")
+
+
+def parse_defines(header_text):
+    """Generated C header text -> {macro: value}; bare `#define X` -> value ""."""
+    out = {}
+    for line in header_text.splitlines():
+        m = _DEFINE_RE.match(line)
+        if m:
+            out[m.group(1)] = " ".join(m.group(2).split())
+    return out

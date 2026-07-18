@@ -9,7 +9,7 @@ import zipfile
 
 from parity.fingerprint import (parse_nm, parse_otool_libs, parse_build_version,
                                 parse_flag_facts, parse_rpaths, normalize_version,
-                                normalize_path, normalize_manifest)
+                                normalize_path, normalize_manifest, parse_defines)
 
 GENERATED_FILES = [
     "etc/classpath.xml",
@@ -204,8 +204,18 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     manifest = "\n".join(sorted(macro_bins))
     generated[MACRO_BIN_MANIFEST_KEY] = hashlib.sha256(manifest.encode("utf-8")).hexdigest()
 
+    # The CMake-GENERATED machine.h (RC-a), compared SEMANTICALLY against configure's
+    # macro set (the baseline's reference, armed from the source-tree header). Absent
+    # until RC-a's generator lands -> section simply empty (the diff's transition rule).
+    header_defines = {}
+    gen_machine = os.path.join(build_dir, "build-cmake", "generated-includes", "machine.h")
+    if os.path.exists(gen_machine):
+        with open(gen_machine, "r", errors="replace") as f:
+            header_defines["machine.h"] = parse_defines(f.read())
+
     return {"build_id": build_id, "executables": executables,
             "dylibs": dylibs, "generated": generated, "jars": jars,
+            "header_defines": header_defines,
             "flags": capture_flag_manifest(build_dir)}
 
 
@@ -232,7 +242,9 @@ def _main(argv):
         json.dump(fp, f, indent=2, sort_keys=True)
     print(f"captured {len(fp['dylibs'])} dylibs, {len(fp['executables'])} executables, "
           f"{len(fp['jars'])} jars, "
-          f"{len(fp['generated'])} generated files, flags[{fp['flags']['source']}] -> {out}")
+          f"{len(fp['generated'])} generated files, "
+          f"{len(fp['header_defines'])} semantic headers, "
+          f"flags[{fp['flags']['source']}] -> {out}")
     return 0
 
 
