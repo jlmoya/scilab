@@ -244,9 +244,10 @@ CC = gcc -std=gnu23
 SCI_CFLAGS = -DNDEBUG -O2 -fwrapv -mmacosx-version-min=11.0
 AM_CFLAGS = $(SCI_CFLAGS)
 libfoo_la_CFLAGS =
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS)
 
 .c.lo:
-\t$(LIBTOOL) --mode=compile $(CC) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
+\t$(LTCOMPILE) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
 
 src/libfoo_la-drop.lo: src/drop.c
 \t$(LIBTOOL) --mode=compile $(CC) $(libfoo_la_CFLAGS) $(CFLAGS) -c -o $@ src/drop.c
