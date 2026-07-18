@@ -94,6 +94,12 @@ sanity:cmake-driver:
       #    generated version.h or the doc target.
       grep -q 'include(cmake/ScilabConfigure.cmake)' CMakeLists.txt
       grep -q 'scilab_help_target()' CMakeLists.txt
+      # H. Retire-configure RC-a is wired: CMake computes + generates machine.h. The native
+      #    parity job would also catch a deleted include (verified: dropping header_defines
+      #    from a candidate against the armed baseline fails with "header_defines section
+      #    missing in candidate", rc=1) — this grep catches it here instead, in the cheap
+      #    sanity job, minutes before the full native build would.
+      grep -q 'include(cmake/ScilabMachineHeader.cmake)' CMakeLists.txt
     - cd build-parity && python3 -m pytest tests/ -q
 
 # Native half — the real Stage-1f-b gate: build the WHOLE app under CMake from the

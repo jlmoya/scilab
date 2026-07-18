@@ -165,8 +165,47 @@ byte-identical source-tree copy still resolves first (`ScilabModule.cmake` keeps
 `core/includes` ahead, reproducing automake's parity-critical `-I` order), and the generated
 copy becomes the resolver when the source-tree header is deleted at retire-`configure`.
 **`machine.h` is NOT generated here** — it is entangled with configure options + pkg-config
-substitutions and moves to retire-`configure` (which also adds the semantic-header parity
-dimension `machine.h` needs; `version.h` is byte-identical so it needs no such dimension).
+substitutions and moved to retire-`configure` **RC-a** (below), which also adds the
+semantic-header parity dimension it needs; `version.h` is byte-identical so it needs no such
+dimension.
+
+## `machine.h` — computed in CMake (retire-configure RC-a)
+
+`scilab/cmake/ScilabMachineHeader.cmake` **computes** all of `machine.h`'s macros itself and
+`configure_file`s `cmake/machine.h.cmake.in` into `build-cmake/generated-includes/`, beside
+`version.h`. It never reads a value out of `config.status` — that independence is the whole
+point: it is what makes the parity check a real gate rather than a tautology. The five sources
+are ~131 `check_include_file`/`check_symbol_exists`/`check_function_exists`/`check_type_size`
+probes, pkg-config-family values (via `curl-config`/`xml2-config`, which is what the `m4/` macros
+actually call — not `pkg-config`), Fortran mangling, the `--enable`/`--with` options, and the
+`PACKAGE_*` boilerplate. A sixth source surfaced during the port and is worth naming for RC-b/RC-c:
+**libtool** (`LT_OBJDIR`), which belongs to none of the five.
+
+Unlike `version.h`, the output is **not** byte-identical to autoconf's (comment style, `#define`
+vs `/* #undef */` formatting, and ordering all differ), so equivalence is proven **semantically**
+by the harness's `header_defines` dimension: `parse_defines` reduces each header to its
+`{macro: value}` `#define` set and the diff reports `macro added/removed/changed` by name. The
+baseline is armed from **configure's source-tree header** while capture reads the
+**CMake-generated** one — the two sides deliberately read different files, because the gate being
+asserted is "CMake's header == configure's header". Coexistence is unchanged: the source-tree
+header is untouched and still resolves first, and since the two are semantically equal the
+compiled output is identical either way; the generated copy becomes the resolver at RC-e.
+
+Two caveats a future reader will need:
+
+- **`LIBARCHIVE_CFLAGS`/`LIBARCHIVE_LIBS` are transcribed literals, not computed** — the single
+  exception, and a deliberate one. `m4/libarchive.m4:61-62` overwrites the libarchive-specific
+  variables with the *entire* global `$LIBS`/`$CFLAGS` accumulator, so configure's captured value
+  is a snapshot of unrelated state rather than a fact about libarchive (hence an **openssl** `-I`
+  path in `LIBARCHIVE_CFLAGS`, and a `-ldl` from an unscoped `AC_CHECK_LIB` 383 lines earlier).
+  Computing the *correct* value would produce a different one and fail parity — "reproduce, don't
+  improve" makes transcription the faithful choice here.
+- **The reference itself is environment-contingent.** That openssl fragment comes from the
+  developer's shell (`export CFLAGS=...` in `~/.bash_profile`), which autoconf inherited; nothing
+  in the tree produces it. A fresh `./configure` from CI, from zsh, or from a login shell that
+  does not source that profile can therefore shift `LIBARCHIVE_CFLAGS` and break this macro's
+  parity **with no CMake-side change involved**. The committed baseline freezes the reference,
+  which is the mitigation — but do not mistake such a shift for a CMake regression.
 
 `scilab/cmake/ScilabHelp.cmake` adds the **`doc`** target (opt-in, `BUILD_HELP`-gated from
 `config.status`, NOT on `drop-in-all`): it runs the built `scilab-adv-cli` headless per
