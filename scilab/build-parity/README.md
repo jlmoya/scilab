@@ -30,12 +30,31 @@ migration. **Known limitation (v1):** only the GLOBAL per-language flags are cap
 overrides (e.g. `differential_equations` forcing `colnew.f` to `-O0` on macOS) are invisible.
 
 ## Scope
-Stage 0 fingerprints **dylibs, executables, and generated files** only. **Jars are deliberately
-NOT fingerprinted** — Stage 1 (make -> CMake) leaves the Ant-built jars byte-for-byte unchanged, so
-there is nothing for a parity check to catch yet; Stage 2 (Ant -> Maven) is what can actually change
-jar contents, and that is when jar-parity semantics need to be defined (contained classes, not raw
-bytes — a reactor build legitimately changes jar timestamps/manifests). Revisit this file when
-Stage 2 starts.
+Six dimensions are fingerprinted today:
+
+| Dimension | Compares | Armed in |
+|---|---|---|
+| `dylibs` | nm symbols (address-stripped) + otool deps + `LC_BUILD_VERSION` + `LC_RPATH` | Stage 0 / 1f-a |
+| `executables` | the same, for `scilab-bin` + `scilab-cli-bin` | Stage 1f-a |
+| `generated` | byte hashes of generated files (incl. the source-tree `machine.h`/`version.h`) | Stage 0 |
+| `flags` | semantic per-language flag facts | Stage 1 |
+| `jars` | normalized jar content manifests (entry list + MANIFEST, volatile lines dropped) | Stage 1f-b |
+| `header_defines` | a header's `{macro: value}` `#define` set — **semantic, not bytes** | RC-a |
+
+`jars` was added in Stage 1f-b, once CMake began driving the Ant build and jar contents could
+actually move. It covers the **24 module jars**; the doc build's output (`scilab_*_help.jar`,
+`scilab_images.jar`) is excluded by filename pattern, since those are help artifacts rather than
+module jars. Stage 2 (Ant -> Maven) is still what can change jar contents most, and the normalized
+manifest is what makes a reactor build's timestamp churn survivable.
+
+`header_defines` (RC-a) exists because CMake's generated `machine.h` is **not** byte-identical to
+autoconf's — comment style, `#define` vs `/* #undef */` spelling and ordering all differ — so it is
+compared semantically instead. Note what that means: it gates the **`#define` set**, not full
+preprocessor equivalence. Directives that are not `#define` (a live vs commented-out `#undef`, an
+`#ifdef` branch) are invisible to it by construction, as are duplicate definitions later in a file
+(last wins) and internal whitespace inside a string value (collapsed before comparison). Those are
+acceptable limits for the job it does — proving CMake computed the same macros configure did — but
+they are limits, not oversights.
 
 ## What it does NOT automate (manual gates — run these too before declaring a module migrated)
 1. **Behavior — the `.tst` suite.** There is no compiled test binary; run it inside the built

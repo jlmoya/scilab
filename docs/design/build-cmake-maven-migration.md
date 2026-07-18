@@ -398,9 +398,28 @@ unacceptable.** The destination: **`./configure && make` and Ant DELETED; `cmake
 build.** Coexistence shrinks to zero across these committed stages, each DELETING part of autotools:
 
 1. **1f-c (done):** CMake owns `version.h` generation + the help build.
-2. **Retire `configure` (next):** CMake computes the `SCI_*FLAGS`, generates `build.incl.xml` +
+2. **Retire `configure` (in progress):** CMake computes the `SCI_*FLAGS`, generates `build.incl.xml` +
    `machine.h` (a *semantic* header parity dimension for the non-byte-identical `machine.h`), and owns
-   the macros build → `./configure`/`config.status` **deleted**.
+   the macros build → `./configure`/`config.status` **deleted**. Decomposed **RC-a…RC-e**:
+   **RC-a (done)** — CMake computes + generates `machine.h`, plus the semantic `header_defines`
+   dimension RC-b/RC-c reuse. **RC-b** — the `SCI_*FLAGS`. **RC-c** — the ~21 other generated files.
+   **RC-d** — the macros build. **RC-e** — the cutover that deletes `./configure`.
+
+   **RC-e prerequisites discovered during RC-a (must be resolved *before* the cutover, because each is
+   latent only while the source-tree header still resolves first):**
+   - **The configure options have two unlinked sources of truth.** `ScilabMachineHeader.cmake` declares
+     `option(WITH_GUI … ON)` and siblings, while `ScilabJava.cmake` derives `SCILAB_GUI` from
+     `config.status`. Nothing links or cross-checks them, so on a `--without-gui` tree the Java bridge
+     would correctly skip the terminal jar while the generated `machine.h` still emitted
+     `#define WITH_GUI`. Harmless today; a real inconsistency the moment CMake's header becomes the
+     resolver. This needs an actual link, not a comment.
+   - **`LIBARCHIVE_CFLAGS`/`LIBARCHIVE_LIBS` are transcribed literals** (see `build-cmake-driver.md` for
+     the full reasoning). At RC-e, when `config.status` is gone, decide deliberately: freeze them, or
+     fix the underlying autoconf accident. Do not let the decision be made by default.
+   - **The reference header is environment-contingent** — part of `LIBARCHIVE_CFLAGS` traces to a
+     developer shell's `CFLAGS` export that autoconf inherited, not to anything in the tree. Any
+     re-`./configure` in a different environment can shift it. The committed baseline freezes the
+     reference; a shift is not a CMake regression.
 3. **Retire `make`:** delete the `Makefile.am`/`Makefile.in` → the native side is CMake-only.
 4. **Stage 2 (Ant→Maven):** Ant + `build.incl.xml` gone → Maven the sole Java build.
 5. **End state:** autotools + Ant fully removed; **zero coexistence.** Then the FFI phase (SWIG/JNI→Panama).

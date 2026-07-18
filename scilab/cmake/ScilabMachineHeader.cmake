@@ -562,7 +562,13 @@ endif()
 # real probe further down.
 # ============================================================================
 
-find_program(SCILAB_CURL_CONFIG NAMES curl-config PATHS /Users/josemoya/miniconda3/bin)
+# HINTS, not PATHS: find_program searches PATHS *after* the environment PATH, so a
+# PATHS hint does not actually pin anything -- on this machine miniconda's curl-config
+# wins only because it happens to come first on PATH. A shell without conda on PATH
+# would resolve /usr/bin/curl-config and silently shift CURL_CFLAGS/LIBS/VERSION,
+# failing parity on 3 macros with no CMake-side change. HINTS is searched before PATH,
+# which makes the pin real.
+find_program(SCILAB_CURL_CONFIG NAMES curl-config HINTS /Users/josemoya/miniconda3/bin)
 if(SCILAB_CURL_CONFIG)
   execute_process(COMMAND "${SCILAB_CURL_CONFIG}" --cflags
                    OUTPUT_VARIABLE CURL_CFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -572,7 +578,7 @@ if(SCILAB_CURL_CONFIG)
                    OUTPUT_VARIABLE CURL_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 endif()
 
-find_program(SCILAB_XML2_CONFIG NAMES xml2-config PATHS /usr/bin)
+find_program(SCILAB_XML2_CONFIG NAMES xml2-config HINTS /usr/bin)
 if(SCILAB_XML2_CONFIG)
   execute_process(COMMAND "${SCILAB_XML2_CONFIG}" --cflags
                    OUTPUT_VARIABLE LIBXML_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)

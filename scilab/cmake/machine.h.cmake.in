@@ -632,13 +632,20 @@
 
 
 
+/* The two #undef lines below are COMMENTED OUT on purpose, reproducing what
+   config.status emits. autoheader treats every `#undef X` in machine.h.in as a
+   template slot; since DIR_SEPARATOR/DIR_SEPARATORW are never AC_DEFINE'd, it
+   emits the commented form (`/* ` + the original line + ` */`) rather than a
+   live #undef. Copying machine.h.in's raw text here instead would leave them
+   live -- a real divergence the header_defines dimension cannot see, since it
+   compares the #define set and #undef is not a #define. */
 #ifdef DIR_SEPARATOR
-       #undef DIR_SEPARATOR
+/*        #undef DIR_SEPARATOR */
 #endif
 #define DIR_SEPARATOR "/"
 
 #ifdef DIR_SEPARATORW
-	   #undef DIR_SEPARATORW
+/* 	   #undef DIR_SEPARATORW */
 #endif
 #define DIR_SEPARATORW L"/"
 
