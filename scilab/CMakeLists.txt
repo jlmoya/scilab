@@ -239,3 +239,7 @@ scilab_executable(scilab-bin
 # automatic). The topo-sort/Ivy stay inside Ant (Stage 2's Maven reactor's job).
 scilab_java_bridge()
 add_dependencies(drop-in-all sci-java-all)
+
+# Stage 1f-c — the help build as an opt-in CMake post-step (needs the built app).
+include(cmake/ScilabHelp.cmake)
+scilab_help_target()
