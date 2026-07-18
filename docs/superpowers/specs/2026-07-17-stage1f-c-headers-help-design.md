@@ -2,6 +2,18 @@
 
 **Status:** approved design, pre-plan
 **Date:** 2026-07-17
+
+> **SCOPE REFINEMENT (2026-07-17, post-approval — governs the plan):** grounding the plan revealed
+> two things that shrink 1f-c. (1) **`machine.h` moves to the retire-configure stage.** Only ~62 of
+> its ~100 macros are pure CMake-probeable; the rest are configure options + pkg-config substitutions
+> (`ENABLE_*`/`WITH_*`/`CURL_*`/Fortran-mangling) that retire-configure takes over anyway — generating
+> it there avoids a circular `config.status` read-back (user decision). (2) **`version.h` is
+> byte-identical**, so **no semantic-header dimension is needed in 1f-c**: `version.h` is exactly
+> `version.h.in` with three `@SCILAB_VERSION_*@` substitutions, so `configure_file(version.h.in …
+> @ONLY)` reproduces it byte-for-byte and the harness keeps byte-hashing it, unchanged. **Final 1f-c
+> scope = CMake generates `version.h` (byte-identical) + the help post-step + docs/CI.** The
+> **semantic-header dimension (§5.3) and `machine.h` generation (§5.1) relocate to retire-configure**;
+> §§5.1/5.3/6.1's semantic-compare language applies THERE, not here. Everything else below stands.
 **Depends on:** Stage 1f-b (CMake drives the whole native app + the 24 Java jars via `sci-java-all`;
 the parity harness has native + rpath + jar dimensions; HEAD `689be760fa4`). Strategy:
 `docs/design/build-cmake-maven-migration.md`; driver usage: `docs/design/build-cmake-driver.md`;
