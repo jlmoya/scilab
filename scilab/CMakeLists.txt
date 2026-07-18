@@ -42,6 +42,10 @@ include(cmake/ScilabModule.cmake)
 include(cmake/ScilabAggregate.cmake)
 include(cmake/ScilabJava.cmake)
 
+# Stage 1f-c — CMake generates version.h into build-cmake/generated-includes/ and
+# prepends it to SCILAB_DEFAULT_INCLUDES so the module builds below consume it.
+include(cmake/ScilabConfigure.cmake)
+
 # Modules register their drop-in-<name> targets onto this aggregate:
 # `cmake --build build-cmake --target drop-in-all` drops every migrated dylib
 # into its modules/<name>/.libs/.
