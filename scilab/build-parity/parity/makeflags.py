@@ -11,7 +11,6 @@ for every TU and mismatch CMake everywhere. Unknown variables expand empty, as
 make does, so $(LIBTOOL)/$@/$< contribute nothing and parse_flag_facts simply
 ignores the residue.
 """
-import os
 import re
 from parity.fingerprint import parse_flag_facts
 
@@ -81,6 +80,19 @@ def makefile_tu_facts(text):
     so the (potentially recursive) expansion never runs twice for one recipe.
     """
     defs, lines = parse_make_defs(text), text.splitlines()
+    # Object paths that appear on the RHS of some LIVE (uncommented) variable
+    # definition anywhere in the Makefile -- the discriminator for "is this
+    # --mode=compile rule actually requested by the build" (see the long
+    # comment at its use below). Built once per Makefile: parse_make_defs
+    # already merged \-continuations and += appends and dropped comment/recipe
+    # lines, so a flat whitespace-split over every surviving definition's
+    # value is enough -- automake's object always appears as a literal token
+    # at its innermost am__objects_N definition, so this needs no recursive
+    # $(VAR) resolution to find it.
+    referenced_objects = set()
+    for value in defs.values():
+        referenced_objects.update(value.split())
+
     out = {"defaults": {}, "explicit": {}}
     for i, line in enumerate(lines):
         m = _SUFFIX_RULE.match(line)
@@ -111,27 +123,56 @@ def makefile_tu_facts(text):
             # build them), so there is nothing on the CMake side for these TUs to
             # be compared against -- an absent override, not a missed one.
             #
-            # A LIVE per-object rule places its object in the SAME directory as its
-            # source -- automake's subdir-objects naming (e.g. the string footgun's
-            # src/c/libscistring_algo_la-strsubst.lo: src/c/strsubst.c). ONE
-            # Makefile in the tree breaks that pattern: modules/elementary_functions
-            # carries a hand-written "Disable optimisation" block (noinst_LTLIBRARIES
-            # = libdummy-elementary_functions.la) that appends a root-level-named
-            # -O0 rule for hqror2.f, comqr3.f, pade.f, icopy.f and unsfdcopy.c (e.g.
+            # A rule is LIVE iff its object is actually requested by the build --
+            # i.e. `obj` is a member of referenced_objects (built above from every
+            # live variable definition in the file). This is NOT the same question
+            # as "does the object sit beside its source": an earlier version of
+            # this filter used exactly that directory heuristic (dirname(obj) ==
+            # dirname(src)), which caught the modules/elementary_functions class
+            # below but MISSED a same-directory collision that poisoned the
+            # capture -- see the two paragraphs after the next for both cases and
+            # the tree-wide measurement that replaced one filter with the other.
+            #
+            # Case 1 -- root-level dead rule (dirname-detectable, kept working):
+            # modules/elementary_functions carries a hand-written "Disable
+            # optimisation" block (noinst_LTLIBRARIES = libdummy-elementary_
+            # functions.la) that appends a root-level-named -O0 rule for
+            # hqror2.f, comqr3.f, pade.f, icopy.f and unsfdcopy.c (e.g.
             # libdummy_elementary_functions_la-hqror2.lo: src/fortran/eispack/
             # hqror2.f) -- never listed in any real target's _OBJECTS, so
             # subdir-objects never requests it; it is DEAD (flagfacts_check.py's
             # FILE_EXPECTED_OVERRIDES comment independently confirms the baseline
-            # compiled all five at plain -O2). "explicit" is keyed by source path,
-            # and this dead rule is the ONLY --mode=compile match these 5 sources
-            # get (their real compile is the plain suffix-rule default), so an
-            # unfiltered read records the dead -O0 fact as if it were a genuine
-            # override. Measured tree-wide across all 78 real Makefiles' --mode=
-            # compile explicit rules: comparing os.path.dirname(obj) to
-            # os.path.dirname(src) yields 2852 matching (live) and exactly 5
-            # mismatched -- precisely this block, with no false positives
-            # elsewhere. Skipping a directory-mismatched rule is therefore a
-            # measured filter, not a guess.
-            if "--mode=compile" in expanded and os.path.dirname(obj) == os.path.dirname(src):
+            # compiled all five at plain -O2). Its object is absent from
+            # referenced_objects, same as it was dirname-mismatched before.
+            #
+            # Case 2 -- same-directory dead rule (the dirname test's blind spot):
+            # modules/history_browser's CommandHistory_Wrap_Fake.c has TWO
+            # --mode=compile rules, both objects sitting beside the source (so
+            # BOTH pass the old dirname test): a live libscihistory_browser_
+            # disable_la-...lo rule (listed in am__objects_1, full AM_CFLAGS) and
+            # a libscihistory_browser_la-...lo rule whose own am__objects_2
+            # listing is commented out by config.status (a FALSE automake
+            # conditional branch) and whose recipe uses the empty per-target
+            # libscihistory_browser_la_CFLAGS -- the _CFLAGS-replaces-AM_CFLAGS
+            # footgun shape. "explicit" is keyed by source path, and the dead
+            # rule sorts textually LAST, so the old filter recorded its poisoned
+            # O0/no-wrapv fact instead of the live rule's O2/wrapv -- contradicting
+            # both the built object's own DWARF (DW_AT_APPLE_optimized=true) and
+            # CMake (-O2 -fwrapv). referenced_objects correctly excludes it: its
+            # object string appears nowhere except its own dead rule text.
+            #
+            # Measured tree-wide across all 78 real Makefiles' --mode=compile
+            # explicit rules (2857 total): the object-referenced test finds 2810
+            # live; the dirname test found 2852 live. EVERY object-referenced-live
+            # rule is also dirname-live (overlap 2810) -- the new test is a STRICT
+            # SUBSET of the old one, so it replaces rather than ANDs with it. Of
+            # the 42 rules the two disagree on: 40 are absent from CMake's build
+            # entirely (nothing to gate either way -- verified against build-cmake/
+            # compile_commands.json), one (helptools/nogui.cpp) has its two
+            # candidate rules agreeing on O2/wrapv (so which one wins is
+            # immaterial), and exactly one is the CommandHistory_Wrap_Fake.c
+            # poisoning above, which -- once excluded -- correctly falls back to
+            # the O2 suffix default, matching both CMake and the DWARF.
+            if "--mode=compile" in expanded and obj in referenced_objects:
                 out["explicit"][src] = parse_flag_facts(expanded)
     return out

@@ -4,7 +4,7 @@ import os
 import pytest
 
 from parity.makeflags import parse_make_defs, expand_make_value, makefile_tu_facts
-from parity.capture import capture_tu_flag_facts
+from parity.capture import capture_tu_flag_facts, _DEFAULT_DEVIATION_LIMIT
 
 def test_parse_defs_handles_continuations_and_append():
     defs = parse_make_defs("A = one \\\n    two\nB = x\nB += y\n")
@@ -28,6 +28,15 @@ def test_expand_resolves_nested_refs_and_unknowns():
 def test_expand_survives_a_definition_cycle():
     assert "loop" not in expand_make_value("$(A)", {"A": "$(B)", "B": "$(A)"})
 
+# am__objects_1 below (referencing both explicit-rule objects) is not incidental:
+# makefile_tu_facts only records a --mode=compile explicit rule as live when its
+# object is referenced by some live variable definition, exactly like real
+# automake output always has (am__objects_N -> ..._OBJECTS). Without it these
+# TUs would be silently absent from "explicit", which is the wrong failure mode
+# for fixtures that are testing something else entirely (footgun/non-footgun
+# fact derivation, below) -- see _MK_DEAD_RULE_COLLISION and
+# _MK_SAME_DIR_CONFIG_STATUS_COLLISION further down for fixtures that
+# deliberately vary this reference to test the live/dead distinction itself.
 _MK = """\
 CC = gcc -std=gnu23 -arch arm64
 CXX = g++ -std=c++17 -arch arm64
@@ -43,6 +52,7 @@ libbar_la_CFLAGS = $(AM_CFLAGS) -Iextra
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS)
 LTF77COMPILE = $(LIBTOOL) --mode=compile $(F77)
+am__objects_1 = src/libfoo_la-drop.lo src/libbar_la-keep.lo
 
 .c.lo:
 \t$(LTCOMPILE) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
@@ -129,6 +139,7 @@ AM_CFLAGS = $(SCI_CFLAGS)
 AM_FFLAGS = $(SCI_FFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS)
 LTF77COMPILE = $(LIBTOOL) --mode=compile $(F77)
+am__objects_1 = src/c/libfoo_la-live.lo
 
 .c.lo:
 \t$(LTCOMPILE) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
@@ -143,7 +154,12 @@ src/c/libfoo_la-live.lo: src/c/live.c
 # modules/elementary_functions/Makefile: a noinst dummy library re-lists a
 # SUBDIRECTORY source under a ROOT-level prefixed object name, with no other
 # --mode=compile rule of its own (dead.f's real compile is the plain .f.lo:
-# suffix default -- this is the ONLY explicit-rule text naming it).
+# suffix default -- this is the ONLY explicit-rule text naming it), and --
+# crucially -- that root-level object name is NEVER assigned to any variable
+# anywhere in the file (the real elementary_functions Makefile's _OBJECTS list
+# uses the plain subdir-objects name instead, never this prefixed one), so it
+# is dead under the object-referenced test too, not merely under the directory
+# one.
 libdummy_foo_la-dead.lo: src/fortran/eispack/dead.f
 \t$(LIBTOOL) --tag=F77 --mode=compile $(F77) $(AM_FFLAGS) $(FFLAGS) -O0 -c -o libdummy_foo_la-dead.lo src/fortran/eispack/dead.f
 """
@@ -155,17 +171,60 @@ def test_tu_facts_dead_rootlevel_rule_does_not_shadow_a_live_subdir_fact():
     # ONLY --mode=compile match for hqror2.f/comqr3.f/pade.f/icopy.f/unsfdcopy.c,
     # so it got recorded as those TUs' fact even though it is never requested by
     # any real target's _OBJECTS (the true compile is the plain suffix default).
-    # The discriminator is the object's directory: a LIVE per-object rule always
-    # places its object beside its source (automake subdir-objects naming); this
-    # dead rule's object sits at the Makefile root while its source lives in a
-    # subdirectory.
+    # The discriminator is whether the object is actually REFERENCED by some live
+    # variable definition -- am__objects_1 above stands in for automake's real
+    # am__objects_N -> ..._OBJECTS chain: the live rule's object is listed there;
+    # the dead rule's root-level object name is listed nowhere.
     facts = makefile_tu_facts(_MK_DEAD_RULE_COLLISION)["explicit"]
-    # The live shape (object beside source) IS recorded, with its true fact.
+    # The live, referenced object IS recorded, with its true fact.
     assert facts["src/c/live.c"]["opt"] == "O0"
-    # The dead, root-level-named rule for a subdirectory source is skipped
-    # entirely -- dead.f is simply absent from "explicit", falling through to
-    # the (O2) suffix default instead of being poisoned by the orphaned rule.
+    # The dead, unreferenced, root-level-named rule for a subdirectory source is
+    # skipped entirely -- dead.f is simply absent from "explicit", falling
+    # through to the (O2) suffix default instead of being poisoned by the
+    # orphaned rule.
     assert "src/fortran/eispack/dead.f" not in facts
+
+
+_MK_SAME_DIR_CONFIG_STATUS_COLLISION = """\
+CC = gcc -std=gnu23
+SCI_CFLAGS = -DNDEBUG -O2 -fwrapv -mmacosx-version-min=11.0
+AM_CFLAGS = $(SCI_CFLAGS)
+libscifoo_la_CFLAGS =
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS)
+
+.c.lo:
+\t$(LTCOMPILE) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
+
+am__objects_1 = src/nofoo/libscifoo_disable_la-Wrap_Fake.lo
+#am__objects_2 = src/nofoo/libscifoo_la-Wrap_Fake.lo
+am__objects_2 = sci_gateway/c/libscifoo_la-sci_something.lo
+
+src/nofoo/libscifoo_disable_la-Wrap_Fake.lo: src/nofoo/Wrap_Fake.c
+\t$(LIBTOOL) --mode=compile $(CC) $(AM_CFLAGS) $(CFLAGS) -c -o $@ src/nofoo/Wrap_Fake.c
+
+src/nofoo/libscifoo_la-Wrap_Fake.lo: src/nofoo/Wrap_Fake.c
+\t$(LIBTOOL) --mode=compile $(CC) $(libscifoo_la_CFLAGS) $(CFLAGS) -c -o $@ src/nofoo/Wrap_Fake.c
+"""
+
+def test_tu_facts_same_dir_config_status_excluded_rule_does_not_shadow_the_live_one():
+    # Regression test for the Fix-1 review finding (RC-b Task 2 review): the
+    # directory-based filter this replaced could not see a SAME-DIRECTORY
+    # collision -- unlike the root-level libdummy_ shape above, BOTH candidate
+    # objects here sit right beside their source, so "dirname(obj) ==
+    # dirname(src)" is True for both and cannot tell them apart. Reproduces
+    # modules/history_browser's real CommandHistory_Wrap_Fake.c shape exactly:
+    # two --mode=compile rules for one source, one live (listed in am__objects_1,
+    # full AM_CFLAGS), one whose own am__objects_2 listing config.status
+    # commented out (a FALSE automake conditional branch) and whose recipe uses
+    # the EMPTY per-target libscifoo_la_CFLAGS -- the _CFLAGS-replaces-AM_CFLAGS
+    # footgun shape. "explicit" is keyed by source path and the dead rule sorts
+    # textually LAST, so a filter that cannot distinguish live from dead here
+    # records the dead rule's O0/no-wrapv fact as the TU's fact -- in the real
+    # Makefile this contradicted both the built object's own DWARF
+    # (DW_AT_APPLE_optimized=true) and CMake, which compiles it -O2 -fwrapv.
+    facts = makefile_tu_facts(_MK_SAME_DIR_CONFIG_STATUS_COLLISION)["explicit"]
+    assert facts["src/nofoo/Wrap_Fake.c"]["opt"] == "O2"
+    assert facts["src/nofoo/Wrap_Fake.c"]["wrapv"] is True
 
 
 HERE = os.path.dirname(__file__)
@@ -234,6 +293,7 @@ SCI_CFLAGS = -DNDEBUG -O2 -fwrapv -mmacosx-version-min=11.0
 AM_CFLAGS = $(SCI_CFLAGS)
 libfoo_la_CFLAGS =
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS)
+am__objects_1 = src/libfoo_la-drop.lo src/libfoo_la-plain.lo
 
 .c.lo:
 \t$(LTCOMPILE) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
@@ -258,3 +318,61 @@ src/libfoo_la-plain.lo: src/plain.c
     assert "modules/m/src/drop.c" in got["overrides"]
     assert "modules/m/src/plain.c" not in got["overrides"]
     assert got["overrides"]["modules/m/src/drop.c"]["opt"] == "O0"
+
+
+def _write_default_only_module(tmp_path, name, opt):
+    """A minimal module Makefile whose ONLY signal is its .c.lo: suffix-rule
+    default -- no explicit rules, so it exercises capture_tu_flag_facts' MODAL
+    aggregation across modules in isolation from the override-selection logic
+    tested above."""
+    mk = f"""\
+CC = gcc -std=gnu23
+SCI_CFLAGS = -DNDEBUG {opt} -fwrapv -mmacosx-version-min=11.0
+AM_CFLAGS = $(SCI_CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS)
+
+.c.lo:
+\t$(LTCOMPILE) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
+"""
+    d = tmp_path / "modules" / name
+    d.mkdir(parents=True)
+    (d / "Makefile").write_text(mk)
+
+
+def test_capture_default_is_the_majority_not_merely_a_seen_value(tmp_path):
+    # Regression test for the modal-selection line itself, `modal =
+    # max(set(seen), key=seen.count)` (RC-b Task 2 review): the ONLY existing
+    # exerciser was test_capture_shape_and_override_selection, a SINGLE-module
+    # fixture where set(seen) always has exactly one element -- max() and min()
+    # of a one-element set return the same thing, so mutating max -> min left
+    # the whole suite green. Three modules -- two agreeing, one diverging -- is
+    # the minimum shape that can tell them apart: the majority value (-O2, seen
+    # twice) must win over the minority value (-O0, seen once); max() picks the
+    # 2-vote value, min() would pick the 1-vote value.
+    _write_default_only_module(tmp_path, "maj_a", "-O2")
+    _write_default_only_module(tmp_path, "maj_b", "-O2")
+    _write_default_only_module(tmp_path, "minority", "-O0")
+
+    got = capture_tu_flag_facts(str(tmp_path))
+    assert got["defaults"]["c"]["opt"] == "O2"
+
+
+def test_capture_default_deviation_limit_raises_when_exceeded(tmp_path):
+    # Boundary test for _DEFAULT_DEVIATION_LIMIT (RC-b Task 2 review): proves the
+    # safety valve actually fires. Every OTHER test in this file stays well under
+    # the limit on purpose, so deleting the `if deviants > _DEFAULT_DEVIATION_
+    # LIMIT: raise` check entirely is invisible to the rest of the suite -- this
+    # is the only test that would notice.
+    #
+    # Two modules agree on the majority (-O2, count 2); _DEFAULT_DEVIATION_LIMIT
+    # + 1 modules each carry their OWN distinct value (-O3, -O4, ...), so no
+    # single deviant value can tie or beat the majority's count of 2 and make
+    # the outcome depend on Python's set iteration order. deviants ends up at
+    # _DEFAULT_DEVIATION_LIMIT + 1 (one over the limit) regardless.
+    _write_default_only_module(tmp_path, "maj_a", "-O2")
+    _write_default_only_module(tmp_path, "maj_b", "-O2")
+    for n in range(_DEFAULT_DEVIATION_LIMIT + 1):
+        _write_default_only_module(tmp_path, f"deviant_{n}", f"-O{n + 3}")
+
+    with pytest.raises(RuntimeError, match="deviate from the modal default"):
+        capture_tu_flag_facts(str(tmp_path))

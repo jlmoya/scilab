@@ -108,14 +108,31 @@ def capture_flag_manifest(build_dir, reader=_file_reader):
 # the TUs that deviate -- a few hundred entries instead of ~3600, and it maps
 # directly onto how flagfacts_check asks the question ("what is expected of THIS
 # file?"). The design's original "~40" estimate undercounted: the known-answer
-# validation (Step 5) measures 212 on the real tree -- ~145 from the vendored
-# patched_sundials subtree (modules/differential_equations) legitimately turning
-# on OpenMP, 16 from spreadsheet's deliberate -std=c++20, 25 from string's (and
-# a handful of siblings') _CFLAGS-replaces-AM_CFLAGS footgun, 13 from mpi's
-# wrapper CC (no -std= token), and the rest genuine per-TU divergences (the
-# macOS gfortran -O0 workarounds). A couple hundred is the expected shape; a
-# count in the THOUSANDS would instead mean an empty `defaults` making every TU
-# compare unequal -- investigate, don't rebaseline, if that recurs.
+# validation (Step 5) measures 211 on the real tree -- 146 from
+# modules/differential_equations, 16 from spreadsheet's deliberate -std=c++20, 25
+# from string's (and a handful of siblings') _CFLAGS-replaces-AM_CFLAGS footgun,
+# 13 from mpi's wrapper CC (no -std= token -- see the CAVEAT below), and the rest
+# genuine per-TU divergences (the macOS gfortran -O0 workarounds). A couple
+# hundred is the expected shape; a count in the THOUSANDS would instead mean an
+# empty `defaults` making every TU compare unequal -- investigate, don't
+# rebaseline, if that recurs.
+#
+# The differential_equations 146 is NOT "~145 from the vendored patched_sundials
+# subtree", despite an earlier draft of this comment claiming that -- measured:
+# only 103 of the 146 are under src/patched_sundials/. The other 43 are the
+# module's OWN gateway/manager files (e.g. sci_gateway/cpp/sci_ida.cpp,
+# src/c/Ex-daskr.c), which inherit the SAME -fopenmp fact via the shared
+# libscidifferential_equations_la_CPPFLAGS block that also covers the vendored
+# subtree -- a real deviation, just not a patched_sundials one.
+#
+# CAVEAT on the mpi 13: genuinely derived from modules/mpi/Makefile (CC =
+# $(OPENMPI_CC), which IS blank on this machine, so its recipes really do lose
+# the -std=gnu23 token that normally arrives via $(CC) -- not a parser
+# artifact), but INERT for flagfacts_check today: build-cmake/compile_commands.json
+# carries ZERO modules/mpi entries here (CMake does not build the module on this
+# machine either), so the gate never walks these 13 files to check them against
+# this expectation. Read "211" as "211 derived facts", not "211 CMake-verified
+# deviations" -- 13 of them currently guard nothing.
 #
 # FROZEN ON PURPOSE: RC-e deletes the generated Makefiles this is derived from, so
 # the committed baseline is what lets the autotools-derived truth outlive autotools.
