@@ -1,8 +1,8 @@
-# The CMake native-build driver (Stage 1f-b — the whole native app + the Java jars)
+# The CMake native-build driver (Stage 1f-c — native app + jars + generated version.h + help)
 
 **Status:** DONE — verified end-to-end 2026-07-17 (from-scratch build → whole-tree
-**rpath-aware** PARITY OK **including the 24 Java jars** → the real GUI runs on the
-CMake-built app, jar-error-free).
+**rpath-aware** PARITY OK **incl. the 24 Java jars + the CMake-generated `version.h`** → the
+real GUI runs on the CMake-built app; the `doc` target builds the help).
 **What it is:** the top-level `scilab/CMakeLists.txt` + the helpers in `scilab/cmake/`
 (`ScilabModule.cmake`, `ScilabAggregate.cmake`, `ScilabToolchain.cmake`) that build the
 **entire native Scilab app** under CMake — the 64 baseline module dylibs, the 21 fold-in
@@ -16,13 +16,15 @@ design; what the harness proves is behavioral/link-shape equivalence. Strategy c
 `docs/superpowers/specs/2026-07-16-stage1f-a-aggregate-executables-design.md`;
 authoritative dylib list: `scilab/cmake/stage1e-manifest.md`.
 
-CMake now drives the whole build — the native app **and** the Java jars (via the
-`sci-java-all` target, which invokes the unchanged Ant to build them). This remains
-**hybrid coexistence**, not a full cutover: autotools still configures the tree and builds
-help. The CMakeLists files are invisible to automake, so the autotools path is untouched
-and rollback is free (`make clean && make` recovers the entire build — dylibs, aggregates,
-executables, and jars). The Ant→Maven cutover is Stage 2; help + retiring `configure` is
-Stage 1f-c.
+CMake now drives the whole build — the native app, the Java jars (`sci-java-all`, invoking
+the unchanged Ant), the generated `version.h` (`ScilabConfigure.cmake`), and the help build
+(the `doc` target). **Coexistence is TEMPORARY scaffolding, not the destination:** autotools
+still *configures* the tree — the `SCI_*FLAGS` + `build.incl.xml` + `machine.h` that CMake
+still reads/uses — and each remaining stage DELETES part of it (retire `configure`, retire
+`make`, Ant→Maven) until autotools is gone (the migration doc's retirement endgame). The
+CMakeLists files are invisible to automake, so the autotools path is untouched and rollback
+is free (`make clean && make` recovers everything). Retire-`configure` is the next stage;
+Ant→Maven is Stage 2.
 
 ## Usage
 
@@ -152,6 +154,34 @@ From-scratch `drop-in-all` built the whole app + 24 jars; whole-tree **PARITY OK
 CMake-built jars with a jar-error-free startup log. The autotools `make` still builds the
 jars via `prebuildjava` (coexistence).
 
+## Generated headers + help (Stage 1f-c)
+
+`scilab/cmake/ScilabConfigure.cmake` generates **`version.h`** by `configure_file`-ing the
+existing `version.h.in` (`@ONLY`, version values from `config.status`) into
+`build-cmake/generated-includes/` — **byte-identical** to configure's copy (`version.h` is
+exactly the template with three `@SCILAB_VERSION_*@` substitutions), so the harness keeps
+byte-hashing it, unchanged. The dir is on the module include path; during coexistence the
+byte-identical source-tree copy still resolves first (`ScilabModule.cmake` keeps
+`core/includes` ahead, reproducing automake's parity-critical `-I` order), and the generated
+copy becomes the resolver when the source-tree header is deleted at retire-`configure`.
+**`machine.h` is NOT generated here** — it is entangled with configure options + pkg-config
+substitutions and moves to retire-`configure` (which also adds the semantic-header parity
+dimension `machine.h` needs; `version.h` is byte-identical so it needs no such dimension).
+
+`scilab/cmake/ScilabHelp.cmake` adds the **`doc`** target (opt-in, `BUILD_HELP`-gated from
+`config.status`, NOT on `drop-in-all`): it runs the built `scilab-adv-cli` headless per
+`ALL_LINGUAS_DOC` locale (`xmltojar`), reproducing the top-level `Makefile`'s `doc:` recipe
+env exactly (incl. the seven `DOC_JAVA_XML_OPTS` jdk.xml limits). `--disable-build-localization`
+is handled (absent `ALL_LINGUAS_DOC` → a no-op `doc`, not a configure failure).
+
+### Headers + help end-to-end proof (2026-07-17)
+
+From-scratch `drop-in-all` generated `version.h` (byte-identical to configure's) and the CMake
+build consumed the generated-includes path; whole-tree **PARITY OK** (68 dylibs + 2 executables
++ 24 jars) + flag-facts rc=0. The `doc` target built the `en_US` help jar
+(`scilab_en_US_help.jar`) on the CMake-built `scilab-adv-cli`. `make` still generates the
+headers + builds help (coexistence).
+
 ## CI
 
 `.gitlab-ci.yml` (fork-native pipeline) carries two guards:
@@ -163,8 +193,10 @@ jars via `prebuildjava` (coexistence).
   (C) the fold-in block equals the aggregate's `_scilab_fold_objects` set; (D) the
   manifest still holds exactly 64 dylib rows; (E) both aggregate + both executable calls
   are still declared; (F) the Java bridge (`scilab_java_bridge()` + `add_dependencies(
-  drop-in-all sci-java-all)`) is still wired — plus the parity-harness unit suite (`pytest
-  build-parity/tests`, hermetic; the acceptance tests self-skip without a built tree).
+  drop-in-all sci-java-all)`) is still wired; (G) the 1f-c codegen (the
+  `ScilabConfigure.cmake` include + `scilab_help_target()`) is wired — plus the
+  parity-harness unit suite (`pytest build-parity/tests`, hermetic; the acceptance tests
+  self-skip without a built tree).
 - **`parity:cmake-drop-in`** (self-hosted macOS arm64 runner, rule-gated on
   `$SCILAB_NATIVE_RUNNER == "1"`): the real gate — `drop-in-all` + rpath-aware parity diff
   + flag facts on the built tree. Because the aggregates + executables + the 24 jars ride
@@ -174,16 +206,18 @@ jars via `prebuildjava` (coexistence).
   runner is registered; without it the job is not created (shared runners can neither build
   nor fingerprint Mach-O).
 
-## Deferred (deliberately out of Stage 1f-b)
+## Deferred (deliberately out of Stage 1f-c)
 
+- **Retire `configure` (the next stage):** CMake computes the `SCI_*FLAGS`, generates
+  `build.incl.xml`, generates `machine.h` (porting configure's ~150 probes + its
+  option/substitution macros — with a NEW *semantic* header parity dimension, since a
+  CMake-generated `machine.h` is not byte-identical to autoconf's, unlike `version.h`), and
+  owns the macros build → `./configure`/`config.status` **deleted**. Then retire `make`
+  (delete the `Makefile.am`s). Coexistence is temporary — see the migration doc's endgame.
 - **Stage 2 — Ant → Maven:** the `prebuildjava` topo-sort + Ivy → one Maven reactor (which
   must list `modules/terminal` explicitly); jar byte-reproducibility (`SOURCE_DATE_EPOCH`);
   the ~23 dead jars drop out. Stage 1f-b keeps Ant unchanged and fingerprints jar *content*
   (not bytes).
-- **Stage 1f-c — help + retiring `configure`:** help generation stays a post-build step
-  (it needs the running app); porting `configure`'s ~186 feature probes so CMake generates
-  `machine.h`/`version.h` (spec §11) is its own stage, provable by the same harness (both
-  headers are fingerprinted).
 - **Machine-specific absolute paths:** the calls transcribe `config.status`-faithful
   absolute paths (the jdk-25 lib dir, the Xcode SDK, Homebrew Cellar dirs, the miniconda
   FLIBS lib dir, the from-source `xlnt-prefix`). These are parity-neutral but pin the CMake

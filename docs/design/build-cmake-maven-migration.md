@@ -377,20 +377,30 @@ a CMake post-build target through both stages. Say this in the POMs so nobody tr
   inert unless a source `#ifdef PIC`s); automate the CMake-module flag-fact capture into the harness
   so per-module flag drift is watched, not manual.
 
-## 11. Status: Stage 1e DONE
+## 11. Status: Stage 1e + 1f-a/b/c DONE — CMake drives the whole build
 
-**Stage 1e (native drop-in) is COMPLETE** (2026-07-16, HEAD `7190b0c2474`, on main + both remotes;
-final review READY TO MERGE). All **64 native module dylibs** are built by a shared `scilab_module()`
-helper (`scilab/cmake/ScilabModule.cmake`) + top-level `scilab/CMakeLists.txt` driver; `cmake --build
-… --target drop-in-all` drops every CMake dylib into `.libs/` → whole-tree harness PARITY OK, the real
-app runs on the CMake dylibs, CI gate wired. Executed subagent-driven (10 tasks; spec + plan under
-`docs/superpowers/`, scope in `scilab/cmake/stage1e-manifest.md`, usage in
-`docs/design/build-cmake-driver.md`). The reusable helper patterns + the per-module linking-class rule
-are in §10.
+**Stage 1** (make→CMake, CMake keeps Ant) is nearly complete. Done, on main + both remotes,
+each subagent-driven + final-reviewed (specs/plans under `docs/superpowers/`; usage in
+`docs/design/build-cmake-driver.md`):
+- **1e** (2026-07-16): all **64 native module dylibs** on `scilab_module()` + the top-level driver.
+- **1f-a** (HEAD `f6df1f268e5`): the whole native app — 21 fold-in OBJECT libs +
+  `libscilab`/`libscilab-cli` aggregates + `scilab-bin`/`scilab-cli-bin` executables; + the
+  **LC_RPATH** parity gate + **JAVA_HOME** hoist (`SCILAB_JAVA_HOME`).
+- **1f-b** (HEAD `689be760fa4`): CMake drives the **24 Java jars** — `sci-java-all` wraps the
+  unchanged `prebuildjava` Ant super-build + a GUI-gated `terminal`; a jar content-manifest dimension.
+- **1f-c**: CMake generates **`version.h`** (byte-identical) + the **help** `doc` target.
 
-**Next inflection: Stage 1f (cutover surface).** Link the `scilab`/`scilab-cli` executables + the
-`libscilab`/`libscilab-cli` aggregate (with the ~22 convenience-lib/core modules — javasci,
-elementary_functions, … — that fold into it) under CMake; stand up the CMake→Ant bridge for the Java
-jars; move help to a CMake post-step; retire the autotools native path. Carries the two recorded
-follow-ups: add **LC_RPATH** to the parity fingerprint + re-baseline (rpath is harness-blind today),
-and hoist **JAVA_HOME** discovery into the driver. Then Stage 2 (Ant→Maven), then the FFI phase.
+## 12. The retirement endgame — coexistence is TEMPORARY (binding invariant)
+
+Every stage so far is **additive + rollback-free** so each step is parity-proven and reversible — but
+that hybrid coexistence is the migration SCAFFOLD, **not the destination. A permanent dual build is
+unacceptable.** The destination: **`./configure && make` and Ant DELETED; `cmake` + Maven the only
+build.** Coexistence shrinks to zero across these committed stages, each DELETING part of autotools:
+
+1. **1f-c (done):** CMake owns `version.h` generation + the help build.
+2. **Retire `configure` (next):** CMake computes the `SCI_*FLAGS`, generates `build.incl.xml` +
+   `machine.h` (a *semantic* header parity dimension for the non-byte-identical `machine.h`), and owns
+   the macros build → `./configure`/`config.status` **deleted**.
+3. **Retire `make`:** delete the `Makefile.am`/`Makefile.in` → the native side is CMake-only.
+4. **Stage 2 (Ant→Maven):** Ant + `build.incl.xml` gone → Maven the sole Java build.
+5. **End state:** autotools + Ant fully removed; **zero coexistence.** Then the FFI phase (SWIG/JNI→Panama).

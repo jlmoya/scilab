@@ -89,6 +89,11 @@ sanity:cmake-driver:
       #    parity job then fails to find).
       grep -q 'scilab_java_bridge()' CMakeLists.txt
       grep -q 'add_dependencies(drop-in-all sci-java-all)' CMakeLists.txt
+      # G. Stage-1f-c codegen is wired: version.h generation (ScilabConfigure) + the help
+      #    post-step (scilab_help_target). A deleted include would silently drop the
+      #    generated version.h or the doc target.
+      grep -q 'include(cmake/ScilabConfigure.cmake)' CMakeLists.txt
+      grep -q 'scilab_help_target()' CMakeLists.txt
     - cd build-parity && python3 -m pytest tests/ -q
 
 # Native half — the real Stage-1f-b gate: build the WHOLE app under CMake from the
