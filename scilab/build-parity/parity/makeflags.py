@@ -11,6 +11,7 @@ for every TU and mismatch CMake everywhere. Unknown variables expand empty, as
 make does, so $(LIBTOOL)/$@/$< contribute nothing and parse_flag_facts simply
 ignores the residue.
 """
+import os
 import re
 from parity.fingerprint import parse_flag_facts
 
@@ -99,6 +100,7 @@ def makefile_tu_facts(text):
             continue
         m = _EXPLICIT_RULE.match(line)
         if m:
+            obj, src = m.group(1), m.group(2)
             expanded = expand_make_value(_recipe_after(lines, i), defs)
             # A handful of check_PROGRAMS test-harness TUs tree-wide (4, e.g.
             # modules/functions_manager/src/cpp/test-function.cpp) compile via a
@@ -108,6 +110,28 @@ def makefile_tu_facts(text):
             # are absent from build-cmake/compile_commands.json (CMake does not
             # build them), so there is nothing on the CMake side for these TUs to
             # be compared against -- an absent override, not a missed one.
-            if "--mode=compile" in expanded:
-                out["explicit"][m.group(2)] = parse_flag_facts(expanded)
+            #
+            # A LIVE per-object rule places its object in the SAME directory as its
+            # source -- automake's subdir-objects naming (e.g. the string footgun's
+            # src/c/libscistring_algo_la-strsubst.lo: src/c/strsubst.c). ONE
+            # Makefile in the tree breaks that pattern: modules/elementary_functions
+            # carries a hand-written "Disable optimisation" block (noinst_LTLIBRARIES
+            # = libdummy-elementary_functions.la) that appends a root-level-named
+            # -O0 rule for hqror2.f, comqr3.f, pade.f, icopy.f and unsfdcopy.c (e.g.
+            # libdummy_elementary_functions_la-hqror2.lo: src/fortran/eispack/
+            # hqror2.f) -- never listed in any real target's _OBJECTS, so
+            # subdir-objects never requests it; it is DEAD (flagfacts_check.py's
+            # FILE_EXPECTED_OVERRIDES comment independently confirms the baseline
+            # compiled all five at plain -O2). "explicit" is keyed by source path,
+            # and this dead rule is the ONLY --mode=compile match these 5 sources
+            # get (their real compile is the plain suffix-rule default), so an
+            # unfiltered read records the dead -O0 fact as if it were a genuine
+            # override. Measured tree-wide across all 78 real Makefiles' --mode=
+            # compile explicit rules: comparing os.path.dirname(obj) to
+            # os.path.dirname(src) yields 2852 matching (live) and exactly 5
+            # mismatched -- precisely this block, with no false positives
+            # elsewhere. Skipping a directory-mismatched rule is therefore a
+            # measured filter, not a guess.
+            if "--mode=compile" in expanded and os.path.dirname(obj) == os.path.dirname(src):
+                out["explicit"][src] = parse_flag_facts(expanded)
     return out

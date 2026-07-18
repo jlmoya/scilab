@@ -10,6 +10,7 @@ import zipfile
 from parity.fingerprint import (parse_nm, parse_otool_libs, parse_build_version,
                                 parse_flag_facts, parse_rpaths, normalize_version,
                                 normalize_path, normalize_manifest, parse_defines)
+from parity.makeflags import makefile_tu_facts, LANG_BY_SUFFIX
 
 GENERATED_FILES = [
     "etc/classpath.xml",
@@ -101,6 +102,59 @@ def capture_flag_manifest(build_dir, reader=_file_reader):
         return manifest
 
     return {"source": "unknown", "c": None, "cxx": None, "f": None}
+
+
+# Derived per-TU flag expectation (RC-b). Stored as a tree-wide default plus ONLY
+# the TUs that deviate -- a few hundred entries instead of ~3600, and it maps
+# directly onto how flagfacts_check asks the question ("what is expected of THIS
+# file?"). The design's original "~40" estimate undercounted: the known-answer
+# validation (Step 5) measures 212 on the real tree -- ~145 from the vendored
+# patched_sundials subtree (modules/differential_equations) legitimately turning
+# on OpenMP, 16 from spreadsheet's deliberate -std=c++20, 25 from string's (and
+# a handful of siblings') _CFLAGS-replaces-AM_CFLAGS footgun, 13 from mpi's
+# wrapper CC (no -std= token), and the rest genuine per-TU divergences (the
+# macOS gfortran -O0 workarounds). A couple hundred is the expected shape; a
+# count in the THOUSANDS would instead mean an empty `defaults` making every TU
+# compare unequal -- investigate, don't rebaseline, if that recurs.
+#
+# FROZEN ON PURPOSE: RC-e deletes the generated Makefiles this is derived from, so
+# the committed baseline is what lets the autotools-derived truth outlive autotools.
+_DEFAULT_DEVIATION_LIMIT = 8
+
+def capture_tu_flag_facts(source_root):
+    modules = os.path.join(source_root, "modules")
+    per_module, defaults_seen = {}, {}
+    for name in sorted(os.listdir(modules)) if os.path.isdir(modules) else []:
+        mk = os.path.join(modules, name, "Makefile")
+        if not os.path.isfile(mk):
+            continue
+        with open(mk, errors="replace") as f:
+            facts = makefile_tu_facts(f.read())
+        per_module[name] = facts
+        for lang, d in facts["defaults"].items():
+            defaults_seen.setdefault(lang, []).append(json.dumps(d, sort_keys=True))
+
+    # The tree-wide default is the MODAL per-module suffix-rule result, not a
+    # hand-picked representative -- picking one module is the same "representative
+    # TU" weakness that makes the global `flags` row a non-gate.
+    defaults = {}
+    for lang, seen in defaults_seen.items():
+        modal = max(set(seen), key=seen.count)
+        deviants = len(seen) - seen.count(modal)
+        if deviants > _DEFAULT_DEVIATION_LIMIT:
+            raise RuntimeError(
+                f"{lang}: {deviants} modules deviate from the modal default -- "
+                "'the tree-wide default' is not a real notion here; investigate "
+                "before trusting this capture")
+        defaults[lang] = json.loads(modal)
+
+    overrides = {}
+    for name, facts in per_module.items():
+        for relsrc, tu in facts["explicit"].items():
+            lang = LANG_BY_SUFFIX.get(relsrc.rsplit(".", 1)[-1])
+            if lang and tu != defaults.get(lang):
+                overrides[f"modules/{name}/{relsrc}"] = tu
+    return {"defaults": defaults, "overrides": overrides}
 
 
 def _normalize_entry(entry, roots):
@@ -228,7 +282,8 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     return {"build_id": build_id, "executables": executables,
             "dylibs": dylibs, "generated": generated, "jars": jars,
             "header_defines": header_defines,
-            "flags": capture_flag_manifest(build_dir)}
+            "flags": capture_flag_manifest(build_dir),
+            "tu_flag_facts": capture_tu_flag_facts(build_dir)}
 
 
 def _default_roots(build_dir):
@@ -256,7 +311,8 @@ def _main(argv):
           f"{len(fp['jars'])} jars, "
           f"{len(fp['generated'])} generated files, "
           f"{len(fp['header_defines'])} semantic headers, "
-          f"flags[{fp['flags']['source']}] -> {out}")
+          f"flags[{fp['flags']['source']}], "
+          f"{len(fp['tu_flag_facts']['overrides'])} flag-override TUs -> {out}")
     return 0
 
 

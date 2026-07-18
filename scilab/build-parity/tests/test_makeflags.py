@@ -4,6 +4,7 @@ import os
 import pytest
 
 from parity.makeflags import parse_make_defs, expand_make_value, makefile_tu_facts
+from parity.capture import capture_tu_flag_facts
 
 def test_parse_defs_handles_continuations_and_append():
     defs = parse_make_defs("A = one \\\n    two\nB = x\nB += y\n")
@@ -119,6 +120,54 @@ COMPILE = $(CC) -O2 -fwrapv
     assert facts["defaults"]["c"]["wrapv"] is False
 
 
+_MK_DEAD_RULE_COLLISION = """\
+CC = gcc -std=gnu23
+F77 = gfortran
+SCI_CFLAGS = -DNDEBUG -O2 -fwrapv -mmacosx-version-min=11.0
+SCI_FFLAGS = -DNDEBUG -O2 -fwrapv -mmacosx-version-min=11.0
+AM_CFLAGS = $(SCI_CFLAGS)
+AM_FFLAGS = $(SCI_FFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS)
+LTF77COMPILE = $(LIBTOOL) --mode=compile $(F77)
+
+.c.lo:
+\t$(LTCOMPILE) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
+
+.f.lo:
+\t$(LTF77COMPILE) $(AM_FFLAGS) $(FFLAGS) -c -o $@ $<
+
+src/c/libfoo_la-live.lo: src/c/live.c
+\t$(LIBTOOL) --mode=compile $(CC) $(AM_CFLAGS) -O0 $(CFLAGS) -c -o $@ src/c/live.c
+
+# Hand-written "disable optimisation" block, shaped exactly like the real one in
+# modules/elementary_functions/Makefile: a noinst dummy library re-lists a
+# SUBDIRECTORY source under a ROOT-level prefixed object name, with no other
+# --mode=compile rule of its own (dead.f's real compile is the plain .f.lo:
+# suffix default -- this is the ONLY explicit-rule text naming it).
+libdummy_foo_la-dead.lo: src/fortran/eispack/dead.f
+\t$(LIBTOOL) --tag=F77 --mode=compile $(F77) $(AM_FFLAGS) $(FFLAGS) -O0 -c -o libdummy_foo_la-dead.lo src/fortran/eispack/dead.f
+"""
+
+def test_tu_facts_dead_rootlevel_rule_does_not_shadow_a_live_subdir_fact():
+    # Regression test for the dead-rule collision (RC-b Task 2 review): reproduces
+    # modules/elementary_functions/Makefile's real defect, where a hand-written
+    # "Disable optimisation" noinst-library block's root-level-named rule was the
+    # ONLY --mode=compile match for hqror2.f/comqr3.f/pade.f/icopy.f/unsfdcopy.c,
+    # so it got recorded as those TUs' fact even though it is never requested by
+    # any real target's _OBJECTS (the true compile is the plain suffix default).
+    # The discriminator is the object's directory: a LIVE per-object rule always
+    # places its object beside its source (automake subdir-objects naming); this
+    # dead rule's object sits at the Makefile root while its source lives in a
+    # subdirectory.
+    facts = makefile_tu_facts(_MK_DEAD_RULE_COLLISION)["explicit"]
+    # The live shape (object beside source) IS recorded, with its true fact.
+    assert facts["src/c/live.c"]["opt"] == "O0"
+    # The dead, root-level-named rule for a subdirectory source is skipped
+    # entirely -- dead.f is simply absent from "explicit", falling through to
+    # the (O2) suffix default instead of being poisoned by the orphaned rule.
+    assert "src/fortran/eispack/dead.f" not in facts
+
+
 HERE = os.path.dirname(__file__)
 BUILD_DIR = os.path.abspath(os.path.join(HERE, "..", ".."))   # the scilab/ dev tree
 _CORE_MAKEFILE = os.path.join(BUILD_DIR, "modules", "core", "Makefile")
@@ -143,9 +192,11 @@ def test_real_makefiles_yield_non_degenerate_defaults():
 
     non_empty = 0
     core_defaults = None
+    derived_per_makefile = []
     for path in makefiles:
         with open(path, encoding="utf-8", errors="replace") as f:
             facts = makefile_tu_facts(f.read())
+        derived_per_makefile.append(facts)
         if facts["defaults"]:
             non_empty += 1
         if path == _CORE_MAKEFILE:
@@ -164,3 +215,46 @@ def test_real_makefiles_yield_non_degenerate_defaults():
     assert core_defaults is not None, "modules/core/Makefile not found among the glob results"
     assert core_defaults["c"]["opt"] == "O2"
     assert core_defaults["c"]["wrapv"] is True
+
+    # Per-language, not just per-file: a Fortran-only regression leaves the file
+    # count untouched (Fortran-bearing Makefiles are a strict subset of the
+    # C/C++-bearing ones), so the majority threshold alone cannot see it.
+    lang_counts = {}
+    for facts in derived_per_makefile:
+        for lang in facts["defaults"]:
+            lang_counts[lang] = lang_counts.get(lang, 0) + 1
+    for lang in ("c", "cxx", "f"):
+        assert lang_counts.get(lang, 0) > 0, f"no Makefile yielded a {lang} default"
+
+
+def test_capture_shape_and_override_selection(tmp_path):
+    mk = """\
+CC = gcc -std=gnu23
+SCI_CFLAGS = -DNDEBUG -O2 -fwrapv -mmacosx-version-min=11.0
+AM_CFLAGS = $(SCI_CFLAGS)
+libfoo_la_CFLAGS =
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS)
+
+.c.lo:
+\t$(LTCOMPILE) $(AM_CFLAGS) $(CFLAGS) -c -o $@ $<
+
+src/libfoo_la-drop.lo: src/drop.c
+\t$(LIBTOOL) --mode=compile $(CC) $(libfoo_la_CFLAGS) $(CFLAGS) -c -o $@ src/drop.c
+
+src/libfoo_la-plain.lo: src/plain.c
+\t$(LIBTOOL) --mode=compile $(CC) $(AM_CFLAGS) $(CFLAGS) -c -o $@ src/plain.c
+"""
+    d = tmp_path / "modules" / "m"
+    d.mkdir(parents=True)
+    (d / "Makefile").write_text(mk)
+    got = capture_tu_flag_facts(str(tmp_path))
+    # The suffix rule reaches the compiler through $(LTCOMPILE), exactly as real
+    # automake output does -- the marker "--mode=compile" is visible only AFTER
+    # expansion. A fixture that inlined it would pass against a parser that gates
+    # on raw recipe text, which is the bug Task 1's review caught (defaults empty
+    # for 78 of 78 real Makefiles). Keep this indirection.
+    assert got["defaults"]["c"]["opt"] == "O2"
+    # ONLY the deviating TU is recorded; a TU matching the default is not.
+    assert "modules/m/src/drop.c" in got["overrides"]
+    assert "modules/m/src/plain.c" not in got["overrides"]
+    assert got["overrides"]["modules/m/src/drop.c"]["opt"] == "O0"
