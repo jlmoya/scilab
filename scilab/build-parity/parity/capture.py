@@ -23,6 +23,17 @@ GENERATED_FILES = [
 # vanish from this list and the manifest hash changes.
 MACRO_BIN_MANIFEST_KEY = "macros/*.bin (manifest)"
 
+# OUTPUT jars of the opt-in help/doc build (CMake `doc` target / `make doc`),
+# which land in modules/helptools/jar/ NEXT TO the real module jar: one
+# scilab_<locale>_help.jar per ALL_LINGUAS_DOC locale plus scilab_images.jar.
+# They are documentation artifacts -- locale-dependent, multi-megabyte, gated
+# by the doc target's own acceptance check -- NOT part of the module-jar
+# parity contract; capturing them would make parity depend on whether (and
+# for which locales) help happened to be built. Excluded by FILENAME, not by
+# directory: org.scilab.modules.helptools.jar in that same directory IS a
+# real module jar (it is in the committed baseline) and must stay captured.
+_DOC_OUTPUT_JAR = re.compile(r"^scilab_(.*_help|images)\.jar$")
+
 
 def _subprocess_runner(cmd):
     return subprocess.run(cmd, capture_output=True, text=True, check=False).stdout
@@ -181,9 +192,10 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
         elif "/modules/" in posix_root + "/" and posix_root.endswith("/jar"):
             # modules/<m>/jar/*.jar — the Ant-built module jars. Content manifest
             # (fingerprint_jar), NOT byte hash: jars embed timestamps + non-det zip
-            # order. Only modules/*/jar (not thirdparty/ or a build-cache jar dir).
+            # order. Only modules/*/jar (not thirdparty/ or a build-cache jar dir),
+            # and never the doc build's output jars (_DOC_OUTPUT_JAR above).
             for fn in files:
-                if fn.endswith(".jar"):
+                if fn.endswith(".jar") and not _DOC_OUTPUT_JAR.match(fn):
                     rel = os.path.relpath(os.path.join(root, fn), build_dir).replace(os.sep, "/")
                     jars[rel] = fingerprint_jar(os.path.join(root, fn))
 

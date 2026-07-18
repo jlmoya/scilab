@@ -121,6 +121,25 @@ def test_fingerprint_build_captures_jars(tmp_path):
     assert "thirdparty/jar/ext.jar" not in fp["jars"]
 
 
+def test_fingerprint_build_skips_doc_output_jars(tmp_path):
+    # The opt-in help build (CMake `doc` target / `make doc`) writes its OUTPUT
+    # jars into modules/helptools/jar/ NEXT TO the real module jar: one
+    # scilab_<locale>_help.jar per built locale plus scilab_images.jar. Those
+    # are separately-gated, locale-dependent documentation artifacts -- not part
+    # of the module-jar contract -- so capturing them would fail parity the
+    # moment anyone builds help. The exclusion is by FILENAME: the real module
+    # jar org.scilab.modules.helptools.jar in the SAME directory must survive.
+    jardir = tmp_path / "modules" / "helptools" / "jar"
+    jardir.mkdir(parents=True)
+    _make_jar(jardir / "org.scilab.modules.helptools.jar", {"H.class": b"H"})
+    _make_jar(jardir / "scilab_en_US_help.jar", {"help.html": b"<html>"})
+    _make_jar(jardir / "scilab_images.jar", {"img.png": b"\x89PNG"})
+    fp = fingerprint_build(str(tmp_path), roots={}, runner=lambda cmd: "", build_id="t")
+    assert "modules/helptools/jar/org.scilab.modules.helptools.jar" in fp["jars"]
+    assert "modules/helptools/jar/scilab_en_US_help.jar" not in fp["jars"]
+    assert "modules/helptools/jar/scilab_images.jar" not in fp["jars"]
+
+
 def test_diff_detects_jar_entry_change():
     base = _fp(jars={"m.jar": {"A.class": "h1"}})
     cand = _fp(jars={"m.jar": {"A.class": "h2"}})
