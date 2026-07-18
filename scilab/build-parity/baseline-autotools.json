@@ -32784,5 +32784,1723 @@
       "org/scilab/modules/xcos/utils/XcosRoute.class": "81edecae4f54761bb5626629a8feebc9507f9eccbeb828e848b22a2699b3e308",
       "org/scilab/modules/xcos/utils/XcosRouteUtils.class": "872cbfb512eb9d4f9dee14f2d04e5977e07b846e49987c9c7ded5c5cbadc6546"
     }
+  },
+  "tu_flag_facts": {
+    "defaults": {
+      "c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "cxx": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "f": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      }
+    },
+    "overrides": {
+      "modules/cacsd/src/fortran/sszer.f": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O0",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/differential_equations_gw.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_arkode.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_bvode.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_cvode.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_daskr.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_dasrt.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_dassl.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_feval.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_ida.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_impl.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_int2d.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_int3d.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_intg.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_kinsol.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_ode.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_odedc.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/sci_gateway/cpp/sci_percent_odeSolution.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/Ex-daskr.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/Ex-ode.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/Ex-odedc.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/arnol.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/colnewmsgs.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/dassl.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/errmds.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/externals_for_tests.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/feval.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/c/rk4.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/ARKODEManager.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/CVODEManager.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/IDAManager.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/KINSOLManager.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/OdeManagerCompute.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/OdeManagerHelpers.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/OdeManagerInit.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/OdeManagerParse.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/OdeManagerSolve.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/SUNDIALSManager.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/checkodeerror.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/complexHelpers.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/differentialequationfunctions.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/odeparameters.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/cpp/scifunctions.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "c++17",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/fortran/colnew.f": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O0",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_adapt.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_arkstep.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_arkstep_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_arkstep_nls.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_bandpre.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_bbdpre.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_butcher.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_butcher_dirk.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_butcher_erk.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_erkstep.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_erkstep_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_forcingstep.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_interp.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_ls.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_lsrkstep.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_lsrkstep_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_mri_tables.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_mristep.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_mristep_controller.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_mristep_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_mristep_nls.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_relaxation.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_root.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_splittingstep.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_splittingstep_coefficients.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_sprk.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_sprkstep.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_sprkstep_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_sunstepper.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/arkode/arkode_user_controller.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodea.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodea_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_bandpre.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_bbdpre.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_diag.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_ls.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_nls.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_nls_sim.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_nls_stg.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_nls_stg1.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/cvodes/cvodes_proj.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idaa.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idaa_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idas.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idas_bbdpre.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idas_ic.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idas_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idas_ls.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idas_nls.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idas_nls_sim.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/idas/idas_nls_stg.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/kinsol/kinsol.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/kinsol/kinsol_bbdpre.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/kinsol/kinsol_io.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/kinsol/kinsol_ls.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/nvector/manyvector/nvector_manyvector.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/nvector/openmp/nvector_openmp.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/nvector/serial/nvector_serial.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunadaptcontroller/imexgus/sunadaptcontroller_imexgus.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunadaptcontroller/mrihtol/sunadaptcontroller_mrihtol.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunadaptcontroller/soderlind/sunadaptcontroller_soderlind.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_adaptcontroller.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_adjointcheckpointscheme.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_adjointstepper.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_band.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_context.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_dense.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_direct.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_errors.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_extension.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_futils.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_hashmap.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_iterative.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_linearsolver.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_logger.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_math.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_matrix.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_memory.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_nonlinearsolver.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_nvector.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_nvector_senswrapper.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_stepper.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sundials/sundials_version.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/band/sunlinsol_band.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/dense/sunlinsol_dense.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/klu/sunlinsol_klu.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/lapackband/sunlinsol_lapackband.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/lapackdense/sunlinsol_lapackdense.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/pcg/sunlinsol_pcg.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/spbcgs/sunlinsol_spbcgs.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/spfgmr/sunlinsol_spfgmr.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/spgmr/sunlinsol_spgmr.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunlinsol/sptfqmr/sunlinsol_sptfqmr.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunmatrix/band/sunmatrix_band.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunmatrix/dense/sunmatrix_dense.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunmatrix/sparse/sunmatrix_sparse.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunmemory/system/sundials_system_memory.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunnonlinsol/fixedpoint/sunnonlinsol_fixedpoint.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/differential_equations/src/patched_sundials/src/sunnonlinsol/newton/sunnonlinsol_newton.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/elementary_functions/src/fortran/slatec/dtensbs.f": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O0",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/history_browser/sci_gateway/c/sci_browsehistory.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_bcast.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_comm_rank.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_comm_size.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_finalize.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_get_processor_name.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_init.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_irecv.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_isend.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_recv.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_send.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/sci_gateway/c/sci_mpi_wait.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/src/c/deserialization.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/mpi/src/c/serialization.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/parallel/src/noparallel/noparallel.c": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": true,
+        "opt": "O2",
+        "std": "gnu23",
+        "wrapv": true
+      },
+      "modules/parameters/src/c/parameters.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/preferences/src/c/getScilabPreference.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/sparse/src/fortran/blkfct.f": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O0",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/sparse/src/fortran/ordmmd.f": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O0",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/sparse/src/fortran/symfct.f": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O0",
+        "std": null,
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_isXlsx.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_parquetRead.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_parquetWrite.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_xls_open.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_xls_read.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_xlsxInfo.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_xlsxRead.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_xlsxSheet.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/sci_gateway/cpp/sci_xlsxWrite.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/src/cpp/arrow_read.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/src/cpp/arrow_write.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/src/cpp/arrow_write_utils.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/src/cpp/parquet_write.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/src/cpp/xlsx_metadata.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/src/cpp/xlsx_read.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/spreadsheet/src/cpp/xlsx_write.cpp": {
+        "min_macos": "11.0",
+        "ndebug": true,
+        "openmp": false,
+        "opt": "O2",
+        "std": "c++20",
+        "wrapv": true
+      },
+      "modules/string/src/c/StringConvert.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/complex_array.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/convstr.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/cvstr.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/getfastcode.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/isalphanum.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/isascii.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/isdigit.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/isletter.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/isnum.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/men_Sutils.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/os_wcsdup.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/os_wcstod.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/os_wcstok.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/partfunction.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/pcre2_private.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/scistrtostr.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/stringToComplex.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/stringToDouble.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/stringsCompare.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/stringsstrrev.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/stristr.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/strsplit.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/strsubst.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/string/src/c/tokens.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/types/src/jni/getScilabVariable_wrap.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      },
+      "modules/windows_tools/src/nowindows_tools/nowindows_tools.c": {
+        "min_macos": null,
+        "ndebug": false,
+        "openmp": false,
+        "opt": "O0",
+        "std": "gnu23",
+        "wrapv": false
+      }
+    }
   }
 }
