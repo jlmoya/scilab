@@ -49,6 +49,9 @@ include(cmake/ScilabConfigure.cmake)
 # RC-a — CMake computes + generates machine.h beside the generated version.h.
 include(cmake/ScilabMachineHeader.cmake)
 
+# RC-b -- the compiler-flag policy, computed in CMake rather than transcribed.
+include(cmake/ScilabFlags.cmake)
+
 # Modules register their drop-in-<name> targets onto this aggregate:
 # `cmake --build build-cmake --target drop-in-all` drops every migrated dylib
 # into its modules/<name>/.libs/.

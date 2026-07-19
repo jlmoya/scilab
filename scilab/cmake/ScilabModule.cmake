@@ -105,16 +105,19 @@
 # (MAINTAINER_MODE off): they ship NO standalone dylib, ALL their objects fold
 # into the libscilab/libscilab-cli aggregates, which consume
 # $<TARGET_OBJECTS:sci<name>-obj>. Same flag/include machinery as
-# scilab_module() (ONE transcription of the autotools flag truth, via
-# _scilab_module_flag_env + _scilab_module_apply); their parity check is the
-# AGGREGATE dylib's fingerprint + the per-TU flag-facts gate — there is no
-# per-module dylib to fingerprint.
+# scilab_module() (ONE flag/include env, via _scilab_module_flag_env +
+# _scilab_module_apply — see the PARITY CONTRACT below for what's computed vs
+# transcribed); their parity check is the AGGREGATE dylib's fingerprint + the
+# per-TU flag-facts gate — there is no per-module dylib to fingerprint.
 #
 # PARITY CONTRACT (arbitrated by build-parity/ against baseline-autotools.json):
-# every fact below — flags, includes, defines, link options, naming — is
-# transcribed from the CONFIGURED autotools build (config.status SCI_*FLAGS +
-# the per-module Makefile), not invented here. The four hand-written exemplars
-# this helper generalizes (sound, parallel, coverage, interpolation at commits
+# compiler FLAGS are a computed policy (cmake/ScilabFlags.cmake, RC-b), proven
+# equal to the autotools build by the derived flag-facts gate
+# (build-parity/parity/flagfacts_check.py) rather than transcribed. Every other
+# fact below — includes, defines, link options, naming — is still transcribed
+# from the CONFIGURED autotools build (config.status SCI_*FLAGS + the
+# per-module Makefile), not invented here. The four hand-written exemplars this
+# helper generalizes (sound, parallel, coverage, interpolation at commits
 # 38e81564f3f/f3d3a58fade/6b43d012ae3/531436d485a) are the reference shapes.
 
 include(CMakeParseArguments)
@@ -162,24 +165,15 @@ endfunction()
 # The per-language flag/include environment — sets _cflags/_cxxflags/_fflags/
 # _incs in the CALLER's scope (a macro, deliberately: _scilab_module_apply then
 # sees them by dynamic scoping). Reads the caller's _dir + M_EXTRA_INCLUDES.
-# Factored out so scilab_module() and scilab_object_module() transcribe ONE
-# flag truth — the fold-in OBJECT libs must compile exactly like the gateway
-# dylibs or the aggregate's objects drift from the baseline.
+# Factored out so scilab_module() and scilab_object_module() share ONE flag/
+# include source (flags COMPUTED per cmake/ScilabFlags.cmake, RC-b; includes
+# still transcribed) — the fold-in OBJECT libs must compile exactly like the
+# gateway dylibs or the aggregate's objects drift from the baseline.
 macro(_scilab_module_flag_env)
-  # --- flags, per language (transcribed SCI_*FLAGS; semantic parity facts:
-  # O2 + fwrapv + min_macos 11.0 + NDEBUG). The -Werror pair is C-only (they
-  # are C diagnostics; SCI_CXXFLAGS omits them). Language standards are pinned
-  # by the migration constraint: C gnu23, C++ c++17 (do NOT raise). ---
-  set(_cflags   -std=gnu23 -DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0
-                -fno-stack-protector -Wall -Wpedantic -Werror=implicit -Werror=incompatible-pointer-types)
-  set(_cxxflags -std=c++17 -DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0
-                -fno-stack-protector -Wall -Wpedantic)
-  # SCI_FFLAGS. -mmacosx-version-min is LOAD-BEARING here: CMake applies
-  # neither CMAKE_OSX_* variable to Fortran TUs, so this flag is Fortran's only
-  # source of it. No -Wall/-Wpedantic/-fno-stack-protector/-std — the F77 rule
-  # has none. (Fortran's single include dir is applied per-language in
-  # _scilab_module_apply, not spelled as a -I flag here.)
-  set(_fflags   -DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0)
+  # RC-b: the policy is computed in cmake/ScilabFlags.cmake, not transcribed here.
+  set(_cflags   ${SCILAB_C_FLAGS})
+  set(_cxxflags ${SCILAB_CXX_FLAGS})
+  set(_fflags   ${SCILAB_Fortran_FLAGS})
 
   # The C/C++ include set, in automake's order: DEFAULT_INCLUDES first —
   # `-I. -I$(top_builddir)/modules/core/includes` PRECEDES every per-target

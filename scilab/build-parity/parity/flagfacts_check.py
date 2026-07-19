@@ -132,36 +132,36 @@ def unchecked_suffixes(compile_commands_path, derived, source_root):
             out.append((e["file"], ext or "(none)"))
     return out
 
-# KNOWN STATE (RC-b Task 3 acceptance run, 2026-07-18): this gate currently
-# reports rc=1 against the real tree -- 50 divergent files in two classes, both
-# REPRODUCE-not-improve bugs (CMake not yet matching autotools) and both Task
-# 4's to close, not Task 3's (Task 3's job was making this gate DERIVE its
-# expectations and correctly FAIL, which it does):
+# HISTORICAL -- the shape of red this gate once reported on the real tree (RC-b
+# Task 3 acceptance run, 2026-07-18): 50 divergent files in two classes, both
+# REPRODUCE-not-improve bugs (CMake not yet matching autotools). Task 3's job
+# was making this gate DERIVE its expectations and correctly FAIL, which it
+# did; Task 4 (2026-07-18) closed all 50, so the gate now reads rc=0:
 #   - 3 files (history_browser/sci_gateway/c/sci_browsehistory.c,
 #     preferences/src/c/getScilabPreference.c,
 #     types/src/jni/getScilabVariable_wrap.c): opt/wrapv/ndebug mismatches --
 #     the _CFLAGS-replaces-AM_CFLAGS footgun documented above, newly found in
-#     these three modules (parameters/windows_tools/string already reproduce
-#     it correctly).
+#     these three modules (parameters/windows_tools/string already reproduced
+#     it correctly). Fixed via C_FLAGS_OVERRIDE on all three.
 #   - 47 files (42 in modules/differential_equations, 5 in modules/scicos --
 #     the latter doubled across the scicos/scicos-cli targets, so 10 mismatch
 #     lines): openmp-only mismatches, a bidirectional CMake OpenMP-linking-
 #     scope bug in cmake/ScilabModule.cmake's FIND_PACKAGES OpenMP handling
-#     (differential_equations under-applies -fopenmp: its ALGO_SOURCES compile
+#     (differential_equations under-applied -fopenmp: its ALGO_SOURCES compiled
 #     into an OBJECT library never linked to OpenMP, and its C++ gateways only
-#     ever get OpenMP::OpenMP_C, never OpenMP::OpenMP_CXX; scicos/scicos-cli
-#     over-apply it: their C gateway sources inherit -fopenmp from the whole
-#     target being linked to OpenMP::OpenMP_C even though autotools never puts
-#     -fopenmp on scicos's own compile lines). Verified codegen-neutral: of
-#     these 47, only patched_sundials' nvector_openmp.c carries an actual
+#     ever got OpenMP::OpenMP_C, never OpenMP::OpenMP_CXX; scicos/scicos-cli
+#     over-applied it: their C gateway sources inherited -fopenmp from the
+#     whole target being linked to OpenMP::OpenMP_C even though autotools never
+#     puts -fopenmp on scicos's own compile lines). Verified codegen-neutral:
+#     of these 47, only patched_sundials' nvector_openmp.c carries an actual
 #     #pragma omp in the whole differential_equations/scicos family, and CMake
-#     already flags that one correctly -- structurally invisible to every
+#     already flagged that one correctly -- structurally invisible to every
 #     prior gate because none of them ever asserted `openmp` at all.
 # tests/test_flagfacts_check.py::test_real_tree_divergence_is_exactly_the_known_
-# tracked_set freezes this exact 50-file set: it fails (a WELCOME failure) the
-# moment Task 4 shrinks it, and fails (investigate first, don't just edit the
-# set) if the shape changes any other way. A reader hitting rc=1 here should
-# check that test before assuming something new broke.
+# tracked_set freezes the now-EMPTY file set: it goes red (investigate first,
+# don't just edit the set) the moment either class reappears. A reader hitting
+# rc=1 here should check that test before assuming this comment's history is
+# the cause -- both classes above are closed.
 
 if __name__ == "__main__":
     cc_path, baseline_path, source_root = sys.argv[1], sys.argv[2], sys.argv[3]
