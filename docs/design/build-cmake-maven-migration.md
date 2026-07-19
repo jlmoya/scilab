@@ -405,6 +405,23 @@ build.** Coexistence shrinks to zero across these committed stages, each DELETIN
    dimension RC-b/RC-c reuse. **RC-b** — the `SCI_*FLAGS`. **RC-c** — the ~21 other generated files.
    **RC-d** — the macros build. **RC-e** — the cutover that deletes `./configure`.
 
+   **RC-b (done)** — the compiler-flag policy computed in `cmake/ScilabFlags.cmake` (3600/3600
+   compile lines byte-identical) and the flag gate's expectations derived from the autotools
+   Makefiles rather than hand-written. It found a real functional bug six stages of parity had
+   missed: CMake was compiling `#ifdef _OPENMP` serial branches where autotools compiled the
+   parallel ones. **RC-c (done)** — nine configure-substituted files plus `Version.incl`,
+   byte-identical, gated by the `generated` dimension grown from 3 entries to 13.
+
+   > **⚠ HARD ORDERING CONSTRAINT discovered in RC-c: RC-e cannot delete `./configure` until
+   > Stage 2 (Ant→Maven) has landed.** RC-c deliberately deferred three files —
+   > `etc/classpath.xml`, `scilab-lib.properties`, `scilab-lib-doc.properties` — which together
+   > carry 115 of the generated-file inventory's 142 substitutions. Every one is a jar path
+   > produced by `AC_JAVA_CHECK_JAR`'s filesystem search (`m4/java-thirdparty.m4:234-256`), and
+   > they are consumed *only* by the Ant build that Maven replaces outright. Reimplementing that
+   > search in CMake would be work aimed at files Stage 2 is expected to obsolete. The cost of
+   > that choice is this dependency: **the endgame's step order is no longer a preference.**
+   > Either Stage 2 precedes RC-e, or RC-e must first absorb the jar-path search after all.
+
    **RC-e prerequisites discovered during RC-a (must be resolved *before* the cutover, because each is
    latent only while the source-tree header still resolves first):**
    - **The configure options have two unlinked sources of truth.** `ScilabMachineHeader.cmake` declares

@@ -108,6 +108,10 @@ sanity:cmake-driver:
       #    a full build. These greps catch it here in seconds.
       grep -q 'include(cmake/ScilabFlags.cmake)' CMakeLists.txt
       grep -q 'SCILAB_C_FLAGS' cmake/ScilabModule.cmake
+      # J. Retire-configure RC-c is wired: CMake generates the configure-substituted
+      #    files. A deleted include is invisible during coexistence -- configure still
+      #    produces them, so the build keeps working and only RC-e would discover it.
+      grep -q 'include(cmake/ScilabGeneratedFiles.cmake)' CMakeLists.txt
     - cd build-parity && python3 -m pytest tests/ -q
 
 # Native half — the real Stage-1f-b gate: build the WHOLE app under CMake from the

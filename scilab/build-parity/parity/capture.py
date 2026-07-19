@@ -174,7 +174,7 @@ def capture_tu_flag_facts(source_root):
         mk = os.path.join(modules, name, "Makefile")
         if not os.path.isfile(mk):
             continue
-        with open(mk, errors="replace") as f:
+        with open(mk, errors="replace", encoding="utf-8") as f:
             facts = makefile_tu_facts(f.read())
         per_module[name] = facts
         for lang, d in facts["defaults"].items():
@@ -327,7 +327,7 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     header_defines = {}
     gen_machine = os.path.join(build_dir, "build-cmake", "generated-includes", "machine.h")
     if os.path.exists(gen_machine):
-        with open(gen_machine, "r", errors="replace") as f:
+        with open(gen_machine, "r", errors="replace", encoding="utf-8") as f:
             header_defines["machine.h"] = parse_defines(f.read())
 
     return {"build_id": build_id, "executables": executables,

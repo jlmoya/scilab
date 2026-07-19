@@ -279,6 +279,61 @@ Nothing had caught it because `nm` lists symbol *names*: two `#ifdef` branches d
 same functions with different bodies produce an identical symbol set, so the dylib and
 executable fingerprints are structurally blind to it. All 50 are closed; the gate is rc=0.
 
+## Generated files — produced by CMake (retire-configure RC-c)
+
+`scilab/cmake/ScilabGeneratedFiles.cmake` generates nine of the files `config.status`
+substitutes, plus `Version.incl`, via `configure_file(@ONLY)` into `build-cmake/generated/`.
+All ten are **byte-identical** to configure's copies — the `version.h` precedent holds for
+this whole class, so no semantic dimension was needed. The harness byte-hashes all of them:
+`GENERATED_FILES` went from 3 entries to 13.
+
+**The inventory is 12 files, not the "~21" an earlier decomposition estimated.**
+`AC_CONFIG_FILES` declares 102 outputs; 89 are `Makefile`s and 13 are not, one of which
+(`version.h`) Stage 1f-c already owned. Verified three ways: `config.status:369`,
+`config.status:925-937`, `configure.ac:2426-2523`.
+
+Three things worth knowing about this set:
+
+- **`Version.incl` is invisible to any `config.status`-derived inventory.** It is written by
+  a conditional shell `echo` at `configure.ac:2965`, guarded by a comparison against a version
+  string scraped out of an SVG icon — not through `AC_CONFIG_FILES`. Yet `build.incl.xml:154`
+  stamps every jar's `Specification-Version` from it. Build the file list the obvious way and
+  you lose it silently.
+- **`build.incl.xml` has zero substitutions** — output is byte-identical to its template, and
+  both are tracked in git (unlike its git-ignored `.properties` siblings). Generating it is a
+  copy.
+- **`etc/Info.plist` is vestigial.** `package-macos.sh:106-133` writes its own via heredoc; the
+  configure-generated file has no consumer. It is reproduced faithfully anyway — parity stays
+  strict, and deleting it would be an "improve" inside a "reproduce" stage — but it is dead
+  weight, and a cleanup pass should remove it and its `AC_CONFIG_FILES` entry together.
+
+**Deliberately not reproduced:** `configure.ac:2930-2937` compares `date +%Y` against a year
+hardcoded in `banner.cpp` and, on mismatch, runs `sed -i` over `banner.cpp` **and
+`etc/Info.plist.in`** — a build system rewriting its own tracked sources on a wall-clock
+trigger. If that bump is wanted it belongs in a release script.
+
+**A trap for anyone regenerating `etc/modules.xml` by hand:** its `helptools` entry is
+hardcoded `activate="yes"`, *not* `@HELP_ENABLE@`, because `--disable-build-help` only skips
+*building* the docs while the module still provides the runtime `help()` machinery. The
+template's own comment records that gating it on the flag "forced a post-configure fixup."
+`configure_file`-ing the template preserves this for free; authoring the XML would not.
+
+**Of the 12 booleans feeding `modules.xml`, only 4 are genuinely conditional today**
+(`WITH_FFTW`/`WITH_MATIO`/`WITH_UMFPACK`/`WITH_XCOS`, each verified to track its CMake option).
+`GUI_ENABLE` is structurally always `"yes"` here: configure's formula is
+`(JAVA_ENABLE != no) OR (with_gui != no)`, and this driver makes Java mandatory
+(`ScilabToolchain.cmake` fatals without a JDK), so the first term is always true. That is
+faithful to configure — but it means **`WITH_GUI=OFF` does not currently affect `modules.xml`.**
+Whoever makes `WITH_GUI` load-bearing enough to skip building the GUI-side jars must revisit
+this file, or the runtime will be told to activate `gui`/`scinotes`/`terminal`/
+`graphic_objects`/`ui_data`/`demo_tools`/`graphics`/`renderer`/`graphic_export` whose jars were
+never built.
+
+**Deferred to Stage 2 (Ant→Maven):** `etc/classpath.xml`, `scilab-lib.properties`,
+`scilab-lib-doc.properties`. They carry 115 of the inventory's 142 substitutions — all jar
+paths from `AC_JAVA_CHECK_JAR`'s filesystem search — and are consumed only by the Ant build
+Maven replaces. **Consequence: RC-e cannot delete `./configure` until Stage 2 lands.**
+
 ## CI
 
 `.gitlab-ci.yml` (fork-native pipeline) carries two guards:
