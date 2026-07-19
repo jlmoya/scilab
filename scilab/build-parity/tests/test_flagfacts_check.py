@@ -95,6 +95,21 @@ def test_derived_keys_excludes_min_macos():
     assert "min_macos" not in DERIVED_KEYS
     assert INVARIANT == {"min_macos": "11.0"}
 
+def test_derived_keys_exact_membership():
+    # Positive lock, complementing the negative assertion above: pins the FULL
+    # membership, not just the min_macos exclusion. This is not tuple-shaped
+    # bookkeeping -- "openmp" is the key whose ABSENCE reinstates a real
+    # functional bug. Narrowing DERIVED_KEYS to drop "openmp" makes expected_for
+    # stop asking for it at all (it builds the expectation dict by iterating
+    # DERIVED_KEYS: `{k: facts[k] for k in DERIVED_KEYS if k in facts}`), so
+    # check_flag_facts silently stops comparing openmp on every TU -- reopening
+    # exactly the differential_equations/scicos serial-vs-parallel `#ifdef
+    # _OPENMP` divergence that was this stage's headline finding (RC-b Task 3/4:
+    # 47 files, closed by fixing the CMake OpenMP link scope). That regression
+    # would then reproduce with the whole suite green and the gate at rc=0 --
+    # the exact silent-pass this test exists to prevent.
+    assert DERIVED_KEYS == ("opt", "wrapv", "ndebug", "std", "openmp")
+
 # --- unchecked_suffixes: the coverage-gap contract --------------------------
 
 def test_unchecked_suffixes_flags_an_unknown_extension(tmp_path):
