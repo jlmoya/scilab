@@ -26,8 +26,30 @@
 # into a build system that never had it. CMake propagates the failure.
 #
 # OPT-IN, not on drop-in-all -- like the 1f-c `doc` target, this needs a fully
-# built interpreter. On an unbuilt tree it would fail at exec in a way that reads
-# as a CMake bug rather than a missing prerequisite.
+# built interpreter. A totally unbuilt tree fails at exec with libtool's own
+# wrapper diagnostic ("... does not exist. This script is just a wrapper for
+# scilab-cli-bin. See the libtool documentation ...") -- clear and on-topic,
+# not a CMake-looking failure (an earlier version of this comment claimed
+# otherwise). That total-miss case is self-explanatory; the case that
+# actually deserves worry is a STALE-but-present interpreter -- see DEPENDS
+# ON A FRESH INTERPRETER below.
+#
+# DEPENDS ON A FRESH INTERPRETER, wired in CMakeLists.txt, not here.
+# Without a dependency, this target has no idea whether bin/scilab-cli wraps a
+# stale binary: edit modules/ast or modules/startup, forget `--target
+# drop-in-all`, run `--target macros` directly, and CMake execs whatever is
+# already in .libs/ with zero rebuild steps -- .bin files compiled by a stale
+# interpreter, rc=0, no diagnostic. That is the same silent-divergence family
+# the FAILS LOUDLY design above guards against, just via interpreter
+# freshness rather than exit-status swallowing. The fix is
+# `add_dependencies(macros drop-in-scilab-cli-bin)`, placed in CMakeLists.txt
+# right after the scilab_executable(scilab-cli-bin ...) declaration: that
+# target -- declared by scilab_executable() in cmake/ScilabAggregate.cmake,
+# which compiles, links, and copies the binary into .libs/ -- does not exist
+# yet when this file is include()'d earlier in CMakeLists.txt, so the
+# dependency cannot be wired here without a configure-time "target not found"
+# error. Do not read this file's lack of DEPENDS/add_dependencies() as the
+# dependency being missing -- it is enforced, just from the other file.
 #
 # NOTE for anyone comparing this against `make macros`: genlib is INCREMENTAL
 # (sci_genlib.cpp:263-279 skips a .sci whose md5 matches the previous `lib`

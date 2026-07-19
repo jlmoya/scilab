@@ -221,6 +221,18 @@ scilab_executable(scilab-cli-bin
     -lopenblas -lemutls_w -lheapt_w -lgfortran -lquadmath -ldl
     "-framework Cocoa")
 
+# RC-d's `macros` target (cmake/ScilabMacros.cmake, included above) execs
+# bin/scilab-cli with no built-in awareness of whether that interpreter is
+# fresh. Wire the dependency here rather than there: drop-in-scilab-cli-bin
+# -- declared by scilab_executable() just above, which compiles, links, and
+# copies scilab-cli-bin into .libs/ -- does not exist yet when
+# ScilabMacros.cmake is include()'d earlier in this file, so calling
+# add_dependencies() from inside that file would fail at configure time with
+# "target not found". This does NOT put `macros` on drop-in-all: the edge
+# runs FROM macros TO the interpreter, the opposite direction, so
+# drop-in-all's own dependency closure is unchanged.
+add_dependencies(macros drop-in-scilab-cli-bin)
+
 # scilab-bin — LDADD = libscilab.la + $(XML_LIBS) $(COMMON_LIBS) $(FLIBS) +
 # console/jvm/commons + libscilab.la again + BLAS/LAPACK/FLIBS +
 # $(JAVA_JNI_LIBS). Baseline: 62 recorded libs, 3 rpaths (JDK third),
