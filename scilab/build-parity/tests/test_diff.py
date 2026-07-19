@@ -1,4 +1,4 @@
-from parity.diff import diff_fingerprints
+from parity.diff import diff_fingerprints, _GENERATED_CMAKE_KEYS
 from parity.fingerprint import parse_flag_facts
 
 def _facts(**over):
@@ -69,6 +69,128 @@ def test_generated_hash_change_is_caught():
     r = diff_fingerprints(_fp(), cand)
     assert r["ok"] is False
     assert any("classpath.xml" in d for d in r["differences"])
+
+
+# --- RC-c final-review Finding (Critical): generated_cmake ------------------
+#
+# `generated` alone only ever hashes the SOURCE TREE copy of an RC-c file (configure's
+# own output) -- on BOTH the baseline and the candidate side -- so it can never detect a
+# corrupted or stale build-cmake/generated/ file: proven end-to-end (corrupting
+# build-cmake/generated/{Version.incl,scilab.pc,etc/logging.properties} still reported
+# PARITY OK before this fix). `generated_cmake` is the missing half: CMake's OWN copies,
+# checked against the baseline's EXISTING `generated` hashes (no separate
+# `generated_cmake` baseline section -- arming one is out of scope and unneeded, since
+# `base["generated"]` already carries real hashes for all ten RC-c files).
+#
+# An "armed baseline" here means `base["generated"]` carries the RC-c file's hash --
+# true of every baseline captured since RC-c (including the real committed one) --
+# which is why these tests build `base` with `generated=` populated directly, the same
+# shape `_fp()`'s default already has, rather than needing any special setup.
+
+def test_generated_cmake_absent_in_candidate_skips_cleanly():
+    # Transition rule, half 1: a candidate captured by a pre-fix capture.py has no
+    # "generated_cmake" key AT ALL (not even an empty dict) -- not yet armed -- so this
+    # dimension must diff clean, exactly like an old candidate missing "header_defines"
+    # against a header_defines-less baseline (test_header_defines.py). The DEFAULT _fp()
+    # already omits "generated_cmake", so this is really just test_identical_is_ok's
+    # scenario made explicit for this dimension.
+    base = _fp(generated={"scilab.pc": "hash-configure-scilab-pc"})
+    cand = _fp(generated={"scilab.pc": "hash-configure-scilab-pc"})
+    assert "generated_cmake" not in cand
+    assert diff_fingerprints(base, cand) == {"ok": True, "differences": []}
+
+
+def test_generated_cmake_matching_baseline_is_ok():
+    # CMake's copy hashes the same as configure's -- byte-identity holds -- must diff
+    # clean once the candidate DOES carry the section.
+    base = _fp(generated={"scilab.pc": "hash-configure-scilab-pc"})
+    cand = _fp(generated={"scilab.pc": "hash-configure-scilab-pc"},
+               generated_cmake={"scilab.pc": "hash-configure-scilab-pc"})
+    assert diff_fingerprints(base, cand)["ok"] is True
+
+
+def test_generated_cmake_mismatch_against_baseline_fails():
+    # THE fault-injection acceptance for this finding: the exact exploit the reviewer
+    # proved end-to-end (a corrupted build-cmake/generated/ file) must now fail parity,
+    # naming the file -- mirroring test_fault_injection_regressed_cflags_fail_parity's
+    # role for the flags dimension.
+    base = _fp(generated={"scilab.pc": "hash-configure-scilab-pc",
+                          "Version.incl": "hash-configure-version-incl"})
+    cand = _fp(generated={"scilab.pc": "hash-configure-scilab-pc",
+                          "Version.incl": "hash-configure-version-incl"},
+               generated_cmake={"scilab.pc": "hash-configure-scilab-pc",
+                                "Version.incl": "CORRUPTED-hash"})
+    r = diff_fingerprints(base, cand)
+    assert r["ok"] is False
+    assert any("generated (cmake) file changed: Version.incl" in d for d in r["differences"])
+    # The untouched file must NOT be named -- only the corrupted one.
+    assert not any("scilab.pc" in d for d in r["differences"])
+
+
+def test_generated_cmake_missing_entry_against_armed_baseline_fails():
+    # Transition rule, half 2: once the candidate's section IS present, it is held to
+    # EVERY RC-c file the (armed) baseline can attest to -- a file CMake silently failed
+    # to write is a real regression, not a silent skip, exactly as jars/header_defines
+    # do not tolerate a candidate quietly dropping an entry the baseline expects.
+    base = _fp(generated={"scilab.pc": "hash-configure-scilab-pc",
+                          "Version.incl": "hash-configure-version-incl"})
+    cand = _fp(generated={"scilab.pc": "hash-configure-scilab-pc",
+                          "Version.incl": "hash-configure-version-incl"},
+               generated_cmake={"scilab.pc": "hash-configure-scilab-pc"})   # Version.incl missing
+    r = diff_fingerprints(base, cand)
+    assert r["ok"] is False
+    assert any("generated (cmake) file missing in candidate: Version.incl" in d
+               for d in r["differences"])
+
+
+def test_generated_cmake_unexpected_entry_is_caught():
+    # A generated_cmake entry outside the ten RC-c keys (e.g. capture.py's GENERATED_FILES
+    # loop finding something under build-cmake/generated/modules/core/includes/ that
+    # should not be there -- machine.h/version.h resolve through generated-includes/
+    # instead) is drift worth surfacing, not silently accepted.
+    base = _fp(generated={"scilab.pc": "hash-configure-scilab-pc"})
+    cand = _fp(generated={"scilab.pc": "hash-configure-scilab-pc"},
+               generated_cmake={"scilab.pc": "hash-configure-scilab-pc",
+                                "modules/core/includes/machine.h": "unexpected"})
+    r = diff_fingerprints(base, cand)
+    assert r["ok"] is False
+    assert any("generated (cmake) file extra in candidate: modules/core/includes/machine.h" in d
+               for d in r["differences"])
+
+
+def test_generated_cmake_ignores_non_rcc_generated_keys():
+    # base["generated"] legitimately carries MORE than the ten RC-c keys -- the three
+    # pre-RC-c entries (etc/classpath.xml, machine.h, version.h) and the macro .bin
+    # manifest key -- none of which CMake ever writes under build-cmake/generated/. A
+    # naive presence-diff against the FULL "generated" section would spuriously report
+    # all of those "missing in candidate" on every single comparison; the
+    # _GENERATED_CMAKE_KEYS filter must keep this dimension silent about them.
+    base = _fp(generated={
+        "scilab.pc": "hash-configure-scilab-pc",
+        "etc/classpath.xml": "hash-classpath",
+        "modules/core/includes/machine.h": "hash-machine-h",
+        "modules/core/includes/version.h": "hash-version-h",
+        "macros/*.bin (manifest)": "hash-macro-manifest",
+    })
+    cand = _fp(generated=dict(base["generated"]),
+               generated_cmake={"scilab.pc": "hash-configure-scilab-pc"})
+    assert diff_fingerprints(base, cand) == {"ok": True, "differences": []}
+
+
+def test_generated_cmake_keys_match_capture_module_minus_the_three_without_a_cmake_copy():
+    # Pinned against parity.capture.GENERATED_FILES itself (not just a literal set), so
+    # the two lists cannot silently drift apart -- diff.py deliberately duplicates this
+    # list rather than importing it (this module stays decoupled from parity.capture,
+    # comparing frozen JSON only), so nothing else enforces they stay in sync.
+    from parity.capture import GENERATED_FILES
+    no_cmake_copy = {
+        "etc/classpath.xml",                    # deferred to Stage 2
+        "modules/core/includes/machine.h",      # generated-includes/, header_defines' job
+        "modules/core/includes/version.h",      # generated-includes/, out of scope here
+    }
+    assert _GENERATED_CMAKE_KEYS == set(GENERATED_FILES) - no_cmake_copy
+    assert len(_GENERATED_CMAKE_KEYS) == 10
+
 
 def test_flag_wrapv_flip_is_caught():
     cand = _fp(flags=_flags(c=_facts(wrapv=False)))

@@ -25,10 +25,12 @@ TEMPORARY — the destination is autotools DELETED (§12).**
 
 ### 3.1 The inventory is 12 files, not "~21"
 
-`AC_CONFIG_FILES` declares 102 outputs; 89 are `Makefile`s and **13 are not**. One of the 13
+`AC_CONFIG_FILES` declares 96 outputs; 83 are `Makefile`s and **13 are not**. One of the 13
 (`modules/core/includes/version.h`) was already migrated in Stage 1f-c, so the live scope is **12**.
 Cross-checked three ways and in agreement: `config.status:369` (`config_files=`),
 `config.status:925-937` (the `case $ac_config_target` dispatch), and `configure.ac:2426-2523`.
+(RC-c final-review Minor 2: an earlier draft of this section said "102 outputs; 89 are `Makefile`s" —
+re-measured for the final-review fixes; the totals were wrong, the load-bearing 13 was always right.)
 
 The "~21" in RC-b's design doc (line 19, the decomposition summary) is unreconcilable — even generously adding `machine.h` (an
 `AC_CONFIG_HEADERS` entry, not `CONFIG_FILES`) and the generated `libtool` script reaches only 15.
@@ -186,9 +188,21 @@ RC-e, which is what makes rollback free.
 
 | Risk | Mitigation |
 |---|---|
-| A file is not byte-identical for an unforeseen reason (line endings, trailing newline, autoconf quoting) | The gate names the exact file; investigate rather than relax. `version.h` is the existence proof that byte-identity is achievable for this template shape. |
+| A file is not byte-identical for an unforeseen reason (line endings, trailing newline, autoconf quoting) | The `generated_cmake` dimension (RC-c final-review fix — see below) names the exact file; investigate rather than relax. `version.h` is the existence proof that byte-identity is achievable for this template shape. |
 | The `helptools` exception is flattened by a mechanical module→flag mapping | Called out in §3.4 with the template's own comment; the gate catches it (`modules.xml` byte-compares). |
-| A partially-generated set silently degrades the Ant build | §3.4: `<property file=…>` fails silently. The gate covers every file in scope, so a missing one fails parity rather than surfacing as a `javac` error. |
+| A partially-generated set silently degrades the Ant build | §3.4: `<property file=…>` fails silently. The `generated_cmake` dimension covers every file in scope, so a missing one fails parity rather than surfacing as a `javac` error. |
+
+**RC-c final-review Finding (Critical), recorded here because the two rows above originally overstated what
+shipped:** as first implemented, `generated`'s byte-hash gate resolved every `GENERATED_FILES` entry
+against the **source tree** on both the baseline and the candidate side — i.e. it re-hashed configure's own
+copy twice, never `build-cmake/generated/`. Both rows above were consequently false: the gate did not, in
+fact, name a byte-identity divergence or a missing file in CMake's own output, because it never looked at
+that output at all. Proven end-to-end: corrupting `build-cmake/generated/{Version.incl,scilab.pc,
+etc/logging.properties}` and running the real CI capture+diff sequence produced `PARITY OK`. Fixed by adding
+a `generated_cmake` map (`build-parity/parity/capture.py`) that hashes CMake's own copies and a matching
+comparison in `parity/diff.py` against the baseline's existing `generated` hashes — re-verified: the same
+corruption now fails, naming the file. The two rows above describe the mitigation as it stands after that
+fix.
 | `Version.incl` is forgotten because it is not in `AC_CONFIG_FILES` | It is named explicitly in scope (§4) and in the gate (§5.1). |
 | Deferring the 3 jar files leaves RC-e blocked in a way nobody notices | Recorded as a hard dependency in the migration doc's endgame (§4). |
 

@@ -16,9 +16,17 @@ by path only — otool's `(compatibility version X, current version Y)` suffix i
 routine `brew upgrade` bumping a system lib's `current version` doesn't flood every dependent dylib
 with a false "link dependencies changed"). Per executable: the `LC_BUILD_VERSION` SDK stamp (must
 stay `minos 11.0 / sdk 11.0` — the anti-SIGTRAP fix) and the link shape. Plus: any non-relocatable
-`/tmp` path, the normalized content hash of `etc/classpath.xml`, `machine.h`, `version.h`, and a
-manifest hash over every compiled macro `.bin` path (presence, not content — cheap, and enough to
-catch a module's macros silently vanishing from a build).
+`/tmp` path; the normalized content hash of the 13 files this harness gates from `config.status`'s
+substitution set — `etc/classpath.xml`, the source-tree `machine.h`/`version.h`, and the ten RC-c
+files (`scilab.pc`, `etc/Info.plist`, `etc/modules.xml`, `Version.incl`, and so on — the exact list
+is `parity/capture.py`'s `GENERATED_FILES`) — **always hashed from the SOURCE TREE** (configure's
+own copies), on *both* sides of every comparison, never from anything CMake wrote; a manifest hash
+over every compiled macro `.bin` path (presence, not content — cheap, and enough to catch a
+module's macros silently vanishing from a build); and, separately, CMake's *own* copies of the ten
+RC-c files (`build-cmake/generated/`), checked against those same source-tree hashes — the only one
+of these that actually looks at what CMake wrote, rather than re-hashing configure's copy a second
+time (see `generated_cmake` in the table below; this is the fix for a real gap a final-review
+caught — corrupting `build-cmake/generated/` used to still report `PARITY OK`).
 
 Plus the **compiler-flag manifest**: the effective per-language (C / C++ / Fortran) codegen facts —
 optimization level (last `-O<x>` wins), `-fwrapv`, `-mmacosx-version-min`, OpenMP, `-DNDEBUG`,
@@ -30,17 +38,25 @@ migration. **Known limitation (v1):** only the GLOBAL per-language flags are cap
 overrides (e.g. `differential_equations` forcing `colnew.f` to `-O0` on macOS) are invisible.
 
 ## Scope
-Six dimensions are fingerprinted today:
+Eight dimensions are fingerprinted today:
 
 | Dimension | Compares | Armed in |
 |---|---|---|
 | `dylibs` | nm symbols (address-stripped) + otool deps + `LC_BUILD_VERSION` + `LC_RPATH` | Stage 0 / 1f-a |
 | `executables` | the same, for `scilab-bin` + `scilab-cli-bin` | Stage 1f-a |
-| `generated` | byte hashes of generated files (incl. the source-tree `machine.h`/`version.h`) | Stage 0 |
+| `generated` | byte hashes of configure's OWN copies of all 13 generated files — always the SOURCE TREE, on both sides | Stage 0, grown 3→13 at RC-c |
+| `generated_cmake` | CMake's OWN copies of the ten RC-c files (`build-cmake/generated/`), byte-checked against `generated`'s baseline hashes — the actual CMake-vs-configure comparison | RC-c final-review fix |
 | `flags` | semantic per-language flag facts | Stage 1 |
 | `jars` | normalized jar content manifests (entry list + MANIFEST, volatile lines dropped) | Stage 1f-b |
 | `header_defines` | a header's `{macro: value}` `#define` set — **semantic, not bytes** | RC-a |
 | `tu_flag_facts` | per-TU flag facts **derived from the autotools generated Makefiles** | RC-b |
+
+`generated_cmake` exists because `generated` alone cannot: resolving `GENERATED_FILES` against the
+source tree, as `generated` does, reads configure's own output regardless of which build produced the
+fingerprint, so a corrupted or stale `build-cmake/generated/` file was invisible to parity before this
+— proven end-to-end (corrupting three of the ten RC-c files there still reported `PARITY OK`). No
+baseline arming was needed: `generated_cmake` is checked against `generated`'s hashes, which were
+already armed.
 
 `jars` was added in Stage 1f-b, once CMake began driving the Ant build and jar contents could
 actually move. It covers the **24 module jars**; the doc build's output (`scilab_*_help.jar`,

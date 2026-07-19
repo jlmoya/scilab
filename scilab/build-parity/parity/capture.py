@@ -321,6 +321,41 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     manifest = "\n".join(sorted(macro_bins))
     generated[MACRO_BIN_MANIFEST_KEY] = hashlib.sha256(manifest.encode("utf-8")).hexdigest()
 
+    # RC-c final-review Finding (Critical): CMake's OWN copies of the generated files
+    # (build-cmake/generated/, ScilabGeneratedFiles.cmake:19), hashed the SAME way as the
+    # block above -- normalize_path(..., roots) then sha256, encoding="utf-8" -- but resolved
+    # against CMake's output directory instead of the source tree. This is the half of the
+    # gate that was MISSING: the block above resolves every GENERATED_FILES entry against
+    # build_dir, which is always the SOURCE TREE (configure's copy) no matter which build
+    # produced this fingerprint, so it can never see what CMake wrote -- it just re-hashes
+    # configure's output a second time. A candidate captured that way compares
+    # configure-vs-configure even when build-cmake/generated/ is silently corrupted (proven:
+    # corrupting Version.incl/scilab.pc/etc/logging.properties there still hashed clean).
+    # `generated_cmake` plus diff.py's matching block is what actually asserts "CMake wrote
+    # what configure wrote".
+    #
+    # Reuses GENERATED_FILES as the candidate path list rather than a second hardcoded one:
+    # the three pre-RC-c entries (etc/classpath.xml, machine.h, version.h) simply do not
+    # exist under build-cmake/generated/ -- machine.h and version.h resolve through
+    # build-cmake/generated-includes/ instead (machine.h already gets its own semantic
+    # dimension, header_defines, right below; version.h and etc/classpath.xml are out of
+    # scope for this fix) -- so they fall through the same `os.path.exists` guard as any
+    # other missing file and are silently absent here, exactly like a missing file above.
+    #
+    # Always present in the returned fingerprint, like header_defines below, even when
+    # build-cmake/generated/ does not exist at all (an autotools-only capture): an empty
+    # dict, never a missing key. That is load-bearing for the diff's transition rule -- it is
+    # the only way to tell "captured by an old capture.py, before this fix" (key truly
+    # absent) apart from "captured by this tool, found nothing" (key present, empty).
+    generated_cmake = {}
+    cmake_generated_dir = os.path.join(build_dir, "build-cmake", "generated")
+    for rel in GENERATED_FILES:
+        p = os.path.join(cmake_generated_dir, rel)
+        if os.path.exists(p):
+            with open(p, "r", encoding="utf-8", errors="replace") as f:
+                content = normalize_path(f.read(), roots)
+            generated_cmake[rel] = hashlib.sha256(content.encode("utf-8", "replace")).hexdigest()
+
     # The CMake-GENERATED machine.h (RC-a), compared SEMANTICALLY against configure's
     # macro set (the baseline's reference, armed from the source-tree header). Absent
     # until RC-a's generator lands -> section simply empty (the diff's transition rule).
@@ -331,7 +366,8 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             header_defines["machine.h"] = parse_defines(f.read())
 
     return {"build_id": build_id, "executables": executables,
-            "dylibs": dylibs, "generated": generated, "jars": jars,
+            "dylibs": dylibs, "generated": generated, "generated_cmake": generated_cmake,
+            "jars": jars,
             "header_defines": header_defines,
             "flags": capture_flag_manifest(build_dir),
             "tu_flag_facts": capture_tu_flag_facts(build_dir)}
@@ -361,6 +397,7 @@ def _main(argv):
     print(f"captured {len(fp['dylibs'])} dylibs, {len(fp['executables'])} executables, "
           f"{len(fp['jars'])} jars, "
           f"{len(fp['generated'])} generated files, "
+          f"{len(fp['generated_cmake'])} generated files (cmake), "
           f"{len(fp['header_defines'])} semantic headers, "
           f"flags[{fp['flags']['source']}], "
           f"{len(fp['tu_flag_facts']['overrides'])} flag-override TUs -> {out}")

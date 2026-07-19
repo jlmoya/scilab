@@ -2,6 +2,28 @@
 import json
 import sys
 
+# The ten of "generated"'s 13 GENERATED_FILES entries that RC-c's ScilabGeneratedFiles.cmake
+# also writes into build-cmake/generated/ (the nine configure_file(@ONLY) templates plus
+# Version.incl) -- i.e. all of them EXCEPT etc/classpath.xml (no CMake counterpart yet,
+# deferred to Stage 2) and machine.h/version.h (resolve through build-cmake/generated-includes/
+# instead; machine.h already has its own semantic dimension, header_defines, below). Kept as a
+# literal here rather than imported from parity.capture, matching this module's existing
+# standalone-of-capture.py design (see the ("c", "cxx", "f") literal further down) -- diff.py
+# compares frozen JSON, never the tool that produced it. Update alongside
+# parity.capture.GENERATED_FILES if that list's RC-c subset ever changes.
+_GENERATED_CMAKE_KEYS = frozenset((
+    "build.incl.xml",
+    "scilab.pc",
+    "scilab.properties",
+    "etc/logging.properties",
+    "etc/modules.xml",
+    "etc/Info.plist",
+    "modules/helptools/etc/SciDocConf.xml",
+    "modules/atoms/etc/repositories",
+    "modules/atoms/tests/unit_tests/repositories.orig",
+    "Version.incl",
+))
+
 
 def _diff_named(kind, base, cand, out):
     """Report added/removed keys in a name->obj mapping."""
@@ -84,11 +106,40 @@ def diff_fingerprints(base, cand):
         if c["tmp_leak"]:
             out.append(f"dylib {name}: non-relocatable /tmp path in link")
 
-    # Generated files: presence + content hash.
+    # Generated files: presence + content hash. NOTE what this compares: `generated` is
+    # always resolved against the SOURCE TREE (configure's own copy) on both the baseline and
+    # candidate side -- see parity.capture.fingerprint_build's GENERATED_FILES loop. It never
+    # looks at anything CMake wrote. The block below (`generated_cmake`) is what does that.
     _diff_named("generated file", base["generated"], cand["generated"], out)
     for name in sorted(set(base["generated"]) & set(cand["generated"])):
         if base["generated"][name] != cand["generated"][name]:
             out.append(f"generated file changed: {name}")
+
+    # RC-c final-review Finding (Critical): CMake's OWN copies of the generated files
+    # (build-cmake/generated/), checked directly against the BASELINE's EXISTING "generated"
+    # hashes above (configure's copies) -- deliberately NOT a same-named "generated_cmake"
+    # baseline section. Arming one is unneeded and out of scope: base["generated"] has carried
+    # real hashes for all ten of _GENERATED_CMAKE_KEYS since RC-c, so the reference side needs
+    # no new baseline capture, and baseline-autotools.json stays untouched. This is what
+    # actually proves "CMake wrote what configure wrote" -- comparing GENERATED_FILES against
+    # build_dir on both sides, as the block above does, only ever reads configure's own copy no
+    # matter which build produced the fingerprint, so a corrupted build-cmake/generated/ file
+    # was invisible to parity before this (configure-vs-configure, unconditionally).
+    #
+    # Transition rule mirrors header_defines/jars, adapted to that base/generated_cmake naming
+    # asymmetry: a candidate with no "generated_cmake" key AT ALL predates this capture (an old
+    # capture.py) -> skip, not yet armed -- the key is always present, even if empty, in any
+    # fingerprint taken by a capture.py new enough to have this section (mirrors how
+    # header_defines tells "old tool" apart from "tool found nothing"). Once a candidate DOES
+    # carry the section, it is held to the baseline's existing hashes for exactly the RC-c
+    # subset: a file it is missing, adds unexpectedly, or reports with the wrong hash all fail,
+    # naming the file -- never silently drops a comparison it is able to make.
+    if "generated_cmake" in cand:
+        expected = {k: v for k, v in base.get("generated", {}).items() if k in _GENERATED_CMAKE_KEYS}
+        _diff_named("generated (cmake) file", expected, cand["generated_cmake"], out)
+        for name in sorted(set(expected) & set(cand["generated_cmake"])):
+            if expected[name] != cand["generated_cmake"][name]:
+                out.append(f"generated (cmake) file changed: {name}")
 
     # Jars: presence + per-jar entry-content map. Transition rule mirrors rpaths/
     # flags: a baseline with no "jars" section predates jar capture -> skip (not yet

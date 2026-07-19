@@ -410,7 +410,9 @@ build.** Coexistence shrinks to zero across these committed stages, each DELETIN
    Makefiles rather than hand-written. It found a real functional bug six stages of parity had
    missed: CMake was compiling `#ifdef _OPENMP` serial branches where autotools compiled the
    parallel ones. **RC-c (done)** — nine configure-substituted files plus `Version.incl`,
-   byte-identical, gated by the `generated` dimension grown from 3 entries to 13.
+   byte-identical, gated by the `generated` dimension grown from 3 entries to 13 — plus a
+   final-review fix, `generated_cmake`, without which `generated` alone byte-hashed configure's
+   own copies on both sides and never actually checked what CMake wrote.
 
    > **⚠ HARD ORDERING CONSTRAINT discovered in RC-c: RC-e cannot delete `./configure` until
    > Stage 2 (Ant→Maven) has landed.** RC-c deliberately deferred three files —
@@ -422,8 +424,10 @@ build.** Coexistence shrinks to zero across these committed stages, each DELETIN
    > that choice is this dependency: **the endgame's step order is no longer a preference.**
    > Either Stage 2 precedes RC-e, or RC-e must first absorb the jar-path search after all.
 
-   **RC-e prerequisites discovered during RC-a (must be resolved *before* the cutover, because each is
-   latent only while the source-tree header still resolves first):**
+   **RC-e prerequisites (must be resolved *before* the cutover).** The first three were discovered
+   during RC-a and are latent only while the source-tree header still resolves first; the fourth was
+   discovered during RC-c and is a harder dependency — `config.status`'s outright deletion, not a
+   resolution-order subtlety:
    - **The configure options have two unlinked sources of truth.** `ScilabMachineHeader.cmake` declares
      `option(WITH_GUI … ON)` and siblings, while `ScilabJava.cmake` derives `SCILAB_GUI` from
      `config.status`. Nothing links or cross-checks them, so on a `--without-gui` tree the Java bridge
@@ -437,6 +441,15 @@ build.** Coexistence shrinks to zero across these committed stages, each DELETIN
      developer shell's `CFLAGS` export that autoconf inherited, not to anything in the tree. Any
      re-`./configure` in a different environment can shift it. The committed baseline freezes the
      reference; a shift is not a CMake regression.
+   - **The version triple (`SCILAB_VERSION_MAJOR`/`MINOR`/`MAINTENANCE`) is read out of `config.status`
+     by `ScilabConfigure.cmake` (Stage 1f-c) — not computed CMake-side policy.** Concretely: RC-e
+     deletes `config.status`; `ScilabConfigure.cmake:19`'s `FATAL_ERROR` then fires and
+     `cmake -S . -B build` fails outright, taking every generated file whose content derives from that
+     triple down with it. RC-c grew this dependency from **1 file** (`version.h`, Stage 1f-c) to **7**
+     (`version.h`, `scilab.pc`, `etc/Info.plist`, `SciDocConf.xml`, both `repositories*`, and
+     `Version.incl`) by reusing the same CMake variables for its own six configure-substituted files
+     rather than re-deriving the triple independently. Recorded here, not fixed here — rewriting the
+     version source is RC-e's own problem to solve, deliberately, not something to smuggle into RC-c.
 3. **Retire `make`:** delete the `Makefile.am`/`Makefile.in` → the native side is CMake-only.
 4. **Stage 2 (Ant→Maven):** Ant + `build.incl.xml` gone → Maven the sole Java build.
 5. **End state:** autotools + Ant fully removed; **zero coexistence.** Then the FFI phase (SWIG/JNI→Panama).

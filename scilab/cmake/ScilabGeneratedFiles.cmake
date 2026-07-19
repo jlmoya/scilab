@@ -4,11 +4,32 @@
 # target, not semantic equivalence: these are scalar-substitution templates, the same
 # shape as version.h, which reproduces byte-for-byte. (machine.h needed a semantic
 # dimension because autoconf renders un-defined macros as `/* #undef X */`; nothing
-# here has that property.) The parity harness's `generated` dimension byte-compares
-# all of them, so a wrong or unset variable is named, never silent.
+# here has that property.)
 #
-# Values are COMPUTED here or come from ScilabConfigure.cmake -- never read out of
-# config.status, which is the dependency the retire-configure stages exist to remove.
+# The parity harness's `generated` dimension byte-hashes configure's OWN copies of all
+# of them (armed since Stage 0, grown to cover all 13 -- the 3 pre-RC-c entries plus
+# these 10 -- once RC-c's baseline was recaptured). By itself it does NOT look at
+# anything this file writes. The separate `generated_cmake` dimension is what actually
+# checks THIS file's output: it byte-hashes build-cmake/generated/<file> and compares
+# against `generated`'s same baseline hashes, so a wrong or unset variable here is
+# named, never silent. (A prior version of this comment claimed `generated` alone did
+# that byte-compare for all of them; it did not -- resolving GENERATED_FILES against
+# the source tree on BOTH sides of a comparison means comparing configure's output to
+# itself regardless of what this file wrote, which corrupting a build-cmake/generated/
+# file proved end-to-end. See build-parity/parity/capture.py's `generated_cmake` map and
+# diff.py's matching comparison block.)
+#
+# Values are COMPUTED here, WITH ONE EXCEPTION: the version triple
+# (SCILAB_VERSION_MAJOR/MINOR/MAINTENANCE) is set by ScilabConfigure.cmake (Stage 1f-c,
+# NOT RC-a), which reads it straight out of config.status -- see that file's own header
+# comment. That is a real, currently open dependency on config.status, not computed
+# policy: it is why RC-e (which deletes config.status) lists it as a prerequisite in
+# docs/design/build-cmake-maven-migration.md. Retire-configure's later stages have not
+# removed this dependency yet -- they have GROWN it, from 1 file (version.h, Stage 1f-c)
+# to 7: this file reuses the same triple for scilab.pc, etc/Info.plist, SciDocConf.xml,
+# both repositories*, and Version.incl below, whose entire substituted content derives
+# from it. Every OTHER scalar in this file is genuine CMake-side policy, each traced to
+# its configure.ac origin -- never a config.status read.
 #
 # NOT REPRODUCED, deliberately: configure.ac:2930-2937 compares `date +%Y` against a
 # year hardcoded in banner.cpp and, on mismatch, runs `sed -i` over banner.cpp AND
@@ -20,9 +41,10 @@ set(SCILAB_GENERATED_DIR ${CMAKE_BINARY_DIR}/generated)
 file(MAKE_DIRECTORY ${SCILAB_GENERATED_DIR})
 
 # --- values ---------------------------------------------------------------
-# The version triple is already computed by ScilabConfigure.cmake (RC-a). Every other
-# scalar below is CMake-side policy, each traced to its configure.ac origin -- never a
-# config.status read.
+# The version triple is set by ScilabConfigure.cmake (Stage 1f-c, NOT RC-a) -- which
+# reads it straight out of config.status; see this file's header comment above for why
+# that matters. Every other scalar below is genuine CMake-side policy, each traced to
+# its configure.ac origin -- never a config.status read.
 
 # configure.ac:58 -- SCILAB_BINARY_VERSION is the dot-joined triple, nothing more.
 set(SCILAB_BINARY_VERSION "${SCILAB_VERSION_MAJOR}.${SCILAB_VERSION_MINOR}.${SCILAB_VERSION_MAINTENANCE}")
@@ -200,8 +222,21 @@ endforeach()
 
 # Version.incl -- NOT an AC_CONFIG_FILES entry. configure.ac:2965 writes it with a raw
 # shell echo, guarded (configure.ac:2961) by a comparison against a version string
-# scraped out of modules/gui/images/icons/aboutscilab.svg. build.incl.xml:154 stamps
-# every jar's Specification-Version from it, so it matters despite being invisible to
-# any inventory built from config.status.
+# scraped out of modules/gui/images/icons/aboutscilab.svg -- and when that guard fires,
+# the SAME block also `sed`s modules/core/includes/version.h{,.in,.vc} and
+# .gitlab-ci.yml's DOCKER_TAG (configure.ac:2966-2975), a broader side effect this
+# generator does not reproduce (nor does anything else in this file -- out of scope,
+# not merely missed).
+#
+# RC-c final-review Finding (Minor 3): this CMake write below is UNCONDITIONAL -- no
+# equivalent guard, every configure. Today the guard never fires (SCILAB_BINARY_VERSION
+# already matches the scraped aboutscilab.svg string), so both paths produce the same
+# bytes; this is a real control-flow divergence, not (yet) an observable one, recorded
+# here so a future version bump that DOES trip the guard is not a surprise -- the
+# generated Version.incl would still update (this write always runs), but nothing here
+# would touch version.h/.gitlab-ci.yml the way configure's guarded block does.
+#
+# build.incl.xml:154 stamps every jar's Specification-Version from it, so it matters
+# despite being invisible to any inventory built from config.status.
 file(WRITE ${SCILAB_GENERATED_DIR}/Version.incl
      "SCIVERSION=scilab-branch-${SCILAB_VERSION_MAJOR}.${SCILAB_VERSION_MINOR}\n")

@@ -284,13 +284,29 @@ executable fingerprints are structurally blind to it. All 50 are closed; the gat
 `scilab/cmake/ScilabGeneratedFiles.cmake` generates nine of the files `config.status`
 substitutes, plus `Version.incl`, via `configure_file(@ONLY)` into `build-cmake/generated/`.
 All ten are **byte-identical** to configure's copies — the `version.h` precedent holds for
-this whole class, so no semantic dimension was needed. The harness byte-hashes all of them:
-`GENERATED_FILES` went from 3 entries to 13.
+this whole class, so no semantic dimension was needed.
+
+**RC-c final-review Finding (Critical), corrected here:** an earlier version of this section
+claimed "the harness byte-hashes all of them" once `GENERATED_FILES` went from 3 entries to 13.
+That was false. `capture.py`'s `generated` map resolves every `GENERATED_FILES` entry against the
+**source tree** — i.e. configure's own copy — on *both* the committed baseline and any candidate,
+so it never read `build-cmake/generated/` at all; the comparison was configure-vs-configure
+regardless of what CMake wrote. Proven end-to-end: corrupting `build-cmake/generated/
+{Version.incl,scilab.pc,etc/logging.properties}` and running the real CI capture+diff sequence
+produced `PARITY OK`. Fixed by a second map, `generated_cmake`, which hashes CMake's *own* copies
+from `build-cmake/generated/` and is checked in `parity/diff.py` against the baseline's existing
+`generated` hashes (no separate baseline section needed — those hashes were already armed). The
+same corruption now fails parity, naming the file. `GENERATED_FILES` itself went from 3 entries to
+13; `generated_cmake` covers the 10 of those that CMake writes into `build-cmake/generated/`
+(excludes `etc/classpath.xml`, deferred to Stage 2, and `machine.h`/`version.h`, which resolve
+through `build-cmake/generated-includes/` and are covered elsewhere).
 
 **The inventory is 12 files, not the "~21" an earlier decomposition estimated.**
-`AC_CONFIG_FILES` declares 102 outputs; 89 are `Makefile`s and 13 are not, one of which
+`AC_CONFIG_FILES` declares 96 outputs; 83 are `Makefile`s and 13 are not, one of which
 (`version.h`) Stage 1f-c already owned. Verified three ways: `config.status:369`,
-`config.status:925-937`, `configure.ac:2426-2523`.
+`config.status:925-937`, `configure.ac:2426-2523`. (RC-c final-review Minor 2: an earlier version
+of this line said "102 outputs; 89 are `Makefile`s" — re-measured; the totals were wrong, the
+load-bearing 13 was always right.)
 
 Three things worth knowing about this set:
 

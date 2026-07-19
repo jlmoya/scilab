@@ -93,6 +93,70 @@ def test_fingerprint_build_walks_dylibs_executables_and_generated(tmp_path):
     # this synthetic tree has no macros/ dir).
     assert list(fp["generated"].keys()) == ["etc/classpath.xml", MACRO_BIN_MANIFEST_KEY]
 
+    # generated_cmake is ALWAYS present (mirrors header_defines) even though this
+    # synthetic tree has no build-cmake/generated/ dir at all -- an empty dict, not a
+    # missing key, which is what lets the diff tell "old capture.py" apart from
+    # "this tool, found nothing" (see the diff.py transition-rule comment).
+    assert fp["generated_cmake"] == {}
+
+
+# --- RC-c final-review Finding (Critical): generated_cmake ------------------
+#
+# capture.py's `generated` dict resolves GENERATED_FILES against build_dir, which is
+# always the SOURCE TREE -- configure's own copy -- regardless of which build produced
+# the fingerprint. It never looks at build-cmake/generated/, so a corrupted or stale
+# CMake-generated file was invisible to parity (proven end-to-end against the real
+# tree). `generated_cmake` hashes CMake's OWN copies from build-cmake/generated/,
+# closing that gap; parity/diff.py checks it against the baseline's existing
+# `generated` hashes (see test_diff.py for the comparison-side tests).
+
+def test_fingerprint_build_captures_generated_cmake_files(tmp_path):
+    build_dir = str(tmp_path)
+    cmake_scilab_pc = os.path.join(build_dir, "build-cmake/generated/scilab.pc")
+    cmake_version_incl = os.path.join(build_dir, "build-cmake/generated/Version.incl")
+    _touch(cmake_scilab_pc, "prefix=/usr/local\n")
+    _touch(cmake_version_incl, "SCIVERSION=scilab-branch-2027.0\n")
+    # modules/core/includes/machine.h deliberately NOT created under build-cmake/generated/
+    # -- it resolves through build-cmake/generated-includes/ instead (header_defines'
+    # job), so it must stay absent from generated_cmake even though it IS one of
+    # GENERATED_FILES's 13 entries this loop walks looking for.
+
+    fp = fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path({}), build_id="t")
+
+    assert set(fp["generated_cmake"].keys()) == {"scilab.pc", "Version.incl"}
+    expected_pc_hash = hashlib.sha256("prefix=/usr/local\n".encode("utf-8")).hexdigest()
+    assert fp["generated_cmake"]["scilab.pc"] == expected_pc_hash
+    assert "modules/core/includes/machine.h" not in fp["generated_cmake"]
+
+
+def test_generated_cmake_hash_is_roots_normalized(tmp_path):
+    # Same normalize_path(..., roots) treatment as the "generated" block above --
+    # matters for a file that (like scilab.pc's install paths, in the real tree) can
+    # embed an absolute checkout path.
+    build_dir = str(tmp_path)
+    p = os.path.join(build_dir, "build-cmake/generated/scilab.pc")
+    _touch(p, f"prefix={build_dir}/usr\n")
+    roots = {build_dir: "$SCI"}
+
+    fp = fingerprint_build(build_dir, roots=roots, runner=fake_runner_by_path({}), build_id="t")
+
+    expected = hashlib.sha256("prefix=$SCI/usr\n".encode("utf-8")).hexdigest()
+    assert fp["generated_cmake"]["scilab.pc"] == expected
+
+
+def test_generated_cmake_differs_from_source_tree_copy_when_corrupted(tmp_path):
+    # The exact shape of the reviewer's exploit, at the unit level: build-cmake/generated/
+    # diverges from the source tree, and generated_cmake must reflect what CMake ACTUALLY
+    # wrote, not silently re-hash the source tree's copy (which is what "generated" does,
+    # and why it alone cannot catch this).
+    build_dir = str(tmp_path)
+    _touch(os.path.join(build_dir, "scilab.pc"), "prefix=/usr/local\n")
+    _touch(os.path.join(build_dir, "build-cmake/generated/scilab.pc"), "CORRUPTED\n")
+
+    fp = fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path({}), build_id="t")
+
+    assert fp["generated"]["scilab.pc"] != fp["generated_cmake"]["scilab.pc"]
+
 
 def test_generated_files_covers_the_rc_c_inventory():
     """The 9 configure-substituted files RC-c generates, plus Version.incl, plus the
@@ -363,9 +427,21 @@ def _assert_c_locale_is_not_utf8():
     # tests below would pass vacuously (same codec on both sides of the
     # comparison) without ever exercising the bug this pins. Belt-and-braces
     # with the explicit forced read below, not a substitute for it.
-    assert locale.getpreferredencoding(False).lower() not in ("utf-8", "utf8"), (
-        "sanity: the C locale must select a non-UTF-8 default codec on this "
-        "platform, or this regression test cannot distinguish the fix from the bug")
+    #
+    # RC-c final-review Finding (Minor 4): PEP 686 makes UTF-8 mode the interpreter
+    # default starting around Python 3.15, which can make locale.getpreferredencoding
+    # report "utf-8" even under LC_ALL=C. When that happens, this is a property of the
+    # PLATFORM/interpreter, not a fresh regression in the code under test -- so this
+    # must SKIP the two tests below, not hard-fail the suite. (A real encoding
+    # regression is still caught independently: capture.py pins encoding="utf-8"
+    # explicitly at both call sites regardless of locale, which is what those tests
+    # assert against a hash computed with an explicit codec of its own -- see
+    # test_generated_file_hash_is_locale_independent's expected_hash.)
+    if locale.getpreferredencoding(False).lower() in ("utf-8", "utf8"):
+        pytest.skip(
+            "this platform's 'C' locale resolves to UTF-8 (PEP 686 UTF-8-by-default?) "
+            "-- the locale-independence regression this pins cannot be distinguished "
+            "from the fix on this interpreter")
 
 
 def test_file_reader_is_locale_independent(tmp_path):
