@@ -350,6 +350,61 @@ never built.
 paths from `AC_JAVA_CHECK_JAR`'s filesystem search — and are consumed only by the Ant build
 Maven replaces. **Consequence: RC-e cannot delete `./configure` until Stage 2 lands.**
 
+## Macros — built by CMake (retire-configure RC-d)
+
+`scilab/cmake/ScilabMacros.cmake` adds the **`macros`** target: Scilab's ~3,516 `.sci` sources are
+compiled to `.bin` by *running the just-built interpreter* over
+`modules/functions/scripts/buildmacros/buildmacros.sce`, which loops the modules `getmodules()`
+reports and calls the compiled `genlib()` builtin. The target **invokes** that machinery; it does not
+reimplement it. Verified **byte-identical to `make macros` across all 3,516 files, 0 differing.**
+
+**Scope is inherited, not re-derived.** `getmodules()` reads `etc/modules.xml` — a file RC-c already
+generates byte-identically and covers in two parity dimensions. That is why this stage is small.
+
+**Opt-in, not on `drop-in-all`** (the 1f-c `doc` precedent), but it **does** depend on
+`drop-in-scilab-cli-bin`, wired in `CMakeLists.txt` after that executable is declared — the target
+isn't defined yet where `ScilabMacros.cmake` is included. Without that edge the target would happily
+compile `.bin` files with a **stale** interpreter and exit 0: autotools' `macros:` rule lists
+`scilab-cli-bin` as a real file prerequisite, and dropping it was a silent-divergence hole inside the
+very target whose design goal is failing loudly. (The 1f-c `doc` target has the same gap — worth
+closing there too.)
+
+**It fails loudly — a deliberate divergence.** `Makefile.am:247` prefixes its recipe with `-`, so
+`make` **ignores the exit status**: a failed macros pass prints "Error 1 (ignored)" and the build
+continues, with nothing downstream re-validating completeness. That is how the `rc=231` bug shipped
+(commit `7303c43690e`: one module lacked its `macros/buildmacros.sce`, the unguarded `exec` failed,
+and `make` swallowed it). Demonstrated A/B with the *same* injected syntax error: CMake exits **rc=2**
+(log shows `Error 231` cascading), `make macros` exits **rc=0**. Reproducing the artifact is the
+mandate; inheriting a swallow-the-error habit into a build system that never had it is not.
+
+**`.bin` output is deterministic — measured, and it is not obvious.** Every `.bin` embeds AST node
+numbers from a process-wide counter that is **never reset**
+(`modules/ast/includes/exps/ast.hxx:40-43`), so a `.bin` is a function of its source *plus everything
+parsed earlier in that same process*. Two independent full rebuilds nonetheless produced **0 of 3,516
+files differing**, and both reproduced the pre-existing on-disk state. That is what makes the harness's
+content-level macro gate strict rather than flaky. If it ever drifts, investigate — do not weaken the
+gate back to presence.
+
+**The trap when comparing the two drivers:** `genlib` is **incremental**
+(`sci_genlib.cpp:263-279` skips a `.sci` whose md5 matches the previous `lib` manifest while its
+`.bin` survives). A rebuild that does not delete **both** `*.bin` **and** `lib` under
+`modules/*/macros/` is a **no-op** that reproduces identical output trivially and proves nothing.
+
+Two incidental findings, recorded so they are not rediscovered:
+
+- **`windows_tools`' macros are unreachable.** It has `macros/buildmacros.sce` and two Windows-only
+  sources, but no entry in `etc/modules.xml`, so `getmodules()` never reaches it. Any `.bin` found
+  there is a stale artifact; parity confirmed none is in the baseline.
+- **`modules/dynamic_link/macros/buildmacros.sce:14-16` has a dead fallback** — it `exec`s
+  `modules/functions/macros/genlib.sci`, which does not exist anywhere in the tree. Vestigial from
+  before `genlib` became a C++ builtin; harmless while the `io` module's builtin is registered, but a
+  trap for anyone reasoning about a reduced interpreter build.
+
+**Known limitation of the macro gate:** it is one hash over every `.bin`'s path *and* content, so a
+failure reports `generated file changed: macros/*.bin (manifest)` without naming *which* file moved.
+Strict, but not self-localizing — a diagnostic mode dumping per-file mismatches is a candidate
+follow-up if this ever fires in anger.
+
 ## CI
 
 `.gitlab-ci.yml` (fork-native pipeline) carries two guards:

@@ -112,6 +112,14 @@ sanity:cmake-driver:
       #    files. A deleted include is invisible during coexistence -- configure still
       #    produces them, so the build keeps working and only RC-e would discover it.
       grep -q 'include(cmake/ScilabGeneratedFiles.cmake)' CMakeLists.txt
+      # K. Retire-configure RC-d is wired: CMake drives the macros build, AND the
+      #    macros target depends on a freshly-built interpreter. Both greps matter:
+      #    without the include there is no target; without the dependency the target
+      #    would silently compile .bin files with a STALE scilab-cli-bin and exit 0
+      #    -- the same silent-divergence class the target's fail-loudly design exists
+      #    to prevent, reached by a different route.
+      grep -q 'include(cmake/ScilabMacros.cmake)' CMakeLists.txt
+      grep -q 'add_dependencies(macros drop-in-scilab-cli-bin)' CMakeLists.txt
     - cd build-parity && python3 -m pytest tests/ -q
 
 # Native half — the real Stage-1f-b gate: build the WHOLE app under CMake from the

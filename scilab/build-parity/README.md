@@ -21,8 +21,12 @@ substitution set — `etc/classpath.xml`, the source-tree `machine.h`/`version.h
 files (`scilab.pc`, `etc/Info.plist`, `etc/modules.xml`, `Version.incl`, and so on — the exact list
 is `parity/capture.py`'s `GENERATED_FILES`) — **always hashed from the SOURCE TREE** (configure's
 own copies), on *both* sides of every comparison, never from anything CMake wrote; a manifest hash
-over every compiled macro `.bin` path (presence, not content — cheap, and enough to catch a
-module's macros silently vanishing from a build); and, separately, CMake's *own* copies of **eleven
+over every compiled macro `.bin`'s **path AND content** (RC-d strengthened this from path-only:
+presence alone would miss a `.bin` sitting at the right path with wrong bytes, which is exactly what
+migrating the macro compiler's driver risks. Content hashing is strict rather than flaky because
+`.bin` output was *measured* deterministic — 0 of 3,516 files differing across two independent full
+rebuilds — even though the format embeds a never-reset process-wide AST node counter. One hash covers
+the whole set, so a failure reports that *something* moved without naming which file); and, separately, CMake's *own* copies of **eleven
 files across two directories** — the ten RC-c files (`build-cmake/generated/`) plus `version.h`
 (`build-cmake/generated-includes/`) — checked against those same source-tree hashes — the only
 comparison here that actually looks at what CMake wrote, rather than re-hashing configure's copy a
