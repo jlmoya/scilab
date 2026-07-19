@@ -39,16 +39,28 @@ list(APPEND _warn_c -Werror=implicit -Werror=incompatible-pointer-types)
 set(SCILAB_C_FLAGS       -std=gnu23  ${_codegen} ${_min_macos} ${_compiler_c}   ${_warn_c})
 set(SCILAB_CXX_FLAGS     -std=c++17  ${_codegen} ${_min_macos} ${_compiler_cxx} ${_warn_cxx})
 set(SCILAB_Fortran_FLAGS             ${_codegen} ${_min_macos})
+# NOT WIRED ANYWHERE, deliberately left declared: the SCI_LDFLAGS analogue. The real
+# link line's -mmacosx-version-min comes from CMake's own CMAKE_OSX_DEPLOYMENT_TARGET
+# handling, and the two -Wl,-rpath entries are still literals in ScilabModule.cmake:375
+# and ScilabAggregate.cmake:148,310. So do NOT assume symmetry with SCILAB_C_FLAGS: wiring
+# a new module's link step to ${SCILAB_LINK_FLAGS} expecting rpath policy would silently
+# produce a dylib missing both rpaths. Kept as the documented placeholder for the RC-c/RC-e
+# work that consolidates link policy; delete it if that never happens.
 set(SCILAB_LINK_FLAGS    ${_min_macos})
 
 # NOT implemented, on purpose -- each verified rather than assumed:
-#  * SCI_CPPFLAGS is a PHANTOM: Makefile.incl.am:25 and Makefile.am:27 both do
-#    AM_CPPFLAGS = $(SCI_CPPFLAGS), but nothing assigns or AC_SUBSTs it anywhere
-#    (verified absent from config.status). It always expands empty.
+#  * SCI_CPPFLAGS is a PHANTOM: Makefile.incl.am:25, Makefile.am:27 and
+#    modules/Makefile.am:129 all do AM_CPPFLAGS = $(SCI_CPPFLAGS), but nothing assigns
+#    or AC_SUBSTs it anywhere (verified absent from config.status). Always expands empty.
 #  * WARNING_FFLAGS / DEBUG_LDFLAGS / WARNING_LDFLAGS / SSE_LDFLAGS /
 #    BACKTRACE_LDFLAGS: zero assignment sites anywhere. Dead everywhere.
 #  * COMPILER_FFLAGS: dead HERE but not dead everywhere -- assigned only on the
 #    Intel-compiler path (m4/intel_compiler.m4:28,30), which this build never takes.
-#  * SSE_*FLAGS: i*86-linux-gnu only (configure.ac:869-875). BACKTRACE_*FLAGS: gated
-#    on a glibc-backtrace probe (m4/backtrace.m4) that fails on macOS, contributing
-#    no -rdynamic here.
+#  * SSE_*FLAGS: i*86-linux-gnu only (configure.ac:869-875).
+#  * BACKTRACE_*FLAGS contribute no -rdynamic here -- but NOT for the reason one would
+#    guess. config.log shows the glibc-backtrace PROBE actually SUCCEEDS on macOS (Darwin
+#    ships execinfo.h/backtrace()). What fails is the subsequent
+#    CHECK_COMPILER_ARG(C,"-rdynamic",...), which mis-expands to a literal `$-rdynamic`
+#    token clang rejects -- an apparent pre-existing autotools/m4 quoting bug. The value
+#    we ship (no -rdynamic) matches the baseline either way, so this is recorded rather
+#    than worked around: fixing the quoting is an autotools-side change, out of scope here.

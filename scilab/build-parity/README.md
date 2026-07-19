@@ -40,12 +40,32 @@ Six dimensions are fingerprinted today:
 | `flags` | semantic per-language flag facts | Stage 1 |
 | `jars` | normalized jar content manifests (entry list + MANIFEST, volatile lines dropped) | Stage 1f-b |
 | `header_defines` | a header's `{macro: value}` `#define` set — **semantic, not bytes** | RC-a |
+| `tu_flag_facts` | per-TU flag facts **derived from the autotools generated Makefiles** | RC-b |
 
 `jars` was added in Stage 1f-b, once CMake began driving the Ant build and jar contents could
 actually move. It covers the **24 module jars**; the doc build's output (`scilab_*_help.jar`,
 `scilab_images.jar`) is excluded by filename pattern, since those are help artifacts rather than
 module jars. Stage 2 (Ant -> Maven) is still what can change jar contents most, and the normalized
 manifest is what makes a reactor build's timestamp churn survivable.
+
+`tu_flag_facts` (RC-b) is what `parity/flagfacts_check.py` now checks against, per translation
+unit. It replaced **hand-written** expectations — a hardcoded default plus two manually maintained
+override tables — which had a structural flaw worth stating plainly: such a gate enforces only what
+someone remembered to record, and silently blesses everything else. It was returning rc=0 while real
+divergences existed. `parity/makeflags.py` derives the facts instead, by expanding each generated
+`Makefile`'s own compile recipes (whole-recipe expansion, because `-std=` arrives via `$(CC)` rather
+than `$(SCI_CFLAGS)`; and a rule counts as live only if the build actually requests its object,
+which excludes config.status-disabled and stale hand-written rules). `parity/capture.py` stores a
+tree-wide default per language plus only the ~211 TUs that deviate. It is **frozen** into the
+baseline on purpose: retire-`configure`'s later sub-stages delete the generated Makefiles this is
+derived from, so the committed baseline is what lets autotools-derived truth outlive autotools.
+
+Switching to derived expectations immediately surfaced 50 divergent files, 47 of which mismatched on
+`openmp` — invisible before because the old tables never asserted `openmp` at all. Three of those
+files carry live `#ifdef _OPENMP` branches, so CMake had been compiling serial code paths where
+autotools compiled parallel ones. The `dylibs` dimension cannot see that class: `nm` lists symbol
+*names*, and two `#ifdef` branches defining the same functions with different bodies yield an
+identical symbol set. That is the concrete argument for keeping a semantic flag dimension at all.
 
 `header_defines` (RC-a) exists because CMake's generated `machine.h` is **not** byte-identical to
 autoconf's — comment style, `#define` vs `/* #undef */` spelling and ordering all differ — so it is

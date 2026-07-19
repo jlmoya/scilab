@@ -48,7 +48,7 @@ cmake --build build-cmake --target drop-in-all -j
 cd build-parity
 python3 -m parity.capture .. /tmp/cand.json cand
 python3 -m parity.diff baseline-autotools.json /tmp/cand.json          # PARITY OK, rc=0
-python3 -m parity.flagfacts_check ../build-cmake/compile_commands.json # rc=0
+python3 -m parity.flagfacts_check ../build-cmake/compile_commands.json baseline-autotools.json .. # rc=0
 ```
 
 Measured on the dev machine (M-series, `-j`, ccache warm): configure ≈ 46 s; a
@@ -224,6 +224,61 @@ build consumed the generated-includes path; whole-tree **PARITY OK** (68 dylibs 
 (`scilab_en_US_help.jar`) on the CMake-built `scilab-adv-cli`. `make` still generates the
 headers + builds help (coexistence).
 
+## Compiler flags — computed in CMake (retire-configure RC-b)
+
+`scilab/cmake/ScilabFlags.cmake` **computes** the compiler-flag policy and exports
+`SCILAB_C_FLAGS` / `SCILAB_CXX_FLAGS` / `SCILAB_Fortran_FLAGS`, which
+`ScilabModule.cmake`'s `_scilab_module_flag_env()` consumes. It replaces three hardcoded
+literal lists whose own header admitted they were "transcribed from the CONFIGURED
+autotools build … not invented here". It reads nothing from `config.status`: the
+release/debug branch is a CMake `option()` whose default is declared here, and
+`-mmacosx-version-min` derives from `CMAKE_OSX_DEPLOYMENT_TARGET`. Equivalence was proven
+at full scale — **3600/3600 compile lines byte-identical** across two fresh worktrees.
+
+**The trap, recorded because a naive port falls straight into it:** `-std=gnu23` and
+`-std=c++17` are **not** in `SCI_CFLAGS`/`SCI_CXXFLAGS`. Autotools carries them in the
+*compiler* variables (`CC = gcc -std=gnu23 -arch arm64`, `CXX = g++ -arch arm64
+-std=c++17`), so mirroring only `SCI_*FLAGS` silently drops the language standard.
+Also documented in the file: `SCI_CPPFLAGS` is a phantom (referenced by three
+`Makefile.am`s, assigned nowhere, absent from `config.status`); five ingredient groups are
+dead everywhere; and `COMPILER_FFLAGS` is dead *here* but live on the Intel-compiler path —
+a distinction worth preserving, since "dead everywhere" and "dead in this configuration"
+imply different code.
+
+### The flag gate now derives its expectations
+
+`parity/flagfacts_check.py` used to assert **hand-written** expectations: a hardcoded
+default plus two manually maintained override tables. It therefore enforced what someone
+had remembered to record and silently blessed what they hadn't — it returned rc=0 while
+real divergences existed. It now takes its expectations from `tu_flag_facts` in
+`baseline-autotools.json`, **derived** from the autotools generated Makefiles by
+`parity/makeflags.py` (whole-recipe variable expansion; a rule counts as live only if the
+build actually requests its object, which excludes config.status-disabled and stale
+hand-written rules). Frozen into the baseline deliberately: retire-`configure`'s later
+sub-stages delete the generated Makefiles, so the committed baseline is what lets the
+autotools-derived truth outlive autotools.
+
+Invocation gained two arguments — `python3 -m parity.flagfacts_check <compile_commands.json>
+<baseline.json> <source_root>`.
+
+`min_macos` is deliberately **not** derived: a footgunned TU's recipe drops
+`-mmacosx-version-min` entirely, while `CMAKE_OSX_DEPLOYMENT_TARGET` stamps 11.0 on every
+CMake TU. That difference was reviewed and accepted, so `min_macos` is asserted as a
+CMake-side invariant while `opt`/`wrapv`/`ndebug`/`std`/`openmp` come from the derived facts.
+
+**What switching to derived expectations immediately found — and why it matters.** The gate
+went from rc=0 to **50 divergent files**: the 3 unreproduced footgun modules above, plus
+**47 mismatching on `openmp`**, which the old gate could never have seen because it never
+asserted `openmp` at all. CMake requested OpenMP for four modules where autotools compiles
+with it in two, so it both missed the flag and added it spuriously. That was **not**
+cosmetic: `-fopenmp` defines the `_OPENMP` macro, and three `differential_equations` files
+carry live `#ifdef _OPENMP` branches selecting serial-vs-parallel solver construction and
+thread-count parsing (12 files tree-wide guard on it). CMake was compiling the serial paths.
+
+Nothing had caught it because `nm` lists symbol *names*: two `#ifdef` branches defining the
+same functions with different bodies produce an identical symbol set, so the dylib and
+executable fingerprints are structurally blind to it. All 50 are closed; the gate is rc=0.
+
 ## CI
 
 `.gitlab-ci.yml` (fork-native pipeline) carries two guards:
@@ -269,9 +324,13 @@ headers + builds help (coexistence).
 - **C++ standard bump (spec §12):** the tree is held at `-std=c++17` to match the baseline;
   the c++23 bump is a codegen axis — bump autotools first, re-baseline, then flip **one
   line** in `ScilabModule.cmake`.
-- **The `_CFLAGS`-replaces-`AM_CFLAGS` footgun:** a handful of dirs (`parameters`,
-  `windows_tools`, `string/src/c`) and 6 Fortran files compile at `-O0` in the baseline
-  because a per-target `_CFLAGS` silently drops the tree's `-O2 -fwrapv`. CMake reproduces
-  this faithfully (the flag-fact check's `FILE_`/`DIR_EXPECTED_OVERRIDES`); the actual fix
-  (restore the optimization, re-baseline) is a deliberate later improvement, not a silent
-  1f-a change.
+- **The `_CFLAGS`-replaces-`AM_CFLAGS` footgun:** **6 modules / 33 C translation units**
+  (`parameters`, `windows_tools`, `string/src/c`, `history_browser`, `types`, `preferences`)
+  compile without any of `SCI_CFLAGS` — no `-O2`, no `-fwrapv` — because a per-target
+  `_CFLAGS` replaces `$(AM_CFLAGS)` wholesale rather than appending. Six Fortran files
+  separately compile at `-O0` via a deliberate `if IS_MACOSX` gfortran workaround. CMake
+  reproduces all of it faithfully. The measured figure replaces an earlier "a handful of
+  dirs" estimate: RC-b's derived gate found that **3 of those modules were silently NOT
+  reproduced** and CMake was compiling them at full flags. The actual fix (restore the
+  optimization and the `-fwrapv` hardening, then re-baseline) remains a deliberate later
+  stage — those TUs currently lack the UB hardening applied tree-wide everywhere else.

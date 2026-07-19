@@ -100,6 +100,14 @@ sanity:cmake-driver:
       #    missing in candidate", rc=1) — this grep catches it here instead, in the cheap
       #    sanity job, minutes before the full native build would.
       grep -q 'include(cmake/ScilabMachineHeader.cmake)' CMakeLists.txt
+      # I. Retire-configure RC-b is wired: the compiler-flag POLICY is computed in
+      #    cmake/ScilabFlags.cmake and consumed by ScilabModule.cmake, rather than
+      #    hardcoded as literal lists. Deleting the include would leave the module
+      #    helper setting flags from now-empty variables -- every TU would silently
+      #    lose -O2/-fwrapv/-std=, which the native flag gate catches but only after
+      #    a full build. These greps catch it here in seconds.
+      grep -q 'include(cmake/ScilabFlags.cmake)' CMakeLists.txt
+      grep -q 'SCILAB_C_FLAGS' cmake/ScilabModule.cmake
     - cd build-parity && python3 -m pytest tests/ -q
 
 # Native half — the real Stage-1f-b gate: build the WHOLE app under CMake from the
@@ -133,7 +141,10 @@ parity:cmake-drop-in:
     - cd build-parity
     - python3 -m parity.capture .. /tmp/cand-ci.json cand
     - python3 -m parity.diff baseline-autotools.json /tmp/cand-ci.json
-    - python3 -m parity.flagfacts_check ../build-cmake/compile_commands.json
+    # RC-b: expectations are DERIVED from the autotools Makefiles and frozen in the
+    # baseline, so the check now needs the baseline + the source root. The old 1-arg
+    # form raises IndexError.
+    - python3 -m parity.flagfacts_check ../build-cmake/compile_commands.json baseline-autotools.json ..
 
 # Regression guard for the UB-miscompile class: rand() returned Inf because
 # durands()'s modulus loop relied on signed-integer overflow, which clang/gcc
