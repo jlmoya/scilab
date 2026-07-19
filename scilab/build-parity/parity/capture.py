@@ -69,10 +69,17 @@ _GENERATED_CMAKE_PATH_OVERRIDES = {
     "modules/core/includes/version.h": os.path.join("generated-includes", "version.h"),
 }
 
-# Key for the macro .bin *manifest* entry in the "generated" map (see
-# _macro_bin_manifest_hash): presence of the SET of compiled macro files, not
-# their content -- if a Stage-1 CMake bootstrap misses a module, its .bin files
-# vanish from this list and the manifest hash changes.
+# Key for the macro .bin manifest entry in the "generated" map: one hash over
+# every compiled macro's PATH **and CONTENT** (RC-d). It was path-only through
+# RC-c -- enough to catch a module's macros vanishing (the rc=231 shape), but
+# blind to a .bin present at the right path with wrong bytes, which is exactly
+# what migrating the macro compiler risks.
+#
+# Content hashing is strict rather than flaky because .bin output is
+# deterministic -- measured before RC-d: two independent full rebuilds (.bin AND
+# lib deleted between, since genlib is incremental) produced 0 of 3516 files
+# differing, and both reproduced the pre-existing on-disk state. If that ever
+# drifts, investigate it; do not weaken this back to presence.
 MACRO_BIN_MANIFEST_KEY = "macros/*.bin (manifest)"
 
 # OUTPUT jars of the opt-in help/doc build (CMake `doc` target / `make doc`),
@@ -309,13 +316,19 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
                     dylibs[key] = fingerprint_dylib(path, roots, runner)
         elif "/macros/" in posix_root + "/":
             # Compiled macro .bin files (any depth under a macros/ dir, e.g.
-            # modules/assert/macros/assert/assert_checkerror.bin). Only the SET of
-            # paths is captured (see MACRO_BIN_MANIFEST_KEY below) -- cheap, and
-            # enough to catch a module's macros silently vanishing from the build.
+            # modules/assert/macros/assert/assert_checkerror.bin). PATH and CONTENT
+            # are both captured (see MACRO_BIN_MANIFEST_KEY above) -- catches both a
+            # module's macros silently vanishing from the build AND a .bin present
+            # at the right path with the wrong bytes.
             for fn in files:
                 if fn.endswith(".bin"):
-                    rel = os.path.relpath(os.path.join(root, fn), build_dir)
-                    macro_bins.append(rel.replace(os.sep, "/"))
+                    p = os.path.join(root, fn)
+                    rel = os.path.relpath(p, build_dir).replace(os.sep, "/")
+                    # BINARY read -- .bin files are serialized ASTs, not text. (The
+                    # text readers elsewhere in this file pin encoding="utf-8"; that
+                    # is the wrong tool here and would corrupt the hash.)
+                    with open(p, "rb") as f:
+                        macro_bins.append(rel + "\0" + hashlib.sha256(f.read()).hexdigest())
         elif "/modules/" in posix_root + "/" and posix_root.endswith("/jar"):
             # modules/<m>/jar/*.jar — the Ant-built module jars. Content manifest
             # (fingerprint_jar), NOT byte hash: jars embed timestamps + non-det zip

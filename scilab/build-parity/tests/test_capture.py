@@ -306,6 +306,45 @@ def test_macro_bin_manifest_changes_when_a_bin_file_goes_missing(tmp_path):
     assert full_hash != reduced_hash
 
 
+def test_macro_bin_manifest_changes_when_a_bin_file_CONTENT_changes(tmp_path):
+    """RC-d: the manifest gates CONTENT, not just presence.
+
+    Before RC-d this hashed a sorted path list, so a .bin present at the right
+    path with wrong bytes was invisible -- precisely the failure a migration of
+    the macro compiler risks. The .bin output is deterministic (measured: two
+    independent full rebuilds, 0 of 3516 files differing), so content hashing is
+    strict rather than flaky.
+    """
+    from parity.capture import fingerprint_build, MACRO_BIN_MANIFEST_KEY
+    mac = tmp_path / "modules" / "core" / "macros"
+    mac.mkdir(parents=True)
+    (tmp_path / ".libs").mkdir()
+    bin_file = mac / "who_user.bin"
+
+    bin_file.write_bytes(b"AST-BYTES-ONE")
+    before = fingerprint_build(str(tmp_path), {}, build_id="b")["generated"][MACRO_BIN_MANIFEST_KEY]
+
+    bin_file.write_bytes(b"AST-BYTES-TWO")   # same path, different bytes
+    after = fingerprint_build(str(tmp_path), {}, build_id="b")["generated"][MACRO_BIN_MANIFEST_KEY]
+
+    assert before != after, "a .bin's content changed but the manifest hash did not"
+
+
+def test_macro_bin_manifest_still_changes_when_a_bin_goes_missing(tmp_path):
+    """The presence property the old gate had must NOT regress -- strengthening a
+    gate should be strictly additive."""
+    from parity.capture import fingerprint_build, MACRO_BIN_MANIFEST_KEY
+    mac = tmp_path / "modules" / "core" / "macros"
+    mac.mkdir(parents=True)
+    (tmp_path / ".libs").mkdir()
+    (mac / "a.bin").write_bytes(b"x")
+    (mac / "b.bin").write_bytes(b"y")
+    before = fingerprint_build(str(tmp_path), {}, build_id="b")["generated"][MACRO_BIN_MANIFEST_KEY]
+    (mac / "b.bin").unlink()
+    after = fingerprint_build(str(tmp_path), {}, build_id="b")["generated"][MACRO_BIN_MANIFEST_KEY]
+    assert before != after, "a .bin vanished but the manifest hash did not change"
+
+
 def test_macro_bin_manifest_ignores_bin_files_outside_a_macros_dir(tmp_path):
     # Real trees have a handful of unrelated .bin files (e.g. .atoms/toremove.bin,
     # JCEF's v8_context_snapshot.arm64.bin) that are not compiled macros and must
