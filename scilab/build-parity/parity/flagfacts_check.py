@@ -69,7 +69,10 @@ INVARIANT = {"min_macos": "11.0"}
 def expected_for(rel_path, suffix_lang, derived):
     """The expected facts for one TU: its derived override if it has one, else the
     derived tree-wide default for its language, plus the CMake-side invariant."""
-    facts = derived["overrides"].get(rel_path) or derived["defaults"].get(suffix_lang)
+    if rel_path in derived["overrides"]:
+        facts = derived["overrides"][rel_path]
+    else:
+        facts = derived["defaults"].get(suffix_lang)
     if facts is None:
         return None
     return {**{k: facts[k] for k in DERIVED_KEYS if k in facts}, **INVARIANT}

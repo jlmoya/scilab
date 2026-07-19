@@ -18,7 +18,13 @@
 # itself compiles NO Fortran, so CMake's implicit Fortran runtime never fires
 # and both are pinned explicitly), xml2/z/icucore + `-ljli` (through jvm).
 # All spelled explicitly below: MODULE_DEPS for the five sibling targets +
-# absolute keg paths / raw flags for the externals.
+# absolute keg paths / raw flags for the externals. omp is a SYSTEM_LIBS
+# absolute path (like klu/amd/umfpack), NOT FIND_PACKAGES OpenMP: xcos's own
+# Makefile.am has ZERO omp/OPENMP references (verified) — it is CXX-only with
+# no compile-flag need at all, and FIND_PACKAGES OpenMP would put -fopenmp on
+# every one of its C++ TUs via OpenMP::OpenMP_CXX's INTERFACE_COMPILE_OPTIONS.
+# SYSTEM_LIBS' absolute path gets the identical linked dep with no compile-
+# side effect (byte-identical otool -L, verified).
 #
 # THE JDK DEP records as `@rpath/libjli.dylib` with NO JDK LC_RPATH (the
 # -Wl,-rpath inside JAVA_JNI_LIBS is dropped by libtool's dependency_libs
@@ -94,12 +100,12 @@ scilab_module(xcos
     /opt/homebrew/opt/suite-sparse/lib/libklu.dylib
     /opt/homebrew/opt/suite-sparse/lib/libamd.dylib
     /opt/homebrew/opt/suite-sparse/lib/libumfpack.dylib
+    /opt/homebrew/opt/libomp/lib/libomp.dylib
     /opt/homebrew/opt/gcc/lib/gcc/current/libgfortran.dylib
     /opt/homebrew/opt/gcc/lib/gcc/current/libquadmath.dylib
     xml2 z icucore
     "-L${SCILAB_JAVA_HOME}/lib" jli
     /opt/homebrew/opt/libarchive/lib/libarchive.dylib
-  FIND_PACKAGES OpenMP
   EXTRA_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/jni
     ${SCILAB_SOURCE_DIR}/modules/scicos/includes

@@ -21,10 +21,32 @@
 #                                  # reexports additionally record the sub-framework
 #                                  # load command (Cocoa -> + CoreFoundation),
 #                                  # matching libtool's link exactly.
-#     [FIND_PACKAGES <pkg>...]     # CMake-resolved external deps (e.g. OpenMP)
+#     [FIND_PACKAGES <pkg>...]     # CMake-resolved external deps whose compile flags
+#                                  # this module's OWN TUs need (currently: OpenMP —
+#                                  # links OpenMP::OpenMP_C, plus OpenMP::OpenMP_CXX
+#                                  # when CXX is in LANG, reaching every C/C++ TU this
+#                                  # call compiles, ALGO_SOURCES included). A module
+#                                  # that needs libomp only on its LINK line — e.g. it
+#                                  # rides in transitively through a sibling .la's
+#                                  # dependency_libs, autotools never puts -fopenmp on
+#                                  # THIS module's own compile lines — must NOT use
+#                                  # FIND_PACKAGES OpenMP (its INTERFACE_COMPILE_OPTIONS
+#                                  # would leak onto every TU here, verified: even
+#                                  # $<LINK_ONLY:...> does not suppress this for a
+#                                  # direct consumer); use SYSTEM_LIBS' absolute-path
+#                                  # form instead (the libomp pattern below — see
+#                                  # scicos/xcos's CMakeLists.txt for the worked case).
 #     [MODULE_DEPS <target>...]    # sibling scilab_module targets (sci<dep>): orders
 #                                  # the build + records the sibling install_name
 #     [EXTRA_INCLUDES <dir>...]    # include dirs beyond SCILAB_DEFAULT_INCLUDES
+#     [C_FLAGS_OVERRIDE <flag>...] # REPLACE the C compile flags (_cflags) for THIS
+#                                  # scilab_module() call's C TUs (ALGO_SOURCES +
+#                                  # any C files directly in GATEWAY_SOURCES) —
+#                                  # the gateway-dylib sibling of
+#                                  # scilab_object_module()'s same-named keyword
+#                                  # (see its doc below for the automake
+#                                  # `_la_CFLAGS`-replaces-AM_CFLAGS footgun this
+#                                  # reproduces). C++/Fortran TUs are unaffected.
 #     [CLASS ENGINE_LIBS|DYNAMIC_LOAD|GUI_LIBS]  # linking class per modules/Makefile.am
 #                                  # (declarative metadata; all classes drop in
 #                                  # relink-free — see the exemplar rationale.
@@ -212,7 +234,7 @@ endfunction()
 
 function(scilab_module NAME)
   cmake_parse_arguments(M "" "CLASS;SYMBOLS"
-    "ALGO_SOURCES;GATEWAY_SOURCES;LANG;SYSTEM_LIBS;FIND_PACKAGES;MODULE_DEPS;EXTRA_INCLUDES;FRAMEWORKS" ${ARGN})
+    "ALGO_SOURCES;GATEWAY_SOURCES;LANG;SYSTEM_LIBS;FIND_PACKAGES;MODULE_DEPS;EXTRA_INCLUDES;FRAMEWORKS;C_FLAGS_OVERRIDE" ${ARGN})
   if(M_UNPARSED_ARGUMENTS)
     message(FATAL_ERROR "scilab_module(${NAME}): unparsed arguments: ${M_UNPARSED_ARGUMENTS}")
   endif()
@@ -229,8 +251,45 @@ function(scilab_module NAME)
   # scilab_object_module — see _scilab_module_flag_env).
   _scilab_module_flag_env()
 
+  # C_FLAGS_OVERRIDE: reproduce the automake per-target `_la_CFLAGS`-replaces-
+  # AM_CFLAGS footgun for a gateway module whose OWN library sets an explicit/
+  # empty _CFLAGS (see scilab_object_module's header comment for the full
+  # story). REPLACES _cflags wholesale for every C TU this scilab_module()
+  # call compiles — both ALGO_SOURCES (via _scilab_module_apply on
+  # sci<name>-algo below) and any C files sitting directly in GATEWAY_SOURCES
+  # (via _scilab_module_apply on sci<name>) — since both read _cflags by
+  # dynamic scoping. DEFINED (not truthiness) so an explicit empty override is
+  # honored. C++/Fortran flags untouched.
+  if(DEFINED M_C_FLAGS_OVERRIDE)
+    set(_cflags ${M_C_FLAGS_OVERRIDE})
+  endif()
+
   # --- find_package deps (e.g. OpenMP) ---
+  # FIND_PACKAGES OpenMP means "this module's OWN compile lines carry
+  # -fopenmp", i.e. autotools applies $(OPENMP_CFLAGS)/$(OPENMP_CXXFLAGS) on
+  # ITS OWN la_CFLAGS/la_CXXFLAGS (differential_equations and parallel are the
+  # only two modules where that is true — verified against their Makefile.am).
+  # A module that needs libomp on its LINK line ONLY because a sibling .la's
+  # dependency_libs drags it in transitively (scicos, xcos: both link
+  # libscisundials.la, whose dependency_libs carries -lomp; their OWN
+  # Makefile.am has ZERO omp/OPENMP references, verified) must NOT go through
+  # here: target_link_libraries(... OpenMP::OpenMP_C) applies its
+  # INTERFACE_COMPILE_OPTIONS to every TU the CONSUMING target compiles, with
+  # no way to keep the link but drop the compile flag for one target's own
+  # direct sources (verified empirically — $<LINK_ONLY:...> does NOT suppress
+  # this for a direct consumer; it only affects propagation to that
+  # consumer's OWN downstream consumers). Those modules instead add the
+  # resolved absolute dylib path straight to SYSTEM_LIBS — see scicos/xcos's
+  # CMakeLists.txt — the same "absolute keg path" shape already used there for
+  # klu/amd/umfpack (also transitively-relinked through libscisundials.la).
   set(_link_libs "")
+  # The subset of _link_libs that must ALSO reach an ALGO_SOURCES OBJECT lib's
+  # OWN compilation: $<TARGET_OBJECTS:...> (below) only pulls compiled .o's
+  # into the consuming target, never usage requirements, so a module whose
+  # ALGO_SOURCES need -fopenmp (differential_equations) must link these onto
+  # sci<name>-algo directly — the main target's target_link_libraries call
+  # never reaches an OBJECT lib it merely consumes objects from.
+  set(_openmp_compile_libs "")
   foreach(pkg IN LISTS M_FIND_PACKAGES)
     if(pkg STREQUAL "OpenMP")
       # Apple clang ships no libomp: default to the Homebrew keg (an explicit
@@ -238,12 +297,23 @@ function(scilab_module NAME)
       # imported target records the dep at libomp's ABSOLUTE install_name —
       # /opt/homebrew/opt/libomp/lib/libomp.dylib — exactly what autotools'
       # -lomp recorded (NOT an @rpath form), and contributes the compile flag
-      # (the harness's openmp=True fact).
+      # (the harness's openmp=True fact) to every C TU this target compiles
+      # directly. OpenMP::OpenMP_CXX joins it — same dylib, verified no
+      # duplicate otool -L entry from linking both — whenever the module also
+      # has C++ sources autotools compiles with $(OPENMP_CXXFLAGS) (LANG CXX
+      # present): differential_equations is the only current module where
+      # that holds; parallel/sundials are LANG C only, so this is a no-op for
+      # them (unchanged behavior).
       if(NOT DEFINED OpenMP_ROOT AND NOT DEFINED ENV{OpenMP_ROOT})
         set(OpenMP_ROOT /opt/homebrew/opt/libomp)
       endif()
       find_package(OpenMP REQUIRED COMPONENTS C CXX)
       list(APPEND _link_libs OpenMP::OpenMP_C)
+      list(APPEND _openmp_compile_libs OpenMP::OpenMP_C)
+      if("CXX" IN_LIST M_LANG)
+        list(APPEND _link_libs OpenMP::OpenMP_CXX)
+        list(APPEND _openmp_compile_libs OpenMP::OpenMP_CXX)
+      endif()
     else()
       # Fail loudly rather than find_package()-and-drop: a bare find_package
       # here would locate the package but never link its imported target (the
@@ -265,6 +335,12 @@ function(scilab_module NAME)
   if(M_ALGO_SOURCES)
     add_library(sci${NAME}-algo OBJECT ${M_ALGO_SOURCES})
     _scilab_module_apply(sci${NAME}-algo)
+    if(_openmp_compile_libs)
+      # See _openmp_compile_libs' definition above: this OBJECT lib's own
+      # compilation needs OpenMP linked directly onto IT, not just onto the
+      # main target that later consumes its $<TARGET_OBJECTS:...>.
+      target_link_libraries(sci${NAME}-algo PRIVATE ${_openmp_compile_libs})
+    endif()
     set(_algo_obj $<TARGET_OBJECTS:sci${NAME}-algo>)
   endif()
 

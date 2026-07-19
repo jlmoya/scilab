@@ -32,6 +32,17 @@ scilab_module(history_browser
     src/jni/CommandHistory.cpp
     src/cpp/CommandHistory_Wrap.cpp
   LANG CXX C
+  # REPRODUCES the automake _CFLAGS footgun (Makefile.am:50 sets
+  # libscihistory_browser_la_CFLAGS to empty, which REPLACES $(AM_CFLAGS)
+  # wholesale) -- sci_browsehistory.c (this call's only C TU) compiles with
+  # none of SCI_CFLAGS, only $(CC)'s own -std=gnu23. The CommandHistory.cpp/
+  # CommandHistory_Wrap.cpp C++ sources are unaffected (no _CXXFLAGS override
+  # exists) and the history_browser-disable stub below is a SEPARATE library
+  # with no _CFLAGS of its own -- verified against the baseline: only
+  # sci_browsehistory.c carries an opt/wrapv/std override, not
+  # CommandHistory_Wrap_Fake.c. Reproduce, do not improve: restoring
+  # -O2 -fwrapv here is a separate stage.
+  C_FLAGS_OVERRIDE -std=gnu23
   EXTRA_INCLUDES
     /Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/include
     /Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/include/darwin

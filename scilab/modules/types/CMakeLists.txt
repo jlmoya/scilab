@@ -47,6 +47,14 @@ scilab_module(types-java
     src/jni/ScilabVariablesRefresh.cpp
     src/jni/ScilabPolynomialToJava.cpp
   LANG C CXX
+  # REPRODUCES the automake _CFLAGS footgun (Makefile.am:50-58 sets
+  # libscitypes_java_la_CFLAGS to a bare -I list, which REPLACES $(AM_CFLAGS)
+  # wholesale -- the parameters/windows_tools/string precedent) --
+  # getScilabVariable_wrap.c (this call's only C TU) compiles with none of
+  # SCI_CFLAGS, only $(CC)'s own -std=gnu23. The other 4 GATEWAY_SOURCES are
+  # C++ (untouched; no _CXXFLAGS override exists). Reproduce, do not improve:
+  # restoring -O2 -fwrapv here is a separate stage.
+  C_FLAGS_OVERRIDE -std=gnu23
   MODULE_DEPS scicommons scijvm
   SYSTEM_LIBS xml2 z icucore "-L${SCILAB_JAVA_HOME}/lib" jli
   EXTRA_INCLUDES

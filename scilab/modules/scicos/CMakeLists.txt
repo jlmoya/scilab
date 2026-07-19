@@ -25,7 +25,7 @@
 #   /opt/homebrew/opt/libarchive/lib/libarchive.13.dylib     (LIBARCHIVE_LIBS)
 #   /usr/local/lib/scilab/libscisundials.2027.dylib          (MODULE_DEPS)
 #   /opt/homebrew/opt/suite-sparse/lib/lib{klu.2,amd.3,umfpack.6}.dylib
-#   /opt/homebrew/opt/libomp/lib/libomp.dylib                (FIND_PACKAGES)
+#   /opt/homebrew/opt/libomp/lib/libomp.dylib                (SYSTEM_LIBS, link-only)
 #   /usr/local/lib/scilab/libsciscicos_blocks.2027.dylib     (main)
 #     — or libsciscicos_blocks-cli.2027.dylib                (-cli)
 #   libgfortran.5 + libquadmath.0 (Fortran TUs -> implicit runtime)
@@ -35,10 +35,18 @@
 # $(LIBXML_LIBS) — an UNDEFINED automake variable on this tree (config.status
 # has no S["LIBXML_LIBS"]; the real xml variable is XML_LIBS) -> empty, which
 # is exactly why the baseline records NO xml2/z/icucore for scicos. The
-# klu/amd/umfpack/omp deps ride in transitively through libscisundials.la's
-# dependency_libs; CMake target links do not propagate a sibling's PRIVATE
-# deps, so they are spelled explicitly (absolute keg paths, the matio
-# pattern). $(LIBARCHIVE_LIBS) = `-larchive -ldl` (-ldl folds into libSystem).
+# klu/amd/umfpack/omp deps ALL ride in transitively through
+# libscisundials.la's dependency_libs — scicos's OWN Makefile.am has ZERO
+# klu/amd/umfpack/omp/OPENMP references (verified); CMake target links do not
+# propagate a sibling's PRIVATE deps, so they are spelled explicitly (absolute
+# keg paths, the matio pattern) in SYSTEM_LIBS below, NOT via FIND_PACKAGES
+# OpenMP: that macro links the OpenMP::OpenMP_C/_CXX imported targets, whose
+# INTERFACE_COMPILE_OPTIONS would put -fopenmp on scicos's own 5 C gateway
+# TUs (sci_ftree2/3/4.c, sci_loadScicos.c, sci_sctree.c) even though autotools
+# never does — verified against the baseline flag-facts (0 openmp overrides
+# anywhere under modules/scicos/). SYSTEM_LIBS' absolute path gets the
+# identical linked dep (byte-identical otool -L, verified) with no compile-
+# side effect. $(LIBARCHIVE_LIBS) = `-larchive -ldl` (-ldl folds into libSystem).
 #
 # INCLUDES: EXTRA_INCLUDES = libsciscicos_algo_la_CPPFLAGS (XCOS branch)
 # beyond the helper base — the patched_sundials set, the module-dir set,
@@ -139,7 +147,7 @@ scilab_module(scicos
     /opt/homebrew/opt/suite-sparse/lib/libklu.dylib
     /opt/homebrew/opt/suite-sparse/lib/libamd.dylib
     /opt/homebrew/opt/suite-sparse/lib/libumfpack.dylib
-  FIND_PACKAGES OpenMP
+    /opt/homebrew/opt/libomp/lib/libomp.dylib
   EXTRA_INCLUDES
     ${SCILAB_SOURCE_DIR}/modules/differential_equations/src/patched_sundials/include
     ${SCILAB_SOURCE_DIR}/modules/differential_equations/src/patched_sundials/include/sundials
@@ -208,7 +216,7 @@ scilab_module(scicos-cli
     /opt/homebrew/opt/suite-sparse/lib/libklu.dylib
     /opt/homebrew/opt/suite-sparse/lib/libamd.dylib
     /opt/homebrew/opt/suite-sparse/lib/libumfpack.dylib
-  FIND_PACKAGES OpenMP
+    /opt/homebrew/opt/libomp/lib/libomp.dylib
   EXTRA_INCLUDES
     ${SCILAB_SOURCE_DIR}/modules/differential_equations/src/patched_sundials/include
     ${SCILAB_SOURCE_DIR}/modules/differential_equations/src/patched_sundials/include/sundials

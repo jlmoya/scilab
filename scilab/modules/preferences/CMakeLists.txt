@@ -40,6 +40,16 @@ scilab_module(preferences
     sci_gateway/cpp/preferences_gw.cpp
     src/jni/ScilabPreferences.cpp
   LANG C CXX
+  # REPRODUCES the automake _CFLAGS footgun (Makefile.am:120 sets
+  # libscipreferences_algo_la_CFLAGS = $(libscipreferences_la_CFLAGS), and
+  # libscipreferences_la_CFLAGS is NEVER assigned anywhere in this file --
+  # expands empty, which REPLACES $(AM_CFLAGS) wholesale) -- getScilabPreference.c
+  # (the algo object's only TU) compiles with none of SCI_CFLAGS, only $(CC)'s
+  # own -std=gnu23. The GATEWAY_SOURCES are all C++ (untouched; no _CXXFLAGS
+  # override exists) and preferences-cli below reuses this same compiled
+  # object via TARGET_OBJECTS rather than recompiling it. Reproduce, do not
+  # improve: restoring -O2 -fwrapv here is a separate stage.
+  C_FLAGS_OVERRIDE -std=gnu23
   SYSTEM_LIBS xml2 z icucore
   EXTRA_INCLUDES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/jni

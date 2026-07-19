@@ -323,7 +323,7 @@ _REAL_SOURCE_ROOT = os.path.join(BUILD_PARITY, "..")
 def test_no_compiled_tu_goes_unchecked_on_the_real_tree():
     assert unchecked_suffixes(_REAL_CC, _real_derived(), _REAL_SOURCE_ROOT) == []
 
-# The KNOWN, TRACKED shape of red on today's tree (RC-b Task 3, 2026-07-18): 3
+# The KNOWN, TRACKED shape of red on the tree (RC-b Task 3, 2026-07-18): 3
 # files from the automake _CFLAGS-replaces-AM_CFLAGS footgun (opt/wrapv/ndebug
 # mismatches -- history_browser, preferences, types) + 47 files from a CMake
 # OpenMP-linking-scope bug in cmake/ScilabModule.cmake's FIND_PACKAGES OpenMP
@@ -337,68 +337,29 @@ def test_no_compiled_tu_goes_unchecked_on_the_real_tree():
 # generated Makefiles on both sides, bidirectional and codegen-neutral (only
 # patched_sundials' nvector_openmp.c carries an actual #pragma omp among the
 # whole differential_equations/scicos family, and CMake already flags THAT one
-# correctly). Both classes are REPRODUCE-not-improve bugs (CMake not matching
-# autotools), so BOTH are Task 4's to close, not Task 3's -- Task 3's job was
-# making this gate DERIVE its expectations and correctly FAIL, which it does.
+# correctly). Both classes were REPRODUCE-not-improve bugs (CMake not matching
+# autotools) -- Task 3's job was making this gate DERIVE its expectations and
+# correctly FAIL, which it did; Task 4 (2026-07-18) closed all 50: the 3
+# footgunned modules now carry C_FLAGS_OVERRIDE (the scilab_object_module()
+# mechanism, extended to scilab_module()); differential_equations now links
+# OpenMP::OpenMP_CXX too (whenever CXX is in LANG) and propagates it onto its
+# ALGO_SOURCES OBJECT lib directly (target_link_libraries reaches an OBJECT
+# lib's OWN TUs, but $<TARGET_OBJECTS:...> consumption does not); scicos/
+# scicos-cli/xcos dropped FIND_PACKAGES OpenMP entirely and instead add
+# libomp's resolved absolute path straight to SYSTEM_LIBS (the pre-existing
+# klu/amd/umfpack "matio pattern" in those same files) -- link-only, verified
+# byte-identical otool -L dep sets before/after (libomp merely moved link-line
+# position, and the harness sorts deps before comparing) with zero compile-
+# side effect.
 #
 # This set exists so a reader hitting rc=1 later can tell "this is the known,
-# tracked state" from "something new broke": if Task 4 narrows it, THIS test
+# tracked state" from "something new broke": if a future change narrows it
+# further (there is nothing left to narrow today -- it is empty), THIS test
 # goes red and must be updated to the smaller set (a welcome failure to fix);
 # if the set grows or changes shape instead, that is a real new regression --
 # investigate before touching this list, the same discipline Task 3 itself
 # was asked to apply to Step 3's expected file list.
-_KNOWN_DIVERGENT_FILES = frozenset({
-    "modules/differential_equations/sci_gateway/cpp/differential_equations_gw.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_arkode.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_bvode.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_cvode.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_daskr.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_dasrt.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_dassl.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_feval.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_ida.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_impl.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_int2d.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_int3d.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_intg.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_kinsol.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_ode.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_odedc.cpp",
-    "modules/differential_equations/sci_gateway/cpp/sci_percent_odeSolution.cpp",
-    "modules/differential_equations/src/c/Ex-daskr.c",
-    "modules/differential_equations/src/c/Ex-ode.c",
-    "modules/differential_equations/src/c/Ex-odedc.c",
-    "modules/differential_equations/src/c/arnol.c",
-    "modules/differential_equations/src/c/colnewmsgs.c",
-    "modules/differential_equations/src/c/dassl.c",
-    "modules/differential_equations/src/c/errmds.c",
-    "modules/differential_equations/src/c/externals_for_tests.c",
-    "modules/differential_equations/src/c/feval.c",
-    "modules/differential_equations/src/c/rk4.c",
-    "modules/differential_equations/src/cpp/ARKODEManager.cpp",
-    "modules/differential_equations/src/cpp/CVODEManager.cpp",
-    "modules/differential_equations/src/cpp/IDAManager.cpp",
-    "modules/differential_equations/src/cpp/KINSOLManager.cpp",
-    "modules/differential_equations/src/cpp/OdeManagerCompute.cpp",
-    "modules/differential_equations/src/cpp/OdeManagerHelpers.cpp",
-    "modules/differential_equations/src/cpp/OdeManagerInit.cpp",
-    "modules/differential_equations/src/cpp/OdeManagerParse.cpp",
-    "modules/differential_equations/src/cpp/OdeManagerSolve.cpp",
-    "modules/differential_equations/src/cpp/SUNDIALSManager.cpp",
-    "modules/differential_equations/src/cpp/checkodeerror.cpp",
-    "modules/differential_equations/src/cpp/complexHelpers.cpp",
-    "modules/differential_equations/src/cpp/differentialequationfunctions.cpp",
-    "modules/differential_equations/src/cpp/odeparameters.cpp",
-    "modules/differential_equations/src/cpp/scifunctions.cpp",
-    "modules/history_browser/sci_gateway/c/sci_browsehistory.c",
-    "modules/preferences/src/c/getScilabPreference.c",
-    "modules/scicos/sci_gateway/c/sci_ftree2.c",
-    "modules/scicos/sci_gateway/c/sci_ftree3.c",
-    "modules/scicos/sci_gateway/c/sci_ftree4.c",
-    "modules/scicos/sci_gateway/c/sci_loadScicos.c",
-    "modules/scicos/sci_gateway/c/sci_sctree.c",
-    "modules/types/src/jni/getScilabVariable_wrap.c",
-})
+_KNOWN_DIVERGENT_FILES = frozenset()
 
 @pytest.mark.skipif(not os.path.exists(_REAL_CC),
                     reason="requires a built build-cmake/compile_commands.json")
@@ -408,6 +369,6 @@ def test_real_tree_divergence_is_exactly_the_known_tracked_set():
     assert got == _KNOWN_DIVERGENT_FILES, (
         f"new: {sorted(got - _KNOWN_DIVERGENT_FILES)}\n"
         f"resolved: {sorted(_KNOWN_DIVERGENT_FILES - got)}\n"
-        "If Task 4 fixed some of these, shrink _KNOWN_DIVERGENT_FILES to match "
-        "(a welcome update). If files not in this set appear instead, investigate "
-        "before editing it -- that is a real new regression, not table drift.")
+        "The tracked set is empty (Task 4 closed all 50). If files appear here, "
+        "investigate before editing this list -- that is a real new regression, "
+        "not table drift.")

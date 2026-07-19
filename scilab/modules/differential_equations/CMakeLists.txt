@@ -40,8 +40,15 @@
 # Reproduced as ABSOLUTE keg paths in SYSTEM_LIBS (the matio pattern — the
 # recorded dep is each file's install_name, identical to what -l resolution
 # recorded) + FIND_PACKAGES OpenMP (records libomp's absolute install_name and
-# contributes the OpenMP compile flag to C TUs, the parallel pattern; the
-# baseline compiled with OPENMP_CFLAGS/CXXFLAGS = `-Xpreprocessor -fopenmp`).
+# contributes -fopenmp to every C AND C++ TU this module compiles directly:
+# ScilabModule.cmake links OpenMP::OpenMP_CXX too whenever CXX is in LANG,
+# reaching the sci_gateway/cpp/*.cpp gateways, and — via the same mechanism —
+# to the sci<name>-algo OBJECT lib's own compilation, reaching the ALGO C/C++
+# sources $<TARGET_OBJECTS:...> alone would not: colnewmsgs.c..externals_for_
+# tests.c and scifunctions.cpp..complexHelpers.cpp. The baseline compiled with
+# OPENMP_CFLAGS/CXXFLAGS = `-Xpreprocessor -fopenmp` on ALL of the above,
+# verified against the derived per-TU flag facts. parallel is LANG C only, so
+# it only ever needed the C half of this).
 #
 # INCLUDES: sundials' la_CPPFLAGS is a standalone 15-dir list (no
 # AM_CPPFLAGS!); `#include <suitesparse/klu.h>` resolved through the GLOBAL
