@@ -97,8 +97,32 @@ else()
 endif()
 
 # GUI_ENABLE (configure.ac:1566-1576) = yes if JAVA_ENABLE!=no OR with_gui!=no.
-# WITH_GUI (ScilabMachineHeader.cmake, RC-a, "With the JAVA stuff (GUI, Console,
-# JOGL...)") IS this driver's with_gui policy.
+#
+# HONEST DISCLOSURE: in THIS driver GUI_ENABLE is STRUCTURALLY always "yes", and
+# the "OR WITH_GUI" clause below is dead -- it is never the deciding term, because
+# JAVA_ENABLE alone already satisfies the OR (see the JAVA_ENABLE comment above:
+# a JDK is mandatory here, not merely on-by-default). Upstream's JAVA_ENABLE=no
+# branch IS reachable -- autoconf treats Java as optional (--without-jdk) -- so
+# configure's OR genuinely has two live arms; this driver's toolchain FATAL_ERRORs
+# before project() runs if no usable JDK exists, so only one arm is ever live
+# here. WITH_GUI (ScilabMachineHeader.cmake, RC-a option, default ON) is a real
+# cache variable, but no CMake option currently makes WITH_GUI=OFF skip anything
+# downstream -- it is consumed nowhere else in the build -- so this clause has
+# never been exercised as an actual switch. The condition is kept in this
+# OR-shaped form only to mirror configure.ac's own formula for traceability, not
+# because WITH_GUI does any work. (Making GUI_ENABLE track WITH_GUI directly
+# would DIVERGE from configure in a configuration -- with_gui=no, Java found --
+# this coexistence-stage driver cannot test; that is an "improve", not a
+# "reproduce", and does not belong here.)
+#
+# FORWARD HAZARD: etc/modules.xml therefore ALWAYS activates the 9 modules keyed
+# on @GUI_ENABLE@ (gui, graphic_objects, scinotes, ui_data, terminal) or on the
+# DEMOTOOLS_ENABLE/GRAPHICS_ENABLE cascade below (demo_tools, graphics, renderer,
+# graphic_export) regardless of WITH_GUI's value, TODAY. The moment a future
+# stage wires WITH_GUI=OFF to actually skip BUILDING the GUI-side jars, this
+# generated file will still tell the runtime to activate those 9 modules --
+# producing a ClassNotFoundException, not a clean headless configuration.
+# Whoever makes WITH_GUI load-bearing MUST revisit this block (and the cascade).
 if(JAVA_ENABLE STREQUAL "yes" OR WITH_GUI)
   set(GUI_ENABLE "yes")
 else()
@@ -130,7 +154,13 @@ else()
 endif()
 
 # DEMOTOOLS_ENABLE / GRAPHICS_ENABLE (configure.ac:2236-2242, :2248-2254) both
-# = yes unless GUI_ENABLE=no.
+# = yes unless GUI_ENABLE=no. Same honest disclosure as GUI_ENABLE above, one
+# level down the cascade: since GUI_ENABLE is structurally always "yes" here,
+# so are these two -- demo_tools (@DEMOTOOLS_ENABLE@) and graphics/renderer/
+# graphic_export (@GRAPHICS_ENABLE@) activate unconditionally today, and the
+# SAME forward hazard applies transitively (see GUI_ENABLE's comment for the
+# full 9-module list and the ClassNotFoundException risk once WITH_GUI becomes
+# load-bearing) -- nothing further to add here, this is not an independent gate.
 if(GUI_ENABLE STREQUAL "yes")
   set(DEMOTOOLS_ENABLE "yes")
 else()

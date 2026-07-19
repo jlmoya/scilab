@@ -66,7 +66,12 @@ def _subprocess_runner(cmd):
 
 def _file_reader(path):
     try:
-        with open(path, "r", errors="replace") as f:
+        # encoding="utf-8" is load-bearing, not decorative: without it, Python
+        # decodes with the CAPTURING PROCESS's locale-preferred codec (LANG=C or
+        # any non-UTF-8-locale machine/container gets ascii/latin-1), which is
+        # unrelated to the FILE's actual encoding. UTF-8 is the only codec these
+        # files are ever written in.
+        with open(path, "r", encoding="utf-8", errors="replace") as f:
             return f.read()
     except OSError:
         return None
@@ -304,7 +309,12 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     for rel in GENERATED_FILES:
         p = os.path.join(build_dir, rel)
         if os.path.exists(p):
-            with open(p, "r", errors="replace") as f:
+            # encoding="utf-8": see _file_reader's comment above -- two of these
+            # (scilab.properties, etc/Info.plist) embed non-ASCII bytes ("Dassault
+            # Systèmes", "©"), so an implicit locale-dependent decode here would
+            # hash differently on a non-UTF-8-locale machine than the committed
+            # baseline, a false PARITY FAILED against an unmodified tree.
+            with open(p, "r", encoding="utf-8", errors="replace") as f:
                 content = normalize_path(f.read(), roots)
             generated[rel] = hashlib.sha256(content.encode("utf-8", "replace")).hexdigest()
 

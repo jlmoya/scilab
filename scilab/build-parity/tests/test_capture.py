@@ -1,3 +1,5 @@
+import hashlib
+import locale
 import os
 import re
 
@@ -331,3 +333,84 @@ def test_fingerprint_build_flags_unknown_on_bare_tree(tmp_path):
     # shape): the flags block degrades to source=unknown, never a crash.
     fp = fingerprint_build(str(tmp_path), roots={}, runner=fake_runner_by_path({}), build_id="t")
     assert fp["flags"] == {"source": "unknown", "c": None, "cxx": None, "f": None}
+
+
+# --- Finding 1 (RC-c review): locale-independent hashing -------------------
+#
+# Both _file_reader and fingerprint_build's generated-file loop used to open
+# files with no explicit `encoding=`, so Python decoded with the CAPTURING
+# PROCESS's locale-preferred codec (locale.getpreferredencoding) rather than
+# the file's actual encoding. Every generated file this harness reads is
+# written in UTF-8; on a machine/container whose default locale is NOT UTF-8
+# (LANG=C, no C.UTF-8 fallback -- a bare debian-slim-style container, unlike
+# this repo's CI image which happens to escape via PEP 538 locale coercion),
+# any non-ASCII byte decoded differently, changing the hash against an
+# UNMODIFIED tree: a false "PARITY FAILED — generated file changed". Two real
+# files carry non-ASCII today -- scilab.properties ("Dassault Systèmes") and
+# etc/Info.plist ("© ... Dassault Systèmes") -- so this is not hypothetical.
+#
+# Both tests force the "C" locale (ASCII-range default codec) for the read and
+# assert the real UTF-8 bytes still come back correctly. Without
+# encoding="utf-8" pinned in capture.py, `errors="replace"` silently swaps
+# each non-ASCII byte for U+FFFD instead of raising, so these fail by
+# content/hash mismatch, not by exception.
+
+_NON_ASCII_LINE = "\t<string>Scilab 2027.0.0, © 2022-2026 Dassault Systèmes</string>\n"
+
+
+def _assert_c_locale_is_not_utf8():
+    # Sanity gate: if some future platform's "C" locale resolved to UTF-8, both
+    # tests below would pass vacuously (same codec on both sides of the
+    # comparison) without ever exercising the bug this pins. Belt-and-braces
+    # with the explicit forced read below, not a substitute for it.
+    assert locale.getpreferredencoding(False).lower() not in ("utf-8", "utf8"), (
+        "sanity: the C locale must select a non-UTF-8 default codec on this "
+        "platform, or this regression test cannot distinguish the fix from the bug")
+
+
+def test_file_reader_is_locale_independent(tmp_path):
+    # _file_reader (capture_flag_manifest's default reader, capture.py:67) --
+    # one of the two call sites Finding 1 named.
+    from parity.capture import _file_reader
+
+    path = os.path.join(str(tmp_path), "config.status")
+    # Written with an explicit codec regardless of the ambient locale, so the
+    # ON-DISK bytes are deterministic no matter what environment runs this test
+    # -- only the READ below is exercised under a forced non-UTF-8 default.
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(_NON_ASCII_LINE)
+
+    saved = locale.setlocale(locale.LC_ALL)
+    try:
+        locale.setlocale(locale.LC_ALL, "C")
+        _assert_c_locale_is_not_utf8()
+        result = _file_reader(path)
+    finally:
+        locale.setlocale(locale.LC_ALL, saved)   # process-global state; never leak into other tests
+
+    assert result == _NON_ASCII_LINE
+
+
+def test_generated_file_hash_is_locale_independent(tmp_path):
+    # fingerprint_build's GENERATED_FILES loop (capture.py:~307-312) -- the
+    # OTHER call site Finding 1 named, and the one the review reproduced
+    # end-to-end against the real scilab.properties / etc/Info.plist. Pinned
+    # against a hash computed independently (an explicit UTF-8 encode), not
+    # merely "two captures agree" -- a comparison a shared bug could still pass.
+    build_dir = str(tmp_path)
+    path = os.path.join(build_dir, "etc/classpath.xml")   # any GENERATED_FILES member
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(_NON_ASCII_LINE)
+
+    expected_hash = hashlib.sha256(_NON_ASCII_LINE.encode("utf-8", "replace")).hexdigest()
+
+    saved = locale.setlocale(locale.LC_ALL)
+    try:
+        locale.setlocale(locale.LC_ALL, "C")
+        _assert_c_locale_is_not_utf8()
+        fp = fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path({}), build_id="t")
+    finally:
+        locale.setlocale(locale.LC_ALL, saved)
+
+    assert fp["generated"]["etc/classpath.xml"] == expected_hash
