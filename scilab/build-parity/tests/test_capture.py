@@ -92,6 +92,33 @@ def test_fingerprint_build_walks_dylibs_executables_and_generated(tmp_path):
     assert list(fp["generated"].keys()) == ["etc/classpath.xml", MACRO_BIN_MANIFEST_KEY]
 
 
+def test_generated_files_covers_the_rc_c_inventory():
+    """The 9 configure-substituted files RC-c generates, plus Version.incl, plus the
+    3 that predate it. Pinned by exact set: this list IS the gate's coverage, and a
+    silent shrink is exactly the failure mode the campaign keeps rediscovering.
+
+    NOT here on purpose -- etc/classpath.xml is, but scilab-lib.properties and
+    scilab-lib-doc.properties are deferred to Stage 2 (Ant->Maven) along with the jar
+    -path search that feeds them; see the RC-c design doc S4.
+    """
+    from parity.capture import GENERATED_FILES
+    assert set(GENERATED_FILES) == {
+        "etc/classpath.xml",
+        "modules/core/includes/machine.h",
+        "modules/core/includes/version.h",
+        "build.incl.xml",
+        "scilab.pc",
+        "scilab.properties",
+        "etc/logging.properties",
+        "etc/modules.xml",
+        "etc/Info.plist",
+        "modules/helptools/etc/SciDocConf.xml",
+        "modules/atoms/etc/repositories",
+        "modules/atoms/tests/unit_tests/repositories.orig",
+        "Version.incl",
+    }
+
+
 def test_fingerprint_build_raises_on_dylib_key_collision(tmp_path):
     # Two different .libs dirs each holding a libz.2027.dylib (different fake
     # symbols -- these are genuinely different files, e.g. a stale artifact left

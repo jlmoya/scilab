@@ -12,10 +12,34 @@ from parity.fingerprint import (parse_nm, parse_otool_libs, parse_build_version,
                                 normalize_path, normalize_manifest, parse_defines)
 from parity.makeflags import makefile_tu_facts, LANG_BY_SUFFIX
 
+# Files config.status substitutes, byte-hashed after root normalization. The three
+# original entries plus RC-c's ten. Byte hash (not semantic) is right here: these are
+# scalar-substitution templates -- configure_file(@ONLY) reproduces autoconf's @VAR@
+# expansion exactly when the values match, which version.h proved. machine.h is the
+# exception that needed a semantic dimension, for a reason none of these share.
+#
+# Version.incl is NOT an AC_CONFIG_FILES entry -- it is written by a conditional shell
+# echo at configure.ac:2965 -- so an inventory built from config.status misses it
+# entirely, while build.incl.xml:154 stamps every jar's Specification-Version from it.
+#
+# scilab-lib.properties and scilab-lib-doc.properties are deliberately ABSENT: they and
+# etc/classpath.xml carry 115 of the inventory's 142 substitutions, all jar paths from
+# AC_JAVA_CHECK_JAR's filesystem search, and are consumed only by the Ant build that
+# Stage 2 replaces. (etc/classpath.xml predates RC-c and stays.) RC-c design doc S4.
 GENERATED_FILES = [
     "etc/classpath.xml",
     "modules/core/includes/machine.h",
     "modules/core/includes/version.h",
+    "build.incl.xml",
+    "scilab.pc",
+    "scilab.properties",
+    "etc/logging.properties",
+    "etc/modules.xml",
+    "etc/Info.plist",
+    "modules/helptools/etc/SciDocConf.xml",
+    "modules/atoms/etc/repositories",
+    "modules/atoms/tests/unit_tests/repositories.orig",
+    "Version.incl",
 ]
 
 # Key for the macro .bin *manifest* entry in the "generated" map (see
