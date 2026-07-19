@@ -42,6 +42,33 @@ GENERATED_FILES = [
     "Version.incl",
 ]
 
+# Where a GENERATED_FILES entry's CMake-written copy lives, for the handful of entries
+# NOT at the default build-cmake/generated/<rel> path the loop in fingerprint_build
+# assumes. Only version.h needs this: it lands in build-cmake/generated-includes/version.h
+# (a header-only directory, no modules/core/includes/ prefix), not build-cmake/generated/
+# modules/core/includes/version.h. machine.h sits in that SAME generated-includes/
+# directory and is deliberately left OUT of this map -- it already gets its own semantic
+# comparison (header_defines, further down) because CMake's machine.h is not
+# byte-identical to configure's, unlike version.h, which is (its generating stage proved
+# that), so the plain byte-hash mechanism applies directly. etc/classpath.xml has no
+# CMake counterpart at all yet (deferred to Stage 2) and is likewise absent. Mapped
+# explicitly, one entry at a time, rather than derived by some general rule (e.g.
+# "headers go to generated-includes/") -- there is no such rule, only per-file facts, and
+# a derived guess would silently mis-route the next file that does not fit the pattern.
+#
+# GENERALIZED LESSON -- this is the THIRD time this exact class of gap has been found
+# (machine.h, before header_defines existed to cover it; the ten RC-c files, before
+# generated_cmake existed at all; now version.h): the `generated` dict below ALWAYS
+# hashes configure's OWN copy of a file, on both the baseline and candidate side, no
+# matter which build produced the fingerprint -- it is structurally blind to anything
+# CMake writes. Any new CMake-generated artifact needs an explicit entry HERE (or, if it
+# is not byte-identical across generators, its own semantic dimension, machine.h's route)
+# or it is completely unguarded: a capture will happily hash a corrupted or stale CMake
+# output and never notice, exactly like this file's own history.
+_GENERATED_CMAKE_PATH_OVERRIDES = {
+    "modules/core/includes/version.h": os.path.join("generated-includes", "version.h"),
+}
+
 # Key for the macro .bin *manifest* entry in the "generated" map (see
 # _macro_bin_manifest_hash): presence of the SET of compiled macro files, not
 # their content -- if a Stage-1 CMake bootstrap misses a module, its .bin files
@@ -334,23 +361,25 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     # `generated_cmake` plus diff.py's matching block is what actually asserts "CMake wrote
     # what configure wrote".
     #
-    # Reuses GENERATED_FILES as the candidate path list rather than a second hardcoded one:
-    # the three pre-RC-c entries (etc/classpath.xml, machine.h, version.h) simply do not
-    # exist under build-cmake/generated/ -- machine.h and version.h resolve through
-    # build-cmake/generated-includes/ instead (machine.h already gets its own semantic
-    # dimension, header_defines, right below; version.h and etc/classpath.xml are out of
-    # scope for this fix) -- so they fall through the same `os.path.exists` guard as any
-    # other missing file and are silently absent here, exactly like a missing file above.
+    # Reuses GENERATED_FILES as the candidate path list rather than a second hardcoded one,
+    # resolving each entry against build-cmake/generated/<rel> UNLESS
+    # _GENERATED_CMAKE_PATH_OVERRIDES (defined above, by GENERATED_FILES) names a different
+    # path for it -- version.h's case, which lives under build-cmake/generated-includes/
+    # instead. etc/classpath.xml (no CMake counterpart, deferred to Stage 2) and machine.h
+    # (compared by header_defines instead, right below) have no override and no file at the
+    # default path, so they fall through the same `os.path.exists` guard as any other
+    # missing file and are silently absent here, exactly like a missing file above.
     #
     # Always present in the returned fingerprint, like header_defines below, even when
-    # build-cmake/generated/ does not exist at all (an autotools-only capture): an empty
-    # dict, never a missing key. That is load-bearing for the diff's transition rule -- it is
-    # the only way to tell "captured by an old capture.py, before this fix" (key truly
-    # absent) apart from "captured by this tool, found nothing" (key present, empty).
+    # build-cmake/ does not exist at all (an autotools-only capture): an empty dict, never a
+    # missing key. That is load-bearing for the diff's transition rule -- it is the only way
+    # to tell "captured by an old capture.py, before this fix" (key truly absent) apart from
+    # "captured by this tool, found nothing" (key present, empty).
     generated_cmake = {}
-    cmake_generated_dir = os.path.join(build_dir, "build-cmake", "generated")
+    cmake_root = os.path.join(build_dir, "build-cmake")
     for rel in GENERATED_FILES:
-        p = os.path.join(cmake_generated_dir, rel)
+        override = _GENERATED_CMAKE_PATH_OVERRIDES.get(rel)
+        p = os.path.join(cmake_root, override) if override else os.path.join(cmake_root, "generated", rel)
         if os.path.exists(p):
             with open(p, "r", encoding="utf-8", errors="replace") as f:
                 content = normalize_path(f.read(), roots)

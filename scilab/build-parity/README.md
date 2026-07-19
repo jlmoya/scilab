@@ -22,11 +22,15 @@ files (`scilab.pc`, `etc/Info.plist`, `etc/modules.xml`, `Version.incl`, and so 
 is `parity/capture.py`'s `GENERATED_FILES`) — **always hashed from the SOURCE TREE** (configure's
 own copies), on *both* sides of every comparison, never from anything CMake wrote; a manifest hash
 over every compiled macro `.bin` path (presence, not content — cheap, and enough to catch a
-module's macros silently vanishing from a build); and, separately, CMake's *own* copies of the ten
-RC-c files (`build-cmake/generated/`), checked against those same source-tree hashes — the only one
-of these that actually looks at what CMake wrote, rather than re-hashing configure's copy a second
-time (see `generated_cmake` in the table below; this is the fix for a real gap a final-review
-caught — corrupting `build-cmake/generated/` used to still report `PARITY OK`).
+module's macros silently vanishing from a build); and, separately, CMake's *own* copies of **eleven
+files across two directories** — the ten RC-c files (`build-cmake/generated/`) plus `version.h`
+(`build-cmake/generated-includes/`) — checked against those same source-tree hashes — the only
+comparison here that actually looks at what CMake wrote, rather than re-hashing configure's copy a
+second time (see `generated_cmake` in the table below; this is the fix for a real gap a final-review
+caught — corrupting `build-cmake/generated/` or `build-cmake/generated-includes/version.h` used to
+still report `PARITY OK`). `machine.h`, which lives in that same `generated-includes/` directory, is
+deliberately NOT part of `generated_cmake` — it is covered separately by the semantic
+`header_defines` dimension, because CMake's `machine.h` is not byte-identical to configure's.
 
 Plus the **compiler-flag manifest**: the effective per-language (C / C++ / Fortran) codegen facts —
 optimization level (last `-O<x>` wins), `-fwrapv`, `-mmacosx-version-min`, OpenMP, `-DNDEBUG`,
@@ -45,7 +49,7 @@ Eight dimensions are fingerprinted today:
 | `dylibs` | nm symbols (address-stripped) + otool deps + `LC_BUILD_VERSION` + `LC_RPATH` | Stage 0 / 1f-a |
 | `executables` | the same, for `scilab-bin` + `scilab-cli-bin` | Stage 1f-a |
 | `generated` | byte hashes of configure's OWN copies of all 13 generated files — always the SOURCE TREE, on both sides | Stage 0, grown 3→13 at RC-c |
-| `generated_cmake` | CMake's OWN copies of the ten RC-c files (`build-cmake/generated/`), byte-checked against `generated`'s baseline hashes — the actual CMake-vs-configure comparison | RC-c final-review fix |
+| `generated_cmake` | CMake's OWN copies of eleven files across two directories — the ten RC-c files (`build-cmake/generated/`) plus `version.h` (`build-cmake/generated-includes/`) — byte-checked against `generated`'s baseline hashes — the actual CMake-vs-configure comparison. `machine.h`, in that same second directory, is covered separately by `header_defines`, not here | RC-c final-review fix, extended |
 | `flags` | semantic per-language flag facts | Stage 1 |
 | `jars` | normalized jar content manifests (entry list + MANIFEST, volatile lines dropped) | Stage 1f-b |
 | `header_defines` | a header's `{macro: value}` `#define` set — **semantic, not bytes** | RC-a |
@@ -57,6 +61,20 @@ fingerprint, so a corrupted or stale `build-cmake/generated/` file was invisible
 — proven end-to-end (corrupting three of the ten RC-c files there still reported `PARITY OK`). No
 baseline arming was needed: `generated_cmake` is checked against `generated`'s hashes, which were
 already armed.
+
+A later final review found `version.h` shared the identical gap: it is CMake-generated too, and
+byte-identical to configure's copy (same as the ten RC-c files), but its CMake output lands in
+`build-cmake/generated-includes/`, not `build-cmake/generated/` — so it was silently skipped by the
+same directory-prefix loop, and the same corrupt-and-recapture proof applied (`PARITY OK` even with a
+mangled `SCI_VERSION_MAJOR`). `parity/capture.py` closes it with a small explicit path mapping
+(`_GENERATED_CMAKE_PATH_OVERRIDES`) rather than a second directory prefix, since `version.h` is the
+only entry that needs one. `machine.h`, in that same `generated-includes/` directory, deliberately
+stays out of that mapping — it is not byte-identical across generators, so `header_defines` remains
+its only comparison. This is the **third** time this exact class of gap has been found (`machine.h`
+before `header_defines` existed; the ten RC-c files before `generated_cmake` existed; now
+`version.h`) — the underlying reason is structural, not a one-off: `generated` hashes configure's own
+copy on *both* sides of every comparison, so any new CMake-generated artifact is unguarded until it
+gets an explicit entry (here, or its own semantic dimension).
 
 `jars` was added in Stage 1f-b, once CMake began driving the Ant build and jar contents could
 actually move. It covers the **24 module jars**; the doc build's output (`scilab_*_help.jar`,

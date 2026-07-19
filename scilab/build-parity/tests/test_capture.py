@@ -158,6 +158,53 @@ def test_generated_cmake_differs_from_source_tree_copy_when_corrupted(tmp_path):
     assert fp["generated"]["scilab.pc"] != fp["generated_cmake"]["scilab.pc"]
 
 
+# --- Later final-review Finding: version.h shared the SAME gap ------------------
+#
+# `generated_cmake`'s loop above resolves every GENERATED_FILES entry against
+# build-cmake/generated/<rel> -- true for the ten RC-c files, but version.h's CMake copy
+# actually lands in build-cmake/generated-includes/version.h (no build-cmake/generated/
+# counterpart at all), so it fell through the `os.path.exists` guard exactly like a
+# missing file and stayed silently absent from generated_cmake -- proven end-to-end:
+# corrupting build-cmake/generated-includes/version.h's SCI_VERSION_MAJOR still reported
+# PARITY OK. _GENERATED_CMAKE_PATH_OVERRIDES (capture.py, next to GENERATED_FILES) is the
+# fix: an explicit path for the one entry that is not at the default location. machine.h
+# sits in that SAME generated-includes/ directory and must stay excluded from
+# generated_cmake either way -- it is header_defines' job, not this dimension's, because
+# (unlike version.h) CMake's machine.h is not byte-identical to configure's.
+
+def test_fingerprint_build_captures_version_h_from_generated_includes(tmp_path):
+    build_dir = str(tmp_path)
+    _touch(os.path.join(build_dir, "build-cmake/generated-includes/version.h"),
+           "#define SCI_VERSION_MAJOR 2027\n")
+    # machine.h in the SAME directory -- must stay OUT of generated_cmake (see the
+    # docstring above), proving this is a version.h-specific override, not "capture
+    # everything under generated-includes/".
+    _touch(os.path.join(build_dir, "build-cmake/generated-includes/machine.h"),
+           "#define SOME_MACRO 1\n")
+
+    fp = fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path({}), build_id="t")
+
+    expected_hash = hashlib.sha256("#define SCI_VERSION_MAJOR 2027\n".encode("utf-8")).hexdigest()
+    assert fp["generated_cmake"]["modules/core/includes/version.h"] == expected_hash
+    assert "modules/core/includes/machine.h" not in fp["generated_cmake"]
+
+
+def test_generated_cmake_version_h_differs_from_source_tree_copy_when_corrupted(tmp_path):
+    # version.h's analogue of test_generated_cmake_differs_from_source_tree_copy_when_
+    # corrupted: this is the exact reviewer exploit (SCI_VERSION_MAJOR 2027 -> 6666 in
+    # build-cmake/generated-includes/version.h) reproduced at the unit level.
+    build_dir = str(tmp_path)
+    _touch(os.path.join(build_dir, "modules/core/includes/version.h"),
+           "#define SCI_VERSION_MAJOR 2027\n")
+    _touch(os.path.join(build_dir, "build-cmake/generated-includes/version.h"),
+           "#define SCI_VERSION_MAJOR 6666\n")
+
+    fp = fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path({}), build_id="t")
+
+    assert (fp["generated"]["modules/core/includes/version.h"]
+            != fp["generated_cmake"]["modules/core/includes/version.h"])
+
+
 def test_generated_files_covers_the_rc_c_inventory():
     """The 9 configure-substituted files RC-c generates, plus Version.incl, plus the
     3 that predate it. Pinned by exact set: this list IS the gate's coverage, and a
