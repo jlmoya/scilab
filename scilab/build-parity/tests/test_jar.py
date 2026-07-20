@@ -182,3 +182,31 @@ def test_diff_detects_jar_entry_add_and_remove():
     diffs = diff_fingerprints(base, cand)["differences"]
     assert any("jar m.jar: entry removed: B.class" in d for d in diffs)
     assert any("jar m.jar: entry added: C.class" in d for d in diffs)
+
+
+def test_maven_descriptor_entries_are_a_real_difference():
+    """A Maven-built jar must NOT smuggle META-INF/maven/ past parity.
+
+    maven-jar-plugin embeds META-INF/maven/<g>/<a>/pom.xml + pom.properties by
+    default. Ant's jars have no such entries, so a jar carrying them differs from
+    the artifact we reproduce -- the gate reporting that is the gate WORKING.
+
+    The fix belongs in the POM (<addMavenDescriptor>false</addMavenDescriptor>),
+    never in this harness: excluding the path here would weaken a strict check to
+    accommodate a divergence, which is how the last three stages shipped defects.
+    This test exists so that a future reader does not "helpfully" add that
+    exclusion -- it fails the moment anyone does.
+    """
+    jar = "modules/commons/jar/org.scilab.modules.commons.jar"
+    base = _fp(jars={jar: {
+        "org/scilab/modules/commons/Foo.class": "aaa",
+        "META-INF/MANIFEST.MF": "bbb"}})
+    cand = _fp(jars={jar: {
+        "org/scilab/modules/commons/Foo.class": "aaa",
+        "META-INF/MANIFEST.MF": "bbb",
+        "META-INF/maven/org.scilab/commons/pom.xml": "ccc",
+        "META-INF/maven/org.scilab/commons/pom.properties": "ddd"}})
+    result = diff_fingerprints(base, cand)
+    assert not result["ok"], "a Maven descriptor slipped past the jar gate"
+    joined = " ".join(result["differences"])
+    assert "META-INF/maven" in joined, f"the difference did not name the culprit: {joined}"
