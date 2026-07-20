@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/completion/pom.xml — Stage 2-e Task 2 module POM
+  (docs/superpowers/plans/2026-07-20-stage2e-topo-batch.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/completion -am package
+  from the reactor root, or mvn -f modules/completion/pom.xml package). Ant
+  (modules/completion/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Eighth in prebuildjava's topo order
+  (modules/prebuildjava/build.xml:25), right after graphic_objects — and
+  the smallest migrated so far (4 source files, 5 .class files: one inner
+  class).
+
+  STEP 1 FINDINGS (grep -rhE '^import (org|com|jdk|sun)\.'
+  modules/completion/src/java, 4 files):
+    - org.scilab.modules.completion.Completion — itself (in-package).
+    - org.scilab.modules.localization.Messages — the one reactor dependency,
+      below.
+    - com.artenum.rosetta.interfaces.{core.CompletionItem,
+      core.InputParsingManager, ui.CompletionWindow} — from
+      thirdparty/jrosetta-API-1.0.4.jar (confirmed: `unzip -l` on that jar
+      lists exactly these three .class files under com/artenum/rosetta/
+      interfaces/).
+    - com.artenum.rosetta.ui.CompletionItemListCellRenderer — a DIFFERENT
+      jar from the one above despite the near-identical package name: `unzip
+      -l` on thirdparty/jrosetta-engine-1.0.4.jar (not jrosetta-API) lists
+      com/artenum/rosetta/ui/CompletionItemListCellRenderer.class. Both
+      vendored jars are therefore genuinely needed to compile, below.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>completion</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Scilab commands completion"/> -->
+  <name>Scilab commands completion</name>
+
+  <dependencies>
+    <!-- Messages.java-consuming class in this module imports
+         org.scilab.modules.localization.Messages — same reactor-sibling
+         idiom as modules/commons/pom.xml's own localization dependency. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- THE TWO VENDORED ROSETTA JARS this module actually compiles against.
+         scilab-lib.properties.in:39 sets jrosetta-API.jar ->
+         thirdparty/jrosetta-API-1.0.4.jar; :41 sets jrosetta-engine.jar ->
+         thirdparty/jrosetta-engine-1.0.4.jar (cited against the tracked .in
+         template, not the generated scilab-lib.properties — see
+         modules/scirenderer/pom.xml's dependencies comment for why: that
+         file is configure's OUTPUT, not tracked by git). build.incl.xml
+         puts both on the shared compile classpath as raw <pathelement>s
+         (lines 82-83) — no Ivy/repository resolution of any kind, the same
+         shape as flexdock below commons and jogl/gluegen below scirenderer.
+
+         SAME MECHANISM, SAME MEASURED RATIONALE AS modules/commons/pom.xml's
+         flexdock <dependency> and modules/scirenderer/pom.xml's jogl/gluegen
+         pair — <scope>system</scope> + <systemPath>, chosen there over
+         install-file (an imperative, per-machine, untracked step) and a
+         project-local file:// repository (measured to be silently
+         intercepted by this machine's wildcard mirror). Cross-referenced
+         rather than restated so the two copies cannot drift apart —
+         including the "should not point at files within the project
+         directory... will be unresolvable by dependent projects" warning
+         Maven prints for every systemPath dependency, and the dated (not yet
+         verified) Maven 4 system-scope risk. Real Maven Central coordinates
+         are used below purely as accurate labels — system scope means
+         neither is ever actually resolved from a repository. -->
+    <dependency>
+      <groupId>com.artenum.rosetta</groupId>
+      <artifactId>jrosetta-API</artifactId>
+      <version>1.0.4</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jrosetta-API-1.0.4.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.artenum.rosetta</groupId>
+      <artifactId>jrosetta-engine</artifactId>
+      <version>1.0.4</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jrosetta-engine-1.0.4.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/completion/jar/org.scilab.modules.completion.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

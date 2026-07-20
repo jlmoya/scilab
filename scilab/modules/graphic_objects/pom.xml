@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/graphic_objects/pom.xml — Stage 2-e Task 2 module POM
+  (docs/superpowers/plans/2026-07-20-stage2e-topo-batch.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/graphic_objects -am
+  package from the reactor root, or mvn -f modules/graphic_objects/pom.xml
+  package). Ant (modules/graphic_objects/build.xml + build.incl.xml) remains
+  the real build; nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Seventh in prebuildjava's topo order
+  (modules/prebuildjava/build.xml:25), right after action_binding — and by
+  far the largest migrated so far (112 source files, 211 .class files, 52
+  directory entries in the jar — more directory entries than any other
+  module's total non-manifest entry count to date). The FIRST module with
+  FOUR simultaneous reactor dependencies at once (action_binding's two was
+  the previous high).
+
+  STEP 1 FINDINGS (grep -rhE '^import (org|com|jdk|sun)\.'
+  modules/graphic_objects/src/java, 112 files):
+    - org.scilab.forge.scirenderer.{ruler.graduations.UserDefinedFormat,
+      shapes.appearance.Color} — Datatip.java, XmlSaver.java: reactor
+      dependency #1 (scirenderer), below.
+    - org.scilab.modules.action_binding.InterpreterManagement —
+      Datatip.java: reactor dependency #2 (action_binding), below.
+    - org.scilab.modules.commons.{CommonFileUtils, OS, ScilabConstants,
+      gui.FindIconHelper, xml.ScilabDocumentBuilderFactory,
+      xml.ScilabXMLUtilities} — MenuBarBuilder.java, XmlSaver.java,
+      XmlLoader.java, XMLDomLoader.java: reactor dependency #3 (commons),
+      below.
+    - org.scilab.modules.localization.Messages — Datatip.java,
+      MenuBarBuilder.java: reactor dependency #4 (localization), below.
+    - org.scilab.modules.graphic_objects.* — itself (in-package, the bulk of
+      the 112 files).
+    - org.w3c.dom.*, org.xml.sax.* — JDK (java.xml module), not a
+      dependency.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  THE OTHER GENUINELY NEW THING: NO library.title PROPERTY. Every other
+  module migrated so far (and every other module in the tree bar
+  prebuildjava, confirmed by `grep -L library.title modules/*/build.xml`)
+  sets `<property name="library.title" value="..."/>` in its own build.xml.
+  modules/graphic_objects/build.xml does not — it sets only library.name.
+  Ant's shared `jar` target (build.incl.xml:153) writes
+  `<attribute name="Specification-Title" value="${library.title}"/>`
+  UNCONDITIONALLY, with no fallback: with the property never set, Ant's own
+  manifest task leaves the literal, un-interpolated string "${library.title}"
+  in the built jar — confirmed directly (unzip -p
+  modules/graphic_objects/jar/org.scilab.modules.graphic_objects.jar
+  META-INF/MANIFEST.MF shows "Specification-Title: ${library.title}" verbatim).
+  Same FAMILY of bug as the Class-Path/manifest.class-path token every
+  migrated module already carries, just landing on a different attribute —
+  and per this campaign's REPRODUCE-DON'T-IMPROVE principle, the manifest
+  fragment below reproduces that exact literal string rather than inventing
+  a real title Ant itself never produces. The <name> element below (which
+  never reaches the built jar — see its own comment) uses build.xml's
+  <description> instead, the closest thing to an authoritative label Ant
+  provides for this one module.
+
+  A THIRD GENUINELY NEW THING, FOUND ONLY BY ACTUALLY COMPILING: Step 1's own
+  grep recipe (`^import (org|com|jdk|sun)\.`) is blind to a real dependency
+  here. xmlloader/CSSParser.java:17 — a JFlex-generated lexer, "//CHECKSTYLE:OFF"
+  and all — carries `@javax.annotation.Generated("JFlex")`, a FULLY-QUALIFIED
+  annotation with no import statement at all, so it matches neither the
+  "^import" prefix nor the org/com/jdk/sun alternation (it is javax, not one
+  of the four). `mvn package` failed outright the first time with "package
+  javax.annotation does not exist" before this was added — javax.annotation.*
+  was removed from the JDK itself in JDK 11 (it shipped as part of Java EE
+  modules, all since removed), so this is a real, non-optional compile-time
+  dependency, not a warning. build.incl.xml:104 puts
+  ${javax.annotation-api.jar} on the shared compile classpath unconditionally
+  (scilab-lib.properties.in:15 -> thirdparty/javax.annotation-api-1.3.2.jar,
+  cited against the tracked .in template per modules/scirenderer/pom.xml's
+  dependencies comment). Same <scope>system</scope> + <systemPath> mechanism
+  as flexdock/jogl/gluegen/rosetta — but UNLIKE those, javax.annotation-api
+  IS published under this exact coordinate on Maven Central
+  (javax.annotation:javax.annotation-api:1.3.2), used below purely as an
+  accurate label; system scope means it is never actually resolved from a
+  repository here either.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>graphic_objects</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:20 <description>Build the Scilab graphic_objects
+       module</description> — there is no library.title here (see the file
+       header comment); this is cosmetic only, never reaching the built jar
+       (addDefaultImplementationEntries/addDefaultSpecificationEntries are
+       false at the parent, and this module's own manifest section comes
+       verbatim from manifestFile below, un-interpolated by Maven). -->
+  <name>Scilab graphic_objects module</name>
+
+  <dependencies>
+    <!-- Datatip.java imports org.scilab.modules.action_binding.InterpreterManagement. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>action_binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- MenuBarBuilder.java, XmlSaver.java, XmlLoader.java, XMLDomLoader.java
+         import org.scilab.modules.commons.{CommonFileUtils, OS,
+         ScilabConstants, gui.FindIconHelper, xml.ScilabDocumentBuilderFactory,
+         xml.ScilabXMLUtilities}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- Datatip.java imports org.scilab.forge.scirenderer.ruler.graduations.
+         UserDefinedFormat; XmlSaver.java imports
+         org.scilab.forge.scirenderer.shapes.appearance.Color. Same reactor
+         coordinate as every other scirenderer-dependent module
+         (groupId/artifactId org.scilab:scirenderer per
+         modules/scirenderer/pom.xml) despite the org.scilab.forge.*
+         PACKAGE namespace scirenderer's classes actually live under —
+         the Maven coordinate and the Java package are independent axes. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>scirenderer</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- Datatip.java, MenuBarBuilder.java import
+         org.scilab.modules.localization.Messages. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- xmlloader/CSSParser.java:17 — @javax.annotation.Generated("JFlex"),
+         a fully-qualified annotation with no import statement (see this
+         file's header comment, "A THIRD GENUINELY NEW THING"). Real Maven
+         Central coordinate used as an accurate label; system scope means it
+         is never actually resolved from a repository. -->
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.3.2</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/javax.annotation-api-1.3.2.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/graphic_objects/jar/org.scilab.modules.graphic_objects.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Specification-Title carries
+                 the literal, un-interpolated "${library.title}" token — see
+                 this file's header comment for why that is correct, not a
+                 mistake to fix. Implementation-Version is present, frozen at
+                 the literal "00000000 0000", positioned between
+                 Implementation-Title and Implementation-Vendor exactly where
+                 Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
