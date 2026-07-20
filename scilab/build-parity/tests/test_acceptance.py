@@ -309,3 +309,40 @@ def test_regression_all_empty_maven_jars_still_skips():
     # pre-existing empty-skip.
     with pytest.raises(pytest.skip.Exception):
         _check_maven_jars_alignment_and_completeness({"jars": {}, "maven_jars": {}})
+
+
+def test_committed_baseline_carries_no_maven_jars_section():
+    """The committed baseline must NOT contain a `maven_jars` section.
+
+    `baseline-autotools.json` is, by name and purpose, a snapshot of the AUTOTOOLS/Ant
+    build. Maven's output is not part of that build, so it does not belong in there --
+    and `diff.py`'s transition rule is written to SKIP `maven_jars` when the baseline
+    lacks it, which is the designed behaviour, not an oversight.
+
+    This test exists because the section was once added by accident: a re-baseline run
+    (commit 65baec3b4c8, fixing an unrelated manifest-normalization change) used
+    `capture.sh`, which captures every section including `maven_jars`, and froze a
+    3-module snapshot into the file. The verification script used at the time compared
+    only keys within sections present in BOTH files, so an entirely NEW section was
+    invisible to it and the change was reported as "0 keys added".
+
+    The consequence is worse than untidiness. With `maven_jars` frozen in the baseline,
+    EVERY subsequent module migration makes the baseline stale and turns
+    `test_committed_baseline_matches_current_tree` red -- so the fix would become a
+    routine re-baseline on every migration, and a gate that is routinely re-baselined
+    has stopped being a gate.
+
+    The real arming for this dimension is `test_maven_jars_align_with_ant_jars`, which
+    compares `maven_jars` against `jars` WITHIN a single capture and therefore needs no
+    frozen reference at all.
+
+    If you are here because `capture.sh` re-added the section: strip it, do not re-point
+    this test.
+    """
+    with open(BASELINE) as f:
+        baseline = json.load(f)
+    assert "maven_jars" not in baseline, (
+        "baseline-autotools.json has grown a maven_jars section -- most likely a "
+        "capture.sh run wrote it. Strip the section; see this test's docstring for why "
+        "a frozen Maven snapshot turns every future migration into a re-baseline."
+    )

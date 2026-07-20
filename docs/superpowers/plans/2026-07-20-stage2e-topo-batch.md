@@ -102,9 +102,18 @@ Expected: no `manifest.class-path` anywhere; `jvm` shows `jdk.internal.loader` /
 cd scilab
 find modules -maxdepth 2 -name target -type d -exec rm -rf {} + 2>/dev/null
 for m in history_manager jvm action_binding; do (cd modules/$m && ant) || exit 1; done
-mvn -pl modules/history_manager,modules/jvm,modules/action_binding -am package 2>&1 | tail -20
+mvn package 2>&1 | tail -20          # FULL reactor -- see the warning below
 cd build-parity && python3 -m pytest tests/test_acceptance.py -q -k maven_jars 2>&1 | tail -3
 ```
+
+> **Build the FULL reactor, not `-pl`.** An earlier draft of this recipe paired
+> `find ... -name target -exec rm -rf` (which wipes **every** module's `target/`, including
+> already-migrated ones) with `mvn -pl <the three> -am` (which rebuilds only those three plus
+> their *dependencies* — `scirenderer` is a dependency of none of them). The result is a reactor
+> where some modules have no Maven jar, which the completeness half of
+> `test_maven_jars_align_with_ant_jars` correctly fails. The gate was right; the recipe was wrong.
+> Either clean only what you rebuild, or rebuild everything you cleaned.
+
 Expected: three jars named `org.scilab.modules.<m>.jar`, alignment test PASSES.
 **Report every iteration it took.**
 
