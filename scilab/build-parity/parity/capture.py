@@ -331,6 +331,7 @@ def _fingerprint_exe(path, roots, runner):
 def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="build"):
     dylibs = {}
     jars = {}
+    maven_jars = {}
     macro_manifest_entries = []
     for root, _dirs, files in os.walk(build_dir):
         posix_root = root.replace(os.sep, "/")
@@ -383,6 +384,45 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
                 if fn.endswith(".jar") and not _DOC_OUTPUT_JAR.match(fn):
                     rel = os.path.relpath(os.path.join(root, fn), build_dir).replace(os.sep, "/")
                     jars[rel] = fingerprint_jar(os.path.join(root, fn))
+        elif "/modules/" in posix_root + "/" and posix_root.endswith("/target"):
+            # modules/<m>/target/*.jar — Maven's module jars. TOP LEVEL of target/
+            # ONLY: os.walk visits target/classes and target/maven-archiver as
+            # separate root values in their own turn of this loop (posix_root
+            # there ends in "/classes" or "/maven-archiver", never "/target"), so
+            # this branch never sees them -- the same one-directory-per-visit
+            # property the Ant-jar branch above relies on for its own exclusions.
+            #
+            # KEYED UNDER modules/<m>/jar/<basename> -- ANT's output path, NOT
+            # Maven's. Stage 2-c design doc S2.1: this key is DELIBERATELY
+            # SYNTHETIC, the same move as _GENERATED_CMAKE_PATH_OVERRIDES above --
+            # Maven really writes here, to modules/<m>/target/, and keeps doing so
+            # even after this section exists (the design doc's Decision A changes
+            # the BASENAME via a parent-POM <finalName>, never the directory; the
+            # directory only flips at the eventual CMake/Ant swap). A future
+            # reader must not mistake this key for Maven's real on-disk location
+            # -- that location is `root`/fn, one path segment over (target/, not
+            # jar/), and is what `fingerprint_jar` below actually opens.
+            #
+            # Aligning the key to Ant's path is what makes `maven_jars` and `jars`
+            # directly comparable dicts (parity/diff.py): a jar the two
+            # toolchains name DIFFERENTLY occupies two different keys under this
+            # scheme -- an added key on one side, a removed key on the other,
+            # i.e. a visible rename -- while a jar they name the SAME way lands
+            # on one shared key and is compared entry-by-entry, exactly like
+            # `jars` already does. Today EVERY Maven jar's basename differs from
+            # Ant's (e.g. commons-2027.0.0-SNAPSHOT.jar vs.
+            # org.scilab.modules.commons.jar) -- that mismatch is EXPECTED to
+            # show up wherever `jars` and `maven_jars` are compared, and closing
+            # it is a later task (the <finalName> above), not a bug in this
+            # section.
+            rel_root = os.path.relpath(root, build_dir).replace(os.sep, "/")
+            parts = rel_root.split("/")
+            if len(parts) == 3:   # modules/<m>/target exactly -- not a deeper subtree
+                module = parts[1]
+                for fn in files:
+                    if fn.endswith(".jar"):
+                        maven_jars[f"modules/{module}/jar/{fn}"] = fingerprint_jar(
+                            os.path.join(root, fn))
 
     executables = {}
     for name in ("scilab-bin", "scilab-cli-bin"):
@@ -455,6 +495,7 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
     return {"build_id": build_id, "executables": executables,
             "dylibs": dylibs, "generated": generated, "generated_cmake": generated_cmake,
             "jars": jars,
+            "maven_jars": maven_jars,
             "header_defines": header_defines,
             "flags": capture_flag_manifest(build_dir),
             "tu_flag_facts": capture_tu_flag_facts(build_dir)}
@@ -483,6 +524,7 @@ def _main(argv):
         json.dump(fp, f, indent=2, sort_keys=True)
     print(f"captured {len(fp['dylibs'])} dylibs, {len(fp['executables'])} executables, "
           f"{len(fp['jars'])} jars, "
+          f"{len(fp['maven_jars'])} maven jars, "
           f"{len(fp['generated'])} generated files, "
           f"{len(fp['generated_cmake'])} generated files (cmake), "
           f"{len(fp['header_defines'])} semantic headers, "

@@ -170,6 +170,42 @@ def diff_fingerprints(base, cand):
                     if b[e] != c[e]:
                         out.append(f"jar {name}: entry changed: {e}")
 
+    # Maven's module jars (parity.capture's maven_jars section), keyed under the
+    # SAME ant-equivalent-path scheme as `jars` above -- see that section's
+    # comment in capture.py for why the key is deliberately synthetic. Compared
+    # exactly the way `jars` is: presence via _diff_named, then a per-shared-key
+    # entry diff (removed/added/changed). Transition rule mirrors jars/rpaths/
+    # header_defines/tu_flag_facts exactly: a baseline with no "maven_jars"
+    # section predates Maven capture -> skip (not yet armed, not a failure). The
+    # reverse is NOT tolerated: against a maven_jars-aware baseline, a candidate
+    # lacking the section must fail (not silently skip).
+    #
+    # SCOPE NOTE: this checks a baseline's OWN maven_jars against a candidate's
+    # OWN maven_jars -- regression across RUNS, exactly like `jars` does. It does
+    # NOT cross-check maven_jars against `jars`. Stage 2-c Task 1: because every
+    # Maven jar's basename currently differs from its Ant counterpart (the
+    # parent-POM <finalName> that fixes this is a later task), a direct
+    # comparison of one capture's `jars` against that SAME capture's
+    # `maven_jars` shows an added key and a removed key per module -- that is
+    # this gate WORKING, the exact wrong-filename defect the hand-run snippet it
+    # replaces could never catch (see the Stage 2-c design doc S2.1). This
+    # transition rule does not perform that cross-check itself; it is what makes
+    # `maven_jars` a real, regression-gated dimension once armed.
+    if "maven_jars" in base:
+        if "maven_jars" not in cand:
+            out.append("maven_jars section missing in candidate")
+        else:
+            _diff_named("maven jar", base["maven_jars"], cand["maven_jars"], out)
+            for name in sorted(set(base["maven_jars"]) & set(cand["maven_jars"])):
+                b, c = base["maven_jars"][name], cand["maven_jars"][name]
+                for e in sorted(set(b) - set(c)):
+                    out.append(f"maven jar {name}: entry removed: {e}")
+                for e in sorted(set(c) - set(b)):
+                    out.append(f"maven jar {name}: entry added: {e}")
+                for e in sorted(set(b) & set(c)):
+                    if b[e] != c[e]:
+                        out.append(f"maven jar {name}: entry changed: {e}")
+
     # Semantic header parity (RC-a): machine.h compared by its #define SET, not bytes
     # (a CMake-generated header is never byte-identical to autoconf's). Transition rule
     # mirrors rpaths/jars: a baseline with no section predates RC-a -> skip; a candidate
