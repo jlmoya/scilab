@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/ui_data/pom.xml — Stage 2-f Task 4 module POM (Wave D)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/ui_data -am package from
+  the reactor root, or mvn -f modules/ui_data/pom.xml package). Ant
+  (modules/ui_data/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave D — four modules whose only unmigrated-wave
+  dependency was gui (Wave C, now in the reactor). ui_data is the largest of
+  the four (146 source files: the variable browser/editor, the file browser,
+  the news feed panel, and their datatable/rowheader/celleditor/renderer/undo
+  support) and, despite its size, the CLEANEST dependency-wise of this wave —
+  six reactor dependencies and, uniquely among this wave's four modules, NO
+  vendored third-party jar at all.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh ui_data, 146 files):
+    [1] imports (excluding ui_data's own packages): org.scilab.modules.
+        action_binding{,.highlevel,.highlevel.ScilabInterpreterManagement},
+        commons{,.gui}, graphic_objects.graphicObject, gui.bridge.
+        {checkboxmenuitem,contextmenu,filechooser,menuitem,tab,toolbar,
+        window}, gui.checkboxmenuitem, gui.console, gui.contextmenu,
+        gui.events.callback, gui.menu, gui.menubar, gui.menuitem,
+        gui.messagebox{,.ScilabModalDialog}, gui.tab, gui.tabfactory,
+        gui.textbox, gui.toolbar, gui.utils, gui.window, localization,
+        types, plus a static import of action_binding.highlevel.
+        ScilabInterpreterManagement.asynchronousScilabExec — six reactor
+        dependencies, all below (all already migrated: Wave C for gui,
+        earlier waves for the rest). org.w3c.dom is JDK (java.xml module),
+        not a dependency. No third-party (non-org.scilab, non-JDK) import
+        anywhere in this module's 146 files.
+    [2] reflection targets — RULED OUT: org.scilab.modules.scinotes.
+        SciNotes, reached only via filebrowser/actions/
+        OpenFileInSciNotesAction.java:49's inline
+        `Class.forName("org.scilab.modules.scinotes.SciNotes")` (confirmed
+        by reading the file — a try/catch around Class.forName + reflective
+        method lookup, not an import). scinotes is Wave E, nowhere near
+        migrated — reproduced as an absence, the same pattern
+        modules/console/pom.xml's HelpSearchField finding and
+        modules/history_browser/pom.xml's EditInScinotesAction finding both
+        follow. This particular call site — an INLINE string literal
+        directly inside Class.forName(...) — is exactly the shape [2]'s
+        regex is built to catch, and it did; cross-checked anyway with an
+        independent `grep -rn 'Class\.forName\|loadClass('` sweep of all 146
+        files (one further hit, the same OpenFileInSciNotesAction.java call
+        site — nothing missed). See modules/history_browser/pom.xml's header
+        for the CONTRASTING case this tool structurally cannot catch
+        (Class.forName(A_CONSTANT_VARIABLE)), found elsewhere in this same
+        wave — not a live concern here, since ui_data's one reflective call
+        is already the inline shape the tool sees.
+    [3] fully-qualified uses with no import: org.scilab.modules.graph.
+        actions.base.DefaultAction — RULED OUT, and worth spelling out
+        because ui_data ALSO defines its own actions.DefaultAction (a
+        completely different class: org.scilab.modules.ui_data.actions.
+        DefaultAction extends CommonCallBack, imported directly and used
+        throughout this module, e.g. variablebrowser/actions/
+        CloseAction.java). The graph.actions.base.DefaultAction spelling
+        appears exactly once, in actions/FilteringAction.java:34's `@see
+        org.scilab.modules.graph.actions.base.DefaultAction#actionPerformed
+        (java.awt.event.ActionEvent)` — a javadoc `@see` tag pointing at
+        graph's unrelated same-named class for documentation purposes only,
+        not code (confirmed by reading the file). graph is this same Wave D,
+        so even a real dependency here would not have crossed a wave
+        boundary — but it is not a real dependency: ui_data's own [1] import
+        list never mentions org.scilab.modules.graph at all, and the single
+        [3] hit is inert javadoc. graph is correctly NOT one of this
+        module's <dependencies> below. Every other name in this category
+        (action_binding.InterpreterManagement, commons.{CommonFileUtils,OS,
+        ScilabConstants}, commons.gui.*, graphic_objects.graphicObject.
+        CallBack, the sixteen gui.* classes, localization.Messages,
+        types.{ScilabTypeEnum,ScilabTypeEnumDescription}) is already covered
+        by the six reactor dependencies below, nothing new.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  IMPLEMENTATION-VERSION: present, frozen at the literal "00000000 0000",
+  positioned between Implementation-Title and Implementation-Vendor exactly
+  where Ant's own jar places it (confirmed against modules/ui_data/jar/
+  org.scilab.modules.ui_data.jar's actual manifest before extraction: live
+  value there was "20260719 1729", a DSTAMP/TSTAMP pair). Vendor string
+  double-encoded ("Ã¨", bytes c3 83 c2 a8) — extracted, never retyped, same
+  as every other module.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>ui_data</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="User interface graphical components"/> -->
+  <name>User interface graphical components</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.action_binding.InterpreterManagement,
+         action_binding.highlevel.ScilabInterpreterManagement (also via a
+         static import of its asynchronousScilabExec method). -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>action_binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.commons.{CommonFileUtils, OS, ScilabConstants},
+         commons.gui.{FindIconHelper, ScilabGUIUtilities, ScilabKeyStroke,
+         ScilabLAF}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.graphic_objects.graphicObject.CallBack. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>graphic_objects</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.gui.* — sixteen classes across bridge.
+         {checkboxmenuitem,contextmenu,filechooser,menuitem,tab,toolbar,
+         window}, checkboxmenuitem, console, contextmenu, events.callback,
+         menu, menubar, menuitem, messagebox, tab, tabfactory, textbox,
+         toolbar, utils, window — this module's UI panels are all gui
+         bridge/Swing widgets underneath. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.types.{ScilabTypeEnum,
+         ScilabTypeEnumDescription} — the variable browser/editor's data
+         model. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>types</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/ui_data/jar/org.scilab.modules.ui_data.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

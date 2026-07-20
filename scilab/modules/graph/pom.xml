@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/graph/pom.xml — Stage 2-f Task 4 module POM (Wave D)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/graph -am package from
+  the reactor root, or mvn -f modules/graph/pom.xml package). Ant
+  (modules/graph/build.xml + build.incl.xml) remains the real build; nothing
+  here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave D — four modules whose only unmigrated-wave
+  dependency was gui (Wave C, now in the reactor). graph is the JGraphX-based
+  diagram canvas xcos (Wave E) will sit on top of — 48 files across
+  io/shape/utils/view/actions/event, the widest vendored-jar surface of this
+  wave (four third-party jars against zero for history_browser and
+  ui_data). NOTE: prebuildjava/build.xml:55 gates its own Ant target on
+  `if="${build_xcos}"` — an Ant-level conditional, not a Wave-D dependency
+  concern (this POM's own dependency set has nothing to do with xcos; see
+  the ruled-out finding below). Maven has no equivalent per-module
+  conditional; this reactor builds graph unconditionally, same as every
+  other module.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh graph, 48 files):
+    [1] imports (excluding graph's own packages):
+      - com.mxgraph.* (canvas, io, model, shape, swing{,.handler,.util,
+        .view}, util, view) — the JGraphX diagram library itself, this
+        module's whole reason for existing. thirdparty/jgraphx-2.1.0.7.jar,
+        below.
+      - net.sourceforge.jeuclid.swing — MathML rendering inside graph labels.
+        thirdparty/jeuclid-core-3.1.14.jar, below (same jar, same coordinate
+        as modules/console/pom.xml and modules/helptools/pom.xml).
+      - org.apache.batik.{anim.dom,bridge,dom,ext.awt,gvt,svggen,util} — SVG
+        export of the diagram canvas. thirdparty/batik-all-1.17.jar, below
+        (same jar, same coordinate as modules/helptools/pom.xml and
+        modules/graphic_export/pom.xml).
+      - org.scilab.forge.jlatexmath — label/GED text rendering, same single
+        plain jar (no .fop.* classes touched) as modules/console/pom.xml,
+        modules/gui/pom.xml. thirdparty/jlatexmath-1.0.7.jar, below.
+      - org.scilab.modules.commons{,.gui}, gui.bridge.{checkboxmenuitem,
+        menuitem}, gui.checkboxmenuitem, gui.events.callback, gui.menuitem,
+        gui.messagebox, jvm, localization, types — five reactor
+        dependencies, all below (all already migrated: Wave C for gui,
+        earlier waves for the rest).
+      - static org.scilab.modules.commons.OS — a static import of the same
+        commons.OS class already covered by the commons dependency below.
+      - org.w3c.dom, org.xml.sax — JDK (java.xml module), not a dependency.
+    [2] reflection targets — RULED OUT: (none reported by the tool). Cross-
+        checked with an independent `grep -rn 'Class\.forName\|loadClass('`
+        sweep of all 48 files — zero hits, confirmed clean (see the
+        modules/history_browser/pom.xml header for why this manual
+        cross-check matters: the tool has a confirmed blind spot for
+        reflection reached through one level of constant indirection, and
+        this module gets the same independent check even though the
+        tool itself reported nothing).
+    [3] fully-qualified uses with no import: org.scilab.modules.xcos.io.
+        codec.XcosObjectCodec — RULED OUT. The ONLY hit, in io/
+        ScilabGraphCodec.java:109, is `@see org.scilab.modules.xcos.io.codec.
+        XcosObjectCodec#afterDecode(...)` — a javadoc `@see` tag (confirmed
+        by reading the file), not code. xcos is Wave E, not migrated —
+        reproduced as an absence, the same class of non-finding as
+        modules/gui/pom.xml's org.scilab.modules.ihm.* entries and Stage
+        2-b's org.scilab.modules.core.Scilab. Every other name in this
+        category (com.mxgraph.util.mxCellRenderer.CanvasFactory, the seven
+        org.apache.batik.* classes, the four jlatexmath classes,
+        commons.OS/gui.FindIconHelper/gui.ScilabLAF, the five gui.* classes,
+        jvm.LoadClassPath, localization.Messages, and the nine
+        org.scilab.modules.types.* classes) is already covered by the
+        reactor/vendored dependencies below, nothing new.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  JGRAPHX — com.mxgraph.{canvas,io,model,shape,swing{,.handler,.util,.view},
+  util,view}.* across this module's io/shape/utils/view packages, the
+  diagram-editing library graph exists to wrap. No confirmed Maven Central
+  coordinate for the exact jar vendored here (thirdparty/jgraphx-2.1.0.7.jar;
+  scilab-lib.properties.in:19 jgraphx.jar=@JGRAPHX@) — same standing as
+  modules/gui/pom.xml's jhall entry: a LABEL, not a verified repository
+  coordinate, but here corroborated directly from the jar's OWN manifest
+  rather than only the package prefix (`unzip -p thirdparty/
+  jgraphx-2.1.0.7.jar META-INF/MANIFEST.MF`): `Bundle-SymbolicName:
+  com.mxgraph`, `Vendor: JGraph Ltd`, `Bundle-Version: 2.1.0.7` — groupId,
+  and version below are taken directly from those three lines, artifactId
+  from the jar's own vendored basename (matching the `jgraphx.jar` property
+  name Ant itself uses). system scope means the coordinate is never actually
+  resolved from a repository either way, so this is purely a documentation
+  label with zero effect on the build.
+
+  BATIK-ALL, JEUCLID-CORE, JLATEXMATH — all three cross-referenced from
+  earlier modules rather than re-justified: batik-all's coordinate
+  (org.apache.xmlgraphics:batik-all:1.17) is the same one used, and
+  independently confirmed against the jar's own Maven-built manifest
+  (Implementation-Title: org.apache.xmlgraphics:batik-all), in
+  modules/helptools/pom.xml and modules/graphic_export/pom.xml; jeuclid-core
+  is the same jar/coordinate as modules/console/pom.xml and
+  modules/helptools/pom.xml; jlatexmath is the same single plain jar (no
+  jlatexmath-fop — graph never touches org.scilab.forge.jlatexmath.fop.*,
+  grep-confirmed zero hits) as modules/console/pom.xml, modules/helptools/
+  pom.xml and modules/gui/pom.xml.
+
+  IMPLEMENTATION-VERSION: present, frozen at the literal "00000000 0000",
+  positioned between Implementation-Title and Implementation-Vendor exactly
+  where Ant's own jar places it (confirmed against modules/graph/jar/
+  org.scilab.modules.graph.jar's actual manifest before extraction: live
+  value there was "20260719 1729", a DSTAMP/TSTAMP pair). Vendor string
+  double-encoded ("Ã¨", bytes c3 83 c2 a8) — extracted, never retyped, same
+  as every other module.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>graph</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Graph drawing"/> -->
+  <name>Graph drawing</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.commons.OS (also via a static import),
+         commons.gui.{FindIconHelper, ScilabLAF}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.gui.{bridge.checkboxmenuitem.
+         SwingScilabCheckBoxMenuItem, bridge.menuitem.SwingScilabMenuItem,
+         checkboxmenuitem.{CheckBoxMenuItem,ScilabCheckBoxMenuItem},
+         events.callback.{CallBack,CommonCallBack}, menuitem.{MenuItem,
+         ScilabMenuItem}, messagebox.ScilabModalDialog}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.jvm.LoadClassPath. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>jvm</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.types.{ScilabBoolean, ScilabDouble,
+         ScilabInteger, ScilabIntegerTypeEnum, ScilabList, ScilabMList,
+         ScilabString, ScilabTList, ScilabType} — the data model graph nodes
+         carry. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>types</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- JGRAPHX — com.mxgraph.* across this module's io/shape/utils/view
+         packages, the diagram-editing library this module wraps. LABEL, not
+         a verified Maven Central coordinate — see this file's header
+         comment for the jgraphx-2.1.0.7.jar manifest evidence
+         (Bundle-SymbolicName: com.mxgraph, Vendor: JGraph Ltd,
+         Bundle-Version: 2.1.0.7) the groupId/artifactId/version below were
+         taken from directly. system scope means it is never actually
+         resolved from a repository. -->
+    <dependency>
+      <groupId>com.mxgraph</groupId>
+      <artifactId>jgraphx</artifactId>
+      <version>2.1.0.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jgraphx-2.1.0.7.jar</systemPath>
+    </dependency>
+    <!-- org.apache.batik.{anim.dom.SAXSVGDocumentFactory, bridge.*,
+         dom.GenericDOMImplementation, ext.awt.RenderingHintsKeyExt,
+         gvt.GraphicsNode, svggen.*, util.XMLResourceDescriptor} — SVG export
+         of the diagram canvas. SAME MECHANISM, SAME COORDINATE AS
+         modules/helptools/pom.xml and modules/graphic_export/pom.xml
+         (cross-referenced, not restated). -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-all</artifactId>
+      <version>1.17</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/batik-all-1.17.jar</systemPath>
+    </dependency>
+    <!-- net.sourceforge.jeuclid.swing — MathML rendering inside graph
+         labels. SAME JAR, SAME COORDINATE AS modules/console/pom.xml and
+         modules/helptools/pom.xml (cross-referenced, not restated). -->
+    <dependency>
+      <groupId>net.sourceforge.jeuclid</groupId>
+      <artifactId>jeuclid-core</artifactId>
+      <version>3.1.14</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jeuclid-core-3.1.14.jar</systemPath>
+    </dependency>
+    <!-- org.scilab.forge.jlatexmath.{ParseException, TeXConstants,
+         TeXFormula, TeXIcon} — label/GED text rendering. Same single plain
+         jar (no jlatexmath-fop; graph never touches the .fop.* classes) as
+         modules/console/pom.xml, modules/helptools/pom.xml and
+         modules/gui/pom.xml. -->
+    <dependency>
+      <groupId>org.scilab.forge</groupId>
+      <artifactId>jlatexmath</artifactId>
+      <version>1.0.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jlatexmath-1.0.7.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/graph/jar/org.scilab.modules.graph.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

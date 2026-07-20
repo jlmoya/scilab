@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/core/pom.xml — Stage 2-f Task 4 module POM (Wave D)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/core -am package from the
+  reactor root, or mvn -f modules/core/pom.xml package). Ant (modules/core/
+  build.xml + build.incl.xml) remains the real build; nothing here is wired
+  into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave D — four modules whose only unmigrated-wave
+  dependency was gui (Wave C, now in the reactor). core is the smallest of
+  the four (3 source files: Scilab.java — Scilab's actual application
+  entry-point / bootstrap class, reached reflectively by NAME from several
+  other modules' ruled-out Class.forName findings in earlier stages —
+  plus ConsoleTab.java and ConsoleTabFactory.java) but pulls in six reactor
+  dependencies plus flexdock, because Scilab.java wires up the whole
+  application shell (menu bar, tool bar, console window, docking layout).
+
+  STEP 1 FINDINGS (./maven-module-deps.sh core, 3 files):
+    [1] imports (excluding core's own package):
+      - org.flexdock.docking — ConsoleTab.java's real import (DockingConstants,
+        DockingManager, both also used fully-qualified — see below).
+        thirdparty/flexdock-1.2.5.jar, below.
+      - org.scilab.modules.action_binding.highlevel — Scilab.java imports
+        ScilabInterpreterManagement.
+      - org.scilab.modules.commons{,.xml} — Scilab.java, ConsoleTab.java import
+        OS, ScilabCommons, ScilabCommonsUtils, ScilabConstants,
+        xml.XConfiguration.
+      - org.scilab.modules.graphic_objects.{graphicController,
+        graphicObject.GraphicObject,utils} — Scilab.java imports
+        GraphicController, GraphicObject, MenuBarBuilder.
+      - org.scilab.modules.gui.* (bridge, bridge.console, bridge.tab,
+        bridge.window, console, menubar, tab, tabfactory, textbox, toolbar,
+        utils) — by far the widest package family here: ScilabTermination,
+        SwingView, CallScilabBridge, SwingScilabConsole,
+        SwingScilabDockablePanel, SwingScilabWindow, ScilabConsole, MenuBar,
+        ScilabMenuBar, ScilabTab, Tab, AbstractScilabTabFactory,
+        ScilabTabFactory, ScilabTextBox, TextBox, ToolBar,
+        ClosingOperationsManager, ConfigManager, LookAndFeelManager,
+        ToolBarBuilder, WindowsConfigurationManager — this module IS the
+        application shell gui's Swing widgets get assembled into.
+      - org.scilab.modules.jvm.LoadClassPath — Scilab.java.
+      - org.scilab.modules.localization.Messages — the usual reactor-sibling
+        idiom.
+      All six already carry Maven coordinates from Wave A/B/C or earlier;
+      none of this wave's work is a new reactor edge, only a new consumer.
+    [2] reflection targets — RULED OUT: (none reported, confirmed by a manual
+        `grep -rn 'Class\.forName\|loadClass('` sweep of all 3 files — zero
+        hits). The two string-literal FQNs that DO appear in this module
+        (ConsoleTabFactory.java:32's own `CLASS = "org.scilab.modules.core.
+        ConsoleTabFactory"` self-reference, and Scilab.java:65's
+        `System.setProperty("java.protocol.handler.pkgs",
+        "org.scilab.modules.commons")`, a URL-handler-package registration,
+        not a class load) are inert for dependency purposes — the first names
+        this module's own class, the second is a system-property VALUE naming
+        a package already a direct dependency below, never passed to
+        Class.forName/loadClass anywhere in this module.
+    [3] fully-qualified uses with no import: org.flexdock.docking.
+        {DockingConstants, DockingManager} — confirms real, load-bearing
+        vendored usage (not merely an unused import) — see the flexdock
+        dependency below. Every other name in this category is one of the
+        six reactor packages above spelled out in full elsewhere in
+        Scilab.java/ConsoleTab.java, nothing new.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  FLEXDOCK — org.flexdock.docking.{DockingConstants, DockingManager},
+  ConsoleTab.java's own docking-layout wiring. SAME MECHANISM, SAME
+  COORDINATE AS modules/commons/pom.xml (cross-referenced, not restated —
+  see that file's <dependencies> comment for the full systemPath-vs-
+  alternatives rationale, including the measured file://-repository mirror
+  trap and the dated Maven-4 system-scope risk).
+
+  IMPLEMENTATION-VERSION: present, frozen at the literal "00000000 0000",
+  positioned between Implementation-Title and Implementation-Vendor exactly
+  where Ant's own jar places it (confirmed against modules/core/jar/
+  org.scilab.modules.core.jar's actual manifest before extraction: live
+  value there was "20260719 1729", a DSTAMP/TSTAMP pair). Vendor string
+  double-encoded ("Ã¨", bytes c3 83 c2 a8) — extracted, never retyped, same
+  as every other module.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>core</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Scilab application"/> -->
+  <name>Scilab application</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.action_binding.highlevel.ScilabInterpreterManagement
+         — Scilab.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>action_binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.commons.{OS, ScilabCommons, ScilabCommonsUtils,
+         ScilabConstants, xml.XConfiguration} — Scilab.java, ConsoleTab.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.graphic_objects.{graphicController.
+         GraphicController, graphicObject.GraphicObject, utils.
+         MenuBarBuilder} — Scilab.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>graphic_objects</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.gui.* — the widest package family in this module
+         (bridge, bridge.console, bridge.tab, bridge.window, console,
+         menubar, tab, tabfactory, textbox, toolbar, utils): this module
+         assembles gui's Swing widgets into the actual application shell. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.jvm.LoadClassPath — Scilab.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>jvm</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- FLEXDOCK — org.flexdock.docking.{DockingConstants, DockingManager},
+         ConsoleTab.java's docking-layout wiring. SAME MECHANISM, SAME
+         COORDINATE AS modules/commons/pom.xml (cross-referenced, not
+         restated — see that file's <dependencies> comment). -->
+    <dependency>
+      <groupId>org.flexdock</groupId>
+      <artifactId>flexdock</artifactId>
+      <version>1.2.5</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/core/jar/org.scilab.modules.core.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

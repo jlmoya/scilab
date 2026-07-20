@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/history_browser/pom.xml — Stage 2-f Task 4 module POM (Wave D)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/history_browser -am
+  package from the reactor root, or mvn -f modules/history_browser/pom.xml
+  package). Ant (modules/history_browser/build.xml + build.incl.xml) remains
+  the real build; nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave D — four modules whose only unmigrated-wave
+  dependency was gui (Wave C, now in the reactor). history_browser is the
+  command-history window (CommandHistory.java's Swing JList/tree UI) plus its
+  toolbar/context-menu actions (14 files, five in the top-level package, nine
+  under actions/).
+
+  STEP 1 FINDINGS (./maven-module-deps.sh history_browser, 14 files):
+    [1] imports (excluding the module's own packages): org.scilab.modules.
+        commons{,.gui}, graphic_objects.graphicObject, gui.* (bridge.
+        {contextmenu,menuitem,tab,toolbar,window}, console, contextmenu,
+        events.callback, menu, menubar, menuitem, messagebox, tab,
+        tabfactory, textbox, toolbar, utils, window), history_manager,
+        localization — five reactor dependencies, all below (all already
+        migrated: Wave C for gui, earlier waves for the rest). No vendored
+        third-party import anywhere in this module.
+    [2] reflection targets — THE TOOL ITSELF MISSED ONE HERE, FOUND BY A
+        MANUAL SWEEP (see the highlighted paragraph below): the script
+        reported "(none)", but actions/EditInScinotesAction.java genuinely
+        reaches org.scilab.modules.scinotes.SciNotes via Class.forName at
+        runtime — RULED OUT below for the same reason every other module's
+        scinotes/core.Scilab reflection finding has been (scinotes is Wave E,
+        nowhere near migrated; a compile-time dependency here would likely
+        cycle, which is exactly why the source uses reflection to begin
+        with — EditInScinotesAction.java's own comment says so explicitly).
+    [3] fully-qualified uses with no import: every org.scilab.modules.
+        {commons,graphic_objects,gui,history_manager,localization}.* name in
+        this category is already covered by the five reactor dependencies
+        above (SwingScilabContextMenu, SwingScilabMenuItem,
+        SwingScilabDockablePanel, SwingScilabToolBar, SwingScilabWindow,
+        ScilabConsole, ContextMenu, ScilabContextMenu, CallBack,
+        CommonCallBack, Menu, ScilabMenu, MenuBar, ScilabMenuBar, MenuItem,
+        ScilabMenuItem, MessageBox, ScilabMessageBox, SimpleTab,
+        AbstractScilabTabFactory, ScilabTabFactory, ScilabTextBox, TextBox,
+        ScilabToolBar, ToolBar, ClosingOperationsManager,
+        WindowsConfigurationManager, ScilabWindow, HistoryManagement,
+        Messages, ScilabGeneralPrefs, FindIconHelper, ScilabGUIUtilities,
+        ScilabKeyStroke, ScilabLAF, CallBack (graphic_objects.graphicObject)),
+        nothing new. org.scilab.modules.scinotes.SciNotes is NOT in this
+        list either — see the paragraph below for why, and why that absence
+        does not mean the finding was safe to skip.
+
+  A REAL GAP IN maven-module-deps.sh, FOUND BY THIS MODULE, NOT DOCUMENTED IN
+  THE SCRIPT'S OWN HEADER. EditInScinotesAction.java:37 declares `private
+  static final String SCINOTES_PACKAGE = "org.scilab.modules.scinotes.
+  SciNotes";` and then calls `Class.forName(SCINOTES_PACKAGE)` at lines 57
+  and 98 — a genuine reflective load of an unmigrated module's class, exactly
+  the shape [2] exists to catch. It caught NEITHER this call NOR the literal
+  as a [3] fully-qualified use, for two compounding reasons, confirmed by
+  reading the script (not guessed):
+    - [2]'s own regex, `(Class\.forName|loadClass)\(\s*"[^"]+"`, requires the
+      double-quoted string literal DIRECTLY inside the call's parentheses.
+      Here the call site passes a variable (SCINOTES_PACKAGE), not an inline
+      literal, so the call itself never matches — contrast modules/ui_data/
+      pom.xml's OpenFileInSciNotesAction.java, which DOES call
+      `Class.forName("org.scilab.modules.scinotes.SciNotes")` inline and WAS
+      correctly caught by this same regex.
+    - [3]'s regex requires the fully-qualified name to be preceded by `@` or
+      a character OUTSIDE the class `[A-Za-z0-9_."]` — and that negated class
+      itself EXCLUDES the double-quote character, so a name occurring as the
+      very first token inside a string literal (immediately after the
+      opening `"`, e.g. the SCINOTES_PACKAGE constant's own initializer) has
+      a `"` as its preceding character and structurally cannot match. The
+      same is true of ConsoleTabFactory.java-style self-referential `CLASS =
+      "org.scilab.modules...ClassName"` constants seen in this wave (core,
+      history_browser, ui_data each have one) — [3] is silent on all of them,
+      by the same mechanism, though those particular ones are harmless
+      (self-references to the declaring module's own class).
+  CONSEQUENCE: a module can hide a real reflective dependency on an
+  unmigrated module behind one level of constant indirection and this tool
+  will report a clean "(none)" for [2] and say nothing in [3] either — the
+  worst kind of miss, a false-negative silence rather than the
+  over-reporting [3] already warns about. Found here only because Task 4's
+  own verification step ran an independent `grep -rn 'Class\.forName\|
+  loadClass('` sweep across all four modules before trusting the tool's
+  "(none)". RULED OUT exactly as intended once found — no compile-time
+  dependency added — but the absence in the tool's own output was NOT
+  evidence of absence in the source, and should not be treated as such by
+  whichever module hits this shape next. Not fixed here (the script itself
+  is out of scope for a module-POM task), but flagged loudly per this
+  campaign's evidence-before-assertion standard.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  IMPLEMENTATION-VERSION: present, frozen at the literal "00000000 0000",
+  positioned between Implementation-Title and Implementation-Vendor exactly
+  where Ant's own jar places it (confirmed against modules/history_browser/
+  jar/org.scilab.modules.history_browser.jar's actual manifest before
+  extraction: live value there was "20260719 1729", a DSTAMP/TSTAMP pair).
+  Vendor string double-encoded ("Ã¨", bytes c3 83 c2 a8) — extracted, never
+  retyped, same as every other module.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>history_browser</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Scilab history browser"/> -->
+  <name>Scilab history browser</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.commons.{ScilabGeneralPrefs, gui.FindIconHelper,
+         gui.ScilabGUIUtilities, gui.ScilabKeyStroke, gui.ScilabLAF}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.graphic_objects.graphicObject.CallBack. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>graphic_objects</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.gui.* — the widest package family here (bridge.
+         {contextmenu,menuitem,tab,toolbar,window}, console, contextmenu,
+         events.callback, menu, menubar, menuitem, messagebox, tab,
+         tabfactory, textbox, toolbar, utils, window). -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.history_manager.HistoryManagement. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>history_manager</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/history_browser/jar/org.scilab.modules.
+                 history_browser.jar META-INF/MANIFEST.MF), never retyped:
+                 Specification-Vendor and Implementation-Vendor both carry
+                 the double-mangled "Ã¨" (bytes c3 83 c2 a8) — see
+                 modules/localization/pom.xml's fuller comment for the
+                 mechanism. Implementation-Version is present, frozen at the
+                 literal "00000000 0000", positioned between
+                 Implementation-Title and Implementation-Vendor exactly
+                 where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
