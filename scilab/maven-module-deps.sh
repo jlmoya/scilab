@@ -83,15 +83,48 @@ echo
 # --- 2. reflection: must be ruled OUT ---------------------------------------
 # These resolve at RUNTIME. Putting them in <dependencies> can introduce a
 # reactor cycle (Stage 2-b). Listed so the exclusion is deliberate and visible.
+#
+# TWO forms are detected, because Stage 2-f Wave D found the second reported a
+# FALSE (none):
+#   (a) inline    -- Class.forName("org.scilab.modules.x.Y")
+#   (b) via const -- static final String PKG = "org.scilab.modules.x.Y";
+#                    ... Class.forName(PKG);
+# history_browser's EditInScinotesAction.java uses (b): the literal is on a
+# `private static final String SCINOTES_PACKAGE = "..."` line, and the forName
+# call names the CONSTANT. An inline-literal grep at the call site sees nothing.
 echo "[2] reflection targets — do NOT add these to <dependencies>"
-REFL=$(grep -rhoE '(Class\.forName|loadClass)\(\s*"[^"]+"' "$SRC" --include='*.java' 2>/dev/null \
-  | grep -oE '"[^"]+"' | tr -d '"' | sort -u)
+# (a) literals passed directly to forName/loadClass
+REFL_INLINE=$(grep -rhoE '(Class\.forName|loadClass)\(\s*"[^"]+"' "$SRC" --include='*.java' 2>/dev/null \
+  | grep -oE '"[^"]+"' | tr -d '"')
+# (b) String constants whose NAME is later handed to forName/loadClass. Collect
+# every `... String IDENT = "value"` declaration, then keep those whose IDENT
+# appears as a forName/loadClass argument anywhere in the module.
+REFL_CONST=$(python3 - "$SRC" <<'PY'
+import os, re, sys
+src = sys.argv[1]
+decl = re.compile(r'\bString\s+([A-Za-z_][A-Za-z0-9_]*)\s*=\s*"([^"]+)"')
+blob = []
+for root, _d, files in os.walk(src):
+    for fn in files:
+        if fn.endswith(".java"):
+            blob.append(open(os.path.join(root, fn), encoding="utf-8", errors="replace").read())
+text = "\n".join(blob)
+consts = dict(decl.findall(text))                      # IDENT -> "value"
+used = set(re.findall(r'(?:Class\.forName|loadClass)\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*[\),]', text))
+for ident in sorted(used):
+    if ident in consts and "." in consts[ident]:       # looks like a class/pkg name
+        print(consts[ident])
+PY
+)
+REFL=$(printf '%s\n%s\n' "$REFL_INLINE" "$REFL_CONST" | grep -v '^$' | sort -u)
 if [ -n "$REFL" ]; then
   echo "$REFL" | sed 's/^/    /'
   echo "    ^ resolved at runtime. If any names a Scilab module, a compile-time"
   echo "      dependency on it would likely CYCLE — that is why Ant uses reflection."
 else
-  echo "    (none)"
+  echo "    (none — but a forName() whose argument is BUILT at runtime, e.g. string"
+  echo "      concatenation, still cannot be seen here; grep Class.forName yourself"
+  echo "      on a module that touches an unmigrated sibling.)"
 fi
 echo
 
