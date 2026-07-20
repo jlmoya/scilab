@@ -127,10 +127,12 @@
          (scilab-lib.properties:11), i.e. a fixed local file path with no
          dependency-resolution machinery at all.
 
-         MECHANISM CHOSEN: <scope>system</scope> + <systemPath>, the direct
-         Maven analogue of Ant's raw pathelement — no repository, no
-         resolution, just "put this exact file on the compile classpath."
-         Two alternatives considered and rejected:
+         MECHANISM CHOSEN: <scope>system</scope> + <systemPath> — no
+         repository, no resolution, just "put this exact file on the
+         compile classpath." That is not merely a resemblance to Ant's
+         raw pathelement; needing no resolution AT ALL is the actual,
+         load-bearing reason this survives builds on THIS machine,
+         demonstrated below. Two alternatives considered and rejected:
            - install:install-file into ~/.m2 under a squatted
              org.flexdock:flexdock:1.2.5 coordinate: this is an imperative,
              out-of-band, PER-MACHINE step that leaves no trace in version
@@ -142,13 +144,31 @@
              consumed the same way Ant already consumes it: a raw file, not
              a published artifact).
            - a project-local file:// repository laid out in Maven's
-             groupId/artifactId/version directory shape: reproducible from
-             a fresh clone, but requires DUPLICATING or symlinking the jar
-             into a repo-shaped subtree under version control (thirdparty/
-             is flat and populated by fetch-thirdparty.sh, not laid out as
-             a Maven repo) — more moving parts than systemPath for the same
-             outcome, and a second on-disk copy of the same permanently-
-             vendored jar to keep in sync.
+             groupId/artifactId/version directory shape: the Stage 2-b
+             review's recommendation, correctly noting that Maven's own
+             tooling calls a systemPath dependency "malformed" (the
+             warning is quoted below) and that Maven 4 drops `system`
+             scope outright (the expiry is recorded below too). MEASURED,
+             not merely argued — and the measurement overturned the
+             recommendation. This machine's ~/.m2/settings.xml declares
+             one mirror: <mirrorOf>*,!maven.oracle.com,!smartnow-tech
+             </mirrorOf>. Maven mirrors match on repository ID, not URL
+             scheme, so a declared file:// repository is intercepted
+             exactly like any real remote one — the URL scheme buys
+             nothing. A probe confirmed it directly: with a file://
+             repository declared and a correctly laid-out
+             repo/org/flexdock/flexdock/1.2.5/ directory (jar plus a
+             minimal .pom), Maven never read the local path at all. It
+             rewrote the request to
+             http://localhost:7910/repository/maven-public/... (the local
+             Nexus mirror, which answers 401) and then to an Azure DevOps
+             feed, and failed outright: BUILD FAILURE, "Could not resolve
+             dependencies." Making file:// work would require every
+             developer to hand-edit a PERSONAL settings.xml — adding this
+             repository's id to the mirror's exclusion list, the same way
+             maven.oracle.com and smartnow-tech are excluded above — and
+             that file is not tracked in version control: strictly WORSE
+             for a fresh clone than systemPath already gives us today.
          Trade-off accepted with systemPath: `system` scope is excluded
          from transitive resolution (a consumer of commons would not
          inherit flexdock automatically) and is generally discouraged for
@@ -159,7 +179,42 @@
          systemPath dependency itself when its turn in the migration comes,
          exactly as each of their build.xml files independently references
          ${flexdock.jar} today. This IS the production mechanism for this
-         jar going forward, not a placeholder. -->
+         jar going forward — under Maven 3. Not a placeholder, but not
+         permanent either: see the dated expiry below.
+
+         THE WARNING BELOW IS EXPECTED, NOT NEW BREAKAGE. Captured
+         2026-07-20 from a plain (without -q) `mvn -pl modules/commons -am
+         package`, this exact <dependency> element produces:
+         "'dependencies.dependency.systemPath' for org.flexdock:
+         flexdock:jar should not point at files within the project
+         directory, ${project.basedir}/../../thirdparty/flexdock-1.2.5.jar
+         will be unresolvable by dependent projects", and separately,
+         "future Maven versions might no longer support building such
+         malformed projects." (The file/line/column Maven also prints
+         locates the <systemPath> element by POSITION, so it drifts every
+         time this comment is edited — match on the wording above, not a
+         line number.) Both sentences are true, and both are the
+         trade-off already accepted above, not a regression to chase:
+         this jar genuinely is unresolvable outside this reactor (system
+         scope is deliberately excluded from transitive resolution,
+         above), and Maven genuinely does consider the declaration
+         malformed. `-q` in earlier verification recipes hid this
+         warning; recipes now run without it specifically so it stays
+         visible.
+
+         DATED EXPIRY — NOT "FINE FOREVER": Maven 4 removes `system`
+         scope entirely and unconditionally. When this reactor's tooling
+         moves to Maven 4, flexdock — one of roughly ten permanently-
+         vendored jars in this position — will need a different
+         mechanism: most plausibly a genuine internal repository (with
+         its id added to this machine's mirror exclusion list the way
+         maven.oracle.com and smartnow-tech are today, so it is actually
+         reachable and does not fall into the trap probed above) or the
+         build-helper-maven-plugin's attach-artifact goal. That migration
+         is out of scope here (so is Maven 4 itself); this paragraph
+         exists so it is a KNOWN, DATED cost paid on purpose later, not a
+         surprise discovered when a Maven-4 upgrade first refuses to
+         build. -->
     <dependency>
       <groupId>org.flexdock</groupId>
       <artifactId>flexdock</artifactId>
