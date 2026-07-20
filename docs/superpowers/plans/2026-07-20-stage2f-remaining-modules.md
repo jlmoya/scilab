@@ -53,6 +53,10 @@ the same break. `normalize_manifest` now joins continuation lines, so this shoul
 9. **`Implementation-Version` must be PRESENT** as frozen `00000000 0000`, between
    `Implementation-Title` and `Implementation-Vendor`. The harness **cannot see** its absence;
    `getImplementationVersion()` returns null without it and Scilab reads it at runtime.
+   **ONE DOCUMENTED EXCEPTION (Wave B):** `javasci`'s `build.xml` overrides the shared `jar` target,
+   so Ant emits a bare manifest with no per-package section at all — its POM fragment reproduces
+   that (no `Implementation-Version`), and adding one would fail parity. See register **B12**. Any
+   *other* module missing it is a bug, not an exception; verify against the module's own Ant jar.
 10. **Build the FULL reactor** (`mvn package`, no `-pl`) after any broad `target/` clean — the
     completeness check requires every reactor module to have a jar.
 11. **The pinned reactor test goes red by design.** UPDATE its exact list and counter; **never**
