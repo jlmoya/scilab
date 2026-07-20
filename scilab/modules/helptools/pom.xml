@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/helptools/pom.xml — Stage 2-f Task 1 module POM (Wave A)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/helptools -am package
+  from the reactor root, or mvn -f modules/helptools/pom.xml package). Ant
+  (modules/helptools/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave A — four modules with no unmigrated
+  dependencies, verified from actual imports. helptools carries the widest
+  set of vendored third-party jars of any module migrated so far (seven),
+  because it is the module `make doc` drives via xmltojar.sci over the
+  built helptools.jar — its jar content must be reproduced exactly.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh helptools, 46 files):
+    [1] imports (excluding own packages):
+      - com.sun.java.help.search — JarOnlyConverter.java imports Indexer
+        (real import, confirmed by reading the file — a second, unrelated
+        textual mention of "com.sun.java.help.search.DefaultSearchEngine"
+        in JavaHelpDocbookTagConverter.java is inside a Java string literal
+        building a .hs XML template, not a compile-time reference).
+        thirdparty/jhall-2.0.jar, below.
+      - jakarta.activation — ImageConverter.java imports
+        MimetypesFileTypeMap. thirdparty/jakarta.activation-api-2.1.3.jar,
+        below (NOT jakarta.activation-2.0.1.jar, the separate impl jar also
+        vendored under thirdparty/ — build.incl.xml:103's compile classpath
+        only ever puts ${jakarta.activation-api.jar} there, confirmed
+        against scilab-lib.properties.in:13).
+      - net.sourceforge.jeuclid{,.context,.converter,.layout} —
+        CopyConvert.java, image/MathMLImageConverter.java's real imports.
+        thirdparty/jeuclid-core-3.1.14.jar, below (same jar as
+        modules/console/pom.xml's identical dependency).
+      - org.apache.batik.transcoder{,.image} — CopyConvert.java,
+        image/SVGImageConverter.java's real imports. thirdparty/
+        batik-all-1.17.jar, below.
+      - org.apache.fop.apps — FopConverter.java's real imports.
+        thirdparty/fop-core-2.9.jar, below.
+      - org.scilab.forge.jlatexmath{,.fop} — CopyConvert.java,
+        FopConverter.java, image/LaTeXImageConverter.java's real imports;
+        UNLIKE modules/console/pom.xml, this module also uses the
+        org.scilab.forge.jlatexmath.fop.* classes (JLaTeXMathElementMapping,
+        JLaTeXMathXMLHandler), which live in the SEPARATE
+        thirdparty/jlatexmath-fop-1.0.7.jar — both jars below.
+      - org.scilab.modules.commons{,.gui,.xml}, .localization — two reactor
+        dependencies, below (both already migrated).
+      - org.w3c.dom, org.xml.sax{,.helpers} — JDK (java.xml module), not a
+        dependency.
+    [2] reflection targets — RULED OUT: org.scilab.modules.xcos.utils.
+        XcosDelegates, reached only via XcosImageConverter.java:78's
+        `Class.forName("org.scilab.modules.xcos.utils.XcosDelegates")`
+        (confirmed by reading the file: the surrounding comment literally
+        says "use a delegate method to avoid a static dependency"). xcos is
+        Wave E, nowhere near migrated yet — reproduced as an absence.
+    [3] fully-qualified uses with no import:
+      - javax.annotation.Generated — five JFlex-generated lexers
+        (SynopsisLexer.java, java/JavaLexer.java, XML/XMLLexer.java,
+        scilab/ScilabLexer.java, c/CLexer.java) each carry
+        `@javax.annotation.Generated("JFlex")`, the EXACT SAME pattern
+        modules/graphic_objects/pom.xml's header comment documents for
+        xmlloader/CSSParser.java. thirdparty/javax.annotation-api-1.3.2.jar,
+        below — same jar, same coordinate as that module.
+      - org.apache.xerces.parsers.SAXParser — RULED OUT: the only hit is
+        CopyConvert.java:721, `// driver class org.apache.xerces.parsers.
+        SAXParser not found` — a comment, not code. Confirmed there is no
+        standalone xerces jar under thirdparty/ either (Ant does not
+        provide one on the shared compile classpath), consistent with this
+        being inert text.
+      - Every com.sun.java.help.search.*, jakarta.activation.*, org.apache.
+        batik.transcoder.*, org.apache.fop.apps.*, org.scilab.forge.
+        jlatexmath{,.fop}.*, org.scilab.modules.commons.*, org.scilab.
+        modules.localization.* name already accounted for above.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  ITERATION 1 (this is the module the settled template warned would need
+  one): the POM as first written omitted xmlgraphics-commons.jar and
+  xml_apis_ext.jar (scilab-lib-doc.properties.in:15,17,19 alongside
+  batik.jar/fop-core.jar/jeuclid-core.jar/commons-io.jar) on the theory
+  that both are transitive runtime support for batik/fop, not anything
+  helptools' OWN source imports or fully-qualifies (confirmed by `grep -rn
+  'org\.apache\.commons\.io\|org\.w3c\.dom\.svg\|org\.w3c\.dom\.css'
+  modules/helptools/src/java`, zero hits, still true). A real `mvn package`
+  proved that theory half right: xml_apis_ext and commons-io genuinely are
+  unneeded (no error mentions either), but xmlgraphics-commons is NOT —
+  FopConverter.java:47,56,59 failed with:
+    cannot access org.apache.xmlgraphics.image.loader.ImageContext
+    cannot access org.apache.xmlgraphics.util.MimeConstants
+    cannot find symbol: variable MIME_POSTSCRIPT
+      location: interface org.apache.fop.apps.MimeConstants
+  `javap -p` on the actual class files explains all three at once:
+  org.apache.fop.apps.MimeConstants (fop-core-2.9.jar) is declared
+  `public interface MimeConstants extends org.apache.xmlgraphics.util.
+  MimeConstants` — it contributes only MIME_FOP_AWT_PREVIEW/MIME_FOP_PRINT/
+  MIME_FOP_AREA_TREE/MIME_FOP_IF/MIME_BITMAP itself; MIME_POSTSCRIPT (which
+  FopConverter.java:59 reads as MimeConstants.MIME_POSTSCRIPT, through the
+  fop.apps import) is inherited from the xmlgraphics-commons superinterface,
+  confirmed present there by the same javap. Resolving an INHERITED
+  interface constant requires the superinterface's own class file at
+  compile time even though nothing in helptools ever spells
+  org.apache.xmlgraphics.* out directly — the same class of gap
+  modules/graphic_objects/pom.xml's javax.annotation-api finding
+  documents, just reached through interface inheritance instead of an
+  unimported annotation. xmlgraphics-commons is added below, citing this
+  exact finding; xml_apis_ext and commons-io are not, per the
+  reproduce-what-Ant's-classpath-actually-serves-THIS-module principle —
+  if a future build proves either of those needed too, add it then, with
+  its own failing symbol cited the same way this one was. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>helptools</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:20 <property name="library.title" value="Help components"/> -->
+  <name>Help components</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.commons.{ScilabCommons, ScilabCommonsUtils,
+         ScilabConstants, gui.FindIconHelper, xml.ScilabDocumentBuilderFactory,
+         xml.ScilabTransformerFactory} across multiple helptools classes. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.{Messages, LocaleToLCID} — the
+         ordinary reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- JarOnlyConverter.java imports com.sun.java.help.search.Indexer.
+         No property in scilab-lib.properties.in names this jar directly by
+         a "jhall.jar=" key distinct from the one already there — it IS
+         that key (scilab-lib.properties.in:27 jhall.jar=@JHALL@ ->
+         thirdparty/jhall-2.0.jar), put on the shared compile classpath as a
+         raw <pathelement> by build.incl.xml:85, same shape as every other
+         vendored jar in this reactor. <scope>system</scope> + <systemPath>,
+         cross-referenced rather than restated — see modules/commons/pom.xml's
+         flexdock comment for the full measured rationale. Coordinate used
+         purely as a label; system scope means it is never actually
+         resolved from a repository. -->
+    <dependency>
+      <groupId>javax.help</groupId>
+      <artifactId>javahelp</artifactId>
+      <version>2.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jhall-2.0.jar</systemPath>
+    </dependency>
+    <!-- ImageConverter.java imports jakarta.activation.MimetypesFileTypeMap.
+         scilab-lib.properties.in:13 sets jakarta.activation-api.jar ->
+         thirdparty/jakarta.activation-api-2.1.3.jar — the API jar Ant's
+         compile classpath actually uses (see this file's header comment
+         for why the separate jakarta.activation-2.0.1.jar impl jar,
+         despite carrying the same class, is not the one to reproduce). Real
+         Maven Central coordinate. -->
+    <dependency>
+      <groupId>jakarta.activation</groupId>
+      <artifactId>jakarta.activation-api</artifactId>
+      <version>2.1.3</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jakarta.activation-api-2.1.3.jar</systemPath>
+    </dependency>
+    <!-- Five JFlex-generated lexers carry @javax.annotation.Generated("JFlex")
+         — a fully-qualified annotation with no import statement (see this
+         file's header comment, STEP 1 FINDINGS [3]). Same jar, same real
+         Maven Central coordinate as modules/graphic_objects/pom.xml's
+         identical dependency (cross-referenced, not restated). -->
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.3.2</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/javax.annotation-api-1.3.2.jar</systemPath>
+    </dependency>
+    <!-- CopyConvert.java, image/SVGImageConverter.java import
+         org.apache.batik.transcoder.{Transcoder, TranscoderInput,
+         TranscoderOutput, TranscoderException, ErrorHandler,
+         XMLAbstractTranscoder, image.ImageTranscoder, image.PNGTranscoder}.
+         scilab-lib-doc.properties.in:4 sets batik.jar -> thirdparty/
+         batik-all-1.17.jar (cited against the tracked .in template, not the
+         generated scilab-lib-doc.properties — see modules/scirenderer/pom.xml's
+         dependencies comment for why). Real Maven Central coordinate
+         (org.apache.xmlgraphics:batik-all). -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-all</artifactId>
+      <version>1.17</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/batik-all-1.17.jar</systemPath>
+    </dependency>
+    <!-- FopConverter.java imports org.apache.fop.apps.{FOPException, Fop,
+         FopFactory, FormattingResults, MimeConstants}.
+         scilab-lib-doc.properties.in:7 sets fop-core.jar -> thirdparty/
+         fop-core-2.9.jar. Real Maven Central coordinate
+         (org.apache.xmlgraphics:fop-core, FOP's own split-module layout). -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>fop-core</artifactId>
+      <version>2.9</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/fop-core-2.9.jar</systemPath>
+    </dependency>
+    <!-- NOT DIRECTLY IMPORTED BY HELPTOOLS' OWN SOURCE — needed anyway,
+         found only by a real compile failure (see this file's header
+         comment, "ITERATION 1"). org.apache.fop.apps.MimeConstants (the
+         interface FopConverter.java imports) extends org.apache.
+         xmlgraphics.util.MimeConstants, and FopConverter.java:59 reads
+         MimeConstants.MIME_POSTSCRIPT — a constant that javap confirms is
+         declared on the xmlgraphics-commons SUPERinterface, not on
+         fop-core's own subinterface. Resolving an inherited interface
+         constant requires the superinterface's class file on the compile
+         classpath even with zero org.apache.xmlgraphics.* text anywhere in
+         helptools' source. scilab-lib-doc.properties.in:17 sets
+         xmlgraphics-commons.jar -> thirdparty/xmlgraphics-commons-2.9.jar.
+         Real Maven Central coordinate (org.apache.xmlgraphics:
+         xmlgraphics-commons, the same groupId as batik-all/fop-core
+         above — all three are sibling artifacts of the Apache XML
+         Graphics project). -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>xmlgraphics-commons</artifactId>
+      <version>2.9</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/xmlgraphics-commons-2.9.jar</systemPath>
+    </dependency>
+    <!-- CopyConvert.java, image/MathMLImageConverter.java import
+         net.sourceforge.jeuclid.{MathMLParserSupport, MutableLayoutContext,
+         context.LayoutContextImpl, context.Parameter, converter.Converter,
+         layout.JEuclidView}. scilab-lib-doc.properties.in:13 sets
+         jeuclid-core.jar -> thirdparty/jeuclid-core-3.1.14.jar — same jar,
+         same coordinate as modules/console/pom.xml's identical dependency
+         (cross-referenced, not restated). -->
+    <dependency>
+      <groupId>net.sourceforge.jeuclid</groupId>
+      <artifactId>jeuclid-core</artifactId>
+      <version>3.1.14</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jeuclid-core-3.1.14.jar</systemPath>
+    </dependency>
+    <!-- CopyConvert.java, FopConverter.java, image/LaTeXImageConverter.java
+         import org.scilab.forge.jlatexmath.{ParseException, TeXConstants,
+         TeXFormula, TeXIcon}. scilab-lib.properties.in:43 sets
+         jlatexmath.jar -> thirdparty/jlatexmath-1.0.7.jar — same jar, same
+         coordinate as modules/console/pom.xml's identical dependency. -->
+    <dependency>
+      <groupId>org.scilab.forge</groupId>
+      <artifactId>jlatexmath</artifactId>
+      <version>1.0.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jlatexmath-1.0.7.jar</systemPath>
+    </dependency>
+    <!-- FopConverter.java imports org.scilab.forge.jlatexmath.fop.
+         {JLaTeXMathElementMapping, JLaTeXMathXMLHandler} — a SEPARATE jar
+         from plain jlatexmath above (confirmed by `unzip -l`: these two
+         classes live only in jlatexmath-fop-1.0.7.jar, not in
+         jlatexmath-1.0.7.jar). scilab-lib.properties.in:45 sets
+         jlatexmath-fop.jar -> thirdparty/jlatexmath-fop-1.0.7.jar. This is
+         the one jar of the seven vendored here that modules/console/pom.xml
+         does NOT need (console never touches the .fop.* classes) — see
+         this file's header comment. -->
+    <dependency>
+      <groupId>org.scilab.forge</groupId>
+      <artifactId>jlatexmath-fop</artifactId>
+      <version>1.0.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jlatexmath-fop-1.0.7.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/helptools/jar/org.scilab.modules.helptools.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. THIS IS THE MODULE `make doc`
+                 DEPENDS ON (xmltojar.sci drives it over the built
+                 helptools.jar) — its jar content is reproduced exactly, not
+                 improvised. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

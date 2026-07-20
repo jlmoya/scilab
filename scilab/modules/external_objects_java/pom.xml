@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/external_objects_java/pom.xml — Stage 2-f Task 1 module POM (Wave A)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/external_objects_java -am
+  package from the reactor root, or mvn -f
+  modules/external_objects_java/pom.xml package). Ant
+  (modules/external_objects_java/build.xml + build.incl.xml) remains the real
+  build; nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave A — four modules with no unmigrated
+  dependencies, verified from actual imports. The smallest of the four (12
+  source files) and, like graphic_objects before it, a reminder that an
+  import-only scan is not the whole story: one real reactor dependency here
+  is invisible to `grep '^import'`.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh external_objects_java, 12 files):
+    [1] imports (excluding own packages): java.awt, java.beans, java.io,
+        java.lang.reflect, java.net, java.nio, java.security, java.util,
+        java.util.jar, java.util.logging, javax.swing, javax.tools (all JDK)
+        and org.scilab.modules.commons — one reactor dependency, below.
+    [2] reflection targets: java.lang.VersionProps — a JDK-internal class
+        (build metadata), not a Scilab module; nothing to rule out.
+    [3] fully-qualified uses with no import — THE ONE THAT BITES HERE:
+        org.scilab.modules.commons.ScilabCommonsUtils (already counted under
+        commons) and org.scilab.modules.jvm.ScilabClassLoader — a SECOND
+        reactor dependency, invisible to the import scan because
+        ScilabJavaCompiler.java:313 spells it out fully qualified inline
+        rather than importing it:
+          `org.scilab.modules.jvm.ScilabClassLoader sysloader =
+           (org.scilab.modules.jvm.ScilabClassLoader)
+           ClassLoader.getSystemClassLoader();`
+        Confirmed real code (not a comment/javadoc) by reading the file
+        directly. jvm is already a migrated reactor module (Stage 2-e Task
+        1), so this is a genuine, satisfiable dependency, added below.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>external_objects_java</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="External object Java implementation"/> -->
+  <name>External object Java implementation</name>
+
+  <dependencies>
+    <!-- ScilabCommonsUtils and other commons classes — the ordinary
+         reactor-sibling idiom, same shape as modules/commons/pom.xml's own
+         localization dependency. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- ScilabJavaCompiler.java:313 — org.scilab.modules.jvm.ScilabClassLoader,
+         spelled out fully qualified with no import (see this file's header
+         comment, STEP 1 FINDINGS [3]). Same reactor-sibling idiom. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>jvm</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/external_objects_java/jar/
+                 org.scilab.modules.external_objects_java.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

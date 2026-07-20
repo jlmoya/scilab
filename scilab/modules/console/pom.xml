@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/console/pom.xml — Stage 2-f Task 1 module POM (Wave A)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/console -am package from
+  the reactor root, or mvn -f modules/console/pom.xml package). Ant
+  (modules/console/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave A — four modules with no unmigrated
+  dependencies, verified from actual imports rather than from
+  prebuildjava's topo-list position alone. The largest of the four (46
+  source files) and the first Wave-A module to carry FIVE simultaneous
+  reactor dependencies plus a vendored third-party pair.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh console, 46 files):
+    [1] imports (excluding own packages):
+      - com.artenum.rosetta.{core,core.action,exception,interfaces.core,
+        interfaces.ui,ui,util} — thirdparty/jrosetta-API-1.0.4.jar +
+        thirdparty/jrosetta-engine-1.0.4.jar, below (same two jars as
+        modules/completion/pom.xml — see that file's dependencies comment
+        for the file layout/mechanism cross-reference).
+      - net.sourceforge.jeuclid{,.context,.layout} — ScilabSpecialTextUtilities.
+        java's real imports (MathMLParserSupport, LayoutContextImpl,
+        Parameter, JEuclidView); thirdparty/jeuclid-core-3.1.14.jar, below.
+      - org.scilab.forge.jlatexmath — same file's real imports
+        (ParseException, TeXConstants, TeXFormula); thirdparty/
+        jlatexmath-1.0.7.jar, below. No `.fop.` classes used here (unlike
+        helptools), so jlatexmath-fop is correctly NOT a dependency of this
+        module.
+      - org.scilab.modules.action_binding, .commons{,.gui,.xml}, .completion,
+        .history_manager, .jvm, .localization — five reactor dependencies,
+        all below (all already migrated: Stage 2-e Task 1/2, Stage 2-b/2-a).
+      - org.w3c.dom, org.xml.sax — JDK (java.xml module), not a dependency.
+    [2] reflection targets — RULED OUT: org.scilab.modules.gui.utils.
+        HelpSearchField, reached only via SciConsole.java:153's
+        `Class.forName("org.scilab.modules.gui.utils.HelpSearchField")`
+        (confirmed by reading the file: a try/catch around
+        Class.forName + reflective constructor lookup, not an import).
+        gui is Wave C, not yet migrated — a compile-time dependency here
+        would be both premature and exactly the kind of edge Ant itself
+        avoids by using reflection. Reproduced as an absence, not "fixed"
+        into a real dependency.
+    [3] fully-qualified uses with no import: every com.artenum.rosetta.*
+        and org.scilab.forge.jlatexmath.* name already accounted for above
+        (confirmed real, non-comment usage — ScilabSpecialTextUtilities.
+        java's own import block), plus org.scilab.modules.action_binding.
+        InterpreterManagement, commons.ScilabGeneralPrefs, commons.gui.
+        ScilabCaret, commons.xml.*, completion.{AbstractSciCompletionWindow,
+        Completion}, history_manager.HistoryManagement, jvm.LoadClassPath,
+        localization.Messages — all already covered by the five reactor
+        dependencies above, nothing new.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  THE TWO ROSETTA JARS, VERIFIED PER-CLASS (same method as modules/
+  completion/pom.xml): `unzip -l thirdparty/jrosetta-API-1.0.4.jar` lists
+  ScriptException, CompletionItem, CompletionManager, ConsoleAction,
+  ConsoleConfiguration, GenericInterpreter, HistoryManager,
+  InputParsingManager, CommandLineView, CompletionWindow, InputCommandView,
+  OutputView, PromptView; `unzip -l thirdparty/jrosetta-engine-1.0.4.jar`
+  lists the remaining ConsoleTextPane, Console, ConfigurationBuilder,
+  StringConstants, BufferedWriter, ConsoleBuilder, CompletionItemImpl,
+  AbstractConsoleAction. All console's com.artenum.rosetta.* references are
+  covered across exactly these two jars, confirming both are genuinely
+  needed (not merely one of them guessed from the package name).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>console</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:20 <property name="library.title" value="Scilab console"/> -->
+  <name>Scilab console</name>
+
+  <dependencies>
+    <!-- SciConsole.java and others import
+         org.scilab.modules.action_binding.InterpreterManagement. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>action_binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.commons.{ScilabGeneralPrefs, gui.ScilabCaret,
+         xml.ScilabXMLUtilities, xml.XConfiguration, xml.XConfigurationEvent,
+         xml.XConfigurationListener} across multiple console classes. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.completion.{Completion, AbstractSciCompletionWindow}
+         — SciCompletionWindow.java, SciCompletionManager.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>completion</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.history_manager.HistoryManagement —
+         SciHistoryManager.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>history_manager</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.jvm.LoadClassPath — SciInterpreter.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>jvm</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- THE TWO VENDORED ROSETTA JARS this module actually compiles against
+         — SAME MECHANISM, SAME TWO FILES AS modules/completion/pom.xml
+         (scilab-lib.properties.in:39/41 -> thirdparty/jrosetta-API-1.0.4.jar,
+         thirdparty/jrosetta-engine-1.0.4.jar; build.incl.xml puts both on
+         the shared compile classpath as raw <pathelement>s, lines 82-83).
+         <scope>system</scope> + <systemPath>, cross-referenced rather than
+         restated — see modules/commons/pom.xml's flexdock comment for the
+         full measured rationale (install-file vs. a project-local file://
+         repository vs. systemPath) and modules/completion/pom.xml for the
+         identical two-jar pair. Real Maven Central coordinates used purely
+         as accurate labels; system scope means neither is ever actually
+         resolved from a repository. -->
+    <dependency>
+      <groupId>com.artenum.rosetta</groupId>
+      <artifactId>jrosetta-API</artifactId>
+      <version>1.0.4</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jrosetta-API-1.0.4.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.artenum.rosetta</groupId>
+      <artifactId>jrosetta-engine</artifactId>
+      <version>1.0.4</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jrosetta-engine-1.0.4.jar</systemPath>
+    </dependency>
+    <!-- ScilabSpecialTextUtilities.java imports net.sourceforge.jeuclid.
+         {MathMLParserSupport, context.LayoutContextImpl, context.Parameter,
+         layout.JEuclidView}. scilab-lib-doc.properties.in:13 sets
+         jeuclid-core.jar -> thirdparty/jeuclid-core-3.1.14.jar (cited
+         against the tracked .in template, not the generated
+         scilab-lib-doc.properties — see modules/scirenderer/pom.xml's
+         dependencies comment for why). build.incl.xml:98 puts it on the
+         shared compile classpath as a raw <pathelement>, same
+         system-scope/systemPath shape as every other vendored jar in this
+         reactor. -->
+    <dependency>
+      <groupId>net.sourceforge.jeuclid</groupId>
+      <artifactId>jeuclid-core</artifactId>
+      <version>3.1.14</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jeuclid-core-3.1.14.jar</systemPath>
+    </dependency>
+    <!-- Same file imports org.scilab.forge.jlatexmath.{ParseException,
+         TeXConstants, TeXFormula}. scilab-lib.properties.in:43 sets
+         jlatexmath.jar -> thirdparty/jlatexmath-1.0.7.jar. Only the plain
+         jlatexmath jar is needed here — console never touches the
+         org.scilab.forge.jlatexmath.fop.* classes that live in the
+         SEPARATE jlatexmath-fop.jar (contrast modules/helptools/pom.xml,
+         which needs both). -->
+    <dependency>
+      <groupId>org.scilab.forge</groupId>
+      <artifactId>jlatexmath</artifactId>
+      <version>1.0.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jlatexmath-1.0.7.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/console/jar/org.scilab.modules.console.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
