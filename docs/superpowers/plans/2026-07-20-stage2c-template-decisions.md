@@ -82,11 +82,52 @@ cd scilab/build-parity && python3 -m pytest -q | tail -3
 
 ---
 
-### Task 2: Decision A — reproduce Ant's jar names
+### Task 2: Decision A — reproduce Ant's jar names, and ARM the dimension
 
-**Files:** Modify `scilab/pom.xml` (parent).
+**Files:** Modify `scilab/pom.xml` (parent), `scilab/build-parity/tests/test_acceptance.py`.
 
-- [ ] **Step 1: One line in the parent POM's `<build>`**, inherited by all 24 modules:
+> **Why this task leads with a test.** Task 1's review found that `maven_jars` is **dormant**:
+> `baseline-autotools.json` has no `maven_jars` key, so the transition rule skips the section, and
+> *nothing in the repo compares `jars` to `maven_jars`*. The dimension can therefore report `ok`
+> however wrong Maven's output is. Arming it is this task's first job, not its last — and the check
+> must be seen to FAIL before `<finalName>` exists, which is exactly what makes it a real gate.
+>
+> Re-baselining `baseline-autotools.json` is **the wrong fix**: its README says refresh it only when
+> the autotools build legitimately changes, and doing so would fail for anyone who has not run
+> `mvn`. A self-arming acceptance check is the right shape.
+
+- [ ] **Step 1: Write the armed consumer FIRST — it must fail today.** In
+  `scilab/build-parity/tests/test_acceptance.py`, gated on `maven_jars` being non-empty so it
+  self-arms rather than needing a baseline refresh:
+
+```python
+def test_maven_jars_align_with_ant_jars(candidate_fingerprint):
+    """Every Maven-built jar must have an Ant counterpart at the same key, with identical content.
+
+    This is what makes the maven_jars dimension a GATE rather than a recorded observation:
+    diff.py's transition rule only detects regression across runs, never disagreement between
+    the two toolchains. Skips when no Maven jars are present so a pure-autotools tree is
+    unaffected; fires the moment anyone runs `mvn package`.
+    """
+    mj = candidate_fingerprint.get("maven_jars", {})
+    if not mj:
+        pytest.skip("no Maven-built jars in this tree -- nothing to align")
+    j = candidate_fingerprint["jars"]
+    orphans = sorted(set(mj) - set(j))
+    assert not orphans, f"Maven jars with no Ant counterpart (naming divergence?): {orphans}"
+    differing = sorted(k for k in mj if mj[k] != j[k])
+    assert not differing, f"Maven and Ant jars differ in content at: {differing}"
+```
+
+Match the file's existing fixture/idiom for obtaining the fingerprint rather than copying the
+parameter name above verbatim — read `tests/test_acceptance.py` and follow what is there.
+
+- [ ] **Step 2: Run it and watch it FAIL.** Expected: `orphans` lists
+  `modules/commons/jar/commons-2027.0.0-SNAPSHOT.jar` and the localization equivalent. **Quote the
+  failure verbatim.** A guard you have not seen fail is not a guard. If it passes, stop and report —
+  either the jars are absent (build them) or the check is not testing what it claims.
+
+- [ ] **Step 3: One line in the parent POM's `<build>`**, inherited by all 24 modules:
 
 ```xml
 <finalName>org.scilab.modules.${project.artifactId}</finalName>
@@ -98,10 +139,14 @@ application's classpath, which "reproduce, don't improve" forbids. Note explicit
 **directory** stays `target/` during coexistence and flips at the CMake swap, and why (a shared
 `jar/` would let a stray `mvn` run feed CMake a Maven jar undetectably).
 
-- [ ] **Step 2: Build both modules and confirm the names changed.**
+- [ ] **Step 4: Rebuild both modules and confirm the names changed.**
 
 ```bash
 cd scilab
+# The rm -rf is LOAD-BEARING CORRECTNESS, not hygiene. target/ is never auto-cleaned, so a
+# package without it leaves BOTH the old and new finalName jars on disk -- maven_jars then
+# carries two keys against jars' one, and Step 5 fails on a spurious orphan that has nothing
+# to do with <finalName>. Do not drop this line.
 find modules/localization modules/commons -name target -type d -exec rm -rf {} + 2>/dev/null
 mvn -pl modules/commons -am package 2>&1 | tail -15
 ls -1 modules/localization/target/*.jar modules/commons/target/*.jar
@@ -109,14 +154,15 @@ ls -1 modules/localization/target/*.jar modules/commons/target/*.jar
 Expected: `org.scilab.modules.localization.jar` and `org.scilab.modules.commons.jar`. Note (do not
 suppress) any warnings now visible without `-q`.
 
-- [ ] **Step 3: Parity THROUGH THE DIMENSION, not a hand-run snippet.** Build both jars with Ant,
-  then compare `jars` against `maven_jars` using the Task 1 machinery. Report the section diff
-  verbatim. Expected: no added keys, no removed keys, no differing entries.
+- [ ] **Step 5: Re-run the Step 1 check — it must now PASS**, through the dimension rather than a
+  hand-run snippet. Report the result. This is the transition the whole task exists to produce:
+  a check that failed for a real reason now passes for a real reason.
 
-- [ ] **Step 4: Prove the gate now bites.** Rename one Maven jar by hand, re-run the comparison,
-  confirm **FAIL**, then restore. This is the assertion the old snippet could not make.
+- [ ] **Step 6: Prove the armed check still bites.** Rename one Maven jar on disk by hand, re-run,
+  confirm **FAIL**, then restore. This is the assertion the old hand-run snippet could not make,
+  and it guards against the check having been accidentally neutered while making it pass.
 
-- [ ] **Step 5: Suite + commit.**
+- [ ] **Step 7: Suite + commit.**
 
 ---
 
