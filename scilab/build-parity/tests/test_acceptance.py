@@ -16,6 +16,7 @@ Alignment   -> the ONE cross-toolchain check in this file (all the others compar
 import copy
 import json
 import os
+import xml.etree.ElementTree as ET
 
 import pytest
 
@@ -25,6 +26,7 @@ from parity.diff import diff_fingerprints
 HERE = os.path.dirname(__file__)
 BUILD_DIR = os.path.abspath(os.path.join(HERE, "..", ".."))   # the scilab/ built tree
 BASELINE = os.path.join(HERE, "..", "baseline-autotools.json")
+PARENT_POM = os.path.join(BUILD_DIR, "pom.xml")                # the Maven reactor root
 
 pytestmark = pytest.mark.skipif(
     not os.path.exists(os.path.join(BUILD_DIR, ".libs", "scilab-bin")),
@@ -104,20 +106,134 @@ def test_sensitivity_wrapv_drop_is_caught():
     assert any("flags c" in d and "wrapv" in d for d in r["differences"])
 
 
-def test_maven_jars_align_with_ant_jars():
-    """Every Maven-built jar must have an Ant counterpart at the same key, with identical content.
+_MVN_NS = "{http://maven.apache.org/POM/4.0.0}"
 
-    This is what makes the maven_jars dimension a GATE rather than a recorded observation:
-    diff.py's transition rule only detects regression across runs, never disagreement between
-    the two toolchains. Skips when no Maven jars are present so a pure-autotools tree is
-    unaffected; fires the moment anyone runs `mvn package`.
+
+def _reactor_modules(pom_path=PARENT_POM):
+    """<module> entries from the parent reactor POM (e.g. "modules/localization"),
+    PARSED rather than hardcoded so the completeness check below (review Fix 1)
+    stays correct through all 22 remaining migrations with no further edits.
+
+    NAMESPACE GOTCHA: the POM declares the default Maven namespace
+    (xmlns="http://maven.apache.org/POM/4.0.0"), so ElementTree needs the
+    "{http://maven.apache.org/POM/4.0.0}" prefix on EVERY tag in the path --
+    root.findall("modules/module") against a namespaced document silently
+    returns [] (no exception, just nothing), which would make the completeness
+    check below assert nothing against everything. See
+    test_reactor_modules_parses_real_pom_non_vacuously: verified to return
+    exactly 2 entries today (modules/localization, modules/commons), not a
+    silently-empty list.
     """
-    cand = _capture()
+    root = ET.parse(pom_path).getroot()
+    return [el.text.strip() for el in root.findall(f"{_MVN_NS}modules/{_MVN_NS}module")]
+
+
+def _missing_reactor_jars(mj, modules):
+    """Reactor `modules` (from _reactor_modules) with no key in `mj` under
+    their Ant-equivalent "<module>/jar/" prefix -- i.e. Maven ran at all (mj is
+    non-empty) but THIS module produced nothing: `mvn clean`, a <skip> added to
+    maven-jar-plugin, a module dropped from <modules>, or a mid-reactor
+    packaging failure would all show up here. A pure function of its arguments
+    (no pytest.skip, no filesystem/tree access) so it is directly unit-testable
+    against synthetic input -- see the regression tests below."""
+    return sorted(m for m in modules if not any(k.startswith(m + "/jar/") for k in mj))
+
+
+def _check_maven_jars_alignment_and_completeness(cand):
+    """The maven_jars gate body (Stage 2-c Task 2), factored out of the pytest
+    test itself so the completeness half (Fix 1) is unit-testable against
+    synthetic `cand` dicts, without needing a real built tree.
+
+    Every Maven-built jar must have an Ant counterpart at the same key, with
+    identical content (the ORIGINAL check) -- AND, once Maven has run at all,
+    it must have produced a jar for EVERY module the parent reactor declares
+    (Fix 1): the original check alone is one-directional (set(mj) - set(j)),
+    so a build that produced FEWER jars than it should -- only `localization`,
+    say, with `commons` silently missing -- used to pass it, because a module
+    that produced NOTHING leaves no orphan key to report. `mvn clean`, a
+    <skip> added to maven-jar-plugin, a module dropped from <modules>, or a
+    packaging failure in an otherwise-building tree all used to read as
+    success.
+    """
     mj = cand.get("maven_jars", {})
     if not mj:
         pytest.skip("no Maven-built jars in this tree -- nothing to align")
     j = cand["jars"]
+
     orphans = sorted(set(mj) - set(j))
-    assert not orphans, f"Maven jars with no Ant counterpart (naming divergence?): {orphans}"
+    assert not orphans, (
+        f"Maven jars with no Ant counterpart: {orphans} -- could be a naming "
+        "divergence (Maven's finalName vs. Ant's jar name), a stale target/ "
+        "jar left over from a pre-rename build (try `mvn clean`), or a "
+        "genuinely missing Ant jar for this module."
+    )
     differing = sorted(k for k in mj if mj[k] != j[k])
     assert not differing, f"Maven and Ant jars differ in content at: {differing}"
+
+    # Completeness (review Fix 1). LIMITATION KEPT ON PURPOSE: the all-empty
+    # case above still SKIPS rather than failing -- "Maven never ran at all"
+    # stays invisible here. That is correct for as long as Maven is run by
+    # hand and additively (a developer who has never typed `mvn` must not get
+    # a red suite) -- it must become a hard FAILURE once Maven is wired into
+    # CI (a later Stage 2 task), at which point both "never ran" and "ran but
+    # incomplete" need to fail.
+    modules = _reactor_modules()
+    assert modules, (
+        f"parsed 0 <module> entries from the parent POM ({PARENT_POM}) -- the "
+        "namespace-aware parse is broken, or the POM lost its <modules> "
+        "block. A vacuous module list would make the completeness check "
+        "below assert nothing against everything -- fix the parse, don't let "
+        "this pass silently."
+    )
+    missing = _missing_reactor_jars(mj, modules)
+    assert not missing, f"reactor modules with no Maven jar at all: {missing}"
+
+
+def test_maven_jars_align_with_ant_jars():
+    """Every Maven-built jar must have an Ant counterpart at the same key, with
+    identical content, AND Maven must have produced a jar for every module the
+    parent reactor declares (Fix 1) -- not merely for whichever ones it
+    happened to build.
+
+    This is what makes the maven_jars dimension a GATE rather than a recorded
+    observation: diff.py's transition rule only detects regression across
+    runs, never disagreement between the two toolchains, and never a module
+    Maven dropped entirely. Skips when no Maven jars are present so a
+    pure-autotools tree is unaffected; fires the moment anyone runs
+    `mvn package`.
+    """
+    _check_maven_jars_alignment_and_completeness(_capture())
+
+
+def test_reactor_modules_parses_real_pom_non_vacuously():
+    # Guards the namespace gotcha itself: against the REAL parent POM, the
+    # parse must return the two modules wired up today, not an empty list --
+    # an empty list would silently make the completeness check above assert
+    # nothing against everything (vacuously "passing").
+    assert _reactor_modules() == ["modules/localization", "modules/commons"]
+
+
+def test_regression_reactor_module_missing_maven_jar_fails():
+    # Fix 1 (a): `commons` is a declared reactor module but produced no Maven
+    # jar at all -- a PARTIAL build. The original one-directional orphan check
+    # (set(mj) - set(j)) cannot see this: with only `localization` present on
+    # both sides it is trivially satisfied. Must now fail, naming the module.
+    modules = ["modules/localization", "modules/commons"]
+    mj = {"modules/localization/jar/org.scilab.modules.localization.jar": {"A.class": "h1"}}
+    assert _missing_reactor_jars(mj, modules) == ["modules/commons"]
+
+    cand = {
+        "jars": {"modules/localization/jar/org.scilab.modules.localization.jar": {"A.class": "h1"}},
+        "maven_jars": mj,
+    }
+    with pytest.raises(AssertionError, match="modules/commons"):
+        _check_maven_jars_alignment_and_completeness(cand)
+
+
+def test_regression_all_empty_maven_jars_still_skips():
+    # Fix 1 (b): maven_jars completely empty must still SKIP, not fail the new
+    # completeness check -- a developer who has never run `mvn` must not get a
+    # red suite. Confirms the completeness check did not move ahead of the
+    # pre-existing empty-skip.
+    with pytest.raises(pytest.skip.Exception):
+        _check_maven_jars_alignment_and_completeness({"jars": {}, "maven_jars": {}})

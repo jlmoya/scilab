@@ -440,6 +440,24 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             # which keys by the real relpath, so a mis-capture there stays
             # visibly wrong. Demonstrated: thirdparty/modules/target/vendored.jar
             # would otherwise be captured as modules/modules/jar/vendored.jar.
+            #
+            # LIMITATION, KEPT ON PURPOSE (review Fix 4): the SAME exact-length-3
+            # requirement also means a NESTED target/ -- e.g.
+            # modules/<m>/sub/target/x.jar, from some future multi-artifact
+            # module -- is invisible to this walk (parts there has length 4, so
+            # `len(parts) == 3` excludes it before parts[0] is even checked): no
+            # key is ever written for it, and the jar escapes SILENTLY -- no
+            # orphan, no diff, nothing -- which is the WRONG failure direction
+            # for a parity gate. No Scilab module is nested today (all 24 Ant
+            # jars sit at modules/<m>/jar/ directly), so there is no live
+            # instance of this gap. Do NOT close it by broadening the walk (e.g.
+            # dropping the length check, or matching on parts[0] == "modules"
+            # alone) -- that is exactly the laundering bug the parts[0] ==
+            # "modules" check above exists to prevent (a stray "modules" path
+            # component anywhere getting rewritten into a plausible-looking
+            # synthetic key). If a nested module ever arrives, widen this
+            # deliberately and re-derive the synthetic-key scheme for it; don't
+            # just relax the guard.
             if len(parts) == 3 and parts[0] == "modules":
                 module = parts[1]
                 # NO filename filter here, unlike the Ant branch's _DOC_OUTPUT_JAR

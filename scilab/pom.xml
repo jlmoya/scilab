@@ -49,7 +49,11 @@
          (artifactId-version.jar, e.g. commons-2027.0.0-SNAPSHOT.jar). ${project.artifactId}
          resolves per-module and already equals the module directory name, which already
          equals Ant's jar infix — one line at the parent covers every module ever added,
-         including the 22 not yet migrated.
+         including the 22 not yet migrated. That equality is a CONVENTION, not something this
+         POM enforces — but it does not need to be trusted, only checked: build-parity's capture
+         keys maven_jars by directory (modules/<dir>/jar/<basename>), so a future POM whose
+         artifactId diverges from its module directory produces an orphan key and fails the
+         parity gate red (test_maven_jars_align_with_ant_jars) instead of silently mis-tagging.
 
          WHY THIS IS NOT COSMETIC. etc/classpath.xml hardcodes 23 module jars by full path AND
          name ($SCILAB/modules/<m>/jar/org.scilab.modules.<m>.jar); etc/jvm_options.xml:20
