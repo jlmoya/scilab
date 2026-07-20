@@ -53,6 +53,13 @@ fi
 mkdir -p "$PAYLOAD" "$MACOS_DIR" "$RES_DIR" "$APP_SCIHOME"
 
 # ---- 2. rsync the engine (incremental; skip build intermediates + recursion)
+# build-cmake/ is the CMake build tree (gitignored, ~600MB, ~27% of the dev tree). It is
+# pure build scaffolding -- CMake's drop-in targets copy their real outputs into the
+# autotools .libs/ layout, and its help target writes into modules/*/jar/, so nothing under
+# build-cmake/ is used at runtime. Without this exclude it copied ~500MB across 5,762 files
+# into the bundle AND made step 3 below grep+sed every text file in it. build-parity/ and
+# .atoms/ are the same class, much smaller. All three postdate this exclude list's last
+# revision, which is why they were missing.
 echo "[1/6] rsync dev build -> payload (incremental)…"
 rsync -a --delete \
   --exclude='Scilab-2027.0.0.app/' \
@@ -61,6 +68,7 @@ rsync -a --delete \
   --exclude='autom4te.cache/' \
   --exclude='config.log' --exclude='config.status' \
   --exclude='.git/' \
+  --exclude='/build-cmake/' --exclude='/build-parity/' --exclude='/.atoms/' \
   "$DEV"/ "$PAYLOAD"/
 
 # ---- 3. relocate: rewrite the dev abs-path -> payload path in text files ----
