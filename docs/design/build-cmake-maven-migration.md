@@ -312,9 +312,13 @@ bytes byte-safe rather than retyping them.
   duplication — but it is worth revisiting whether `system` scope is the right long-term mechanism
   for the ~10 permanently-vendored jars, versus a `file://` repository.
   **SETTLED in Stage 2-c §4: keep `systemPath`.** The `file://` alternative was measured and does
-  **not** work here — Maven mirrors match on repository **id**, not URL scheme, so the wildcard
-  mirror intercepts a `file://` repo and fails the build. `systemPath` needs no resolution, so it is
-  immune to mirror configuration. Maven 4 dropping system scope remains a real, dated future cost.
+  **not** work here — this machine's `*` (wildcard) mirror matches by repository **id**, so it
+  intercepts a declared `file://` repo too and the build fails. (Maven's `external:*` selector *is*
+  documented as excluding `file://` repos, so scheme can matter to a differently-configured mirror;
+  it is the plain `*` wildcard, specifically, that does not distinguish.) `systemPath` needs no
+  resolution, so it is immune to mirror configuration. `system` scope is deprecated and Maven warns
+  that future versions may drop such projects — a real dated risk, but **not verified here**
+  (this machine runs Maven 3.9.16; no Maven 4 was exercised).
 
 **The `maven_jars` dimension is what makes the first bullet above checkable at all** (Stage 2-c
 Task 1–2, `build-parity/parity/capture.py` + `tests/test_acceptance.py`), and this document had not
@@ -348,7 +352,8 @@ So the dependency inventory is **not** blocked — but it depends on a **third-p
 not on Central, and on a machine-local `settings.xml` that **this repository does not carry**. A
 fresh clone on another machine has none of it. That is a real portability gap to close before the
 endgame, and it is why a `file://` third-party repository cannot work here either (Stage 2-c §4):
-mirrors match on repository **id**, not URL scheme, so a `file://` repo is intercepted too.
+a `*` (wildcard) mirror matches by repository **id**, so a declared `file://` repo is intercepted
+too. (`external:*` would exclude `file://` — scheme matters to *that* selector, not to plain `*`.)
 
 #### Corrections to this document, from the Stage 2 reconnaissance
 
