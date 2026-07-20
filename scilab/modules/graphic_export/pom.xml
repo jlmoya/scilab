@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/graphic_export/pom.xml — Stage 2-f Task 2 module POM (Wave B)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/graphic_export -am
+  package from the reactor root, or mvn -f modules/graphic_export/pom.xml
+  package). Ant (modules/graphic_export/build.xml + build.incl.xml) remains
+  the real build; nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave B, and the reason renderer had to land in
+  the SAME wave rather than a later one: graphic_export imports
+  org.scilab.modules.renderer.JoGLView directly, so both are added to the
+  parent's <modules> together, with renderer ordered first (confirmed by
+  the Reactor Build Order preamble of a full `mvn clean package` — see the
+  Stage 2-f Task 2 report).
+
+  STEP 1 FINDINGS (./maven-module-deps.sh graphic_export, 8 files):
+    [1] imports (excluding own packages), verified per-file (all 8 files
+        read directly, not just grepped) — every import below is REAL, none
+        is a stray/unused line:
+      - org.apache.batik.dom.GenericDOMImplementation, org.apache.batik.
+        svggen.{SVGGeneratorContext, SVGGraphics2D} — Export.java. thirdparty/
+        batik-all-1.17.jar, below (same jar, same coordinate as
+        modules/helptools/pom.xml's identical dependency).
+      - org.apache.fop.Version, org.apache.fop.svg.PDFDocumentGraphics2D —
+        Export.java. thirdparty/fop-core-2.9.jar, below (same jar, same
+        coordinate as modules/helptools/pom.xml's identical dependency;
+        `unzip -l` confirms fop-core-2.9.jar — not the sibling fop-2.9.jar
+        also under thirdparty/ — carries both classes plus
+        org.apache.fop.apps.MimeConstants).
+      - org.apache.xmlgraphics.java2d.GraphicContext, .java2d.ps.
+        {AbstractPSDocumentGraphics2D, EPSDocumentGraphics2D,
+        PSDocumentGraphics2D}, .ps.{DSCConstants, PSGenerator} —
+        Export.java, all six DIRECTLY imported (contrast modules/
+        helptools/pom.xml's xmlgraphics-commons finding, which needed the
+        jar for an INHERITED constant with zero direct references anywhere
+        in its source — this module's own code spells every one of these
+        names out itself). Same jar, same coordinate as helptools'
+        identical dependency: thirdparty/xmlgraphics-commons-2.9.jar.
+      - org.scilab.forge.scirenderer.Canvas, .implementation.g2d.{G2DCanvas,
+        G2DCanvasFactory}, .implementation.jogl.{JoGLCanvas,
+        JoGLCanvasFactory} — Export.java. A REACTOR SIBLING (scirenderer,
+        Stage 2-d), not a vendored jar — same as modules/renderer/pom.xml.
+      - org.scilab.modules.commons.ScilabCommonsUtils; org.scilab.modules.
+        graphic_objects.{axes.AxesContainer, figure.Figure,
+        graphicController.GraphicController,
+        graphicObject.GraphicObjectProperties, uicontrol.frame.Frame};
+        org.scilab.modules.localization.Messages; org.scilab.modules.
+        renderer.JoGLView.DrawerVisitor — four reactor dependencies below,
+        commons/graphic_objects/localization already migrated, renderer
+        migrated in THIS SAME WAVE (modules/renderer/pom.xml).
+      - java.*, javax.imageio{,.stream}, org.w3c.dom.{DOMImplementation,
+        Document} — JDK, not a dependency.
+    [2] reflection targets — RULED OUT: org.freehep.graphicsio.emf.
+        EMFGraphics2D, reached only via Export.java:1120's
+        `Class.forName("org.freehep.graphicsio.emf.EMFGraphics2D")` inside
+        EMFExporter's constructor (confirmed by reading the file: the
+        loaded class is used purely reflectively, cast to the JDK's own
+        Graphics2D, with a caught ClassNotFoundException that throws "This
+        Scilab build does not provide EMF support" — EMF export is designed
+        as an OPTIONAL, pluggable feature, not a hard compile-time
+        dependency). Reproduced as an absence, not fixed into a real
+        dependency — same discipline as modules/console/pom.xml's gui
+        exclusion and modules/helptools/pom.xml's xcos exclusion.
+    [3] fully-qualified uses with no import — ONE entry here needed
+        opening the file, and it was a genuine false positive, not a
+        dependency:
+      - org.freehep.graphicsio.ImageEncoder — the ONLY hit is
+        convertToPPM/PPMEncoder.java:43, `//import org.freehep.graphicsio.
+        ImageEncoder;` — commented-out, dead code. PPMEncoder.java:54's
+        `public class PPMEncoder extends ImageEncoder` resolves instead to
+        the LOCAL class convertToPPM/ImageEncoder.java:59 (`public abstract
+        class ImageEncoder implements ImageConsumer`, same package, no
+        import needed) — confirmed by `find` + `grep -rn "class
+        ImageEncoder"` across the module: exactly one definition, and it is
+        graphic_export's own. This is precisely the over-report class
+        [3]'s own header warns about (matches inside a comment) — the
+        freehep jar this name superficially suggests is not needed for any
+        reason.
+      - Every other name (org.apache.batik.*, org.apache.fop.*, org.apache.
+        xmlgraphics.*, org.scilab.forge.scirenderer.*, org.scilab.modules.*)
+        already accounted for in [1].
+  NET RESULT: no freehep-* jar of any kind appears in <dependencies> below,
+  despite build.incl.xml:100-102 putting freehep-graphics2d.jar,
+  freehep-graphicsio-emf.jar and freehep-graphicsio.jar on the SHARED
+  compile classpath every module can see — graphic_export's own source
+  genuinely uses none of them at compile time. Ant's shared classpath being
+  available is not evidence a given module needs everything on it; only
+  this module's own confirmed imports/FQNs are.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>graphic_export</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:20 <property name="library.title" value="Export plot to any image format"/> -->
+  <name>Export plot to any image format</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.commons.ScilabCommonsUtils — Export.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.graphic_objects.{axes.AxesContainer,
+         figure.Figure, graphicController.GraphicController,
+         graphicObject.GraphicObjectProperties, uicontrol.frame.Frame} —
+         Export.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>graphic_objects</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — Driver.java,
+         FileExporter.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.renderer.JoGLView.DrawerVisitor — Export.java.
+         THE WAVE'S NAMESAKE EDGE: renderer migrates in this same wave
+         (modules/renderer/pom.xml), which is why both land together —
+         see this file's header comment. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>renderer</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.forge.scirenderer.Canvas, .implementation.g2d.*,
+         .implementation.jogl.* — Export.java. A reactor sibling
+         (scirenderer, Stage 2-d), not a vendored jar. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>scirenderer</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.apache.batik.dom.GenericDOMImplementation, org.apache.batik.
+         svggen.{SVGGeneratorContext, SVGGraphics2D} — Export.java. Same
+         jar, same coordinate as modules/helptools/pom.xml's identical
+         dependency (cross-referenced, not restated). -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-all</artifactId>
+      <version>1.17</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/batik-all-1.17.jar</systemPath>
+    </dependency>
+    <!-- org.apache.fop.Version, org.apache.fop.svg.PDFDocumentGraphics2D —
+         Export.java. Same jar, same coordinate as modules/helptools/
+         pom.xml's identical dependency. -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>fop-core</artifactId>
+      <version>2.9</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/fop-core-2.9.jar</systemPath>
+    </dependency>
+    <!-- org.apache.xmlgraphics.java2d.GraphicContext, .java2d.ps.
+         {AbstractPSDocumentGraphics2D, EPSDocumentGraphics2D,
+         PSDocumentGraphics2D}, .ps.{DSCConstants, PSGenerator} —
+         Export.java, all DIRECT imports (unlike modules/helptools/pom.xml's
+         inherited-constant case for this same jar). Same jar, same
+         coordinate as that module's identical dependency. -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>xmlgraphics-commons</artifactId>
+      <version>2.9</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/xmlgraphics-commons-2.9.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/graphic_export/jar/org.scilab.modules.
+                 graphic_export.jar META-INF/MANIFEST.MF), never retyped:
+                 Specification-Vendor and Implementation-Vendor both carry
+                 the double-mangled "Ã¨" (bytes c3 83 c2 a8) — see
+                 modules/localization/pom.xml's fuller comment for the
+                 mechanism. Implementation-Version is present, frozen at the
+                 literal "00000000 0000", positioned between
+                 Implementation-Title and Implementation-Vendor exactly
+                 where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/renderer/pom.xml — Stage 2-f Task 2 module POM (Wave B)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/renderer -am package
+  from the reactor root, or mvn -f modules/renderer/pom.xml package). Ant
+  (modules/renderer/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave B — renderer, javasci, graphic_export — the
+  three modules whose only unmigrated-dependency risk (console, for
+  renderer) was closed out by Wave A. The largest of Stage 2-f's remaining
+  modules (67 source files) and the first to depend on scirenderer as a
+  REACTOR SIBLING rather than a vendored jar (scirenderer migrated Stage
+  2-d; every earlier module either predates it in the reactor or has no
+  scirenderer dependency at all).
+
+  STEP 1 FINDINGS (./maven-module-deps.sh renderer, 67 files):
+    [1] imports (excluding own packages):
+      - com.jogamp.opengl.util — JoGLShapeDrawer usage; see the GLBuffers
+        finding below.
+      - org.scilab.forge.jlatexmath — real import, TeXConstants/TeXFormula/
+        TeXIcon (grep-confirmed, JoGLView text-rendering code); NO jeuclid
+        usage anywhere in this module (`grep -rn jeuclid modules/renderer/
+        src/java` — zero hits), unlike modules/console/pom.xml which needs
+        both. thirdparty/jlatexmath-1.0.7.jar, below.
+      - org.scilab.forge.scirenderer{,.buffers,.clipping,.implementation.
+        jogl,.lightning,.ruler{,.graduations},.shapes.{appearance,geometry},
+        .texture,.tranformations,.utils.shapes.geometry} — scirenderer,
+        below. THIS IS A REACTOR DEPENDENCY, not a vendored jar: scirenderer
+        migrated to the Maven reactor in Stage 2-d
+        (docs/superpowers/plans/2026-07-20-stage2d-scirenderer.md) and has
+        carried its own <finalName>scirenderer</finalName> POM ever since.
+        Contrast modules/console/pom.xml and modules/helptools/pom.xml,
+        both written before that migration existed for anything they used.
+      - org.scilab.modules.commons{,.utils} — OS, utils.BlockingResult;
+        org.scilab.modules.console.utils — ScilabSpecialTextUtilities
+        (FormattedTextSpriteDrawer.java:23, TextObjectSpriteDrawer.java:33 —
+        confirmed real imports, not comments); org.scilab.modules.
+        graphic_objects{,.arc,.axes{,.Camera},.axis,.compound,
+        .contouredObject,.datatip,.fec,.figure,.graphicController,
+        .graphicObject{,.ClippableProperty},.graphicView,.imageplot,.label,
+        .legend{,.Legend},.polyline,.rectangle,.surface,.textObject,
+        .uicontrol.frame,.utils,.vectfield} plus two `import static`
+        GraphicObjectProperties/Figure/Polyline members; org.scilab.modules.
+        jvm — LoadClassPath (FormattedTextSpriteDrawer.java:27,
+        TextObjectSpriteDrawer.java:37 — confirmed real imports);
+        org.scilab.modules.localization — five reactor dependencies below,
+        all already migrated (commons: Stage 2-b; console: Stage 2-f Task 1;
+        graphic_objects: Stage 2-e; jvm: Stage 2-b; localization: Stage 2-a).
+      - java.*, javax.swing{,.event,.tree} — JDK, not a dependency.
+    [2] reflection targets: (none) — this module makes no Class.forName /
+        loadClass call anywhere.
+    [3] fully-qualified uses with no import: every name resolves to either
+        the scirenderer packages above (org.scilab.forge.scirenderer.*, e.g.
+        Canvas/Drawer/DrawingTools/SciRendererException/BuffersManager/...)
+        or the graphic_objects packages above (e.g. MainDataLoader,
+        ObjectRemovedException, PolylineData, ScilabNativeView, SurfaceData,
+        Axes/AxesContainer/AxisProperty/Box, ColorMap/Figure, Grayplot/
+        Matplot, Font/FormattedText/Text/TextObject, Arrow/Champ/Segs, ...),
+        plus com.jogamp.opengl.util.GLBuffers (below) and one Messages
+        (localization). Nothing new beyond [1]'s reactor set.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}" — same shape as modules/console/pom.xml
+  and modules/helptools/pom.xml).
+
+  THE GLBUFFERS FINDING — a second instance of the "inherited member" class
+  helptools' xmlgraphics-commons finding documents, this time a superclass
+  rather than a superinterface. renderer's own source has exactly one
+  com.jogamp reference: `import com.jogamp.opengl.util` / GLBuffers.newDirect
+  GLBuffer(...) (util/FormattedTextSpriteDrawer.java and others). `javap -p`
+  on thirdparty/jogl-all-2.5.0.jar's own GLBuffers.class shows:
+    public class com.jogamp.opengl.util.GLBuffers
+        extends com.jogamp.common.nio.Buffers
+  com.jogamp.common.* is GlueGen's namespace, not JOGL's — resolving
+  GLBuffers' inherited members requires gluegen-rt's Buffers.class on the
+  compile classpath even though renderer's source never spells
+  com.jogamp.common.* out. build.incl.xml's compile.classpath puts both
+  ${gluegen2.jar} (line 81) and ${jogl2.jar} (line 84) on every module's
+  classpath unconditionally, consistent with this. Same two real Maven
+  Central coordinates as modules/scirenderer/pom.xml's identical pair
+  (cross-referenced, not restated — see that file's <dependencies> comment
+  for the full systemPath-vs-alternatives rationale).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>renderer</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:20 <property name="library.title" value="Plot management"/> -->
+  <name>Plot management</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.commons.OS, commons.utils.BlockingResult. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.console.utils.ScilabSpecialTextUtilities —
+         FormattedTextSpriteDrawer.java, TextObjectSpriteDrawer.java. The
+         wave's namesake edge (renderer<-console per the Stage 2-f plan);
+         console migrated Stage 2-f Task 1 (Wave A). -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>console</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.graphic_objects.* — by far the widest single
+         package family this module imports (arc, axes, axis, compound,
+         contouredObject, datatip, fec, figure, graphicController,
+         graphicObject, graphicView, imageplot, label, legend, polyline,
+         rectangle, surface, textObject, uicontrol.frame, utils, vectfield).
+         graphic_objects migrated Stage 2-e. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>graphic_objects</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.jvm.LoadClassPath — FormattedTextSpriteDrawer.
+         java, TextObjectSpriteDrawer.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>jvm</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.forge.scirenderer.* — this module's single widest
+         dependency by import-line count (buffers, clipping, implementation.
+         jogl, lightning, ruler(.graduations), shapes.(appearance,geometry),
+         texture, tranformations, utils.shapes.geometry). A REACTOR SIBLING,
+         not a vendored jar — see this file's header comment. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>scirenderer</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- THE JOGL / GLUEGEN PAIR — needed for com.jogamp.opengl.util.
+         GLBuffers, whose OWN superclass (com.jogamp.common.nio.Buffers)
+         lives in gluegen-rt, not jogl-all — see this file's header comment,
+         "THE GLBUFFERS FINDING". SAME MECHANISM, SAME TWO REAL MAVEN
+         CENTRAL COORDINATES AS modules/scirenderer/pom.xml (cross-
+         referenced, not restated — see that file's <dependencies> comment
+         for the full systemPath-vs-alternatives rationale, shared with
+         modules/commons/pom.xml's flexdock comment). -->
+    <dependency>
+      <groupId>org.jogamp.jogl</groupId>
+      <artifactId>jogl-all</artifactId>
+      <version>2.5.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jogl-all-2.5.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.jogamp.gluegen</groupId>
+      <artifactId>gluegen-rt</artifactId>
+      <version>2.5.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/gluegen-rt-2.5.0.jar</systemPath>
+    </dependency>
+    <!-- org.scilab.forge.jlatexmath.{TeXConstants, TeXFormula, TeXIcon} —
+         text-rendering code under JoGLView. Same jar, same coordinate as
+         modules/console/pom.xml's identical dependency (cross-referenced,
+         not restated). Only the plain jlatexmath jar is needed — renderer
+         never touches org.scilab.forge.jlatexmath.fop.* (the SEPARATE
+         jlatexmath-fop.jar modules/helptools/pom.xml needs). -->
+    <dependency>
+      <groupId>org.scilab.forge</groupId>
+      <artifactId>jlatexmath</artifactId>
+      <version>1.0.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jlatexmath-1.0.7.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/renderer/jar/org.scilab.modules.renderer.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/javasci/pom.xml — Stage 2-f Task 2 module POM (Wave B)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/javasci -am package
+  from the reactor root, or mvn -f modules/javasci/pom.xml package). Ant
+  (modules/javasci/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave B, and the smallest of the three (5 source
+  files). Depends on nothing but types (Stage 2-f Task 1, Wave A) — but its
+  BUILD.XML is the one genuine surprise in this wave; read on before
+  assuming this is a copy of modules/localization/pom.xml with a different
+  <artifactId>.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh javasci, 5 files):
+    [1] imports: org.scilab.modules.types.{GetScilabVariable, ScilabType,
+        ScilabTypeEnum, ScilabIntegerTypeEnum, ScilabDouble, ScilabList,
+        ScilabMList, ScilabTList, ScilabString, ScilabBoolean,
+        ScilabBooleanSparse, ScilabInteger, ScilabPolynomial, ScilabSparse,
+        ScilabVariables, ScilabVariablesHandler} — every one confirmed by
+        reading all 5 files directly (Call_Scilab.java, Scilab.java,
+        ScilabVariablesJavasci.java); types migrated Stage 2-f Task 1
+        (Wave A). No other Scilab module referenced anywhere, including no
+        org.scilab.modules.jvm import — see "THE BESPOKE MANIFEST" below for
+        why that absence matters.
+    [2] reflection targets: (none).
+    [3] fully-qualified uses with no import: none beyond [1] (every
+        org.scilab.modules.types.* name is a real, direct import).
+  No thirdparty jar of any kind on javasci's own compile classpath — the
+  smallest dependency footprint of any module migrated so far.
+
+  THE BESPOKE MANIFEST — the actual reason this module gets its own STEP 1
+  writeup instead of a two-line diff against modules/localization/pom.xml.
+  modules/javasci/build.xml does NOT import build.incl.xml's shared
+  `compile`/`jar` targets for this module the way every other build.xml
+  does — it DEFINES ITS OWN `compile` and `jar` targets under the same
+  names, which (Ant <import> semantics: a target defined in the importING
+  file always wins over one of the same name from an imported file) silently
+  REPLACE the shared ones instead of extending them:
+
+      <target name="jar" description="Build the jar file" depends="compile">
+          <manifestclasspath property="manifest.classpath"
+                              jarfile="${build.jar.dir}/${library.name}">
+              <classpath location="${library.jvm.dir}/${library.jvm.name}"/>
+          </manifestclasspath>
+          <jar destfile="${build.jar.dir}/${library.name}" basedir="${classes.dir}/v2/">
+              <manifest>
+                  <attribute name="Class-Path" value="${manifest.classpath}"/>
+              </manifest>
+          </jar>
+      </target>
+
+  Confirmed by extracting the ACTUAL Ant-built jar's manifest (unzip -p
+  modules/javasci/jar/org.scilab.modules.javasci.jar META-INF/MANIFEST.MF):
+
+      Manifest-Version: 1.0
+      Ant-Version: Apache Ant 1.10.17
+      Created-By: 25.0.3+9-LTS-195 (Oracle Corporation)
+      Class-Path: ../../jvm/jar/org.scilab.modules.jvm.jar
+
+  Contrast modules/renderer/pom.xml's or modules/console/pom.xml's Ant
+  manifest: Built-By, a "Name: org/scilab/modules/<m>/" section header, and
+  Specification-Title/Version/Vendor + Implementation-Title/Version/Vendor
+  are ALL ABSENT here — not stripped by parity/fingerprint.py's
+  _MANIFEST_VOLATILE (that only removes specific lines that exist), simply
+  never written, because javasci's own `jar` target never runs
+  build.incl.xml's shared one (build.incl.xml:148-163) that would have
+  produced them. This is a THIRD, distinct manifest shape in this reactor —
+  NOT the same case modules/scirenderer/pom.xml documents as "2 of 24
+  modules declare manifest.class-path" (that count is scirenderer + gui,
+  both of which DO run the shared jar target and merely set its
+  `manifest.class-path` property to a non-default value). javasci sets a
+  DIFFERENTLY-NAMED property (`manifest.classpath`, no hyphen, computed by
+  the <manifestclasspath> task from the two jars' actual relative
+  filesystem locations, modules/javasci/jar/ -> modules/jvm/jar/) inside a
+  wholly bespoke jar target that skips the shared one's Built-By/Name/
+  Specification/Implementation logic entirely. It is not counted among
+  those two, and would not be counted among a hypothetical three either —
+  it is a different mechanism, not a third instance of the same one.
+
+  CONSEQUENCES FOR THIS POM, both deliberate reproductions of what Ant
+  actually does, not omissions:
+
+  1) <dependencies> below carries only `types` — NOT `jvm`, even though the
+     manifest names jvm's jar. The Class-Path entry is a DEPLOYMENT-time
+     classpath hint (where to find jvm's classes alongside javasci's own at
+     runtime); it has nothing to do with COMPILE-time symbol resolution, and
+     javasci's source never imports anything from org.scilab.modules.jvm
+     (confirmed above). Adding jvm as a Maven <dependency> here would put a
+     jar on the compile classpath that Ant's own compile target
+     (modules/javasci/build.xml's own bespoke `compile` target, which
+     compiles against the SAME shared compile.classpath as every other
+     module regardless of the jar target being bespoke) already provides
+     but that this module's source never asks for — not wrong, but not what
+     Ant's actual dependency shape is either, and every other module in
+     this migration adds a reactor dependency ONLY on confirmed source
+     evidence.
+
+  2) THE MANIFEST FRAGMENT (src/main/manifest/MANIFEST-section.MF) is NOT
+     the usual "Name: ... / Specification-* / Implementation-* / Class-Path"
+     block. It is exactly one line — a MAIN-section attribute, not a named
+     section — extracted byte-for-byte (never retyped) from the Ant jar
+     above:
+
+         Class-Path: ../../jvm/jar/org.scilab.modules.jvm.jar
+
+     This is the SAME "reproduce Ant's OUTPUT bytes literally, do not
+     compute a fresh value for Maven's own target/ directory layout"
+     principle already established for modules/console/pom.xml's and
+     modules/renderer/pom.xml's literal "${manifest.class-path}" — the
+     value is copied as a fixed string regardless of where Maven's own jar
+     ends up on disk, because Maven's output is not wired into anything
+     that reads this Class-Path entry today (Global Constraints:
+     ADDITIVE). No leading blank line precedes it (contrast every other
+     migrated module's fragment): a blank line signals "a NEW section
+     starts here" to the manifest parser, and this fragment has no section
+     to start — it merges directly into maven-archiver's own auto-generated
+     main-section attributes (Manifest-Version, plus whatever Built-By the
+     parent POM's manifestEntries contributes).
+
+  3) NO Implementation-Version LINE — a deliberate DEVIATION from this
+     stage's general instruction that it "must be PRESENT... positioned
+     exactly between Implementation-Title and Implementation-Vendor",
+     because for THIS module those two anchor attributes do not exist on
+     either side of the comparison: Ant's real jar has neither, so there is
+     no "between" to place anything in. Adding a fabricated Name:/
+     Specification-*/Implementation-* block to manufacture a place for it
+     would be a REAL, non-volatile divergence from Ant's actual manifest
+     content (extra lines with no counterpart on the Ant side,
+     none of them matched by _MANIFEST_VOLATILE) and would fail parity —
+     exactly the "the POM is wrong" case Global Constraints warns about,
+     not a harness gap to route around. This is also not a regression
+     introduced by this migration: getImplementationVersion() already
+     returns null for org/scilab/modules/javasci/ under the CURRENT,
+     unmodified Ant build, because Ant's own bespoke jar target for this
+     module has never populated it. Reproducing that absence is the
+     correct application of "reproduce, don't improve" here, not an
+     oversight — flagged loudly in the Task 2 report per this stage's
+     instructions, the same way an unexpected <finalName> override would
+     be.
+
+  4) Built-By: still safe to leave to the parent's inherited
+     manifestEntries (no override here) even though Ant's real javasci
+     manifest has no Built-By line at all — unlike Implementation-Version,
+     Built-By IS matched by parity/fingerprint.py's _MANIFEST_VOLATILE by
+     attribute NAME alone (`^(Ant-Version|Created-By|Built-By|...)`),
+     regardless of value or even presence on the other side, so Maven
+     carrying one where Ant has none is invisible to the parity gate.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>javasci</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:20 <property name="library.title" value="Scilab Java API"/> -->
+  <name>Scilab Java API</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.types.* — every one of javasci's 5 source files
+         resolves to this single reactor dependency; see this file's header
+         comment for why jvm is deliberately NOT listed here despite
+         appearing in the Ant manifest's Class-Path entry. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>types</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>,
+         reproduced by modules/javasci/build.xml's OWN bespoke `compile`
+         target too (srcdir="src/java/", destdir="${classes.dir}/v2" —
+         "v2" is only Ant's local BUILD-STAGING subdirectory name,
+         invisible in the packaged jar: `<jar basedir="${classes.dir}/v2/">`
+         packs that directory's CONTENTS at the jar root, i.e.
+         org/scilab/modules/javasci/*.class, byte-for-byte the same layout
+         Maven's own target/classes/ produces). Same source tree either
+         way; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false is inherited from the parent POM.
+                 manifestFile mechanism as every other migrated module — but
+                 THIS FRAGMENT'S SHAPE IS UNIQUE. See this file's header
+                 comment ("THE BESPOKE MANIFEST") for the full reasoning:
+                 one main-section Class-Path attribute, extracted verbatim
+                 from the Ant-built jar's actual manifest (unzip -p
+                 modules/javasci/jar/org.scilab.modules.javasci.jar
+                 META-INF/MANIFEST.MF), no Name:/Specification-*/
+                 Implementation-* block, and deliberately NO
+                 Implementation-Version line. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
