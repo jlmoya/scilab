@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/commons/pom.xml — Stage 2-b "the reactor's first real dependency"
+  module POM (task-1-brief.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/commons -am package from
+  the reactor root, or mvn -f modules/commons/pom.xml package). Ant
+  (modules/commons/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Stage 2-a (task-2-brief.md) chose modules/localization
+  specifically BECAUSE it is a leaf (zero imports) and skipped commons for
+  the opposite reason: commons imports org.scilab.modules.localization.*.
+  That is exactly why Stage 2-b picks it up next — it is the cheapest module
+  that exercises a REAL reactor dependency edge, proving Maven resolves
+  build order from the dependency graph rather than from prebuildjava/
+  build.xml:25's hand-encoded 23-module <target name="all" depends="...">
+  list (localization, commons, history_manager, jvm, ... in a fixed, manually
+  maintained sequence). See Step 5 below and task-1-report.md for the actual
+  reactor-ordering proof.
+
+  STEP 1 FINDINGS (grep -rhE '^import (org|com)\.' modules/commons/src/java,
+  25 files, confirmed against task-1-brief.md's expectation, then verified
+  FURTHER — a plain import grep is not the whole story):
+    - org.scilab.modules.commons.*      — itself (8 in-package imports)
+    - org.scilab.modules.localization.* — Messages, WindowsDefaultLanguage:
+      the reactor dependency, below.
+    - org.flexdock.view.View            — thirdparty/flexdock-1.2.5.jar,
+      real load-bearing usage (ScilabGUIUtilities.toFront(View, String)),
+      not a stray unused import. See the flexdock dependency below.
+    - org.w3c.dom.*, org.xml.sax.*      — JDK (java.xml module), not a
+      dependency at all.
+  No `manifest.class-path` in build.xml (confirmed again in the actual
+  Ant-built jar's manifest: the Class-Path attribute is the literal,
+  never-interpolated string "${manifest.class-path}", same as localization).
+
+  A WIDER SCAN THAN THE BRIEF ASKED FOR, BECAUSE FOUR MORE FULLY-QUALIFIED
+  NAMES SHOWED UP under a plain `grep -o '(org|com)\.[a-zA-Z0-9_.]+'` sweep
+  (i.e. not restricted to `^import` lines) and each needed to be individually
+  ruled in or out as a real compile-time dependency rather than assumed away:
+    - org.scilab.modules.core.Scilab — ScilabCommonsUtils.java:207, inside a
+      JAVADOC COMMENT ("Called from org.scilab.modules.core.Scilab::..."),
+      not code. Zero compile-time weight.
+    - org.scilab.modules.history_manager.HistoryPrefs — XConfiguration.
+      java:108, org.scilab.modules.jvm.LoadClassPath — ScilabCommonsUtils.
+      java:167,184, org.scilab.modules.preferences.ScilabPreferences —
+      ScilabGeneralPrefs.java:45: all THREE reached only via
+      ClassLoader.getSystemClassLoader().loadClass("...") /
+      Class.forName("...") — STRING literals passed to reflection, never an
+      `import` or a static type reference. javac never needs to resolve
+      these at compile time, so none of history_manager/jvm/preferences
+      belongs in <dependencies> below. This is very likely deliberate: those
+      three modules plausibly depend back on commons, so a compile-time
+      import here would cycle; reflection is how the Ant-built tree already
+      avoids that, and the Maven POM must reproduce the SAME absence, not
+      "fix" it into a real dependency edge.
+    - com.sun.nio.file.SensitivityWatchEventModifier (FileSystemMonitor.
+      java:139) and the four com.sun.org.apache.{xalan,xerces,xpath}.
+      internal.* / com.sun.xml.internal.stream.XMLOutputFactoryImpl JAXP
+      factory-override class NAMES (ScilabXPathFactory.java:27,
+      ScilabDocumentBuilderFactory.java:27, ScilabXMLOutputFactory.java:25,
+      ScilabTransformerFactory.java:27): all four are `private static final
+      String` constants (JDK-internal implementation class names for the
+      JAXP factory-override system-property mechanism) or a Class.forName
+      argument — never imported, never used as a type. They live inside the
+      JDK's own java.xml module already (internal, non-exported packages)
+      and resolve at RUNTIME via reflection, not at compile time. Not a
+      dependency; nothing to add.
+  Net result: Step 1's dependency inventory is exactly two entries —
+  localization (reactor) and flexdock (vendored thirdparty) — matching the
+  brief's expectation, but confirmed by ruling out every other fully-
+  qualified name in the source rather than trusting the import-only grep.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>commons</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Commons for Scilab modules"/> -->
+  <name>Commons for Scilab modules</name>
+
+  <dependencies>
+    <!-- THE REACTOR DEPENDENCY — the mechanic this whole task exists to
+         prove. Replaces the hand-encoded ordering at prebuildjava/
+         build.xml:25 (`depends="scirenderer, localization, commons, ..."`)
+         for this one edge: Maven computes that `commons` needs
+         `localization` built first from THIS <dependency> declaration
+         alone, not from <modules> declaration order in the parent POM
+         (commons is added to <modules> below in scilab/pom.xml AFTER
+         localization only for human readability — Step 5 in
+         task-1-report.md proves `mvn -pl modules/commons -am package`
+         builds localization first even with that ordering ignored, by
+         rerunning it with <modules> order left as-is and watching the
+         reactor still sequence localization ahead of commons on the
+         dependency graph). version uses ${project.version} (not a literal
+         2027.0.0-SNAPSHOT) so it can never drift from the parent's actual
+         version — the ordinary Maven reactor-sibling idiom. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- FLEXDOCK — a PERMANENTLY VENDORED third-party jar, not scaffolding
+         awaiting a coordinate. modules/prebuildjava/ivy.xml:29 carries a
+         commented-out flexdock <dependency> element tagged COPY (ivy's own
+         convention, used on this line and its neighbors, for "give up
+         resolving this and hand-copy it instead") — ivy's own author gave
+         up resolving it from any repository and left it to be hand-copied
+         from thirdparty/flexdock-1.2.5.jar instead. It is not
+         on Maven Central (or any repository this build reaches) under any
+         coordinate, and — per task-1-brief.md — that will still be true
+         after this task, unlike Stage 2-a's beachhead where every "not
+         wired into CMake yet" mechanism was explicitly temporary. Ant
+         itself does not resolve this jar either: build.incl.xml:80's
+         compile.classpath just points a raw <pathelement> at
+         ${flexdock.jar} = thirdparty/flexdock-1.2.5.jar
+         (scilab-lib.properties:11), i.e. a fixed local file path with no
+         dependency-resolution machinery at all.
+
+         MECHANISM CHOSEN: <scope>system</scope> + <systemPath>, the direct
+         Maven analogue of Ant's raw pathelement — no repository, no
+         resolution, just "put this exact file on the compile classpath."
+         Two alternatives considered and rejected:
+           - install:install-file into ~/.m2 under a squatted
+             org.flexdock:flexdock:1.2.5 coordinate: this is an imperative,
+             out-of-band, PER-MACHINE step that leaves no trace in version
+             control. A fresh clone + `mvn package` would fail until
+             someone manually re-runs the install command (or it is bound
+             as a plugin execution — which then reduces to installing into
+             the shared ~/.m2 namespace on every build, a bigger footprint
+             for no behavioral gain over systemPath here, since this jar is
+             consumed the same way Ant already consumes it: a raw file, not
+             a published artifact).
+           - a project-local file:// repository laid out in Maven's
+             groupId/artifactId/version directory shape: reproducible from
+             a fresh clone, but requires DUPLICATING or symlinking the jar
+             into a repo-shaped subtree under version control (thirdparty/
+             is flat and populated by fetch-thirdparty.sh, not laid out as
+             a Maven repo) — more moving parts than systemPath for the same
+             outcome, and a second on-disk copy of the same permanently-
+             vendored jar to keep in sync.
+         Trade-off accepted with systemPath: `system` scope is excluded
+         from transitive resolution (a consumer of commons would not
+         inherit flexdock automatically) and is generally discouraged for
+         PUBLISHED library dependencies — irrelevant here, since this
+         reactor is additive/run-by-hand and not published to any
+         repository; every module that needs flexdock (gui, scinotes, ...,
+         per build.incl.xml's compile.classpath) will declare the same
+         systemPath dependency itself when its turn in the migration comes,
+         exactly as each of their build.xml files independently references
+         ${flexdock.jar} today. This IS the production mechanism for this
+         jar going forward, not a placeholder. -->
+    <dependency>
+      <groupId>org.flexdock</groupId>
+      <artifactId>flexdock</artifactId>
+      <version>1.2.5</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:20 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 <manifestFile> mechanism as modules/localization/pom.xml
+                 (see that file's <build> comment for why manifestSections/
+                 manifestEntries, the mechanism task-1-brief.md Step 4
+                 pointed at by cross-reference to Step 4 of task-2-brief.md,
+                 does not work: wrong attribute order and a
+                 "${manifest.class-path}" -> literal "null" corruption).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF
+                 (unzip -p modules/commons/jar/org.scilab.modules.commons.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) that Ant's <property file> produces
+                 by decoding scilab.properties's UTF-8 "è" (c3 a8) as
+                 Latin-1 and re-encoding the result as UTF-8 — see
+                 modules/localization/src/main/manifest/MANIFEST-section.MF
+                 and task-2-report.md section 2 for the mechanism. Retyping
+                 a linguistically-correct "è" here would compile, look
+                 right to a human, and fail parity silently. Implementation-
+                 Version (the DSTAMP/TSTAMP live timestamp) is left out for
+                 the same reason localization's is: parity/fingerprint.py's
+                 _MANIFEST_VOLATILE strips it from both sides before
+                 comparing, so present-and-stripped and absent-and-never-
+                 added are byte-identical after normalization. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
