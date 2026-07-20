@@ -274,6 +274,42 @@ command line carries `-g:none`. Read the property, not the attribute.
   strictness — one against a diff-time exclusion, one against a capture-time one — so the gate
   cannot be "fixed" by loosening it.
 
+### Stage 2-b — the reactor's first real dependency (DONE 2026-07-20)
+
+**Proven:** `modules/commons` is byte-parity-green, and it exercises the two mechanics 2-a could not.
+
+- **Real dependency resolution, replacing the hand topo-sort.** `commons` imports
+  `org.scilab.modules.localization.*`. Building it with `mvn -pl modules/commons -am` puts
+  `localization` first — and, the discriminating test, **it still does when the parent's `<modules>`
+  declaration order is reversed on a full clean.** That isolates the `<dependency>` graph from
+  declaration order, which is the whole point: `prebuildjava/build.xml:25`'s hand-encoded 23-module
+  list becomes derivable rather than maintained.
+- **A permanently-vendored third-party jar.** `commons` imports `org.flexdock.view.View` from
+  `thirdparty/flexdock-1.2.5.jar` — one of the entries `ivy.xml` itself gave up resolving
+  (`<!-- COPY -->`). It is **not** scaffolding awaiting a coordinate; it stays a local file after the
+  inventory is complete.
+
+Parity was first-try, reproduced across four independent clean rebuild cycles, with `localization`
+re-verified unregressed. All seven of 2-a's hard-won constraints applied cleanly — including catching
+the XML-comment `--` trap by pre-scan rather than by a failed build, and extracting the mangled vendor
+bytes byte-safe rather than retyping them.
+
+**Two things this surfaced for the remaining 22 modules:**
+
+- **Maven's jar names differ from Ant's.** Maven produces `commons-2027.0.0-SNAPSHOT.jar`; Ant
+  produces `org.scilab.modules.commons.jar`. Content parity is unaffected — the harness compares
+  entries, not filenames — but this **will** matter when `cmake/ScilabJava.cmake` is swapped from Ant
+  to Maven, since the drop-in machinery and `etc/classpath.xml` both reference Ant's names. Decide
+  `finalName` versus adjusted coordinates before the CMake swap, not during it.
+- **`system`-scope dependencies are not transitive.** Every future module needing flexdock must
+  repeat the declaration. That mirrors what Ant already does per-module, so it is not new
+  duplication — but it is worth revisiting whether `system` scope is the right long-term mechanism
+  for the ~10 permanently-vendored jars, versus a `file://` repository.
+
+**Maven Central is reachable from this environment** (verified HTTP 200 against `repo1.maven.org`).
+An earlier reconnaissance could not confirm this and flagged it as a gap — the dependency inventory
+is therefore **not** blocked on network access.
+
 #### Corrections to this document, from the Stage 2 reconnaissance
 
 - The `prebuildjava` topo-sort is **23** modules, not 22 (this doc said both in different places;
