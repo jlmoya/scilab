@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/gui/pom.xml — Stage 2-f Task 3 module POM (Wave C)
+  (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/gui -am package from the
+  reactor root, or mvn -f modules/gui/pom.xml package). Ant (modules/gui/
+  build.xml + build.incl.xml) remains the real build; nothing here is wired
+  into CMake or any release build yet.
+
+  WHY THIS MODULE. Wave C is gui alone — 351 source files, the single
+  largest module migrated so far and the largest until xcos (Wave E). It is
+  also the ONE module the continuation-line fix in build-parity/parity/
+  fingerprint.py's normalize_manifest was written to answer: gui is the only
+  module remaining in this reactor that declares manifest.class-path
+  (build.xml:9), and its six-entry value is long enough to WRAP across two
+  manifest lines — see "THE CLASS-PATH WRAP" below for the measured proof
+  and the actual bytes on both sides.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh gui, 351 files):
+    [1] imports (excluding gui's own packages) resolve to TEN reactor
+        dependencies — every one already migrated by an earlier wave, which
+        is exactly what let Wave C consist of gui alone:
+          action_binding (InterpreterManagement, highlevel.
+          ScilabInterpreterManagement), commons ({,gui,utils,xml}.*),
+          console (HelpBrowser, OneCharKeyEventListener, SciConsole,
+          SciHistoryManager, SciInputCommandView, SciOutputView, utils.
+          ScilabSpecialTextUtilities), graphic_export (Driver, ExportParams,
+          FileExporter), graphic_objects (by far the widest single package
+          family — arc/axes/console/datatip/figure/graphicController/
+          graphicModel/graphicObject/graphicView/uicontrol/utils and the full
+          GraphicObjectProperties.__GO_*__ static-import family),
+          history_manager (HistoryManagement), jvm (LoadClassPath),
+          localization (Messages — the usual reactor-sibling idiom),
+          renderer (CallRenderer, JoGLView{,.axes,.util}, utils.*), and
+          scirenderer (Canvas, implementation.{jogl,vulkan}.*,
+          tranformations.Vector3d — see the JOGL/GlueGen entry below for why
+          the vulkan sub-package sits in scirenderer, not a separate jar).
+        All ten already carry Maven coordinates from Waves A/B/earlier
+        stages; none of this wave's work is a new reactor edge, only new
+        consumers of existing ones.
+    [2] reflection targets — RULED OUT: org.scilab.modules.core.Scilab and
+        org.scilab.modules.scinotes.SciNotes are each reached only via
+        Class.forName/loadClass STRING literals (confirmed by reading the
+        call sites), never imported. core is Wave D and scinotes is Wave E —
+        neither is migrated yet, and a compile-time dependency on either
+        here would be premature (core) or would likely cycle (scinotes,
+        which itself depends on gui). Reproduced as an absence, matching
+        every earlier module's Class.forName pattern for an unmigrated
+        module (see e.g. modules/console/pom.xml's HelpSearchField entry for
+        the same shape one wave earlier). java.awt.Color and
+        org.scilab.modules.gui.ged.graphic_objects. are the tool's own
+        reflection regex matching an unrelated Class.forName/loadClass call
+        and a trailing-dot package prefix respectively — neither names a
+        Scilab module, both irrelevant to <dependencies>.
+    [3] fully-qualified uses with no import — mostly the ten reactor
+        packages above spelled out in full elsewhere in the tree (nothing
+        new), plus the vendored-jar classes catalogued below. One entry is a
+        confirmed NON-finding: every org.scilab.modules.ihm.* name (UIElement,
+        utils.Position, utils.Size) in this list resolves entirely to
+        `@see` javadoc tags inside ScilabBridge.java (grep-confirmed: every
+        hit sits on a `* @see org.scilab.modules.ihm...` line) — no such
+        module exists anywhere in this tree, and zero compile-time weight
+        attaches to a javadoc @see target. This is the same class of
+        over-report the tool's own header warns about (graphic_objects/gui,
+        Stage 2-b's core.Scilab), just caught here before it could be
+        mistaken for a dependency.
+  No OTHER manifest.class-path anywhere else in this tree changed shape —
+  gui's own value is exactly the six entries handled below.
+
+  THE cc.sosonline.gpu FINDING — a first-party jar, not a third-party one.
+  Two files (bridge/canvas/SwingScilabVulkanCanvas.java, bridge/canvas/
+  ScilabCanvasFactory.java) import exactly three classes — GpuSurfaceComponent,
+  NativeSurface, VulkanScene — from package cc.sosonline.gpu, which exists
+  NOWHERE as source in this tree (confirmed: no `package cc.sosonline.gpu`
+  anywhere under modules/). It is supplied by thirdparty/
+  swing-gpu-surface-0.1.0.jar, itself Maven-built (its own manifest reads
+  "Created-By: Maven JAR Plugin 3.5.0") and — per fetch-thirdparty.sh's own
+  comment — "the first-party Layer-1 GPU surface jar is *tracked* in this
+  repo (vendored)" at modules/prebuildjava/firstparty/
+  swing-gpu-surface-0.1.0.jar, i.e. part of THIS project's own Vulkan/MoltenVK
+  renderer work (docs/design/vulkan-renderer.md), not an external library.
+  Every method gui's two consumers actually call against GpuSurfaceComponent/
+  NativeSurface/VulkanScene (constructors, .width()/.height()/.handle(),
+  .resize()/.beginFrame()/.triangles()/.lines()/.depthEpochs()/
+  .uploadTexture()/.destroyTexture()/.sprite()/.image()/.endFrame()/
+  .dispose()/.snapshot()/.captureNext()/.ensureContext()) is typed in
+  primitives, arrays, java.nio.ByteBuffer or java.awt/BufferedImage — never
+  an LWJGL or Kotlin type — so, unlike the GLBuffers case below,
+  swing-gpu-surface-0.1.0.jar alone satisfies this compile with no need for
+  the lwjgl/lwjgl-vulkan/kotlin-stdlib/jna/slf4j-api/annotations/
+  directory-watcher jars that build.incl.xml's shared compile.classpath also
+  carries (those are swing-gpu-surface's OWN build-time dependencies, not
+  gui's — confirmed by the full-reactor build below actually succeeding
+  without them).
+
+  THE JOGL / GLUEGEN PAIR — gui imports com.jogamp.opengl{,.awt} directly
+  (GL, GLAutoDrawable, GLCapabilities, GLException, GLProfile, GLCanvas,
+  GLJPanel — the classic JOGL canvas, alongside the Vulkan one above) and
+  org.scilab.forge.scirenderer.implementation.{jogl,vulkan}.* (a reactor
+  dependency, not vendored — see [1] above). SAME TWO REAL MAVEN CENTRAL
+  COORDINATES AS modules/renderer/pom.xml and modules/scirenderer/pom.xml
+  (cross-referenced, not restated — see renderer's "THE GLBUFFERS FINDING"
+  for the full inherited-member mechanism and scirenderer's <dependencies>
+  comment for the systemPath-vs-alternatives rationale shared with
+  modules/commons/pom.xml's flexdock entry). gui's own JOGL surface is wider
+  than renderer's (javap -p on jogl-all-2.5.0.jar shows GLCanvas/GLJPanel
+  implementing com.jogamp.nativewindow.* interfaces alongside the JOGL ones,
+  all bundled inside jogl-all.jar itself), and the full-reactor build below
+  is what actually settles whether gluegen-rt's classes are ever reached —
+  reproduced here as a pair because every other JOGL-using module in this
+  reactor needs both and Ant's own shared compile.classpath never offers one
+  without the other.
+
+  THE THREE-JAR CLASS-PATH TAIL, VERIFIED PER-CLASS. gson (com.google.gson.
+  Gson — SwingScilabBrowser.java, the CEF-backed help/plot browser bridge)
+  and jcef-api (org.cef.* — CefApp/CefClient/CefBrowser/CefFrame/
+  CefMessageRouter and the handler/callback/network sub-packages, the
+  embedded Chromium browser itself) both carry REAL Maven Central
+  coordinates, sourced directly from fetch-thirdparty.sh's own MAVEN_MANIFEST
+  heredoc (not invented): `com.google.code.gson:gson:2.10.1` and
+  `me.friwi:jcef-api:jcef-d3de827+cef-146.0.10+g8219561+chromium-146.0.7680.179`
+  (the CEF-146 pin — see the macOS build memory on the CEF-135-on-macOS-26
+  crash this version fixes). jhall (javax.help{,.event,.plaf.basic,.search}
+  — the JavaHelp viewer) has no such confirmed coordinate; it ships from the
+  "official Scilab prerequirements" tarball alongside flexdock/jogl/jrosetta,
+  so `javax.help:jhall:2.0` below is a LABEL derived from the package prefix
+  and the jar's own embedded version (thirdparty/jhall-2.0.jar), same
+  standing as org.scilab.forge:jlatexmath — never resolved, system scope.
+  ONE TOOL CAVEAT surfaced here: maven-module-deps.sh's section [3] treats
+  every javax.* name as JDK-shipped unless it matches the explicitly-removed
+  list (annotation/xml.bind/activation/jws/xml.ws/transaction) — javax.help
+  was never JDK-shipped at all (it is, and always was, the standalone jhall
+  library), so section [3] would have silently swallowed it as noise had it
+  ever appeared there. It didn't: section [1]'s unfiltered import scan
+  already reports `import javax.help` etc. directly, so nothing was actually
+  missed here — noted for whichever future module hits this gap without
+  section [1]'s help.
+
+  THE TWO ROSETTA JARS, VERIFIED PER-CLASS (same method as modules/
+  console/pom.xml, which needs the identical pair): `unzip -l thirdparty/
+  jrosetta-API-1.0.4.jar` lists com/artenum/rosetta/interfaces/ui/
+  InputCommandView.class; `unzip -l thirdparty/jrosetta-engine-1.0.4.jar`
+  lists com/artenum/rosetta/util/StringConstants.class. Both genuinely
+  needed, cross-referenced rather than restated.
+
+  jlatexmath: org.scilab.forge.jlatexmath.{TeXConstants,TeXFormula,TeXIcon}
+  (label/GED text rendering) — same single plain jar as modules/console/
+  pom.xml and modules/renderer/pom.xml; gui never touches
+  org.scilab.forge.jlatexmath.fop.* either (grep-confirmed zero hits), so
+  the separate jlatexmath-fop.jar modules/helptools/pom.xml needs stays out.
+
+  flexdock: org.flexdock.docking{,.activation,.defaults,.drag.{effects,
+  preview},.event{,.hierarchy},.floating.frames,.props,.state},
+  org.flexdock.perspective.persist.xml, org.flexdock.view — gui's dockable
+  tab/window layer, the module flexdock's OWN vendoring comment
+  (modules/commons/pom.xml) anticipated by name ("every module that needs
+  flexdock (gui, scinotes, ...)"). Cross-referenced, not restated.
+
+  THE CLASS-PATH WRAP — the reason Task 3 exists. build.xml:9 sets
+  manifest.class-path to the literal six-token string "flexdock.jar
+  jrosetta-engine.jar jrosetta-API.jar javafx.base.jar javafx.swing.jar
+  javafx.graphics.jar". Ant's own built jar (unzip -p modules/gui/jar/
+  org.scilab.modules.gui.jar META-INF/MANIFEST.MF) wraps that value across
+  two physical lines INSIDE the 72-byte-per-line manifest format, and the
+  wrap lands mid-token:
+      Class-Path: flexdock.jar jrosetta-engine.jar jrosetta-API.jar javafx.b
+       ase.jar javafx.swing.jar javafx.graphics.jar
+  measured directly: the first physical line is exactly 70 bytes including
+  the trailing CRLF's two bytes' worth of reserved room (org.apache.tools.
+  ant.taskdefs.Manifest's own wrap width), breaking "javafx.base.jar" into
+  "javafx.b" + continuation "ase.jar". Maven's plexus-archiver, building
+  from the identical logical value, wraps at the full 72 bytes instead —
+  DIFFERENT byte columns, same logical value. No POM content changes this
+  (both a pre-wrapped-at-70 and a single-logical-line value were fed to
+  Maven during this campaign's earlier measurement and produced the
+  identical 72-byte Maven-side break either way), so the fragment below
+  extracts Ant's own bytes verbatim (wrap included) rather than inventing a
+  different source form. parity/fingerprint.py's normalize_manifest joins
+  continuation lines on BOTH sides before comparing, specifically so this
+  measured, real, un-fixable difference compares equal instead of failing
+  the gate — see that function, not this POM, for the mechanism. THE FULL
+  BYTE COMPARISON (both sides, Ant's raw jar and this module's built jar)
+  is recorded in the Stage 2-f Task 3 report, not restated here.
+
+  IMPLEMENTATION-VERSION: present, frozen at the literal "00000000 0000",
+  positioned between Implementation-Title and Implementation-Vendor exactly
+  where Ant's own jar places it (Ant's live value there today is
+  "20260719 1729" — a DSTAMP/TSTAMP pair, replaced with the frozen literal
+  for the same reason and by the same mechanism as every other migrated
+  module; see modules/localization/pom.xml's <build> comment for the full
+  runtime-consumer rationale). Vendor string double-encoded ("Ã¨", bytes c3
+  83 c2 a8) — extracted, never retyped, same as every other module.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>gui</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:8 <property name="library.title" value="Graphical interface"/> -->
+  <name>Graphical interface</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.action_binding.{InterpreterManagement,
+         highlevel.ScilabInterpreterManagement}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>action_binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.commons.{,gui,utils,xml}.* across the bridge/
+         ged/utils packages — the widest reactor import after graphic_objects. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.console.{HelpBrowser, OneCharKeyEventListener,
+         SciConsole, SciHistoryManager, SciInputCommandView, SciOutputView,
+         utils.ScilabSpecialTextUtilities}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>console</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.graphic_export.{Driver, ExportParams,
+         FileExporter} — the export-format bridge behind the GUI's Export menu. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>graphic_export</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.graphic_objects.* — this module's single widest
+         package family (arc, axes, console, datatip, figure,
+         graphicController, graphicModel, graphicObject, graphicView,
+         uicontrol{,.frame.border}, utils) plus the full
+         GraphicObjectProperties.__GO_*__ static-import family used across
+         the ged/ editor packages. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>graphic_objects</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.history_manager.HistoryManagement. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>history_manager</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.jvm.LoadClassPath. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>jvm</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.renderer.{CallRenderer, JoGLView{,.axes,.util},
+         utils{,.textRendering}.*} — the classic (non-Vulkan) plot renderer
+         bridge. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>renderer</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.forge.scirenderer.{Canvas, implementation.{jogl,vulkan}.*,
+         tranformations.Vector3d} — a REACTOR SIBLING despite the
+         org.scilab.forge.* package namespace (see modules/graphic_objects/
+         pom.xml's identical note). Carries BOTH canvas backends gui's
+         bridge/canvas package selects between at runtime (ScilabCanvasFactory). -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>scirenderer</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- FLEXDOCK — gui's dockable tab/window layer
+         (org.flexdock.docking{,.activation,.defaults,.drag.{effects,preview},
+         .event{,.hierarchy},.floating.frames,.props,.state},
+         org.flexdock.perspective.persist.xml, org.flexdock.view). SAME
+         MECHANISM, SAME COORDINATE AS modules/commons/pom.xml (cross-
+         referenced, not restated — see that file's <dependencies> comment
+         for the full systemPath-vs-alternatives rationale; its own text
+         names gui by name as a future consumer). -->
+    <dependency>
+      <groupId>org.flexdock</groupId>
+      <artifactId>flexdock</artifactId>
+      <version>1.2.5</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
+    </dependency>
+    <!-- THE TWO VENDORED ROSETTA JARS — com.artenum.rosetta.interfaces.ui.
+         InputCommandView (jrosetta-API) and com.artenum.rosetta.util.
+         StringConstants (jrosetta-engine), verified per-class (see this
+         file's header comment). SAME MECHANISM, SAME TWO COORDINATES AS
+         modules/console/pom.xml (cross-referenced, not restated). -->
+    <dependency>
+      <groupId>com.artenum.rosetta</groupId>
+      <artifactId>jrosetta-API</artifactId>
+      <version>1.0.4</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jrosetta-API-1.0.4.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.artenum.rosetta</groupId>
+      <artifactId>jrosetta-engine</artifactId>
+      <version>1.0.4</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jrosetta-engine-1.0.4.jar</systemPath>
+    </dependency>
+    <!-- THE JOGL / GLUEGEN PAIR — com.jogamp.opengl{,.awt} (GL,
+         GLAutoDrawable, GLCapabilities, GLException, GLProfile, GLCanvas,
+         GLJPanel), the classic JOGL figure canvas. SAME MECHANISM, SAME TWO
+         REAL MAVEN CENTRAL COORDINATES AS modules/renderer/pom.xml and
+         modules/scirenderer/pom.xml (cross-referenced, not restated — see
+         this file's header comment, "THE JOGL / GLUEGEN PAIR"). -->
+    <dependency>
+      <groupId>org.jogamp.jogl</groupId>
+      <artifactId>jogl-all</artifactId>
+      <version>2.5.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jogl-all-2.5.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.jogamp.gluegen</groupId>
+      <artifactId>gluegen-rt</artifactId>
+      <version>2.5.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/gluegen-rt-2.5.0.jar</systemPath>
+    </dependency>
+    <!-- org.scilab.forge.jlatexmath.{TeXConstants, TeXFormula, TeXIcon} —
+         label/GED text rendering. Same single plain jar (no jlatexmath-fop)
+         as modules/console/pom.xml and modules/renderer/pom.xml — see this
+         file's header comment. -->
+    <dependency>
+      <groupId>org.scilab.forge</groupId>
+      <artifactId>jlatexmath</artifactId>
+      <version>1.0.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jlatexmath-1.0.7.jar</systemPath>
+    </dependency>
+    <!-- GSON — com.google.gson.Gson (SwingScilabBrowser.java, the CEF
+         bridge). Real Maven Central coordinate, sourced from
+         fetch-thirdparty.sh's own MAVEN_MANIFEST (not invented); system
+         scope means it is never actually resolved from a repository here
+         either — see this file's header comment, "THE THREE-JAR CLASS-PATH
+         TAIL". -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.10.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/gson-2.10.1.jar</systemPath>
+    </dependency>
+    <!-- JCEF — org.cef.{CefApp, CefClient, CefSettings, browser.*,
+         callback.*, handler.*, misc.*, network.*}, the embedded Chromium
+         browser (help browser + plot browser bridge). Real Maven Central
+         coordinate (me.friwi:jcef-api), sourced from fetch-thirdparty.sh's
+         own MAVEN_MANIFEST — the exact CEF-146 pin recorded there fixes the
+         CEF-135-on-macOS-26 crash. See this file's header comment. -->
+    <dependency>
+      <groupId>me.friwi</groupId>
+      <artifactId>jcef-api</artifactId>
+      <version>jcef-d3de827+cef-146.0.10+g8219561+chromium-146.0.7680.179</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jcef-api.jar</systemPath>
+    </dependency>
+    <!-- JHALL (JavaHelp) — javax.help{,.event,.plaf.basic,.search}, the
+         embedded help viewer. LABEL only (no confirmed Maven Central
+         coordinate; ships from the "official Scilab prerequirements"
+         tarball, same standing as jlatexmath below) — see this file's
+         header comment, "THE THREE-JAR CLASS-PATH TAIL", including the
+         maven-module-deps.sh javax.* classification caveat this dependency
+         surfaced. -->
+    <dependency>
+      <groupId>javax.help</groupId>
+      <artifactId>jhall</artifactId>
+      <version>2.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jhall-2.0.jar</systemPath>
+    </dependency>
+    <!-- THE THREE manifest.class-path JAVAFX ENTRIES — javafx.{application,
+         collections,embed.swing,stage{,.FileChooser}}, used by the
+         JCEF/help-browser embedding and the native file chooser bridge.
+         org.openjfx is JavaFX's real Maven Central group; fetch-thirdparty.sh
+         installs these three specific jars (base/graphics/swing) straight
+         from the official openjfx-25.0.2 osx-aarch64 SDK zip's lib/
+         directory (JDK-25 parity, per that script's own comment) — version
+         25.0.2 below reflects that exactly, though the SDK's plain
+         (classifier-less) jars are used here rather than Central's
+         platform-classified artifacts, same "accurate label, system scope
+         never resolves it" standing as every other vendored jar in this
+         file. -->
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>25.0.2</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/javafx.base.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-swing</artifactId>
+      <version>25.0.2</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/javafx.swing.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>25.0.2</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/javafx.graphics.jar</systemPath>
+    </dependency>
+    <!-- cc.sosonline.gpu.{GpuSurfaceComponent, NativeSurface, VulkanScene}
+         — the Vulkan canvas's Layer-1 GPU surface. FIRST-PARTY, not a
+         genuine third party: tracked in this repo at modules/prebuildjava/
+         firstparty/swing-gpu-surface-0.1.0.jar and copied to thirdparty/ by
+         fetch-thirdparty.sh (its own comment calls this out explicitly).
+         See this file's header comment, "THE cc.sosonline.gpu FINDING", for
+         why the lwjgl/kotlin-stdlib/jna/slf4j-api/annotations/
+         directory-watcher jars that jar's OWN build needed are not repeated
+         here. -->
+    <dependency>
+      <groupId>cc.sosonline</groupId>
+      <artifactId>swing-gpu-surface</artifactId>
+      <version>0.1.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/swing-gpu-surface-0.1.0.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/gui/jar/org.scilab.modules.gui.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it. Class-Path carries gui's own
+                 six-entry manifest.class-path value exactly as Ant wrapped
+                 it (mid-token, at Ant's 70-byte column) — see this file's
+                 header comment, "THE CLASS-PATH WRAP", for why the wrap
+                 column itself does not matter and is not reproduced as a
+                 goal in its own right. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

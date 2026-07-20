@@ -138,7 +138,7 @@ _MVN_NS = "{http://maven.apache.org/POM/4.0.0}"
 def _reactor_modules(pom_path=PARENT_POM):
     """<module> entries from the parent reactor POM (e.g. "modules/localization"),
     PARSED rather than hardcoded so the completeness check below (review Fix 1)
-    stays correct through all 8 remaining migrations with no further edits.
+    stays correct through all 7 remaining migrations with no further edits.
 
     NAMESPACE GOTCHA: the POM declares the default Maven namespace
     (xmlns="http://maven.apache.org/POM/4.0.0"), so ElementTree needs the
@@ -147,12 +147,12 @@ def _reactor_modules(pom_path=PARENT_POM):
     returns [] (no exception, just nothing), which would make the completeness
     check below assert nothing against everything. See
     test_reactor_modules_parses_real_pom_non_vacuously: verified to return
-    exactly 15 entries today (modules/localization, modules/commons,
+    exactly 16 entries today (modules/localization, modules/commons,
     modules/history_manager, modules/jvm, modules/action_binding,
     modules/scirenderer, modules/graphic_objects, modules/completion,
     modules/console, modules/helptools, modules/types,
     modules/external_objects_java, modules/renderer, modules/javasci,
-    modules/graphic_export), not a silently-empty list.
+    modules/graphic_export, modules/gui), not a silently-empty list.
 
     PROFILE-SCOPED MODULES GOTCHA (final review, Minor): this only matches a
     <modules> block that is a DIRECT CHILD of <project> --
@@ -264,22 +264,23 @@ def test_maven_jars_align_with_ant_jars():
 
 def test_reactor_modules_parses_real_pom_non_vacuously():
     # Guards the namespace gotcha itself: against the REAL parent POM, the
-    # parse must return the fifteen modules wired up today, not an empty list
+    # parse must return the sixteen modules wired up today, not an empty list
     # -- an empty list would silently make the completeness check above assert
     # nothing against everything (vacuously "passing").
     #
     # MAINTENANCE NOTE (final review, Minor): this exact-list assertion is
-    # meant to be UPDATED every time a module is added to the parent POM (8
+    # meant to be UPDATED every time a module is added to the parent POM (7
     # more times before the migration is done) -- never weakened to a
     # truthiness check (`assert _reactor_modules()`) to dodge that churn.
     # Truthiness alone is already covered by the `assert modules` inside
     # _check_maven_jars_alignment_and_completeness; this test's whole point
     # is pinning the EXACT set, so a module that silently fails to parse (or
     # parses to the wrong set) still gets caught here. Updated for Stage 2-f
-    # Task 2, Wave B (modules/renderer, modules/javasci,
-    # modules/graphic_export added to the parent's <modules> -- renderer<-
-    # console, javasci<-types, graphic_export<-renderer+graphic_objects, all
-    # three dependencies already migrated by Wave A or earlier).
+    # Task 3, Wave C (modules/gui added to the parent's <modules> -- gui's
+    # ten reactor dependencies -- action_binding, commons, console,
+    # graphic_export, graphic_objects, history_manager, jvm, localization,
+    # renderer, scirenderer -- were all already migrated by Wave A, Wave B,
+    # or earlier).
     assert _reactor_modules() == [
         "modules/localization",
         "modules/commons",
@@ -296,6 +297,7 @@ def test_reactor_modules_parses_real_pom_non_vacuously():
         "modules/renderer",
         "modules/javasci",
         "modules/graphic_export",
+        "modules/gui",
     ]
 
 
