@@ -260,19 +260,20 @@ def test_maven_jars_align_with_ant_jars():
 
 def test_reactor_modules_parses_real_pom_non_vacuously():
     # Guards the namespace gotcha itself: against the REAL parent POM, the
-    # parse must return the two modules wired up today, not an empty list --
+    # parse must return the three modules wired up today, not an empty list --
     # an empty list would silently make the completeness check above assert
     # nothing against everything (vacuously "passing").
     #
     # MAINTENANCE NOTE (final review, Minor): this exact-list assertion is
-    # meant to be UPDATED every time a module is added to the parent POM (22
+    # meant to be UPDATED every time a module is added to the parent POM (21
     # more times before the migration is done) -- never weakened to a
     # truthiness check (`assert _reactor_modules()`) to dodge that churn.
     # Truthiness alone is already covered by the `assert modules` inside
     # _check_maven_jars_alignment_and_completeness; this test's whole point
     # is pinning the EXACT set, so a module that silently fails to parse (or
-    # parses to the wrong set) still gets caught here.
-    assert _reactor_modules() == ["modules/localization", "modules/commons"]
+    # parses to the wrong set) still gets caught here. Updated for Stage 2-d
+    # Task 1 (modules/scirenderer added to the parent's <modules>).
+    assert _reactor_modules() == ["modules/localization", "modules/commons", "modules/scirenderer"]
 
 
 def test_regression_reactor_module_missing_maven_jar_fails():

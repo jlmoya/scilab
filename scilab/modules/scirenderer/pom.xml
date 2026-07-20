@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/scirenderer/pom.xml — Stage 2-d "the triple exception" module POM
+  (docs/superpowers/plans/2026-07-20-stage2d-scirenderer.md, Task 1).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/scirenderer package from
+  the reactor root, or mvn -f modules/scirenderer/pom.xml package). Ant
+  (modules/scirenderer/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Stage 2-a picked modules/localization and Stage 2-b picked
+  modules/commons for their reactor-ordering properties (a leaf, then a real
+  dependency edge). scirenderer is picked next for the opposite reason — it
+  is ALSO a leaf (zero Scilab-module imports; confirmed by a recursive
+  `grep -rhE '^import (org|com)\.'` over modules/scirenderer/src, restricted
+  to *.java files and excluding scirenderer's own package, which returns only
+  `com.jogamp.opengl.*` names, 134 .java files under src/java) — but it
+  concentrates three mechanics the template has not yet had to prove in one
+  module: a per-module <finalName> override (below), the Class-Path manifest
+  attribute (only 2 of Scilab's 24 Java modules declare manifest.class-path
+  at all — this is the smaller of the two; `gui`, the other, is deferred),
+  and a manifest section that names a package that does not exist anywhere in
+  the jar (see the <manifestFile> comment below).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>scirenderer</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:12 <property name="library.title" value="Scirenderer"/> -->
+  <name>Scirenderer</name>
+
+  <dependencies>
+    <!-- THE TWO VENDORED JOGL JARS scirenderer actually compiles against.
+         scilab-lib.properties:21 sets jogl2.jar -> thirdparty/
+         jogl-all-2.5.0.jar; :35 sets gluegen2.jar -> thirdparty/
+         gluegen-rt-2.5.0.jar. build.incl.xml puts both on the compile
+         classpath as raw <pathelement>s (line 81 ${gluegen2.jar}, line 84
+         ${jogl2.jar}) — no Ivy/repository resolution of any kind, the same
+         shape as flexdock below commons.
+
+         SAME MECHANISM, SAME MEASURED RATIONALE AS modules/commons/pom.xml's
+         flexdock <dependency> — <scope>system</scope> + <systemPath>, chosen
+         there over install-file (an imperative, per-machine, untracked step)
+         and a project-local file:// repository (measured to be silently
+         intercepted by this machine's wildcard mirror; see that POM's
+         comment for the full probe). Cross-referenced rather than restated
+         so the two copies cannot drift apart — including its two hedges,
+         which apply here unchanged: the "should not point at files within
+         the project directory... will be unresolvable by dependent
+         projects" warning Maven prints for every systemPath dependency, and
+         the dated (not yet verified) Maven 4 system-scope risk. Real Maven
+         Central coordinates are used below (unlike flexdock, which per
+         commons's comment is not published under any coordinate) purely as
+         accurate labels — system scope means neither is ever actually
+         resolved from a repository. -->
+    <dependency>
+      <groupId>org.jogamp.jogl</groupId>
+      <artifactId>jogl-all</artifactId>
+      <version>2.5.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jogl-all-2.5.0.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>org.jogamp.gluegen</groupId>
+      <artifactId>gluegen-rt</artifactId>
+      <version>2.5.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/gluegen-rt-2.5.0.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- THE FINALNAME OVERRIDE — the reason this module is Stage 2-d's Task
+         1. The parent (scilab/pom.xml) sets
+         <finalName>org.scilab.modules.${project.artifactId}</finalName>,
+         which would produce org.scilab.modules.scirenderer.jar here — WRONG.
+         scirenderer is the one module of 24 whose Ant-built jar breaks the
+         org.scilab.modules.<m>.jar convention: scilab-lib.properties:88 sets
+         library.scirenderer.name=scirenderer.jar explicitly, unlike e.g.
+         :96 library.commons.name=org.scilab.modules.commons.jar or :112
+         library.localization.name=org.scilab.modules.localization.jar.
+         build.incl.xml's shared `jar` target (line 149) writes
+         destfile="${build.jar.dir}/${library.name}" — the literal jar
+         filename comes from that one per-module property, not from anything
+         the shared target itself enforces, so this one property is the
+         entire explanation for the exception.
+
+         NOT COSMETIC. etc/classpath.xml:127 already hardcodes
+         "$SCILAB/modules/scirenderer/jar/scirenderer.jar" literally (unlike
+         its other 23 module entries, e.g. :236
+         "$SCILAB/modules/commons/jar/org.scilab.modules.commons.jar") — the
+         RUNNING application reads this exact path today. A wrong finalName
+         here would not only fail the build-parity gate (an orphan
+         org.scilab.modules.scirenderer.jar key with no Ant counterpart —
+         proven directly, by removing this override and rebuilding, in Stage
+         2-d Task 1 Step 6), it would diverge from a real classpath entry the
+         day this module's Maven output ever feeds the running app. Reached
+         via modules/prebuildjava/build.xml's hand-coded `all` target
+         (depends="scirenderer, localization, commons, ..."), same as every
+         other module — the jar NAME is what sets scirenderer apart, not how
+         its build is triggered. -->
+    <finalName>scirenderer</finalName>
+
+    <!-- build.incl.xml:20 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- SAME manifestFile MECHANISM AS modules/localization/pom.xml
+                 and modules/commons/pom.xml — see localization's <build>
+                 comment for why (the obvious tool, manifestSections /
+                 manifestEntries, scrambles attribute order and turns
+                 "${manifest.class-path}" into the literal string "null";
+                 manifestFile sidesteps both by never running the fragment
+                 through Maven property interpolation at all). Not restated
+                 here.
+
+                 THIS MODULE'S OWN MANIFEST-section.MF, EXTRACTED VERBATIM —
+                 never retyped — from `unzip -p modules/scirenderer/jar/
+                 scirenderer.jar META-INF/MANIFEST.MF`, carries three things
+                 unique to scirenderer among the modules migrated so far:
+
+                 1) Class-Path: jogl-all.jar gluegen-rt.jar — UNVERSIONED
+                    names, while the files actually on disk (the
+                    <dependencies> above) are jogl-all-2.5.0.jar and
+                    gluegen-rt-2.5.0.jar. build.xml:15 sets
+                    manifest.class-path to exactly this unversioned literal;
+                    it is a deployment-time classpath entry (what the jar
+                    expects to find alongside itself at runtime), not a
+                    build-time path, and Ant never resolves or rewrites it —
+                    reproduced exactly as-is, not "corrected" to match the
+                    versioned filenames. scirenderer is one of only 2 of 24
+                    modules that declare manifest.class-path at all — `gui`
+                    (6 entries, a 72-byte continuation-wrap risk) is the
+                    other, deferred to a later task.
+
+                 2) Name: org/scilab/modules/scirenderer/ — a section header
+                    that DOES NOT MATCH any package actually in this jar (the
+                    classes are org.scilab.forge.scirenderer.*). It is inert
+                    metadata: build.incl.xml:152 generates it mechanically as
+                    "org/scilab/modules/${ant.project.name}/", and
+                    modules/scirenderer/build.xml:2 declares
+                    <project name="scirenderer" ...> — so ant.project.name
+                    gets stitched onto the org.scilab.modules prefix every
+                    OTHER migrated module's real package happens to share,
+                    with nothing checking whether THIS module's classes
+                    actually live there. They do not. REPRODUCE, DON'T
+                    IMPROVE — this campaign's binding principle is producing
+                    the SAME jar Ant does, warts included. Do not "fix" this
+                    to org/scilab/forge/scirenderer/, and do not let a future
+                    reader fix it either: nothing reads this section by
+                    package name today (unlike xcos's own section, which per
+                    localization's comment IS read at runtime via
+                    Package.getPackage(...).getSpecificationVersion() /
+                    getImplementationVersion() — this one has no such
+                    reader).
+
+                 3) Implementation-Version: 00000000 0000 — the frozen
+                    literal, PRESENT rather than omitted, same reasoning as
+                    modules/localization/pom.xml and modules/commons/pom.xml:
+                    the live Ant value at capture time was "20260719 1728"
+                    (Ant's ${DSTAMP} ${TSTAMP}); parity/fingerprint.py's
+                    _MANIFEST_VOLATILE strips any 8-digit/space/4-digit-shaped
+                    line from both sides before comparing regardless of
+                    value, so the frozen literal costs the parity gate
+                    nothing while still giving getImplementationVersion() a
+                    real, non-null value at runtime instead of silently
+                    returning null the instant the attribute is missing. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

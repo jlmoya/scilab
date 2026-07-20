@@ -37,6 +37,7 @@
   <modules>
     <module>modules/localization</module>
     <module>modules/commons</module>
+    <module>modules/scirenderer</module>
   </modules>
 
   <properties>
@@ -76,11 +77,12 @@
          (parity/capture.py) and compare directly against `jars` — see
          build-parity/tests/test_acceptance.py::test_maven_jars_align_with_ant_jars.
 
-         KNOWN FUTURE EXCEPTION, NOT HANDLED HERE: scirenderer is Ant-only and its jar does NOT
-         follow the org.scilab.modules.* convention (it is already one of the tracked orphans).
-         When scirenderer is migrated it will need a per-module <finalName> override that
-         shadows this parent default — out of scope for this task, recorded so it is not
-         mistaken for an oversight later. -->
+         EXCEPTION, NOW HANDLED: scirenderer's jar does NOT follow the org.scilab.modules.*
+         convention (it was one of the tracked orphans noted here until Stage 2-d Task 1
+         migrated it). Its own POM, modules/scirenderer/pom.xml, overrides <finalName> to
+         shadow this parent default — see that file's <build> comment for the full rationale
+         (scilab-lib.properties:88's library.scirenderer.name, and etc/classpath.xml:127's
+         hardcoded runtime path). -->
     <finalName>org.scilab.modules.${project.artifactId}</finalName>
     <plugins>
       <plugin>
