@@ -214,6 +214,100 @@ Java.**
 CMake now calls Maven where it called Ant. The native build is done and frozen; we only touch the
 Java subordinate.
 
+### Stage 2-a — the beachhead (DONE 2026-07-19)
+
+**Proven:** a Maven-built `modules/localization` jar is **byte-parity-green** against the Ant-built
+one — all three entry lists empty via the harness's own `fingerprint_jar`, reproduced independently
+and again under a **cold Maven repository** (so nothing depends on a warm local cache). Parent POM +
+one module POM; Ant remains the build; Maven is run by hand.
+
+**Not proven, and each is its own sub-stage:** the other 23 module POMs; Maven coordinates for the
+~32 vendored jars that have none recorded (including `junit-4.10`); `etc/classpath.xml`
+regeneration; the JUnit 4→5 port and `surefire`; swapping `cmake/ScilabJava.cmake` from Ant to Maven.
+
+`localization` was chosen because it is a **true leaf** — 6 Java files, zero `import` statements, so
+a parity failure could only come from build settings, never from a dependency mistake. `commons` was
+rejected: it imports `org.scilab.modules.localization`.
+
+#### What the beachhead cost, and why it was worth running first
+
+Five real fixes were needed, **two of which contradict the obvious approach**. Each was reproduced by
+reverting it in isolation:
+
+1. **`<release>25</release>` does not work.** Combined with `--add-exports` on `java.base` it fails —
+   release mode compiles against a stripped symbol table with no internal packages to export. Use
+   `<source>`/`<target>`, which also matches Ant's own attributes. **Every module POM needs this as
+   long as `modules/jvm` is in the reactor**, since `LibraryPath.java` imports
+   `jdk.internal.loader.NativeLibraries` and `sun.misc.Unsafe`.
+2. **`<manifestSections>` does not work.** It scrambles attribute order (in Plexus's XML-to-Map
+   layer, not `ManifestSection`) and resolves `${manifest.class-path}` to the literal string `null`
+   instead of leaving it unresolved. Use `<manifestFile>` pointing at a text fragment —
+   order-preserving and immune to Mojo interpolation. **All 23 sectioned module jars will need this
+   from the start.**
+3. **`<debug>false</debug>` emits no `-g` flag at all** (not `-g:none`), leaving javac's default of
+   line numbers + source file. An explicit `-g:none` compiler arg is required.
+4. **maven-archiver 3.6.5 unconditionally stamps `Java-Version`**, which is not in the harness's
+   volatile-strip list. Pinned to 3.6.4 via the plugin's own `<dependencies>`.
+5. XML comments cannot contain `--`.
+
+**A trap worth reading twice — `debuglevel` is dead text.** `build.incl.xml:129` reads
+`debug="${build.debug}"`, and `scilab.properties:3` sets `build.debug=off`. So the adjacent
+`debuglevel="lines,vars,source"` is **ignored** — `<javac>` honours it only when `debug=true`. The
+attributes suggest a debug build; the property says otherwise, and `ant -verbose` confirms the real
+command line carries `-g:none`. Read the property, not the attribute.
+
+#### Three things that do NOT generalize from this beachhead
+
+- **The "leave `Class-Path` unresolved" trick is `localization`-specific.** 26 modules share the
+  section-emitting `jar` target, but only **`gui`** (`build.xml:22`) and **`scirenderer`**
+  (`build.xml:15`) set a real `manifest.class-path` that Ant actually resolves. For those two the
+  Class-Path must be hand-encoded; copying `localization`'s inert-literal pattern would silently
+  produce a wrong manifest. The *mechanism* (`manifestFile`) generalizes; this trick does not.
+- **The manifest's vendor string is double-encoded, and reproducing it requires copying the mangled
+  bytes.** Ant's `<property file>` reads `scilab.properties`'s UTF-8 "è" as Latin-1, so every jar
+  manifest carries `Ã¨`. A contributor who writes a future manifest fragment from the *logically
+  correct* UTF-8 source produces something valid, human-readable, and **silently parity-failing**.
+  Extract the bytes Ant actually emits; do not retype the string.
+- **`<addMavenDescriptor>false</addMavenDescriptor>` is load-bearing, not boilerplate.**
+  `maven-jar-plugin` embeds `META-INF/maven/**` by default; Ant's jars have none, so those entries
+  are a real divergence and the parity gate rejects them correctly. Two harness tests now pin that
+  strictness — one against a diff-time exclusion, one against a capture-time one — so the gate
+  cannot be "fixed" by loosening it.
+
+#### Corrections to this document, from the Stage 2 reconnaissance
+
+- The `prebuildjava` topo-sort is **23** modules, not 22 (this doc said both in different places;
+  `prebuildjava/build.xml:25` is authoritative). `terminal` is a **24th**, absent from that list and
+  built only via its own `USEANT=1` path, gated `if GUI`.
+- **FlatLaf is fetched but unused.** "Already bundled to replace the Swing L&F set" overstates it —
+  its only reference in the whole tree is `// TODO uncomment if using FlatLaf`
+  (`modules/ui_data/.../ScilabFileSelectorFilter.java:162`).
+
+#### Findings a later sub-stage will need
+
+- **The Xcos manifest dependency is the highest-stakes item in Stage 2.** `build.incl.xml:148-163`
+  stamps a *per-package* manifest section, and Xcos reads it at runtime —
+  `XcosDiagramCodec.java:304-305` and `CustomWriter.java:121` call
+  `Package.getSpecificationVersion()`/`getImplementationVersion()` and stamp the result **into saved
+  `.xcos` files**. Maven's default flat manifest compiles cleanly and silently changes user data.
+- **`ivy.xml` is dead.** No ivy jar exists anywhere and `~/.ant/lib` does not exist, so `ant download`
+  would fail immediately on an unresolved antlib. `fetch-thirdparty.sh` reimplements it with
+  `curl` + sha256.
+- **Manifest `Class-Path` chaining works for 2 of 23 modules** — the other 21 ship the literal string
+  `${manifest.class-path}`, because Ant leaves undefined property references as text.
+- **22 of 23 jars are built twice** under plain autotools (once via `prebuildjava`, again via each
+  module's own `USEANT=1`). Stage 1's CMake bridge already collapsed this to 2 Ant invocations.
+- **Three orphans a reactor forces into the open**, all deliberately preserved by Stage 2-a:
+  `output_stream` is built by **nothing** yet referenced by `scilab-lib.properties:170-172`;
+  `scirenderer` is Ant-only (no `Makefile.am`, no `SUBDIRS` entry); `terminal` is GUI-gated and
+  outside the topo-sort. Each is a product decision the current tangle makes by omission.
+- **No codegen plugin is needed.** JFlex's 9 grammars have zero build wiring (hand-committed lexers);
+  SWIG (32 `.i`) and GIWS (34 `.giws.xml`) run only under explicit flags and are slated for deletion
+  in the FFI phase.
+- **Tests do not run today.** 40 files / 338 `@Test` methods (JUnit 4.10) across 7 of 23 modules, but
+  every module's Ant default target is `jar`, so `ant test` only runs if invoked by hand. Cobertura
+  is broken outright — it calls `cobertura-*` tasks with no `taskdef`.
+
 ### 2a. The Maven reactor + dependency management (the maintenance win)
 - Stand up a parent POM + per-module POMs. **The reactor's real inter-module dependencies replace
   prebuildjava's hand-coded 22-module topo-sort** — delete the hand-sort.
