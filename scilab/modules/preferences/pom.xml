@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/preferences/pom.xml — Stage 2-f Task 5 module POM (Wave E, the
+  FINAL wave) (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/preferences -am package
+  from the reactor root, or mvn -f modules/preferences/pom.xml package). Ant
+  (modules/preferences/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Part of Wave E — the smallest of the three (39 source
+  files) and, despite depending on the wave's OTHER module (scinotes), the
+  cleanest dependency-wise: four reactor dependencies and, like
+  modules/ui_data/pom.xml (Wave D), NO vendored third-party jar at all.
+  Listed second in the parent's <modules>, after scinotes, precisely because
+  of that dependency.
+
+  A macOS/BSD-sed TOOL BUG affects maven-module-deps.sh's section [1] raw
+  output for every multi-package module in this wave (self-referencing
+  org.scilab.modules.preferences.* imports leak in instead of being
+  filtered) — see modules/scinotes/pom.xml's header comment for the full
+  root cause and the corrected-pipeline method used to get a clean list;
+  not repeated here. preferences' own self-reference noise was small (it has
+  few sub-packages), but the same correction was applied for consistency.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh preferences, 39 files; self-
+  reference noise removed per modules/scinotes/pom.xml's header comment):
+    [1] imports resolve to FOUR reactor dependencies, all below (all already
+        migrated by earlier waves):
+          commons ({,gui,xml}.*), gui (bridge.{checkbox,colorchooser,
+          filechooser,fontchooser,pushbutton,radiobutton,slider}, console,
+          filechooser, messagebox{,.ScilabModalDialog}, utils, widget),
+          localization (Messages, WindowsDefaultLanguage), scinotes (THIS
+          WAVE's other module — KeywordAdapter, KeywordEvent,
+          ScilabEditorKit, ScilabEditorPane, ScilabLexerConstants, all
+          instantiated/called directly by Component/PreviewCode.java, never
+          subclassed — see this file's header comment, "NO TRANSITIVE
+          VENDORED DEPENDENCY FROM SCINOTES", for why that distinction
+          matters here). org.w3c.dom, org.xml.sax are JDK (java.xml module),
+          not a dependency.
+    [2] reflection targets — NONE (the tool's own verdict, confirmed by an
+        independent `grep -rn 'Class\.forName\|loadClass('` sweep of all 39
+        files: zero hits).
+    [3] fully-qualified uses with no import — one confirmed NON-finding
+        worth recording: Component/Icon.java:24 contains
+        `//TODO import org.scilab.modules.gui.bridge.label.SwingScilabLabel;`
+        — a COMMENTED-OUT import (confirmed by reading the file), not live
+        code; inert either way since `gui` is already a dependency below for
+        other reasons. Every other name in this category
+        (commons.{OS,ScilabCommons,ScilabCommonsUtils,ScilabConstants,
+        gui.FindIconHelper,xml.*}, the eight gui.* classes,
+        localization.{Messages,WindowsDefaultLanguage}, the five scinotes.*
+        classes) is already covered by the four reactor dependencies below,
+        nothing new.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  NO TRANSITIVE VENDORED DEPENDENCY FROM SCINOTES. Component/PreviewCode.
+  java is the one file that touches scinotes: it instantiates
+  ScilabEditorPane and ScilabEditorKit directly (`new ScilabEditorPane(null)`,
+  `new ScilabEditorKit()`) and calls KeywordAdapter.{MouseOverAdapter,
+  MouseClickedAdapter}/KeywordEvent/ScilabLexerConstants — never EXTENDS a
+  scinotes class (contrast modules/scinotes/pom.xml's own header comment,
+  "THE TWO ROSETTA JARS... SILENT CLASS FINDING", where scinotes extends a
+  console class whose superclass pulls in a third rosetta package this
+  module's imports never mention). Checked anyway, the same way: `extends
+  JEditorPane` (ScilabEditorPane) and `extends DefaultEditorKit`
+  (ScilabEditorKit) are both plain java.desktop/Swing base classes — no
+  rosetta/flexdock/FOP type appears anywhere in either superclass chain a
+  preferences class touches. Maven system-scope dependencies are never
+  transitive in any case (scinotes' own rosetta/fop/flexdock/javax.
+  annotation-api dependencies do not propagate here merely from depending on
+  scinotes' jar) — this paragraph confirms the stronger fact that nothing
+  preferences itself does would need them even if they were.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>preferences</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Preferences for Scilab"/> -->
+  <name>Preferences for Scilab</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.commons.{OS, ScilabCommons, ScilabCommonsUtils,
+         ScilabConstants, gui.FindIconHelper, xml.*}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.gui.* — bridge.{checkbox, colorchooser,
+         filechooser, fontchooser, pushbutton, radiobutton, slider}, console,
+         filechooser, messagebox{,.ScilabModalDialog}, utils, widget. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.{Messages, WindowsDefaultLanguage}
+         — the ordinary reactor-sibling idiom used across nearly every
+         module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.scinotes.{KeywordAdapter, KeywordEvent,
+         ScilabEditorKit, ScilabEditorPane, ScilabLexerConstants} —
+         Component/PreviewCode.java's live code-preview pane. THIS WAVE's
+         other module; see this file's header comment for why it must (and
+         does) precede preferences in the parent's <modules>, and "NO
+         TRANSITIVE VENDORED DEPENDENCY FROM SCINOTES" for why scinotes'
+         own vendored jars do not need to be repeated here. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>scinotes</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/preferences/jar/org.scilab.modules.preferences.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it (Ant's live value there today:
+                 "20260719 1729", a DSTAMP/TSTAMP pair). -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

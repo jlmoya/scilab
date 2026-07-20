@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/xcos/pom.xml — Stage 2-f Task 5 module POM (Wave E, the FINAL
+  wave) (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/xcos -am package from
+  the reactor root, or mvn -f modules/xcos/pom.xml package). Ant
+  (modules/xcos/build.xml + build.incl.xml) remains the real build; nothing
+  here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. The second-largest module in the whole reactor (271
+  source files — behind only gui's 351, Wave C) and the last of Wave E.
+  Listed third (after scinotes, preferences) in the parent's <modules>; it
+  depends on neither of this wave's other two modules, only on
+  core/graph/gui/helptools/javasci/types (all migrated by earlier waves)
+  plus action_binding/commons/localization.
+
+  THIS IS THE MODULE THE Implementation-Version RULE EXISTS FOR.
+  modules/localization/pom.xml's <build> comment (Stage 2-a, the very first
+  POM in this whole campaign) named xcos BY NAME as "the actual reader this
+  exists to satisfy" — and here it is. Two call sites read the per-package
+  manifest section AT RUNTIME and stamp the result into every saved .xcos
+  diagram file:
+    - io/writer/CustomWriter.java:121 — inside `if (kind == Kind.DIAGRAM)`,
+      `Package.getPackage("org.scilab.modules.xcos")` then
+      `.getSpecificationVersion()` / `.getImplementationVersion()`, written
+      as an XML comment at the top of the diagram's XML serialization.
+    - io/codec/XcosDiagramCodec.java:304-305 — the same
+      Package.getPackage(...).getSpecificationVersion()/
+      .getImplementationVersion() pair, fed to `trace(...)` inside
+      beforeEncode(), the mxCodec hook that runs for every encoded diagram
+      object.
+  Both resolve via java.lang.Package, which the JVM populates from the
+  per-package manifest section named `Name: org/scilab/modules/xcos/` in
+  whichever jar org.scilab.modules.xcos.* classes were loaded from —
+  EXACTLY the section this POM's <manifestFile> fragment (below) supplies.
+  If that section were absent, or present without an Implementation-Version
+  attribute, getImplementationVersion() returns null (documented
+  java.lang.Package behavior) and every diagram saved by a Maven-built xcos
+  would silently carry the literal text "null" where a version stamp
+  belongs — a real behavioral regression the build-parity harness CANNOT
+  see: parity/fingerprint.py's normalize_manifest strips the
+  Implementation-Version line from BOTH sides (Ant's live DSTAMP/TSTAMP
+  value and this POM's frozen literal alike) before comparing, precisely so
+  a stable rebuild doesn't fail parity on a timestamp — so "parity is green"
+  and "getImplementationVersion() returns null" are BOTH possible
+  simultaneously, and only reading the actual runtime consumer (as this
+  comment does) tells them apart. VERIFIED PRESENT in the built jar below —
+  see the Stage 2-f Task 5 report for the `unzip -p .../org.scilab.modules.
+  xcos.jar META-INF/MANIFEST.MF` transcript of the actual built artifact.
+
+  A macOS/BSD-sed TOOL BUG affects maven-module-deps.sh's section [1] raw
+  output here too (self-referencing org.scilab.modules.xcos.* imports —
+  actions, block, configuration, explorer, graph, io, link, modelica,
+  palette, port, preferences, utils and their sub-packages — leak in
+  unfiltered instead of being excluded). See modules/scinotes/pom.xml's
+  header comment for the full root cause; not repeated here. Every
+  dependency below was cross-checked against a corrected, self-reference-
+  free pass (POSIX bracket classes instead of the tool's `\s`), not the raw
+  script output alone.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh xcos, 271 files; self-reference
+  noise removed per modules/scinotes/pom.xml's header comment):
+    [1] imports resolve to NINE reactor dependencies, all below (all already
+        migrated by earlier waves): action_binding ({,highlevel.}
+        ScilabInterpreterManagement, incl. three static-imported methods),
+        commons ({,gui,xml}.*, incl. a static import of commons.OS), core
+        (Scilab), graph (ScilabComponent, ScilabGraph, actions.*,
+        actions.base.*, event.ArrowKeyListener, io.{ScilabGraphCodec,
+        ScilabObjectCodec}, utils.*), gui (a wide surface: bridge.*,
+        checkboxmenuitem, contextmenu, events.callback, filechooser, menu,
+        menubar, menuitem, messagebox{,.ScilabModalDialog}, tab,
+        tabfactory, textbox, toolbar, utils), helptools (image.
+        XcosImageConverter — see "THE HELPTOOLS / XCOS MUTUAL REFERENCE"
+        below), javasci (JavasciException, Scilab), localization (Messages),
+        types (Boolean, Double, Integer, IntegerTypeEnum, List, MList,
+        String, TList, Type, TypeEnum).
+    [2] reflection targets — NONE (the tool's own verdict, confirmed by an
+        independent `grep -rn 'Class\.forName\|loadClass('` sweep of all 271
+        files: zero hits — xcos is a reflection TARGET for other modules
+        [helptools' XcosDelegates finding, graph's earlier javadoc-only
+        near-miss] but never a reflection SOURCE itself).
+    [3] fully-qualified uses with no import — every org.scilab.modules.*
+        name is already covered by the nine reactor dependencies above,
+        nothing new. The vendored-jar entries (com.mxgraph.*,
+        javax.xml.bind{,.annotation}.*, org.apache.batik.transcoder{,.image}.*,
+        org.apache.lucene.*, org.flexdock.{docking.activation,
+        plaf.common.border}.*) are handled below, each verified per-file
+        against this module's OWN source, not merely copied from the tool's
+        list. javax.annotation.Generated does NOT appear anywhere in this
+        module (confirmed: `grep -rln "javax.annotation" modules/xcos/src/
+        java` is empty) — xcos has no JFlex-generated lexer, unlike
+        scinotes/helptools/graphic_objects, so javax.annotation-api is
+        correctly NOT a dependency here.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  THE HELPTOOLS / XCOS MUTUAL REFERENCE, CLOSING THE LOOP. modules/helptools/
+  pom.xml's header comment documents a reflection target RULED OUT:
+  helptools' image/XcosImageConverter.java reaches
+  `org.scilab.modules.xcos.utils.XcosDelegates` only via
+  Class.forName(...), specifically to avoid a hard compile-time dependency
+  on xcos (which depends on helptools directly — a hard edge the other way
+  would cycle the reactor). Landing here confirms the OTHER half: xcos's own
+  utils/XcosDelegates.java:24 imports
+  `org.scilab.modules.helptools.image.XcosImageConverter` with a plain,
+  ordinary `import` statement — mentioned only in a `@see {@link
+  XcosImageConverter}` javadoc tag in this file (convertToPNG's actual body
+  calls com.mxgraph.util.mxCellRenderer directly, not XcosImageConverter),
+  but a plain unused-in-code import is still real Java source that requires
+  the package to resolve at compile time (javac errors on an unresolvable
+  import regardless of whether the imported name is later referenced) — so
+  `helptools` is a genuine dependency here for this reason alone, independent
+  of the image-conversion delegation itself.
+
+  EXTENDS-CHAIN CHECKS, TO RULE OUT TRANSITIVE VENDORED DEPENDENCIES FROM
+  graph. xcos subclasses graph extensively (XcosDiagram extends ScilabGraph;
+  GraphComponent/PaletteComponent extend ScilabComponent; XcosDiagramCodec
+  extends ScilabGraphCodec; XcosConstants extends ScilabGraphConstants; ~15
+  action classes extend graph's DefaultAction). modules/graph/pom.xml
+  carries FOUR vendored jars (jgraphx, batik-all, jeuclid-core, jlatexmath);
+  Maven system-scope dependencies are never transitive, so depending on
+  graph's jar does not hand any of those to xcos automatically — but if
+  DefaultAction or ScilabGraph exposed a jeuclid/jlatexmath type in a
+  signature xcos touches, xcos would need that jar too, independent of
+  transitivity. Checked directly: DefaultAction's and ScilabGraph's own
+  import lists (modules/graph/src/java/org/scilab/modules/graph/actions/
+  base/DefaultAction.java, .../ScilabGraph.java) resolve entirely to
+  java.*/javax.swing (JDK), commons/gui/graph (reactor, already covered),
+  and com.mxgraph.* (already needed here directly, see below) — no
+  net.sourceforge.jeuclid or org.scilab.forge.jlatexmath anywhere in either
+  chain. jeuclid-core and jlatexmath are correctly NOT dependencies of this
+  module.
+
+  JGRAPHX — com.mxgraph.{io,model,swing{,.handler,.util},util,view}.* across
+  this module's block/graph/io/link/palette/port packages (the diagram model
+  and Swing canvas xcos is built on). SAME COORDINATE, SAME EVIDENCE AS
+  modules/graph/pom.xml (cross-referenced, not restated — that file's header
+  comment cites the jar's own OSGi manifest: Bundle-SymbolicName: com.mxgraph,
+  Vendor: JGraph Ltd, Bundle-Version: 2.1.0.7). Also independently needed
+  here regardless of the graph dependency: xcos imports twice as many
+  com.mxgraph.* names directly as graph does.
+
+  BATIK — org.apache.batik.transcoder{,.image}.{TranscoderException,
+  TranscoderInput, TranscoderOutput, ImageTranscoder} — utils/
+  ImageIconTranscoder.java (an SVG-to-icon transcoder) and palette/model/
+  PaletteBlock.java. SAME COORDINATE AS modules/helptools/pom.xml and
+  modules/graph/pom.xml (cross-referenced, not restated).
+
+  THE LUCENE PAIR, INCLUDING A REAL Ant-CLASSPATH ALIAS. palette/
+  {PaletteSearcher,PaletteIndexer,PaletteSearchManager}.java import
+  org.apache.lucene.{analysis.{,standard.StandardAnalyzer},
+  document.{Document,Field,StringField,TextField},
+  index.{DirectoryReader,IndexReader,IndexWriter,IndexWriterConfig},
+  search.{IndexSearcher,Query,ScoreDoc,TopDocs},
+  store.ByteBuffersDirectory} plus
+  queryparser.flexible.{core.QueryNodeException,
+  standard.StandardQueryParser} — Xcos's block/palette search index.
+  scilab-lib.properties (generated from scilab-lib.properties.in) sets BOTH
+  `lucene-core.jar` AND `lucene-analyzers-common.jar` to the SAME absolute
+  path, thirdparty/lucene-core-9.10.0.jar — confirmed by reading the
+  generated properties file directly, and explained by fetch-thirdparty.sh:
+  247's own comment, `ln -sf lucene-core-9.10.0.jar
+  "$TP/lucene-analyzers-common-9.10.0.jar"   # class moved in Lucene 9`:
+  org.apache.lucene.analysis.standard.StandardAnalyzer, split into its own
+  lucene-analyzers-common artifact in older Lucene, was folded back into
+  lucene-core itself as of Lucene 9 — confirmed directly, `unzip -l
+  thirdparty/lucene-core-9.10.0.jar` lists
+  org/apache/lucene/analysis/standard/StandardAnalyzer.class alongside
+  org/apache/lucene/{document,index,store}/*.class. Ant's compile.classpath
+  (build.incl.xml:88-89) therefore puts the SAME physical file on the
+  classpath under two different property names; reproduced here as ONE
+  dependency (org.apache.lucene:lucene-core:9.10.0) rather than two
+  <dependency> entries pointing at identical bytes — javac resolves a class
+  from whichever classpath entry supplies it first, so a duplicate
+  <systemPath> entry for the same file would be inert, not more faithful.
+  lucene-queryparser-9.10.0.jar is a genuinely separate file (`unzip -l`
+  confirms org/apache/lucene/queryparser/flexible/{core,standard}/*.class
+  live only there), added as its own dependency below. Both real Maven
+  Central coordinates (org.apache.lucene), high confidence — well-known
+  groupId, and the jars' own internal timestamps (2024-02-14) line up with
+  Lucene 9.10.0's real release date.
+
+  JAXB-API — javax.xml.bind.{JAXBContext, JAXBElement, JAXBException,
+  Marshaller, Unmarshaller} and javax.xml.bind.annotation.{XmlAccessType,
+  XmlAccessorType, XmlAttribute, XmlElement, XmlElementDecl, XmlElementRef,
+  XmlElementRefs, XmlElements, XmlRegistry, XmlRootElement, XmlSchemaType,
+  XmlSeeAlso, XmlTransient, XmlType} — the modelica/ and configuration/model/
+  JAXB-annotated data-binding classes (22 files: ModelicaController,
+  Modelica, the modelica.model.* value classes and their ObjectFactory,
+  configuration.model.{SettingType,DocumentType,ObjectFactory}, and the
+  palette.model.* value classes and their ObjectFactory). Removed from the
+  JDK at Java 11 (the exact class of gap this tool's header names by name —
+  javax.xml.bind is in its always-report list). Real, well-known Maven
+  Central coordinate (javax.xml.bind:jaxb-api), only the API is needed at
+  compile time (build.incl.xml's shared classpath puts ONLY jaxb-api.jar
+  there, not the separate jaxb-impl/jaxb-runtime jars also vendored under
+  thirdparty/ — those are runtime-only implementation classes, confirmed
+  against build.incl.xml:105, a single `${jaxb-api.jar}` pathelement and
+  nothing else naming jaxb).
+
+  FLEXDOCK — org.flexdock.docking.activation.ActiveDockableTracker
+  (ViewPortTab.java, XcosTab.java) and org.flexdock.plaf.common.border.
+  ShadowBorder (palette/view/PaletteBlockView.java). SAME COORDINATE AS
+  modules/commons/pom.xml and modules/gui/pom.xml (cross-referenced, not
+  restated) — a different pair of flexdock sub-packages than those two
+  modules use, same jar, verified per-class: `unzip -l thirdparty/
+  flexdock-1.2.5.jar` lists both org/flexdock/docking/activation/
+  ActiveDockableTracker.class and org/flexdock/plaf/common/border/
+  ShadowBorder.class.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>xcos</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Modeler and simulator for hybrid systems"/> -->
+  <name>Modeler and simulator for hybrid systems</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.action_binding.highlevel.
+         ScilabInterpreterManagement, also via static imports of
+         asynchronousScilabExec/buildCall/synchronousScilabExec. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>action_binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.commons.{CommonFileUtils, ScilabCommons,
+         ScilabConstants, gui.{FindIconHelper,ScilabLAF}, xml.*}, also via a
+         static import of commons.OS. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.core.Scilab. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.graph.* — ScilabComponent, ScilabGraph,
+         actions.*, actions.base.* (the base xcos's own ~15 action classes
+         extend — see this file's header comment, "EXTENDS-CHAIN CHECKS"),
+         event.ArrowKeyListener, io.{ScilabGraphCodec,ScilabObjectCodec},
+         utils.*. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>graph</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.gui.* — bridge.{contextmenu,filechooser,menu,
+         menubar,menuitem,tab,toolbar,window}, checkboxmenuitem,
+         contextmenu, events.callback, filechooser, menu, menubar, menuitem,
+         messagebox{,.ScilabModalDialog}, tab, tabfactory, textbox, toolbar,
+         utils. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.helptools.image.XcosImageConverter —
+         utils/XcosDelegates.java. See this file's header comment, "THE
+         HELPTOOLS / XCOS MUTUAL REFERENCE". -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>helptools</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.javasci.{JavasciException, Scilab}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>javasci</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.types.{Boolean, Double, Integer,
+         IntegerTypeEnum, List, MList, String, TList, Type, TypeEnum} — the
+         block/port data-type model. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>types</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- JGRAPHX — see this file's header comment for the coordinate
+         evidence (cross-referenced from modules/graph/pom.xml, not
+         restated). -->
+    <dependency>
+      <groupId>com.mxgraph</groupId>
+      <artifactId>jgraphx</artifactId>
+      <version>2.1.0.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jgraphx-2.1.0.7.jar</systemPath>
+    </dependency>
+    <!-- BATIK — see this file's header comment (cross-referenced from
+         modules/helptools/pom.xml and modules/graph/pom.xml, not
+         restated). -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-all</artifactId>
+      <version>1.17</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/batik-all-1.17.jar</systemPath>
+    </dependency>
+    <!-- LUCENE-CORE — covers BOTH org.apache.lucene.{document,index,store}.*
+         AND org.apache.lucene.analysis.standard.StandardAnalyzer (folded
+         into lucene-core as of Lucene 9; Ant's own lucene-analyzers-common.jar
+         property resolves to this identical file). See this file's header
+         comment, "THE LUCENE PAIR", for the full alias evidence. -->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+      <version>9.10.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/lucene-core-9.10.0.jar</systemPath>
+    </dependency>
+    <!-- LUCENE-QUERYPARSER — org.apache.lucene.queryparser.flexible.
+         {core.QueryNodeException, standard.StandardQueryParser}, a
+         genuinely separate jar from lucene-core (see this file's header
+         comment). -->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-queryparser</artifactId>
+      <version>9.10.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/lucene-queryparser-9.10.0.jar</systemPath>
+    </dependency>
+    <!-- JAXB-API — javax.xml.bind{,.annotation}.* across the modelica/ and
+         configuration/model/ data-binding classes. Removed from the JDK at
+         Java 11; only the API jar is on Ant's shared compile classpath (not
+         the separate jaxb-impl/jaxb-runtime implementation jars also
+         vendored under thirdparty/ — see this file's header comment). -->
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jaxb-api-2.3.1.jar</systemPath>
+    </dependency>
+    <!-- FLEXDOCK — org.flexdock.docking.activation.ActiveDockableTracker,
+         org.flexdock.plaf.common.border.ShadowBorder. SAME COORDINATE AS
+         modules/commons/pom.xml and modules/gui/pom.xml (cross-referenced,
+         not restated). -->
+    <dependency>
+      <groupId>org.flexdock</groupId>
+      <artifactId>flexdock</artifactId>
+      <version>1.2.5</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/xcos/jar/org.scilab.modules.xcos.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism.
+
+                 IMPLEMENTATION-VERSION IS NOT OPTIONAL HERE — see this
+                 file's header comment, "THIS IS THE MODULE THE
+                 Implementation-Version RULE EXISTS FOR", for the two actual
+                 runtime call sites (CustomWriter.java:121,
+                 XcosDiagramCodec.java:304-305) that read this exact
+                 section's Implementation-Version attribute via
+                 java.lang.Package at runtime and stamp the result into
+                 every saved .xcos diagram file. Present below, frozen at
+                 the literal "00000000 0000", positioned between
+                 Implementation-Title and Implementation-Vendor exactly
+                 where Ant places it (Ant's live value there today:
+                 "20260719 1729", a DSTAMP/TSTAMP pair) — confirmed in the
+                 BUILT Maven jar, not merely in this source fragment, per
+                 the Stage 2-f Task 5 report. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

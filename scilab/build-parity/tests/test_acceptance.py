@@ -138,7 +138,8 @@ _MVN_NS = "{http://maven.apache.org/POM/4.0.0}"
 def _reactor_modules(pom_path=PARENT_POM):
     """<module> entries from the parent reactor POM (e.g. "modules/localization"),
     PARSED rather than hardcoded so the completeness check below (review Fix 1)
-    stays correct through all 3 remaining migrations with no further edits.
+    stays correct with no further edits now that Stage 2-f Wave E (Task 5) has
+    brought the reactor to all 23 modules -- 0 remaining.
 
     NAMESPACE GOTCHA: the POM declares the default Maven namespace
     (xmlns="http://maven.apache.org/POM/4.0.0"), so ElementTree needs the
@@ -147,13 +148,15 @@ def _reactor_modules(pom_path=PARENT_POM):
     returns [] (no exception, just nothing), which would make the completeness
     check below assert nothing against everything. See
     test_reactor_modules_parses_real_pom_non_vacuously: verified to return
-    exactly 20 entries today (modules/localization, modules/commons,
+    exactly 23 entries today -- ALL 23 modules of the reactor, Stage 2-f
+    complete (modules/localization, modules/commons,
     modules/history_manager, modules/jvm, modules/action_binding,
     modules/scirenderer, modules/graphic_objects, modules/completion,
     modules/console, modules/helptools, modules/types,
     modules/external_objects_java, modules/renderer, modules/javasci,
     modules/graphic_export, modules/gui, modules/core,
-    modules/history_browser, modules/graph, modules/ui_data), not a
+    modules/history_browser, modules/graph, modules/ui_data,
+    modules/scinotes, modules/preferences, modules/xcos), not a
     silently-empty list.
 
     PROFILE-SCOPED MODULES GOTCHA (final review, Minor): this only matches a
@@ -266,29 +269,35 @@ def test_maven_jars_align_with_ant_jars():
 
 def test_reactor_modules_parses_real_pom_non_vacuously():
     # Guards the namespace gotcha itself: against the REAL parent POM, the
-    # parse must return the twenty modules wired up today, not an empty list
-    # -- an empty list would silently make the completeness check above assert
-    # nothing against everything (vacuously "passing").
+    # parse must return the twenty-three modules wired up today, not an empty
+    # list -- an empty list would silently make the completeness check above
+    # assert nothing against everything (vacuously "passing").
     #
     # MAINTENANCE NOTE (final review, Minor): this exact-list assertion is
-    # meant to be UPDATED every time a module is added to the parent POM (3
-    # more times before the migration is done) -- never weakened to a
-    # truthiness check (`assert _reactor_modules()`) to dodge that churn.
-    # Truthiness alone is already covered by the `assert modules` inside
-    # _check_maven_jars_alignment_and_completeness; this test's whole point
-    # is pinning the EXACT set, so a module that silently fails to parse (or
-    # parses to the wrong set) still gets caught here. Updated for Stage 2-f
-    # Task 4, Wave D (modules/core, modules/history_browser, modules/graph,
-    # modules/ui_data added to the parent's <modules> -- all four depended on
-    # gui, migrated the wave before; core and history_browser also needed
-    # action_binding/commons/graphic_objects/jvm/localization/history_manager,
-    # graph and ui_data also needed commons/jvm-or-types/localization -- every
-    # one of those reactor edges was already migrated by Wave A, Wave B, Wave
-    # C, or earlier; none of the four depends on any of the others despite
-    # two textual near-misses ruled out by reading the source: graph's only
-    # org.scilab.modules.xcos mention is a javadoc @see tag, and ui_data's
-    # only org.scilab.modules.graph mention is also a javadoc @see tag on an
-    # unrelated same-named DefaultAction class).
+    # meant to be UPDATED every time a module is added to the parent POM --
+    # never weakened to a truthiness check (`assert _reactor_modules()`) to
+    # dodge that churn. Truthiness alone is already covered by the `assert
+    # modules` inside _check_maven_jars_alignment_and_completeness; this
+    # test's whole point is pinning the EXACT set, so a module that silently
+    # fails to parse (or parses to the wrong set) still gets caught here.
+    # Updated for Stage 2-f Task 5, Wave E -- the FINAL wave (modules/
+    # scinotes, modules/preferences, modules/xcos added to the parent's
+    # <modules>, bringing the reactor to all 23 modules; the assertion is
+    # now stable, with no further module additions anticipated). scinotes
+    # depended on core/gui/helptools (Waves D/C/A) plus the usual
+    # action_binding/commons/completion/console/history_manager/jvm/
+    # localization boilerplate (all pre-existing or Wave A); preferences
+    # depended on gui (Wave C) AND on scinotes itself, which is why scinotes
+    # is listed first of the three -- Maven's reactor build order is derived
+    # from the dependency graph regardless of <modules> list order (see the
+    # Reactor Build Order preamble the Stage 2-f Task 5 report quotes in
+    # full), but the listing order still follows the established convention
+    # of every earlier wave; xcos depended on core/graph/gui/helptools/
+    # javasci/types (Waves D/D/C/A/B/A) plus the same boilerplate. None of
+    # the three depends on the other two in a way that would cycle: xcos
+    # does not import scinotes or preferences at all, and preferences's only
+    # scinotes dependency is direct instantiation/method calls, never a
+    # reactor cycle back onto preferences or xcos.
     assert _reactor_modules() == [
         "modules/localization",
         "modules/commons",
@@ -310,6 +319,9 @@ def test_reactor_modules_parses_real_pom_non_vacuously():
         "modules/history_browser",
         "modules/graph",
         "modules/ui_data",
+        "modules/scinotes",
+        "modules/preferences",
+        "modules/xcos",
     ]
 
 

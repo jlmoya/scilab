@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/scinotes/pom.xml — Stage 2-f Task 5 module POM (Wave E, the FINAL
+  wave) (docs/superpowers/plans/2026-07-20-stage2f-remaining-modules.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/scinotes -am package from
+  the reactor root, or mvn -f modules/scinotes/pom.xml package). Ant
+  (modules/scinotes/build.xml + build.incl.xml) remains the real build;
+  nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Wave E is the last wave — scinotes, preferences, xcos —
+  and completes the 23-module reactor. scinotes (140 source files) is listed
+  first of the three because preferences imports scinotes directly (see
+  modules/preferences/pom.xml), so scinotes must exist in the reactor before
+  preferences can depend on it; xcos also depends on scinotes' siblings core/
+  graph/gui/helptools/javasci/types but not on scinotes itself.
+
+  A TOOL BUG, FOUND HERE, THAT AFFECTS ALL THREE MODULES' RAW OUTPUT. On this
+  platform (macOS, BSD sed), maven-module-deps.sh's section [1] pipeline
+  strips "import " via `sed -E 's/^\s*import\s+(static\s+)?//'` — but BSD
+  sed's -E (POSIX ERE) does NOT support the `\s` GNU shorthand at all, so
+  that substitution is a silent no-op: every section-[1] line keeps its
+  literal "import " prefix. The self-package exclusion one step later
+  (`grep -vE "^org\.scilab\.(modules|forge)\.$MOD(\.|$)"`) is anchored on
+  `^org\.`, which can never match a line still starting with "import ", so it
+  never fires either — a module's OWN sub-packages leak into its own
+  "reactor imports" list instead of being excluded. Confirmed directly:
+  `echo "org.scilab.modules.scinotes.actions" | grep -vE "^org\.scilab\.
+  (modules|forge)\.scinotes(\.|$)"` exits 1 (correctly excluded) in
+  isolation, but running the SCRIPT's actual multi-stage pipeline over
+  scinotes' real source left "import org.scilab.modules.scinotes",
+  "...scinotes.actions", "...scinotes.tabfactory", "...scinotes.utils" sitting
+  unfiltered in section [1]'s output — self-references to scinotes' own
+  packages, not reactor dependencies. Reproduced with POSIX bracket classes
+  (`[[:space:]]` instead of `\s`, functionally identical, portable to BSD
+  sed) to get a corrected list; every dependency below was cross-checked
+  against that corrected, self-reference-free pass, not the raw script
+  output alone. This is a pre-existing latent bug in the tool itself (not
+  touched here — out of this task's scope, and every earlier wave's own POMs
+  were seemingly written by a reader who recognized and mentally filtered the
+  same self-referencing noise rather than by a tool that suppressed it), not
+  a new one introduced this wave — flagged here once, for whoever next reads
+  a maven-module-deps.sh transcript against a large multi-package module on
+  macOS. modules/preferences/pom.xml and modules/xcos/pom.xml cross-reference
+  this paragraph rather than repeating it.
+
+  STEP 1 FINDINGS (./maven-module-deps.sh scinotes, 140 files; self-reference
+  noise removed per the paragraph above):
+    [1] imports resolve to TEN reactor dependencies, all below (all already
+        migrated by earlier waves):
+          action_binding ({,highlevel.}InterpreterManagement /
+          ScilabInterpreterManagement — not actually imported by name here,
+          see [3]), commons ({,filemonitor,gui,xml}.* plus a static import of
+          commons.xml.XConfiguration), completion (AbstractSciCompletionWindow,
+          Completion), console (AdvCLIManagement, CompletionAction,
+          SciCompletionManager, SciInputParsingManager, SciPromptView,
+          utils.ScilabLaTeXViewer), core (Scilab — SciNotes.java,
+          SciNotesAutosave.java, a REAL import; core is Wave D, already
+          migrated, so unlike modules/gui/pom.xml's reflection-only finding
+          for the same class one wave earlier, scinotes reaches it directly),
+          gui (bridge.{checkboxmenuitem,filechooser,menu,menubar,menuitem,
+          tab,textbox,toolbar,window} plus a wide top-level surface —
+          checkboxmenuitem, console, events.callback, filechooser, menu,
+          menubar, menuitem, messagebox{,.ScilabModalDialog}, tab,
+          tabfactory, textbox, toolbar, utils), helptools (scilab.
+          {AbstractScilabCodeHandler, HTMLWithStyleScilabCodeHandler,
+          ScilabLexer} — confirmed present at modules/helptools/src/java/org/
+          scilab/modules/helptools/scilab/), history_manager
+          (HistoryManagement), jvm (LoadClassPath), localization (Messages).
+    [2] reflection targets — NONE (the tool's own verdict: no forName/
+        loadClass call anywhere in this module, inline or via a named
+        constant). Independently re-confirmed with a direct `grep -rn
+        'Class\.forName\|loadClass('` sweep of all 140 files: zero hits.
+    [3] fully-qualified uses with no import — every org.scilab.modules.*
+        name is already covered by the ten reactor dependencies above
+        (action_binding.{InterpreterManagement, highlevel.
+        ScilabInterpreterManagement} included — used, just never imported by
+        simple name), nothing new. The vendored-jar entries in this category
+        (com.artenum.rosetta.*, org.apache.fop.apps.*,
+        org.flexdock.docking.event.DockingEvent, javax.annotation.Generated)
+        are handled below, each verified per-class or per-file, not merely
+        copied from the tool's list.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+
+  THE FOP / XMLGRAPHICS-COMMONS PAIR — utils/CodeExporter.java imports
+  org.apache.fop.apps.{FOUserAgent, Fop, FopFactory, MimeConstants} and calls
+  FopFactory.newInstance/newFOUserAgent/newFop plus reads
+  MimeConstants.{MIME_PDF, MIME_POSTSCRIPT, MIME_EPS, MIME_RTF, MIME_PNG,
+  MIME_FOP_AWT_PREVIEW, MIME_FOP_PRINT} — the SAME shape as modules/helptools/
+  pom.xml's FopConverter.java, including the SAME inherited-superinterface
+  trap that module's "ITERATION 1" comment documents in full: line 61 here,
+  `MimeConstants.MIME_POSTSCRIPT`, is a constant javap confirms is declared
+  on org.apache.xmlgraphics.util.MimeConstants (xmlgraphics-commons), not on
+  fop-core's own org.apache.fop.apps.MimeConstants subinterface — resolving
+  it needs the superinterface's class file at compile time even though
+  scinotes' source never spells org.apache.xmlgraphics.* out directly.
+  Applied here BEFORE a build iteration had to rediscover it (cross-
+  referenced, not restated): both org.apache.xmlgraphics:fop-core:2.9 and
+  org.apache.xmlgraphics:xmlgraphics-commons:2.9 below, same coordinates,
+  same thirdparty/ files, same groupId as modules/helptools/pom.xml. Only
+  the plain FOP/xmlgraphics-commons pair is needed — CodeExporter.java never
+  touches org.scilab.forge.jlatexmath{,.fop}, net.sourceforge.jeuclid, or the
+  freehep/avalon-framework jars that are FOP's OWN runtime implementation
+  dependencies, not anything this module's source references (same
+  "transitive runtime support, not this module's own compile need"
+  reasoning as modules/gui/pom.xml's cc.sosonline.gpu finding).
+
+  JAVAX.ANNOTATION-API — FOUR JFlex-generated lexers/scanners (ScilabLexer.
+  java, FunctionScanner.java, IndentScanner.java, MatchingBlockScanner.java)
+  each carry `@javax.annotation.Generated("JFlex")`, the exact same pattern
+  modules/helptools/pom.xml and modules/graphic_objects/pom.xml already
+  documented. Same jar, same coordinate (cross-referenced, not restated).
+
+  THE TWO ROSETTA JARS, VERIFIED PER-CLASS, PLUS ONE SILENT-CLASS FINDING.
+  utils/SciNotesCompletionWindow.java and actions/SciNotesCompletionAction.
+  java directly import com.artenum.rosetta.core.CompletionItemImpl (engine)
+  and com.artenum.rosetta.interfaces.{core,ui}.* (API) — `unzip -l` on both
+  jars confirms every one of the eleven distinct classes this module's
+  source names resolves across exactly jrosetta-API-1.0.4.jar (the nine
+  interfaces.{core,ui}.* names) and jrosetta-engine-1.0.4.jar
+  (CompletionItemImpl), same two coordinates as modules/console/pom.xml and
+  modules/gui/pom.xml. THE SILENT CLASS: actions/SciNotesCompletionAction.
+  java's own top-level class `extends org.scilab.modules.console.
+  CompletionAction`, and console's CompletionAction (modules/console/src/
+  java/org/scilab/modules/console/CompletionAction.java:35) in turn `extends
+  com.artenum.rosetta.core.action.AbstractConsoleAction` — a THIRD rosetta
+  package, com.artenum.rosetta.core.action, that appears ZERO times as text
+  anywhere in scinotes' own source (confirmed: `grep -rn
+  "rosetta.core.action" modules/scinotes/src/java` finds nothing) and that
+  the tool's own scan therefore cannot report at all — the same class of gap
+  its header names for helptools' inherited MimeConstants member, reached
+  here through an EXTENDS chain instead of an inherited interface constant.
+  `unzip -l thirdparty/jrosetta-engine-1.0.4.jar` confirms
+  com/artenum/rosetta/core/action/AbstractConsoleAction.class lives there
+  (not in jrosetta-API) — already covered by the jrosetta-engine dependency
+  this module needs anyway for CompletionItemImpl, so no THIRD rosetta jar
+  is required, but the finding is recorded here because the two jars being
+  "already needed anyway" was confirmed, not assumed. The same file's two
+  inner classes (SciNotesInputParsingManager extends console's
+  SciInputParsingManager, SciNotesCompletionManager extends console's
+  SciCompletionManager) were checked the same way — both superclasses'
+  import lists resolve entirely to completion/localization (reactor
+  siblings) and rosetta interfaces/core already accounted for above, nothing
+  further.
+
+  FLEXDOCK — org.flexdock.docking.event.DockingEvent, implemented by
+  SciNotes.java, utils/NavigatorWindow.java and utils/SearchFile.java's
+  DockingListener callbacks. SAME MECHANISM, SAME COORDINATE AS
+  modules/commons/pom.xml and modules/gui/pom.xml (cross-referenced, not
+  restated).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>scinotes</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Text editor for Scilab"/> -->
+  <name>Text editor for Scilab</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.action_binding.{InterpreterManagement,
+         highlevel.ScilabInterpreterManagement} — used unqualified across
+         several actions classes (imported, not merely fully-qualified). -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>action_binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.commons.{CommonFileUtils, OS, ScilabCommons,
+         ScilabCommonsUtils, ScilabConstants, ScilabGeneralPrefs,
+         filemonitor.FileSystemMonitor, gui.*, xml.*}. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.completion.{AbstractSciCompletionWindow,
+         Completion} — utils/SciNotesCompletionWindow.java,
+         actions/SciNotesCompletionAction.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>completion</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.console.{AdvCLIManagement, CompletionAction,
+         SciCompletionManager, SciInputParsingManager, SciPromptView,
+         utils.ScilabLaTeXViewer} — see this file's header comment, "THE TWO
+         ROSETTA JARS... SILENT CLASS FINDING", for the extends chain this
+         dependency's CompletionAction/SciCompletionManager/
+         SciInputParsingManager classes sit at the root of. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>console</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.core.Scilab — SciNotes.java, SciNotesAutosave.
+         java. A genuine compile-time import (core is Wave D, migrated the
+         wave before this one) — contrast modules/gui/pom.xml's reflection-
+         only finding for the identical class name one wave earlier, back
+         when core was not yet migrated. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.gui.* — this module's widest reactor surface:
+         bridge.{checkboxmenuitem,filechooser,menu,menubar,menuitem,tab,
+         textbox,toolbar,window} plus checkboxmenuitem, console,
+         events.callback, filechooser, menu, menubar, menuitem,
+         messagebox{,.ScilabModalDialog}, tab, tabfactory, textbox, toolbar,
+         utils. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.helptools.scilab.{AbstractScilabCodeHandler,
+         HTMLWithStyleScilabCodeHandler, ScilabLexer} — utils/CodeExporter.
+         java's HTML export path. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>helptools</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.history_manager.HistoryManagement. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>history_manager</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.jvm.LoadClassPath. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>jvm</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages — the ordinary
+         reactor-sibling idiom used across nearly every module. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- THE TWO VENDORED ROSETTA JARS — SAME MECHANISM, SAME TWO
+         COORDINATES AS modules/console/pom.xml and modules/gui/pom.xml (see
+         this file's header comment for the per-class verification and the
+         AbstractConsoleAction silent-class finding). -->
+    <dependency>
+      <groupId>com.artenum.rosetta</groupId>
+      <artifactId>jrosetta-API</artifactId>
+      <version>1.0.4</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jrosetta-API-1.0.4.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.artenum.rosetta</groupId>
+      <artifactId>jrosetta-engine</artifactId>
+      <version>1.0.4</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jrosetta-engine-1.0.4.jar</systemPath>
+    </dependency>
+    <!-- FOP-CORE — org.apache.fop.apps.{FOUserAgent, Fop, FopFactory,
+         MimeConstants}, utils/CodeExporter.java's PDF/PS/EPS/RTF/PNG export
+         engine. SAME COORDINATE AS modules/helptools/pom.xml (cross-
+         referenced, not restated — see this file's header comment). -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>fop-core</artifactId>
+      <version>2.9</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/fop-core-2.9.jar</systemPath>
+    </dependency>
+    <!-- NOT DIRECTLY IMPORTED — needed for the identical inherited-
+         superinterface reason modules/helptools/pom.xml documents in full
+         ("ITERATION 1"): CodeExporter.java:61 reads
+         MimeConstants.MIME_POSTSCRIPT, a constant declared on
+         xmlgraphics-commons' org.apache.xmlgraphics.util.MimeConstants
+         superinterface, not on fop-core's own subinterface. See this file's
+         header comment, "THE FOP / XMLGRAPHICS-COMMONS PAIR". -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>xmlgraphics-commons</artifactId>
+      <version>2.9</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/xmlgraphics-commons-2.9.jar</systemPath>
+    </dependency>
+    <!-- javax.annotation.Generated("JFlex") on four generated lexers/
+         scanners. Same jar, same coordinate as modules/helptools/pom.xml
+         and modules/graphic_objects/pom.xml (cross-referenced, not
+         restated). -->
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.3.2</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/javax.annotation-api-1.3.2.jar</systemPath>
+    </dependency>
+    <!-- FLEXDOCK — org.flexdock.docking.event.DockingEvent (SciNotes.java,
+         utils/NavigatorWindow.java, utils/SearchFile.java). SAME MECHANISM,
+         SAME COORDINATE AS modules/commons/pom.xml and modules/gui/pom.xml
+         (cross-referenced, not restated). -->
+    <dependency>
+      <groupId>org.flexdock</groupId>
+      <artifactId>flexdock</artifactId>
+      <version>1.2.5</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml (see
+                 that file's build comment for the full rationale).
+                 MANIFEST-section.MF's bytes were EXTRACTED from the actual
+                 Ant-built jar's META-INF/MANIFEST.MF (unzip -p
+                 modules/scinotes/jar/org.scilab.modules.scinotes.jar
+                 META-INF/MANIFEST.MF), never retyped: Specification-Vendor
+                 and Implementation-Vendor both carry the double-mangled
+                 "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it (Ant's live value there today:
+                 "20260719 1729", a DSTAMP/TSTAMP pair). -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
