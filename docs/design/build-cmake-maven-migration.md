@@ -351,6 +351,45 @@ cross-checking one capture's `maven_jars` against that same capture's `jars` —
 **seen to fail** on the real naming divergence the first bullet above describes, before
 `<finalName>` fixed it.
 
+### Stage 2-d — `scirenderer`, the triple exception (DONE 2026-07-20)
+
+Reconnaissance before this stage found the remaining Maven mechanics are **far narrower than this
+document previously implied**, and one module concentrates them. Ported `modules/scirenderer` at jar
+parity, proving three things the template had never met:
+
+- **A per-module `<finalName>` override.** `scirenderer.jar` is the **only one of 24** not matching
+  `org.scilab.modules.<dir>.jar`, so the parent POM's inherited value produces the wrong name. This
+  is load-bearing **at runtime**, not cosmetic: `etc/classpath.xml:127` lists the literal
+  `$SCILAB/modules/scirenderer/jar/scirenderer.jar`, so a wrong name yields a classpath entry
+  pointing at a file that does not exist. (An earlier draft of the 2-d plan claimed `classpath.xml`
+  did *not* list it; the implementer checked and corrected that.) Proven load-bearing rather than
+  merely present, by removing the override and watching the gate report the orphan key.
+- **The `Class-Path` manifest attribute** — `jogl-all.jar gluegen-rt.jar`. Note it names
+  **unversioned** jars while the files on disk are `jogl-all-2.5.0.jar` / `gluegen-rt-2.5.0.jar`:
+  it is a deployment-time name, not a build path, and reproducing the versioned spelling would look
+  right and be wrong.
+- **Two vendored third-party jars on one module** (JOGL + GlueGen), on the `systemPath` mechanism
+  Stage 2-c settled.
+
+**Only 2 of 24 modules declare `manifest.class-path`** — `scirenderer` (2 entries) and `gui` (6).
+The Class-Path machinery is a two-module concern, not a pervasive one. `scirenderer` also has *zero*
+Scilab-module imports (only `com.jogamp.opengl.*`), so unlike `commons` it imposes no reactor
+ordering, and its jar holds no non-`.class` entries.
+
+**A wart preserved deliberately, now tracked:** `scirenderer`'s per-package manifest section is
+`Name: org/scilab/modules/scirenderer/`, but its classes are `org.scilab.forge.scirenderer.*` — the
+section names a package that does not exist in the jar, generated mechanically from
+`${ant.project.name}`, and is therefore inert. Reproduced rather than corrected, per
+*reproduce, don't improve*, and recorded as **P3** in `docs/design/deferred-fixes-register.md`.
+
+**Named before `gui` starts — the 72-byte continuation-wrapping risk.** `normalize_manifest` is
+**line-oriented**: it filters volatile lines and rejoins the survivors, never joining a manifest's
+continuation lines. So a wrapped attribute is compared **literally**, byte position included.
+`scirenderer`'s Class-Path is short enough not to wrap; `gui`'s six-entry value **does**, mid-token
+(`javafx.b` / `ase.jar`). Ant and Maven both write through `java.util.jar.Manifest`, which wraps at
+72 bytes, so they *should* agree — but "should" has a poor record in this campaign, and the gate
+will catch it either way. Expect it; do not be surprised by it.
+
 **Artifact resolution works, but NOT the way this section originally claimed** (corrected 2026-07-20,
 Stage 2-c §5). The original wording — "Maven Central is reachable, verified HTTP 200 against
 `repo1.maven.org`" — drew a true conclusion from evidence that does not support it: `curl` does not
