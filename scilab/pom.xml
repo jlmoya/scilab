@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  scilab/pom.xml — Stage 2-a "Maven beachhead" (build-cmake-maven-migration.md).
+
+  STATUS: ADDITIVE and RUN BY HAND. Ant (build.incl.xml + each module's
+  build.xml) remains the real, only build for every one of Scilab's 24 Java
+  jars — nothing here is wired into CMake or any release build yet. This
+  parent POM exists to answer one cheap question before the full migration
+  (a hand-encoded module order, a four-way dependency tangle, ~78 vendored
+  jars mostly lacking Maven coordinates): do the Maven mechanics and the
+  existing build-parity "jars" dimension actually work on one real module?
+
+  The one module currently wired up is modules/localization — see its own
+  pom.xml for why it was chosen (a genuine leaf: 6 Java files, zero import
+  statements) over modules/commons (imports org.scilab.modules.localization,
+  so not a leaf). Record: .superpowers/sdd/task-2-brief.md,
+  .superpowers/sdd/task-2-report.md.
+
+  Everything under <build><plugins> here is POLICY shared by every Ant-built
+  module jar (build.incl.xml's `compile`/`jar` targets, imported by every
+  module's build.xml) — it belongs at the parent so each child module POM
+  only has to add what is genuinely module-specific (its manifest section,
+  its dependencies, if any).
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.scilab</groupId>
+  <artifactId>scilab-modules-parent</artifactId>
+  <version>2027.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>Scilab Java modules (Maven beachhead)</name>
+
+  <modules>
+    <module>modules/localization</module>
+  </modules>
+
+  <properties>
+    <!-- build.incl.xml:129 javac encoding="utf-8" -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.15.0</version>
+        <configuration>
+          <!-- build.incl.xml:129 source="25" target="25": reproduced as the
+               classic source/target PAIR, deliberately NOT the unified
+               <release> element task-2-brief.md Step 3 suggested. Tried
+               <release>25</release> first: it fails outright with
+               "exporting a package from system module java.base is not
+               allowed with release", because javac's release mode compiles
+               against a stripped per-release symbol table (ct.sym) that
+               does not contain java.base's non-exported internal packages
+               at all, so add-exports (below) has nothing to add-export TO.
+               The source/target pair compiles directly against the CURRENT
+               running JDK's real module system instead (no ct.sym
+               involved), which is what actually allows add-exports and
+               add-opens to work, and it is also the textually exact match
+               for what Ant's javac task attribute pair (source="25"
+               target="25", not a unified release="25") already does; Ant
+               hits no such restriction, which is how this mismatch
+               surfaced. See task-2-report.md Step 5 for the failing build
+               output. -->
+          <source>25</source>
+          <target>25</target>
+          <!-- build.incl.xml:129 encoding="utf-8" -->
+          <encoding>UTF-8</encoding>
+          <!-- build.incl.xml:129 debug="${build.debug}"; scilab.properties:3
+               sets build.debug=off, which makes Ant's javac task pass
+               -g:none: NO debug info at all (no LineNumberTable /
+               LocalVariableTable / SourceFile attributes). Maven's own
+               default is debug=true. This is NOT cosmetic: the jars parity
+               dimension (build-parity/parity/capture.py:fingerprint_jar)
+               hashes each class entry's raw bytes, and -g:none vs the default
+               produces DIFFERENT (and differently-SIZED) bytes for every
+               single .class file — confirmed by an actual build, all 6
+               .class files 87-144 bytes larger with debug=false ALONE than
+               with the -g:none compilerArg below added (task-2-report.md
+               Step 5). debuglevel="lines,vars,source" (build.incl.xml:129)
+               only selects WHICH tables -g emits when debug=on — moot here
+               since Ant's debug is off. -->
+          <debug>false</debug>
+          <!-- <debug>false</debug> ALONE IS NOT ENOUGH, confirmed by
+               inspecting the actual javac command line Maven constructs
+               (mvn ... -X): with only <debug>false</debug> set, Maven emits
+               NO -g flag of any kind, which is not the same as -g:none:
+               javac's OWN bare default (no -g flag at all) still generates
+               LineNumberTable + SourceFile (per javac's docs: "If no flags
+               are specified, javac generates line number and source file
+               information"), which is BOTH what was observed (javap -v on
+               the Maven-built .class files showed LineNumberTable/SourceFile
+               present, byte counts larger than Ant's) and short of Ant's
+               actual -g:none. The explicit -g:none compilerArg below is
+               therefore the real, load-bearing fix; <debug>false</debug> is
+               kept only so the intent reads correctly next to it, not
+               because it does anything by itself here. -->
+          <!-- build.incl.xml:129 deprecation="on" — a diagnostic-only
+               warning switch (stderr output), never changes the compiled
+               .class bytes. Reproduced for fidelity with Ant's javac
+               invocation; the parity gate does not need it. -->
+          <showDeprecation>true</showDeprecation>
+          <compilerArgs>
+            <!-- THE actual -g:none, load-bearing per the debug comments
+                 above: this is what makes the compiled .class bytes match
+                 Ant's. -->
+            <arg>-g:none</arg>
+            <!-- build.incl.xml:130-140 — the -Xlint family. Diagnostic-only
+                 warning selection (stderr output), zero effect on emitted
+                 bytecode or the manifest. Reproduced only so this POM is a
+                 complete mirror of Ant's javac invocation, not because parity
+                 needs any of them. -->
+            <arg>-Xlint</arg>
+            <arg>-Xlint:-unchecked</arg>
+            <arg>-Xlint:-rawtypes</arg>
+            <arg>-Xlint:-path</arg>
+            <arg>-Xlint:-serial</arg>
+            <arg>-Xlint:-options</arg>
+            <!-- build.incl.xml:141-143 — LOAD-BEARING, not boilerplate.
+                 modules/jvm/src/java/org/scilab/modules/jvm/LibraryPath.java:25-26
+                 imports jdk.internal.loader.NativeLibraries and
+                 sun.misc.Unsafe and reflectively rewrites
+                 LibraryPaths.USER_PATHS; without these three flags that file
+                 does not compile under JDK 17+ module encapsulation.
+                 modules/localization (this beachhead's module) does not need
+                 them — but Ant applies them to EVERY module's compile
+                 unconditionally, because they live in the one shared
+                 `compile` target every module's build.xml imports from this
+                 file, not in a per-module override. The policy belongs here,
+                 at the parent, for the same reason: every child module
+                 inherits it automatically, matching Ant's actual shared-target
+                 behavior, instead of each module POM re-declaring it only
+                 where currently known to be needed and silently diverging
+                 from Ant the day some other module needs it too. -->
+            <arg>--add-exports=java.base/jdk.internal.loader=ALL-UNNAMED</arg>
+            <arg>--add-opens=java.base/jdk.internal.loader=ALL-UNNAMED</arg>
+            <arg>--add-opens=java.base/java.lang.reflect=ALL-UNNAMED</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.5.0</version>
+        <!-- Pins maven-jar-plugin's OWN bundled maven-archiver dependency down
+             from 3.6.5 (this plugin version's default, per its own POM
+             property mavenArchiverVersion) to 3.6.4. Confirmed by decompiling
+             both: maven-archiver 3.6.5 added an UNCONDITIONAL new manifest
+             main attribute, "Java-Version: <release/target>", with no
+             configuration flag to turn it off (unlike the neighboring
+             Build-Jdk-Spec, which DOES have one, addBuildEnvironmentEntries);
+             3.6.4 and earlier do not add it at all. Confirmed by an actual
+             build: with 3.6.5, the jar's manifest carried an extra
+             "Java-Version: 25" line that is NOT one of the lines
+             parity/fingerprint.py's _MANIFEST_VOLATILE regex strips (Ant-
+             Version/Created-By/Built-By/Built-Date/Build-Jdk(-Spec)/Bnd-
+             LastModified/Archiver-Version, plus the DSTAMP/TSTAMP-shaped
+             Implementation-Version) — see task-2-report.md Step 5. Per this
+             stage's binding constraint, extending that regex to also strip
+             Java-Version is not an option (parity/fingerprint.py must not be
+             touched; the POM is what's wrong, not the harness), and pinning
+             a plugin's transitive dependency version via <dependencies> is a
+             completely ordinary, first-class Maven mechanism, not a hack. -->
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-archiver</artifactId>
+            <version>3.6.4</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <archive>
+            <!-- MANDATORY, not boilerplate. maven-jar-plugin embeds
+                 META-INF/maven/<groupId>/<artifactId>/pom.xml and
+                 pom.properties into every jar by default. Ant's jars have
+                 none of that — it is a real divergence from the artifact
+                 this beachhead reproduces, and
+                 build-parity/tests/test_jar.py::test_maven_descriptor_entries_are_a_real_difference
+                 (Task 1 of this stage, commit 3a32370905e) exists specifically
+                 to lock the gate's strictness here: it fails the moment
+                 anyone "fixes" a META-INF/maven mismatch by excluding that
+                 path in the harness instead of turning this off in the POM.
+                 Set once, at the parent, so every child jar gets it without
+                 having to remember to repeat it. -->
+            <addMavenDescriptor>false</addMavenDescriptor>
+            <manifest>
+              <!-- Ant's shared `jar` target (build.incl.xml:148-163) sets
+                   exactly ONE main-section attribute itself (Built-By,
+                   handled below via manifestEntries) and nothing else at the
+                   top level — no Maven-style auto-populated
+                   Specification-Title/Implementation-Title etc. at the MAIN
+                   attribute level (those only exist per-package, inside each
+                   module's own named manifest section — see e.g.
+                   modules/localization/pom.xml's <manifestFile>). Both of
+                   these default to false already; set explicitly so that
+                   stays a documented decision instead of an accident of the
+                   default. -->
+              <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+            </manifest>
+            <manifestEntries>
+              <!-- build.incl.xml:151 <attribute name="Built-By" value="${user.name}"/>.
+                   Reproduced for fidelity; parity-inert either way:
+                   parity/fingerprint.py's _MANIFEST_VOLATILE strips any
+                   Built-By line before the jars dimension compares manifests
+                   (same treatment as Ant-Version/Created-By/etc., all of
+                   which are build-environment specifics, not build output). -->
+              <Built-By>${user.name}</Built-By>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

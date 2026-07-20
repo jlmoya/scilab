@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/localization/pom.xml — Stage 2-a "Maven beachhead" module POM.
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -f modules/localization/pom.xml
+  package). modules/localization/build.xml + build.incl.xml (Ant) remains the
+  real build; nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. task-2-brief.md's plan pointed at modules/commons first,
+  but commons imports org.scilab.modules.localization (confirmed again here:
+  a recursive grep for '^import org.scilab.modules.[a-z_]+' over
+  modules/commons/src/java's *.java files finds
+  `import org.scilab.modules.localization`) — so it is not a leaf, and a
+  beachhead that needs a second module's jar on its classpath is not
+  answering the cheap question this stage exists to answer. localization IS a
+  leaf: 6 Java files under src/java, zero `import` statements of any kind
+  (confirmed: the same recursive grep for '^import ' over
+  modules/localization/src/java's *.java files returns nothing). All 6 are
+  SWIG-generated JNI stubs (Messages,
+  MessagesJNI, LocaleToLCID, LocaleToLCIDJNI, WindowsDefaultLanguage,
+  WindowsDefaultLanguageJNI) referencing only java.lang.* (String, System,
+  SecurityException, UnsatisfiedLinkError) — no fully-qualified reference to
+  any other jar either. Hence: no <dependencies> block below. A module that
+  genuinely needed thirdparty/*.jar or another Scilab module's jar would need
+  one here (file://-repository / install-file / systemPath scaffolding,
+  explicitly temporary — see task-2-brief.md Step 4); localization has
+  nothing to resolve, which makes this POM encode ONLY the compiler and
+  manifest policy — exactly what the build-parity "jars" dimension measures.
+
+  ONE MORE FILE THAN THE PLAN NAMED: src/main/manifest/MANIFEST-section.MF.
+  task-2-brief.md's Files list named only two POMs; this module ended up
+  needing a third, small, plain-text file too, added ONLY because
+  maven-jar-plugin's <manifestSections>/<manifestEntries> (the mechanism the
+  brief specified) turned out not to reproduce the per-package section
+  correctly — see the <manifestFile> comment in <build> below for what broke
+  and why the fix lives there instead. It carries the exact same section
+  content this POM would otherwise have encoded inline; nothing about the
+  module's dependency shape changed.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>localization</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Localization support"/> -->
+  <name>Localization support</name>
+
+  <build>
+    <!-- build.incl.xml:20 <property name="src.dir" location="src/java/"/>.
+         Points Maven straight at the SAME source tree Ant compiles — no
+         files are copied or duplicated into src/main/java; both build tools
+         compile the identical .java files on disk. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are inherited
+                 from the parent POM (scilab/pom.xml) — not redeclared here.
+                 Only what is genuinely specific to this module's jar lives
+                 below. -->
+            <!--
+                 THE PER-PACKAGE MANIFEST SECTION IS A RUNTIME DEPENDENCY,
+                 NOT COSMETICS. build.incl.xml:148-163 stamps a per-package
+                 manifest section (Name: org/scilab/modules/<project>/,
+                 carrying Specification-*/Implementation-* attributes) that
+                 modules/xcos/src/java/org/scilab/modules/xcos/io/codec/XcosDiagramCodec.java:304-305
+                 and
+                 modules/xcos/src/java/org/scilab/modules/xcos/io/writer/CustomWriter.java:121
+                 read at RUNTIME via
+                 Package.getPackage("org.scilab.modules.xcos").getSpecificationVersion()
+                 / .getImplementationVersion() — values the JVM populates
+                 from exactly this manifest section — and then stamp INTO
+                 every saved .xcos diagram file. Maven's default flat
+                 manifest compiles fine and would silently change what
+                 users' saved diagrams contain the day xcos itself moves to
+                 Maven. localization does not read its own manifest this way
+                 today, but this beachhead exists to rehearse the shape of
+                 the fix on a harmless module BEFORE a module that actually
+                 depends on it needs the same treatment done correctly under
+                 real stakes.
+
+                 WHY manifestFile INSTEAD OF manifestSections. The obvious
+                 tool, maven-jar-plugin's <manifestSections>/<manifestEntries>,
+                 was tried first and produces a WRONG jar, two different ways,
+                 confirmed by an actual build (task-2-report.md Step 5 shows
+                 both failures byte-for-byte):
+                   1) Attribute ORDER inside the section came out
+                      unpredictable and did not match the XML declaration
+                      order, even with declaration order set to Ant's exact
+                      sequence, and even after forcing
+                      manifestEntries[@implementation=java.util.LinkedHashMap]
+                      (javap on maven-archiver's own ManifestSection.class
+                      confirms ITS field is a LinkedHashMap; the scrambling
+                      happens earlier, in Plexus/Sisu's generic XML-to-Map
+                      configurator, before that field is ever populated) — two
+                      different configurations produced two different WRONG
+                      orders, neither matching Ant's. The jars parity
+                      dimension hashes the whole manifest as one ordered text
+                      blob, so this alone fails parity.
+                   2) The Class-Path value "${manifest.class-path}" (a
+                      deliberately-unresolved Ant property, see below) came
+                      out of maven-jar-plugin as the literal string "null",
+                      not the expected literal "${manifest.class-path}" text —
+                      Mojo Map-parameter interpolation resolves an unknown
+                      expression to "null" rather than leaving it as-is,
+                      unlike Ant's (and the POM model's own) unresolved-stays-
+                      literal behavior.
+                 <manifestFile> sidesteps both: maven-archiver merges in a
+                 pre-written manifest section from a plain text file, parsed
+                 and re-serialized via java.util.jar.Manifest/Attributes,
+                 which preserve insertion order (this is the SAME class Ant's
+                 own jar writer ultimately targets), and the file is never
+                 run through Maven property interpolation at all, so
+                 "${manifest.class-path}" survives as inert literal text
+                 instead of being (mis-)interpolated.
+
+                 ONE ATTRIBUTE DELIBERATELY LEFT OUT of MANIFEST-section.MF:
+                 build.incl.xml:157's Implementation-Version, value
+                 "${DSTAMP} ${TSTAMP}" (Ant's build date + minute, e.g.
+                 "20260719 2038"). It is a real wall-clock value that can
+                 never agree between two separate builds, which is exactly
+                 why parity/fingerprint.py's _MANIFEST_VOLATILE regex strips
+                 any "Implementation-Version: <8 digits> <4 digits>" line
+                 from BOTH sides before comparing. A plain text manifestFile
+                 cannot embed a live timestamp (no property interpolation
+                 reaches it, by design, per the Class-Path reasoning above),
+                 and reproducing the ATTRIBUTE's presence with a fake value
+                 in the DSTAMP/TSTAMP shape would need extra resource-
+                 filtering machinery for zero observable difference: present-
+                 and-stripped and absent-and-never-added compare byte-for-
+                 byte identical after normalize_manifest() removes the line
+                 from Ant's side too. Omitted rather than faked. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

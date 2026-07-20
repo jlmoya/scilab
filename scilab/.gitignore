@@ -219,3 +219,7 @@ locale/*/*/*.po
 
 # Stage-1 make->CMake driver build dir (hybrid coexistence with autotools)
 /build-cmake/
+
+# Stage 2-a Maven beachhead build output (hybrid coexistence with Ant; Ant's
+# own modules/*/jar and modules/*/build outputs are covered above)
+modules/*/target/
