@@ -31,6 +31,20 @@
 #   1. imports            — the obvious ones
 #   2. reflection strings — must be ruled OUT of <dependencies>, deliberately
 #   3. fully-qualified uses with no import — the silent class
+#
+# WHAT THIS SCRIPT CANNOT FIND, and no source scan can. A dependency may be
+# required with ZERO occurrences of its name anywhere in the module's source.
+# Stage 2-f Wave A hit it: helptools' FopConverter.java reads
+# MimeConstants.MIME_POSTSCRIPT, and MimeConstants resolves fine — but the
+# CONSTANT is inherited from a SUPERINTERFACE, org.apache.xmlgraphics.util.
+# MimeConstants, which lives in a different jar (xmlgraphics-commons). javac
+# needs that superinterface on the classpath to resolve the inherited member,
+# so the module does not compile without a jar it never mentions.
+#
+# Only the compiler settles that class. Treat a clean run of this script as
+# "no KNOWN-detectable dependency is missing", never as "the dependency set is
+# complete" — and when javac reports a package you did not expect, check what
+# build.incl.xml's compile.classpath already provides before adding anything.
 # ============================================================================
 set -uo pipefail
 
