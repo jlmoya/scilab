@@ -371,39 +371,76 @@ closing there too.)
 
 **It fails loudly — a deliberate divergence.** `Makefile.am:247` prefixes its recipe with `-`, so
 `make` **ignores the exit status**: a failed macros pass prints "Error 1 (ignored)" and the build
-continues, with nothing downstream re-validating completeness. That is how the `rc=231` bug shipped
-(commit `7303c43690e`: one module lacked its `macros/buildmacros.sce`, the unguarded `exec` failed,
-and `make` swallowed it). Demonstrated A/B with the *same* injected syntax error: CMake exits **rc=2**
+continues, with nothing downstream re-validating completeness. That is how the `rc=231` bug shipped —
+FIXED in commit `7303c43690e` ("toolbox_manager: add the standard per-module buildmacros.sce (fixes
+the rc=231 exit)"): one module lacked its `macros/buildmacros.sce`, the unguarded `exec` failed, and
+`make` swallowed it. Demonstrated A/B with the *same* injected syntax error: CMake exits **rc=2**
 (log shows `Error 231` cascading), `make macros` exits **rc=0**. Reproducing the artifact is the
 mandate; inheriting a swallow-the-error habit into a build system that never had it is not.
 
-**`.bin` output is deterministic — measured, and it is not obvious.** Every `.bin` embeds AST node
-numbers from a process-wide counter that is **never reset**
-(`modules/ast/includes/exps/ast.hxx:40-43`), so a `.bin` is a function of its source *plus everything
-parsed earlier in that same process*. Two independent full rebuilds nonetheless produced **0 of 3,516
-files differing**, and both reproduced the pre-existing on-disk state. That is what makes the harness's
-content-level macro gate strict rather than flaky. If it ever drifts, investigate — do not weaken the
-gate back to presence.
+**`.bin` output is reproducible for a full build from a purged tree — measured, and it is not
+obvious — but final review I2 corrects an earlier, too-broad claim here: it is NOT a pure function of
+the sources.** Every `.bin` embeds AST node numbers from a process-wide counter that is **never
+reset** (`modules/ast/includes/exps/ast.hxx:42`, `nodeNumber = globalNodeNumber++`) and gets
+serialized (`serializervisitor.hxx:103`, under a `saveNodeNumber` flag that **defaults true**), so a
+`.bin`'s bytes depend on its source *plus everything parsed earlier in that same process* — i.e. on
+which files got (re)compiled and in what order, not on source content alone. genlib's own incremental
+skip (`sci_genlib.cpp:266-276`) `continue`s **before** `parser.parseFile` ever runs for a skipped
+file, so a skipped file never advances the counter either — two builds that end up recompiling a
+*different subset* of the tree will legitimately assign different root node numbers to the files they
+DO recompile. Measured: deleting only `who_user.bin` and `fftshift.bin` from an otherwise-full tree
+and rebuilding regenerated them with root node numbers **448** and **1484** — versus **2030** and
+**423875** from a full rebuild of the identical sources. Same sources, different bytes.
+
+Two independent **full** rebuilds (both `*.bin` and `lib` purged first under every `modules/*/macros/`
+— see the trap below) nonetheless produced **0 of 3,516 files differing**, and both reproduced the
+pre-existing on-disk state. That is what makes the harness's content-level macro gate strict rather
+than flaky **for the case it actually runs in**: a full build from a purged tree. Determinism here is
+a property of *that specific procedure*, not of the sources by themselves — a macro-manifest mismatch
+is only meaningful when both sides being compared were captured from a full, purged rebuild. If this
+manifest ever mismatches, do not treat that as a regression report on its own: first purge
+`modules/*/macros/{*.bin,lib}` and re-run a full macro build on the suspect side, then recapture and
+recompare. An incremental rebuild sitting in between two captures (a developer deleting one stray
+`.bin`, or touching then reverting a `.sci`) can produce a legitimate, false-alarm mismatch with no
+source regression at all — chasing that as if it were one wastes time on a phantom. Only a mismatch
+that survives a from-purged full rebuild on both sides is real; investigate *that* — and still do not
+weaken the gate back to presence.
 
 **The trap when comparing the two drivers:** `genlib` is **incremental**
 (`sci_genlib.cpp:263-279` skips a `.sci` whose md5 matches the previous `lib` manifest while its
 `.bin` survives). A rebuild that does not delete **both** `*.bin` **and** `lib` under
-`modules/*/macros/` is a **no-op** that reproduces identical output trivially and proves nothing.
+`modules/*/macros/` is a **no-op** that reproduces identical output trivially and proves nothing. This
+is the SAME incremental-skip mechanism behind the history-dependence above — it is both a
+capture-comparison trap (this paragraph) and, as just shown, a property of the output itself.
 
 Two incidental findings, recorded so they are not rediscovered:
 
 - **`windows_tools`' macros are unreachable.** It has `macros/buildmacros.sce` and two Windows-only
   sources, but no entry in `etc/modules.xml`, so `getmodules()` never reaches it. Any `.bin` found
   there is a stale artifact; parity confirmed none is in the baseline.
-- **`modules/dynamic_link/macros/buildmacros.sce:14-16` has a dead fallback** — it `exec`s
-  `modules/functions/macros/genlib.sci`, which does not exist anywhere in the tree. Vestigial from
-  before `genlib` became a C++ builtin; harmless while the `io` module's builtin is registered, but a
-  trap for anyone reasoning about a reduced interpreter build.
+- **`modules/dynamic_link/macros/buildmacros.sce:14-16` has a dead fallback, one indirection deeper
+  than it looks.** Guarded by `isdef("genlib") == %f`, it `exec`s
+  `modules/functions/scripts/buildmacros/loadgenlib.sce` — which **does** exist. It is
+  `loadgenlib.sce`'s own `listmacrostoload` table that then `exec`s `modules/functions/macros/
+  genlib.sci` for its `"genlib","functions"` entry, and *that* file is the one that does not exist
+  anywhere in the tree. Vestigial from before `genlib` became a C++ builtin; harmless while the `io`
+  module's builtin is registered, but a trap for anyone reasoning about a reduced interpreter build.
 
-**Known limitation of the macro gate:** it is one hash over every `.bin`'s path *and* content, so a
-failure reports `generated file changed: macros/*.bin (manifest)` without naming *which* file moved.
-Strict, but not self-localizing — a diagnostic mode dumping per-file mismatches is a candidate
-follow-up if this ever fires in anger.
+**Final review Minor 1: the manifest also covers `lib`.** Each module's `macros/lib` (e.g.
+`modules/core/macros/lib`) is the XML index `genlib()` writes and Scilab actually loads to resolve a
+macro *name* to its `.bin` file and md5 — the resolution mechanism itself, not a byproduct. Before
+this fix, only `.bin` files were hashed: every `.bin` could stay byte-identical while a corrupted
+`lib` (a wrong library-name argument, a truncated write) left macros unresolvable at runtime, and the
+gate would still report `PARITY OK`. All 81 `lib` files were measured byte-identical across both
+drivers, exactly like the `.bin` files, so they are as deterministic (in the from-a-purged-full-build
+sense above) and are folded into the SAME manifest entry — same `MACRO_BIN_MANIFEST_KEY`, same
+`path\0sha256hex` entry shape — rather than given a section of their own.
+
+**Known limitation of the macro gate:** it is one hash over every `.bin`'s *and* `lib`'s path *and*
+content, so a failure reports `generated file changed: macros/*.bin (manifest)` without naming *which*
+file moved (the key keeps its original ".bin"-only name for continuity with the existing baseline
+entry, even though its coverage now includes `lib`). Strict, but not self-localizing — a diagnostic
+mode dumping per-file mismatches is a candidate follow-up if this ever fires in anger.
 
 ## CI
 
@@ -425,9 +462,14 @@ follow-up if this ever fires in anger.
   + flag facts on the built tree. Because the aggregates + executables + the 24 jars ride
   `drop-in-all` and the capture fingerprints every `.libs/` artifact (incl. `LC_RPATH`) and
   every `modules/*/jar/*.jar`, this job now gates the whole app — native + jars —
-  automatically (the runner has Ant + the JDK). Set the project variable only while such a
-  runner is registered; without it the job is not created (shared runners can neither build
-  nor fingerprint Mach-O).
+  automatically (the runner has Ant + the JDK). The `macros` target does NOT ride along this
+  way (it is opt-in, see above), so — final review Important 1 — this job purges every
+  `.bin`/`lib` under `modules/*/macros/` and runs `--target macros` explicitly, right before
+  the capture step: this runner's workdir is persistent (`GIT_CLEAN_FLAGS: none`), so without
+  an explicit purge+rebuild the capture could fingerprint macros an earlier autotools run
+  produced, and the content-manifest dimension would gate nothing CMake actually did. Set the
+  project variable only while such a runner is registered; without it the job is not created
+  (shared runners can neither build nor fingerprint Mach-O).
 
 ## Deferred (deliberately out of Stage 1f-c)
 

@@ -21,12 +21,23 @@ substitution set — `etc/classpath.xml`, the source-tree `machine.h`/`version.h
 files (`scilab.pc`, `etc/Info.plist`, `etc/modules.xml`, `Version.incl`, and so on — the exact list
 is `parity/capture.py`'s `GENERATED_FILES`) — **always hashed from the SOURCE TREE** (configure's
 own copies), on *both* sides of every comparison, never from anything CMake wrote; a manifest hash
-over every compiled macro `.bin`'s **path AND content** (RC-d strengthened this from path-only:
-presence alone would miss a `.bin` sitting at the right path with wrong bytes, which is exactly what
-migrating the macro compiler's driver risks. Content hashing is strict rather than flaky because
-`.bin` output was *measured* deterministic — 0 of 3,516 files differing across two independent full
-rebuilds — even though the format embeds a never-reset process-wide AST node counter. One hash covers
-the whole set, so a failure reports that *something* moved without naming which file); and, separately, CMake's *own* copies of **eleven
+over every compiled macro `.bin`'s **and each module's `lib`'s path AND content** (RC-d strengthened
+this from path-only: presence alone would miss a `.bin` sitting at the right path with wrong bytes,
+which is exactly what migrating the macro compiler's driver risks; a final review folded `lib` — the
+XML index Scilab actually loads to resolve a macro name to its `.bin` and md5, not a byproduct — into
+the SAME manifest entry, since every `.bin` byte could match while a corrupted `lib` left macros
+unresolvable at runtime. Content hashing is strict rather than flaky because `.bin`/`lib` output is
+*reproducible for a full build from a purged tree* — 0 of 3,516 `.bin` files, and separately all 81
+`lib` files, differing across two independent full rebuilds — but that is **not** the same as
+"deterministic" outright, an earlier over-claim a later final review corrected: the `.bin` format
+embeds AST node numbers from a never-reset process-wide counter, and genlib's incremental skip
+advances that counter only for the files it actually reparses, so an *incremental* rebuild (unlike the
+from-purged *full* rebuild the 0-differing measurement used) can legitimately assign different node
+numbers to whichever files it does recompile — same sources, different bytes. A manifest mismatch is
+only trustworthy when both sides were captured from a full, purged rebuild; `docs/design/
+build-cmake-driver.md`'s "Macros" section has the measured example and what to do before trusting a
+mismatch. One hash covers the whole set, so a failure reports that *something* moved without naming
+which file); and, separately, CMake's *own* copies of **eleven
 files across two directories** — the ten RC-c files (`build-cmake/generated/`) plus `version.h`
 (`build-cmake/generated-includes/`) — checked against those same source-tree hashes — the only
 comparison here that actually looks at what CMake wrote, rather than re-hashing configure's copy a

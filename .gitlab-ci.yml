@@ -129,7 +129,12 @@ sanity:cmake-driver:
 # symbols/deps/install_name + LC_RPATH + the 24-jar content manifest + the per-TU flag
 # facts from compile_commands.json. The aggregate/executable/rpath/jar coverage is
 # automatic: they ride drop-in-all and the capture fingerprints every .libs/ artifact and
-# every modules/*/jar/*.jar (the runner has Ant + the JDK). Any regression
+# every modules/*/jar/*.jar (the runner has Ant + the JDK). RC-d's `macros` target does
+# NOT ride along this way — it is deliberately opt-in (the `doc`-target precedent), so
+# without an explicit purge+rebuild here the capture would happily fingerprint .bin/lib
+# files an EARLIER autotools run produced on this persistent runner, and the
+# content-manifest dimension would gate nothing CMake actually did (see the inline
+# comment at the build step below). Any regression
 # fails the pipeline. Needs a self-hosted macOS
 # arm64 runner (shell executor) whose persistent workdir is configured + built per
 # docs/design/build-cmake-driver.md — shared gitlab.com runners can neither build nor
@@ -150,6 +155,17 @@ parity:cmake-drop-in:
     - test -f config.status  # CMake consumes the configure-generated machine.h/version.h
     - cmake -S . -B build-cmake -DCMAKE_Fortran_COMPILER=gfortran
     - cmake --build build-cmake --target drop-in-all -j
+    # RC-d final-review Important 1: the macro .bin files must be built BY CMAKE for the
+    # content manifest to mean anything -- capturing a tree whose macros an earlier
+    # autotools run produced (this runner's workdir is persistent, GIT_CLEAN_FLAGS: none
+    # above) would compare autotools against itself and report PARITY OK regardless of
+    # whether cmake/ScilabMacros.cmake's COMMAND even still works. Purge both *.bin AND
+    # lib: genlib is incremental (sci_genlib.cpp:263-279) and skips any .sci whose md5
+    # still matches its lib entry, so without the lib purge too this is a no-op that
+    # reuses the stale files instead of rebuilding them.
+    - find modules -path '*/macros/*' -name '*.bin' -delete
+    - find modules -path '*/macros/*' -name 'lib'   -delete
+    - cmake --build build-cmake --target macros
     - cd build-parity
     - python3 -m parity.capture .. /tmp/cand-ci.json cand
     - python3 -m parity.diff baseline-autotools.json /tmp/cand-ci.json

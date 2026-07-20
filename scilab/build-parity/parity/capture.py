@@ -69,17 +69,53 @@ _GENERATED_CMAKE_PATH_OVERRIDES = {
     "modules/core/includes/version.h": os.path.join("generated-includes", "version.h"),
 }
 
-# Key for the macro .bin manifest entry in the "generated" map: one hash over
-# every compiled macro's PATH **and CONTENT** (RC-d). It was path-only through
-# RC-c -- enough to catch a module's macros vanishing (the rc=231 shape), but
-# blind to a .bin present at the right path with wrong bytes, which is exactly
-# what migrating the macro compiler risks.
+# Key for the macro manifest entry in the "generated" map: one hash over every
+# compiled macro's PATH **and CONTENT** (RC-d). It was path-only through RC-c --
+# enough to catch a module's macros vanishing (the rc=231 shape), but blind to a
+# .bin present at the right path with wrong bytes, which is exactly what
+# migrating the macro compiler risks.
 #
-# Content hashing is strict rather than flaky because .bin output is
-# deterministic -- measured before RC-d: two independent full rebuilds (.bin AND
-# lib deleted between, since genlib is incremental) produced 0 of 3516 files
-# differing, and both reproduced the pre-existing on-disk state. If that ever
-# drifts, investigate it; do not weaken this back to presence.
+# RC-d final-review Minor 1: also covers each module's `lib` (e.g.
+# modules/core/macros/lib) -- the XML index Scilab actually loads to resolve a
+# macro NAME to its .bin path and md5, not a byproduct of building one. Every
+# .bin byte could match while a corrupted lib (wrong library-name argument,
+# truncated write) left macros unresolvable at runtime, and this manifest would
+# not have noticed. Folded into the SAME key (not a new "lib (manifest)" entry)
+# and the SAME path\0sha256hex entry shape as the .bin entries -- see the
+# fingerprint_build loop below. The key keeps its original ".bin"-only name for
+# continuity with the existing baseline entry even though its coverage is now
+# broader.
+#
+# Content hashing is strict rather than flaky because .bin/lib output is
+# REPRODUCIBLE FOR A FULL BUILD FROM A PURGED TREE -- measured before RC-d: two
+# independent full rebuilds (.bin AND lib deleted first under every
+# modules/*/macros/, since genlib is incremental) produced 0 of 3516 .bin files
+# differing (81 of 81 lib files likewise, measured for the RC-d final-review
+# fix), and both reproduced the pre-existing on-disk state.
+#
+# RC-d final-review Important 2: that reproducibility claim needs a caveat this
+# comment used to omit -- .bin/lib output is NOT a pure function of the sources.
+# Every .bin embeds AST node numbers from a process-wide counter that never
+# resets (ast.hxx:42, `nodeNumber = globalNodeNumber++`) and gets serialized
+# (serializervisitor.hxx:103, under a `saveNodeNumber` flag that DEFAULTS TRUE).
+# genlib's own incremental skip (sci_genlib.cpp:266-276) `continue`s BEFORE
+# parser.parseFile ever runs for a skipped file, so a skipped file never
+# advances the counter either -- which files a build actually reparses, and in
+# what order, changes the root node numbers of the ones it does. Measured:
+# deleting only who_user.bin and fftshift.bin from an otherwise-full tree and
+# rebuilding assigned them root node numbers 448 and 1484, versus 2030 and
+# 423875 from a full build of the identical sources. Same sources, different
+# bytes -- determinism here is a property of the FULL-PURGED-REBUILD procedure,
+# not of the source tree by itself.
+#
+# Practical consequence: a capture taken after an INCREMENTAL macro rebuild (a
+# developer deletes a stray .bin, or touches then reverts a .sci, then runs a
+# plain build) can legitimately differ from one taken after a full purged
+# rebuild, with no source regression at all. If this manifest ever mismatches,
+# do not trust that in isolation -- delete *.bin and lib under every
+# modules/*/macros/ and re-run a FULL macro build before concluding anything;
+# investigate a mismatch that survives THAT, do not weaken this back to
+# presence.
 MACRO_BIN_MANIFEST_KEY = "macros/*.bin (manifest)"
 
 # OUTPUT jars of the opt-in help/doc build (CMake `doc` target / `make doc`),
@@ -295,7 +331,7 @@ def _fingerprint_exe(path, roots, runner):
 def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="build"):
     dylibs = {}
     jars = {}
-    macro_bins = []
+    macro_manifest_entries = []
     for root, _dirs, files in os.walk(build_dir):
         posix_root = root.replace(os.sep, "/")
         if posix_root.endswith("/.libs"):
@@ -316,19 +352,28 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
                     dylibs[key] = fingerprint_dylib(path, roots, runner)
         elif "/macros/" in posix_root + "/":
             # Compiled macro .bin files (any depth under a macros/ dir, e.g.
-            # modules/assert/macros/assert/assert_checkerror.bin). PATH and CONTENT
-            # are both captured (see MACRO_BIN_MANIFEST_KEY above) -- catches both a
-            # module's macros silently vanishing from the build AND a .bin present
-            # at the right path with the wrong bytes.
+            # modules/assert/macros/assert/assert_checkerror.bin) PLUS each module's
+            # `lib` (e.g. modules/core/macros/lib) -- the XML index Scilab actually
+            # loads to resolve a macro NAME to its .bin path and md5 (RC-d
+            # final-review Minor 1: every .bin byte could match while a corrupted
+            # lib left macros unresolvable at runtime, so `lib` needs the same
+            # coverage). PATH and CONTENT are both captured for both kinds, folded
+            # into the SAME manifest entry (see MACRO_BIN_MANIFEST_KEY above) --
+            # catches a module's macros silently vanishing from the build, a .bin
+            # present at the right path with the wrong bytes, AND a corrupted lib.
             for fn in files:
-                if fn.endswith(".bin"):
+                if fn.endswith(".bin") or fn == "lib":
                     p = os.path.join(root, fn)
                     rel = os.path.relpath(p, build_dir).replace(os.sep, "/")
-                    # BINARY read -- .bin files are serialized ASTs, not text. (The
-                    # text readers elsewhere in this file pin encoding="utf-8"; that
-                    # is the wrong tool here and would corrupt the hash.)
+                    # BINARY read for both kinds -- .bin files are serialized ASTs;
+                    # `lib` happens to be XML text, but reading it the same way
+                    # keeps one code path and avoids an encoding decision. (The
+                    # text readers elsewhere in this file pin encoding="utf-8";
+                    # that is the wrong tool here and would risk corrupting the
+                    # hash for either kind.)
                     with open(p, "rb") as f:
-                        macro_bins.append(rel + "\0" + hashlib.sha256(f.read()).hexdigest())
+                        macro_manifest_entries.append(
+                            rel + "\0" + hashlib.sha256(f.read()).hexdigest())
         elif "/modules/" in posix_root + "/" and posix_root.endswith("/jar"):
             # modules/<m>/jar/*.jar — the Ant-built module jars. Content manifest
             # (fingerprint_jar), NOT byte hash: jars embed timestamps + non-det zip
@@ -358,7 +403,7 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
                 content = normalize_path(f.read(), roots)
             generated[rel] = hashlib.sha256(content.encode("utf-8", "replace")).hexdigest()
 
-    manifest = "\n".join(sorted(macro_bins))
+    manifest = "\n".join(sorted(macro_manifest_entries))
     generated[MACRO_BIN_MANIFEST_KEY] = hashlib.sha256(manifest.encode("utf-8")).hexdigest()
 
     # RC-c final-review Finding (Critical): CMake's OWN copies of the generated files

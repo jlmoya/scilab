@@ -345,6 +345,65 @@ def test_macro_bin_manifest_still_changes_when_a_bin_goes_missing(tmp_path):
     assert before != after, "a .bin vanished but the manifest hash did not change"
 
 
+# --- RC-d final-review Minor 1: `lib` folded into the same manifest ---------
+#
+# Each module's `macros/lib` (e.g. modules/core/macros/lib) is the XML index Scilab
+# actually loads to resolve a macro NAME to its .bin path and md5 -- not a byproduct.
+# Before this fix only .bin files were hashed: every .bin byte could match while a
+# corrupted `lib` (wrong library-name argument, truncated write) left macros
+# unresolvable at runtime, and MACRO_BIN_MANIFEST_KEY would still report clean. These
+# three tests mirror the .bin content/presence tests above, for `lib`, plus pin the
+# exact-filename match (not a substring/glob) that keeps lookalike files out.
+
+def test_macro_bin_manifest_changes_when_a_lib_file_CONTENT_changes(tmp_path):
+    """Same content-hash treatment as .bin, for lib: same path, different bytes must
+    change the manifest hash."""
+    from parity.capture import fingerprint_build, MACRO_BIN_MANIFEST_KEY
+    mac = tmp_path / "modules" / "core" / "macros"
+    mac.mkdir(parents=True)
+    (tmp_path / ".libs").mkdir()
+    lib_file = mac / "lib"
+
+    lib_file.write_bytes(b'<scilablib name="corelib"><macro name="a" file="a.bin" md5="1"/></scilablib>')
+    before = fingerprint_build(str(tmp_path), {}, build_id="b")["generated"][MACRO_BIN_MANIFEST_KEY]
+
+    lib_file.write_bytes(b'<scilablib name="corelib"><macro name="a" file="a.bin" md5="CORRUPTED"/></scilablib>')
+    after = fingerprint_build(str(tmp_path), {}, build_id="b")["generated"][MACRO_BIN_MANIFEST_KEY]
+
+    assert before != after, "a lib file's content changed but the manifest hash did not"
+
+
+def test_macro_bin_manifest_changes_when_a_lib_file_goes_missing(tmp_path):
+    """The presence property .bin has must cover lib too -- a lib silently vanishing
+    (e.g. a module's macro build wrote no index at all) must be caught exactly like a
+    vanished .bin is."""
+    from parity.capture import fingerprint_build, MACRO_BIN_MANIFEST_KEY
+    mac = tmp_path / "modules" / "core" / "macros"
+    mac.mkdir(parents=True)
+    (tmp_path / ".libs").mkdir()
+    (mac / "OS_Version.bin").write_bytes(b"x")
+    (mac / "lib").write_bytes(b"<scilablib/>")
+    before = fingerprint_build(str(tmp_path), {}, build_id="b")["generated"][MACRO_BIN_MANIFEST_KEY]
+    (mac / "lib").unlink()
+    after = fingerprint_build(str(tmp_path), {}, build_id="b")["generated"][MACRO_BIN_MANIFEST_KEY]
+    assert before != after, "a lib file vanished but the manifest hash did not change"
+
+
+def test_macro_bin_manifest_only_matches_the_exact_filename_lib(tmp_path):
+    # Guard the exact-match semantics (fn == "lib"), not a substring/glob: a macros/
+    # dir could plausibly contain "lib.bak" or "liblib" (an editor backup, a stray
+    # rename) that must NOT be swept in as if it were the real index.
+    build_dir = str(tmp_path)
+    _touch(os.path.join(build_dir, "modules/core/macros/lib"))
+    with_real_lib = _bin_manifest(build_dir)
+
+    _touch(os.path.join(build_dir, "modules/core/macros/lib.bak"))
+    _touch(os.path.join(build_dir, "modules/core/macros/liblib"))
+    with_lookalikes_too = _bin_manifest(build_dir)
+
+    assert with_real_lib == with_lookalikes_too
+
+
 def test_macro_bin_manifest_ignores_bin_files_outside_a_macros_dir(tmp_path):
     # Real trees have a handful of unrelated .bin files (e.g. .atoms/toremove.bin,
     # JCEF's v8_context_snapshot.arm64.bin) that are not compiled macros and must

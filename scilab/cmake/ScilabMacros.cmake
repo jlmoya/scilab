@@ -11,17 +11,24 @@
 # parity dimensions. So this stage inherits proven scope rather than re-deriving
 # module enablement.
 #
-# No JVM, no jars: Makefile.am's own check-jvm-dep asserts scilab-cli-bin has NO
-# libjvm dependency. Depending on the Java build here would invent a prerequisite
-# autotools does not have.
+# No JVM, no jars: Makefile.am:246's `macros:` rule lists check-jvm-dep (asserts
+# scilab-cli-bin has NO libjvm dependency) and check-libstdcpp-dep as PREREQUISITES,
+# both dropped here rather than reproduced. Depending on the Java build here would
+# invent a prerequisite autotools does not have -- the inverse mistake. Both checks
+# are dormant no-ops on macOS today (check-jvm-dep's body is `if !IS_MACOSX`, entirely
+# absent here; check-libstdcpp-dep's is `if USE_STATIC_SYSTEM_LIB`, which this configure
+# leaves false, so it only echoes "libstdc++ presence test skipped") -- worth reproducing
+# before this driver ever targets Linux, where USE_STATIC_SYSTEM_LIB can be true and the
+# check real.
 #
 # DELIBERATE DIVERGENCE FROM autotools -- this target FAILS LOUDLY.
 # Makefile.am:247 prefixes its recipe with `-`, so make IGNORES the exit status:
 # a failed macros pass prints "Error 1 (ignored)" and the build continues, and
-# nothing downstream re-validates completeness. That is not hypothetical -- it is
-# how the rc=231 bug shipped (commit 7303c43690e: one module lacked its
-# macros/buildmacros.sce, the unguarded exec failed, scilab-cli exited non-zero
-# after building every other library fine, and make swallowed it). The migration's
+# nothing downstream re-validates completeness. That is not hypothetical -- it
+# shipped as the rc=231 bug, FIXED in commit 7303c43690e ("toolbox_manager: add the
+# standard per-module buildmacros.sce (fixes the rc=231 exit)"): one module lacked
+# its macros/buildmacros.sce, the unguarded exec failed, scilab-cli exited non-zero
+# after building every other library fine, and make swallowed it. The migration's
 # mandate is to reproduce the ARTIFACT, not to inherit a swallow-the-error habit
 # into a build system that never had it. CMake propagates the failure.
 #
