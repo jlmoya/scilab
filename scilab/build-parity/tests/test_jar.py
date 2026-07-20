@@ -210,3 +210,25 @@ def test_maven_descriptor_entries_are_a_real_difference():
     assert not result["ok"], "a Maven descriptor slipped past the jar gate"
     joined = " ".join(result["differences"])
     assert "META-INF/maven" in joined, f"the difference did not name the culprit: {joined}"
+
+
+def test_fingerprint_jar_captures_maven_descriptor_entries(tmp_path):
+    """fingerprint_jar itself must not special-case META-INF/maven/.
+
+    Companion guard to test_maven_descriptor_entries_are_a_real_difference, which
+    only covers a weakening made in diff.py. A CAPTURE-time skip defeats the gate
+    just as completely, and that test can never see it -- it calls diff_fingerprints
+    on hand-built dicts and never calls fingerprint_jar at all. Verified: mutating
+    fingerprint_jar to skip these entries leaves the whole suite green without this.
+
+    The capture-time route is arguably the MORE likely mistake: _DOC_OUTPUT_JAR one
+    function away in capture.py already excludes jars by filename, so "add another
+    exclusion here" is a one-line copy of an existing in-file precedent.
+    """
+    j = tmp_path / "a.jar"
+    _make_jar(j, {"org/x/A.class": b"AAAA",
+                  "META-INF/maven/org.scilab/localization/pom.xml": b"<project/>",
+                  "META-INF/maven/org.scilab/localization/pom.properties": b"version=1"})
+    fp = fingerprint_jar(str(j))
+    assert "META-INF/maven/org.scilab/localization/pom.xml" in fp
+    assert "META-INF/maven/org.scilab/localization/pom.properties" in fp
