@@ -396,6 +396,47 @@ not a weakening: the two wrap positions of the *same* value compare equal, but a
 removed attribute still fails. See "Accepted divergences" in `docs/design/deferred-fixes-register.md`
 for the full record.
 
+### Stage 2-e — the bulk phase begins (DONE 2026-07-20)
+
+Eight of 23 modules migrated: added `history_manager`, `jvm`, `action_binding`, `graphic_objects`
+and `completion` in two batched tasks rather than one stage each. **The beachhead phase is over** —
+2-a…2-d each existed to prove one mechanic and each found real traps worth the isolation; nothing
+unproven remained, so the remainder is mechanical.
+
+- **The topo-sort was already solved for us.** `prebuildjava/build.xml:25` hand-encodes a 23-module
+  order that has built correctly for years, and the three modules migrated before this stage turned
+  out to be *exactly its first three*. Following it means every dependency is in the reactor when
+  its turn comes. **`gui` is 12th, not next** — it imports nine Scilab modules. It is a milestone,
+  not an increment; do not reach for it as "the obvious one".
+- **`jvm` proved the JDK-internals policy.** `LibraryPath.java` imports `jdk.internal.loader` and
+  `sun.misc.Unsafe`; the parent POM's `--add-exports`/`--add-opens` set had been carried since
+  Stage 2-a on reasoning alone. It compiled cleanly on first real use, with only ordinary
+  `sun.misc.Unsafe` deprecation notices — verified byte-identical to Ant's own javac output.
+- **Directory entries reproduce exactly.** Maven emits the same `org/`, `META-INF/` zip entries Ant
+  does (checked: commons 10/10, localization 5/5, scirenderer 44/44, graphic_objects 52/52). What
+  looked like a resources mechanic in reconnaissance was directory entries, and was not one.
+
+**A gate bug this stage exposed, worth reading if you ever re-baseline.** The re-baseline done for
+the continuation-line fix used `capture.sh`, which writes *every* section — so it froze a 3-module
+`maven_jars` snapshot into `baseline-autotools.json`, a file that by name and purpose describes the
+**autotools** build. `diff.py` is written to *skip* `maven_jars` when the baseline lacks it; that is
+the design, not an oversight. The verification script used at the time compared only keys within
+sections present in **both** files, so an entirely new section never entered the comparison and the
+change was reported as "0 keys added".
+
+The consequence was worse than untidiness: with a frozen Maven snapshot in the baseline, *every*
+subsequent migration would make it stale, so re-baselining would become routine — and a gate that is
+routinely re-baselined has stopped being a gate. Stage 2-e hit it on the very next three modules.
+Fixed by stripping the section and adding `test_committed_baseline_carries_no_maven_jars_section`,
+seen to fail when the section returns.
+
+**`maven-module-deps.sh` now exists because `grep '^import'` is not sufficient** — twice proven.
+Stage 2-b found three modules reachable only through `Class.forName` strings, which must *not*
+become compile dependencies (they would cycle the reactor). Stage 2-e found
+`@javax.annotation.Generated` in JFlex-generated source with no import statement at all; the package
+left the JDK at Java 11, and Ant already carries the jar (`build.incl.xml:104`). Run it before
+writing any module POM.
+
 **Artifact resolution works, but NOT the way this section originally claimed** (corrected 2026-07-20,
 Stage 2-c §5). The original wording — "Maven Central is reachable, verified HTTP 200 against
 `repo1.maven.org`" — drew a true conclusion from evidence that does not support it: `curl` does not
