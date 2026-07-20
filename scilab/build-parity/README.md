@@ -67,7 +67,7 @@ Nine dimensions are fingerprinted today:
 | `generated_cmake` | CMake's OWN copies of eleven files across two directories — the ten RC-c files (`build-cmake/generated/`) plus `version.h` (`build-cmake/generated-includes/`) — byte-checked against `generated`'s baseline hashes — the actual CMake-vs-configure comparison. `machine.h`, in that same second directory, is covered separately by `header_defines`, not here | RC-c final-review fix, extended |
 | `flags` | semantic per-language flag facts | Stage 1 |
 | `jars` | normalized jar content manifests (entry list + MANIFEST, volatile lines dropped) | Stage 1f-b |
-| `maven_jars` | normalized jar content manifests for Maven's `modules/*/target/*.jar` output, keyed at Ant's `modules/<m>/jar/<basename>` path so it is directly comparable to `jars` | Stage 2-c Task 1 (captured; dormant until Task 2 arms the baseline) |
+| `maven_jars` | normalized jar content manifests for Maven's `modules/*/target/*.jar` output, keyed at Ant's `modules/<m>/jar/<basename>` path so it is directly comparable to `jars` | captured Stage 2-c Task 1; **armed** Task 2 by `test_maven_jars_align_with_ant_jars` |
 | `header_defines` | a header's `{macro: value}` `#define` set — **semantic, not bytes** | RC-a |
 | `tu_flag_facts` | per-TU flag facts **derived from the autotools generated Makefiles** | RC-b |
 
@@ -97,6 +97,26 @@ actually move. It covers the **24 module jars**; the doc build's output (`scilab
 `scilab_images.jar`) is excluded by filename pattern, since those are help artifacts rather than
 module jars. Stage 2 (Ant -> Maven) is still what can change jar contents most, and the normalized
 manifest is what makes a reactor build's timestamp churn survivable.
+
+`maven_jars` (Stage 2-c) is the same structural gap as `generated_cmake`, one toolchain over:
+`jars` collects from directories ending in `/jar`, which is where **Ant** writes. Maven writes to
+`modules/<m>/target/`, so for two whole stages no Maven artifact had ever entered a whole-tree
+fingerprint — both "parity green" claims came from a hand-run `fingerprint_jar(a, b)` snippet with
+**both paths supplied by hand**, which structurally cannot detect a wrong *filename*. It keys
+Maven's jars at Ant's path so the two dicts compare directly; the key is deliberately synthetic and
+does **not** reflect where the file lives on disk.
+
+Capturing it was not enough, and the distinction is the point. `diff.py`'s transition rule only
+detects regression *across runs* — with no `maven_jars` section in `baseline-autotools.json` it
+skips silently, so the dimension could report `ok` however wrong Maven's output was (proven by
+injecting a deliberately garbage section: `ok=True`). Re-baselining would have been the wrong fix —
+`baseline-autotools.json` is refreshed only when the autotools build legitimately changes, and
+arming it that way would fail for anyone who has not run `mvn`. What arms it is
+`test_maven_jars_align_with_ant_jars` in `tests/test_acceptance.py`: it skips when `maven_jars` is
+empty and otherwise asserts every Maven key has an Ant counterpart with identical content. That
+self-arms on any tree where someone has run Maven, and it was **seen to fail** on the real naming
+divergence before `<finalName>` fixed it. A captured dimension nobody compares is an observation,
+not a gate.
 
 `tu_flag_facts` (RC-b) is what `parity/flagfacts_check.py` now checks against, per translation
 unit. It replaced **hand-written** expectations — a hardcoded default plus two manually maintained
