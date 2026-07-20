@@ -301,14 +301,34 @@ bytes byte-safe rather than retyping them.
   entries, not filenames — but this **will** matter when `cmake/ScilabJava.cmake` is swapped from Ant
   to Maven, since the drop-in machinery and `etc/classpath.xml` both reference Ant's names. Decide
   `finalName` versus adjusted coordinates before the CMake swap, not during it.
+  **SETTLED in Stage 2-c §3: reproduce Ant's names** via `<finalName>org.scilab.modules.${project.artifactId}</finalName>`
+  in the parent POM. This is load-bearing, not latent — `etc/classpath.xml` hardcodes 23 module jars
+  by path *and* name, and `etc/jvm_options.xml:20` hardcodes the JVM bootstrap entry.
 - **`system`-scope dependencies are not transitive.** Every future module needing flexdock must
   repeat the declaration. That mirrors what Ant already does per-module, so it is not new
   duplication — but it is worth revisiting whether `system` scope is the right long-term mechanism
   for the ~10 permanently-vendored jars, versus a `file://` repository.
+  **SETTLED in Stage 2-c §4: keep `systemPath`.** The `file://` alternative was measured and does
+  **not** work here — Maven mirrors match on repository **id**, not URL scheme, so the wildcard
+  mirror intercepts a `file://` repo and fails the build. `systemPath` needs no resolution, so it is
+  immune to mirror configuration. Maven 4 dropping system scope remains a real, dated future cost.
 
-**Maven Central is reachable from this environment** (verified HTTP 200 against `repo1.maven.org`).
-An earlier reconnaissance could not confirm this and flagged it as a gap — the dependency inventory
-is therefore **not** blocked on network access.
+**Artifact resolution works, but NOT the way this section originally claimed** (corrected 2026-07-20,
+Stage 2-c §5). The original wording — "Maven Central is reachable, verified HTTP 200 against
+`repo1.maven.org`" — drew a true conclusion from evidence that does not support it: `curl` does not
+exercise Maven's resolution path. What actually happens:
+
+- `~/.m2/settings.xml` declares `<mirrorOf>*,!maven.oracle.com,!smartnow-tech</mirrorOf>`, so Maven
+  sends essentially every request to `http://localhost:7910` (Nexus), which answers **401**.
+- Resolution succeeds only via **`smartnow-tech`**, an Azure DevOps feed excluded from that mirror,
+  which proxies Central anonymously. Verified by resolving a genuinely uncached artifact end to end
+  (`commons-imaging:1.0-alpha3`, 785 kB, fetched over the wire from that feed).
+
+So the dependency inventory is **not** blocked — but it depends on a **third-party corporate feed**,
+not on Central, and on a machine-local `settings.xml` that **this repository does not carry**. A
+fresh clone on another machine has none of it. That is a real portability gap to close before the
+endgame, and it is why a `file://` third-party repository cannot work here either (Stage 2-c §4):
+mirrors match on repository **id**, not URL scheme, so a `file://` repo is intercepted too.
 
 #### Corrections to this document, from the Stage 2 reconnaissance
 
