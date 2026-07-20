@@ -57,7 +57,7 @@ migration. **Known limitation (v1):** only the GLOBAL per-language flags are cap
 overrides (e.g. `differential_equations` forcing `colnew.f` to `-O0` on macOS) are invisible.
 
 ## Scope
-Eight dimensions are fingerprinted today:
+Nine dimensions are fingerprinted today:
 
 | Dimension | Compares | Armed in |
 |---|---|---|
@@ -67,6 +67,7 @@ Eight dimensions are fingerprinted today:
 | `generated_cmake` | CMake's OWN copies of eleven files across two directories — the ten RC-c files (`build-cmake/generated/`) plus `version.h` (`build-cmake/generated-includes/`) — byte-checked against `generated`'s baseline hashes — the actual CMake-vs-configure comparison. `machine.h`, in that same second directory, is covered separately by `header_defines`, not here | RC-c final-review fix, extended |
 | `flags` | semantic per-language flag facts | Stage 1 |
 | `jars` | normalized jar content manifests (entry list + MANIFEST, volatile lines dropped) | Stage 1f-b |
+| `maven_jars` | normalized jar content manifests for Maven's `modules/*/target/*.jar` output, keyed at Ant's `modules/<m>/jar/<basename>` path so it is directly comparable to `jars` | Stage 2-c Task 1 (captured; dormant until Task 2 arms the baseline) |
 | `header_defines` | a header's `{macro: value}` `#define` set — **semantic, not bytes** | RC-a |
 | `tu_flag_facts` | per-TU flag facts **derived from the autotools generated Makefiles** | RC-b |
 

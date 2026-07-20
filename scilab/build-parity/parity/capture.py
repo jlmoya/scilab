@@ -386,11 +386,19 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
                     jars[rel] = fingerprint_jar(os.path.join(root, fn))
         elif "/modules/" in posix_root + "/" and posix_root.endswith("/target"):
             # modules/<m>/target/*.jar — Maven's module jars. TOP LEVEL of target/
-            # ONLY: os.walk visits target/classes and target/maven-archiver as
-            # separate root values in their own turn of this loop (posix_root
-            # there ends in "/classes" or "/maven-archiver", never "/target"), so
+            # ONLY: os.walk visits target/classes, target/generated-sources, and
+            # target/maven-status as separate root values in their own turn of
+            # this loop (posix_root there ends in "/classes",
+            # "/generated-sources", or "/maven-status", never "/target"), so
             # this branch never sees them -- the same one-directory-per-visit
             # property the Ant-jar branch above relies on for its own exclusions.
+            # (Those three are what actually exists on disk today; a
+            # maven-archiver/ subdir, which some Maven jar plugins create, does
+            # NOT appear in this tree -- the parent POM sets
+            # addMavenDescriptor=false, see modules/commons/pom.xml. Exclusion
+            # here is by DIRECTORY, not by an enumerated subdir list, so this
+            # parenthetical is informational, not load-bearing: a future subdir
+            # this loop has never seen is excluded the same way.)
             #
             # KEYED UNDER modules/<m>/jar/<basename> -- ANT's output path, NOT
             # Maven's. Stage 2-c design doc S2.1: this key is DELIBERATELY
@@ -417,12 +425,56 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             # section.
             rel_root = os.path.relpath(root, build_dir).replace(os.sep, "/")
             parts = rel_root.split("/")
-            if len(parts) == 3:   # modules/<m>/target exactly -- not a deeper subtree
+            # BOTH checks are required to pin the shape to modules/<m>/target
+            # exactly -- len(parts) == 3 alone does not. The outer "/modules/"
+            # in posix_root pre-filter above is satisfied by a modules
+            # component ANYWHERE in the walked path (including one that is
+            # part of build_dir's own absolute path, not just relative to it),
+            # so length alone would also match e.g. thirdparty/modules/target/
+            # (a stray "modules" component) or, when build_dir's own path
+            # contains "/modules/", any two-segment subtree ending in target/
+            # such as aaa/bbb/target/. Because this branch REWRITES the path
+            # into a synthetic modules/<m>/jar/<basename> key, either
+            # mis-capture would be laundered into something indistinguishable
+            # from a real module jar -- unlike the Ant `jars` branch above,
+            # which keys by the real relpath, so a mis-capture there stays
+            # visibly wrong. Demonstrated: thirdparty/modules/target/vendored.jar
+            # would otherwise be captured as modules/modules/jar/vendored.jar.
+            if len(parts) == 3 and parts[0] == "modules":
                 module = parts[1]
+                # NO filename filter here, unlike the Ant branch's _DOC_OUTPUT_JAR
+                # above -- deliberate, not an oversight. target/ is actually MORE
+                # prone to auxiliary jars than jar/ is: -sources.jar, -javadoc.jar,
+                # -tests.jar, and original-*.jar (the shade/assembly plugins' own
+                # pre-relocation copy) are all standard Maven conventions that a
+                # plugin can place right next to the real artifact. Harmless today
+                # -- no such plugin is configured in any module POM, and an
+                # unexpected extra key fails RED (an "extra in candidate" diff),
+                # which is the safe failure direction. Anyone adding
+                # maven-source-plugin or maven-javadoc-plugin (routine for
+                # `install`/`deploy` executions) would start producing spurious
+                # orphan keys here -- that is the trigger to revisit this, not a
+                # silent breakage discovered later. Not adding a filter
+                # preemptively: a gate that silently DROPS an artifact it was
+                # never told to expect is worse than one that over-reports one,
+                # and there is no real plugin configuration yet to filter FOR.
                 for fn in files:
                     if fn.endswith(".jar"):
-                        maven_jars[f"modules/{module}/jar/{fn}"] = fingerprint_jar(
-                            os.path.join(root, fn))
+                        key = f"modules/{module}/jar/{fn}"
+                        # Same precedent as the dylib key collision above: unreachable
+                        # today (a given modules/<m>/target is visited once by os.walk,
+                        # and a directory cannot hold two files of the same name, so
+                        # nothing can yet map two different jars onto one key) -- but
+                        # fail loudly rather than silently overwrite if that ever
+                        # changes, instead of leaving a stale artifact from one file
+                        # masquerading as the other.
+                        if key in maven_jars:
+                            raise ValueError(
+                                f"maven jar key collision: {key} (second file: "
+                                f"{os.path.join(root, fn)}). Two jars map to one "
+                                f"fingerprint key -- likely a stale artifact in target/; "
+                                f"clean the build tree.")
+                        maven_jars[key] = fingerprint_jar(os.path.join(root, fn))
 
     executables = {}
     for name in ("scilab-bin", "scilab-cli-bin"):

@@ -80,6 +80,52 @@ def test_fingerprint_build_maven_jars_excludes_non_module_target_dirs(tmp_path):
     assert "thirdparty/something/jar/stray.jar" not in fp["maven_jars"]
 
 
+def test_fingerprint_build_maven_jars_excludes_stray_modules_path_component(tmp_path):
+    # Depth-guard regression (review Fix 1). The OUTER "/modules/" pre-filter
+    # (capture.py's `elif "/modules/" in posix_root + "/" and ...`) is
+    # satisfied by a "modules" path component ANYWHERE in the walked path, not
+    # only at the relative root -- e.g. a vendored thirdparty Maven build
+    # nested under a directory that merely happens to be NAMED "modules".
+    # Reviewer-demonstrated: with only `len(parts) == 3` (no parts[0] check),
+    # thirdparty/modules/target/vendored.jar was captured under the synthetic
+    # key modules/modules/jar/vendored.jar -- and because this branch REWRITES
+    # the path into that synthetic key, the mis-capture was indistinguishable
+    # from a real module jar (unlike the Ant `jars` branch, which keys by the
+    # real relpath and would have stayed visibly wrong). `parts[0] ==
+    # "modules"` is what rules this out: parts[0] here is "thirdparty".
+    build_dir = str(tmp_path)
+    stray = tmp_path / "thirdparty" / "modules" / "target"
+    stray.mkdir(parents=True)
+    _make_jar(stray / "vendored.jar", {"V.class": b"V"})
+
+    fp = fingerprint_build(build_dir, roots={}, runner=lambda cmd: "", build_id="t")
+
+    assert fp["maven_jars"] == {}
+    assert "modules/modules/jar/vendored.jar" not in fp["maven_jars"]
+
+
+def test_fingerprint_build_maven_jars_excludes_stray_modules_in_build_dir_path(tmp_path):
+    # Depth-guard regression (review Fix 1), the OTHER way the outer
+    # pre-filter can be fooled: build_dir's OWN absolute path contains
+    # "/modules/" (e.g. the tree is checked out under a directory named
+    # "modules"), so posix_root carries "/modules/" even though the path
+    # RELATIVE TO build_dir has no "modules" component at all.
+    # Reviewer-demonstrated: with only `len(parts) == 3`, a build_dir whose
+    # own path contains "/modules/" turned aaa/bbb/target/notamodule.jar into
+    # the synthetic key modules/bbb/jar/notamodule.jar. `parts[0] ==
+    # "modules"` rules it out: parts is computed from the path RELATIVE to
+    # build_dir, and parts[0] here is "aaa", not "modules".
+    build_dir = str(tmp_path / "modules" / "buildroot")
+    stray = tmp_path / "modules" / "buildroot" / "aaa" / "bbb" / "target"
+    stray.mkdir(parents=True)
+    _make_jar(stray / "notamodule.jar", {"N.class": b"N"})
+
+    fp = fingerprint_build(build_dir, roots={}, runner=lambda cmd: "", build_id="t")
+
+    assert fp["maven_jars"] == {}
+    assert "modules/bbb/jar/notamodule.jar" not in fp["maven_jars"]
+
+
 def test_fingerprint_build_maven_jars_always_present_when_empty(tmp_path):
     # Mirrors generated_cmake/header_defines: ALWAYS present, even on a tree
     # with no modules/*/target at all -- an empty dict, never a missing key.
