@@ -133,9 +133,12 @@ cd build-parity && python3 -m pytest -q | tail -2
 - [ ] **Step 2:** Record the **72-byte continuation-wrapping risk** for `gui`, which is next:
   `normalize_manifest` is line-oriented and never joins continuation lines, so a wrapped
   `Class-Path` is compared **literally**. `gui`'s 6-entry value wraps mid-token (`javafx.b` /
-  `ase.jar`). Both Ant and Maven write via `java.util.jar.Manifest`, which wraps at 72 bytes, so
-  they *should* agree — but this campaign has been burned by "should" before, and the gate will
-  catch it. Name it before `gui` starts.
+  `ase.jar`). **Measured, not assumed:** Ant and Maven wrap at *different* byte positions, and
+  neither writes through `java.util.jar.Manifest` — Ant's `org.apache.tools.ant.taskdefs.Manifest`
+  breaks at 70 (`MAX_LINE_LENGTH - 2`, reserving room for CRLF), Maven's archiver stack breaks at
+  the full 72, and no POM content changes either one (confirmed by feeding Maven both the wrapped
+  and unwrapped form of the same value and getting the identical 72-byte break both times). Name
+  it before `gui` starts.
 
 - [ ] **Step 3: Commit.**
 

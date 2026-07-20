@@ -382,13 +382,19 @@ section names a package that does not exist in the jar, generated mechanically f
 `${ant.project.name}`, and is therefore inert. Reproduced rather than corrected, per
 *reproduce, don't improve*, and recorded as **P3** in `docs/design/deferred-fixes-register.md`.
 
-**Named before `gui` starts — the 72-byte continuation-wrapping risk.** `normalize_manifest` is
-**line-oriented**: it filters volatile lines and rejoins the survivors, never joining a manifest's
-continuation lines. So a wrapped attribute is compared **literally**, byte position included.
-`scirenderer`'s Class-Path is short enough not to wrap; `gui`'s six-entry value **does**, mid-token
-(`javafx.b` / `ase.jar`). Ant and Maven both write through `java.util.jar.Manifest`, which wraps at
-72 bytes, so they *should* agree — but "should" has a poor record in this campaign, and the gate
-will catch it either way. Expect it; do not be surprised by it.
+**Named before `gui` starts — the 72-byte continuation-wrapping risk, MEASURED.** `gui`'s six-entry
+Class-Path wraps mid-token (`javafx.b` / `ase.jar`); `scirenderer`'s two-entry value is short enough
+not to. A reviewer reproduced the wrap by injecting `gui`'s real value into both toolchains: **Ant
+and Maven wrap at different byte positions, and neither writes through `java.util.jar.Manifest`.**
+Ant's `org.apache.tools.ant.taskdefs.Manifest` breaks at `MAX_LINE_LENGTH - 2 = 70` bytes (reserving
+two bytes for the trailing CRLF); Maven's archiver stack (maven-archiver/plexus-archiver) breaks at
+the full 72. **No POM content can influence this** — the reviewer fed Maven both the pre-wrapped and
+the unwrapped form of the same value and got the identical 72-byte break either way, so there is no
+fragment to re-extract and no plugin knob to tune. `normalize_manifest`
+(`build-parity/parity/fingerprint.py`) now joins continuation lines before comparing — a correction,
+not a weakening: the two wrap positions of the *same* value compare equal, but a changed, added, or
+removed attribute still fails. See "Accepted divergences" in `docs/design/deferred-fixes-register.md`
+for the full record.
 
 **Artifact resolution works, but NOT the way this section originally claimed** (corrected 2026-07-20,
 Stage 2-c §5). The original wording — "Maven Central is reachable, verified HTTP 200 against

@@ -138,7 +138,7 @@ _MVN_NS = "{http://maven.apache.org/POM/4.0.0}"
 def _reactor_modules(pom_path=PARENT_POM):
     """<module> entries from the parent reactor POM (e.g. "modules/localization"),
     PARSED rather than hardcoded so the completeness check below (review Fix 1)
-    stays correct through all 22 remaining migrations with no further edits.
+    stays correct through all 21 remaining migrations with no further edits.
 
     NAMESPACE GOTCHA: the POM declares the default Maven namespace
     (xmlns="http://maven.apache.org/POM/4.0.0"), so ElementTree needs the
@@ -147,8 +147,8 @@ def _reactor_modules(pom_path=PARENT_POM):
     returns [] (no exception, just nothing), which would make the completeness
     check below assert nothing against everything. See
     test_reactor_modules_parses_real_pom_non_vacuously: verified to return
-    exactly 2 entries today (modules/localization, modules/commons), not a
-    silently-empty list.
+    exactly 3 entries today (modules/localization, modules/commons,
+    modules/scirenderer), not a silently-empty list.
 
     PROFILE-SCOPED MODULES GOTCHA (final review, Minor): this only matches a
     <modules> block that is a DIRECT CHILD of <project> --

@@ -46,6 +46,96 @@ def test_normalize_manifest_keeps_semantic_implementation_version():
     assert normalize_manifest(m) == "Manifest-Version: 1.0\nImplementation-Version: 2027.0.0"
 
 
+# ---- Fix 1b fault injection: Ant and Maven wrap a long Class-Path at DIFFERENT
+# byte positions (measured: Ant's org.apache.tools.ant.taskdefs.Manifest breaks at
+# 70 -- MAX_LINE_LENGTH - 2, reserving room for the trailing CRLF -- while Maven's
+# archiver stack breaks at the full 72; neither writes through
+# java.util.jar.Manifest, and no POM content changes either break position). See
+# docs/design/deferred-fixes-register.md, "Accepted divergences". gui's real
+# six-entry Class-Path is the fixture that exposed this (reproduced verbatim, not
+# a synthetic stand-in): unwrapped it is
+# "flexdock.jar jrosetta-engine.jar jrosetta-API.jar javafx.base.jar
+# javafx.swing.jar javafx.graphics.jar" (114 bytes with the "Class-Path: " label),
+# which is long enough that BOTH toolchains wrap it, at different offsets.
+_ANT_WRAPPED_GUI_MANIFEST = (
+    "Manifest-Version: 1.0\n"
+    "Class-Path: flexdock.jar jrosetta-engine.jar jrosetta-API.jar javafx.b\n"
+    " ase.jar javafx.swing.jar javafx.graphics.jar\n"
+    "Main-Class: org.scilab.Foo\n"
+)
+
+_MAVEN_WRAPPED_GUI_MANIFEST = (
+    "Manifest-Version: 1.0\n"
+    "Class-Path: flexdock.jar jrosetta-engine.jar jrosetta-API.jar javafx.bas\n"
+    " e.jar javafx.swing.jar javafx.graphics.jar\n"
+    "Main-Class: org.scilab.Foo\n"
+)
+
+
+def test_normalize_manifest_same_value_different_wrap_position_compares_equal():
+    # THE FIX (injection 1/4): the identical six-entry Class-Path, wrapped at
+    # Ant's real break (70) on one side and Maven's real break (72) on the
+    # other. Before Fix 1b this failed parity on every module whose Class-Path
+    # is long enough to wrap -- gui is next -- despite both sides shipping the
+    # same value.
+    assert (normalize_manifest(_ANT_WRAPPED_GUI_MANIFEST)
+            == normalize_manifest(_MAVEN_WRAPPED_GUI_MANIFEST))
+    # And the joined result is the actual unwrapped attribute, not merely "equal
+    # to each other by coincidence of both being wrong the same way."
+    assert normalize_manifest(_ANT_WRAPPED_GUI_MANIFEST) == (
+        "Manifest-Version: 1.0\n"
+        "Class-Path: flexdock.jar jrosetta-engine.jar jrosetta-API.jar "
+        "javafx.base.jar javafx.swing.jar javafx.graphics.jar\n"
+        "Main-Class: org.scilab.Foo")
+
+
+def test_normalize_manifest_changed_value_still_caught_when_wrapped():
+    # Sensitivity preserved (injection 2/4): same wrap position as the Ant
+    # fixture above, but the LAST jar name differs (graphics -> media).
+    # Joining must not make a real content change invisible.
+    changed = (
+        "Manifest-Version: 1.0\n"
+        "Class-Path: flexdock.jar jrosetta-engine.jar jrosetta-API.jar javafx.b\n"
+        " ase.jar javafx.swing.jar javafx.media.jar\n"
+        "Main-Class: org.scilab.Foo\n"
+    )
+    assert normalize_manifest(_ANT_WRAPPED_GUI_MANIFEST) != normalize_manifest(changed)
+
+
+def test_normalize_manifest_removed_attribute_still_caught_when_wrapped():
+    # Sensitivity preserved (injection 3/4): the wrapped Class-Path attribute
+    # is entirely absent on one side (e.g. a POM that dropped
+    # manifest.class-path).
+    without_classpath = "Manifest-Version: 1.0\nMain-Class: org.scilab.Foo\n"
+    assert normalize_manifest(_ANT_WRAPPED_GUI_MANIFEST) != normalize_manifest(without_classpath)
+
+
+def test_normalize_manifest_added_attribute_still_caught_when_wrapped():
+    # Sensitivity preserved (injection 4/4), the mirror image of the removal
+    # case: the wrapped Class-Path attribute appears on only one side.
+    without_classpath = "Manifest-Version: 1.0\nMain-Class: org.scilab.Foo\n"
+    assert normalize_manifest(without_classpath) != normalize_manifest(_MAVEN_WRAPPED_GUI_MANIFEST)
+
+
+def test_normalize_manifest_joins_before_filtering_volatile_dstamp():
+    # ORDERING REGRESSION GUARD -- not one of the four required injections, but
+    # the specific failure mode the implementation note warns about.
+    # Implementation-Version's volatile pattern is anchored end-to-end
+    # (^Implementation-Version: [0-9]{8} [0-9]{4}$), so it only matches a
+    # COMPLETE, unwrapped "DSTAMP TSTAMP" line. Join-then-filter reconstructs
+    # the line first, so this still strips; filter-then-join would leave both
+    # fragments behind as two spuriously "stable" lines, and every cross-minute
+    # rebuild would go red for no product reason.
+    # Break falls mid-token (like the real "javafx.b" / "ase.jar" case) so the
+    # single leading space on the continuation line is unambiguously the JAR-spec
+    # marker, not a byte of the original value.
+    m = ("Manifest-Version: 1.0\n"
+         "Implementation-Version: 2026071\n"
+         " 7 1645\n"
+         "Main-Class: org.scilab.Foo\n")
+    assert normalize_manifest(m) == "Manifest-Version: 1.0\nMain-Class: org.scilab.Foo"
+
+
 def test_fingerprint_jar_hashes_entry_content(tmp_path):
     j = tmp_path / "a.jar"
     _make_jar(j, {"org/x/A.class": b"AAAA", "org/x/B.class": b"BBBB"})

@@ -22,8 +22,9 @@ sufficient — the site comment stops the next reader from breaking parity; this
 the defect findable afterwards.
 
 **Scope note.** Sections 1 and 2 are defects in *Scilab*. Section 3 is limitations in *our own
-harness*. Section 4 is migration scaffolding that disappears by construction. Keep them separate —
-they have different owners and different "done" conditions.
+harness*. Section 4 is migration scaffolding that disappears by construction. Section 5 is
+divergences accepted on purpose, forever. Keep them separate — they have different owners and
+different "done" conditions.
 
 ---
 
@@ -78,6 +79,17 @@ Recorded only so nobody mistakes them for permanent design. All disappear at the
   immune to mirror interception, but `system` scope is deprecated; a Maven 4 move needs a different
   mechanism (an internal repository, or `build-helper:attach-artifact`).
 - The `config.status` version-triple dependency, which blocks RC-e (deleting `./configure`).
+
+## 5. Accepted divergences — differences that are permanent and harmless
+
+Not a defect in Scilab, not a harness gap, and not scaffolding that disappears at the endgame.
+These are places where Maven's output provably differs from Ant's at the byte level, **forever**,
+with no behavioral consequence — so parity is measured on the reconstituted *meaning*, not the raw
+bytes that encode it.
+
+| # | Divergence | Why accepted | Harness handling | Sensitivity proof |
+|---|---|---|---|---|
+| A1 | **Long manifest attribute values wrap at a different byte offset.** Ant's `org.apache.tools.ant.taskdefs.Manifest` breaks continuation lines at 70 bytes (`MAX_LINE_LENGTH - 2`, reserving room for the trailing CRLF); Maven's archiver stack (maven-archiver/plexus-archiver) breaks at the full 72. **Neither writes through `java.util.jar.Manifest`** — an earlier draft of the Stage 2-d doc claimed they did and would "therefore" agree; a reviewer measured otherwise. Reproduced with `gui`'s real six-entry `Class-Path` (`flexdock.jar jrosetta-engine.jar jrosetta-API.jar javafx.base.jar javafx.swing.jar javafx.graphics.jar`, 114 bytes): Ant breaks mid-token at `javafx.b` / `ase.jar`, Maven at `javafx.bas` / `e.jar`. | A manifest's meaning is `{attribute: value}`; the wrap position is a serialization artifact of the 72-byte-per-line limit, invisible to every real consumer — `java.util.jar.Manifest` reconstitutes the logical value when a jar is read, so the JVM classloader resolving `Class-Path` never sees where the writer broke the line. **No POM content can change either break position** — verified by feeding Maven both the pre-wrapped and the unwrapped form of the same value and getting the identical 72-byte break both times, so there is nothing to fix on our side. | `normalize_manifest` (`build-parity/parity/fingerprint.py`) now joins continuation lines — a single leading space starts a continuation, stripped when joined — **before** the volatile-line filter, then compares the reconstituted value instead of the literal bytes. A correction, not a weakening: it only makes two *different* wrap positions of the *same* value compare equal. | `build-parity/tests/test_jar.py`: `test_normalize_manifest_same_value_different_wrap_position_compares_equal` (same value, different wrap → equal) plus three siblings (`..._changed_value_still_caught_when_wrapped`, `..._removed_attribute_still_caught_when_wrapped`, `..._added_attribute_still_caught_when_wrapped`) proving a changed, removed, or added wrapped attribute still fails. |
 
 ---
 

@@ -151,11 +151,56 @@ _MANIFEST_VOLATILE = re.compile(
     r"|^Implementation-Version: [0-9]{8} [0-9]{4}$", re.IGNORECASE)
 
 
+def _join_manifest_continuations(lines):
+    """Un-wrap JAR-spec continuation lines: a line beginning with a single leading
+    space is a continuation of the previous line, with that one leading space
+    stripped and the remainder appended directly (no separator). Reconstructs the
+    logical value regardless of where -- or whether -- the writer chose to break it.
+
+    A line that starts with a space but has no predecessor (a malformed manifest
+    opening on a continuation) is kept as-is rather than raising, since this
+    function's only job is reconstruction, not validation.
+    """
+    joined = []
+    for line in lines:
+        if line.startswith(" ") and joined:
+            joined[-1] += line[1:]
+        else:
+            joined.append(line)
+    return joined
+
+
 def normalize_manifest(text):
     """Drop build-environment-volatile lines from a jar's META-INF/MANIFEST.MF so
-    its content hash reflects only stable attributes. Line-oriented; preserves the
-    order of surviving lines."""
-    return "\n".join(l for l in text.splitlines() if not _MANIFEST_VOLATILE.match(l))
+    its content hash reflects only stable attributes. Preserves the order of
+    surviving lines.
+
+    Joins continuation lines FIRST, before filtering. A manifest's meaning is
+    {attribute: value}; where the writer chose to break a long value across
+    lines is a serialization artifact of the 72-byte-per-line limit -- the same
+    class of thing as zip entry ordering (which fingerprint_jar already
+    normalizes away) or the volatile lines filtered below. Every real consumer
+    unwraps: java.util.jar.Manifest reconstitutes the logical value when a jar
+    is read, so the break position is invisible to the JVM classloader that
+    resolves Class-Path. It is also NOT a POM-controllable fact: Ant's
+    org.apache.tools.ant.taskdefs.Manifest breaks at 70 bytes
+    (MAX_LINE_LENGTH - 2, reserving room for the trailing CRLF) while Maven's
+    archiver stack breaks at the full 72 -- two different writer classes,
+    neither of which is java.util.jar.Manifest, and no manifest content changes
+    either one. See "Accepted divergences" in docs/design/deferred-fixes-register.md.
+
+    This is a CORRECTION, not a loosened check: joining is applied to BOTH
+    sides of every comparison, so a changed, added, or removed attribute still
+    differs after joining -- only two different break positions of the SAME
+    value stop differing. Must run before the volatile-line filter: the
+    Implementation-Version volatile pattern is anchored end-to-end
+    (^Implementation-Version: [0-9]{8} [0-9]{4}$), so a wrapped DSTAMP/TSTAMP
+    value would fail to match piecemeal and leak through as a spuriously
+    "stable" line, flipping cross-minute rebuilds red for no product reason --
+    filtering after joining is what makes that pattern reliable again.
+    """
+    joined = _join_manifest_continuations(text.splitlines())
+    return "\n".join(l for l in joined if not _MANIFEST_VOLATILE.match(l))
 
 
 # A generated C config header -> its {macro: value} #define SET. autoconf and CMake

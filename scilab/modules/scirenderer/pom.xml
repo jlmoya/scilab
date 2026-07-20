@@ -42,9 +42,13 @@
 
   <dependencies>
     <!-- THE TWO VENDORED JOGL JARS scirenderer actually compiles against.
-         scilab-lib.properties:21 sets jogl2.jar -> thirdparty/
+         scilab-lib.properties.in:21 sets jogl2.jar -> thirdparty/
          jogl-all-2.5.0.jar; :35 sets gluegen2.jar -> thirdparty/
-         gluegen-rt-2.5.0.jar. build.incl.xml puts both on the compile
+         gluegen-rt-2.5.0.jar (cited against the tracked .in template, not the
+         generated scilab-lib.properties: that file is configure's OUTPUT, not
+         tracked by git, and does not exist on a fresh clone before
+         ./configure has run — the line numbers coincide today by luck, not
+         design). build.incl.xml puts both on the compile
          classpath as raw <pathelement>s (line 81 ${gluegen2.jar}, line 84
          ${jogl2.jar}) — no Ivy/repository resolution of any kind, the same
          shape as flexdock below commons.
@@ -86,10 +90,13 @@
          <finalName>org.scilab.modules.${project.artifactId}</finalName>,
          which would produce org.scilab.modules.scirenderer.jar here — WRONG.
          scirenderer is the one module of 24 whose Ant-built jar breaks the
-         org.scilab.modules.<m>.jar convention: scilab-lib.properties:88 sets
-         library.scirenderer.name=scirenderer.jar explicitly, unlike e.g.
+         org.scilab.modules.<m>.jar convention: scilab-lib.properties.in:88
+         sets library.scirenderer.name=scirenderer.jar explicitly, unlike e.g.
          :96 library.commons.name=org.scilab.modules.commons.jar or :112
-         library.localization.name=org.scilab.modules.localization.jar.
+         library.localization.name=org.scilab.modules.localization.jar (cited
+         against the tracked .in template — see the <dependencies> comment
+         above for why the generated scilab-lib.properties is the wrong file
+         to point at).
          build.incl.xml's shared `jar` target (line 149) writes
          destfile="${build.jar.dir}/${library.name}" — the literal jar
          filename comes from that one per-module property, not from anything
@@ -112,7 +119,7 @@
          its build is triggered. -->
     <finalName>scirenderer</finalName>
 
-    <!-- build.incl.xml:20 <property name="src.dir" location="src/java/"/>.
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
          Same source tree Ant compiles — see modules/localization/pom.xml's
          identical comment; nothing module-specific to add here. -->
     <sourceDirectory>src/java</sourceDirectory>
