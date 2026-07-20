@@ -36,12 +36,15 @@ create `scilab/build-parity/tests/test_maven_jars.py`.
 
 ```bash
 cd scilab/build-parity && python3 -c "
-from parity.capture import capture_fingerprint
-fp = capture_fingerprint('..')
+from parity.capture import fingerprint_build, _default_roots
+fp = fingerprint_build('..', _default_roots('..'))
 print('jars keys mentioning target/ :', [k for k in fp['jars'] if 'target' in k] or 'NONE')
 print('maven_jars section present   :', 'maven_jars' in fp)
 "
 ```
+(`_default_roots(build_dir)` returns a **dict** and is passed as the second positional argument —
+see `tests/test_acceptance.py:31` for the canonical call. An earlier draft of this plan named a
+non-existent `capture_fingerprint`; corrected here.)
 Expected: `NONE` and `False`. **If either differs, stop and report** — the premise is wrong.
 
 - [ ] **Step 2: Add the capture section.** Collect `modules/*/target/*.jar` (top level of `target/`
