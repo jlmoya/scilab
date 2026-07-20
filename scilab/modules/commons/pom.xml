@@ -147,15 +147,22 @@
              groupId/artifactId/version directory shape: the Stage 2-b
              review's recommendation, correctly noting that Maven's own
              tooling calls a systemPath dependency "malformed" (the
-             warning is quoted below) and that Maven 4 drops `system`
-             scope outright (the expiry is recorded below too). MEASURED,
+             warning is quoted below) and separately warning that a
+             future Maven version might drop support for such a project
+             (the hedge, and what is and is not verified about it, is
+             recorded below, not overstated into certainty). MEASURED,
              not merely argued — and the measurement overturned the
              recommendation. This machine's ~/.m2/settings.xml declares
              one mirror: <mirrorOf>*,!maven.oracle.com,!smartnow-tech
-             </mirrorOf>. Maven mirrors match on repository ID, not URL
-             scheme, so a declared file:// repository is intercepted
-             exactly like any real remote one — the URL scheme buys
-             nothing. A probe confirmed it directly: with a file://
+             </mirrorOf>. That `*` (wildcard) mirror matches by
+             repository ID, not URL scheme, so it intercepts a declared
+             file:// repository too — the URL scheme buys nothing
+             against THIS mirror. (Maven also supports an external:*
+             mirror selector, documented as matching everything except
+             localhost and file://-based repositories — URL scheme CAN
+             matter to a differently-configured mirror; it is this
+             machine's plain `*` mirror, specifically, that does not
+             distinguish.) A probe confirmed it directly: with a file://
              repository declared and a correctly laid-out
              repo/org/flexdock/flexdock/1.2.5/ directory (jar plus a
              minimal .pom), Maven never read the local path at all. It
@@ -202,19 +209,36 @@
          warning; recipes now run without it specifically so it stays
          visible.
 
-         DATED EXPIRY — NOT "FINE FOREVER": Maven 4 removes `system`
-         scope entirely and unconditionally. When this reactor's tooling
-         moves to Maven 4, flexdock — one of roughly ten permanently-
-         vendored jars in this position — will need a different
-         mechanism: most plausibly a genuine internal repository (with
-         its id added to this machine's mirror exclusion list the way
-         maven.oracle.com and smartnow-tech are today, so it is actually
-         reachable and does not fall into the trap probed above) or the
-         build-helper-maven-plugin's attach-artifact goal. That migration
-         is out of scope here (so is Maven 4 itself); this paragraph
-         exists so it is a KNOWN, DATED cost paid on purpose later, not a
-         surprise discovered when a Maven-4 upgrade first refuses to
-         build. -->
+         DATED RISK, NOT VERIFIED HERE — AND NOT "FINE FOREVER" EITHER:
+         `system` scope is deprecated and actively discouraged; current
+         Maven docs say plainly "While the system scope is supported,
+         its usage is not recommended!" The warning captured above is
+         itself hedged — "future Maven versions might no longer support
+         building such malformed projects" — not a claim that Maven 4
+         already refuses this. That hedge was never resolved by testing
+         against Maven 4: this reactor runs Maven 3.9.16 (`mvn
+         -version`), and no Maven 4 was exercised here. What IS publicly
+         documented is DIRECTION, not a confirmed Maven-4 behavior: the
+         Maven 4 model (org.apache.maven.api.DependencyScope) is moving
+         away from systemPath, though SYSTEM still appears there today,
+         undeprecated. An earlier version of this paragraph stated
+         "Maven 4 removes system scope entirely and unconditionally" —
+         stronger than anything actually measured, and corrected here.
+         Treat this as a real, DATED cost owed later, not a fact about
+         what Maven 4 currently does: when this reactor's tooling moves
+         to Maven 4 — re-verified against whatever that Maven version
+         actually does by then, not against this paragraph — flexdock
+         (one of roughly ten permanently-vendored jars in this position)
+         may need a different mechanism: most plausibly a genuine
+         internal repository (with its id added to this machine's
+         mirror exclusion list the way maven.oracle.com and
+         smartnow-tech are today, so it is actually reachable and does
+         not fall into the trap probed above) or the
+         build-helper-maven-plugin's attach-artifact goal. That
+         migration is out of scope here (so is Maven 4 itself); this
+         paragraph exists so it stays a KNOWN, DATED risk paid on
+         purpose later, not a surprise discovered when a Maven-4 upgrade
+         first refuses to build. -->
     <dependency>
       <groupId>org.flexdock</groupId>
       <artifactId>flexdock</artifactId>
@@ -256,11 +280,19 @@
                  and task-2-report.md section 2 for the mechanism. Retyping
                  a linguistically-correct "è" here would compile, look
                  right to a human, and fail parity silently. Implementation-
-                 Version (the DSTAMP/TSTAMP live timestamp) is left out for
-                 the same reason localization's is: parity/fingerprint.py's
-                 _MANIFEST_VOLATILE strips it from both sides before
-                 comparing, so present-and-stripped and absent-and-never-
-                 added are byte-identical after normalization. -->
+                 Version (the DSTAMP/TSTAMP-shaped attribute) IS PRESENT
+                 here too, carrying the same frozen literal
+                 "00000000 0000" and for the same reason as
+                 modules/localization/pom.xml's fuller comment: the runtime
+                 consumer (xcos's Package.getImplementationVersion(), which
+                 returns null when the attribute is missing) needs the
+                 attribute's PRESENCE, and parity/fingerprint.py's
+                 _MANIFEST_VOLATILE strips the line — matched by SHAPE (8
+                 digits, a space, 4 digits), not by value — from both sides
+                 before comparing, so it cannot tell "present with a frozen
+                 value" from "absent" and a frozen literal costs the parity
+                 gate nothing while giving the runtime consumer a real,
+                 non-null value. -->
             <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
           </archive>
         </configuration>

@@ -128,22 +128,60 @@
                  "${manifest.class-path}" survives as inert literal text
                  instead of being (mis-)interpolated.
 
-                 ONE ATTRIBUTE DELIBERATELY LEFT OUT of MANIFEST-section.MF:
-                 build.incl.xml:157's Implementation-Version, value
-                 "${DSTAMP} ${TSTAMP}" (Ant's build date + minute, e.g.
-                 "20260719 2038"). It is a real wall-clock value that can
-                 never agree between two separate builds, which is exactly
-                 why parity/fingerprint.py's _MANIFEST_VOLATILE regex strips
-                 any "Implementation-Version: <8 digits> <4 digits>" line
-                 from BOTH sides before comparing. A plain text manifestFile
-                 cannot embed a live timestamp (no property interpolation
-                 reaches it, by design, per the Class-Path reasoning above),
-                 and reproducing the ATTRIBUTE's presence with a fake value
-                 in the DSTAMP/TSTAMP shape would need extra resource-
-                 filtering machinery for zero observable difference: present-
-                 and-stripped and absent-and-never-added compare byte-for-
-                 byte identical after normalize_manifest() removes the line
-                 from Ant's side too. Omitted rather than faked. -->
+                 IMPLEMENTATION-VERSION IS PRESENT, WITH A FROZEN VALUE — an
+                 earlier version of this POM omitted it, and that was wrong.
+                 build.incl.xml:157 stamps this section's Implementation-
+                 Version with "${DSTAMP} ${TSTAMP}" (Ant's build date +
+                 minute, e.g. "20260719 2038"). The runtime consumer named
+                 above — XcosDiagramCodec/CustomWriter — does not read the
+                 VALUE, it reads the attribute's PRESENCE, via
+                 Package.getPackage(...).getImplementationVersion(), which
+                 returns null the instant the attribute is missing from the
+                 jar's manifest section. Omitting the line entirely used to
+                 seem safe because parity/fingerprint.py's _MANIFEST_VOLATILE
+                 regex strips any "Implementation-Version: <8 digits> <4
+                 digits>" line from BOTH sides before comparing, so
+                 present-and-stripped and absent-and-never-added hash
+                 identically — true, but that is a fact about what the
+                 HARNESS can observe, not about what the JVM returns at
+                 runtime. The day a module that actually calls
+                 getImplementationVersion() (xcos, eventually) copies this
+                 template, "zero observable difference" would have meant
+                 shipping null into every saved .xcos diagram with every
+                 gate green.
+
+                 THE FIX ADDS A LINE; IT DOES NOT TOUCH THE HARNESS: the
+                 frozen literal "00000000 0000" below, in the exact shape
+                 _MANIFEST_VOLATILE matches (8 digits, a space, 4 digits),
+                 placed in the same position within the section that Ant's
+                 own jars place it — confirmed against an actual Ant-built
+                 jar (unzip -p modules/localization/jar/
+                 org.scilab.modules.localization.jar META-INF/MANIFEST.MF):
+                 between Implementation-Title and Implementation-Vendor. The
+                 regex still strips it from both sides, so parity stays
+                 green exactly as before, AND the attribute now exists at
+                 runtime, so getImplementationVersion() returns
+                 "00000000 0000" instead of null.
+
+                 WHY A FROZEN LITERAL, NOT A LIVE TIMESTAMP: a plain-text
+                 manifestFile is never run through Maven property
+                 interpolation at all — that is the whole reason
+                 "${manifest.class-path}" above survives as inert literal
+                 text instead of the <manifestSections> mis-interpolation to
+                 the literal string "null" documented above. Filtering this
+                 file through maven-resources-plugin to inject a live
+                 per-build value would turn interpolation back ON for the
+                 WHOLE file, resolving "${manifest.class-path}" too — the
+                 exact hazard that sank <manifestSections> in the first
+                 place. So the remaining fidelity gap is real and left
+                 honest rather than hidden: this value is a CONSTANT, never
+                 Ant's live per-build timestamp, and every build (and every
+                 module that copies this template) stamps the identical
+                 bytes. A per-build value, if ever genuinely wanted, needs a
+                 mechanism that can inject it WITHOUT running the whole file
+                 through general interpolation — out of scope here; revisit
+                 when xcos itself migrates to Maven, since xcos is the
+                 actual reader this exists to satisfy. -->
             <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
           </archive>
         </configuration>

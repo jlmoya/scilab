@@ -112,11 +112,17 @@ skips silently, so the dimension could report `ok` however wrong Maven's output 
 injecting a deliberately garbage section: `ok=True`). Re-baselining would have been the wrong fix —
 `baseline-autotools.json` is refreshed only when the autotools build legitimately changes, and
 arming it that way would fail for anyone who has not run `mvn`. What arms it is
-`test_maven_jars_align_with_ant_jars` in `tests/test_acceptance.py`: it skips when `maven_jars` is
-empty and otherwise asserts every Maven key has an Ant counterpart with identical content. That
-self-arms on any tree where someone has run Maven, and it was **seen to fail** on the real naming
-divergence before `<finalName>` fixed it. A captured dimension nobody compares is an observation,
-not a gate.
+`test_maven_jars_align_with_ant_jars` in `tests/test_acceptance.py`, which checks two different
+things. **Alignment** (the original check): it skips when `maven_jars` is empty and otherwise
+asserts every Maven key has an Ant counterpart with identical content. That self-arms on any tree
+where someone has run Maven, and it was **seen to fail** on the real naming divergence before
+`<finalName>` fixed it. Alignment alone is one-directional, though — `set(mj) - set(j)` — so a
+module that produced **no** Maven jar at all leaves no orphan key to report: `mvn clean`, a
+`<skip>` added to `maven-jar-plugin`, or a module quietly dropped from `<modules>` used to read as
+success. **Completeness** (added one commit later): `_missing_reactor_jars` parses the parent
+reactor's own `<modules>` list and asserts every declared module produced at least one Maven jar,
+so a build that is merely *partial* now fails loudly instead of passing by omission. A captured
+dimension nobody compares is an observation, not a gate.
 
 `tu_flag_facts` (RC-b) is what `parity/flagfacts_check.py` now checks against, per translation
 unit. It replaced **hand-written** expectations — a hardcoded default plus two manually maintained

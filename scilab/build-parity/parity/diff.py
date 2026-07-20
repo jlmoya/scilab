@@ -182,15 +182,19 @@ def diff_fingerprints(base, cand):
     #
     # SCOPE NOTE: this checks a baseline's OWN maven_jars against a candidate's
     # OWN maven_jars -- regression across RUNS, exactly like `jars` does. It does
-    # NOT cross-check maven_jars against `jars`. Stage 2-c Task 1: because every
-    # Maven jar's basename currently differs from its Ant counterpart (the
-    # parent-POM <finalName> that fixes this is a later task), a direct
-    # comparison of one capture's `jars` against that SAME capture's
-    # `maven_jars` shows an added key and a removed key per module -- that is
-    # this gate WORKING, the exact wrong-filename defect the hand-run snippet it
-    # replaces could never catch (see the Stage 2-c design doc S2.1). This
-    # transition rule does not perform that cross-check itself; it is what makes
-    # `maven_jars` a real, regression-gated dimension once armed.
+    # NOT cross-check maven_jars against `jars` -- that cross-check is a SEPARATE
+    # gate, test_acceptance.py::test_maven_jars_align_with_ant_jars, run once per
+    # capture rather than base-vs-candidate. CURRENT STATE (Stage 2-c Decision A,
+    # shipped): the parent POM's
+    # <finalName>org.scilab.modules.${project.artifactId}</finalName> makes
+    # every Maven jar's basename match its Ant counterpart, so that cross-check
+    # now lands each module on one shared key and compares clean. Before
+    # <finalName> landed, that SAME cross-check showed an added key and a
+    # removed key per module -- that was the gate WORKING, catching the exact
+    # wrong-filename defect the hand-run snippet it replaces could never catch
+    # (see the Stage 2-c design doc S2.1). This transition rule does not perform
+    # that cross-check itself; it is what makes `maven_jars` a real,
+    # regression-gated dimension once armed.
     if "maven_jars" in base:
         if "maven_jars" not in cand:
             out.append("maven_jars section missing in candidate")

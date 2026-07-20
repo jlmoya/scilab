@@ -297,10 +297,13 @@ bytes byte-safe rather than retyping them.
 **Two things this surfaced for the remaining 22 modules:**
 
 - **Maven's jar names differ from Ant's.** Maven produces `commons-2027.0.0-SNAPSHOT.jar`; Ant
-  produces `org.scilab.modules.commons.jar`. Content parity is unaffected — the harness compares
-  entries, not filenames — but this **will** matter when `cmake/ScilabJava.cmake` is swapped from Ant
-  to Maven, since the drop-in machinery and `etc/classpath.xml` both reference Ant's names. Decide
-  `finalName` versus adjusted coordinates before the CMake swap, not during it.
+  produces `org.scilab.modules.commons.jar`. **"Content parity is unaffected — the harness compares
+  entries, not filenames" needs correcting** (corrected 2026-07-20, Stage 2-c final review): that
+  was true only in the sense that two jars ALREADY matched up compare entry-by-entry — filenames
+  were never actually irrelevant, they just had no automated check looking at them yet (see the
+  `maven_jars` paragraph below). This **will** matter when `cmake/ScilabJava.cmake` is swapped from
+  Ant to Maven, since the drop-in machinery and `etc/classpath.xml` both reference Ant's names.
+  Decide `finalName` versus adjusted coordinates before the CMake swap, not during it.
   **SETTLED in Stage 2-c §3: reproduce Ant's names** via `<finalName>org.scilab.modules.${project.artifactId}</finalName>`
   in the parent POM. This is load-bearing, not latent — `etc/classpath.xml` hardcodes 23 module jars
   by path *and* name, and `etc/jvm_options.xml:20` hardcodes the JVM bootstrap entry.
@@ -312,6 +315,23 @@ bytes byte-safe rather than retyping them.
   **not** work here — Maven mirrors match on repository **id**, not URL scheme, so the wildcard
   mirror intercepts a `file://` repo and fails the build. `systemPath` needs no resolution, so it is
   immune to mirror configuration. Maven 4 dropping system scope remains a real, dated future cost.
+
+**The `maven_jars` dimension is what makes the first bullet above checkable at all** (Stage 2-c
+Task 1–2, `build-parity/parity/capture.py` + `tests/test_acceptance.py`), and this document had not
+named it until now. Through both 2-a and 2-b, the harness's one jar-content dimension, `jars`, only
+ever walked directories ending in `/jar` — where Ant writes — so Maven's `modules/<m>/target/`
+output had never entered a whole-tree fingerprint; both "parity green" claims above came from a
+hand-run `fingerprint_jar(a, b)` snippet with *both paths supplied by hand*, which structurally
+cannot detect a wrong filename. `maven_jars` closes that the same way `generated_cmake` (§3) closed
+the analogous CMake-vs-configure gap: it collects `modules/*/target/*.jar` and keys each entry at
+Ant's own `modules/<m>/jar/<basename>` path, so the two dicts compare directly — a basename
+mismatch becomes a visible added/removed key pair instead of an untested assumption.
+`jars`/`generated_cmake`'s established transition rule (skip when the baseline predates the
+section, fail if a candidate loses it) makes it a regression gate across runs;
+`test_maven_jars_align_with_ant_jars` is the separate check that arms it as a REAL gate at all, by
+cross-checking one capture's `maven_jars` against that same capture's `jars` — it is what was
+**seen to fail** on the real naming divergence the first bullet above describes, before
+`<finalName>` fixed it.
 
 **Artifact resolution works, but NOT the way this section originally claimed** (corrected 2026-07-20,
 Stage 2-c §5). The original wording — "Maven Central is reachable, verified HTTP 200 against

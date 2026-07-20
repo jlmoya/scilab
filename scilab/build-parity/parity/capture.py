@@ -417,12 +417,17 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             # scheme -- an added key on one side, a removed key on the other,
             # i.e. a visible rename -- while a jar they name the SAME way lands
             # on one shared key and is compared entry-by-entry, exactly like
-            # `jars` already does. Today EVERY Maven jar's basename differs from
-            # Ant's (e.g. commons-2027.0.0-SNAPSHOT.jar vs.
-            # org.scilab.modules.commons.jar) -- that mismatch is EXPECTED to
-            # show up wherever `jars` and `maven_jars` are compared, and closing
-            # it is a later task (the <finalName> above), not a bug in this
-            # section.
+            # `jars` already does. CURRENT STATE (Stage 2-c Decision A, shipped):
+            # the parent POM's own
+            # <finalName>org.scilab.modules.${project.artifactId}</finalName>
+            # (scilab/pom.xml, not this file -- there is no <finalName> "above"
+            # here) makes every Maven jar's basename MATCH its Ant counterpart
+            # today (e.g. both sides write org.scilab.modules.commons.jar), so a
+            # real module lands on one shared key, as designed. A basename that
+            # diverges again -- a per-module <finalName> override, a typo'd
+            # artifactId, a module POM that forgets to inherit the parent -- is
+            # a REGRESSION this key scheme exists to catch (an orphan key on
+            # each side), not an expected, tolerated mismatch.
             rel_root = os.path.relpath(root, build_dir).replace(os.sep, "/")
             parts = rel_root.split("/")
             # BOTH checks are required to pin the shape to modules/<m>/target
@@ -441,23 +446,42 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             # visibly wrong. Demonstrated: thirdparty/modules/target/vendored.jar
             # would otherwise be captured as modules/modules/jar/vendored.jar.
             #
-            # LIMITATION, KEPT ON PURPOSE (review Fix 4): the SAME exact-length-3
-            # requirement also means a NESTED target/ -- e.g.
+            # LIMITATION, NARROWED BY THE COMPLETENESS CHECK (review Fix 4, then
+            # narrowed again at final review): the SAME exact-length-3
+            # requirement means a NESTED target/ -- e.g.
             # modules/<m>/sub/target/x.jar, from some future multi-artifact
-            # module -- is invisible to this walk (parts there has length 4, so
+            # module -- is invisible to THIS WALK (parts there has length 4, so
             # `len(parts) == 3` excludes it before parts[0] is even checked): no
-            # key is ever written for it, and the jar escapes SILENTLY -- no
-            # orphan, no diff, nothing -- which is the WRONG failure direction
-            # for a parity gate. No Scilab module is nested today (all 24 Ant
-            # jars sit at modules/<m>/jar/ directly), so there is no live
-            # instance of this gap. Do NOT close it by broadening the walk (e.g.
-            # dropping the length check, or matching on parts[0] == "modules"
-            # alone) -- that is exactly the laundering bug the parts[0] ==
-            # "modules" check above exists to prevent (a stray "modules" path
-            # component anywhere getting rewritten into a plausible-looking
-            # synthetic key). If a nested module ever arrives, widen this
-            # deliberately and re-derive the synthetic-key scheme for it; don't
-            # just relax the guard.
+            # key is ever written for it. Two different cases follow from that,
+            # and only one is still silent:
+            #   - A declared reactor module that is ITSELF nested (e.g. a
+            #     hypothetical <module>modules/foo/sub</module>) produces ALL
+            #     its jars under a path this walk never visits, so it gets NO
+            #     maven_jars key at all -- and that IS caught now:
+            #     _missing_reactor_jars (the completeness check,
+            #     build-parity/tests/test_acceptance.py) parses the reactor's
+            #     own <modules> list and fails loudly, naming the module, when
+            #     nothing under its prefix exists.
+            #   - An EXTRA nested artifact inside an otherwise-normal module
+            #     (e.g. modules/commons/sub/target/extra.jar, alongside the
+            #     real modules/commons/target/x.jar that DOES get captured
+            #     normally) is still invisible: the module already has a
+            #     passing top-level jar, so completeness has nothing to object
+            #     to, and nothing else looks for a nested EXTRA. That narrower
+            #     case remains the WRONG failure direction for a parity gate
+            #     -- silent, not loud -- and is the live limitation this
+            #     comment now describes.
+            # No Scilab module is nested today (all 24 Ant jars sit at
+            # modules/<m>/jar/ directly), so there is no live instance of
+            # either case. Do NOT close the remaining gap by broadening the
+            # walk (e.g. dropping the length check, or matching on parts[0] ==
+            # "modules" alone) -- that is exactly the laundering bug the
+            # parts[0] == "modules" check above exists to prevent (a stray
+            # "modules" path component anywhere getting rewritten into a
+            # plausible-looking synthetic key). If a nested module or a
+            # multi-artifact module ever arrives, widen this deliberately and
+            # re-derive the synthetic-key scheme for it; don't just relax the
+            # guard.
             if len(parts) == 3 and parts[0] == "modules":
                 module = parts[1]
                 # NO filename filter here, unlike the Ant branch's _DOC_OUTPUT_JAR

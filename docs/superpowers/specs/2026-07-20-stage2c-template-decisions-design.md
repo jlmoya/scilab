@@ -108,16 +108,21 @@ comes. It is already one of the three tracked orphans.
 ## 4. Decision B — vendored jars: keep `systemPath`, for a better reason than we had
 
 The review recommended replacing `<scope>system</scope>` + `<systemPath>` with a project-local
-`file://` repository, noting correctly that Maven's own tooling warns the POM is "malformed" and
-that Maven 4 strips system-scope entries. The `-q` flag in the plan's own recipe had hidden that
-warning.
+`file://` repository, noting correctly that Maven's own tooling warns the POM is "malformed" and,
+separately, that Maven's own warning hedges that a future version might no longer support such a
+project — a hedge, not a confirmed Maven 4 behavior (see the correction below). The `-q` flag in
+the plan's own recipe had hidden that warning.
 
 **Measurement overturned the recommendation.** A `file://` repository does not work in this
 environment:
 
 `~/.m2/settings.xml` declares a mirror with `<mirrorOf>*,!maven.oracle.com,!smartnow-tech</mirrorOf>`.
-Maven mirrors match on repository **id**, not URL scheme, so a declared `file://` repository is
-intercepted like any other. A probe confirmed it directly: Maven never read the local path, it
+That `*` (wildcard) mirror matches by repository **id**, not URL scheme, so it intercepts a
+declared `file://` repository too — the same way it intercepts any other repository id not in its
+exclusion list. (Maven also supports an `external:*` mirror selector, documented as matching
+everything *except* localhost and `file://`-based repositories — i.e. URL scheme *can* matter to a
+differently-configured mirror; it is this machine's plain `*` mirror, specifically, that does not
+distinguish.) A probe confirmed it directly: Maven never read the local path, it
 rewrote the request to `http://localhost:7910/...` (Nexus, which answers **401**) and to an Azure
 DevOps feed → `BUILD FAILURE`. Making `file://` work would require every developer to hand-edit a
 personal `settings.xml` that is not in version control — strictly worse for a fresh clone than
@@ -127,10 +132,19 @@ what we have.
 That is a materially stronger justification than the "direct analogue of Ant's raw pathelement"
 argument currently in the POM comment, and it is the one that should be recorded.
 
-**The forward risk is real and gets recorded rather than dismissed:** Maven 4 does drop system
-scope. When the reactor moves to Maven 4, these ~10 permanently-vendored jars need a different
-mechanism — most likely a genuine internal repository, or `build-helper:attach-artifact`. That is
-a known, dated migration cost, not a surprise waiting in the dark.
+**The forward risk is real and gets recorded rather than dismissed — but stated no stronger than
+what was actually checked.** `system` scope is deprecated and discouraged, and Maven's own warning
+(quoted above) is hedged — "future Maven versions **might** no longer support" such a project, not
+a statement that Maven 4 already refuses it. That hedge was not resolved here: this reactor runs
+Maven 3.9.16, and no Maven 4 was exercised against it. Current Maven docs say only that system
+scope's "usage is not recommended," and Maven 4's own `org.apache.maven.api.DependencyScope` model
+still lists `SYSTEM`, undeprecated — so "Maven 4 does drop system scope" overstates what is public
+and confirmed; the accurate claim is that the Maven 4 model's *direction* is away from
+`systemPath`. Treated as a dated risk, not a verified fact: when the reactor moves to Maven 4 —
+reverified against whatever that Maven version actually does by then — these ~10
+permanently-vendored jars may need a different mechanism, most likely a genuine internal
+repository, or `build-helper:attach-artifact`. That is a known, dated migration cost recorded on
+purpose, not a claim of certainty about a Maven version nobody has run here.
 
 **Also fixed:** stop passing `-q` in verification recipes. It suppressed exactly the diagnostic
 that mattered. A silent `rc=0` is not evidence.

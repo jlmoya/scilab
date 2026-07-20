@@ -14,6 +14,7 @@ Alignment   -> the ONE cross-toolchain check in this file (all the others compar
                across runs, never disagreeing with jars within one run.
 """
 import copy
+import glob
 import json
 import os
 import xml.etree.ElementTree as ET
@@ -28,16 +29,35 @@ BUILD_DIR = os.path.abspath(os.path.join(HERE, "..", ".."))   # the scilab/ buil
 BASELINE = os.path.join(HERE, "..", "baseline-autotools.json")
 PARENT_POM = os.path.join(BUILD_DIR, "pom.xml")                # the Maven reactor root
 
-pytestmark = pytest.mark.skipif(
-    not os.path.exists(os.path.join(BUILD_DIR, ".libs", "scilab-bin")),
-    reason="requires the built autotools tree",
-)
+# CRITICAL (final review): this file used to carry ONE module-level `pytestmark`,
+# keyed on `.libs/scilab-bin`, applied to EVERY test below -- including all four
+# maven_jars tests. Two of those (the parse test and the two synthetic regression
+# tests) touch no build output at all, and a third (test_maven_jars_align_with_ant_jars)
+# needs only Ant's jars, never the native executable. `.libs/` is untracked build
+# output, so a fresh clone, a `make clean`ed tree, a Java-only CI job, or a git
+# worktree (this project's own documented isolation mode) all skipped the ENTIRE
+# maven_jars gate silently -- "191 passed, 11 skipped" names no dimension, so
+# nothing said the gate never ran. Each guard below is now scoped to what the test
+# underneath it ACTUALLY needs, not to what the busiest test in the file needs.
+_HAS_BUILT_TREE = os.path.exists(os.path.join(BUILD_DIR, ".libs", "scilab-bin"))
+_requires_built_tree = pytest.mark.skipif(
+    not _HAS_BUILT_TREE, reason="requires the built autotools tree")
+
+# test_maven_jars_align_with_ant_jars' OWN requirement: at least one Ant-built
+# module jar to compare against -- NOT the native .libs/scilab-bin executable,
+# which that test never touches. A cheap filesystem glob (not a call to
+# _capture(), which would pay for a whole-tree walk just to learn there is
+# nothing to align).
+_ANY_ANT_JAR = glob.glob(os.path.join(BUILD_DIR, "modules", "*", "jar", "*.jar"))
+_requires_ant_jars = pytest.mark.skipif(
+    not _ANY_ANT_JAR, reason="requires at least one Ant-built module jar")
 
 
 def _capture():
     return fingerprint_build(BUILD_DIR, _default_roots(BUILD_DIR), build_id="candidate")
 
 
+@_requires_built_tree
 def test_stability_recapture_is_green():
     # No false positives: the same tree captured twice must be identical.
     a = _capture()
@@ -45,12 +65,14 @@ def test_stability_recapture_is_green():
     assert diff_fingerprints(a, b) == {"ok": True, "differences": []}
 
 
+@_requires_built_tree
 def test_committed_baseline_matches_current_tree():
     with open(BASELINE) as f:
         base = json.load(f)
     assert diff_fingerprints(base, _capture())["ok"] is True
 
 
+@_requires_built_tree
 def test_sensitivity_dropped_symbol_is_caught():
     base = _capture()
     mutated = copy.deepcopy(base)
@@ -60,6 +82,7 @@ def test_sensitivity_dropped_symbol_is_caught():
     assert diff_fingerprints(base, mutated)["ok"] is False
 
 
+@_requires_built_tree
 def test_sensitivity_sdk_downgrade_is_caught():
     base = _capture()
     mutated = copy.deepcopy(base)
@@ -69,6 +92,7 @@ def test_sensitivity_sdk_downgrade_is_caught():
     assert any("sdk" in d.lower() for d in r["differences"])
 
 
+@_requires_built_tree
 def test_sensitivity_tmp_leak_is_caught():
     base = _capture()
     mutated = copy.deepcopy(base)
@@ -77,6 +101,7 @@ def test_sensitivity_tmp_leak_is_caught():
     assert diff_fingerprints(base, mutated)["ok"] is False
 
 
+@_requires_built_tree
 def test_sensitivity_dropped_rpath_is_caught():
     # Stage 1f: LC_RPATH is load-bearing for @rpath resolution (the jvm/JDK
     # modules resolve libjvm through it). Dropping one moves no symbol, link
@@ -92,6 +117,7 @@ def test_sensitivity_dropped_rpath_is_caught():
     assert any("rpaths" in d for d in r["differences"])
 
 
+@_requires_built_tree
 def test_sensitivity_wrapv_drop_is_caught():
     # THE codegen blind spot the flag manifest closes: -fwrapv drops out of the C
     # flags and NOTHING about symbols/link/stamp moves -- the exact class that sat
@@ -123,6 +149,17 @@ def _reactor_modules(pom_path=PARENT_POM):
     test_reactor_modules_parses_real_pom_non_vacuously: verified to return
     exactly 2 entries today (modules/localization, modules/commons), not a
     silently-empty list.
+
+    PROFILE-SCOPED MODULES GOTCHA (final review, Minor): this only matches a
+    <modules> block that is a DIRECT CHILD of <project> --
+    root.findall(f"{_MVN_NS}modules/{_MVN_NS}module"). A module declared
+    instead under <profiles><profile><modules>...</modules></profile>
+    </profiles> -- a plausible next move for an opt-in reactor -- is
+    invisible to this parse, and therefore to the completeness check below:
+    it is never counted as expected, so it can never be reported missing
+    either. Not a live gap today (the real POM has no <profiles> block), but
+    widen this deliberately if one is ever added -- don't assume profile-
+    gated modules are automatically covered.
     """
     root = ET.parse(pom_path).getroot()
     return [el.text.strip() for el in root.findall(f"{_MVN_NS}modules/{_MVN_NS}module")]
@@ -135,7 +172,13 @@ def _missing_reactor_jars(mj, modules):
     maven-jar-plugin, a module dropped from <modules>, or a mid-reactor
     packaging failure would all show up here. A pure function of its arguments
     (no pytest.skip, no filesystem/tree access) so it is directly unit-testable
-    against synthetic input -- see the regression tests below."""
+    against synthetic input -- see the regression tests below.
+
+    GRANULARITY LIMIT, kept on purpose (final review, Minor): this asks only
+    whether a module produced >=1 jar under its prefix, not how many -- a
+    module whose Ant build emits two jars but whose Maven build emits only
+    one would still pass. No live instance today: all 24 Ant-built modules
+    emit exactly one jar apiece."""
     return sorted(m for m in modules if not any(k.startswith(m + "/jar/") for k in mj))
 
 
@@ -189,6 +232,7 @@ def _check_maven_jars_alignment_and_completeness(cand):
     assert not missing, f"reactor modules with no Maven jar at all: {missing}"
 
 
+@_requires_ant_jars
 def test_maven_jars_align_with_ant_jars():
     """Every Maven-built jar must have an Ant counterpart at the same key, with
     identical content, AND Maven must have produced a jar for every module the
@@ -198,9 +242,18 @@ def test_maven_jars_align_with_ant_jars():
     This is what makes the maven_jars dimension a GATE rather than a recorded
     observation: diff.py's transition rule only detects regression across
     runs, never disagreement between the two toolchains, and never a module
-    Maven dropped entirely. Skips when no Maven jars are present so a
+    Maven dropped entirely. Skips when no Maven jars are present (the
+    pytest.skip inside _check_maven_jars_alignment_and_completeness) so a
     pure-autotools tree is unaffected; fires the moment anyone runs
     `mvn package`.
+
+    GUARD, DELIBERATELY NARROWER THAN THIS FILE'S OTHER TESTS (final review,
+    Critical): decorated with @_requires_ant_jars, not @_requires_built_tree.
+    This test needs Ant's jars to compare against -- never the native
+    .libs/scilab-bin executable every other test in this file requires -- so
+    it must run (and can fail) in a tree with no built native binaries at
+    all: a Java-only CI job, a git worktree, or a fresh clone that has only
+    run the Ant/Maven jar builds.
     """
     _check_maven_jars_alignment_and_completeness(_capture())
 
@@ -210,6 +263,15 @@ def test_reactor_modules_parses_real_pom_non_vacuously():
     # parse must return the two modules wired up today, not an empty list --
     # an empty list would silently make the completeness check above assert
     # nothing against everything (vacuously "passing").
+    #
+    # MAINTENANCE NOTE (final review, Minor): this exact-list assertion is
+    # meant to be UPDATED every time a module is added to the parent POM (22
+    # more times before the migration is done) -- never weakened to a
+    # truthiness check (`assert _reactor_modules()`) to dodge that churn.
+    # Truthiness alone is already covered by the `assert modules` inside
+    # _check_maven_jars_alignment_and_completeness; this test's whole point
+    # is pinning the EXACT set, so a module that silently fails to parse (or
+    # parses to the wrong set) still gets caught here.
     assert _reactor_modules() == ["modules/localization", "modules/commons"]
 
 
