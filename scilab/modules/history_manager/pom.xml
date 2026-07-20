@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/history_manager/pom.xml — Stage 2-e Task 1 module POM
+  (docs/superpowers/plans/2026-07-20-stage2e-topo-batch.md).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/history_manager -am
+  package from the reactor root, or mvn -f modules/history_manager/pom.xml
+  package). Ant (modules/history_manager/build.xml + build.incl.xml) remains
+  the real build; nothing here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE. Fourth in prebuildjava's topo order
+  (modules/prebuildjava/build.xml:25), right after commons. This stage is
+  the settled template applied, not a new mechanic discovered — see the
+  parent POM and modules/commons/pom.xml for the load-bearing comments this
+  module inherits without repeating.
+
+  STEP 1 FINDINGS (grep -rhE '^import (org|com|jdk|sun)\.'
+  modules/history_manager/src/java, 3 files):
+    - org.scilab.modules.commons.xml.{XConfiguration,XConfigurationEvent,
+      XConfigurationListener} — HistoryPrefs.java: the one reactor
+      dependency, below.
+    - org.w3c.dom.Document — JDK (java.xml module), not a dependency.
+  No manifest.class-path anywhere in build.xml (confirmed again in the
+  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
+  string "${manifest.class-path}").
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>history_manager</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:19 <property name="library.title" value="Scilab history manager"/> -->
+  <name>Scilab history manager</name>
+
+  <dependencies>
+    <!-- HistoryPrefs.java imports org.scilab.modules.commons.xml.* — the
+         ordinary reactor-sibling idiom, same shape as modules/commons/pom.xml's
+         own localization dependency. version uses ${project.version}, never
+         a literal 2027.0.0-SNAPSHOT, so it cannot drift from the parent's
+         actual version. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are
+                 inherited from the parent POM — not redeclared here. Same
+                 manifestFile mechanism as modules/localization/pom.xml and
+                 modules/commons/pom.xml (see either for why
+                 manifestSections/manifestEntries does not work: wrong
+                 attribute order and a "${manifest.class-path}" turned into
+                 the literal "null"). MANIFEST-section.MF's bytes were
+                 EXTRACTED from the actual Ant-built jar's
+                 META-INF/MANIFEST.MF (unzip -p modules/history_manager/jar/
+                 org.scilab.modules.history_manager.jar META-INF/MANIFEST.MF),
+                 never retyped: Specification-Vendor and
+                 Implementation-Vendor both carry the double-mangled "Ã¨"
+                 (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
+                 fuller comment for the mechanism. Implementation-Version is
+                 present, frozen at the literal "00000000 0000", positioned
+                 between Implementation-Title and Implementation-Vendor
+                 exactly where Ant places it — Package.getImplementationVersion()
+                 returns null when the attribute is missing, and
+                 parity/fingerprint.py's _MANIFEST_VOLATILE strips the line
+                 by shape, not value, so a frozen literal costs the parity
+                 gate nothing while giving the runtime consumer a real,
+                 non-null value. -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -138,7 +138,7 @@ _MVN_NS = "{http://maven.apache.org/POM/4.0.0}"
 def _reactor_modules(pom_path=PARENT_POM):
     """<module> entries from the parent reactor POM (e.g. "modules/localization"),
     PARSED rather than hardcoded so the completeness check below (review Fix 1)
-    stays correct through all 21 remaining migrations with no further edits.
+    stays correct through all 18 remaining migrations with no further edits.
 
     NAMESPACE GOTCHA: the POM declares the default Maven namespace
     (xmlns="http://maven.apache.org/POM/4.0.0"), so ElementTree needs the
@@ -147,7 +147,8 @@ def _reactor_modules(pom_path=PARENT_POM):
     returns [] (no exception, just nothing), which would make the completeness
     check below assert nothing against everything. See
     test_reactor_modules_parses_real_pom_non_vacuously: verified to return
-    exactly 3 entries today (modules/localization, modules/commons,
+    exactly 6 entries today (modules/localization, modules/commons,
+    modules/history_manager, modules/jvm, modules/action_binding,
     modules/scirenderer), not a silently-empty list.
 
     PROFILE-SCOPED MODULES GOTCHA (final review, Minor): this only matches a
@@ -260,20 +261,28 @@ def test_maven_jars_align_with_ant_jars():
 
 def test_reactor_modules_parses_real_pom_non_vacuously():
     # Guards the namespace gotcha itself: against the REAL parent POM, the
-    # parse must return the three modules wired up today, not an empty list --
+    # parse must return the six modules wired up today, not an empty list --
     # an empty list would silently make the completeness check above assert
     # nothing against everything (vacuously "passing").
     #
     # MAINTENANCE NOTE (final review, Minor): this exact-list assertion is
-    # meant to be UPDATED every time a module is added to the parent POM (21
+    # meant to be UPDATED every time a module is added to the parent POM (18
     # more times before the migration is done) -- never weakened to a
     # truthiness check (`assert _reactor_modules()`) to dodge that churn.
     # Truthiness alone is already covered by the `assert modules` inside
     # _check_maven_jars_alignment_and_completeness; this test's whole point
     # is pinning the EXACT set, so a module that silently fails to parse (or
-    # parses to the wrong set) still gets caught here. Updated for Stage 2-d
-    # Task 1 (modules/scirenderer added to the parent's <modules>).
-    assert _reactor_modules() == ["modules/localization", "modules/commons", "modules/scirenderer"]
+    # parses to the wrong set) still gets caught here. Updated for Stage 2-e
+    # Task 1 (modules/history_manager, modules/jvm, modules/action_binding
+    # added to the parent's <modules>).
+    assert _reactor_modules() == [
+        "modules/localization",
+        "modules/commons",
+        "modules/history_manager",
+        "modules/jvm",
+        "modules/action_binding",
+        "modules/scirenderer",
+    ]
 
 
 def test_regression_reactor_module_missing_maven_jar_fails():
