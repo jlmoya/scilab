@@ -45,6 +45,39 @@
   </properties>
 
   <build>
+    <!-- Stage 2-c Decision A (design doc §3): reproduce Ant's jar NAME, not Maven's default
+         (artifactId-version.jar, e.g. commons-2027.0.0-SNAPSHOT.jar). ${project.artifactId}
+         resolves per-module and already equals the module directory name, which already
+         equals Ant's jar infix — one line at the parent covers every module ever added,
+         including the 22 not yet migrated.
+
+         WHY THIS IS NOT COSMETIC. etc/classpath.xml hardcodes 23 module jars by full path AND
+         name ($SCILAB/modules/<m>/jar/org.scilab.modules.<m>.jar); etc/jvm_options.xml:20
+         hardcodes the JVM bootstrap entry the same way
+         (-Djava.class.path=$SCILAB/modules/jvm/jar/org.scilab.modules.jvm.jar). Both are read
+         by the RUNNING application. Renaming the jars would mean rewriting classpath.xml and
+         jvm_options.xml — that is *improving*, and this campaign's binding principle is
+         reproduce, don't improve (CMake/Maven must produce the same app autotools/Ant did,
+         warts included). A build-tool swap must not, as a side effect, rewrite the running
+         application's classpath.
+
+         THE OUTPUT DIRECTORY IS DELIBERATELY NOT PART OF THIS CHANGE. Maven keeps writing to
+         target/, not modules/<m>/jar/, for as long as Ant and Maven coexist. Pointing Maven at
+         jar/ now would have both toolchains writing the SAME file — a stray `mvn package` run
+         could then silently feed CMake (or a developer's Ant-built tree) a Maven jar under a
+         path CMake believes only Ant ever writes, with no way to tell them apart after the
+         fact. The directory only flips at the eventual CMake/Ant swap, when Ant stops writing
+         there at all. Same basename in two different directories is also exactly what lets
+         build-parity's maven_jars section key itself at Ant's modules/<m>/jar/<basename> path
+         (parity/capture.py) and compare directly against `jars` — see
+         build-parity/tests/test_acceptance.py::test_maven_jars_align_with_ant_jars.
+
+         KNOWN FUTURE EXCEPTION, NOT HANDLED HERE: scirenderer is Ant-only and its jar does NOT
+         follow the org.scilab.modules.* convention (it is already one of the tracked orphans).
+         When scirenderer is migrated it will need a per-module <finalName> override that
+         shadows this parent default — out of scope for this task, recorded so it is not
+         mistaken for an oversight later. -->
+    <finalName>org.scilab.modules.${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

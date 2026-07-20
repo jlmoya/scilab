@@ -7,6 +7,11 @@ Stability  -> capturing the same tree twice is identical (proves the capture pip
               test_parse_nm_strips_addresses_and_sorts (Task 1), which discards the address column
               unconditionally; the two together substantiate "not too loose."
 Sensitivity -> a mutated real fingerprint is caught (proves no false negatives).
+Alignment   -> the ONE cross-toolchain check in this file (all the others compare a fingerprint
+               against itself or a baseline): every Maven jar must match its Ant counterpart, on
+               the SAME real capture. This is what arms the maven_jars dimension (Stage 2-c Task 2)
+               -- diff.py's transition rule only ever catches maven_jars regressing against itself
+               across runs, never disagreeing with jars within one run.
 """
 import copy
 import json
@@ -97,3 +102,22 @@ def test_sensitivity_wrapv_drop_is_caught():
     r = diff_fingerprints(base, mutated)
     assert r["ok"] is False
     assert any("flags c" in d and "wrapv" in d for d in r["differences"])
+
+
+def test_maven_jars_align_with_ant_jars():
+    """Every Maven-built jar must have an Ant counterpart at the same key, with identical content.
+
+    This is what makes the maven_jars dimension a GATE rather than a recorded observation:
+    diff.py's transition rule only detects regression across runs, never disagreement between
+    the two toolchains. Skips when no Maven jars are present so a pure-autotools tree is
+    unaffected; fires the moment anyone runs `mvn package`.
+    """
+    cand = _capture()
+    mj = cand.get("maven_jars", {})
+    if not mj:
+        pytest.skip("no Maven-built jars in this tree -- nothing to align")
+    j = cand["jars"]
+    orphans = sorted(set(mj) - set(j))
+    assert not orphans, f"Maven jars with no Ant counterpart (naming divergence?): {orphans}"
+    differing = sorted(k for k in mj if mj[k] != j[k])
+    assert not differing, f"Maven and Ant jars differ in content at: {differing}"
