@@ -15,6 +15,20 @@ failure modes are a dropped flag, a missing exported symbol, a differently-linke
 weeks later as a runtime bug. So the first artifact is a **parity harness**, and every migrated
 unit is diffed new-against-old before it counts as done.
 
+**And its corollary: a fix is an improvement.** "Reproduce, don't improve" forbids fixing defects
+mid-migration — a fix and a migration bug are indistinguishable to a parity diff. That discipline
+only works if the deferred defects are written down and scheduled, or the migration quietly makes
+them permanent. Two documents exist for that, and both are load-bearing:
+
+- **`docs/design/deferred-fixes-register.md`** — the authoritative index of every wart being
+  deliberately preserved, with evidence, why it is reproduced, and the proposed fix. **Add a row in
+  the same commit that reproduces a wart.** A comment at the site stops the next reader from
+  breaking parity; only the register makes the defect findable afterwards.
+- **`docs/superpowers/plans/2026-07-20-post-migration-remediation.md`** — the plan that turns the
+  register into work, gated on the endgame (autotools and Ant deleted). Note that the harness's
+  role *inverts* there: it stops proving "new build == old build" and starts proving "this change
+  moved exactly the artifacts predicted, and nothing else."
+
 ---
 
 ## 1. The current build, as it actually is (grounded)

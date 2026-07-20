@@ -68,8 +68,14 @@ section `Name: org/scilab/modules/scirenderer/`; 134 files. **Any deviation — 
 
 - [ ] **Step 2: The per-module `<finalName>` override.** The parent sets
   `org.scilab.modules.${project.artifactId}`; this module must emit `scirenderer.jar`. Override it
-  in the module POM and comment *why* — it is the one module of 24 that breaks the convention, and
-  `etc/classpath.xml` does not list it (it is an Ant-only orphan reached via `prebuildjava`).
+  in the module POM and comment *why* — it is the one module of 24 that breaks the convention.
+
+  **Correction (this plan was wrong when first written):** an earlier draft said `etc/classpath.xml`
+  does not list `scirenderer`. It does — `etc/classpath.xml:127`, as the literal
+  `$SCILAB/modules/scirenderer/jar/scirenderer.jar`, rather than the `org.scilab.modules.<m>.jar`
+  form the other 23 use. That makes the override **load-bearing at runtime**, not merely cosmetic:
+  the wrong name yields a classpath entry pointing at a file that does not exist. Verify the line
+  yourself rather than trusting either version of this sentence.
 
 - [ ] **Step 3: The two vendored JOGL jars.** `scilab-lib.properties:21,35` point `jogl2.jar` and
   `gluegen2.jar` at `thirdparty/jogl-all-2.5.0.jar` and `thirdparty/gluegen-rt-2.5.0.jar`;
