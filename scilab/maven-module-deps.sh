@@ -73,8 +73,13 @@ echo
 
 # --- 1. import statements ---------------------------------------------------
 echo "[1] imports (excluding the module's own packages)"
-grep -rhE '^\s*import\s+(static\s+)?[a-z]' "$SRC" --include='*.java' 2>/dev/null \
-  | sed -E 's/^\s*import\s+(static\s+)?//; s/;.*//' \
+# NOTE: [[:space:]], not \s. BSD sed (macOS) treats \s as a LITERAL 's', so
+# `sed -E 's/^\s*import\s+//'` silently fails to strip the import prefix and the
+# self-package grep two lines down never fires — a module's own sub-packages then
+# leak into its own "imports" list. Found in Stage 2-f Wave E. POSIX classes are
+# portable across BSD and GNU; use them in every grep/sed here.
+grep -rhE '^[[:space:]]*import[[:space:]]+(static[[:space:]]+)?[a-z]' "$SRC" --include='*.java' 2>/dev/null \
+  | sed -E 's/^[[:space:]]*import[[:space:]]+(static[[:space:]]+)?//; s/;.*//' \
   | sed -E 's/\.[A-Z][A-Za-z0-9_]*$//; s/\.[*]$//' \
   | grep -vE "^org\.scilab\.(modules|forge)\.$MOD(\.|$)" \
   | sort -u | sed 's/^/    /'
@@ -94,7 +99,7 @@ echo
 # call names the CONSTANT. An inline-literal grep at the call site sees nothing.
 echo "[2] reflection targets — do NOT add these to <dependencies>"
 # (a) literals passed directly to forName/loadClass
-REFL_INLINE=$(grep -rhoE '(Class\.forName|loadClass)\(\s*"[^"]+"' "$SRC" --include='*.java' 2>/dev/null \
+REFL_INLINE=$(grep -rhoE '(Class\.forName|loadClass)\([[:space:]]*"[^"]+"' "$SRC" --include='*.java' 2>/dev/null \
   | grep -oE '"[^"]+"' | tr -d '"')
 # (b) String constants whose NAME is later handed to forName/loadClass. Collect
 # every `... String IDENT = "value"` declaration, then keep those whose IDENT
@@ -132,8 +137,8 @@ echo
 # Annotations and inline type references written out in full. Invisible to an
 # import scan; they still need the package on the compile classpath.
 echo "[3] fully-qualified uses with NO import — the class that bites"
-IMPORTED=$(grep -rhE '^\s*import\s' "$SRC" --include='*.java' 2>/dev/null \
-  | sed -E 's/^\s*import\s+(static\s+)?//; s/;.*//' | sort -u)
+IMPORTED=$(grep -rhE '^[[:space:]]*import[[:space:]]' "$SRC" --include='*.java' 2>/dev/null \
+  | sed -E 's/^[[:space:]]*import[[:space:]]+(static[[:space:]]+)?//; s/;.*//' | sort -u)
 FQ=$(grep -rhoE '(@|[^A-Za-z0-9_."])((javax|jakarta|java|com|org|jdk|sun)(\.[a-z][A-Za-z0-9_]*)+\.[A-Z][A-Za-z0-9_]*)' \
       "$SRC" --include='*.java' 2>/dev/null \
     | grep -oE '((javax|jakarta|java|com|org|jdk|sun)(\.[a-z][A-Za-z0-9_]*)+\.[A-Z][A-Za-z0-9_]*)' \
