@@ -437,15 +437,33 @@ become compile dependencies (they would cycle the reactor). Stage 2-e found
 left the JDK at Java 11, and Ant already carries the jar (`build.incl.xml:104`). Run it before
 writing any module POM.
 
-### Stage 2-f — the reactor is COMPLETE: all 23 modules on Maven (DONE 2026-07-20)
+### Stage 2-f — the reactor is COMPLETE: all 24 modules on Maven (DONE 2026-07-20; corrected same day, Wave F)
 
 The remaining 15 modules migrated in five dependency **waves** (A `console`/`helptools`/`types`/
 `external_objects_java`; B `renderer`/`javasci`/`graphic_export`; C `gui`; D `core`/`history_browser`/
 `graph`/`ui_data`; E `scinotes`/`preferences`/`xcos`), each wave's dependencies satisfied by the
-waves before it. `mvn clean package` at the reactor root now builds **all 23 modules + parent** in
+waves before it. `mvn clean package` at the reactor root now builds **all 24 modules + parent** in
 one dependency-resolved reactor, every jar byte-parity-green against its Ant counterpart through the
 `maven_jars` dimension. This **retires `prebuildjava`'s hand-encoded 23-module topo-sort** — the
 maintenance win Stage 2 exists to deliver — replaced by real dependency resolution.
+
+**Wave F — the final review's CRITICAL finding, and why "23 modules" was wrong.** Waves A-E closed
+believing the reactor complete at 23/23, derived from `prebuildjava/build.xml:25`'s topo-sort. That
+was the wrong ground truth: `terminal` (the embedded JediTerm terminal) is a normal Java module — 7
+source files, its own `build.xml` — that genuinely **ships** (`etc/classpath.xml:286` loads
+`org.scilab.modules.terminal.jar` into the running app) but sits *outside* `prebuildjava` entirely
+(GUI-gated, built only via its own `USEANT=1` path — already tracked as orphan **B3** in the
+register), so none of Waves A-E ever had a reason to touch it. The completeness gate could not catch
+the gap either, by construction: `_missing_reactor_jars` (Stage 2-f's own Fix 1) only ever asks
+whether every module the reactor **declares** produced a jar — a module the reactor never declared in
+the first place is not reported missing, it is never asked about. Fixed in the order that matters:
+`build-parity/tests/test_acceptance.py` gained the missing direction
+(`_ant_modules_without_reactor_entry` — every module with a real Ant-built jar must have a reactor
+`<module>` entry, not only the reverse) and was run **before** `terminal` was added, so the gap was
+seen to fail, naming exactly `['terminal']`, not merely asserted fixed. `modules/terminal/pom.xml`
+then joined the reactor as the 24th entry, modeled on `modules/gui/pom.xml` (four reactor
+dependencies plus vendored `flexdock`/`jediterm-core`/`jediterm-ui`/`jna`), and the full 24-module
+reactor rebuilt clean with both gate directions green. `commit 44845dbf98c`.
 
 Waves were the dependency partial order, **not** `prebuildjava`'s list read literally: `helptools`,
 `types` and `external_objects_java` sit late in that list but had no unmigrated dependencies, so they
@@ -508,7 +526,10 @@ too. (`external:*` would exclude `file://` — scheme matters to *that* selector
 
 - The `prebuildjava` topo-sort is **23** modules, not 22 (this doc said both in different places;
   `prebuildjava/build.xml:25` is authoritative). `terminal` is a **24th**, absent from that list and
-  built only via its own `USEANT=1` path, gated `if GUI`.
+  built only via its own `USEANT=1` path, gated `if GUI` — permanently true of *Ant*, and unrelated to
+  whether the *Maven reactor* also has a module for it. It did not, until Wave F: `terminal` joined
+  the reactor as its 24th `<module>` entry (`commit 44845dbf98c`), closing the gap the final review
+  found — see the Stage 2-f section above.
 - **FlatLaf is fetched but unused.** "Already bundled to replace the Swing L&F set" overstates it —
   its only reference in the whole tree is `// TODO uncomment if using FlatLaf`
   (`modules/ui_data/.../ScilabFileSelectorFilter.java:162`).
@@ -523,20 +544,28 @@ too. (`external:*` would exclude `file://` — scheme matters to *that* selector
 - **`ivy.xml` is dead.** No ivy jar exists anywhere and `~/.ant/lib` does not exist, so `ant download`
   would fail immediately on an unresolved antlib. `fetch-thirdparty.sh` reimplements it with
   `curl` + sha256.
-- **Manifest `Class-Path` chaining works for 2 of 23 modules** — the other 21 ship the literal string
-  `${manifest.class-path}`, because Ant leaves undefined property references as text.
+- **Manifest `Class-Path` chaining works for 2 of 24 modules** — the other 22 (including `terminal`,
+  Wave F) ship the literal string `${manifest.class-path}`, because Ant leaves undefined property
+  references as text.
 - **22 of 23 jars are built twice** under plain autotools (once via `prebuildjava`, again via each
   module's own `USEANT=1`). Stage 1's CMake bridge already collapsed this to 2 Ant invocations.
 - **Three orphans a reactor forces into the open**, all deliberately preserved by Stage 2-a:
   `output_stream` is built by **nothing** yet referenced by `scilab-lib.properties:170-172`;
   `scirenderer` is Ant-only (no `Makefile.am`, no `SUBDIRS` entry); `terminal` is GUI-gated and
   outside the topo-sort. Each is a product decision the current tangle makes by omission.
+  **`terminal`'s reactor omission is now RESOLVED (Wave F, `commit 44845dbf98c`)** — it is the
+  24th `<module>` entry, byte-parity-green. Its ANT-side fact is unchanged and permanent (still
+  outside `prebuildjava`'s topo-sort, still built only via its own `USEANT=1` path — that is Ant
+  structure, not a reactor gap, and out of scope for Maven to fix): only the omission this bullet
+  originally tracked — a shipping module the *reactor* never picked up — is closed. See register
+  **B3**.
 - **No codegen plugin is needed.** JFlex's 9 grammars have zero build wiring (hand-committed lexers);
   SWIG (32 `.i`) and GIWS (34 `.giws.xml`) run only under explicit flags and are slated for deletion
   in the FFI phase.
-- **Tests do not run today.** 40 files / 338 `@Test` methods (JUnit 4.10) across 7 of 23 modules, but
-  every module's Ant default target is `jar`, so `ant test` only runs if invoked by hand. Cobertura
-  is broken outright — it calls `cobertura-*` tasks with no `taskdef`.
+- **Tests do not run today.** 40 files / 338 `@Test` methods (JUnit 4.10) across 7 of 24 modules
+  (`terminal`, Wave F, adds none — no `@Test` anywhere in it, only a `.tst` Scilab script under
+  `tests/unit_tests/`), but every module's Ant default target is `jar`, so `ant test` only runs if
+  invoked by hand. Cobertura is broken outright — it calls `cobertura-*` tasks with no `taskdef`.
 
 ### 2a. The Maven reactor + dependency management (the maintenance win)
 - Stand up a parent POM + per-module POMs. **The reactor's real inter-module dependencies replace

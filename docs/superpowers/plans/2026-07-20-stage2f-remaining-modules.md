@@ -2,6 +2,15 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans. Steps use checkbox (`- [ ]`) syntax.
 
+> **Post-completion note (Wave F, 2026-07-20):** every "23" below is `prebuildjava`'s own topo-sort
+> count, not the full shipping-module count, and Task 6's "23 of 23" was believed final but was not.
+> `terminal` is a genuine 24th shipping Java module (`etc/classpath.xml:286`) that sits outside
+> `prebuildjava` entirely (GUI-gated, its own `USEANT=1` path — see register **B3**), so it was never
+> in scope for any wave this plan describes. The Stage 2-f final review caught that omission and
+> `terminal` joined the reactor separately, as Wave F (`commit 44845dbf98c`), bringing the true total
+> to 24/24. See `docs/design/build-cmake-maven-migration.md`'s Stage 2-f section for the full account.
+> Nothing below is rewritten — Waves A-E ran exactly as planned; this note only reconciles the count.
+
 **Goal:** Finish Stage 2 — every one of the 23 `prebuildjava` modules building under Maven at jar
 parity.
 
