@@ -213,7 +213,7 @@ public class SwingScilabHelpBrowserViewer extends BasicContentViewerUI implement
      * Try to transform an address such as scilab://scilab.help/bvode into a conform URL
      * pointing to the corresponding file in using jar: protocol.
      * E.g. scilab://scilab.help/bvode will be transform into
-     * jar:file:SCI/modules/helptools/jar/scilab_fr_FR_help.jar!/scilab_fr_FR_help/bvode.html
+     * jar:file:SCI/modules/helptools/target/scilab_fr_FR_help.jar!/scilab_fr_FR_help/bvode.html
      * (where SCI has the good value)
      * @param event the yperlink event
      * @return the correct address in using jar:// protocol

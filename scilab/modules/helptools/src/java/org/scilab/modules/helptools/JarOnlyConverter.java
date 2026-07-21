@@ -104,8 +104,8 @@ public class JarOnlyConverter extends ContainerConverter {
         JarOutputStream jarFile = null;
         FileOutputStream fileOutputStream = null;
 
-        /* Stored into SCI/modules/helptools/jar */
-        String fileName = SCI + "/modules/helptools/jar" + SLASH + "scilab_images" + JAR_EXT;
+        /* Stored into SCI/modules/helptools/target */
+        String fileName = SCI + "/modules/helptools/target" + SLASH + "scilab_images" + JAR_EXT;
         try {
             fileOutputStream = new FileOutputStream(fileName);
             jarFile = new JarOutputStream(fileOutputStream);
@@ -178,7 +178,7 @@ public class JarOnlyConverter extends ContainerConverter {
         JarOutputStream jarFile = null;
         FileOutputStream fileOutputStream = null;
 
-        /* Stored into SCI/modules/helptools/jar */
+        /* Stored into SCI/modules/helptools/target */
         String fileName = outputDirectory + SLASH + baseName + JAR_EXT;
         /* bug 4407 */
         /* we do list of files before to create scilab_xx_XX_help.jar */

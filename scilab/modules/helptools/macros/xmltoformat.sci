@@ -449,6 +449,11 @@ function generated_files = xmltoformat(output_format,dirs,titles,directory_langu
         // Define and create the final output directory if does not exist
         if output_format == "web" then
             final_output_dir = pathconvert(SCI+"/modules/helptools/web",%f,%f);
+        elseif output_format_ext == "jar" then
+            // The javaHelp jars now live under Maven's target/ (was jar/).
+            // output_format_ext stays "jar" (it is also the file extension of
+            // scilab_xx_XX_help.jar) - only the destination directory moves.
+            final_output_dir = pathconvert(SCI+"/modules/helptools/target",%f,%f);
         else
             // Define and create the final output directory if does not exist
             final_output_dir = pathconvert(SCI+"/modules/helptools/"+output_format_ext,%f,%f);

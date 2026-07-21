@@ -65,7 +65,7 @@ public final class PaletteIndexer {
         roots.add(new File(ScilabConstants.SCI.getAbsolutePath() + "/modules/helptools/javaHelp"));
 
         // for binary version
-        roots.add(new File(ScilabConstants.SCI.getAbsolutePath() + "/modules/helptools/jar"));
+        roots.add(new File(ScilabConstants.SCI.getAbsolutePath() + "/modules/helptools/target"));
     }
 
     public void createIndex(Map<String, PaletteBlock> blockNameToPalette) {
@@ -143,7 +143,7 @@ public final class PaletteIndexer {
             boolean url() {
                 try {
                     // we have to generate a url in the form before indexing
-                    // jar:file:/modules/helptools/jar/scilab_en_US_help.jar!/scilab_en_US_help/blockName.html
+                    // jar:file:/modules/helptools/target/scilab_en_US_help.jar!/scilab_en_US_help/blockName.html
                     url = new URL("jar:" + fileURI + "!/" + basename + '/' + blk + ".html");
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(PaletteIndexer.class.getName()).log(Level.SEVERE, null, ex);

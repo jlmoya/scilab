@@ -74,7 +74,7 @@ public class SwingScilabHelpBrowser extends JPanel implements SimpleHelpBrowser,
 
     private static String defaultLanguage = "en_US";
     private static String jarExtension = "_help.jar";
-    private static String mainJarPath = System.getenv("SCI") + "/modules/helptools/jar/scilab_";
+    private static String mainJarPath = System.getenv("SCI") + "/modules/helptools/target/scilab_";
 
     private String currentLanguage = "";
     private JHelp jhelp;
@@ -156,7 +156,7 @@ public class SwingScilabHelpBrowser extends JPanel implements SimpleHelpBrowser,
             currentLanguage = defaultLanguage;
         }
         if (!mainJar.exists()) {
-            String message = "'SCI/modules/helptools/jar/scilab_" + defaultLanguage + jarExtension + "' has not been found on the system.\n"
+            String message = "'SCI/modules/helptools/target/scilab_" + defaultLanguage + jarExtension + "' has not been found on the system.\n"
                              + "" + "Are you sure you built it?\nThe help will not be available.";
             if (ScilabConsole.isExistingConsole()) {
                 MessageBox messageBox = ScilabMessageBox.createMessageBox();
