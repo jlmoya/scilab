@@ -2,9 +2,10 @@
 import json
 import sys
 
-# The eleven of "generated"'s 13 GENERATED_FILES entries that get a real CMake-vs-configure
-# byte comparison: the ten RC-c files (RC-c's ScilabGeneratedFiles.cmake writes them into
-# build-cmake/generated/) plus version.h (a later final review found it shared the exact
+# The ten of "generated"'s 12 GENERATED_FILES entries that get a real CMake-vs-configure
+# byte comparison: the nine RC-c files still generated (RC-c's ScilabGeneratedFiles.cmake
+# writes them into build-cmake/generated/; build.incl.xml, RC-c's tenth, retired with Ant
+# at RC-e) plus version.h (a later final review found it shared the exact
 # same gap -- its CMake copy lands in build-cmake/generated-includes/ instead, via
 # parity.capture's _GENERATED_CMAKE_PATH_OVERRIDES -- and closed it the same way, since
 # version.h, unlike machine.h, IS byte-identical between CMake and configure). I.e. all of
@@ -16,7 +17,6 @@ import sys
 # -- diff.py compares frozen JSON, never the tool that produced it. Update alongside
 # parity.capture.GENERATED_FILES / _GENERATED_CMAKE_PATH_OVERRIDES if this subset ever changes.
 _GENERATED_CMAKE_KEYS = frozenset((
-    "build.incl.xml",
     "scilab.pc",
     "scilab.properties",
     "etc/logging.properties",

@@ -89,9 +89,10 @@ def test_generated_hash_change_is_caught():
 #
 # A later final review found version.h shared this exact gap (its own section further
 # down, near test_generated_cmake_version_h_mismatch_against_baseline_fails) and folded
-# it into the same `generated_cmake` mechanism -- `_GENERATED_CMAKE_KEYS` now has eleven
-# entries, not ten, but the "armed baseline" argument above is unchanged: version.h's
-# hash has been in `base["generated"]` since before RC-c even existed.
+# it into the same `generated_cmake` mechanism -- `_GENERATED_CMAKE_KEYS` includes version.h
+# (ten entries since build.incl.xml retired with Ant at RC-e), but the "armed baseline"
+# argument above is unchanged: version.h's hash has been in `base["generated"]` since
+# before RC-c even existed.
 
 def test_generated_cmake_absent_in_candidate_skips_cleanly():
     # Transition rule, half 1: a candidate captured by a pre-fix capture.py has no
@@ -214,7 +215,7 @@ def test_generated_cmake_keys_match_capture_module_minus_the_two_without_a_cmake
     # list rather than importing it (this module stays decoupled from parity.capture,
     # comparing frozen JSON only), so nothing else enforces they stay in sync. version.h
     # used to be a third "no cmake copy" entry (generated-includes/, out of scope) until a
-    # later final review closed that gap the same way as the RC-c ten -- it is now in
+    # later final review closed that gap the same way as the RC-c nine -- it is now in
     # _GENERATED_CMAKE_KEYS, not in this set.
     from parity.capture import GENERATED_FILES
     no_cmake_copy = {
@@ -222,7 +223,7 @@ def test_generated_cmake_keys_match_capture_module_minus_the_two_without_a_cmake
         "modules/core/includes/machine.h",      # generated-includes/, header_defines' job
     }
     assert _GENERATED_CMAKE_KEYS == set(GENERATED_FILES) - no_cmake_copy
-    assert len(_GENERATED_CMAKE_KEYS) == 11
+    assert len(_GENERATED_CMAKE_KEYS) == 10
 
 
 def test_flag_wrapv_flip_is_caught():

@@ -206,9 +206,10 @@ def test_generated_cmake_version_h_differs_from_source_tree_copy_when_corrupted(
 
 
 def test_generated_files_covers_the_rc_c_inventory():
-    """The 9 configure-substituted files RC-c generates, plus Version.incl, plus the
-    3 that predate it. Pinned by exact set: this list IS the gate's coverage, and a
-    silent shrink is exactly the failure mode the campaign keeps rediscovering.
+    """The 8 configure-substituted files RC-c still generates (build.incl.xml, RC-c's
+    ninth, retired with Ant at RC-e), plus Version.incl, plus the 3 that predate it.
+    Pinned by exact set: this list IS the gate's coverage, and a silent shrink is
+    exactly the failure mode the campaign keeps rediscovering.
 
     NOT here on purpose -- etc/classpath.xml is, but scilab-lib.properties and
     scilab-lib-doc.properties are deferred to Stage 2 (Ant->Maven) along with the jar
@@ -219,7 +220,6 @@ def test_generated_files_covers_the_rc_c_inventory():
         "etc/classpath.xml",
         "modules/core/includes/machine.h",
         "modules/core/includes/version.h",
-        "build.incl.xml",
         "scilab.pc",
         "scilab.properties",
         "etc/logging.properties",

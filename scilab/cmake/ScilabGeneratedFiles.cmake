@@ -222,10 +222,7 @@ set(MPI_ENABLE "no")
 set(WITH_TKSCI "no")
 
 # --- the files ------------------------------------------------------------
-# build.incl.xml has ZERO substitutions -- output is byte-identical to its template
-# (verified: `grep -c '@' build.incl.xml.in` is 0). configure_file still handles it
-# correctly; it is listed for completeness of the migration, not because it needs work.
-foreach(_f build.incl.xml scilab.pc scilab.properties etc/logging.properties
+foreach(_f scilab.pc scilab.properties etc/logging.properties
            etc/modules.xml etc/Info.plist
            modules/helptools/etc/SciDocConf.xml
            modules/atoms/etc/repositories

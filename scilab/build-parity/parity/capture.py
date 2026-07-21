@@ -13,7 +13,8 @@ from parity.fingerprint import (parse_nm, parse_otool_libs, parse_build_version,
 from parity.makeflags import makefile_tu_facts, LANG_BY_SUFFIX
 
 # Files config.status substitutes, byte-hashed after root normalization. The three
-# original entries plus RC-c's ten. Byte hash (not semantic) is right here: these are
+# original entries plus RC-c's nine (build.incl.xml, RC-c's tenth, retired with Ant
+# at RC-e). Byte hash (not semantic) is right here: these are
 # scalar-substitution templates -- configure_file(@ONLY) reproduces autoconf's @VAR@
 # expansion exactly when the values match, which version.h proved. machine.h is the
 # exception that needed a semantic dimension, for a reason none of these share.
@@ -30,7 +31,6 @@ GENERATED_FILES = [
     "etc/classpath.xml",
     "modules/core/includes/machine.h",
     "modules/core/includes/version.h",
-    "build.incl.xml",
     "scilab.pc",
     "scilab.properties",
     "etc/logging.properties",
