@@ -73,32 +73,23 @@ find_program(SCILAB_ANT ant)
 # unaffected, matching "ant default behaves exactly as today, zero change".
 find_program(SCILAB_MVN mvn)
 
-# _scilab_parse_am_conditional stays defined here for cmake/ScilabHelp.cmake's
-# BUILD_HELP_TRUE (RC-e.2's config.status-severing list does not include
-# BUILD_HELP_TRUE, so that one read is untouched) -- the automake-conditional
-# parse DOES still need its guard for whatever key still uses it: were the
-# S["<key>"] line absent, REGEX REPLACE would pass the empty input through,
-# and "" reads as conditional-ON — silently wrong. Per ScilabToolchain.cmake's
-# config.status standard, a required line that is missing or format-drifted
-# fails loudly: the line must be exactly S["<key>"]="" (conditional holds) or
-# S["<key>"]="#".
-function(_scilab_parse_am_conditional key outvar)
-  file(STRINGS ${SCILAB_SOURCE_DIR}/config.status _sci_cond_line REGEX "^S\\[\"${key}\"\\]=")
-  if(NOT _sci_cond_line MATCHES "^S\\[\"${key}\"\\]=\"(#?)\"$")
-    message(FATAL_ERROR "config.status has no parsable S[\"${key}\"] line "
-                        "(got '${_sci_cond_line}') — cannot decide the ${key} gate; "
-                        "re-run ./configure or update the parse in cmake/ScilabJava.cmake")
-  endif()
-  set(${outvar} "${CMAKE_MATCH_1}" PARENT_SCOPE)
-endfunction()
+# _scilab_parse_am_conditional (the automake-conditional config.status parser)
+# lived here for cmake/ScilabHelp.cmake's BUILD_HELP_TRUE gate -- RC-e.2
+# deliberately left that one read untouched (see below). RC-e.2b finishes the
+# job: BUILD_HELP_TRUE is now ENABLE_HELP, a native CACHE BOOL
+# (cmake/ScilabHelp.cmake), so the helper has zero remaining callers and is
+# deleted here. That was CMake's LAST config.status read --
+# `grep -rn config.status cmake/*.cmake CMakeLists.txt` now turns up comments
+# only (RC-e.3 proves it by reconfiguring with config.status renamed away).
 
 # RC-e.2: GUI_TRUE/NEED_JAVA_TRUE become native CACHE BOOL options instead of a
 # config.status parse -- a plain BOOL, not a string-valued automake
 # conditional, so downstream reads if(ENABLE_JAVA)/if(ENABLE_GUI) rather than
 # the old STREQUAL "" dance. Defaults are ON/ON, hardcoded from what this
 # tree's config.status currently records (S["NEED_JAVA_TRUE"]="" and
-# S["GUI_TRUE"]="" -- automake's empty-string-is-true convention, see the
-# function comment above) -- the same one-time transcription RC-e.1 used for
+# S["GUI_TRUE"]="" -- automake's empty-string-is-true convention: "" means the
+# conditional holds, "#" means off; same convention ENABLE_HELP's default
+# transcribes, cmake/ScilabHelp.cmake) -- the same one-time transcription RC-e.1 used for
 # the version triple (cmake/ScilabVersion.cmake), and that WITH_GUI, a few
 # lines of the file below, already uses for its own ON default
 # (cmake/ScilabMachineHeader.cmake). A tree configured --without-gui or

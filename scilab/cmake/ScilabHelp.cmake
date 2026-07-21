@@ -1,20 +1,26 @@
 # scilab/cmake/ScilabHelp.cmake — the help build as a CMake post-step (Stage 1f-c).
 #
 # `make doc` runs the BUILT scilab-adv-cli HEADLESS per locale (xmltojar) — help needs the
-# running app (the circular dep), so this is a post-link, opt-in (BUILD_HELP-gated) target,
+# running app (the circular dep), so this is a post-link, opt-in (ENABLE_HELP-gated) target,
 # NOT on drop-in-all. Reproduces the top-level Makefile's `doc:` recipe env + command
 # EXACTLY — _JAVA_OPTIONS below is `-Djava.awt.headless=true $(DOC_JAVA_XML_OPTS)` with
 # DOC_JAVA_XML_OPTS transcribed, expanded, from the configured Makefile (the seven
 # -Djdk.xml.*Limit/Depth=0 lifts that let the DocBook pipeline swallow Scilab's help XML).
 
-# BUILD_HELP gate, from config.status (automake conditional: _TRUE="" = on, "#" = off).
-# Reuses _scilab_parse_am_conditional (cmake/ScilabJava.cmake, included before this file
-# from CMakeLists.txt) for its missing/format-drift FATAL guard — a silently-absent line
-# must not read as conditional-ON.
-_scilab_parse_am_conditional(BUILD_HELP_TRUE SCILAB_BUILD_HELP)
+# BUILD_HELP gate: RC-e.2b severs this config.status read -- CMake's LAST one
+# (cmake/ScilabJava.cmake's _scilab_parse_am_conditional, which existed only for
+# this call, is deleted along with it). A native CACHE BOOL, matching the
+# ENABLE_GUI/ENABLE_JAVA pattern RC-e.2 established (cmake/ScilabJava.cmake).
+# Default ON, hardcoded from what this tree's config.status currently records
+# (S["BUILD_HELP_TRUE"]="" -- automake's empty-string-is-true convention: ""
+# means the conditional holds (help IS on), "#" means off). A tree configured
+# --disable-build-help needs -DENABLE_HELP=OFF on the cmake command line --
+# rediscovering that switch without reading config.status is exactly the
+# coupling this increment removes.
+option(ENABLE_HELP "Build the Scilab help docs (autotools: BUILD_HELP, ./configure --enable-build-help)" ON)
 
 function(scilab_help_target)
-  if(NOT SCILAB_BUILD_HELP STREQUAL "")
+  if(NOT ENABLE_HELP)
     add_custom_target(doc COMMENT "Help disabled (BUILD_HELP off — ./configure --enable-build-help)")
     return()
   endif()
