@@ -6,23 +6,25 @@
 # be deleted"): a SCILAB_JAVA_BUILD switch selects which toolchain the
 # sci-java-all target actually runs.
 #
-#   SCILAB_JAVA_BUILD = ant (CACHE STRING, DEFAULT) — modules/prebuildjava/
+#   SCILAB_JAVA_BUILD = ant (CACHE STRING, opt-in since RC-e.4a) — modules/prebuildjava/
 #     build.xml (default "all") hand-topo-sorts 23 module jars and drives Ivy
 #     (the 24th, terminal, is a separate GUI-gated command). The topo-sort /
 #     inter-module Java deps stay INSIDE Ant. Reproduces exactly how
 #     Makefile.incl.am's `java:` target runs it: bare `ant` in
 #     modules/prebuildjava with JAVA_HOME exported. Jars land in
-#     modules/<m>/jar/ (the same place `make` writes them) so the drop-in is
-#     automatic — no copy step. UNCHANGED from Stage 1f-b: this is still
-#     exactly what runs when nobody passes the flag at all.
+#     modules/<m>/jar/ (the same place `make` writes them). Through RC-e.3 this
+#     was the default; RC-e.4a made maven the default (jar/ is no longer what
+#     classpath.xml loads), so ant now runs only when -DSCILAB_JAVA_BUILD=ant
+#     is passed.
 #
-#   SCILAB_JAVA_BUILD = maven (opt-in via -DSCILAB_JAVA_BUILD=maven) — runs
+#   SCILAB_JAVA_BUILD = maven (CACHE STRING, DEFAULT since RC-e.4a) — runs
 #     `mvn package` at the reactor root (${SCILAB_SOURCE_DIR}/pom.xml, Stage
 #     2-f/Wave F — all 24 modules, terminal included). That is the whole
 #     build action: Maven writes every jar to modules/<m>/target/ and it
-#     STAYS there. No copy to jar/, no POM change, no classpath.xml change.
-#     Repointing consumers (classpath.xml) at target/ instead of jar/ is a
-#     separate, later increment — out of scope here.
+#     STAYS there — no copy to jar/, no POM change. RC-e.4a completed the
+#     consumption cutover that repoints classpath.xml at target/ instead of
+#     jar/ (both etc/classpath.xml and etc/classpath.xml.in), so target/ is now
+#     the path the running app loads from.
 #
 # RC-e.2: ANT and the two automake gates no longer come from config.status —
 # each is resolved natively (see the code below); this paragraph now records
@@ -46,13 +48,19 @@
 
 # SCILAB_JAVA_BUILD — the jar-build backend switch. A CACHE STRING (not a
 # plain option() BOOL) because there are two named backends, not an on/off
-# toggle. "ant" is the default and, unchanged from Stage 1f-b, is what runs
-# when nobody passes the flag at all. The STRINGS property below is only a
-# ccmake/cmake-gui dropdown hint — CMake does not itself reject an off-list
-# value for a CACHE STRING, so the FATAL guard right after it is what actually
-# catches a typo rather than letting it silently fall into the ant branch below.
-set(SCILAB_JAVA_BUILD "ant" CACHE STRING
-    "Java module jar build backend: ant (default, modules/<m>/jar/) or maven (opt-in, modules/<m>/target/)")
+# toggle. RC-e.4a: "maven" is now the DEFAULT (was "ant" through Stage 1f-b /
+# RC-e.3). This is the consumption cutover: etc/classpath.xml now loads the 24
+# module jars from modules/<m>/target/ (Maven's natural output — its home), and
+# ONLY the Maven backend fills target/, so the default backend and the path the
+# running app loads from MUST agree. "ant" stays selectable
+# (-DSCILAB_JAVA_BUILD=ant), but its modules/<m>/jar/ output is no longer what
+# classpath.xml points at; jar/ retires together with Ant at the RC-e.4
+# deletion. The STRINGS property below is only a ccmake/cmake-gui dropdown
+# hint — CMake does not itself reject an off-list value for a CACHE STRING, so
+# the FATAL guard right after it is what actually catches a typo rather than
+# letting it silently fall into a backend branch below.
+set(SCILAB_JAVA_BUILD "maven" CACHE STRING
+    "Java module jar build backend: maven (default, modules/<m>/target/) or ant (opt-in, modules/<m>/jar/)")
 set_property(CACHE SCILAB_JAVA_BUILD PROPERTY STRINGS ant maven)
 if(NOT SCILAB_JAVA_BUILD STREQUAL "ant" AND NOT SCILAB_JAVA_BUILD STREQUAL "maven")
   message(FATAL_ERROR "SCILAB_JAVA_BUILD must be 'ant' or 'maven' (got '${SCILAB_JAVA_BUILD}')")
