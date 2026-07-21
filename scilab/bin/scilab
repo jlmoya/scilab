@@ -626,7 +626,7 @@ detect_java_vm() {
             echo "Cannot find $LIBJAVA"
         fi
     else
-        CLASSPATH="${CLASSPATH:+:$CLASSPATH}$SCI/modules/core/jar/org.scilab.modules.core.jar"
+        CLASSPATH="${CLASSPATH:+:$CLASSPATH}$SCI/modules/core/target/org.scilab.modules.core.jar"
         # @TODO This is the default path of the official sun JVM.
         # It is different for other implementation of the JVM....
         LD_LIBRARY_PATH="$JRE_HOME/lib/:$JRE_HOME/lib/server/:$JRE_HOME/lib/native_threads/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
