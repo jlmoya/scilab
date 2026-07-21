@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  modules/terminal/pom.xml — Wave F module POM: the final-review CRITICAL finding
+  (docs/design/build-cmake-maven-migration.md, Stage 2-f).
+
+  STATUS: ADDITIVE and RUN BY HAND (mvn -pl modules/terminal -am package from the
+  reactor root, or mvn -f modules/terminal/pom.xml package). Ant
+  (modules/terminal/build.xml + build.incl.xml) remains the real build; nothing
+  here is wired into CMake or any release build yet.
+
+  WHY THIS MODULE, AND WHY IT IS NOT LIKE THE OTHER 23. `terminal` (the embedded
+  JediTerm terminal, docs/design/terminal-live-reload.md) is a normal Java module
+  — 7 source files, its own build.xml (default="jar", imports build.incl.xml) —
+  and a genuinely SHIPPING one: etc/classpath.xml:286 loads
+  org.scilab.modules.terminal.jar into the running application. Stage 2-f's own
+  "DONE" report declared the reactor complete at 23/23, derived from
+  prebuildjava/build.xml:25's hand-encoded topo-sort — but that list was never
+  the right ground truth for "every module that ships": `terminal` is GUI-gated
+  and built via its own USEANT=1 path (modules/terminal/Makefile.am:34), outside
+  prebuildjava entirely, so it was never a candidate for any of Waves A-E and the
+  23/23 claim was one module short. The build-parity completeness gate could not
+  catch this either, by construction: it only ever asked "did every REACTOR
+  module produce a jar" (one direction), never "does every Ant-built module jar
+  have a reactor module" (the other) — see
+  build-parity/tests/test_acceptance.py::_ant_modules_without_reactor_entry,
+  added in the SAME change that adds this POM, and watched to fail naming
+  `terminal` before this file existed. Previously tracked as orphan **B3** in
+  docs/design/deferred-fixes-register.md; this POM resolves the Maven-reactor
+  half of that row (the Ant-side fact — outside prebuildjava's topo-sort — is
+  permanent and unaffected, per *reproduce, don't improve*).
+
+  STEP 1 FINDINGS (./maven-module-deps.sh terminal, 7 files):
+    [1] imports resolve to FOUR reactor dependencies, all already migrated:
+          action_binding (InterpreterManagement — ScilabTerminal.java:54),
+          commons ({,gui,xml}.* — ScilabConstants/ScilabGUIUtilities,
+          ScilabTerminal.java:55-56; XConfiguration{,.XConfAttribute},
+          TerminalOptions.java:20-21), gui (bridge.{console,tab,window},
+          console, events.callback, menu{,bar,item}, tab, tabfactory, textbox,
+          toolbar, utils — by far the widest single package family, spread
+          across ScilabTerminal.java/TerminalTab.java/TerminalTabFactory.java),
+          and localization (Messages — ScilabTerminal.java:78, the ordinary
+          reactor-sibling idiom used across nearly every module). `localization`
+          is not in this task's own dependency summary but IS a genuine direct
+          import (confirmed: `import org.scilab.modules.localization.Messages;`
+          is real code, ScilabTerminal.java:78, not a comment) — declared
+          explicitly below, matching every other migrated module's own
+          convention of listing a directly-imported reactor sibling even where
+          it would also arrive transitively (e.g. modules/gui/pom.xml's own
+          localization entry, needed despite commons already carrying it).
+    [2] reflection targets — RULED OUT: org.scilab.modules.ui_data.FileBrowser
+        is reached only via Class.forName("org.scilab.modules.ui_data.
+        FileBrowser").getMethod("openFileBrowser").invoke(null)
+        (ScilabTerminal.java:723), with the source's OWN comment stating the
+        reason explicitly: "Invoked reflectively to avoid a compile-time
+        dependency on the ui_data ... module". Reproduced as an absence, same
+        shape as every other module's ruled-out Class.forName target.
+    [3] fully-qualified uses with no import — none outside java.*.
+  Vendored, on the established systemPath mechanism:
+    - org.flexdock.docking.{Dockable, DockingConstants, DockingManager,
+      DockingPort} (ScilabTerminal.java:49-52) — thirdparty/flexdock-1.2.5.jar,
+      SAME MECHANISM, SAME COORDINATE AS modules/commons/pom.xml and
+      modules/gui/pom.xml (cross-referenced, not restated).
+    - com.jediterm.{core.util.TermSize, terminal.{TtyConnector,
+      TerminalExecutorServiceManager}} — thirdparty/jediterm-core-3.70.jar;
+      com.jediterm.terminal.ui.{JediTermWidget, settings.{DefaultSettingsProvider,
+      SettingsProvider}} — thirdparty/jediterm-ui-3.70.jar. TWO jars, not one:
+      `unzip -l` on both confirms the split (TtyConnector/
+      TerminalExecutorServiceManager/TermSize live in -core; JediTermWidget/
+      DefaultSettingsProvider/SettingsProvider live in -ui), and Maven's
+      system-scope dependencies are never transitively resolved, so both must be
+      declared even though jediterm-ui depends on jediterm-core upstream. Real
+      Maven coordinates (not invented) sourced directly from
+      fetch-thirdparty.sh's own MAVEN_MANIFEST heredoc: `org.jetbrains.jediterm:
+      jediterm-core:3.70` / `org.jetbrains.jediterm:jediterm-ui:3.70` (repo "jb"
+      = JetBrains' own intellij-dependencies repository, not Central) — same
+      "real coordinate, system scope never resolves it" standing as
+      modules/gui/pom.xml's gson/jcef-api entries. build.incl.xml:67-68
+      (`${jediterm-core.jar}` / `${jediterm-ui.jar}`); scilab-lib.properties:70-71.
+    - com.sun.jna.{Library, Memory, Native, Pointer, StringArray} and
+      com.sun.jna.ptr.IntByReference (Pty.java:16-21, the PTY/JNI bridge) —
+      thirdparty/jna-5.14.0.jar. Real Maven Central coordinate
+      `net.java.dev.jna:jna:5.14.0`, same fetch-thirdparty.sh MAVEN_MANIFEST
+      source as the pair above. build.incl.xml:74 (`${jna.jar}`);
+      scilab-lib.properties:78.
+
+  MANIFEST: a NORMAL per-package section (unlike javasci's bare-manifest
+  exception, register B12) — extracted from the actual Ant-built jar's
+  META-INF/MANIFEST.MF (unzip -p modules/terminal/jar/
+  org.scilab.modules.terminal.jar META-INF/MANIFEST.MF), never retyped:
+  Specification-Vendor and Implementation-Vendor both carry the double-mangled
+  "Ã¨" (bytes c3 83 c2 a8), same mechanism as every other module (see
+  modules/localization/pom.xml's fuller comment). Implementation-Version is
+  present, frozen at the literal "00000000 0000" between Implementation-Title
+  and Implementation-Vendor, exactly where Ant's own jar places it (Ant's live
+  value there today is a DSTAMP/TSTAMP pair). Class-Path is the literal,
+  never-interpolated string "${manifest.class-path}" — terminal's build.xml
+  never defines the `manifest.class-path` property (confirmed: only
+  `library.name` and `library.title` are set), so Ant leaves the reference
+  unresolved and this fragment reproduces that literal text exactly, same
+  standing as modules/localization/pom.xml and modules/action_binding/pom.xml.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.scilab</groupId>
+    <artifactId>scilab-modules-parent</artifactId>
+    <version>2027.0.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>terminal</artifactId>
+  <packaging>jar</packaging>
+
+  <!-- build.xml:17 <property name="library.title" value="Scilab terminal"/> -->
+  <name>Scilab terminal</name>
+
+  <dependencies>
+    <!-- org.scilab.modules.action_binding.InterpreterManagement
+         (ScilabTerminal.java:54). -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>action_binding</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.commons.ScilabConstants,
+         commons.gui.ScilabGUIUtilities (ScilabTerminal.java:55-56); commons.xml.
+         XConfiguration and the static import XConfiguration.XConfAttribute
+         (TerminalOptions.java:20-21). -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.gui.{bridge.console, bridge.tab, bridge.window,
+         console, events.callback, menu, menubar, menuitem, tab, tabfactory,
+         textbox, toolbar, utils} — this module's widest package family, across
+         ScilabTerminal.java, TerminalTab.java and TerminalTabFactory.java. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- org.scilab.modules.localization.Messages (ScilabTerminal.java:78) — the
+         ordinary reactor-sibling idiom used across nearly every module, declared
+         explicitly despite also arriving transitively via commons/gui, matching
+         modules/gui/pom.xml's own localization entry. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>localization</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <!-- FLEXDOCK — org.flexdock.docking.{Dockable, DockingConstants,
+         DockingManager, DockingPort} (ScilabTerminal.java:49-52). SAME
+         MECHANISM, SAME COORDINATE AS modules/commons/pom.xml and
+         modules/gui/pom.xml (cross-referenced, not restated). -->
+    <dependency>
+      <groupId>org.flexdock</groupId>
+      <artifactId>flexdock</artifactId>
+      <version>1.2.5</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
+    </dependency>
+    <!-- JEDITERM CORE — com.jediterm.core.util.TermSize
+         (PtyTtyConnector.java:16), com.jediterm.terminal.TtyConnector
+         (PtyTtyConnector.java:17), com.jediterm.terminal.
+         TerminalExecutorServiceManager (ScilabTerminal.java:44). Real
+         coordinate `org.jetbrains.jediterm:jediterm-core:3.70`, sourced from
+         fetch-thirdparty.sh's own MAVEN_MANIFEST (JetBrains' own
+         intellij-dependencies repository, not Central) — see this file's
+         header comment. -->
+    <dependency>
+      <groupId>org.jetbrains.jediterm</groupId>
+      <artifactId>jediterm-core</artifactId>
+      <version>3.70</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jediterm-core-3.70.jar</systemPath>
+    </dependency>
+    <!-- JEDITERM UI — com.jediterm.terminal.ui.JediTermWidget
+         (ScilabTerminal.java:45), com.jediterm.terminal.ui.settings.
+         {DefaultSettingsProvider, SettingsProvider} (ScilabTerminal.java:46-47).
+         A SEPARATE jar from jediterm-core (verified per-class: `unzip -l` shows
+         JediTermWidget/DefaultSettingsProvider/SettingsProvider live here, not
+         in -core) — system scope is never transitive, so both are declared.
+         Real coordinate `org.jetbrains.jediterm:jediterm-ui:3.70`, same source
+         as jediterm-core above. -->
+    <dependency>
+      <groupId>org.jetbrains.jediterm</groupId>
+      <artifactId>jediterm-ui</artifactId>
+      <version>3.70</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jediterm-ui-3.70.jar</systemPath>
+    </dependency>
+    <!-- JNA — com.sun.jna.{Library, Memory, Native, Pointer, StringArray} and
+         com.sun.jna.ptr.IntByReference (Pty.java:16-21), the native PTY bridge.
+         Real Maven Central coordinate `net.java.dev.jna:jna:5.14.0`, sourced
+         from fetch-thirdparty.sh's own MAVEN_MANIFEST — see this file's header
+         comment. -->
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.14.0</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/../../thirdparty/jna-5.14.0.jar</systemPath>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!-- build.incl.xml:22 <property name="src.dir" location="src/java/"/>.
+         Same source tree Ant compiles — see modules/localization/pom.xml's
+         identical comment; nothing module-specific to add here. -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <!-- addMavenDescriptor=false and the Built-By entry are inherited
+                 from the parent POM — not redeclared here. Same manifestFile
+                 mechanism as modules/localization/pom.xml (see that file's
+                 build comment for the full rationale). MANIFEST-section.MF's
+                 bytes were EXTRACTED from the actual Ant-built jar's
+                 META-INF/MANIFEST.MF, never retyped — see this file's header
+                 comment for the full manifest rationale (double-mangled vendor
+                 string, frozen Implementation-Version, uninterpolated
+                 Class-Path literal). -->
+            <manifestFile>${project.basedir}/src/main/manifest/MANIFEST-section.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

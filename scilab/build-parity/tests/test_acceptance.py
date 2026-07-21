@@ -137,9 +137,12 @@ _MVN_NS = "{http://maven.apache.org/POM/4.0.0}"
 
 def _reactor_modules(pom_path=PARENT_POM):
     """<module> entries from the parent reactor POM (e.g. "modules/localization"),
-    PARSED rather than hardcoded so the completeness check below (review Fix 1)
-    stays correct with no further edits now that Stage 2-f Wave E (Task 5) has
-    brought the reactor to all 23 modules -- 0 remaining.
+    PARSED rather than hardcoded so the completeness check below (review Fix 1,
+    and Fix 2) stays correct with no further edits now that Wave F has brought
+    the reactor to all 24 modules -- 0 remaining. Stage 2-f's own Waves A-E
+    (Task 5) had declared it complete at 23/23; Wave F is the final-review
+    CRITICAL correction that added the 24th, `terminal` -- a genuine shipping
+    module (etc/classpath.xml:286) the 23-module count had silently dropped.
 
     NAMESPACE GOTCHA: the POM declares the default Maven namespace
     (xmlns="http://maven.apache.org/POM/4.0.0"), so ElementTree needs the
@@ -148,7 +151,7 @@ def _reactor_modules(pom_path=PARENT_POM):
     returns [] (no exception, just nothing), which would make the completeness
     check below assert nothing against everything. See
     test_reactor_modules_parses_real_pom_non_vacuously: verified to return
-    exactly 23 entries today -- ALL 23 modules of the reactor, Stage 2-f
+    exactly 24 entries today -- ALL 24 modules of the reactor, Wave F
     complete (modules/localization, modules/commons,
     modules/history_manager, modules/jvm, modules/action_binding,
     modules/scirenderer, modules/graphic_objects, modules/completion,
@@ -156,8 +159,8 @@ def _reactor_modules(pom_path=PARENT_POM):
     modules/external_objects_java, modules/renderer, modules/javasci,
     modules/graphic_export, modules/gui, modules/core,
     modules/history_browser, modules/graph, modules/ui_data,
-    modules/scinotes, modules/preferences, modules/xcos), not a
-    silently-empty list.
+    modules/scinotes, modules/preferences, modules/xcos,
+    modules/terminal), not a silently-empty list.
 
     PROFILE-SCOPED MODULES GOTCHA (final review, Minor): this only matches a
     <modules> block that is a DIRECT CHILD of <project> --
@@ -191,10 +194,31 @@ def _missing_reactor_jars(mj, modules):
     return sorted(m for m in modules if not any(k.startswith(m + "/jar/") for k in mj))
 
 
+def _ant_modules_without_reactor_entry(j, modules):
+    """The completeness gate's MISSING direction (final review CRITICAL, Wave F):
+    module names with >=1 Ant-built jar under "modules/<name>/jar/" in the `jars`
+    dimension, but no "modules/<name>" entry in the reactor's <modules> list at
+    all. `_missing_reactor_jars` above is the OTHER direction -- every declared
+    reactor module must have produced a jar -- and it is blind to this one BY
+    CONSTRUCTION: it only ever iterates the reactor's OWN `modules` argument, so a
+    module that was simply never added to <modules> is not reported missing, it
+    is never asked about in the first place. `terminal` was exactly this: a
+    real, Ant-built, SHIPPING jar (`etc/classpath.xml:286` loads it into the
+    running app) with no reactor module at all -- 23 green reactor modules, one
+    invisible orphan the old one-directional check could not name. A pure
+    function of its arguments (no pytest.skip, no filesystem/tree access),
+    unit-testable against synthetic input -- see the regression tests below.
+    """
+    jar_modules = {k.split("/")[1] for k in j if k.startswith("modules/")}
+    reactor_modules = {m.split("/")[1] for m in modules}
+    return sorted(jar_modules - reactor_modules)
+
+
 def _check_maven_jars_alignment_and_completeness(cand):
     """The maven_jars gate body (Stage 2-c Task 2), factored out of the pytest
-    test itself so the completeness half (Fix 1) is unit-testable against
-    synthetic `cand` dicts, without needing a real built tree.
+    test itself so the completeness half (Fix 1, and Fix 2 below) is
+    unit-testable against synthetic `cand` dicts, without needing a real built
+    tree.
 
     Every Maven-built jar must have an Ant counterpart at the same key, with
     identical content (the ORIGINAL check) -- AND, once Maven has run at all,
@@ -206,6 +230,16 @@ def _check_maven_jars_alignment_and_completeness(cand):
     <skip> added to maven-jar-plugin, a module dropped from <modules>, or a
     packaging failure in an otherwise-building tree all used to read as
     success.
+
+    Fix 2 (final review CRITICAL, Wave F): completeness ALSO requires every
+    module with a real Ant-built jar in `jars` to have a reactor <module> entry
+    at all -- not only that every declared reactor module produced a jar (Fix
+    1). Fix 1 alone still ranges only over the reactor's OWN declared modules,
+    so a SHIPPING module the reactor never picked up -- `terminal`, a full Java
+    module `etc/classpath.xml:286` loads into the running app -- was invisible
+    to both the original check and Fix 1: 23/23 reactor modules green, and the
+    24th jar never even asked about. Fix 2 closes that: `jars`' module set must
+    be a SUBSET of the reactor's module set.
     """
     mj = cand.get("maven_jars", {})
     if not mj:
@@ -240,6 +274,24 @@ def _check_maven_jars_alignment_and_completeness(cand):
     missing = _missing_reactor_jars(mj, modules)
     assert not missing, f"reactor modules with no Maven jar at all: {missing}"
 
+    # Completeness, THE OTHER DIRECTION (Fix 2, final review CRITICAL, Wave F):
+    # every module with a real Ant-built jar in `jars` must have a reactor
+    # <module> entry -- not only must every DECLARED reactor module have
+    # produced a jar (the assert immediately above, Fix 1). Additive
+    # strengthening of the SAME gate, not a new one: fingerprint_jar,
+    # normalize_manifest, diff.py and capture.py are untouched. Skips exactly
+    # when the asserts above would -- this sits downstream of the SAME
+    # `if not mj` guard at the top of this function, so a tree where nobody
+    # has run Maven at all still skips cleanly rather than failing (this
+    # stage's binding constraint; see also
+    # test_regression_all_empty_maven_jars_still_skips).
+    orphans = _ant_modules_without_reactor_entry(j, modules)
+    assert not orphans, (
+        f"modules with an Ant-built jar in 'jars' but no reactor <module> entry: "
+        f"{orphans} -- a shipping module jar with nobody building it under Maven; "
+        "add modules/<name> to the parent POM's <modules> (scilab/pom.xml)."
+    )
+
 
 @_requires_ant_jars
 def test_maven_jars_align_with_ant_jars():
@@ -269,7 +321,7 @@ def test_maven_jars_align_with_ant_jars():
 
 def test_reactor_modules_parses_real_pom_non_vacuously():
     # Guards the namespace gotcha itself: against the REAL parent POM, the
-    # parse must return the twenty-three modules wired up today, not an empty
+    # parse must return the twenty-four modules wired up today, not an empty
     # list -- an empty list would silently make the completeness check above
     # assert nothing against everything (vacuously "passing").
     #
@@ -280,10 +332,9 @@ def test_reactor_modules_parses_real_pom_non_vacuously():
     # modules` inside _check_maven_jars_alignment_and_completeness; this
     # test's whole point is pinning the EXACT set, so a module that silently
     # fails to parse (or parses to the wrong set) still gets caught here.
-    # Updated for Stage 2-f Task 5, Wave E -- the FINAL wave (modules/
-    # scinotes, modules/preferences, modules/xcos added to the parent's
-    # <modules>, bringing the reactor to all 23 modules; the assertion is
-    # now stable, with no further module additions anticipated). scinotes
+    # Updated for Stage 2-f Task 5, Wave E (modules/scinotes,
+    # modules/preferences, modules/xcos added to the parent's <modules>,
+    # bringing the reactor to 23/23 -- believed final at the time). scinotes
     # depended on core/gui/helptools (Waves D/C/A) plus the usual
     # action_binding/commons/completion/console/history_manager/jvm/
     # localization boilerplate (all pre-existing or Wave A); preferences
@@ -298,6 +349,17 @@ def test_reactor_modules_parses_real_pom_non_vacuously():
     # does not import scinotes or preferences at all, and preferences's only
     # scinotes dependency is direct instantiation/method calls, never a
     # reactor cycle back onto preferences or xcos.
+    #
+    # UPDATED AGAIN for Wave F (final review CRITICAL): `modules/terminal`
+    # appended as the 24th entry -- 23/23 was wrong, not final; `terminal`
+    # ships (etc/classpath.xml:286) but sits outside prebuildjava's topo-sort
+    # entirely (GUI-gated, its own USEANT=1 path), so none of Waves A-E ever
+    # had a reason to consider it. Listed last, matching the established
+    # convention of appending each wave in the order it landed -- its four
+    # reactor dependencies (action_binding, commons, gui, localization) are
+    # all earlier in this same list, so the dependency graph (not list order)
+    # places it correctly regardless. The counter bottoms out here: 0
+    # remaining, reactor complete at 24/24.
     assert _reactor_modules() == [
         "modules/localization",
         "modules/commons",
@@ -322,6 +384,7 @@ def test_reactor_modules_parses_real_pom_non_vacuously():
         "modules/scinotes",
         "modules/preferences",
         "modules/xcos",
+        "modules/terminal",
     ]
 
 
@@ -340,6 +403,52 @@ def test_regression_reactor_module_missing_maven_jar_fails():
     }
     with pytest.raises(AssertionError, match="modules/commons"):
         _check_maven_jars_alignment_and_completeness(cand)
+
+
+def test_regression_ant_module_missing_reactor_entry_fails():
+    # Fix 2 (final review CRITICAL, Wave F): `terminal` had a real Ant-built jar
+    # in `jars` -- a genuine shipping module, etc/classpath.xml:286 loads it into
+    # the running app -- but (before Wave F) no reactor <module> entry at all.
+    # Both the ORIGINAL one-directional check (mj-vs-j) and Fix 1's
+    # _missing_reactor_jars are blind to this shape: neither one ever iterates a
+    # module that was never added to <modules> in the first place, so it is not
+    # reported missing -- it is never asked about. The pure function, against a
+    # wholly synthetic two-module reactor, must name the offender:
+    modules = ["modules/localization"]
+    j = {
+        "modules/localization/jar/org.scilab.modules.localization.jar": {"A.class": "h1"},
+        "modules/terminal/jar/org.scilab.modules.terminal.jar": {"T.class": "h9"},
+    }
+    assert _ant_modules_without_reactor_entry(j, modules) == ["terminal"]
+
+    # And the SAME shape must fail through the FULL check too --
+    # _check_maven_jars_alignment_and_completeness itself parses the real parent
+    # POM internally (_reactor_modules() takes no injectable argument), so a
+    # purely local `modules` list like the one above never reaches it. Built
+    # against the REAL reactor module list instead (not hardcoded), so this
+    # stays a clean Fix-2-only probe no matter how many modules the reactor
+    # holds by the time this runs: one synthetic jar per REAL reactor module
+    # satisfies Fix 1 trivially, plus one extra `jars`-only entry naming a
+    # module that can never be a real one.
+    real_names = [m.split("/")[1] for m in _reactor_modules()]
+    mj = {f"modules/{n}/jar/{n}.jar": {"A.class": "h1"} for n in real_names}
+    full_j = dict(mj)
+    full_j["modules/_wave_f_probe/jar/_wave_f_probe.jar"] = {"X.class": "h9"}
+    cand = {"jars": full_j, "maven_jars": mj}
+    with pytest.raises(AssertionError, match="_wave_f_probe"):
+        _check_maven_jars_alignment_and_completeness(cand)
+
+
+def test_regression_ant_modules_without_reactor_entry_empty_jars_is_vacuous():
+    # The new direction's own empty case: zero Ant-built module jars makes the
+    # jars-module set empty, which is vacuously a subset of any reactor set --
+    # no offenders, by construction, regardless of what `modules` holds. (Whether
+    # the SURROUNDING check skips outright when nobody has run Maven at all is
+    # the pre-existing `if not mj` guard, proven by
+    # test_regression_all_empty_maven_jars_still_skips below -- this test
+    # isolates the new pure function's own behavior on empty input, per this
+    # stage's "keep the existing skip-when-empty behavior" constraint.)
+    assert _ant_modules_without_reactor_entry({}, ["modules/localization"]) == []
 
 
 def test_regression_all_empty_maven_jars_still_skips():
