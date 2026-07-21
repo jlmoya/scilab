@@ -12,7 +12,7 @@
 
 function doc(varargin)
 
-    if findfiles("SCI/modules/helptools/target","*_help.jar") == [] then
+    if findfiles("SCI/modules/helptools/jar","*_help.jar") == [] then
         error(msprintf(gettext("%s: help file(.jar) is not installed.\n"), "doc"));
     end
 

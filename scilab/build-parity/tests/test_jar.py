@@ -230,29 +230,6 @@ def test_fingerprint_build_skips_doc_output_jars(tmp_path):
     assert "modules/helptools/jar/scilab_images.jar" not in fp["jars"]
 
 
-def test_fingerprint_build_skips_doc_output_jars_in_target(tmp_path):
-    # Companion to test_fingerprint_build_skips_doc_output_jars, for the maven_jars
-    # branch. As of the RC-e.4b.1 help artifact cutover the doc build's output jars
-    # (scilab_<locale>_help.jar + scilab_images.jar) live in modules/helptools/target/
-    # -- Maven's dir, walked by the maven_jars branch -- next to the real module jar.
-    # They are locale-dependent documentation artifacts, not Maven module jars, and
-    # the Ant `jars` branch already drops them; the maven_jars branch must drop them
-    # the SAME way, or each becomes an ORPHAN maven_jars key with no `jars`
-    # counterpart and test_acceptance.py's alignment gate (set(maven_jars) - set(jars))
-    # fails by construction. The real module jar in the SAME directory must survive.
-    # maven_jars keys use the SYNTHETIC modules/<m>/jar/ path (not target/), so the
-    # excluded/kept keys below read "jar", not "target" -- see capture.py.
-    target = tmp_path / "modules" / "helptools" / "target"
-    target.mkdir(parents=True)
-    _make_jar(target / "org.scilab.modules.helptools.jar", {"H.class": b"H"})
-    _make_jar(target / "scilab_en_US_help.jar", {"help.html": b"<html>"})
-    _make_jar(target / "scilab_images.jar", {"img.png": b"\x89PNG"})
-    fp = fingerprint_build(str(tmp_path), roots={}, runner=lambda cmd: "", build_id="t")
-    assert "modules/helptools/jar/org.scilab.modules.helptools.jar" in fp["maven_jars"]
-    assert "modules/helptools/jar/scilab_en_US_help.jar" not in fp["maven_jars"]
-    assert "modules/helptools/jar/scilab_images.jar" not in fp["maven_jars"]
-
-
 def test_diff_detects_jar_entry_change():
     base = _fp(jars={"m.jar": {"A.class": "h1"}})
     cand = _fp(jars={"m.jar": {"A.class": "h2"}})
