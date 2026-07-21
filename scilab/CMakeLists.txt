@@ -21,6 +21,12 @@ cmake_minimum_required(VERSION 3.20)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
+# RC-e.1 — the canonical version triple, CMake-native (no config.status read). Has no
+# dependency on anything (not even project()/SCILAB_SOURCE_DIR), so it can and does go
+# first: include()d before its two consumers, ScilabConfigure.cmake's version.h
+# generation and ScilabGeneratedFiles.cmake's SCILAB_BINARY_VERSION/Version.incl.
+include(cmake/ScilabVersion.cmake)
+
 # Environment discovery (source root, compiler defaults, arch, include bases)
 # — must precede project().
 include(cmake/ScilabToolchain.cmake)

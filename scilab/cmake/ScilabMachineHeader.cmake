@@ -820,14 +820,15 @@ set(UMFPACK_SUITESPARSE 1)
 # those 3 by CMake, exactly as autoconf itself computes them.
 #
 # Deliberately NOT wired to this project's OWN SCILAB_VERSION_MAJOR/MINOR/
-# MAINTENANCE (cmake/ScilabConfigure.cmake, Stage 1f-c, for version.h's
-# *different* "2027.0" fork/branch version): those are read from
-# config.status BY DESIGN -- version.h targets BYTE-identity, a different
-# contract than this file's SEMANTIC one (see that file's own header
-# comment) -- so reusing them here would launder a config.status read into
-# this bucket, and they are numerically wrong for this purpose regardless
-# (2027.0.0, not 6): AC_INIT's product version has been the literal "6"
-# since long before the 2027 branch existed; the two numbers are unrelated.
+# MAINTENANCE (cmake/ScilabVersion.cmake as of RC-e.1; before that,
+# cmake/ScilabConfigure.cmake read it from config.status -- Stage 1f-c --
+# for version.h's *different* "2027.0" fork/branch version): version.h
+# targets BYTE-identity, a different contract than this file's SEMANTIC one
+# (see that file's own header comment) -- so reusing the triple here would
+# launder an unrelated source of truth into this bucket, and it is
+# numerically wrong for this purpose regardless (2027.0.0, not 6): AC_INIT's
+# product version has been the literal "6" since long before the 2027
+# branch existed; the two numbers are unrelated, RC-e.1 or not.
 # ============================================================================
 set(PACKAGE_NAME "Scilab")
 set(VERSION "6")

@@ -19,17 +19,19 @@
 # file proved end-to-end. See build-parity/parity/capture.py's `generated_cmake` map and
 # diff.py's matching comparison block.)
 #
-# Values are COMPUTED here, WITH ONE EXCEPTION: the version triple
-# (SCILAB_VERSION_MAJOR/MINOR/MAINTENANCE) is set by ScilabConfigure.cmake (Stage 1f-c,
-# NOT RC-a), which reads it straight out of config.status -- see that file's own header
-# comment. That is a real, currently open dependency on config.status, not computed
-# policy: it is why RC-e (which deletes config.status) lists it as a prerequisite in
-# docs/design/build-cmake-maven-migration.md. Retire-configure's later stages have not
-# removed this dependency yet -- they have GROWN it, from 1 file (version.h, Stage 1f-c)
-# to 7: this file reuses the same triple for scilab.pc, etc/Info.plist, SciDocConf.xml,
-# both repositories*, and Version.incl below, whose entire substituted content derives
-# from it. Every OTHER scalar in this file is genuine CMake-side policy, each traced to
-# its configure.ac origin -- never a config.status read.
+# Values are ALL computed here (or upstream in CMake-native cmake/*.cmake files), never
+# read out of config.status. The version triple (SCILAB_VERSION_MAJOR/MINOR/MAINTENANCE)
+# used to be the one exception -- ScilabConfigure.cmake (Stage 1f-c, NOT RC-a) read it
+# straight out of config.status, a real, then-open dependency documented as an RC-e
+# prerequisite in docs/design/build-cmake-maven-migration.md. RC-e.1 severed it:
+# cmake/ScilabVersion.cmake is now the single canonical source, include()d from
+# CMakeLists.txt before ScilabConfigure.cmake AND this file, so both merely consume
+# already-set variables today. This file reuses that triple for scilab.pc,
+# etc/Info.plist, SciDocConf.xml, both repositories*, and Version.incl below, whose
+# entire substituted content derives from it -- 7 files off the one source, none of them
+# a config.status read anymore. Every OTHER scalar in this file remains genuine
+# CMake-side policy, each traced to its configure.ac origin -- never a config.status
+# read, same as before.
 #
 # NOT REPRODUCED, deliberately: configure.ac:2930-2937 compares `date +%Y` against a
 # year hardcoded in banner.cpp and, on mismatch, runs `sed -i` over banner.cpp AND
@@ -41,10 +43,11 @@ set(SCILAB_GENERATED_DIR ${CMAKE_BINARY_DIR}/generated)
 file(MAKE_DIRECTORY ${SCILAB_GENERATED_DIR})
 
 # --- values ---------------------------------------------------------------
-# The version triple is set by ScilabConfigure.cmake (Stage 1f-c, NOT RC-a) -- which
-# reads it straight out of config.status; see this file's header comment above for why
-# that matters. Every other scalar below is genuine CMake-side policy, each traced to
-# its configure.ac origin -- never a config.status read.
+# The version triple is set by cmake/ScilabVersion.cmake (RC-e.1), include()d from
+# CMakeLists.txt ahead of both this file and ScilabConfigure.cmake -- no longer a
+# config.status read (see this file's header comment above). Every other scalar below
+# is genuine CMake-side policy, each traced to its configure.ac origin -- never a
+# config.status read, same as before RC-e.1.
 
 # configure.ac:58 -- SCILAB_BINARY_VERSION is the dot-joined triple, nothing more.
 set(SCILAB_BINARY_VERSION "${SCILAB_VERSION_MAJOR}.${SCILAB_VERSION_MINOR}.${SCILAB_VERSION_MAINTENANCE}")
@@ -52,20 +55,32 @@ set(SCILAB_BINARY_VERSION "${SCILAB_VERSION_MAJOR}.${SCILAB_VERSION_MINOR}.${SCI
 # scilab.pc's 4 directory variables -- standard autoconf installation-directory
 # boilerplate (present in every AC_INIT'd configure; not configure.ac-authored logic).
 # prefix defaults to ac_default_prefix ("/usr/local") when --prefix is not given;
-# exec_prefix/includedir/libdir default to the LITERAL, UNEXPANDED strings below
-# (config.status: S["exec_prefix"]="${prefix}", S["includedir"]="${prefix}/include",
-# S["libdir"]="${exec_prefix}/lib") -- pkg-config resolves ${prefix}-style refs itself
-# when a .pc file is consumed, so autoconf leaves them as text rather than expanding
-# them at generation time. CMAKE_INSTALL_PREFIX is CMake's own equivalent and defaults
-# to the SAME "/usr/local" (ScilabMachineHeader.cmake's INSTALLPREFIX already
-# established this fact for machine.h). The backslash before each $ is load-bearing:
-# it stops CMake evaluating ${prefix}/${exec_prefix} as ITS OWN variable reference at
-# set()-time, so the literal token survives into the substituted output, matching
-# autoconf's own unexpanded style (round-trip verified against the live scilab.pc.in).
+# exec_prefix/includedir/libdir default to the LITERAL, UNEXPANDED strings below,
+# built from GNUInstallDirs (RC-e.1) rather than hand-transcribed -- config.status held
+# S["exec_prefix"]="${prefix}", S["includedir"]="${prefix}/include",
+# S["libdir"]="${exec_prefix}/lib"; CMAKE_INSTALL_INCLUDEDIR/CMAKE_INSTALL_LIBDIR
+# default to the SAME "include"/"lib" on this non-multiarch, prefix=/usr/local, Darwin
+# tree (GNUInstallDirs' lib64 override is Linux-only -- CMAKE_SYSTEM_NAME MATCHES
+# "^(Linux|GNU)$" -- never Darwin), so the substituted text is unchanged; verified by
+# the `generated_cmake` parity dimension, not merely asserted. exec_prefix has no
+# GNUInstallDirs analogue (autoconf-only two-prefix boilerplate) and stays the literal
+# "${prefix}" reference, matching config.status's own S["exec_prefix"]="${prefix}"
+# exactly (this build never differentiates the two). pkg-config resolves ${prefix}-style
+# refs itself when a .pc file is consumed, so autoconf (and this file) leaves them as
+# text rather than expanding at generation time. CMAKE_INSTALL_PREFIX is CMake's own
+# equivalent of prefix and defaults to the SAME "/usr/local" (ScilabMachineHeader.cmake's
+# INSTALLPREFIX already established this fact for machine.h). The backslash before each
+# leading $ is load-bearing: it stops CMake evaluating ${prefix}/${exec_prefix} as ITS
+# OWN variable reference at set()-time, so the literal token survives into the
+# substituted output, matching autoconf's own unexpanded style (round-trip verified
+# against the live scilab.pc.in). GNUInstallDirs is included here, at first use, rather
+# than at the top of the file: nothing above this point needs it, and no install() rule
+# exists anywhere in this CMake tree yet for it to interact with.
+include(GNUInstallDirs)
 set(prefix "${CMAKE_INSTALL_PREFIX}")
 set(exec_prefix "\${prefix}")
-set(includedir "\${prefix}/include")
-set(libdir "\${exec_prefix}/lib")
+set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
 
 # configure.ac:112-127 declares 6 independent --enable-debug-* sub-flags. JAVAC_DEBUG
 # (scilab.properties) and LOGGING_LEVEL (etc/logging.properties) both key off
