@@ -484,24 +484,30 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             # guard.
             if len(parts) == 3 and parts[0] == "modules":
                 module = parts[1]
-                # NO filename filter here, unlike the Ant branch's _DOC_OUTPUT_JAR
-                # above -- deliberate, not an oversight. target/ is actually MORE
-                # prone to auxiliary jars than jar/ is: -sources.jar, -javadoc.jar,
-                # -tests.jar, and original-*.jar (the shade/assembly plugins' own
-                # pre-relocation copy) are all standard Maven conventions that a
-                # plugin can place right next to the real artifact. Harmless today
-                # -- no such plugin is configured in any module POM, and an
-                # unexpected extra key fails RED (an "extra in candidate" diff),
-                # which is the safe failure direction. Anyone adding
-                # maven-source-plugin or maven-javadoc-plugin (routine for
-                # `install`/`deploy` executions) would start producing spurious
-                # orphan keys here -- that is the trigger to revisit this, not a
-                # silent breakage discovered later. Not adding a filter
-                # preemptively: a gate that silently DROPS an artifact it was
-                # never told to expect is worse than one that over-reports one,
-                # and there is no real plugin configuration yet to filter FOR.
+                # Same _DOC_OUTPUT_JAR filter as the Ant branch above, and for the
+                # SAME reason -- newly load-bearing here as of the RC-e.4b.1 help
+                # artifact cutover, which relocated the doc build's output jars
+                # (scilab_<locale>_help.jar + scilab_images.jar) OUT of
+                # modules/helptools/jar/ and INTO modules/helptools/target/, right
+                # next to the real module jar. This walk now SEES them. They are
+                # locale-dependent documentation artifacts, not Maven module jars
+                # (nothing under <modules> builds them), so they must be excluded
+                # here exactly as they already are on the Ant side -- otherwise
+                # each becomes an ORPHAN maven_jars key with no `jars` counterpart
+                # (the Ant branch drops it), and test_acceptance.py's alignment
+                # gate `set(maven_jars) - set(jars)` fails on a difference that is
+                # correct-by-construction, not a regression.
+                #
+                # The pattern is deliberately NARROW (^scilab_(.*_help|images)\.jar$),
+                # so the original reason this branch had no filter is PRESERVED:
+                # target/ is more prone to auxiliary jars than jar/ (-sources.jar,
+                # -javadoc.jar, -tests.jar, original-*.jar from shade/assembly), and
+                # NONE of those match _DOC_OUTPUT_JAR -- they still fail RED as an
+                # "extra in candidate" diff, the safe failure direction. This filter
+                # excludes only the two KNOWN doc artifacts the Ant branch already
+                # excludes, never an unexpected one.
                 for fn in files:
-                    if fn.endswith(".jar"):
+                    if fn.endswith(".jar") and not _DOC_OUTPUT_JAR.match(fn):
                         key = f"modules/{module}/jar/{fn}"
                         # Same precedent as the dylib key collision above: unreachable
                         # today (a given modules/<m>/target is visited once by os.walk,

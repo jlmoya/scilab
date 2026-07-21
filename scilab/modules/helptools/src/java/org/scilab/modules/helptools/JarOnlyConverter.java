@@ -104,8 +104,8 @@ public class JarOnlyConverter extends ContainerConverter {
         JarOutputStream jarFile = null;
         FileOutputStream fileOutputStream = null;
 
-        /* Stored into SCI/modules/helptools/jar */
-        String fileName = SCI + "/modules/helptools/jar" + SLASH + "scilab_images" + JAR_EXT;
+        /* Stored into SCI/modules/helptools/target */
+        String fileName = SCI + "/modules/helptools/target" + SLASH + "scilab_images" + JAR_EXT;
         try {
             fileOutputStream = new FileOutputStream(fileName);
             jarFile = new JarOutputStream(fileOutputStream);
