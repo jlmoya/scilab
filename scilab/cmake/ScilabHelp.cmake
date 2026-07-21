@@ -18,35 +18,22 @@ function(scilab_help_target)
     add_custom_target(doc COMMENT "Help disabled (BUILD_HELP off — ./configure --enable-build-help)")
     return()
   endif()
-  # The doc locales: ALL_LINGUAS_DOC is a plain substituted value ("en_US fr_FR …"), not a
-  # conditional. Parsed HERE, after the BUILD_HELP stub above (not at include time), so a
-  # help-off configure never reads it. Unlike BUILD_HELP_TRUE (an AM_CONDITIONAL, always
-  # present), its AC_SUBST sits inside configure.ac's enable_build_localization branch, so
-  # the line is LEGALLY ABSENT under --disable-build-localization: absent means zero doc
-  # locales (a no-op doc target, matching autotools' graceful degrade), NOT config.status
-  # format drift. Only a line that is present but unparseable fails loudly. (A
-  # present-but-EMPTY value is likewise legal: no doc locales.)
-  file(STRINGS ${SCILAB_SOURCE_DIR}/config.status _sci_ll REGEX "^S\\[\"ALL_LINGUAS_DOC\"\\]=")
-  if(_sci_ll STREQUAL "")
-    message(STATUS "config.status has no S[\"ALL_LINGUAS_DOC\"] line "
-                   "(build-localization off) — the doc target will build no locales")
-    set(_sci_doc_langs "")
-  elseif(_sci_ll MATCHES "^S\\[\"ALL_LINGUAS_DOC\"\\]=\"(.*)\"$")
-    set(_sci_doc_langs "${CMAKE_MATCH_1}")
-  else()
-    message(FATAL_ERROR "config.status S[\"ALL_LINGUAS_DOC\"] line is present but "
-                        "unparseable (got '${_sci_ll}') — cannot enumerate the help "
-                        "locales; re-run ./configure or update the parse in "
-                        "cmake/ScilabHelp.cmake")
-  endif()
+  # The doc locales: RC-e.2 severs this config.status read too. configure.ac:1875
+  # assigns ALL_LINGUAS_DOC="en_US fr_FR pt_BR ja_JP ru_RU" as a plain literal —
+  # not a probed/derived value — then AC_SUBSTs it (only inside the
+  # enable_build_localization branch, configure.ac:1877-1899) into config.status
+  # as S["ALL_LINGUAS_DOC"]. This driver has no --disable-build-localization
+  # equivalent (no CMake option gates it — same as ENABLE_GUI/ENABLE_JAVA in
+  # cmake/ScilabJava.cmake, which likewise hardcode the one configured tree's
+  # answer rather than modeling the autotools --without-* switch), so unlike the
+  # config.status read this replaces, there is no "legally absent" case left to
+  # degrade for: the list below is unconditional, the same one-time
+  # transcription RC-e.1 used for the version triple (cmake/ScilabVersion.cmake).
+  # Verified equal to this tree's config.status S["ALL_LINGUAS_DOC"] before the
+  # cutover. Bump here (and in configure.ac:1875, until configure.ac is deleted
+  # at RC-e.4) if the doc locale set ever changes.
+  set(_sci_doc_langs "en_US fr_FR pt_BR ja_JP ru_RU")
   separate_arguments(_sci_doc_langs)   # "en_US fr_FR …" -> a CMake list
-  if(_sci_doc_langs STREQUAL "")
-    # Zero locales (absent line, or present-but-empty): a bare no-op target —
-    # add_custom_target rejects USES_TERMINAL with no COMMAND, so the real target
-    # below cannot express "no locales" itself.
-    add_custom_target(doc COMMENT "No help locales (build-localization off)")
-    return()
-  endif()
   set(_cmds "")
   foreach(l ${_sci_doc_langs})
     # Per-locale env + command, byte-for-byte from the configured Makefile's `doc:` recipe

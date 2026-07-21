@@ -18,16 +18,30 @@ endif()
 # SCILAB_JAVA_HOME: the ONE shared JDK location — consumed by every
 # JDK-touching CMakeLists (the libjli linkers jvm/types/external_objects_java/
 # xcos, the JNI-header includers helptools/io, the aggregates, scilab-bin).
-# Parsed from the configured tree's config.status (S["JAVA_HOME"]) — the EXACT
-# JDK the autotools baseline linked (jdk-25 here). The /usr/libexec/java_home
-# fallback answers jdk-26 on this machine, which is precisely why
-# config.status is the primary source (and why the fallback WARNS). The future
-# de-autotools driver must do its own JDK detection (FindJNI or equivalent) —
-# recorded as driver debt.
-file(STRINGS ${SCILAB_SOURCE_DIR}/config.status _scilab_java_home_line
-     REGEX "^S\\[\"JAVA_HOME\"\\]=")
-string(REGEX REPLACE "^S\\[\"JAVA_HOME\"\\]=\"(.*)\"$" "\\1"
-       SCILAB_JAVA_HOME "${_scilab_java_home_line}")
+#
+# RC-e.2: natively resolved, no config.status read. Tier 1 is $ENV{JAVA_HOME},
+# REALPATH-canonicalized — the exact mechanism configure.ac's own JDK probe
+# tries first (m4/java.m4 AC_JAVA_DETECT_JVM: "check if JAVA_HOME is set...
+# use it as JVM root directory"), so this is the same algorithm's first step,
+# just run natively instead of transcribed off config.status. REALPATH matters
+# on a machine where JAVA_HOME is a version-manager shim (jenv, sdkman, etc):
+# autotools' own probe resolves it with `cd $JAVA_HOME; pwd` (plain, non-`-P`
+# cd+pwd), which does NOT fully resolve a multi-level symlink chain — yet this
+# tree's config.status S["JAVA_HOME"] IS the fully-resolved
+# /Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home, meaning configure
+# was run in a shell where $JAVA_HOME already held that literal path.
+# get_filename_component(... REALPATH) reproduces that same end state
+# regardless of which shell/tool set $ENV{JAVA_HOME} — verified to land on the
+# byte-identical string here (jenv's ~/.jenv/versions/25 shim resolves to the
+# same real jdk-25.jdk directory). Tier 2 (JAVA_HOME unset or unusable) falls
+# back to /usr/libexec/java_home — the find_program(java)-derived resolution
+# the RC-e plan names as the native alternative — kept verbatim from before
+# RC-e.2, WARNING included: it answers jdk-26 on this machine, a DIFFERENT
+# major version than the configured jdk-25, so it stays the fallback tier, not
+# the primary.
+if(NOT "$ENV{JAVA_HOME}" STREQUAL "")
+  get_filename_component(SCILAB_JAVA_HOME "$ENV{JAVA_HOME}" REALPATH)
+endif()
 if(NOT SCILAB_JAVA_HOME OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
   execute_process(COMMAND /usr/libexec/java_home
                   OUTPUT_VARIABLE SCILAB_JAVA_HOME
@@ -35,12 +49,13 @@ if(NOT SCILAB_JAVA_HOME OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
                   RESULT_VARIABLE _scilab_java_home_rc)
   if(NOT _scilab_java_home_rc EQUAL 0
      OR NOT EXISTS "${SCILAB_JAVA_HOME}/lib/libjli.dylib")
-    message(FATAL_ERROR "no JDK with lib/libjli.dylib found — config.status "
-                        "has no usable JAVA_HOME and /usr/libexec/java_home failed")
+    message(FATAL_ERROR "no JDK with lib/libjli.dylib found — \$ENV{JAVA_HOME} "
+                        "is unset/unusable and /usr/libexec/java_home failed")
   endif()
-  message(WARNING "config.status JAVA_HOME unusable; falling back to "
+  message(WARNING "\$ENV{JAVA_HOME} unset or unusable; falling back to "
                   "/usr/libexec/java_home (${SCILAB_JAVA_HOME}) — may differ "
-                  "from the configured JDK the autotools baseline linked")
+                  "from the JDK the autotools baseline linked (compare against "
+                  "config.status's S[\"JAVA_HOME\"] if the two builds must match)")
 endif()
 message(STATUS "SCILAB_JAVA_HOME = ${SCILAB_JAVA_HOME}")
 

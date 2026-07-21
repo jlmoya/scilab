@@ -72,7 +72,8 @@ add_custom_target(drop-in-all)
 # SCILAB_JAVA_HOME — the configured JDK for every JDK-consuming CMakeLists
 # (jvm/types/external_objects_java/xcos/helptools/io, the aggregates,
 # scilab-bin) — is resolved ONCE in cmake/ScilabToolchain.cmake (included
-# above): config.status S["JAVA_HOME"] first, /usr/libexec/java_home fallback.
+# above): RC-e.2, natively -- $ENV{JAVA_HOME} (REALPATH-canonicalized) first,
+# /usr/libexec/java_home fallback. No config.status read (was: S["JAVA_HOME"]).
 
 # Migrated modules — ALL 64 baseline module dylibs (the 4 parity-proven
 # exemplars + Batch A's 8 simple leaves + Batch B's 10 variant-pair GUI
