@@ -437,6 +437,55 @@ become compile dependencies (they would cycle the reactor). Stage 2-e found
 left the JDK at Java 11, and Ant already carries the jar (`build.incl.xml:104`). Run it before
 writing any module POM.
 
+### Stage 2-f — the reactor is COMPLETE: all 23 modules on Maven (DONE 2026-07-20)
+
+The remaining 15 modules migrated in five dependency **waves** (A `console`/`helptools`/`types`/
+`external_objects_java`; B `renderer`/`javasci`/`graphic_export`; C `gui`; D `core`/`history_browser`/
+`graph`/`ui_data`; E `scinotes`/`preferences`/`xcos`), each wave's dependencies satisfied by the
+waves before it. `mvn clean package` at the reactor root now builds **all 23 modules + parent** in
+one dependency-resolved reactor, every jar byte-parity-green against its Ant counterpart through the
+`maven_jars` dimension. This **retires `prebuildjava`'s hand-encoded 23-module topo-sort** — the
+maintenance win Stage 2 exists to deliver — replaced by real dependency resolution.
+
+Waves were the dependency partial order, **not** `prebuildjava`'s list read literally: `helptools`,
+`types` and `external_objects_java` sit late in that list but had no unmigrated dependencies, so they
+went in Wave A. `gui` (351 files, 13 vendored jars incl. the first-party `swing-gpu-surface` Vulkan
+jar) built green first-try — the payoff of the settled template plus `maven-module-deps.sh`.
+
+Findings that shaped the waves, each now recorded where the next reader needs it:
+
+- **The `gui` Class-Path wrap — the one thing that needed new harness logic — is proven.** Ant wraps
+  the manifest at 70 bytes, Maven's plexus-archiver at 72; `normalize_manifest`'s continuation-line
+  join (built after Stage 2-d's review measured the disagreement) makes them compare equal, harness
+  untouched. See "Accepted divergences" in the register.
+- **`javasci` is the one module without a per-package manifest section** — its `build.xml` overrides
+  the shared `jar` target, so Ant emits a bare manifest and its POM reproduces that (no
+  `Implementation-Version`). Register **B12**. Any *other* module missing it is a bug.
+- **`xcos` is the module the `Implementation-Version` rule exists for** — `CustomWriter.java:121` and
+  `XcosDiagramCodec.java:304-305` read `getSpecificationVersion()`/`getImplementationVersion()` at
+  runtime and stamp them into saved `.xcos` diagrams. Its per-package section is confirmed present in
+  the built Maven jar; absence would have silently written `null` into user diagrams, invisibly to
+  the harness.
+- **Four classes of dependency `grep '^import'` cannot find**, all now in `maven-module-deps.sh` or
+  its documented limits: reflection via `Class.forName` string (Stage 2-b), fully-qualified use with
+  no import (2-e's `javax.annotation.Generated`), an inherited **superclass/constant in another jar**
+  with zero name occurrences (`helptools`→xmlgraphics-commons, `renderer`→gluegen-rt — only `javac`
+  finds these), and a `Class.forName(CONSTANT)` where the literal is on a `static final String` line
+  (2-f Wave D; the tool now resolves it). The tool also gained a BSD-`sed` `\s` portability fix in
+  Wave E.
+
+**What remains before Ant can be deleted** (none of it is module migration — that is done):
+
+1. **The CMake↔Maven swap** — `cmake/ScilabJava.cmake` still invokes Ant (`sci-java-all`). Point it
+   at `mvn`. The jar-naming decision (Stage 2-c: `<finalName>org.scilab.modules.<name>`, output still
+   in `target/`) means the drop-in path changes here, not the names.
+2. **`etc/classpath.xml` regeneration** (register B9) and the JUnit 4→5 + surefire port (B8).
+3. **Re-enable fork CI once its guards match the migrated build.** CI/CD was disabled 2026-07-20
+   during the migration push storm; the `guard:ub-miscompile`/`sanity:scripts` jobs assert
+   autotools-era invariants the migration moves, so they need rework before re-enabling.
+4. **RC-e** (delete `./configure`) then the autotools/Ant deletion — the endgame (§12), which
+   unblocks the whole deferred-fixes remediation plan.
+
 **Artifact resolution works, but NOT the way this section originally claimed** (corrected 2026-07-20,
 Stage 2-c §5). The original wording — "Maven Central is reachable, verified HTTP 200 against
 `repo1.maven.org`" — drew a true conclusion from evidence that does not support it: `curl` does not
