@@ -317,8 +317,6 @@
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-all</artifactId>
       <version>1.17</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/batik-all-1.17.jar</systemPath>
     </dependency>
     <!-- LUCENE-CORE — covers BOTH org.apache.lucene.{document,index,store}.*
          AND org.apache.lucene.analysis.standard.StandardAnalyzer (folded
@@ -329,8 +327,6 @@
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-core</artifactId>
       <version>9.10.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/lucene-core-9.10.0.jar</systemPath>
     </dependency>
     <!-- LUCENE-QUERYPARSER — org.apache.lucene.queryparser.flexible.
          {core.QueryNodeException, standard.StandardQueryParser}, a
@@ -340,8 +336,6 @@
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-queryparser</artifactId>
       <version>9.10.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/lucene-queryparser-9.10.0.jar</systemPath>
     </dependency>
     <!-- JAXB-API — javax.xml.bind{,.annotation}.* across the modelica/ and
          configuration/model/ data-binding classes. Removed from the JDK at
@@ -352,8 +346,6 @@
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
       <version>2.3.1</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jaxb-api-2.3.1.jar</systemPath>
     </dependency>
     <!-- FLEXDOCK — org.flexdock.docking.activation.ActiveDockableTracker,
          org.flexdock.plaf.common.border.ShadowBorder. SAME COORDINATE AS

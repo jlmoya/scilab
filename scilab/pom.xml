@@ -188,6 +188,58 @@
     </pluginManagement>
 
     <plugins>
+      <!-- THIRD-PARTY STAGING. Maven resolves these from repositories; this execution copies
+           the resolved jars into thirdparty/, which is what etc/classpath.xml, bin/scilab and
+           package-macos.sh all read at runtime. That split is the whole point: dependencies
+           become normal Maven dependencies (resolvable, updatable, visible to
+           versions:display-dependency-updates) WITHOUT moving the runtime layout.
+
+           Why `copy` with explicit artifactItems here, rather than `copy-dependencies` inherited
+           by each module: copy-dependencies writes artifactId-version.jar, and 5 of our 28
+           mappings do not match the filenames classpath.xml resolves by — javafx.base.jar,
+           javafx.graphics.jar, javafx.swing.jar, jcef-api.jar and jhall-2.0.jar. A default-named
+           copy would leave classpath.xml pointing at files that no longer exist, which fails at
+           RUNTIME, not at build time. destFileName pins each one. Centralizing also keeps the
+           list in one readable place instead of spread across 24 POMs.
+
+           Only Tier A is listed so far — the 13 jars proven byte-identical to Maven Central by
+           SHA-1 (docs/design/systempath-removal.md). Tiers B/C/D still come from
+           fetch-thirdparty.sh and keep their systemPath entries; that file remains the source for
+           natives and for anything Maven cannot supply. The two mechanisms coexist safely: both
+           write the same filenames into the same directory. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.8.1</version>
+        <executions>
+          <execution>
+            <id>stage-thirdparty-jars</id>
+            <phase>generate-resources</phase>
+            <goals><goal>copy</goal></goals>
+            <inherited>false</inherited>
+            <configuration>
+              <outputDirectory>${project.basedir}/thirdparty</outputDirectory>
+              <overWriteIfNewer>true</overWriteIfNewer>
+              <artifactItems>
+                <artifactItem><groupId>com.google.code.gson</groupId><artifactId>gson</artifactId><version>2.10.1</version><destFileName>gson-2.10.1.jar</destFileName></artifactItem>
+                <artifactItem><groupId>net.java.dev.jna</groupId><artifactId>jna</artifactId><version>5.14.0</version><destFileName>jna-5.14.0.jar</destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.lucene</groupId><artifactId>lucene-core</artifactId><version>9.10.0</version><destFileName>lucene-core-9.10.0.jar</destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.lucene</groupId><artifactId>lucene-queryparser</artifactId><version>9.10.0</version><destFileName>lucene-queryparser-9.10.0.jar</destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.xmlgraphics</groupId><artifactId>batik-all</artifactId><version>1.17</version><destFileName>batik-all-1.17.jar</destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.xmlgraphics</groupId><artifactId>fop-core</artifactId><version>2.9</version><destFileName>fop-core-2.9.jar</destFileName></artifactItem>
+                <artifactItem><groupId>org.apache.xmlgraphics</groupId><artifactId>xmlgraphics-commons</artifactId><version>2.9</version><destFileName>xmlgraphics-commons-2.9.jar</destFileName></artifactItem>
+                <artifactItem><groupId>org.scilab.forge</groupId><artifactId>jlatexmath</artifactId><version>1.0.7</version><destFileName>jlatexmath-1.0.7.jar</destFileName></artifactItem>
+                <artifactItem><groupId>org.scilab.forge</groupId><artifactId>jlatexmath-fop</artifactId><version>1.0.7</version><destFileName>jlatexmath-fop-1.0.7.jar</destFileName></artifactItem>
+                <artifactItem><groupId>javax.xml.bind</groupId><artifactId>jaxb-api</artifactId><version>2.3.1</version><destFileName>jaxb-api-2.3.1.jar</destFileName></artifactItem>
+                <artifactItem><groupId>jakarta.activation</groupId><artifactId>jakarta.activation-api</artifactId><version>2.1.3</version><destFileName>jakarta.activation-api-2.1.3.jar</destFileName></artifactItem>
+                <artifactItem><groupId>javax.annotation</groupId><artifactId>javax.annotation-api</artifactId><version>1.3.2</version><destFileName>javax.annotation-api-1.3.2.jar</destFileName></artifactItem>
+                <artifactItem><groupId>me.friwi</groupId><artifactId>jcef-api</artifactId><version>jcef-d3de827+cef-146.0.10+g8219561+chromium-146.0.7680.179</version><destFileName>jcef-api.jar</destFileName></artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

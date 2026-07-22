@@ -350,8 +350,6 @@
       <groupId>org.scilab.forge</groupId>
       <artifactId>jlatexmath</artifactId>
       <version>1.0.7</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jlatexmath-1.0.7.jar</systemPath>
     </dependency>
     <!-- GSON — com.google.gson.Gson (SwingScilabBrowser.java, the CEF
          bridge). Real Maven Central coordinate, sourced from
@@ -363,8 +361,6 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.10.1</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/gson-2.10.1.jar</systemPath>
     </dependency>
     <!-- JCEF — org.cef.{CefApp, CefClient, CefSettings, browser.*,
          callback.*, handler.*, misc.*, network.*}, the embedded Chromium
@@ -376,8 +372,6 @@
       <groupId>me.friwi</groupId>
       <artifactId>jcef-api</artifactId>
       <version>jcef-d3de827+cef-146.0.10+g8219561+chromium-146.0.7680.179</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jcef-api.jar</systemPath>
     </dependency>
     <!-- JHALL (JavaHelp) — javax.help{,.event,.plaf.basic,.search}, the
          embedded help viewer. LABEL only (no confirmed Maven Central
