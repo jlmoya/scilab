@@ -55,11 +55,19 @@ mkdir -p "$PAYLOAD" "$MACOS_DIR" "$RES_DIR" "$APP_SCIHOME"
 # ---- 2. rsync the engine (incremental; skip build intermediates + recursion)
 # build-cmake/ is the CMake build tree (gitignored, ~600MB, ~27% of the dev tree). It is
 # pure build scaffolding -- CMake's drop-in targets copy their real outputs into the
-# autotools .libs/ layout, and its help target writes into modules/*/jar/, so nothing under
+# .libs/ layout, and its help target writes into modules/*/target/, so nothing under
 # build-cmake/ is used at runtime. Without this exclude it copied ~500MB across 5,762 files
 # into the bundle AND made step 3 below grep+sed every text file in it. build-parity/ and
 # .atoms/ are the same class, much smaller. All three postdate this exclude list's last
 # revision, which is why they were missing.
+#
+# modules/*/target/ MUST be copied -- it holds the 24 module jars and the 6 help jars that
+# classpath.xml, bin/scilab and jvm_options.xml all resolve at runtime (the Ant-era jar/
+# directories were deleted 2026-07-21). But Maven's target/ carries build intermediates the
+# old jar/ never did: classes/ is the exploded copy of the very same .class files already
+# inside the jar, and maven-status/ is reactor bookkeeping. Measured 90M total vs 75M of
+# jars, so excluding them keeps ~15M of dead weight out of every bundle. The excludes are
+# scoped to target/ so a module shipping a real classes/ resource dir elsewhere is untouched.
 echo "[1/6] rsync dev build -> payload (incremental)…"
 rsync -a --delete \
   --exclude='Scilab-2027.0.0.app/' \
@@ -69,6 +77,8 @@ rsync -a --delete \
   --exclude='config.log' --exclude='config.status' \
   --exclude='.git/' \
   --exclude='/build-cmake/' --exclude='/build-parity/' --exclude='/.atoms/' \
+  --exclude='modules/*/target/classes/' --exclude='modules/*/target/maven-status/' \
+  --exclude='modules/*/target/generated-sources/' --exclude='modules/*/target/maven-archiver/' \
   "$DEV"/ "$PAYLOAD"/
 
 # ---- 3. relocate: rewrite the dev abs-path -> payload path in text files ----

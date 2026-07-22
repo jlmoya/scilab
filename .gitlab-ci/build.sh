@@ -92,27 +92,44 @@ export CCACHE_DIR
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$(pwd)/scilab/usr/lib/"
 export LD_LIBRARY_PATH
 
-# configure (with reconfigure for up to date info)
+# NOTE (fork, 2026-07-21): autotools and Ant were retired -- there is no ./configure and no
+# `make`. The configure/build steps below were repointed to the CMake + Maven driver, matching
+# the targets build-macos.sh uses and verifies. They are NOT verified on Linux: this fork's
+# pipeline is disabled and upstream CI needs Dassault runners we cannot run. Treat as
+# best-effort until a Linux runner exercises it.
+#
+# --enable-stop-on-warning has NO CMake equivalent in this tree; it is intentionally dropped
+# rather than replaced with an invented cache variable.
+
+# configure
 echo -e "\e[0Ksection_start:$(date +%s):configure[collapsed=true]\r\e[0KConfigure"
 cd scilab ||exit 1
-./configure --prefix='' --enable-stop-on-warning | tee -a "../${LOG_PATH}/build_configure_${CI_COMMIT_SHORT_SHA}.log"
+cmake -S . -B build-cmake | tee -a "../${LOG_PATH}/build_configure_${CI_COMMIT_SHORT_SHA}.log"
 CONFIGURE_STATUS="${PIPESTATUS[0]}"
-cp -a config.log "../${LOG_PATH}/build_config.log_${CI_COMMIT_SHORT_SHA}.log"
+cp -a build-cmake/CMakeCache.txt "../${LOG_PATH}/build_CMakeCache_${CI_COMMIT_SHORT_SHA}.log" 2>/dev/null ||true
 if [ "${CONFIGURE_STATUS}" -ne 0 ]; then
 	exit "${CONFIGURE_STATUS}"
 fi
 echo -e "\e[0Ksection_end:$(date +%s):configure\r\e[0K"
 
-# make
+# build: native dylibs + executables + the 24 Maven module jars, then macros, then help
 echo -e "\e[0Ksection_start:$(date +%s):make\r\e[0KMake"
-make --jobs="$(nproc)" all &>>"../${LOG_PATH}/build_make_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../${LOG_PATH}/build_make_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
-make doc &>"../${LOG_PATH}/build_doc_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_doc_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
-make help &>"../${LOG_PATH}/build_help_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_help_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
+cmake --build build-cmake --target drop-in-all --parallel "$(nproc)" &>>"../${LOG_PATH}/build_make_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../${LOG_PATH}/build_make_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
+cmake --build build-cmake --target macros --parallel "$(nproc)" &>>"../${LOG_PATH}/build_make_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../${LOG_PATH}/build_make_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
+cmake --build build-cmake --target doc &>"../${LOG_PATH}/build_doc_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_doc_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
 echo -e "\e[0Ksection_end:$(date +%s):make\r\e[0K"
 
-# install to tmpdir
+# install to tmpdir -- NOT AVAILABLE.
+# `make install DESTDIR=...` died with autotools, and the CMake build defines ZERO install()
+# rules: it is in-tree only. Every step below this point reads /tmp/${SCI_VERSION_STRING},
+# which only that install populated, so the rest of this script cannot run until install()
+# rules exist. Failing loudly here beats silently producing an empty package.
+# Tracked in docs/design/deferred-fixes-register.md.
 echo -e "\e[0Ksection_start:$(date +%s):install\r\e[0KInstall"
-make install DESTDIR="/tmp/${SCI_VERSION_STRING}" &>>"../${LOG_PATH}/build_install_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_install_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
+echo "ERROR: 'make install' was removed with autotools and the CMake build defines no" >&2
+echo "       install() rules yet, so DESTDIR=/tmp/${SCI_VERSION_STRING} cannot be produced." >&2
+echo "       Packaging steps below depend on it. See docs/design/deferred-fixes-register.md." >&2
+exit 1
 echo -e "\e[0Ksection_end:$(date +%s):install\r\e[0K"
 
 echo -e "\e[0Ksection_start:$(date +%s):patch[collapsed=true]\r\e[0KPatch binary"

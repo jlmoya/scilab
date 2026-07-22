@@ -95,6 +95,28 @@ bytes that encode it.
 
 ---
 
+## 5b. Capability lost in the migration — `make install` has no replacement
+
+Found 2026-07-21 while auditing the scripts. **The CMake build defines zero `install()` rules**
+(`grep -c '^\s*install(' CMakeLists.txt cmake/*.cmake` → 0). Retiring autotools therefore removed
+`make install` and nothing took it over: the build is in-tree only.
+
+This was invisible during the migration because the parity harness compares *build outputs* in the
+tree, and macOS packaging (`package-macos.sh`) rsyncs a relocated copy of that tree — neither ever
+calls install. It is a genuine capability regression, not a cosmetic one:
+
+| Consumer | Effect |
+|---|---|
+| `.gitlab-ci/build.sh` | **Structurally broken past the install step**, not merely stale. Everything from the `patch binary` section on reads `/tmp/${SCI_VERSION_STRING}`, which only `make install DESTDIR=` populated. Now fails loudly with an explanatory message instead of silently packaging an empty tree. |
+| `bin/scilab` | Its runtime search logic still supports the split-prefix layout (`/usr/local/{bin,share/scilab,lib/scilab,include/scilab}`) and the DESTDIR variant Linux packagers use. That code is live and must not be deleted — but **no build path in this tree can emit those layouts any more.** Header comment corrected to say so. |
+| Linux/distro packaging | Not possible from this tree until install rules exist. macOS is unaffected (`package-macos.sh`). |
+
+**Deferred: add `install()` rules to the CMake build.** Not urgent for this fork (macOS packaging
+works without them), but it is the honest scope of what "autotools retired" cost, and it must be
+closed before anyone packages this tree for a distro.
+
+---
+
 ## 6. Downstream scope — the toolbox ecosystem (audited 2026-07-21)
 
 Asked after the endgame: *"are the toolboxes built with Ant? If so they should be built with Maven

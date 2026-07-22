@@ -16,20 +16,21 @@
 
 ####
 #
-# Scilab can be installed/used in different ways :
-# * ./configure; make install
-#    => will install Scilab into /usr/local/ and split files to
-#    /usr/local/bin, /usr/local/share/scilab/, /usr/local/lib/scilab/,
-#    /usr/local/include/scilab/
-# * ./configure --prefix=/my/dir/; make install
-#    => will install Scilab into /my/dir/ and split files to
-#    /my/dir/bin/, /my/dir/share/scilab/, /my/dir/lib/scilab/
-#    /my/dir/include/scilab/
-#    Scilab official binary uses this arch
-# * ./configure; make install prefix=$(DESTDIR)/usr \
-#                   bindir=$(DESTDIR)/usr/bin \
-#                   datadir=$(DESTDIR)/usr/share/scilab ...
-#    Solution used mainly by Linux packagers
+# Scilab can be used from several layouts, and this script searches for its pieces
+# accordingly. The layouts below are still fully supported AT RUNTIME -- the search
+# logic further down handles each one -- but note how they are produced:
+#
+# * in-tree (the layout this fork builds): ./build-macos.sh leaves everything in the
+#    source tree; scilab-bin lands in .libs/, the jars in modules/*/target/.
+# * bundled: ./package-macos.sh rsyncs a relocated copy of that tree into
+#    /Applications/Scilab-2027.0.0.app. This is the only "install" this fork performs.
+# * split prefix layout -- /usr/local/{bin,share/scilab,lib/scilab,include/scilab},
+#    or the DESTDIR variant Linux packagers use. Scilab's official binaries use this.
+#    NO BUILD PATH CURRENTLY PRODUCES IT: autotools was retired 2026-07-21 (tag
+#    `autotools-ant-retired`), which removed `make install`, and the CMake build
+#    defines no install() rules yet -- it is in-tree only. The runtime support below
+#    is therefore live code serving layouts this tree can no longer emit; do not
+#    delete it. See docs/design/deferred-fixes-register.md (missing install rules).
 #
 ## First, this script will look for scilab-bin in :
 # * If specified, in the $SCI variable
