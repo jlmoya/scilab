@@ -95,6 +95,28 @@ bytes that encode it.
 
 ---
 
+## 6. Downstream scope — the toolbox ecosystem (audited 2026-07-21)
+
+Asked after the endgame: *"are the toolboxes built with Ant? If so they should be built with Maven
+too."* Measured across the ~50 toolboxes in `SciLabProjects/`. **The intuitive half of the answer is
+the empty one, and the real exposure is somewhere else.**
+
+| Finding | Measurement | Consequence |
+|---|---|---|
+| **Toolboxes never used Ant.** | **0** Ant build files. The only 3 `build.xml` on disk are vendored **SWIG Android examples** under `sciQuantLib/swig/Examples/` — third-party sample code, never executed by any Scilab build. | Retiring Ant (`42e58dd3707`) cost the toolbox ecosystem **nothing**. No follow-up needed. |
+| **Toolbox Java barely exists.** | **2** of ~50 toolboxes contain any `.java`: `swing-gpu-surface` (first-party, **already Maven**) and that same vendored SWIG tree. In-tree, `contrib/toolbox_skeleton` has exactly **one** `.java`. | **Do not Mavenize toolbox Java.** Forcing toolbox authors to install Maven to ship a jar is a usability regression against a population of one file. `ilib_build_jar` (`modules/dynamic_link/macros/`, a Scilab macro — no Ant, and no `javac` shell-out; a grep for "javac" false-positives on `javaclasspath`) is the correct Scilab-native API. |
+| **The real legacy dependency is autotools — and it is LIVE, at runtime.** | `modules/dynamic_link/src/scripts/` ships a complete skeleton: `configure`, `configure.ac`, `Makefile.am/.in`, `aclocal.m4`, `ltmain.sh`, `config.guess`, `config.sub`, `depcomp`, `compile`, `missing`. Toolboxes compiling native code via `ilib_build`/`tbx_build_src` run **`./configure && make` on the end user's machine** (`ilib_compile.sci:157,165`). Preserved deliberately in the autotools purge — `1ed4171fad1` deleted **0** files under that path. | **This is the last live autotools in the tree** and the true parallel to the finished core migration. Deleting it breaks every toolbox's native build, so it was correctly kept. |
+
+**Deferred: `ilib_build` → CMake.** Needs its own spec, not a task on this register. It is
+higher-stakes than anything in the core migration for two reasons the core work never faced:
+it **executes on end-user machines** (so a defect ships as a broken toolbox build, not a broken
+local tree), and **toolboxes ship prebuilt binaries in the wild**, making backward compatibility a
+hard constraint rather than a nicety. The parity question also inverts: the artifact to hold
+constant is a *third-party toolbox's* built dylib, which this repository does not contain — so the
+gate must be built from the toolbox catalog before any code moves.
+
+---
+
 ## Known-unknown, worth stating
 
 **Maven resolution here depends on machine-local configuration the repository does not carry.**
