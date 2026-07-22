@@ -77,8 +77,8 @@
   swing-gpu-surface-0.1.0.jar, itself Maven-built (its own manifest reads
   "Created-By: Maven JAR Plugin 3.5.0") and — per fetch-thirdparty.sh's own
   comment — "the first-party Layer-1 GPU surface jar is *tracked* in this
-  repo (vendored)" at modules/prebuildjava/firstparty/
-  swing-gpu-surface-0.1.0.jar, i.e. part of THIS project's own Vulkan/MoltenVK
+  repo (vendored)" at firstparty/swing-gpu-surface-0.1.0.jar (moved there from
+  modules/prebuildjava/ when Ant was retired), i.e. part of THIS project's own Vulkan/MoltenVK
   renderer work (docs/design/vulkan-renderer.md), not an external library.
   Every method gui's two consumers actually call against GpuSurfaceComponent/
   NativeSurface/VulkanScene (constructors, .width()/.height()/.handle(),
@@ -428,7 +428,7 @@
     </dependency>
     <!-- cc.sosonline.gpu.{GpuSurfaceComponent, NativeSurface, VulkanScene}
          — the Vulkan canvas's Layer-1 GPU surface. FIRST-PARTY, not a
-         genuine third party: tracked in this repo at modules/prebuildjava/
+         genuine third party: tracked in this repo at
          firstparty/swing-gpu-surface-0.1.0.jar and copied to thirdparty/ by
          fetch-thirdparty.sh (its own comment calls this out explicitly).
          See this file's header comment, "THE cc.sosonline.gpu FINDING", for
