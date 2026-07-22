@@ -23,10 +23,7 @@ Makefile
 #
 # Java compilation output dir
 #
-modules/*/build
-modules/jar
 modules/*/inline
-modules/*/jar
 modules/*/test-output
 junit-report
 
@@ -220,6 +217,7 @@ locale/*/*/*.po
 # Stage-1 make->CMake driver build dir (hybrid coexistence with autotools)
 /build-cmake/
 
-# Stage 2-a Maven beachhead build output (hybrid coexistence with Ant; Ant's
-# own modules/*/jar and modules/*/build outputs are covered above)
+# Maven module build output — the jars etc/classpath.xml loads at runtime.
+# (Ant's modules/*/jar and modules/*/build ignores were dropped 2026-07-21: Ant
+# is deleted, so nothing regenerates those directories.)
 modules/*/target/

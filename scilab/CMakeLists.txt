@@ -264,10 +264,10 @@ scilab_executable(scilab-bin
     "-framework Cocoa"
   ALIAS Scilab-${SCILAB_LIBRARY_VERSION_MAJOR}.0.0)
 
-# THE JAVA JARS (Stage 1f-b) — one target wrapping the prebuildjava Ant super-build
-# (cmake/ScilabJava.cmake). Rides drop-in-all so `--target drop-in-all` now builds
-# the whole native app AND the 24 jars. Jars land in modules/<m>/jar/ (drop-in is
-# automatic). The topo-sort/Ivy stay inside Ant (Stage 2's Maven reactor's job).
+# THE JAVA JARS — one target wrapping the Maven reactor (cmake/ScilabJava.cmake).
+# Rides drop-in-all so `--target drop-in-all` builds the whole native app AND the
+# 24 jars. Jars land in modules/<m>/target/, which is where etc/classpath.xml loads
+# them from, so no drop-in copy is needed. Inter-module ordering is the reactor's.
 scilab_java_bridge()
 add_dependencies(drop-in-all sci-java-all)
 

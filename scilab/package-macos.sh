@@ -68,6 +68,11 @@ mkdir -p "$PAYLOAD" "$MACOS_DIR" "$RES_DIR" "$APP_SCIHOME"
 # inside the jar, and maven-status/ is reactor bookkeeping. Measured 90M total vs 75M of
 # jars, so excluding them keeps ~15M of dead weight out of every bundle. The excludes are
 # scoped to target/ so a module shipping a real classes/ resource dir elsewhere is untouched.
+#
+# modules/*/build/ is the same story one era earlier: 25 dirs / 14M of Ant-era output left on
+# disk when Ant was retired. Gitignored, zero tracked files, nothing newer than pom.xml, and
+# no runtime reference (classpath.xml has zero /build/ entries) -- but rsync copied them into
+# every bundle regardless. Excluded here; deleting them from the dev tree is safe too.
 echo "[1/6] rsync dev build -> payload (incremental)…"
 rsync -a --delete \
   --exclude='Scilab-2027.0.0.app/' \
@@ -79,6 +84,7 @@ rsync -a --delete \
   --exclude='/build-cmake/' --exclude='/build-parity/' --exclude='/.atoms/' \
   --exclude='modules/*/target/classes/' --exclude='modules/*/target/maven-status/' \
   --exclude='modules/*/target/generated-sources/' --exclude='modules/*/target/maven-archiver/' \
+  --exclude='modules/*/build/' \
   "$DEV"/ "$PAYLOAD"/
 
 # ---- 3. relocate: rewrite the dev abs-path -> payload path in text files ----

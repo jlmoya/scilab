@@ -95,7 +95,7 @@ central me.friwi:jcef-api:jcef-d3de827+cef-146.0.10+g8219561+chromium-146.0.7680
 "
 
 # The first-party Layer-1 GPU surface jar is *tracked* in this repo (vendored).
-SWING_GPU_SURFACE_SRC="$SCRIPT_DIR/modules/prebuildjava/firstparty/swing-gpu-surface-0.1.0.jar"
+SWING_GPU_SURFACE_SRC="$SCRIPT_DIR/firstparty/swing-gpu-surface-0.1.0.jar"
 
 rm -f "$CACHE/.pending-seen" 2>/dev/null || true
 
