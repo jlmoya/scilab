@@ -399,26 +399,38 @@
          platform-classified artifacts, same "accurate label, system scope
          never resolves it" standing as every other vendored jar in this
          file. -->
+    <!-- JavaFX resolves from Maven Central with a PLATFORM CLASSIFIER. The unclassified
+         org.openjfx artifact is a 4 KB stub carrying ZERO classes (verified: 0 .class entries in
+         javafx-graphics-25.0.2.jar) — depending on it without the classifier compiles nothing.
+         The mac-aarch64 classifier carries the real code, and its class set is IDENTICAL to the
+         SDK jars this replaces: 662 / 3024 / 48 entries for base / graphics / swing, diffed
+         name-by-name with zero differences.
+
+         ${javafx.platform} is a parent property so a Windows/Linux port changes one line (or adds
+         an OS-activated profile) rather than three dependencies. Today this fork is macOS/arm64
+         only, so a single default is honest rather than limiting.
+
+         NATIVES ARE NOT AFFECTED. The classifier jars embed 8 dylibs, but Scilab loads JavaFX
+         natives from lib/thirdparty/ via java.library.path, which fetch-thirdparty.sh still fills
+         from the sha256-pinned Gluon SDK. JavaFX's NativeLibLoader prefers java.library.path and
+         only falls back to extracting from the jar, so the embedded copies stay inert. -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-base</artifactId>
       <version>25.0.2</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/javafx.base.jar</systemPath>
+      <classifier>${javafx.platform}</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-swing</artifactId>
       <version>25.0.2</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/javafx.swing.jar</systemPath>
+      <classifier>${javafx.platform}</classifier>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-graphics</artifactId>
       <version>25.0.2</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/javafx.graphics.jar</systemPath>
+      <classifier>${javafx.platform}</classifier>
     </dependency>
     <!-- cc.sosonline.gpu.{GpuSurfaceComponent, NativeSurface, VulkanScene}
          — the Vulkan canvas's Layer-1 GPU surface. FIRST-PARTY, not a
