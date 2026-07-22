@@ -484,24 +484,27 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             # guard.
             if len(parts) == 3 and parts[0] == "modules":
                 module = parts[1]
-                # NO filename filter here, unlike the Ant branch's _DOC_OUTPUT_JAR
-                # above -- deliberate, not an oversight. target/ is actually MORE
-                # prone to auxiliary jars than jar/ is: -sources.jar, -javadoc.jar,
-                # -tests.jar, and original-*.jar (the shade/assembly plugins' own
-                # pre-relocation copy) are all standard Maven conventions that a
-                # plugin can place right next to the real artifact. Harmless today
-                # -- no such plugin is configured in any module POM, and an
-                # unexpected extra key fails RED (an "extra in candidate" diff),
-                # which is the safe failure direction. Anyone adding
-                # maven-source-plugin or maven-javadoc-plugin (routine for
-                # `install`/`deploy` executions) would start producing spurious
-                # orphan keys here -- that is the trigger to revisit this, not a
-                # silent breakage discovered later. Not adding a filter
-                # preemptively: a gate that silently DROPS an artifact it was
-                # never told to expect is worse than one that over-reports one,
-                # and there is no real plugin configuration yet to filter FOR.
+                # SAME _DOC_OUTPUT_JAR exclusion as the Ant branch above. This was
+                # deliberately ABSENT until the help cutover (2026-07-21): the doc
+                # build wrote scilab_<locale>_help.jar / scilab_images.jar into
+                # modules/helptools/jar/, so only the Ant branch could ever see them
+                # and target/ had nothing to filter FOR. The cutover moved the help
+                # artifacts to modules/helptools/target/, so they now land right
+                # beside the real module jar here -- exactly the situation the Ant
+                # branch's filter exists for. Without this, helptools would report
+                # THREE "module jars" (its own + two doc outputs), which are not
+                # module jars at all: they are doc-build output, rebuilt by
+                # `xmltojar`, not by the Maven reactor.
+                #
+                # Still NOT filtering Maven's other auxiliary conventions
+                # (-sources.jar, -javadoc.jar, -tests.jar, original-*.jar): no module
+                # POM configures a plugin that emits them, and an unexpected extra key
+                # fails RED ("extra in candidate"), which is the safe direction. Adding
+                # maven-source-plugin / maven-javadoc-plugin is the trigger to revisit
+                # -- a gate that silently DROPS an artifact it was never told to expect
+                # is worse than one that over-reports.
                 for fn in files:
-                    if fn.endswith(".jar"):
+                    if fn.endswith(".jar") and not _DOC_OUTPUT_JAR.match(fn):
                         key = f"modules/{module}/jar/{fn}"
                         # Same precedent as the dylib key collision above: unreachable
                         # today (a given modules/<m>/target is visited once by os.walk,

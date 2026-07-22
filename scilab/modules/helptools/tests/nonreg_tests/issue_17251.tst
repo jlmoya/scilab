@@ -17,11 +17,11 @@
 // The generated HTML help pages (in the jar) should be XML compliant.
 //
 
-if isfile("SCI/modules/helptools/jar/scilab_en_US_help.jar") then
+if isfile("SCI/modules/helptools/target/scilab_en_US_help.jar") then
     d = TMPDIR + "/issue_17251";
 
     assert_checkequal(mkdir(d), 1);
-    files = decompress("SCI/modules/helptools/jar/scilab_en_US_help.jar", d);
+    files = decompress("SCI/modules/helptools/target/scilab_en_US_help.jar", d);
 
     errors = [];
     for f=files'

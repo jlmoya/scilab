@@ -460,38 +460,83 @@ def test_regression_all_empty_maven_jars_still_skips():
         _check_maven_jars_alignment_and_completeness({"jars": {}, "maven_jars": {}})
 
 
-def test_committed_baseline_carries_no_maven_jars_section():
-    """The committed baseline must NOT contain a `maven_jars` section.
+def test_committed_baseline_carries_maven_jars_section():
+    """The committed baseline MUST contain a `maven_jars` section -- it is now the
+    only jar reference there is.
 
-    `baseline-autotools.json` is, by name and purpose, a snapshot of the AUTOTOOLS/Ant
-    build. Maven's output is not part of that build, so it does not belong in there --
-    and `diff.py`'s transition rule is written to SKIP `maven_jars` when the baseline
-    lacks it, which is the designed behaviour, not an oversight.
+    THIS ASSERTION IS INVERTED FROM ITS ORIGINAL FORM, deliberately, at the jar/
+    deletion (2026-07-21). Both halves of the history matter, so neither gets flipped
+    back by accident:
 
-    This test exists because the section was once added by accident: a re-baseline run
-    (commit 65baec3b4c8, fixing an unrelated manifest-normalization change) used
-    `capture.sh`, which captures every section including `maven_jars`, and froze a
-    3-module snapshot into the file. The verification script used at the time compared
-    only keys within sections present in BOTH files, so an entirely NEW section was
-    invisible to it and the change was reported as "0 keys added".
+    ORIGINALLY it asserted `maven_jars` must be ABSENT. That was right for the
+    COEXISTENCE era: the baseline was a snapshot of the AUTOTOOLS/Ant build, Ant's
+    `modules/*/jar/` was the reference, and `maven_jars` was a candidate-side dimension
+    compared against it WITHIN a single capture (needing no frozen reference). The test
+    existed because a re-baseline once added the section by accident -- `capture.sh`
+    writes EVERY section -- and with a frozen Maven snapshot in the baseline, every
+    subsequent module migration would turn `test_committed_baseline_matches_current_tree`
+    red, making re-baselining routine. A gate that is routinely re-baselined is not a gate.
 
-    The consequence is worse than untidiness. With `maven_jars` frozen in the baseline,
-    EVERY subsequent module migration makes the baseline stale and turns
-    `test_committed_baseline_matches_current_tree` red -- so the fix would become a
-    routine re-baseline on every migration, and a gate that is routinely re-baselined
-    has stopped being a gate.
+    THE PREMISE ENDED when Ant was retired and `modules/*/jar/` was deleted. `jars` now
+    captures nothing (the directory does not exist), so it can no longer be anyone's
+    reference, and `test_maven_jars_align_with_ant_jars` correctly skips forever. If the
+    baseline also carried no `maven_jars`, the jar content of the shipped build would be
+    gated by NOTHING -- 24 module jars completely unwatched. That is strictly worse than
+    the staleness the original guard was protecting against.
 
-    The real arming for this dimension is `test_maven_jars_align_with_ant_jars`, which
-    compares `maven_jars` against `jars` WITHIN a single capture and therefore needs no
-    frozen reference at all.
+    So `maven_jars` (from `modules/*/target/`) is now the reference the baseline must
+    carry, and re-baselining IS the correct response to an intentional jar change --
+    with the predict-then-diff discipline, exactly as the post-migration remediation plan
+    describes for the harness's inverted role.
 
-    If you are here because `capture.sh` re-added the section: strip it, do not re-point
-    this test.
+    Completeness (every reactor module produced a jar) lives in
+    `test_maven_jars_completeness_against_reactor`, which needs no frozen reference.
     """
     with open(BASELINE) as f:
         baseline = json.load(f)
-    assert "maven_jars" not in baseline, (
-        "baseline-autotools.json has grown a maven_jars section -- most likely a "
-        "capture.sh run wrote it. Strip the section; see this test's docstring for why "
-        "a frozen Maven snapshot turns every future migration into a re-baseline."
+    assert "maven_jars" in baseline and baseline["maven_jars"], (
+        "the committed baseline has no (or an empty) maven_jars section. Since "
+        "modules/*/jar/ was deleted, maven_jars is the ONLY jar dimension -- without it "
+        "in the baseline the shipped jars are ungated. Re-baseline (capture.sh) so the "
+        "target/ jars become the reference; see this test's docstring."
+    )
+
+
+def test_maven_jars_completeness_against_reactor():
+    """Every module the parent reactor declares must have produced a Maven jar.
+
+    THE POST-jar/ SURVIVOR. `test_maven_jars_align_with_ant_jars` carried two
+    different gates in one body: (a) ALIGNMENT -- every Maven jar matches an
+    Ant-built counterpart in `jars` -- and (b) COMPLETENESS -- every declared
+    reactor module actually produced a jar. Gate (a)'s premise ended with the
+    migration: `modules/*/jar/` was deleted once Ant was retired and everything
+    moved to Maven's `target/`, so there are no Ant jars left to align against
+    and that test now skips forever via `@_requires_ant_jars`. That skip is
+    correct RETIREMENT, not breakage.
+
+    But (b) has nothing to do with Ant, and letting it skip alongside (a) would
+    take a live gate dark -- a module silently dropping out of `<modules>`, or
+    the reactor quietly failing to build one, would stop being caught. That is
+    exactly this campaign's recurring failure class (a gate that stops looking at
+    what the stage produces), so completeness is re-homed HERE, guarded only on
+    Maven output existing.
+
+    Skips when no Maven jars exist at all (a fresh clone where nobody has run
+    `mvn` must not get a red suite); fires the moment Maven has run.
+    """
+    fp = _capture()
+    mj = fp.get("maven_jars", {})
+    if not mj:
+        pytest.skip("no Maven-built jars in this tree -- nothing to check")
+    modules = _reactor_modules()
+    assert modules, (
+        f"parsed 0 <module> entries from the parent POM ({PARENT_POM}) -- the "
+        "namespace-aware parse is broken, or the POM lost its <modules> block. "
+        "A vacuous module list makes this check assert nothing against "
+        "everything -- fix the parse, don't let it pass silently."
+    )
+    missing = _missing_reactor_jars(mj, modules)
+    assert not missing, (
+        f"reactor modules with no Maven jar at all: {missing} -- the reactor "
+        "declares them but produced nothing; a module dropped out of the build."
     )

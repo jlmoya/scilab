@@ -12,7 +12,7 @@
 supportedLanguages = ["en_US" "fr_FR" "ja_JP" "pt_BR" "ru_RU"];
 
 for kL=1:size(supportedLanguages, "*")
-    helpFile = "SCI/modules/helptools/jar/scilab_" + supportedLanguages(kL) + "_help.jar";
+    helpFile = "SCI/modules/helptools/target/scilab_" + supportedLanguages(kL) + "_help.jar";
     assert_checktrue(isfile(helpFile));
     [x, ierr] = fileinfo(helpFile);
     assert_checktrue(ierr==0);
