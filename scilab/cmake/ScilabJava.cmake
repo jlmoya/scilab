@@ -158,6 +158,19 @@ function(scilab_java_bridge)
     endif()
     set(_sci_java_workdir ${SCILAB_SOURCE_DIR})
   else()
+    # RETIRED 2026-07-21 (tag `autotools-ant-retired`). This branch drove `ant` in
+    # modules/prebuildjava, but that directory and all 26 build.xml were deleted, so
+    # -DSCILAB_JAVA_BUILD=ant can no longer succeed: it would locate ant, launch it,
+    # and fail deep inside ant with "Buildfile: build.xml does not exist!" — a message
+    # that points at ant rather than at the retirement that actually caused it.
+    # Fail here instead, at configure time, naming the real reason. Kept as an explicit
+    # error rather than deleting the switch so an existing CMakeCache carrying
+    # SCILAB_JAVA_BUILD=ant gets an explanation instead of silently building nothing.
+    message(FATAL_ERROR
+      "SCILAB_JAVA_BUILD=ant is no longer supported: Ant was retired 2026-07-21 and "
+      "modules/prebuildjava/ plus every build.xml were deleted. Use the default "
+      "(-DSCILAB_JAVA_BUILD=maven), which builds the 24 module jars into "
+      "modules/<m>/target/. See docs/design/build-cmake-maven-migration.md.")
     if(NOT SCILAB_ANT OR NOT EXISTS "${SCILAB_ANT}")
       message(FATAL_ERROR "ant not found on PATH (SCILAB_ANT='${SCILAB_ANT}') — cannot build the Java jars")
     endif()

@@ -117,6 +117,63 @@ closed before anyone packages this tree for a distro.
 
 ---
 
+## 5c. CI pipeline — validated statically, and it CANNOT build this tree
+
+Audited 2026-07-21 after an initial dismissal of `.gitlab-ci/prebuild.sh` as "third-party, not
+ours" was correctly challenged. It is in this repository, so it is ours. Validating it found two
+hard blockers that the dismissal would have missed.
+
+**What static validation proves.** All four `.gitlab-ci/*.sh` parse (`bash -n`) and are
+**shellcheck-clean at warning severity and above** — 0 findings; `prebuild.sh` has only 11
+style-level notes and carries 14 explicit `shellcheck disable` directives, i.e. upstream lints it
+deliberately. The shellcheck run was itself verified against a known-bad script (it reported
+SC2154) rather than trusted for reporting zero. The scripts are well-maintained.
+
+**What static validation cannot prove — and here does not hold: that they still WORK.** The image
+they build predates the migration and is now incompatible with it:
+
+| # | Blocker | Evidence | Effect |
+|---|---|---|---|
+| CI-1 | **No Maven anywhere in CI provisioning.** | Zero case-insensitive matches for `maven`/`mvn` in `prebuild.sh` and `docker_setup.sh`; `Dockerfile.linux`'s apt list has none. | `cmake/ScilabJava.cmake` resolves `find_program(SCILAB_MVN mvn)` off PATH and FATALs at point of use. The 24 module jars cannot be built. Repointing `build.sh` to CMake is necessary but **not sufficient** — the image lacks the tool. |
+| CI-2 | **JDK 17, but the reactor compiles at source 25.** | `prebuild.sh:84` `JDK_VERSION=17.0.7+7`; `Dockerfile.linux:136` `openjdk-17-jdk`. Root `pom.xml:132` `<source>25</source>`. | javac 17 rejects source 25. Not a one-line bump: Debian bookworm has no openjdk-25, so it needs a JDK 25 tarball on the Scilab artifact mirror — **infrastructure this fork does not control**. |
+| CI-3 | **Apache Ant still downloaded and installed** (`prebuild.sh:182,629-640`), and `ANT_HOME` exported. | Nothing consumes it: all 26 `build.xml` were deleted. | Dead weight in the image. Harmless, but it misleads a reader into thinking Ant is still part of the build. |
+
+CMake itself **is** provisioned (`Dockerfile.linux.prebuild` builds it from source), so that half of
+the migration is already satisfied. The autotools packages (`autotools-dev automake libtool`) stay:
+third-party dependencies built from source in the image still need them, even though Scilab does not.
+
+**Not fixed here, deliberately.** CI-1 and CI-2 are Linux-image changes that cannot be verified on
+this machine — this fork's pipeline is disabled and upstream CI needs Dassault runners — and CI-2 is
+additionally blocked on an artifact mirror we do not control. Writing plausible-but-unverified
+Dockerfile edits would replace a *documented* blocker with a *hidden* one. Documented instead, so
+re-enabling CI starts from a known list rather than a mystery.
+
+**Fixed here:** the reachable-but-dead `-DSCILAB_JAVA_BUILD=ant` path in `cmake/ScilabJava.cmake`.
+It would have located ant, launched it, and died inside ant with "Buildfile: build.xml does not
+exist!" — blaming ant instead of the retirement. It now fails at configure time naming the real
+cause. Verified in both directions: ant mode exits 1 with the new message, default maven mode still
+configures clean (exit 0).
+
+---
+
+## 5d. JOGL is still the production graphics path — do not remove it
+
+Raised 2026-07-21: since the Vulkan renderer landed, is JOGL still needed? **Yes.** Measured:
+
+- 4 JOGL/GlueGen jars in `thirdparty/`, referenced by `etc/classpath.xml`
+- **6** module POMs depend on JOGL
+- **30** Java sources import `com.jogamp`
+- `scirenderer` carries **both** implementations side by side — `implementation.jogl.*` and
+  `implementation.vulkan.*` (see `modules/gui/pom.xml:36`)
+
+The Vulkan renderer ([[realtime-3d-renderer]], merged `d30f75059e5`) was added **alongside** JOGL,
+not in place of it. Removing JOGL is not a build-script cleanup; it requires porting 30 source files
+across 6 modules and proving feature parity on every graphics surface. So `prebuild.sh` building
+JOGL is **correct and still required** — the right call for the right reason, which is that it is
+load-bearing for us, not that it is somebody else's code.
+
+---
+
 ## 6. Downstream scope — the toolbox ecosystem (audited 2026-07-21)
 
 Asked after the endgame: *"are the toolboxes built with Ant? If so they should be built with Maven
