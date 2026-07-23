@@ -119,17 +119,14 @@ cmake --build build-cmake --target macros --parallel "$(nproc)" &>>"../${LOG_PAT
 cmake --build build-cmake --target doc &>"../${LOG_PATH}/build_doc_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_doc_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
 echo -e "\e[0Ksection_end:$(date +%s):make\r\e[0K"
 
-# install to tmpdir -- NOT AVAILABLE.
-# `make install DESTDIR=...` died with autotools, and the CMake build defines ZERO install()
-# rules: it is in-tree only. Every step below this point reads /tmp/${SCI_VERSION_STRING},
-# which only that install populated, so the rest of this script cannot run until install()
-# rules exist. Failing loudly here beats silently producing an empty package.
-# Tracked in docs/design/deferred-fixes-register.md.
+# install to tmpdir. `make install DESTDIR=...` died with autotools; replaced by
+# `cmake --install` (cmake/ScilabInstall.cmake, register §5b) — installs a runnable tree
+# to the prefix and relocates the baked-in source paths. NOTE: unverified on Linux — this
+# fork's pipeline is disabled and upstream CI needs Dassault runners; the install was
+# verified on macOS only. The downstream 'patch binary' steps still assume the autotools
+# split-prefix layout, so they may need adjusting to this runnable-tree layout on Linux.
 echo -e "\e[0Ksection_start:$(date +%s):install\r\e[0KInstall"
-echo "ERROR: 'make install' was removed with autotools and the CMake build defines no" >&2
-echo "       install() rules yet, so DESTDIR=/tmp/${SCI_VERSION_STRING} cannot be produced." >&2
-echo "       Packaging steps below depend on it. See docs/design/deferred-fixes-register.md." >&2
-exit 1
+cmake --install build-cmake --prefix "/tmp/${SCI_VERSION_STRING}" &>>"../${LOG_PATH}/build_install_${CI_COMMIT_SHORT_SHA}.log" ||(tail --lines=100 "../$LOG_PATH/build_install_${CI_COMMIT_SHORT_SHA}.log"; exit 1)
 echo -e "\e[0Ksection_end:$(date +%s):install\r\e[0K"
 
 echo -e "\e[0Ksection_start:$(date +%s):patch[collapsed=true]\r\e[0KPatch binary"

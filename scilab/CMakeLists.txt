@@ -279,3 +279,8 @@ add_dependencies(drop-in-all sci-java-all)
 # Stage 1f-c — the help build as an opt-in CMake post-step (needs the built app).
 include(cmake/ScilabHelp.cmake)
 scilab_help_target()
+
+# `cmake --install` support — install a runnable tree to CMAKE_INSTALL_PREFIX and
+# relocate the source paths baked into the config (register §5b). Build first
+# (drop-in-all + macros + doc), then install.
+include(cmake/ScilabInstall.cmake)

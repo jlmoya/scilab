@@ -133,11 +133,24 @@ copies are now legacy — present but unused (the prepended generated dir wins),
 
 ---
 
-## 5b. Capability lost in the migration — `make install` has no replacement
+## 5b. `make install` had no replacement — RESOLVED 2026-07-23
 
-Found 2026-07-21 while auditing the scripts. **The CMake build defines zero `install()` rules**
-(`grep -c '^\s*install(' CMakeLists.txt cmake/*.cmake` → 0). Retiring autotools therefore removed
-`make install` and nothing took it over: the build is in-tree only.
+Found 2026-07-21 while auditing the scripts; fixed 2026-07-23. Retiring autotools removed
+`make install` and the CMake build defined **zero `install()` rules**, so the build was in-tree only
+and could not be prefix-installed (what a distro package needs).
+
+**Fix:** `cmake/ScilabInstall.cmake` (wired into `CMakeLists.txt`) adds the rules, so
+`cmake --install build-cmake --prefix DIR` now installs a runnable Scilab at DIR and rewrites the
+source-tree paths baked into the built config (`etc/classpath.xml`'s 59 absolute paths,
+`jvm_options.xml`, launcher wrappers, `*.properties`) to the install location — the copy+relocate
+`package-macos.sh` already does for the `.app`, exposed as the standard CMake install so it works on
+any platform and any prefix. **Verified:** install to a temp prefix succeeds (exit 0), relocation
+leaves 0 source-path refs, and Scilab runs from the installed tree (`SCI` resolves to the prefix,
+`det`/macros work, exit 0). Parity 210 passed — the rules are configure-time-only, build-neutral.
+Scope: a runnable SCI-rooted tree; the leaner autotools-style FHS split (bin/ + lib/scilab/ +
+share/scilab/ + include/scilab/) that `bin/scilab` still supports is future work.
+
+Original finding, for context:
 
 This was invisible during the migration because the parity harness compares *build outputs* in the
 tree, and macOS packaging (`package-macos.sh`) rsyncs a relocated copy of that tree — neither ever
