@@ -6,13 +6,14 @@
 # runnable tree; each artifact is copied into modules/<name>/.libs/ — the libtool
 # layout bin/scilab and package-macos.sh still read from — by its drop-in target.
 #
-# STILL CONSUMES the pre-generated modules/core/includes/{machine.h,version.h}:
-# the compile includes those in-tree copies directly. CMake computes an equivalent
-# machine.h into build-cmake/generated-includes/ (cmake/ScilabMachineHeader.cmake),
-# but the source copy is what is compiled against — and both headers are gitignored
-# and were produced by the now-retired configure, so a fresh clone must restore
-# them (ScilabToolchain.cmake guards their presence). Finishing that consumption
-# cutover is a tracked follow-up — docs/design/deferred-fixes-register.md.
+# SELF-CONTAINED headers: machine.h and version.h are GENERATED at configure time
+# into build-cmake/generated-includes/ (machine.h from cmake/machine.h.cmake.in via
+# ScilabMachineHeader.cmake, version.h from modules/core/includes/version.h.in via
+# ScilabConfigure.cmake), and that dir is prepended to the include path, so the
+# compile consumes the generated copies. A fresh clone needs only the two tracked
+# templates — no configure, no pre-generated headers. (The old gitignored
+# modules/core/includes/{machine.h,version.h} the retired configure produced are
+# legacy now, present-but-unused; consumption cutover done, register §5a2.)
 #
 # Build:    cmake -S . -B build-cmake -DCMAKE_Fortran_COMPILER="$(which gfortran)"
 #           cmake --build build-cmake --target drop-in-all     (or drop-in-<name>)

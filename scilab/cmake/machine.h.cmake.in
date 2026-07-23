@@ -29,14 +29,14 @@
 #define CNAME(name1,name2) @CNAME_BODY@
 
 /* CURL flags */
-/* Plain #define, not #cmakedefine -- same trap as PACKAGE_URL below, a
+/* Plain #define, not cmakedefine -- same trap as PACKAGE_URL below, a
    different trigger: m4/curl.m4's AC_DEFINE_UNQUOTED(CURL_CFLAGS,
    ["$CURL_CFLAGS"], ...) (curl.m4:98) fires UNCONDITIONALLY right after
    AC_CHECK_LIB/AC_CHECK_HEADERS succeed -- curl is mandatory in Scilab
    (configure AC_MSG_ERRORs out otherwise), so any machine.h that exists at
    all has this defined. `curl-config --cflags` legitimately prints an empty
    line when curl's headers already sit on the default include path (common
-   with a system-wide curl-dev install); #cmakedefine would wrongly read
+   with a system-wide curl-dev install); cmakedefine would wrongly read
    that empty CMake string as false and comment the macro out as undefined,
    instead of defined-to-empty-string like configure always does. */
 #define CURL_CFLAGS "@CURL_CFLAGS@"
@@ -455,17 +455,17 @@
 #cmakedefine KLU_SUITESPARSE
 
 /* LIBARCHIVE flags */
-/* Plain #define, not #cmakedefine -- same trap as CURL_CFLAGS/PACKAGE_URL
+/* Plain #define, not cmakedefine -- same trap as CURL_CFLAGS/PACKAGE_URL
    elsewhere in this file: m4/libarchive.m4's AC_DEFINE_UNQUOTED(
    LIBARCHIVE_CFLAGS, ["$LIBARCHIVE_CFLAGS"], ...) (libarchive.m4:71) fires
    UNCONDITIONALLY -- libarchive is mandatory in Scilab, so any machine.h
    that exists at all has this defined, even in a hypothetical run where the
    captured $CFLAGS accumulator (see the transcription note in
-   ScilabMachineHeader.cmake) held nothing libarchive-specific. #cmakedefine
+   ScilabMachineHeader.cmake) held nothing libarchive-specific. cmakedefine
    would wrongly comment this macro out as undefined instead of
    defined-to-empty-string. (The VALUE on this line is a transcription, not
    a CMake-computed probe -- see ScilabMachineHeader.cmake's bucket-2
-   comment; this #define-vs-#cmakedefine fix is orthogonal to that and
+   comment; this #define-vs-cmakedefine fix is orthogonal to that and
    applies regardless of how the value itself is obtained.) */
 #define LIBARCHIVE_CFLAGS "@LIBARCHIVE_CFLAGS@"
 
@@ -478,17 +478,17 @@
 /* Plain #define: same reasoning as LIBARCHIVE_CFLAGS above
    (libarchive.m4:73). Unlike its two siblings, this VALUE is a real
    CMake-computed probe (see ScilabMachineHeader.cmake); only the
-   #cmakedefine -> #define fix is shared. */
+   cmakedefine -> #define fix is shared. */
 #define LIBARCHIVE_VERSION "@LIBARCHIVE_VERSION@"
 
 /* libXML2 flags */
-/* Plain #define, not #cmakedefine -- same trap as CURL_CFLAGS/PACKAGE_URL
+/* Plain #define, not cmakedefine -- same trap as CURL_CFLAGS/PACKAGE_URL
    elsewhere in this file: m4/libxml2.m4's AC_DEFINE_UNQUOTED(LIBXML_FLAGS,
    ["$XML_FLAGS"], ...) (libxml2.m4:80) fires UNCONDITIONALLY once
    AC_CHECK_LIB succeeds -- libxml2 is mandatory in Scilab, so any machine.h
    that exists at all has this defined. `xml2-config --cflags` legitimately
    prints an empty line when libxml2's headers already sit on the default
-   include path; #cmakedefine would wrongly read that empty CMake string as
+   include path; cmakedefine would wrongly read that empty CMake string as
    false and comment the macro out as undefined instead of
    defined-to-empty-string like configure always does. */
 #define LIBXML_FLAGS "@LIBXML_FLAGS@"
@@ -521,9 +521,9 @@
 #cmakedefine PACKAGE_TARNAME "@PACKAGE_TARNAME@"
 
 /* Define to the home page for this package. */
-/* Plain #define, not #cmakedefine: configure always defines this macro
+/* Plain #define, not cmakedefine: configure always defines this macro
    (AC_INIT's optional 5th arg is just an empty string when omitted, as it
-   is here). CMake's #cmakedefine treats an empty-STRING variable as false,
+   is here). CMake's cmakedefine treats an empty-STRING variable as false,
    which would wrongly comment this macro out as undefined instead of
    emitting it defined-to-empty-string, as configure itself always does. */
 #define PACKAGE_URL "@PACKAGE_URL@"
@@ -635,10 +635,11 @@
 /* The two #undef lines below are COMMENTED OUT on purpose, reproducing what
    config.status emits. autoheader treats every `#undef X` in machine.h.in as a
    template slot; since DIR_SEPARATOR/DIR_SEPARATORW are never AC_DEFINE'd, it
-   emits the commented form (`/* ` + the original line + ` */`) rather than a
-   live #undef. Copying machine.h.in's raw text here instead would leave them
-   live -- a real divergence the header_defines dimension cannot see, since it
-   compares the #define set and #undef is not a #define. */
+   emits the commented-out form (the original line wrapped in C block-comment
+   delimiters) rather than a live #undef. Copying machine.h.in's raw text here
+   instead would leave them live -- a real divergence the header_defines
+   dimension cannot see, since it compares the #define set and #undef is not
+   a #define. */
 #ifdef DIR_SEPARATOR
 /*        #undef DIR_SEPARATOR */
 #endif
