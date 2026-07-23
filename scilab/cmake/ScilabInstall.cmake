@@ -8,8 +8,10 @@
 #     cmake --install build-cmake --prefix /opt/scilab-2027
 #
 # installs a RUNNABLE Scilab at the prefix and rewrites the source-tree paths baked
-# into the built text config (etc/classpath.xml carries 59 absolute paths, plus
-# jvm_options.xml, the launcher wrappers and *.properties) to the install location.
+# into the built text config (jvm_options.xml, the launcher wrappers and *.properties)
+# to the install location. (etc/classpath.xml used to need this too, but B9 made it
+# $SCILAB-rooted — LoadClassPath.java resolves $SCILAB at runtime — so it is now
+# relocation-free and byte-identical in the dev tree and every install prefix.)
 # That copy+relocate is exactly what package-macos.sh does to build the .app payload;
 # this exposes it as the standard CMake install so it works on any platform and for
 # any prefix, macOS .app packaging included (package-macos.sh stays as the macOS
