@@ -1,18 +1,22 @@
-# scilab/CMakeLists.txt — Stage-1 make→CMake driver (hybrid coexistence).
+# scilab/CMakeLists.txt — the CMake build driver (make/autotools retired 2026-07-21).
 #
-# Builds the migrated module dylibs ONLY; the rest of the tree stays autotools
-# (this file is invisible to automake). Each migrated module is a one-call
-# scilab_module() declaration (cmake/ScilabModule.cmake) whose output replaces
-# the autotools dylib in modules/<name>/.libs/ via its drop-in-<name> target;
-# the autotools original is always recoverable with `make -C modules/<name>`.
+# Builds the whole native app: every module dylib via a one-call scilab_module()
+# declaration (cmake/ScilabModule.cmake), the libscilab / libscilab-cli aggregates,
+# the two executables, and the Maven module jars. `--target drop-in-all` yields a
+# runnable tree; each artifact is copied into modules/<name>/.libs/ — the libtool
+# layout bin/scilab and package-macos.sh still read from — by its drop-in target.
 #
-# Requires an autotools-CONFIGURED tree (machine.h/version.h are configure-
-# generated) — cmake/ScilabToolchain.cmake enforces that.
+# STILL CONSUMES the pre-generated modules/core/includes/{machine.h,version.h}:
+# the compile includes those in-tree copies directly. CMake computes an equivalent
+# machine.h into build-cmake/generated-includes/ (cmake/ScilabMachineHeader.cmake),
+# but the source copy is what is compiled against — and both headers are gitignored
+# and were produced by the now-retired configure, so a fresh clone must restore
+# them (ScilabToolchain.cmake guards their presence). Finishing that consumption
+# cutover is a tracked follow-up — docs/design/deferred-fixes-register.md.
 #
-# Build:    cmake -S . -B build-cmake -DCMAKE_BUILD_TYPE=
+# Build:    cmake -S . -B build-cmake -DCMAKE_Fortran_COMPILER="$(which gfortran)"
 #           cmake --build build-cmake --target drop-in-all     (or drop-in-<name>)
-# Verify:   cd build-parity && python3 -m parity.capture .. /tmp/cand.json cand \
-#           && python3 -m parity.diff baseline-autotools.json /tmp/cand.json
+# Verify:   cd build-parity && python3 -m pytest -q
 #
 # (Makefile/Ninja generators only — the per-language $<COMPILE_LANGUAGE:...>
 # includes/defines in ScilabModule.cmake don't express under -G Xcode/VS.)

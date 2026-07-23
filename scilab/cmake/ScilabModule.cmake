@@ -397,8 +397,9 @@ function(scilab_module NAME)
 
   # --- drop-in: copy the dylib into modules/<name>/.libs/ + recreate the
   # symlink. A REAL copy, not a symlink: the parity harness skips symlinked
-  # dylibs, and the autotools original stays recoverable by simply rebuilding
-  # (`make -C modules/<name>`). ---
+  # dylibs. .libs/ is where bin/scilab and package-macos.sh read the binaries
+  # from (the libtool layout the launcher and packager were written against;
+  # only autotools, which invented that layout, is gone — the location stays). ---
   add_custom_target(drop-in-${NAME}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${_dir}/.libs
     COMMAND ${CMAKE_COMMAND} -E copy
@@ -406,7 +407,7 @@ function(scilab_module NAME)
     COMMAND ${CMAKE_COMMAND} -E create_symlink
             $<TARGET_FILE_NAME:sci${NAME}> ${_dir}/.libs/libsci${NAME}.dylib
     DEPENDS sci${NAME} VERBATIM
-    COMMENT "Dropping CMake-built ${NAME} into modules/${NAME}/.libs/ (hybrid coexistence)")
+    COMMENT "Dropping CMake-built ${NAME} into modules/${NAME}/.libs/ (launcher + packager read here)")
   if(TARGET drop-in-all)
     add_dependencies(drop-in-all drop-in-${NAME})
   endif()

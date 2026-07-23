@@ -175,8 +175,8 @@ function(scilab_aggregate NAME)
 
   # Drop-in: a REAL copy into <caller-source-dir>/.libs — modules/.libs/ for
   # the aggregates — plus the unversioned symlink, exactly the scilab_module()
-  # hybrid-coexistence pattern (autotools original recoverable via
-  # `make -C modules libscilab.la libscilab-cli.la`).
+  # drop-in pattern. .libs/ is the libtool layout bin/scilab and package-macos.sh
+  # read from; the location stays even though autotools, which invented it, is gone.
   add_custom_target(drop-in-${NAME}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/.libs
     COMMAND ${CMAKE_COMMAND} -E copy
@@ -184,7 +184,7 @@ function(scilab_aggregate NAME)
     COMMAND ${CMAKE_COMMAND} -E create_symlink
             $<TARGET_FILE_NAME:${NAME}> ${CMAKE_CURRENT_SOURCE_DIR}/.libs/${NAME}.dylib
     DEPENDS ${NAME} VERBATIM
-    COMMENT "Dropping CMake-built ${NAME} into modules/.libs/ (hybrid coexistence)")
+    COMMENT "Dropping CMake-built ${NAME} into modules/.libs/ (launcher + packager read here)")
   if(TARGET drop-in-all)
     add_dependencies(drop-in-all drop-in-${NAME})
   endif()
@@ -362,7 +362,7 @@ function(scilab_executable NAME)
             $<TARGET_FILE:${NAME}> ${CMAKE_CURRENT_SOURCE_DIR}/.libs/${NAME}
     ${_alias_copy}
     DEPENDS ${NAME} VERBATIM
-    COMMENT "Dropping CMake-built ${NAME} into .libs/ (hybrid coexistence)")
+    COMMENT "Dropping CMake-built ${NAME} into .libs/ (launcher + packager read here)")
   if(TARGET drop-in-all)
     add_dependencies(drop-in-all drop-in-${NAME})
   endif()

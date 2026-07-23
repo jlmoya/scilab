@@ -1,8 +1,6 @@
-# CMake build for the `xcos` module — Batch E (the densest edge module: 5
-# sibling deps + the JDK) on the shared scilab_module() helper
-# (cmake/ScilabModule.cmake); built from the top-level scilab/CMakeLists.txt
-# driver. HYBRID COEXISTENCE: this file is invisible to automake; the
-# autotools xcos is always recoverable with `make -C modules/xcos`.
+# CMake build for the `xcos` module — the densest edge module (5 sibling deps
+# + the JDK) on the shared scilab_module() helper (cmake/ScilabModule.cmake);
+# built from the top-level scilab/CMakeLists.txt driver.
 #
 # VARIANT PAIR — TWO scilab_module() calls: the MAIN dylib and the `-disable`
 # stub (noxcos.c, pure C -> C-driver link, deps = libSystem ONLY).
@@ -146,7 +144,7 @@ add_custom_command(TARGET scixcos POST_BUILD
     $<TARGET_FILE:scixcos>
   COMMAND codesign -f -s - $<TARGET_FILE:scixcos>
   VERBATIM
-  COMMENT "xcos: rewriting scicos/scicos_blocks deps to @rpath + re-signing (autotools all-local hook)")
+  COMMENT "xcos: rewriting scicos/scicos_blocks deps to @rpath + re-signing")
 
 scilab_module(xcos-disable
   GATEWAY_SOURCES

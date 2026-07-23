@@ -97,6 +97,37 @@ bytes that encode it.
 
 ---
 
+## 5a2. `machine.h` / `version.h` consumption cutover is incomplete — a fresh clone cannot build
+
+Found 2026-07-23 while cleaning stale "hybrid coexistence" labels. RC-a made CMake **compute** a
+`machine.h` (`cmake/ScilabMachineHeader.cmake` → `build-cmake/generated-includes/machine.h`), and
+the north-star said the generated copy would "activate at RC-e." **It did not fully activate.** The
+compile still `#include`s the *source* `modules/core/includes/machine.h` (and `version.h`), proven
+empirically: rename the source header away and `cmake -S . -B build-cmake` FATALs (exit 1).
+
+Why this is a real defect, not a label:
+
+- Both `modules/core/includes/machine.h` and `version.h` are **gitignored and untracked**
+  (`git ls-files` → 0; `git check-ignore` → yes). They exist on this machine only because a
+  historical `./configure` (retired 2026-07-21) generated them, dated Jul 10.
+- **A fresh clone has neither file**, and `configure` — the only thing that produced them — is
+  deleted. `ScilabToolchain.cmake` FATALs on the missing header. So the tree that "builds with
+  configure/config.status absent" (true on *this* machine, where the headers linger) does **not**
+  build on a clean checkout.
+
+The FATAL message used to say "run ./configure there first" — impossible now; reworded 2026-07-23 to
+point at `build-cmake/generated-includes/machine.h` and this register instead.
+
+**Fix (the actual consumption cutover):** make the compile include CMake's generated
+`build-cmake/generated-includes/machine.h`/`version.h` (add that dir to the module include path and
+drop the source dir), OR have configure-time CMake write the generated headers into
+`modules/core/includes/` so the existing include path finds them. Either closes the fresh-clone gap.
+Gate it on the semantic header-parity dimension (the CMake `machine.h` was built to match the
+autotools one macro-for-macro, so codegen stays identical). Until then, a fresh clone must restore
+the two headers from a prior build.
+
+---
+
 ## 5b. Capability lost in the migration — `make install` has no replacement
 
 Found 2026-07-21 while auditing the scripts. **The CMake build defines zero `install()` rules**

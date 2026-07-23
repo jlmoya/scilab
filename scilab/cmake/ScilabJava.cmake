@@ -33,7 +33,6 @@ if(NOT SCILAB_JAVA_BUILD STREQUAL "maven")
     "ant backend cannot build anything. See docs/design/build-cmake-maven-migration.md.")
 endif()
 
-# mvn resolution: plain PATH lookup (file scope, unconditional, like SCILAB_ANT
 # mvn resolution: plain PATH lookup at file scope, FATAL-guarded at point of use
 # inside scilab_java_bridge() — so merely configuring on a machine without Maven
 # still succeeds; only building the jars requires it.
@@ -112,7 +111,7 @@ function(scilab_java_bridge)
     else()
       list(APPEND _sci_java_cmds -pl !:terminal)
       set(_sci_jar_summary "23 Scilab module jars via Maven (reactor package minus terminal; jars land in modules/<m>/target/, not jar/; terminal skipped: GUI off)")
-      message(STATUS "GUI off — terminal excluded from the Maven reactor build (sci-java-all = the 23 non-terminal modules, matching autotools)")
+      message(STATUS "GUI off — terminal excluded from the Maven reactor build (sci-java-all = the 23 non-terminal modules)")
     endif()
     set(_sci_java_workdir ${SCILAB_SOURCE_DIR})
   endif()
@@ -123,9 +122,5 @@ function(scilab_java_bridge)
     USES_TERMINAL
     COMMENT "Building the ${_sci_jar_summary}")
   add_dependencies(drop-in-jars sci-java-all)
-  if(SCILAB_JAVA_BUILD STREQUAL "maven")
-    message(STATUS "SCILAB_MVN = ${SCILAB_MVN} (jar bridge armed, maven mode — jars land in modules/<m>/target/, NOT jar/)")
-  else()
-    message(STATUS "SCILAB_ANT = ${SCILAB_ANT} (jar bridge armed)")
-  endif()
+  message(STATUS "SCILAB_MVN = ${SCILAB_MVN} (jar bridge armed — jars land in modules/<m>/target/)")
 endfunction()

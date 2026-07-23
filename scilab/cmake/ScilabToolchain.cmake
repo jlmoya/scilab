@@ -6,13 +6,24 @@
 # bases). Per-module policy (flags, link options, naming, drop-in) lives in
 # ScilabModule.cmake.
 
-# SCILAB_SOURCE_DIR: the configured autotools source tree (has the generated
-# machine.h/version.h). Default to this file's ../.. ; overridable via -D.
+# SCILAB_SOURCE_DIR: the source tree. It must contain the pre-generated headers
+# modules/core/includes/{machine.h,version.h}: the compile includes those in-tree
+# copies directly. CMake computes an equivalent machine.h into
+# build-cmake/generated-includes/ (ScilabMachineHeader.cmake), but the source copy
+# is what is consumed — and both headers are gitignored and were produced by the
+# now-retired configure, so a fresh clone must restore them (finishing that
+# consumption cutover is tracked in docs/design/deferred-fixes-register.md).
+# Default to this file's ../.. ; overridable via -D.
 if(NOT DEFINED SCILAB_SOURCE_DIR)
   get_filename_component(SCILAB_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
 endif()
 if(NOT EXISTS "${SCILAB_SOURCE_DIR}/modules/core/includes/machine.h")
-  message(FATAL_ERROR "machine.h not found under ${SCILAB_SOURCE_DIR}; run ./configure there first.")
+  message(FATAL_ERROR
+    "machine.h not found under ${SCILAB_SOURCE_DIR}/modules/core/includes/. It is a "
+    "pre-generated, gitignored header the build still consumes; the retired autotools "
+    "configure originally produced it. Restore it from a prior build or from "
+    "build-cmake/generated-includes/machine.h. See docs/design/deferred-fixes-register.md "
+    "(machine.h consumption cutover).")
 endif()
 
 # SCILAB_JAVA_HOME: the ONE shared JDK location — consumed by every
