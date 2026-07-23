@@ -1,6 +1,9 @@
 # Modernization TODO: remove OpenGL/JOGL entirely — Vulkan as the only graphics path
 
-**Status:** NOT STARTED. Scoped 2026-07-21.
+**Status:** DEFERRED / PARKED 2026-07-23 — take further down the line. Scoped 2026-07-21; scope
+corrected 2026-07-23 (there is NO cheap POM-only Phase 1 — see the correction below; the whole job
+is the porting of 30 `com.jogamp` files + graphic_export's JoGL-class usage to Vulkan, graphics-
+parity-gated, multi-session).
 **Goal:** delete JOGL/GlueGen from Scilab. Vulkan (via our own renderer + MoltenVK on macOS)
 becomes the single graphics implementation, not one of two.
 
