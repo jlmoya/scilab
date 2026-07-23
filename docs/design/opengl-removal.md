@@ -26,8 +26,15 @@ Smaller than the 4 jars and 6 POM dependencies suggest.
 | `gui` | 9 |
 | `renderer` | 1 |
 
-**3 of the 6 POM dependencies are already dead** — they declare JOGL and import it nowhere:
-`completion`, `graphic_objects`, `graphic_export` (0 importing files each).
+**CORRECTION 2026-07-23 — there is no dead-dependency shortcut.** An earlier draft claimed
+"3 of the 6 POM dependencies are already dead (completion, graphic_objects, graphic_export)."
+That was a survey error: it came from `grep -li jogl modules/*/pom.xml` → 6, which matches
+**comment prose**, not `<dependency>` elements. A real audit
+(`grep -cE '<artifactId>(jogl-all|gluegen-rt)</artifactId>'`) shows JOGL is declared **only** in
+the three real consumers — `gui`, `renderer`, `scirenderer` — each carrying jogl-all + gluegen-rt.
+The three "dead" modules declare **zero** JOGL deps; their jogl mentions are accurate comments
+(POM-ordering analogies; graphic_export's use of the Scilab `JoGLView`/`implementation.jogl.*`
+classes via reactor siblings, which is a real Vulkan-porting dependency but not a `<dependency>`).
 
 **scirenderer already carries both implementations side by side:**
 `org/scilab/forge/scirenderer/implementation/jogl` (24 files) and `.../vulkan` (16 files).
@@ -40,10 +47,9 @@ libraries.
 
 Each phase ends with a working, testable tree — no phase leaves graphics broken.
 
-**Phase 1 — drop the 3 dead POM dependencies.** `completion`, `graphic_objects`,
-`graphic_export`. Zero importing files, so this is a POM-only change. Verify with a full
-`mvn package` plus a GUI smoke. Cheapest possible start and it shrinks the dependency graph
-before any real porting.
+**Phase 1 — REMOVED (was "drop 3 dead POM deps").** The mirage above. There is no cheap POM-only
+start; the removal is entirely the porting work in the phases below. The renumbering keeps the
+original Phase 2/3/4 names for continuity with earlier references.
 
 **Phase 2 — close the scirenderer Vulkan gap (24 jogl files vs 16 vulkan).** This is the core of
 the work. Includes the two deferred renderer items that block parity: **#101** IMAGE-plot clipping
