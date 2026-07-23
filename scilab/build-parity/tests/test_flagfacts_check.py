@@ -64,10 +64,20 @@ def test_min_macos_fact_is_guarded_even_though_it_is_not_derived(tmp_path):
 # --- expected_for: the override/default/invariant merge contract -----------
 
 def test_expected_for_prefers_override_over_default():
+    # A NON-footgun override (opt=O0 but wrapv kept) is preferred over the default.
+    derived = _derived(defaults={"c": _C_DEFAULT},
+                       overrides={"modules/m/drop.c": {**_C_DEFAULT, "opt": "O0", "wrapv": True}})
+    exp = expected_for("modules/m/drop.c", "c", derived)
+    assert exp["opt"] == "O0" and exp["wrapv"] is True
+
+def test_expected_for_unfootguns_a_c_cflags_footgun_override():
+    # register B10: a C override that is the _CFLAGS footgun (opt=O0 AND wrapv=False)
+    # is IGNORED in favour of the tree default -- the CMake build gives those TUs the
+    # full SCI_CFLAGS (-O2 -fwrapv).
     derived = _derived(defaults={"c": _C_DEFAULT},
                        overrides={"modules/m/drop.c": {**_C_DEFAULT, "opt": "O0", "wrapv": False}})
     exp = expected_for("modules/m/drop.c", "c", derived)
-    assert exp["opt"] == "O0" and exp["wrapv"] is False
+    assert exp["opt"] == "O2" and exp["wrapv"] is True
 
 def test_expected_for_falls_back_to_the_language_default():
     derived = _derived(defaults={"c": _C_DEFAULT}, overrides={})
@@ -203,32 +213,37 @@ def test_derived_overrides_cover_the_known_footgun_dirs():
                   "modules/windows_tools/src/nowindows_tools/nowindows_tools.c"):
         exp = expected_for(probe, "c", derived)
         assert exp is not None, probe
-        assert exp["opt"] == "O0" and exp["wrapv"] is False, probe
+        # UN-FOOTGUNNED (B10): expected_for maps the derived _CFLAGS footgun for these
+        # C dirs to the tree default (O2 + fwrapv).
+        assert exp["opt"] == "O2" and exp["wrapv"] is True, probe
 
 def test_a_tu_with_no_override_gets_the_derived_default():
     derived = _real_derived()
     exp = expected_for("modules/core/src/c/nowhere.c", "c", derived)
     assert exp["opt"] == "O2" and exp["wrapv"] is True and exp["min_macos"] == "11.0"
 
-def test_footgun_c_shape_passes_end_to_end(tmp_path):
-    # The real footgun shape (per-target _CFLAGS replaced AM_CFLAGS wholesale --
-    # only $(CC)'s own -std=gnu23 survives): no -O2, no -fwrapv, no -DNDEBUG.
-    # Covers all three DIR_EXPECTED_OVERRIDES-era directories in one test.
+def test_unfootgunned_c_shape_passes_end_to_end(tmp_path):
+    # UN-FOOTGUNNED (register B10): these C TUs now compile with the full SCI_CFLAGS
+    # default (-DNDEBUG -O2 -fwrapv), and expected_for maps their derived _CFLAGS
+    # footgun to the tree default -- so a correct O2 compile PASSES. Covers all three
+    # ex-footgun directories in one test.
     derived = _real_derived()
     for path in ("/m/modules/parameters/src/c/parameters.c",
                  "/m/modules/windows_tools/src/nowindows_tools/nowindows_tools.c",
                  "/m/modules/string/src/c/StringConvert.c"):
         cc = _cc(tmp_path, [{"file": path, "directory": "/m",
             "command": f"gcc -std=gnu23 -arch arm64 -mmacosx-version-min=11.0 "
-            f"-DHAVE_CONFIG_H -c {os.path.basename(path)}"}])
+            f"-DNDEBUG -O2 -fwrapv -DHAVE_CONFIG_H -c {os.path.basename(path)}"}])
         assert check_flag_facts(cc, derived, "/m") == [], path
 
-def test_footgun_c_reverting_to_o2_still_fails(tmp_path):
-    # If parameters.c is ever silently un-footgunned (SCI_CFLAGS restored), the
-    # derived override must still catch it -- opt/wrapv/ndebug all regress together.
+def test_still_footgunned_c_is_now_caught(tmp_path):
+    # register B10 INVERTED the gate to enforce "no C TU stays footgunned": a C TU
+    # still compiled with the footgun shape (only the CC driver's -std=gnu23, no
+    # -O2/-fwrapv/-DNDEBUG) MISMATCHES the tree-default expectation -- opt/wrapv/ndebug
+    # all flagged. (Pre-B10 this exact shape PASSED, matching the derived override.)
     derived = _real_derived()
     cc = _cc(tmp_path, [{"file": "/m/modules/parameters/src/c/parameters.c", "directory": "/m",
-        "command": "gcc -std=gnu23 -arch arm64 -DNDEBUG -O2 -fwrapv "
+        "command": "gcc -std=gnu23 -arch arm64 "
         "-mmacosx-version-min=11.0 -c parameters.c"}])
     out = check_flag_facts(cc, derived, "/m")
     assert any("opt" in m for m in out) and any("wrapv" in m for m in out) \
@@ -304,7 +319,9 @@ def test_string_src_c_footgun_is_scoped_to_c_not_cxx():
     # pick up the C override (expected_for is keyed by language too).
     derived = _real_derived()
     c_exp = expected_for("modules/string/src/c/StringConvert.c", "c", derived)
-    assert c_exp["opt"] == "O0" and c_exp["wrapv"] is False
+    # UN-FOOTGUNNED (B10): string's C tree now maps to the tree default (O2 + fwrapv);
+    # its C++ gateways were never footgunned and stay O2 -- both O2 now.
+    assert c_exp["opt"] == "O2" and c_exp["wrapv"] is True
     # The real C++ gateways live at a different relpath entirely (sci_gateway/
     # cpp/), absent from "overrides", so they fall through to the cxx default.
     gw_exp = expected_for("modules/string/sci_gateway/cpp/sci_strindex.cpp", "cxx", derived)

@@ -42,7 +42,9 @@ scilab_module(history_browser
   # sci_browsehistory.c carries an opt/wrapv/std override, not
   # CommandHistory_Wrap_Fake.c. Reproduce, do not improve: restoring
   # -O2 -fwrapv here is a separate stage.
-  C_FLAGS_OVERRIDE -std=gnu23
+  # C_FLAGS_OVERRIDE removed 2026-07-23 (register B10): un-footgunned — this module's
+  # C TUs now get the full SCI_CFLAGS default (-O2 -fwrapv -g). The comment(s) above
+  # describe the automake _CFLAGS footgun this used to reproduce.
   EXTRA_INCLUDES
     /Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/include
     /Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/include/darwin

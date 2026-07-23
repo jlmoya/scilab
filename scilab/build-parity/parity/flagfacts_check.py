@@ -66,11 +66,33 @@ from parity.makeflags import LANG_BY_SUFFIX
 DERIVED_KEYS = ("opt", "wrapv", "ndebug", "std", "openmp")
 INVARIANT = {"min_macos": "11.0"}
 
+# DELIBERATE un-footgun — register B10, 2026-07-23. The automake `_la_CFLAGS`-
+# REPLACES-`AM_CFLAGS` footgun compiled 30 core C TUs (string/src/c, parameters,
+# preferences, windows_tools, history_browser, types) with SCI_CFLAGS dropped
+# wholesale: opt=O0, wrapv=False. Benign (the signed-overflow UB miscompiles at
+# -O2, not -O0) but slow and a latent trap. The CMake build now gives those TUs the
+# full SCI_CFLAGS default (-O2 -fwrapv -g), so their EXPECTED facts are the tree
+# default, NOT the footgun the (retired) Makefile still encodes. This is expressed
+# HERE, in the expectation, rather than by filtering the derivation in
+# capture_tu_flag_facts -- the derivation stays a faithful autotools ground truth
+# (so its own unit/fault-injection tests keep passing), and the deliberate
+# divergence lives in exactly one place. Net effect: the gate now ENFORCES "no C TU
+# stays footgunned" -- a C TU still compiled O0/no-fwrapv now MISMATCHES the
+# tree-default expectation and is flagged. The per-FILE -O0 Fortran workarounds
+# (colnew.f, sszer.f, ...) keep wrapv=True, are not C, and are untouched.
+def _is_cflags_footgun(facts):
+    return facts.get("opt") in ("O0", "0") and facts.get("wrapv") is False
+
 def expected_for(rel_path, suffix_lang, derived):
     """The expected facts for one TU: its derived override if it has one, else the
-    derived tree-wide default for its language, plus the CMake-side invariant."""
-    if rel_path in derived["overrides"]:
-        facts = derived["overrides"][rel_path]
+    derived tree-wide default for its language, plus the CMake-side invariant. A C
+    override that is the deliberately-un-footgunned _CFLAGS footgun (see above) is
+    ignored in favour of the tree default."""
+    ov = derived["overrides"].get(rel_path)
+    if ov is not None and suffix_lang == "c" and _is_cflags_footgun(ov):
+        facts = derived["defaults"].get(suffix_lang)   # un-footgunned -> tree default
+    elif ov is not None:
+        facts = ov
     else:
         facts = derived["defaults"].get(suffix_lang)
     if facts is None:

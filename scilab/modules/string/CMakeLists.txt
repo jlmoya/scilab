@@ -103,10 +103,23 @@ scilab_object_module(string
   LANG C CXX
   # C TUs reproduce the footgun (bare -std=gnu23, no SCI_CFLAGS); the 33 C++
   # gateways are untouched by this and keep SCI_CXXFLAGS (O2) — see the header.
-  C_FLAGS_OVERRIDE -std=gnu23
+  # C_FLAGS_OVERRIDE removed 2026-07-23 (register B10): un-footgunned — this module's
+  # C TUs now get the full SCI_CFLAGS default (-O2 -fwrapv -g). The comment(s) above
+  # describe the automake _CFLAGS footgun this used to reproduce.
   EXTRA_INCLUDES
     /opt/homebrew/Cellar/pcre2/10.47_1/include
     ${SCILAB_SOURCE_DIR}/modules/functions/includes
     ${SCILAB_SOURCE_DIR}/modules/functions_manager/includes
     ${SCILAB_SOURCE_DIR}/modules/threads/includes
     ${SCILAB_SOURCE_DIR}/modules/console/includes)
+
+# pcre2_private.c: pcre2_split_pattern() deliberately returns a non-const wchar_t*
+# into its const input (an API const-correctness wart, lines ~178/290). With
+# SCI_CFLAGS' -Werror restored by the B10 un-footgun above, those two
+# discards-qualifiers WARNINGS become errors; dial exactly that one warning back to
+# non-error for exactly this file -- the -Wno-error the pre-footgun build carried.
+# A proper const fix would cascade through pcre2_split_pattern's callers, out of
+# scope for a flags change. Does not touch the flagfacts-checked keys
+# (opt/wrapv/ndebug/std/openmp), so parity is unaffected.
+set_source_files_properties(src/c/pcre2_private.c PROPERTIES
+  COMPILE_OPTIONS "-Wno-error=incompatible-pointer-types-discards-qualifiers")

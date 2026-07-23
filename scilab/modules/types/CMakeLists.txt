@@ -54,7 +54,9 @@ scilab_module(types-java
   # SCI_CFLAGS, only $(CC)'s own -std=gnu23. The other 4 GATEWAY_SOURCES are
   # C++ (untouched; no _CXXFLAGS override exists). Reproduce, do not improve:
   # restoring -O2 -fwrapv here is a separate stage.
-  C_FLAGS_OVERRIDE -std=gnu23
+  # C_FLAGS_OVERRIDE removed 2026-07-23 (register B10): un-footgunned — this module's
+  # C TUs now get the full SCI_CFLAGS default (-O2 -fwrapv -g). The comment(s) above
+  # describe the automake _CFLAGS footgun this used to reproduce.
   MODULE_DEPS scicommons scijvm
   SYSTEM_LIBS xml2 z icucore "-L${SCILAB_JAVA_HOME}/lib" jli
   EXTRA_INCLUDES
