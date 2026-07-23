@@ -20,6 +20,7 @@ function main_menubar_cb(key)
                 "*.tst"                     _("Scilab Tests")
                 "*.sod"                     _("Scilab Data")
                 "*.sce|*.sci|*.xcos|*.zcos|*.xmi|*.ssp|*.tst|*.sod" _("All Scilab files")
+                "*.*"                       _("All files")
                 ];
         %fileToOpen = uigetfile(ext, pwd(), msg);
         if %fileToOpen ~= "" then
@@ -31,7 +32,23 @@ function main_menubar_cb(key)
             elseif ext==".sod"
                 load(%fileToOpen);
             else
-                if getos()=="Windows"
+                // Not a Scilab-specific type. Prefer the Scilab editor (SciNotes)
+                // for TEXT files (.xml, .txt, .md, .json, sources, ...) so they are
+                // edited inside Scilab, instead of handing them to the OS default
+                // handler — which for e.g. .xml may be an unrelated application.
+                // Genuinely binary files (images, PDFs, archives) still open with
+                // the OS. Text is detected by the absence of a NUL byte in the first
+                // 4 KB, the standard heuristic; an empty file counts as text.
+                isText = %f;
+                [%fd, %ierr] = mopen(%fileToOpen, "rb");
+                if %ierr == 0 then
+                    %sample = mget(4096, "uc", %fd);
+                    mclose(%fd);
+                    isText = ~or(%sample == 0);
+                end
+                if isText then
+                    editor(%fileToOpen);
+                elseif getos()=="Windows"
                     winopen(%fileToOpen)
                 elseif getos()=="Linux"
                     host("xdg-open "+%fileToOpen+" &")
