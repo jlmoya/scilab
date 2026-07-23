@@ -34,9 +34,12 @@
       the 112 files).
     - org.w3c.dom.*, org.xml.sax.* — JDK (java.xml module), not a
       dependency.
-  No manifest.class-path anywhere in build.xml (confirmed again in the
-  Ant-built jar's manifest: Class-Path is the literal, never-interpolated
-  string "${manifest.class-path}").
+  No manifest.class-path anywhere in build.xml: the Ant build left the literal,
+  never-interpolated string "${manifest.class-path}" in the jar. RESOLVED
+  (register P2, 2026-07-23) — that junk Class-Path line is now dropped from this
+  module and the 20 others whose property was never set; the manifest fragment
+  below no longer carries it. (gui, javasci and scirenderer keep their real,
+  interpolated Class-Path values and are untouched.)
 
   THE OTHER GENUINELY NEW THING: NO library.title PROPERTY. Every other
   module migrated so far (and every other module in the tree bar
@@ -46,18 +49,13 @@
   Ant's shared `jar` target (build.incl.xml:153) writes
   `<attribute name="Specification-Title" value="${library.title}"/>`
   UNCONDITIONALLY, with no fallback: with the property never set, Ant's own
-  manifest task leaves the literal, un-interpolated string "${library.title}"
-  in the built jar — confirmed directly (unzip -p
-  modules/graphic_objects/jar/org.scilab.modules.graphic_objects.jar
-  META-INF/MANIFEST.MF shows "Specification-Title: ${library.title}" verbatim).
-  Same FAMILY of bug as the Class-Path/manifest.class-path token every
-  migrated module already carries, just landing on a different attribute —
-  and per this campaign's REPRODUCE-DON'T-IMPROVE principle, the manifest
-  fragment below reproduces that exact literal string rather than inventing
-  a real title Ant itself never produces. The <name> element below (which
-  never reaches the built jar — see its own comment) uses build.xml's
-  <description> instead, the closest thing to an authoritative label Ant
-  provides for this one module.
+  manifest task left the literal, un-interpolated string "${library.title}"
+  in the built jar. Same FAMILY of bug as the Class-Path/manifest.class-path
+  token. RESOLVED (register P4, 2026-07-23) — the manifest fragment below now
+  carries a real Specification-Title, "Scilab graphic_objects module": the same
+  value as this module's <name> below (build.xml's <description>, the closest
+  thing to an authoritative label Ant provides), consistent with every other
+  module, where Specification-Title == <name>.
 
   A THIRD GENUINELY NEW THING, FOUND ONLY BY ACTUALLY COMPILING: Step 1's own
   grep recipe (`^import (org|com|jdk|sun)\.`) is blind to a real dependency
