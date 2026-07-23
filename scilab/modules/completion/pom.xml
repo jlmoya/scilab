@@ -72,7 +72,6 @@
 
          SAME MECHANISM, SAME MEASURED RATIONALE AS modules/commons/pom.xml's
          flexdock <dependency> and modules/scirenderer/pom.xml's jogl/gluegen
-         pair — <scope>system</scope> + <systemPath>, chosen there over
          install-file (an imperative, per-machine, untracked step) and a
          project-local file:// repository (measured to be silently
          intercepted by this machine's wildcard mirror). Cross-referenced
@@ -87,15 +86,11 @@
       <groupId>com.artenum.rosetta</groupId>
       <artifactId>jrosetta-API</artifactId>
       <version>1.0.4</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jrosetta-API-1.0.4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.artenum.rosetta</groupId>
       <artifactId>jrosetta-engine</artifactId>
       <version>1.0.4</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jrosetta-engine-1.0.4.jar</systemPath>
     </dependency>
   </dependencies>
 

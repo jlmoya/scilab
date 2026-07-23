@@ -127,7 +127,6 @@
          (scilab-lib.properties:11), i.e. a fixed local file path with no
          dependency-resolution machinery at all.
 
-         MECHANISM CHOSEN: <scope>system</scope> + <systemPath> — no
          repository, no resolution, just "put this exact file on the
          compile classpath." That is not merely a resemblance to Ant's
          raw pathelement; needing no resolution AT ALL is the actual,
@@ -198,7 +197,6 @@
          will be unresolvable by dependent projects", and separately,
          "future Maven versions might no longer support building such
          malformed projects." (The file/line/column Maven also prints
-         locates the <systemPath> element by POSITION, so it drifts every
          time this comment is edited — match on the wording above, not a
          line number.) Both sentences are true, and both are the
          trade-off already accepted above, not a regression to chase:
@@ -243,8 +241,6 @@
       <groupId>org.flexdock</groupId>
       <artifactId>flexdock</artifactId>
       <version>1.2.5</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
     </dependency>
   </dependencies>
 

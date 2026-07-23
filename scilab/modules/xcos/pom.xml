@@ -174,7 +174,6 @@
   dependency (org.apache.lucene:lucene-core:9.10.0) rather than two
   <dependency> entries pointing at identical bytes — javac resolves a class
   from whichever classpath entry supplies it first, so a duplicate
-  <systemPath> entry for the same file would be inert, not more faithful.
   lucene-queryparser-9.10.0.jar is a genuinely separate file (`unzip -l`
   confirms org/apache/lucene/queryparser/flexible/{core,standard}/*.class
   live only there), added as its own dependency below. Both real Maven
@@ -307,8 +306,6 @@
       <groupId>com.mxgraph</groupId>
       <artifactId>jgraphx</artifactId>
       <version>2.1.0.7</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jgraphx-2.1.0.7.jar</systemPath>
     </dependency>
     <!-- BATIK — see this file's header comment (cross-referenced from
          modules/helptools/pom.xml and modules/graph/pom.xml, not
@@ -355,8 +352,6 @@
       <groupId>org.flexdock</groupId>
       <artifactId>flexdock</artifactId>
       <version>1.2.5</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
     </dependency>
   </dependencies>
 

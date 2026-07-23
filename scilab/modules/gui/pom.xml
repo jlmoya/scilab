@@ -300,8 +300,6 @@
       <groupId>org.flexdock</groupId>
       <artifactId>flexdock</artifactId>
       <version>1.2.5</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/flexdock-1.2.5.jar</systemPath>
     </dependency>
     <!-- THE TWO VENDORED ROSETTA JARS — com.artenum.rosetta.interfaces.ui.
          InputCommandView (jrosetta-API) and com.artenum.rosetta.util.
@@ -312,15 +310,11 @@
       <groupId>com.artenum.rosetta</groupId>
       <artifactId>jrosetta-API</artifactId>
       <version>1.0.4</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jrosetta-API-1.0.4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.artenum.rosetta</groupId>
       <artifactId>jrosetta-engine</artifactId>
       <version>1.0.4</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jrosetta-engine-1.0.4.jar</systemPath>
     </dependency>
     <!-- THE JOGL / GLUEGEN PAIR — com.jogamp.opengl{,.awt} (GL,
          GLAutoDrawable, GLCapabilities, GLException, GLProfile, GLCanvas,
@@ -332,15 +326,11 @@
       <groupId>org.jogamp.jogl</groupId>
       <artifactId>jogl-all</artifactId>
       <version>2.5.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jogl-all-2.5.0.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.jogamp.gluegen</groupId>
       <artifactId>gluegen-rt</artifactId>
       <version>2.5.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/gluegen-rt-2.5.0.jar</systemPath>
     </dependency>
     <!-- org.scilab.forge.jlatexmath.{TeXConstants, TeXFormula, TeXIcon} —
          label/GED text rendering. Same single plain jar (no jlatexmath-fop)
@@ -382,10 +372,8 @@
          surfaced. -->
     <dependency>
       <groupId>javax.help</groupId>
-      <artifactId>jhall</artifactId>
+      <artifactId>javahelp</artifactId>
       <version>2.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jhall-2.0.jar</systemPath>
     </dependency>
     <!-- THE THREE manifest.class-path JAVAFX ENTRIES — javafx.{application,
          collections,embed.swing,stage{,.FileChooser}}, used by the
@@ -445,8 +433,6 @@
       <groupId>cc.sosonline</groupId>
       <artifactId>swing-gpu-surface</artifactId>
       <version>0.1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/swing-gpu-surface-0.1.0.jar</systemPath>
     </dependency>
   </dependencies>
 

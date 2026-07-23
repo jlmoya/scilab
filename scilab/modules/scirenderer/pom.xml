@@ -54,7 +54,6 @@
          shape as flexdock below commons.
 
          SAME MECHANISM, SAME MEASURED RATIONALE AS modules/commons/pom.xml's
-         flexdock <dependency> — <scope>system</scope> + <systemPath>, chosen
          there over install-file (an imperative, per-machine, untracked step)
          and a project-local file:// repository (measured to be silently
          intercepted by this machine's wildcard mirror; see that POM's
@@ -72,15 +71,11 @@
       <groupId>org.jogamp.jogl</groupId>
       <artifactId>jogl-all</artifactId>
       <version>2.5.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jogl-all-2.5.0.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>org.jogamp.gluegen</groupId>
       <artifactId>gluegen-rt</artifactId>
       <version>2.5.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/gluegen-rt-2.5.0.jar</systemPath>
     </dependency>
   </dependencies>
 

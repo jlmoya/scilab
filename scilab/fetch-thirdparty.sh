@@ -328,6 +328,50 @@ if [ -f "$XLNT_PREFIX/lib/libxlnt.1.6.1.dylib" ]; then
     || { echo "  BAD install name (want @rpath/…): $XLNT_PREFIX/lib/libxlnt.1.6.1.dylib"; MISSING=1; }
 fi
 
+# ---- Maven local-repo install of the non-Central jars ---------------------
+# These 11 third-party jars are NOT on Maven Central at the versions this build
+# pins: abandoned upstreams (flexdock, jgraphx, jrosetta-API/engine, jeuclid),
+# JetBrains-only jediterm-core/ui, JOGL/gluegen at 2.5.0, javax.help (Central has
+# only 2.0.05), and our own unpublished swing-gpu-surface. The Maven reactor now
+# depends on them as normal compile-scope dependencies instead of the deprecated
+# <scope>system</scope> it used before, so it must resolve them from a repository.
+# We install them into the LOCAL Maven repo from the jars fetched above rather
+# than standing up an external registry (which every clone would need auth for).
+# Each gets a STUB POM — no parent, no transitive deps — matching the old
+# system-scope behaviour exactly; some of these jars embed a pom.xml that names a
+# non-existent parent, so a forced stub is required. classpath.xml still loads
+# them from thirdparty/ at runtime; this install is purely for the build.
+if command -v mvn >/dev/null 2>&1; then
+  echo "[*] installing non-Central jars into the local Maven repo…"
+  mvn_install_local() {   # <groupId:artifactId:version> <jarname>
+    _coord="$1"; _jar="$2"
+    _g="${_coord%%:*}"; _r="${_coord#*:}"; _a="${_r%%:*}"; _v="${_r##*:}"
+    [ -f "$TP/$_jar" ] || { echo "      SKIP (missing): $_jar"; return; }
+    _stub="${TMPDIR:-/tmp}/stub-$_a-$$.pom"
+    printf '<project xmlns="http://maven.apache.org/POM/4.0.0"><modelVersion>4.0.0</modelVersion><groupId>%s</groupId><artifactId>%s</artifactId><version>%s</version><packaging>jar</packaging></project>' "$_g" "$_a" "$_v" > "$_stub"
+    if mvn -q install:install-file -Dfile="$TP/$_jar" -DpomFile="$_stub" >/dev/null 2>&1; then
+      echo "      $_coord"
+    else
+      echo "      FAILED: $_coord"; MISSING=1
+    fi
+    rm -f "$_stub"
+  }
+  mvn_install_local org.flexdock:flexdock:1.2.5                  flexdock-1.2.5.jar
+  mvn_install_local org.jogamp.gluegen:gluegen-rt:2.5.0         gluegen-rt-2.5.0.jar
+  mvn_install_local org.jetbrains.jediterm:jediterm-core:3.70   jediterm-core-3.70.jar
+  mvn_install_local org.jetbrains.jediterm:jediterm-ui:3.70     jediterm-ui-3.70.jar
+  mvn_install_local net.sourceforge.jeuclid:jeuclid-core:3.1.14 jeuclid-core-3.1.14.jar
+  mvn_install_local com.mxgraph:jgraphx:2.1.0.7                 jgraphx-2.1.0.7.jar
+  mvn_install_local javax.help:javahelp:2.0                     jhall-2.0.jar
+  mvn_install_local org.jogamp.jogl:jogl-all:2.5.0              jogl-all-2.5.0.jar
+  mvn_install_local com.artenum.rosetta:jrosetta-API:1.0.4      jrosetta-API-1.0.4.jar
+  mvn_install_local com.artenum.rosetta:jrosetta-engine:1.0.4   jrosetta-engine-1.0.4.jar
+  mvn_install_local cc.sosonline:swing-gpu-surface:0.1.0        swing-gpu-surface-0.1.0.jar
+else
+  echo "[!] mvn not found — skipped the local Maven install of the non-Central jars."
+  echo "    The reactor build will not resolve them until mvn is on PATH and this reruns."
+fi
+
 if [ -f "$CACHE/.pending-seen" ]; then
   echo
   echo "RESULT: downloads OK but PENDING sha256 pins remain — bake the printed values into this script."

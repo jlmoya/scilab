@@ -144,15 +144,11 @@
       <groupId>com.artenum.rosetta</groupId>
       <artifactId>jrosetta-API</artifactId>
       <version>1.0.4</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jrosetta-API-1.0.4.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>com.artenum.rosetta</groupId>
       <artifactId>jrosetta-engine</artifactId>
       <version>1.0.4</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jrosetta-engine-1.0.4.jar</systemPath>
     </dependency>
     <!-- ScilabSpecialTextUtilities.java imports net.sourceforge.jeuclid.
          {MathMLParserSupport, context.LayoutContextImpl, context.Parameter,
@@ -168,8 +164,6 @@
       <groupId>net.sourceforge.jeuclid</groupId>
       <artifactId>jeuclid-core</artifactId>
       <version>3.1.14</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../thirdparty/jeuclid-core-3.1.14.jar</systemPath>
     </dependency>
     <!-- Same file imports org.scilab.forge.jlatexmath.{ParseException,
          TeXConstants, TeXFormula}. scilab-lib.properties.in:43 sets

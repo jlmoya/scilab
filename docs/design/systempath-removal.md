@@ -1,6 +1,6 @@
 # Removing `systemPath`: let Maven resolve the third-party jars
 
-**Status:** IN PROGRESS. Evidence gathered and Tier A implemented 2026-07-21.
+**Status:** COMPLETE 2026-07-23. Zero `<systemPath>` elements remain across all 24 module POMs.
 **Goal:** stop using `<scope>system</scope>` + `<systemPath>` so Maven resolves and updates
 third-party jars normally — the point of using Maven at all.
 
@@ -60,15 +60,48 @@ parent stages the resolved jars into `thirdparty/` under their existing filename
 not change. `fetch-thirdparty.sh` keeps only what Maven cannot supply: natives (jcef, JOGL) and
 Tier C.
 
-## Remaining decisions (not taken unilaterally)
+## Resolution — COMPLETE 2026-07-23: zero `systemPath` elements remain
 
-- **Tier B is a version bump, not a repo fix.** `javahelp` 2.0 → 2.0.05 touches the **help
-  browser**, which was verified working on 2026-07-21. It needs its own test pass.
-- **Tier C needs external repositories** (JogAmp, JetBrains) — a supply-chain surface increase —
-  and `swing-gpu-surface` is *ours* and unpublished, so no repository can ever supply it. Its real
-  options are: install to the local repo, promote it to a reactor module, or keep it vendored.
-- **JOGL/GlueGen are slated for deletion** (`docs/design/opengl-removal.md`), so effort spent
-  resolving them from a repository is likely wasted.
+All 27 jars are now normal Maven dependencies. Tiers A (13, from Central) and D (JavaFX, 3, via
+platform classifier) went first. The remaining 11 — none of which are on Central at the pinned
+version — were handled uniformly by **installing them into the LOCAL Maven repo** rather than
+standing up an external registry:
+
+| The 11 non-Central jars | Why not Central | Handled by |
+|---|---|---|
+| flexdock 1.2.5, jgraphx 2.1.0.7, jrosetta-API/engine 1.0.4, jeuclid-core 3.1.14 | abandoned upstreams | local install |
+| jediterm-core/ui 3.70 | JetBrains-only, not on Central | local install |
+| gluegen-rt / jogl-all 2.5.0 | Central has only 2.6.0; JOGL is being deleted anyway (`opengl-removal.md`) | local install (kept at 2.5.0) |
+| javax.help 2.0 (jhall-2.0.jar) | Central has only 2.0.05 | local install (kept at **2.0** — no bump, so the just-verified help browser is untouched) |
+| swing-gpu-surface 0.1.0 | ours, unpublished | local install |
+
+**Why local install, not the external registry the brainstorm floated.** An external GitLab
+registry would make every fresh clone need an auth token — worsening the portability gap already in
+the register — and would re-host third-party jars. Local install achieves the same end (the reactor
+resolves them as normal dependencies) with none of that: `fetch-thirdparty.sh`, which every clone
+already runs and which already fetches these jars into `thirdparty/`, now also runs
+`mvn install:install-file` for each. This also let every jar keep its **exact current version** — no
+risky bumps, which is why help stays at 2.0 and JOGL at 2.5.0.
+
+**Two implementation notes worth keeping:**
+- Each jar is installed with a **forced stub POM** (no parent, no dependencies). `install-file`
+  otherwise extracts the jar's *embedded* `pom.xml`, and jrosetta's names a parent
+  (`com.artenum:jrosetta`) that exists nowhere, which broke the reactor build until the stub was
+  forced. The stub also reproduces system scope's zero-transitive behaviour, sidestepping the
+  transitive-conflict class (cf. the fop-1.0 shadowing that Tier A hit).
+- **Runtime is unchanged.** `classpath.xml` still loads every one of these from `thirdparty/`; the
+  local install is a *build-time-only* mechanism. The parity harness confirms the 24 module jars are
+  byte-identical after the conversion (jar/maven dimensions green).
+
+The Tier-A `maven-dependency-plugin:copy` staging brings the Central jars into `thirdparty/` for
+runtime; the 11 local-installed jars are already there from `fetch-thirdparty.sh`, so they need no
+staging entry.
+
+**Deferred, deliberately:** JOGL/GlueGen conversion is technically done but those artifacts vanish
+with `opengl-removal.md`; whoever executes that removal should also drop their `install-file` lines
+and dependencies. `swing-gpu-surface` is installed under the consumer coordinate
+`cc.sosonline:swing-gpu-surface:0.1.0` (its source project declares
+`cc.sosonline.gpu:…:0.1.0-SNAPSHOT` — the mismatch is a known follow-up if it is ever published).
 
 ## Related
 
