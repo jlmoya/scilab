@@ -1,0 +1,25 @@
+# Dependabot configuration — intentionally disables automated dependency PRs.
+#
+# This fork manages its dependencies MANUALLY and deliberately:
+#   * third-party jars are pinned and installed locally by fetch-thirdparty.sh
+#     (some are not on Maven Central at all — see docs/design/systempath-removal.md);
+#   * available updates are surfaced on demand via versions-maven-plugin
+#     (`mvn versions:display-dependency-updates`, configured in scilab/pom.xml
+#     with a ruleset that filters pre-release / vendor noise and pins jcef);
+#   * a version bump is a reviewed change (e.g. help/JOGL stay pinned on purpose).
+#
+# Automated Dependabot version-bump PRs are therefore pure noise. This turns them
+# off for the Maven reactor. The wildcard `ignore` also suppresses Dependabot
+# SECURITY-update PRs for Maven; vulnerability ALERTS still appear (nothing is
+# hidden), they just do not auto-open PRs. If security PRs ever slip through
+# regardless, the definitive backstop is the repo's
+# Settings -> Code security -> "Dependabot security updates" toggle.
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/scilab"        # the Maven reactor root (scilab/pom.xml)
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 0 # disable version-update PRs for this ecosystem
+    ignore:
+      - dependency-name: "*"    # suppress version + security PRs for all Maven deps
