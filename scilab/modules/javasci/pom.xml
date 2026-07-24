@@ -177,6 +177,13 @@
       <artifactId>types</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- Several javasci tests import org.scilab.modules.commons.* — test scope only. -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

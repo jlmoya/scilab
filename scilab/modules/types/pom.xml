@@ -66,6 +66,15 @@
       <artifactId>localization</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- testSerialization.java exercises ScilabType serialization through
+         org.scilab.modules.commons helpers — test scope only (no cycle: commons
+         does not depend on types). -->
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>commons</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
