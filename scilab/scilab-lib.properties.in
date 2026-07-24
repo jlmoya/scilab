@@ -167,9 +167,10 @@ library.terminal.dir=${modules.dir}/terminal/${build.jar.dir}/
 library.terminal.src.dir=${modules.dir}/terminal/${library.src.path}
 library.terminal.name=org.scilab.modules.terminal.jar
 
-library.output_stream.dir=${modules.dir}/output_stream/${build.jar.dir}/
-library.output_stream.src.dir=${modules.dir}/output_stream/${library.src.path}
-library.output_stream.name=org.scilab.modules.output_stream.jar
+# output_stream is a native-only module — no Java jar is built or loaded (not in
+# etc/classpath.xml, no reactor POM, zero importers). Its dead library.* entries
+# (which pointed at an org.scilab.modules.output_stream.jar nothing produces) were
+# removed — register B1. scilab-lib.properties is not parity-gated (capture.py).
 
 library.preferences.dir=${modules.dir}/preferences/${build.jar.dir}/
 library.preferences.src.dir=${modules.dir}/preferences/${library.src.path}
