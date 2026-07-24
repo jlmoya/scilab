@@ -240,6 +240,12 @@
             <DYLD_LIBRARY_PATH>${scilab.test.native.libs}</DYLD_LIBRARY_PATH>
             <SCI>${scilab.test.sci.root}</SCI>
           </environmentVariables>
+          <!-- Force headless AWT so Graphics2D/ImageIO/font tests never depend on a
+               display (they pass in isolation but a windowed CI or -am reactor run can
+               fail otherwise). -->
+          <systemPropertyVariables>
+            <java.awt.headless>true</java.awt.headless>
+          </systemPropertyVariables>
           <!-- The 40 MIGRATED legacy tests under org.scilab.tests.* are native
                INTEGRATION tests: they System.loadLibrary("scilab") / embed the engine
                (javasci). libscilab's siblings link via ABSOLUTE /usr/local/lib/scilab/
