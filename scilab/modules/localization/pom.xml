@@ -126,7 +126,12 @@
                  own jar writer ultimately targets), and the file is never
                  run through Maven property interpolation at all, so
                  "${manifest.class-path}" survives as inert literal text
-                 instead of being (mis-)interpolated.
+                 instead of being (mis-)interpolated. (That specific
+                 "${manifest.class-path}" literal has since been dropped from
+                 every shipped manifest by register P2 — kept here only as the
+                 mechanism example; the manifestFile behaviour it illustrates
+                 is unchanged and still load-bearing for the vendor bytes and
+                 the frozen Implementation-Version below.)
 
                  IMPLEMENTATION-VERSION IS PRESENT, WITH A FROZEN VALUE — an
                  earlier version of this POM omitted it, and that was wrong.

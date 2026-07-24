@@ -268,7 +268,7 @@
                  Ant-built jar's META-INF/MANIFEST.MF
                  (unzip -p modules/commons/jar/org.scilab.modules.commons.jar
                  META-INF/MANIFEST.MF), never retyped: Specification-Vendor
-                 and Implementation-Vendor both carry the double-mangled
+                 and Implementation-Vendor both carried (now un-mangled to "è" by register P1) the double-mangled
                  "Ã¨" (bytes c3 83 c2 a8) that Ant's <property file> produces
                  by decoding scilab.properties's UTF-8 "è" (c3 a8) as
                  Latin-1 and re-encoding the result as UTF-8 — see

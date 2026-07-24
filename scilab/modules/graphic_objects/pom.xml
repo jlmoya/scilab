@@ -169,7 +169,7 @@
                  Ant-built jar's META-INF/MANIFEST.MF (unzip -p
                  modules/graphic_objects/jar/org.scilab.modules.graphic_objects.jar
                  META-INF/MANIFEST.MF), never retyped: Specification-Vendor
-                 and Implementation-Vendor both carry the double-mangled
+                 and Implementation-Vendor both carried (now un-mangled to "è" by register P1) the double-mangled
                  "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
                  fuller comment for the mechanism. Specification-Title carries
                  the literal, un-interpolated "${library.title}" token — see

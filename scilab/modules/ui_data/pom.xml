@@ -81,7 +81,7 @@
   where Ant's own jar places it (confirmed against modules/ui_data/jar/
   org.scilab.modules.ui_data.jar's actual manifest before extraction: live
   value there was "20260719 1729", a DSTAMP/TSTAMP pair). Vendor string
-  double-encoded ("Ã¨", bytes c3 83 c2 a8) — extracted, never retyped, same
+  double-encoded ("Ã¨", bytes c3 83 c2 a8) — extracted, never retyped (since un-mangled to "è" by register P1), same
   as every other module.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -173,7 +173,7 @@
                  Ant-built jar's META-INF/MANIFEST.MF (unzip -p
                  modules/ui_data/jar/org.scilab.modules.ui_data.jar
                  META-INF/MANIFEST.MF), never retyped: Specification-Vendor
-                 and Implementation-Vendor both carry the double-mangled
+                 and Implementation-Vendor both carried (now un-mangled to "è" by register P1) the double-mangled
                  "Ã¨" (bytes c3 83 c2 a8) — see modules/localization/pom.xml's
                  fuller comment for the mechanism. Implementation-Version is
                  present, frozen at the literal "00000000 0000", positioned
