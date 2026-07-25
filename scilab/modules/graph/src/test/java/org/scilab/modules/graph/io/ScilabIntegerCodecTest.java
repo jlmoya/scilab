@@ -16,6 +16,8 @@ package org.scilab.modules.graph.io;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,6 +25,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.scilab.modules.types.ScilabInteger;
 import org.scilab.modules.types.ScilabIntegerTypeEnum;
+import org.scilab.modules.types.ScilabList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -150,5 +153,94 @@ public class ScilabIntegerCodecTest {
         assertNotNull(decoded);
         assertEquals(new ScilabInteger(), decoded);                 // empty template
         assertNotEquals(new ScilabInteger((short) 200, true), decoded);
+    }
+
+    @Test
+    public void encodeThenDecodeUnsignedInt32RoundTrips() throws Exception {
+        // Exercises the sci_uint32 branch of the decode switch.
+        assertRoundTrips(new ScilabInteger(new int[][] {{10, 20}}, true), ScilabIntegerTypeEnum.sci_uint32);
+    }
+
+    @Test
+    public void encodeThenDecodeUnsignedInt16RoundTrips() throws Exception {
+        assertRoundTrips(new ScilabInteger(new short[][] {{100, 200}}, true), ScilabIntegerTypeEnum.sci_uint16);
+    }
+
+    @Test
+    public void encodeThenDecodeUnsignedInt64RoundTrips() throws Exception {
+        // The default branch of the switch, in its unsigned form.
+        assertRoundTrips(new ScilabInteger(new long[][] {{123456789012L}}, true), ScilabIntegerTypeEnum.sci_uint64);
+    }
+
+    @Test
+    public void binaryEncodeStoresTheObjectAndDecodeReturnsItFromTheStore() {
+        // In binary mode encode emits only a position marker and pushes the
+        // live object into the shared store; decode reads it straight back.
+        ScilabInteger original = new ScilabInteger(new int[][] {{7, -3}}, false);
+        ScilabList store = new ScilabList();
+        ScilabObjectCodec.enableBinarySerialization(store);
+        try {
+            mxCodec enc = new mxCodec();
+            Node node = codec().encode(enc, original);
+            assertEquals("true", ((Element) node).getAttribute("binary"));
+            assertEquals("0", ((Element) node).getAttribute("position"));
+            assertEquals(1, store.size());
+            assertSame(original, store.get(0));
+
+            Object decoded = codec().decode(enc, node, null);
+            assertSame(original, decoded);
+        } finally {
+            ScilabObjectCodec.disableBinarySerialization();
+        }
+    }
+
+    @Test
+    public void emptyMatrixDecodesToTheEmptyTemplate() throws Exception {
+        // height * width == 0 short-circuits before any data parsing.
+        Document doc = newDocument();
+        Element node = doc.createElement("ScilabInteger");
+        node.setAttribute("height", "0");
+        node.setAttribute("width", "0");
+        node.setAttribute("intPrecision", "sci_int32");
+
+        ScilabInteger decoded = (ScilabInteger) codec().decode(new mxCodec(), node, null);
+        assertNotNull(decoded);
+        assertEquals(new ScilabInteger(), decoded);
+    }
+
+    @Test
+    public void nonElementNodeDecodesToNull() throws Exception {
+        // A non-ELEMENT node trips UnrecognizeFormatException, caught before obj
+        // is ever assigned, so decode returns the null it started with.
+        Document doc = newDocument();
+        Node text = doc.createTextNode("not an element");
+        assertNull(codec().decode(new mxCodec(), text, null));
+    }
+
+    @Test
+    public void legacyPrecisionAttributeType32SignedIsHonoured() throws Exception {
+        // Pre-5.2.2 files carry a "precision" attribute (type8/16/32/64) instead
+        // of "intPrecision"; convertOldType maps it to the modern enum.
+        Document doc = newDocument();
+        Element node = scalarNode(doc, null, "-123456");
+        node.setAttribute("precision", "type32");
+
+        ScilabInteger decoded = (ScilabInteger) codec().decode(new mxCodec(), node, null);
+        assertEquals(ScilabIntegerTypeEnum.sci_int32, decoded.getPrec());
+        assertEquals(-123456L, decoded.getData()[0][0]);
+    }
+
+    @Test
+    public void legacyPrecisionType8WithBUnsignedDecodesAsUnsignedByte() throws Exception {
+        // The mere presence of the bUnsigned attribute selects the unsigned type.
+        Document doc = newDocument();
+        Element node = scalarNode(doc, null, "100");
+        node.setAttribute("precision", "type8");
+        node.setAttribute("bUnsigned", "true");
+
+        ScilabInteger decoded = (ScilabInteger) codec().decode(new mxCodec(), node, null);
+        assertEquals(ScilabIntegerTypeEnum.sci_uint8, decoded.getPrec());
+        assertTrue(decoded.isUnsigned());
+        assertEquals(100L, decoded.getData()[0][0]);
     }
 }

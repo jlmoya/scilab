@@ -62,4 +62,67 @@ public class ScilabJavaConstructorTest {
         assertThrows(ScilabJavaException.class,
                      () -> new ScilabJavaConstructor(NoDefault.class).invoke(new int[0]));
     }
+
+    /* ============================================================ extended coverage */
+
+    public static class VarargsCtor {
+        final int total;
+        public VarargsCtor(String label, int... nums) {
+            int t = 0;
+            for (int n : nums) {
+                t += n;
+            }
+            this.total = t;
+        }
+    }
+
+    public static class IntCtor {
+        final int value;
+        public IntCtor(int value) {
+            this.value = value;
+        }
+    }
+
+    public abstract static class AbstractCtor {
+        public AbstractCtor() { }
+        public abstract void go();
+    }
+
+    public static class BoomCtor {
+        public BoomCtor() {
+            throw new IllegalStateException("boom");
+        }
+    }
+
+    @Test
+    public void invokesAVarargsConstructorPackingTrailingArgs() throws ScilabJavaException {
+        int label = ScilabJavaObject.wrap("x");
+        int n1 = ScilabJavaObject.wrap(2);
+        int n2 = ScilabJavaObject.wrap(3);
+        Object built = new ScilabJavaConstructor(VarargsCtor.class).invoke(new int[] {label, n1, n2});
+        assertTrue(built instanceof VarargsCtor);
+        assertEquals(5, ((VarargsCtor) built).total, "the two trailing ints are packed into nums[]");
+    }
+
+    @Test
+    public void coercesAnIntegralDoubleToAnIntConstructor() throws ScilabJavaException {
+        int d = ScilabJavaObject.wrap(4.0);
+        Object built = new ScilabJavaConstructor(IntCtor.class).invoke(new int[] {d});
+        assertTrue(built instanceof IntCtor);
+        assertEquals(4, ((IntCtor) built).value, "an integral double is coerced to the int parameter");
+    }
+
+    @Test
+    public void anAbstractClassIsReportedAsNonInstantiable() {
+        // getConstructors() exposes the public no-arg constructor, but newInstance() on an
+        // abstract class raises InstantiationException, wrapped as ScilabJavaException.
+        assertThrows(ScilabJavaException.class,
+                     () -> new ScilabJavaConstructor(AbstractCtor.class).invoke(new int[0]));
+    }
+
+    @Test
+    public void aConstructorThatThrowsIsWrappedInScilabJavaException() {
+        assertThrows(ScilabJavaException.class,
+                     () -> new ScilabJavaConstructor(BoomCtor.class).invoke(new int[0]));
+    }
 }

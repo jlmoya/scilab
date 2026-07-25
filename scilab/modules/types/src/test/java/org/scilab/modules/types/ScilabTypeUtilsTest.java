@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
 
 import org.junit.jupiter.api.Test;
 
@@ -123,5 +125,174 @@ public class ScilabTypeUtilsTest {
         ByteBuffer tooSmall = ByteBuffer.allocate(2);
         ScilabTypeUtils.setPart(tooSmall, part);
         assertArrayEquals(new byte[] {0, 0}, tooSmall.array());
+    }
+
+    // ----- swaped (row-major) equality paths -----
+
+    @Test
+    public void equalsDoubleSwapedBufferIsRowMajor() {
+        // When the data is flagged swaped, the buffer is compared row-by-row:
+        // buffer must be data flattened row-major.
+        double[][] data = {{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}};
+        DoubleBuffer rowMajor = DoubleBuffer.wrap(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
+        assertTrue(ScilabTypeUtils.equalsDouble(rowMajor, false, data, true));
+
+        DoubleBuffer wrong = DoubleBuffer.wrap(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 7.0});
+        assertFalse(ScilabTypeUtils.equalsDouble(wrong, false, data, true));
+    }
+
+    @Test
+    public void equalsDoubleMatrixFirstDispatchDelegatesToBuffer() {
+        // buffer arg is the matrix, data arg is the buffer: the matrix-first overloads
+        // just swap and reuse the buffer engine.
+        double[][] matrix = {{1.0, 2.0}, {3.0, 4.0}};
+        DoubleBuffer columnMajor = DoubleBuffer.wrap(new double[] {1.0, 3.0, 2.0, 4.0});
+        assertTrue(ScilabTypeUtils.equalsDouble(matrix, false, columnMajor, false));
+    }
+
+    @Test
+    public void equalsIntegerByteSwapedBufferIsRowMajor() {
+        byte[][] data = {{1, 2}, {3, 4}};
+        ByteBuffer rowMajor = ByteBuffer.wrap(new byte[] {1, 2, 3, 4});
+        assertTrue(ScilabTypeUtils.equalsInteger(rowMajor, false, data, true));
+        ByteBuffer wrong = ByteBuffer.wrap(new byte[] {1, 2, 3, 9});
+        assertFalse(ScilabTypeUtils.equalsInteger(wrong, false, data, true));
+    }
+
+    @Test
+    public void equalsIntegerShortColumnMajorAndSwaped() {
+        short[][] data = {{10, 20}, {30, 40}};
+        // column-major
+        ShortBuffer columnMajor = ShortBuffer.wrap(new short[] {10, 30, 20, 40});
+        assertTrue(ScilabTypeUtils.equalsInteger(columnMajor, false, data, false));
+        // swaped -> row-major
+        ShortBuffer rowMajor = ShortBuffer.wrap(new short[] {10, 20, 30, 40});
+        assertTrue(ScilabTypeUtils.equalsInteger(rowMajor, false, data, true));
+    }
+
+    @Test
+    public void equalsIntegerIntSwapedBufferIsRowMajor() {
+        int[][] data = {{10, 20}, {30, 40}};
+        IntBuffer rowMajor = IntBuffer.wrap(new int[] {10, 20, 30, 40});
+        assertTrue(ScilabTypeUtils.equalsInteger(rowMajor, false, data, true));
+    }
+
+    @Test
+    public void equalsIntegerLongColumnMajorAndSwaped() {
+        long[][] data = {{10L, 20L}, {30L, 40L}};
+        LongBuffer columnMajor = LongBuffer.wrap(new long[] {10L, 30L, 20L, 40L});
+        assertTrue(ScilabTypeUtils.equalsInteger(columnMajor, false, data, false));
+        LongBuffer rowMajor = LongBuffer.wrap(new long[] {10L, 20L, 30L, 40L});
+        assertTrue(ScilabTypeUtils.equalsInteger(rowMajor, false, data, true));
+        LongBuffer wrong = LongBuffer.wrap(new long[] {10L, 20L, 30L, 99L});
+        assertFalse(ScilabTypeUtils.equalsInteger(wrong, false, data, true));
+    }
+
+    @Test
+    public void equalsIntegerMatrixFirstDispatchForShortAndLong() {
+        short[][] shortData = {{1, 2}, {3, 4}};
+        ShortBuffer shortBuf = ShortBuffer.wrap(new short[] {1, 3, 2, 4});
+        assertTrue(ScilabTypeUtils.equalsInteger(shortData, false, shortBuf, false));
+
+        long[][] longData = {{1L, 2L}, {3L, 4L}};
+        LongBuffer longBuf = LongBuffer.wrap(new long[] {1L, 3L, 2L, 4L});
+        assertTrue(ScilabTypeUtils.equalsInteger(longData, false, longBuf, false));
+    }
+
+    @Test
+    public void equalsIntegerBufferToBuffer() {
+        ByteBuffer a = ByteBuffer.wrap(new byte[] {1, 2, 3});
+        ByteBuffer same = ByteBuffer.wrap(new byte[] {1, 2, 3});
+        ByteBuffer other = ByteBuffer.wrap(new byte[] {1, 2, 4});
+        assertTrue(ScilabTypeUtils.equalsInteger(a, false, same, false));
+        assertFalse(ScilabTypeUtils.equalsInteger(a, false, other, false));
+    }
+
+    // ----- boolean equality across representations -----
+
+    @Test
+    public void equalsBooleanBufferToMatrixColumnMajorAndSwaped() {
+        boolean[][] data = {{true, false}, {false, true}};
+        // column-major: index i + rows*j -> [T,F,F,T] = [1,0,0,1]
+        IntBuffer columnMajor = IntBuffer.wrap(new int[] {1, 0, 0, 1});
+        assertTrue(ScilabTypeUtils.equalsBoolean(columnMajor, false, data, false));
+        // swaped -> row-major: index j + cols*i -> [T,F,F,T] = [1,0,0,1] here too
+        assertTrue(ScilabTypeUtils.equalsBoolean(IntBuffer.wrap(new int[] {1, 0, 0, 1}), false, data, true));
+        // a genuine mismatch
+        assertFalse(ScilabTypeUtils.equalsBoolean(IntBuffer.wrap(new int[] {1, 1, 0, 1}), false, data, false));
+    }
+
+    @Test
+    public void equalsBooleanMatrixFirstAndBufferToBuffer() {
+        boolean[][] data = {{true, false}, {false, true}};
+        IntBuffer columnMajor = IntBuffer.wrap(new int[] {1, 0, 0, 1});
+        // matrix-first dispatch
+        assertTrue(ScilabTypeUtils.equalsBoolean(data, false, columnMajor, false));
+        // buffer-to-buffer
+        assertTrue(ScilabTypeUtils.equalsBoolean(IntBuffer.wrap(new int[] {1, 0}), false, IntBuffer.wrap(new int[] {1, 0}), false));
+    }
+
+    // ----- setBuffer / setPart round trips for the remaining primitive widths -----
+
+    @Test
+    public void setPartThenSetBufferRoundTripsBytes() {
+        byte[][] part = {{1, 2}, {3, 4}};
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        ScilabTypeUtils.setPart(buffer, part);
+        assertArrayEquals(new byte[] {1, 2, 3, 4}, buffer.array());
+
+        byte[][] recovered = new byte[2][2];
+        ScilabTypeUtils.setBuffer(recovered, buffer);
+        assertArrayEquals(part[0], recovered[0]);
+        assertArrayEquals(part[1], recovered[1]);
+    }
+
+    @Test
+    public void setPartThenSetBufferRoundTripsShorts() {
+        short[][] part = {{10, 20}, {30, 40}};
+        ShortBuffer buffer = ShortBuffer.allocate(4);
+        ScilabTypeUtils.setPart(buffer, part);
+        assertArrayEquals(new short[] {10, 20, 30, 40}, buffer.array());
+
+        short[][] recovered = new short[2][2];
+        ScilabTypeUtils.setBuffer(recovered, buffer);
+        assertArrayEquals(part[0], recovered[0]);
+        assertArrayEquals(part[1], recovered[1]);
+    }
+
+    @Test
+    public void setPartThenSetBufferRoundTripsLongs() {
+        long[][] part = {{100L, 200L}, {300L, 400L}};
+        LongBuffer buffer = LongBuffer.allocate(4);
+        ScilabTypeUtils.setPart(buffer, part);
+        assertArrayEquals(new long[] {100L, 200L, 300L, 400L}, buffer.array());
+
+        long[][] recovered = new long[2][2];
+        ScilabTypeUtils.setBuffer(recovered, buffer);
+        assertArrayEquals(part[0], recovered[0]);
+        assertArrayEquals(part[1], recovered[1]);
+    }
+
+    @Test
+    public void setPartThenSetBufferRoundTripsBooleansColumnMajor() {
+        // The boolean setPart/setBuffer pair stores column-major (index i + cols*j).
+        boolean[][] part = {{true, false}, {false, true}};
+        IntBuffer buffer = IntBuffer.allocate(4);
+        ScilabTypeUtils.setPart(buffer, part);
+
+        boolean[][] recovered = new boolean[2][2];
+        ScilabTypeUtils.setBuffer(recovered, buffer);
+        assertArrayEquals(part[0], recovered[0]);
+        assertArrayEquals(part[1], recovered[1]);
+    }
+
+    @Test
+    public void setBufferIsNoOpWhenBufferTooSmall() {
+        // The double variant guards on r*c <= capacity, leaving the target untouched.
+        double[][] target = {{9.0, 9.0}, {9.0, 9.0}};
+        DoubleBuffer tooSmall = DoubleBuffer.allocate(2);
+        ScilabTypeUtils.setBuffer(target, tooSmall);
+        assertArrayEquals(new double[] {9.0, 9.0}, target[0], 0.0);
+        assertArrayEquals(new double[] {9.0, 9.0}, target[1], 0.0);
     }
 }

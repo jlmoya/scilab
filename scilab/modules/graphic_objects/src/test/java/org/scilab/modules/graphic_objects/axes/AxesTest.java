@@ -22,6 +22,8 @@ import org.scilab.modules.graphic_objects.axes.Camera.ViewType;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject.UpdateStatus;
 
+import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.*;
+
 /**
  * Hermetic unit tests for the {@link Axes} graphic object. These drive the
  * plain Java model directly (no GraphicController), covering construction
@@ -213,5 +215,162 @@ public class AxesTest {
         // The axes array is deep-copied: mutating the clone leaves the source.
         copy.setXAxisVisible(false);
         assertTrue(a.getXAxisVisible());
+    }
+
+    /* ---------------- getPropertyFromName resolution ---------------- */
+
+    // Asserts a property id resolves to the enum constant of the given name.
+    // The Axes.AxesProperty enum is private, so identity is checked through the
+    // public Enum#toString (which is the constant name) rather than by reference.
+    private static void assertResolves(int propertyId, String expectedName) {
+        Object p = new Axes().getPropertyFromName(propertyId);
+        assertNotNull(p, "id " + propertyId + " resolved to null");
+        assertTrue(p.getClass().isEnum(), "id " + propertyId + " did not resolve to an enum");
+        assertEquals(expectedName, p.toString(), "id " + propertyId + " resolved to the wrong constant");
+    }
+
+    @Test
+    public void getPropertyFromNameResolvesTheAxisFamilies() {
+        // X axis.
+        assertResolves(__GO_X_AXIS_VISIBLE__, "XAXISVISIBLE");
+        assertResolves(__GO_X_AXIS_REVERSE__, "XAXISREVERSE");
+        assertResolves(__GO_X_AXIS_GRID_COLOR__, "XAXISGRIDCOLOR");
+        assertResolves(__GO_X_AXIS_GRID_THICKNESS__, "XAXISGRIDTHICKNESS");
+        assertResolves(__GO_X_AXIS_GRID_STYLE__, "XAXISGRIDSTYLE");
+        assertResolves(__GO_X_AXIS_LABEL__, "XAXISLABEL");
+        assertResolves(__GO_X_AXIS_LOCATION__, "XAXISLOCATION");
+        assertResolves(__GO_X_AXIS_LOG_FLAG__, "XAXISLOGFLAG");
+        assertResolves(__GO_X_AXIS_TICKS__, "XAXISTICKS");
+        assertResolves(__GO_X_AXIS_FORMAT__, "XAXISFORMAT");
+        assertResolves(__GO_X_AXIS_ST_FACTORS__, "XAXISSTFACTORS");
+        assertResolves(__GO_X_AXIS_AUTO_TICKS__, "XAXISAUTOTICKS");
+        assertResolves(__GO_X_AXIS_NUMBER_TICKS__, "XAXISNUMBERTICKS");
+        assertResolves(__GO_X_AXIS_SUBTICKS__, "XAXISSUBTICKS");
+        // Y axis (spot sample).
+        assertResolves(__GO_Y_AXIS_VISIBLE__, "YAXISVISIBLE");
+        assertResolves(__GO_Y_AXIS_GRID_COLOR__, "YAXISGRIDCOLOR");
+        assertResolves(__GO_Y_AXIS_LOCATION__, "YAXISLOCATION");
+        assertResolves(__GO_Y_AXIS_LOG_FLAG__, "YAXISLOGFLAG");
+        // Z axis (spot sample).
+        assertResolves(__GO_Z_AXIS_VISIBLE__, "ZAXISVISIBLE");
+        assertResolves(__GO_Z_AXIS_GRID_COLOR__, "ZAXISGRIDCOLOR");
+        assertResolves(__GO_Z_AXIS_LOCATION__, "ZAXISLOCATION");
+        assertResolves(__GO_Z_AXIS_LOG_FLAG__, "ZAXISLOGFLAG");
+    }
+
+    @Test
+    public void getPropertyFromNameResolvesTheGeneralAxesProperties() {
+        assertResolves(__GO_GRID_POSITION__, "GRIDPOSITION");
+        assertResolves(__GO_TITLE__, "TITLE");
+        assertResolves(__GO_AUTO_CLEAR__, "AUTOCLEAR");
+        assertResolves(__GO_FILLED__, "FILLED");
+        assertResolves(__GO_BACKGROUND__, "BACKGROUND");
+        assertResolves(__GO_MARGINS__, "MARGINS");
+        assertResolves(__GO_AUTO_MARGINS__, "AUTO_MARGINS");
+        assertResolves(__GO_AXES_BOUNDS__, "AXESBOUNDS");
+        assertResolves(__GO_HIDDEN_COLOR__, "HIDDENCOLOR");
+        assertResolves(__GO_COLORMAP__, "COLORMAP");
+        assertResolves(__GO_COLORMAP_SIZE__, "COLORMAPSIZE");
+        assertResolves(__GO_AUTO_SUBTICKS__, "AUTOSUBTICKS");
+        assertResolves(__GO_FONT_STYLE__, "FONT_STYLE");
+        assertResolves(__GO_FONT_SIZE__, "FONT_SIZE");
+        assertResolves(__GO_FONT_COLOR__, "FONT_COLOR");
+        assertResolves(__GO_FONT_FRACTIONAL__, "FONT_FRACTIONAL");
+    }
+
+    @Test
+    public void getPropertyFromNameRoutesToSubObjectEnums() {
+        // Camera-owned view properties.
+        assertResolves(__GO_VIEW__, "VIEW");
+        assertResolves(__GO_ISOVIEW__, "ISOVIEW");
+        assertResolves(__GO_CUBE_SCALING__, "CUBESCALING");
+        // Box-owned geometry properties.
+        assertResolves(__GO_BOX_TYPE__, "BOX");
+        assertResolves(__GO_DATA_BOUNDS__, "DATABOUNDS");
+        assertResolves(__GO_X_TIGHT_LIMITS__, "XTIGHTLIMITS");
+        assertResolves(__GO_AUTO_SCALE__, "AUTOSCALE");
+        // Line / mark / clippable / arc.
+        assertResolves(__GO_LINE_MODE__, "MODE");
+        assertResolves(__GO_MARK_STYLE__, "STYLE");
+        assertResolves(__GO_CLIP_STATE__, "CLIPSTATE");
+        assertResolves(__GO_ARC_DRAWING_METHOD__, "ARCDRAWINGMETHOD");
+    }
+
+    @Test
+    public void getPropertyFromNameFallsThroughToGraphicObjectForGenericProperties() {
+        // A non-Axes property is delegated to the GraphicObject superclass.
+        Object p = new Axes().getPropertyFromName(__GO_VISIBLE__);
+        assertNotNull(p);
+        assertEquals("VISIBLE", p.toString());
+    }
+
+    @Test
+    public void getPropertyFromNameIsStableAndDistinct() {
+        Axes a = new Axes();
+        // Same id resolves to the same singleton enum constant every time.
+        assertSame(a.getPropertyFromName(__GO_FILLED__), a.getPropertyFromName(__GO_FILLED__));
+        // Different ids never collapse to the same constant.
+        assertNotSame(a.getPropertyFromName(__GO_FILLED__), a.getPropertyFromName(__GO_BACKGROUND__));
+    }
+
+    /* ---------- getProperty / setProperty dispatch round-trips ---------- */
+
+    // Resolves a property by id and round-trips a scalar through the generic
+    // setProperty/getProperty dispatch, exercising the big switch arms that the
+    // typed setters above reach only directly.
+    private void assertScalarRoundTrip(int propertyId, Object value) {
+        Axes a = new Axes();
+        Object prop = a.getPropertyFromName(propertyId);
+        a.setProperty(prop, value);
+        assertEquals(value, a.getProperty(prop), "round-trip mismatch for id " + propertyId);
+    }
+
+    @Test
+    public void booleanPropertiesRoundTripThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_X_AXIS_VISIBLE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_X_AXIS_REVERSE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_X_AXIS_LOG_FLAG__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Y_AXIS_VISIBLE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Z_AXIS_VISIBLE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_FILLED__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_AUTO_CLEAR__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_AUTO_MARGINS__, Boolean.FALSE);
+    }
+
+    @Test
+    public void integerPropertiesRoundTripThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_X_AXIS_GRID_COLOR__, Integer.valueOf(7));
+        assertScalarRoundTrip(__GO_BACKGROUND__, Integer.valueOf(9));
+        assertScalarRoundTrip(__GO_GRID_POSITION__, Integer.valueOf(0));
+        assertScalarRoundTrip(__GO_X_AXIS_LOCATION__, Integer.valueOf(1));
+        // Box- and Camera- and Arc-routed integer properties.
+        assertScalarRoundTrip(__GO_BOX_TYPE__, Integer.valueOf(1));
+        assertScalarRoundTrip(__GO_VIEW__, Integer.valueOf(1));
+        assertScalarRoundTrip(__GO_ARC_DRAWING_METHOD__, Integer.valueOf(0));
+    }
+
+    @Test
+    public void doublePropertyRoundTripsThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_X_AXIS_GRID_THICKNESS__, Double.valueOf(2.5));
+    }
+
+    @Test
+    public void arrayPropertiesRoundTripThroughGenericDispatch() {
+        Axes a = new Axes();
+
+        Object margins = a.getPropertyFromName(__GO_MARGINS__);
+        Double[] m = {0.1, 0.2, 0.3, 0.4};
+        a.setProperty(margins, m);
+        assertArrayEquals(m, (Double[]) a.getProperty(margins));
+
+        Object axesBounds = a.getPropertyFromName(__GO_AXES_BOUNDS__);
+        Double[] ab = {0.0, 0.0, 1.0, 1.0};
+        a.setProperty(axesBounds, ab);
+        assertArrayEquals(ab, (Double[]) a.getProperty(axesBounds));
+
+        Object dataBounds = a.getPropertyFromName(__GO_DATA_BOUNDS__);
+        Double[] db = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0};
+        a.setProperty(dataBounds, db);
+        assertArrayEquals(db, (Double[]) a.getProperty(dataBounds));
     }
 }

@@ -25,11 +25,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.jupiter.api.Test;
 import org.scilab.modules.graph.io.ScilabObjectCodec.UnrecognizeFormatException;
+import org.scilab.modules.types.ScilabBoolean;
+import org.scilab.modules.types.ScilabDouble;
+import org.scilab.modules.types.ScilabInteger;
 import org.scilab.modules.types.ScilabList;
 import org.scilab.modules.types.ScilabString;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+
+import com.mxgraph.io.mxCodecRegistry;
 
 /**
  * Hermetic unit tests for {@link ScilabObjectCodec}: the shared static
@@ -167,5 +172,28 @@ public class ScilabObjectCodecTest {
         UnrecognizeFormatException wrapped = new UnrecognizeFormatException(cause);
         assertSame(cause, wrapped.getCause());
         assertNull(new UnrecognizeFormatException().getCause());
+    }
+
+    /*
+     * ----- register() -----
+     */
+
+    @Test
+    public void registerPopulatesTheCodecRegistryWithTheScalarCodecs() {
+        // register() constructs and registers one codec per Scilab scalar type.
+        // The registry keys each codec under mxCodecRegistry.getName(template),
+        // so we resolve with that exact same name computation. Asserting the
+        // concrete subclass (not a bare mxObjectCodec) proves register() ran and
+        // not the registry's reflective auto-registration fallback.
+        ScilabObjectCodec.register();
+
+        assertTrue(mxCodecRegistry.getCodec(mxCodecRegistry.getName(new ScilabString()))
+                   instanceof ScilabStringCodec);
+        assertTrue(mxCodecRegistry.getCodec(mxCodecRegistry.getName(new ScilabBoolean()))
+                   instanceof ScilabBooleanCodec);
+        assertTrue(mxCodecRegistry.getCodec(mxCodecRegistry.getName(new ScilabDouble()))
+                   instanceof ScilabDoubleCodec);
+        assertTrue(mxCodecRegistry.getCodec(mxCodecRegistry.getName(new ScilabInteger()))
+                   instanceof ScilabIntegerCodec);
     }
 }

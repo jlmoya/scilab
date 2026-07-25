@@ -16,12 +16,15 @@ package org.scilab.modules.graph.io;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.jupiter.api.Test;
 import org.scilab.modules.types.ScilabBoolean;
+import org.scilab.modules.types.ScilabList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -127,5 +130,44 @@ public class ScilabBooleanCodecTest {
 
         ScilabBoolean decoded = (ScilabBoolean) codec().decode(new mxCodec(), node, null);
         assertTrue(decoded.getElement(0, 0));
+    }
+
+    @Test
+    public void binaryEncodeStoresTheObjectAndDecodeReturnsItFromTheStore() {
+        ScilabBoolean original = new ScilabBoolean(new boolean[][] {{true, false}});
+        ScilabList store = new ScilabList();
+        ScilabObjectCodec.enableBinarySerialization(store);
+        try {
+            mxCodec enc = new mxCodec();
+            Node node = codec().encode(enc, original);
+            assertEquals("true", ((Element) node).getAttribute("binary"));
+            assertEquals("0", ((Element) node).getAttribute("position"));
+            assertEquals(1, store.size());
+            assertSame(original, store.get(0));
+
+            Object decoded = codec().decode(enc, node, null);
+            assertSame(original, decoded);
+        } finally {
+            ScilabObjectCodec.disableBinarySerialization();
+        }
+    }
+
+    @Test
+    public void emptyMatrixDecodesToTheEmptyTemplate() throws Exception {
+        Document doc = newDocument();
+        Element node = doc.createElement("ScilabBoolean");
+        node.setAttribute("height", "0");
+        node.setAttribute("width", "0");
+
+        ScilabBoolean decoded = (ScilabBoolean) codec().decode(new mxCodec(), node, null);
+        assertNotNull(decoded);
+        assertEquals(new ScilabBoolean(), decoded);
+    }
+
+    @Test
+    public void nonElementNodeDecodesToNull() throws Exception {
+        Document doc = newDocument();
+        Node text = doc.createTextNode("not an element");
+        assertNull(codec().decode(new mxCodec(), text, null));
     }
 }

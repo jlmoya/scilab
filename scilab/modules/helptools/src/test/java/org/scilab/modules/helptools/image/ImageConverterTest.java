@@ -19,6 +19,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import javax.swing.Icon;
@@ -86,5 +87,64 @@ public class ImageConverterTest {
         assertTrue(ImageConverter.convertIconToPNG(new BlankIcon(), out));
         assertTrue(out.isFile());
         assertTrue(out.length() > 0, "a PNG should have been written");
+    }
+
+    // ---- copyImageFile (static) ----------------------------------------
+
+    @Test
+    public void copyImageFileCreatesDestinationWithIdenticalContent(@TempDir Path dir) throws IOException {
+        File src = new File(dir.toFile(), "src.png");
+        byte[] payload = {1, 2, 3, 4, 5};
+        Files.write(src.toPath(), payload);
+
+        File destDir = new File(dir.toFile(), "dest");
+        assertTrue(destDir.mkdir());
+
+        ImageConverter.copyImageFile(src, destDir.getAbsolutePath());
+
+        File copied = new File(destDir, "src.png");
+        assertTrue(copied.isFile(), "the image must be copied into the destination directory");
+        assertArrayEquals(payload, Files.readAllBytes(copied.toPath()));
+    }
+
+    @Test
+    public void copyImageFileSkipsWhenDestinationIsNewer(@TempDir Path dir) throws IOException {
+        File src = new File(dir.toFile(), "src.png");
+        Files.write(src.toPath(), new byte[] {9, 9});
+
+        File destDir = new File(dir.toFile(), "dest");
+        assertTrue(destDir.mkdir());
+        File dest = new File(destDir, "src.png");
+        byte[] original = {7, 7, 7};
+        Files.write(dest.toPath(), original);
+
+        // Destination strictly newer than the source => the copy is a no-op.
+        assertTrue(src.setLastModified(1_000L));
+        assertTrue(dest.setLastModified(5_000_000L));
+
+        ImageConverter.copyImageFile(src, destDir.getAbsolutePath());
+
+        assertArrayEquals(original, Files.readAllBytes(dest.toPath()),
+                          "an up-to-date destination must not be overwritten");
+    }
+
+    @Test
+    public void copyImageFileOverwritesWhenSourceIsNewer(@TempDir Path dir) throws IOException {
+        File src = new File(dir.toFile(), "src.png");
+        byte[] fresh = {4, 2};
+        Files.write(src.toPath(), fresh);
+
+        File destDir = new File(dir.toFile(), "dest");
+        assertTrue(destDir.mkdir());
+        File dest = new File(destDir, "src.png");
+        Files.write(dest.toPath(), new byte[] {0, 0, 0, 0});
+
+        // Source strictly newer => the stale destination is refreshed.
+        assertTrue(dest.setLastModified(1_000L));
+        assertTrue(src.setLastModified(5_000_000L));
+
+        ImageConverter.copyImageFile(src, destDir.getAbsolutePath());
+
+        assertArrayEquals(fresh, Files.readAllBytes(dest.toPath()));
     }
 }

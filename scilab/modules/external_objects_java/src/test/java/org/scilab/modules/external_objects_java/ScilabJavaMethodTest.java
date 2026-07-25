@@ -73,4 +73,60 @@ public class ScilabJavaMethodTest {
         assertEquals("foobar", ret);
         assertSame(String.class, returnType[0]);
     }
+
+    /* ============================================================ extended coverage */
+
+    public static class VarargsHost {
+        public static String join(String sep, Object... parts) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < parts.length; i++) {
+                if (i > 0) {
+                    sb.append(sep);
+                }
+                sb.append(parts[i]);
+            }
+            return sb.toString();
+        }
+    }
+
+    public static class ThrowingHost {
+        public void boom() {
+            throw new IllegalStateException("kaboom");
+        }
+    }
+
+    @Test
+    public void callReportsEachPrimitiveReturnType() throws ScilabJavaException {
+        Class[] rt = new Class[1];
+        ScilabJavaMethod.call("longValue", Long.class, 7L, rt, new Object[0], new Class[0]);
+        assertSame(long.class, rt[0]);
+        ScilabJavaMethod.call("floatValue", Float.class, 1.5f, rt, new Object[0], new Class[0]);
+        assertSame(float.class, rt[0]);
+        ScilabJavaMethod.call("doubleValue", Double.class, 2.5, rt, new Object[0], new Class[0]);
+        assertSame(double.class, rt[0]);
+        ScilabJavaMethod.call("shortValue", Short.class, (short) 3, rt, new Object[0], new Class[0]);
+        assertSame(short.class, rt[0]);
+        ScilabJavaMethod.call("byteValue", Byte.class, (byte) 4, rt, new Object[0], new Class[0]);
+        assertSame(byte.class, rt[0]);
+        ScilabJavaMethod.call("booleanValue", Boolean.class, Boolean.TRUE, rt, new Object[0], new Class[0]);
+        assertSame(boolean.class, rt[0]);
+        ScilabJavaMethod.call("charValue", Character.class, 'z', rt, new Object[0], new Class[0]);
+        assertSame(char.class, rt[0]);
+    }
+
+    @Test
+    public void callPacksAndInvokesAVarargsMethod() throws ScilabJavaException {
+        Class[] rt = new Class[1];
+        Object ret = ScilabJavaMethod.call("join", VarargsHost.class, null, rt,
+                     new Object[] {"-", "a", "b"}, new Class[] {String.class, String.class, String.class});
+        assertEquals("a-b", ret, "trailing args are packed into the varargs array and joined");
+        assertSame(String.class, rt[0]);
+    }
+
+    @Test
+    public void callWrapsAThrownExceptionInScilabJavaException() {
+        assertThrows(ScilabJavaException.class,
+                     () -> ScilabJavaMethod.call("boom", ThrowingHost.class, new ThrowingHost(), new Class[1],
+                             new Object[0], new Class[0]));
+    }
 }

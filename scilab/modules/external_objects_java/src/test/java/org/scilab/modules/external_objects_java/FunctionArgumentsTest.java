@@ -298,4 +298,42 @@ public class FunctionArgumentsTest {
                      () -> FunctionArguments.findConstructor(OnlyString.class.getConstructors(),
                              new Class[] {Integer.class}, new Object[] {5}));
     }
+
+    /* ============================================================ extended coverage */
+
+    public static class Overloaded {
+        public String pick(Object o) {
+            return "object";
+        }
+        public String pick(Number n) {
+            return "number";
+        }
+    }
+
+    public static class VHost {
+        public String v(Object... xs) {
+            return xs == null ? "null" : "n=" + xs.length;
+        }
+    }
+
+    @Test
+    public void findMethodPrefersTheNearerSupertypeByDerivationDistance() throws Exception {
+        MethodDescriptor[] d = descriptorsOf(Overloaded.class);
+        // Integer -> Number is distance 2, Integer -> Object is distance 3, so pick(Number) wins.
+        // This drives the superclass-walking loop in dist() over more than one iteration.
+        Object[] res = FunctionArguments.findMethod("pick", d, new Class[] {Integer.class}, new Object[] {Integer.valueOf(1)});
+        Method m = (Method) res[0];
+        assertArrayEquals(new Class[] {Number.class}, m.getParameterTypes(),
+                          "the closest supertype overload is chosen");
+    }
+
+    @Test
+    public void findMethodCollapsesALoneNullArgumentForAVarargsMethod() throws Exception {
+        MethodDescriptor[] d = descriptorsOf(VHost.class);
+        Object[] res = FunctionArguments.findMethod("v", d, new Class[] {null}, new Object[] {null});
+        assertEquals(2, res.length, "a varargs match returns {method, repackaged args}");
+        Object[] newArgs = (Object[]) res[1];
+        assertEquals(1, newArgs.length);
+        assertNull(newArgs[0], "a single null argument collapses to a null varargs array");
+    }
 }

@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -97,5 +98,71 @@ public class ScilabJarCreatorTest {
         assertThrows(ScilabJavaException.class,
                      () -> ScilabJarCreator.createJarArchive(badJar.toString(),
                              new String[] {src.toString()}, "", null, false));
+    }
+
+    /* ============================================================ extended coverage */
+
+    @Test
+    public void keepsAbsolutePathsWhenRequested(@TempDir Path tmp) throws Exception {
+        Path a = writeFile(tmp.resolve("deep/dir/a.txt"), "A");
+        Path jar = tmp.resolve("abs.jar");
+        // No root + keepAbsolutePaths=true: the entry name mirrors the file's absolute path.
+        int rc = ScilabJarCreator.createJarArchive(jar.toString(), new String[] {a.toString()}, "", null, true);
+        assertEquals(0, rc);
+
+        try (JarFile jf = new JarFile(jar.toFile())) {
+            boolean found = jf.stream().anyMatch(e -> !e.isDirectory() && e.getName().endsWith("a.txt"));
+            assertTrue(found, "an absolute-path entry ending in a.txt must be present");
+        }
+    }
+
+    @Test
+    public void usesAProvidedManifestFile(@TempDir Path tmp) throws Exception {
+        Path src = tmp.resolve("src");
+        writeFile(src.resolve("a.txt"), "A");
+        Path manifest = tmp.resolve("MyManifest.MF");
+        Files.write(manifest, "Manifest-Version: 1.0\r\nCustom-Key: custom-value\r\n\r\n".getBytes(UTF_8));
+
+        Path jar = tmp.resolve("withmanifest.jar");
+        int rc = ScilabJarCreator.createJarArchive(jar.toString(), new String[] {src.toString()}, "", manifest.toString(), false);
+        assertEquals(0, rc);
+
+        try (JarFile jf = new JarFile(jar.toFile())) {
+            assertNotNull(jf.getManifest());
+            assertEquals("custom-value", jf.getManifest().getMainAttributes().getValue("Custom-Key"),
+                         "the supplied manifest's attributes are carried into the jar");
+        }
+    }
+
+    @Test
+    public void computesTheCommonRootAcrossMultipleExplicitFiles(@TempDir Path tmp) throws Exception {
+        Path root = tmp.resolve("proj");
+        Path a = writeFile(root.resolve("x/a.txt"), "1");
+        Path b = writeFile(root.resolve("y/b.txt"), "2");
+        Path jar = tmp.resolve("common.jar");
+        // Two explicit files, no root, not keepAbsolute: getCommonPath() must derive "proj"
+        // and relativize both entries against it.
+        int rc = ScilabJarCreator.createJarArchive(jar.toString(),
+                 new String[] {a.toString(), b.toString()}, "", null, false);
+        assertEquals(0, rc);
+
+        try (JarFile jf = new JarFile(jar.toFile())) {
+            assertArrayEquals("1".getBytes(UTF_8), entryBytes(jf, "x/a.txt"));
+            assertArrayEquals("2".getBytes(UTF_8), entryBytes(jf, "y/b.txt"));
+        }
+    }
+
+    @Test
+    public void jarsASingleFileUsingItsParentAsTheRoot(@TempDir Path tmp) throws Exception {
+        Path a = writeFile(tmp.resolve("solo/a.txt"), "SOLO");
+        Path jar = tmp.resolve("single.jar");
+        // A single non-directory path with no root: getCommonPath() returns the file's parent,
+        // so the entry name is just the bare file name.
+        int rc = ScilabJarCreator.createJarArchive(jar.toString(), new String[] {a.toString()}, "", null, false);
+        assertEquals(0, rc);
+
+        try (JarFile jf = new JarFile(jar.toFile())) {
+            assertArrayEquals("SOLO".getBytes(UTF_8), entryBytes(jf, "a.txt"));
+        }
     }
 }

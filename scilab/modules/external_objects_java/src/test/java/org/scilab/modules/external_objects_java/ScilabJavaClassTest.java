@@ -87,4 +87,15 @@ public class ScilabJavaClassTest {
         int notAClass = ScilabJavaObject.wrap("just a string");
         assertThrows(ScilabJavaException.class, () -> ScilabJavaClass.newInstance(notAClass, new int[0]));
     }
+
+    @Test
+    public void newInstanceWithAnArgumentInvokesTheMatchingConstructor() throws ScilabJavaException {
+        ScilabJavaClass c = new ScilabJavaClass(StringBuilder.class);
+        int resultId = ScilabJavaClass.newInstance(c.id, new int[] {ScilabJavaObject.wrap("seed")});
+
+        assertTrue(ScilabJavaObject.isValidJavaObject(resultId));
+        Object built = ScilabJavaObject.arraySJO[resultId].object;
+        assertTrue(built instanceof StringBuilder, "the StringBuilder(String) constructor is selected");
+        assertEquals("seed", built.toString());
+    }
 }

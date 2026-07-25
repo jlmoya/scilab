@@ -25,9 +25,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.scilab.modules.types.ScilabList;
 import org.scilab.modules.types.ScilabMList;
+import org.scilab.modules.types.ScilabString;
 import org.scilab.modules.types.ScilabTList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.mxgraph.io.mxCodec;
 
@@ -163,5 +165,31 @@ public class ScilabListCodecTest {
 
         Object clone = codec().cloneTemplate(node);
         assertSame(ScilabList.class, clone.getClass());
+    }
+
+    /*
+     * ----- binary serialization path (encode + decode) -----
+     */
+
+    @Test
+    public void binaryEncodeStoresTheListAndDecodeReturnsItFromTheStore() {
+        ScilabList list = new ScilabList();
+        list.add(new ScilabString("a"));
+
+        ScilabList store = new ScilabList();
+        ScilabObjectCodec.enableBinarySerialization(store);
+        try {
+            mxCodec enc = new mxCodec();
+            Node node = codec().encode(enc, list);
+            assertEquals("true", ((Element) node).getAttribute("binary"));
+            assertEquals("0", ((Element) node).getAttribute("position"));
+            assertEquals(1, store.size());
+            assertSame(list, store.get(0));
+
+            Object decoded = codec().decode(enc, node, null);
+            assertSame(list, decoded);
+        } finally {
+            ScilabObjectCodec.disableBinarySerialization();
+        }
     }
 }

@@ -121,4 +121,32 @@ public class TemplateHandlerTest {
         handler.generateFileFromTemplate(out.getAbsolutePath(), "id", "C");
         assertEquals("just some text\n", Files.readString(out.toPath(), StandardCharsets.UTF_8));
     }
+
+    @Test
+    public void everyFillerHookIsDispatchedInDocumentOrder(@TempDir Path dir) throws IOException {
+        // One template exercising the remaining substitution tokens back-to-back;
+        // each must route to its matching TemplateFiller hook, in order.
+        File tpl = writeTemplate(dir, "all.html",
+                                 "<!--<top>--><!--<previous>--><!--<next>--><!--<path>-->"
+                                 + "<!--<subtitle>--><!--<origin>--><!--<toclist>-->"
+                                 + "<!--<lastmodified>--><!--<generationdate>--><!--<version>-->");
+        TemplateHandler handler = new TemplateHandler(new StubFiller(), tpl, "en_US");
+
+        File out = new File(dir.toFile(), "all-out.html");
+        handler.generateFileFromTemplate(out.getAbsolutePath(), "id", "unused");
+
+        assertEquals("TOPPREVNEXTPATHSUBORIGINTOCLMGENVER\n",
+                     Files.readString(out.toPath(), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void unknownTokenSubstitutesTheEmptyString(@TempDir Path dir) throws IOException {
+        // A token that matches no hook (and is not a translate= directive) yields "".
+        File tpl = writeTemplate(dir, "unknown.html", "X<!--<nosuchtoken>-->Y");
+        TemplateHandler handler = new TemplateHandler(new StubFiller(), tpl, "en_US");
+
+        File out = new File(dir.toFile(), "unknown-out.html");
+        handler.generateFileFromTemplate(out.getAbsolutePath(), "id", "C");
+        assertEquals("XY\n", Files.readString(out.toPath(), StandardCharsets.UTF_8));
+    }
 }

@@ -286,4 +286,106 @@ public class ScilabJavaArrayTest {
         int[] a = {1, 2, 3};
         assertThrows(ScilabJavaException.class, () -> ScilabJavaArray.set(a, new int[] {9}, 1));
     }
+
+    /* ==================================================== extended coverage: remaining overloads */
+
+    @Test
+    public void toPrimitiveUnboxesEveryWrapperArrayType() {
+        assertArrayEquals(new float[] {1.5f, 2.5f}, ScilabJavaArray.toPrimitive(new Float[] {1.5f, 2.5f}), 0.0f);
+        assertArrayEquals(new byte[] {1, 2}, ScilabJavaArray.toPrimitive(new Byte[] {1, 2}));
+        assertArrayEquals(new short[] {3, 4}, ScilabJavaArray.toPrimitive(new Short[] {3, 4}));
+        assertArrayEquals(new long[] {5L, 6L}, ScilabJavaArray.toPrimitive(new Long[] {5L, 6L}));
+        assertArrayEquals(new boolean[] {true, false}, ScilabJavaArray.toPrimitive(new Boolean[] {true, false}));
+    }
+
+    @Test
+    public void fromPrimitiveBoxesEveryPrimitiveArrayType() {
+        assertArrayEquals(new Float[] {1.5f, 2.5f}, ScilabJavaArray.fromPrimitive(new float[] {1.5f, 2.5f}));
+        assertArrayEquals(new Character[] {'a', 'b'}, ScilabJavaArray.fromPrimitive(new char[] {'a', 'b'}));
+        assertArrayEquals(new Byte[] {1, 2}, ScilabJavaArray.fromPrimitive(new byte[] {1, 2}));
+        assertArrayEquals(new Short[] {3, 4}, ScilabJavaArray.fromPrimitive(new short[] {3, 4}));
+        assertArrayEquals(new Long[] {5L, 6L}, ScilabJavaArray.fromPrimitive(new long[] {5L, 6L}));
+    }
+
+    /* --------------------------------------------------------------- 3-D box/unbox recursion */
+
+    @Test
+    public void toPrimitiveReshapesAThreeDimensionalBoxedArray() {
+        Double[][][] boxed = {{{1.0, 2.0}}, {{3.0, 4.0}}};
+        Object r = ScilabJavaArray.toPrimitive(boxed);
+        assertTrue(r instanceof double[][][], "Double[][][] converts to double[][][]");
+        double[][][] d = (double[][][]) r;
+        assertArrayEquals(new double[] {1.0, 2.0}, d[0][0], EPS);
+        assertArrayEquals(new double[] {3.0, 4.0}, d[1][0], EPS);
+    }
+
+    @Test
+    public void fromPrimitiveReshapesAThreeDimensionalPrimitiveArray() {
+        double[][][] prim = {{{1.0, 2.0}}, {{3.0, 4.0}}};
+        Object r = ScilabJavaArray.fromPrimitive(prim);
+        assertTrue(r instanceof Double[][][], "double[][][] converts to Double[][][]");
+        Double[][][] d = (Double[][][]) r;
+        assertArrayEquals(new Double[] {1.0, 2.0}, d[0][0]);
+        assertArrayEquals(new Double[] {3.0, 4.0}, d[1][0]);
+    }
+
+    /* --------------------------------------------------------- flatten every primitive matrix */
+
+    @Test
+    public void toOneDimFlattensEveryPrimitiveMatrixType() {
+        assertArrayEquals(new byte[] {1, 2, 3, 4}, ScilabJavaArray.toOneDim(new byte[][] {{1, 2}, {3, 4}}));
+        assertArrayEquals(new short[] {1, 2, 3, 4}, ScilabJavaArray.toOneDim(new short[][] {{1, 2}, {3, 4}}));
+        assertArrayEquals(new long[] {1L, 2L, 3L, 4L}, ScilabJavaArray.toOneDim(new long[][] {{1L, 2L}, {3L, 4L}}));
+        assertArrayEquals(new float[] {1, 2, 3, 4}, ScilabJavaArray.toOneDim(new float[][] {{1, 2}, {3, 4}}), 0.0f);
+        assertArrayEquals(new char[] {'a', 'b', 'c', 'd'}, ScilabJavaArray.toOneDim(new char[][] {{'a', 'b'}, {'c', 'd'}}));
+    }
+
+    @Test
+    public void toOneDimOfEmptyPrimitiveMatricesAreEmpty() {
+        assertEquals(0, ScilabJavaArray.toOneDim(new byte[0][0]).length);
+        assertEquals(0, ScilabJavaArray.toOneDim(new float[][] {{}}).length);
+        assertEquals(0, ScilabJavaArray.toOneDim(new long[][] {{}}).length);
+    }
+
+    /* -------------------------------------------------------- remaining List -> primitive array */
+
+    @Test
+    public void listToArrayHelpersCoverFloatByteShort() {
+        assertArrayEquals(new float[] {1.5f, 2.5f}, ScilabJavaArray.toFloatArray(Arrays.asList(1.5f, 2.5f)), 0.0f);
+        assertArrayEquals(new byte[] {1, 2}, ScilabJavaArray.toByteArray(Arrays.asList((byte) 1, (byte) 2)));
+        assertArrayEquals(new short[] {3, 4}, ScilabJavaArray.toShortArray(Arrays.asList((short) 3, (short) 4)));
+    }
+
+    /* ----------------------------------------------------------------------------- newInstance */
+
+    @Test
+    public void newInstanceOfAPrimitiveBaseTypeAllocatesAPrimitiveArray() throws ScilabJavaException {
+        int id = ScilabJavaArray.newInstance("double", new int[] {2, 3});
+        Object arr = ScilabJavaObject.arraySJO[id].object;
+        assertTrue(arr instanceof double[][], "'double' base with 2 dims -> double[][]");
+        assertEquals(2, ((double[][]) arr).length);
+        assertEquals(3, ((double[][]) arr)[0].length);
+    }
+
+    @Test
+    public void newInstanceOfAnIntBaseTypeAllocatesAnIntArray() throws ScilabJavaException {
+        int id = ScilabJavaArray.newInstance("int", new int[] {5});
+        Object arr = ScilabJavaObject.arraySJO[id].object;
+        assertTrue(arr instanceof int[]);
+        assertEquals(5, ((int[]) arr).length);
+    }
+
+    @Test
+    public void newInstanceOfAReferenceClassAllocatesAReferenceArray() throws ScilabJavaException {
+        int id = ScilabJavaArray.newInstance("java.lang.String", new int[] {3});
+        Object arr = ScilabJavaObject.arraySJO[id].object;
+        assertTrue(arr instanceof String[]);
+        assertEquals(3, ((String[]) arr).length);
+    }
+
+    @Test
+    public void newInstanceOfAnUnknownClassThrows() {
+        assertThrows(ScilabJavaException.class,
+                     () -> ScilabJavaArray.newInstance("no.such.Class12345", new int[] {2}));
+    }
 }

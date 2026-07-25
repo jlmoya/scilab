@@ -13,25 +13,32 @@
 
 package org.scilab.modules.console;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.artenum.rosetta.interfaces.core.CompletionItem;
+
 /**
- * Hermetic unit tests for {@link SciCompletionManager#separateFilesDirectories}.
+ * Hermetic unit tests for {@link SciCompletionManager}.
  *
- * <p>The manager's {@code getCompletionItems}/{@code addItemsToDictionary} paths
- * reach into the native completion engine ({@code Completion.*}) and the JNI
- * {@code Messages.gettext}, so they are out of scope. {@code separateFilesDirectories}
- * however is pure: it partitions a dictionary into files and directories purely
- * by whether each entry ends with the platform file separator, so it can be
- * driven with no console, no engine and no display. The separator is read from
- * the running platform so the test is portable.
+ * <p>The manager's {@code getCompletionItems} path reaches into the native
+ * completion engine ({@code Completion.*}) and the branch of {@code
+ * addItemsToDictionary} that actually builds items calls the JNI {@code
+ * Messages.gettext}, so those are out of scope. What is hermetic:
+ * {@code separateFilesDirectories} (pure partitioning by the platform file
+ * separator), the guard branches of {@code addItemsToDictionary} that never
+ * reach the interpreter (null and empty inputs), and the two collaborator
+ * setters. Everything runs with no console, no engine and no display.
  */
 public class SciCompletionManagerTest {
 
@@ -104,5 +111,44 @@ public class SciCompletionManagerTest {
         manager.separateFilesDirectories(input, files, dirs);
         assertEquals(Arrays.asList("a" + SEP + "b.sci"), files);
         assertTrue(dirs.isEmpty());
+    }
+
+    // --- addItemsToDictionary: the compiler-free guard branches -------------
+
+    @Test
+    public void addItemsToDictionaryIgnoresANullItemArray() {
+        // items == null short-circuits before the dictionary (still null here) or
+        // the JNI Messages.gettext is ever touched.
+        assertNull(manager.dictionary);
+        assertDoesNotThrow(() -> manager.addItemsToDictionary("File", null));
+        assertNull(manager.dictionary, "a null item array must not create a dictionary");
+    }
+
+    @Test
+    public void addItemsToDictionaryAddsNothingForAnEmptyItemArray() {
+        // An empty (but non-null) array enters the guard yet runs the loop zero
+        // times, so no CompletionItemImpl is built and gettext is never called.
+        manager.dictionary = new ArrayList<CompletionItem>();
+        manager.addItemsToDictionary("Directory", new String[0]);
+        assertTrue(manager.dictionary.isEmpty());
+    }
+
+    // --- collaborator setters ----------------------------------------------
+
+    @Test
+    public void setInterpretorIsANoOpForTheScilabImplementation() {
+        // Scilab does its own interpretation, so this setter deliberately does
+        // nothing and must tolerate a null argument.
+        assertDoesNotThrow(() -> manager.setInterpretor(null));
+    }
+
+    @Test
+    public void setInputParsingManagerStoresTheManager() throws Exception {
+        SciInputParsingManager ipm = new SciInputParsingManager();
+        manager.setInputParsingManager(ipm);
+
+        Field f = SciCompletionManager.class.getDeclaredField("inputParsingManager");
+        f.setAccessible(true);
+        assertSame(ipm, f.get(manager));
     }
 }

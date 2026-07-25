@@ -174,4 +174,75 @@ public class TransformationFactoryTest {
         Vector3d v = new Vector3d(1.5, 0.75, -0.5);
         assertTrue(v.equals(ortho.unproject(ortho.project(v))));
     }
+
+    // ------------------------------------------------------------- perspective
+
+    @Test
+    public void perspectiveMatrixHasTheExpectedEntries() {
+        // fov = 90 deg => tan(45) = 1 => f = 1. near = 1, far = 3.
+        Transformation p = TransformationFactory.getPerspectiveTransformation(1, 3, 90);
+        assertFalse(p.isIdentity());
+        double[] m = p.getMatrix();
+        assertEquals(1.0, m[0], 1e-9);    // f
+        assertEquals(1.0, m[5], 1e-9);    // f
+        assertEquals(-2.0, m[10], 1e-9);  // (far+near)/(near-far) = 4/-2
+        assertEquals(-1.0, m[11], 1e-9);
+        assertEquals(-3.0, m[14], 1e-9);  // 2*far*near/(near-far) = 6/-2
+        assertEquals(0.0, m[15], 1e-9);
+    }
+
+    @Test
+    public void perspectiveInverseMatrixHasTheExpectedEntries() {
+        Transformation p = TransformationFactory.getPerspectiveTransformation(1, 3, 90);
+        double[] inv = p.getInverseMatrix();
+        assertEquals(1.0, inv[0], 1e-9);           // fInv
+        assertEquals(1.0, inv[5], 1e-9);           // fInv
+        assertEquals(-1.0 / 3.0, inv[11], 1e-9);   // (near-far)/(2*far*near) = -2/6
+        assertEquals(-1.0, inv[14], 1e-9);
+        assertEquals(2.0 / 3.0, inv[15], 1e-9);    // (near+far)/(2*far*near) = 4/6
+    }
+
+    @Test
+    public void perspectiveMatrixIsADefensiveClone() {
+        Transformation p = TransformationFactory.getPerspectiveTransformation(1, 3, 90);
+        double[] m = p.getMatrix();
+        m[0] = 42;
+        assertNotSame(m, p.getMatrix());
+        assertEquals(1.0, p.getMatrix()[0], 1e-9);
+    }
+
+    @Test
+    public void perspectiveProjectDividesByW() {
+        // For (0,0,-2): z' = -2*(-2) + (-3) = 1 ; w = -1*(-2) = 2 ; result z = 0.5.
+        Transformation p = TransformationFactory.getPerspectiveTransformation(1, 3, 90);
+        Vector3d projected = p.project(new Vector3d(0, 0, -2));
+        assertEquals(0.0, projected.getX(), 1e-9);
+        assertEquals(0.0, projected.getY(), 1e-9);
+        assertEquals(0.5, projected.getZ(), 1e-9);
+    }
+
+    // ------------------------------------------------------- projectDirection
+
+    @Test
+    public void projectDirectionIgnoresPureTranslation() {
+        Transformation t = TransformationFactory.getTranslateTransformation(10, 20, 30);
+        Vector3d d = t.projectDirection(new Vector3d(1, 2, 3));
+        assertTrue(new Vector3d(1, 2, 3).equals(d), "actual: " + d);
+    }
+
+    @Test
+    public void projectDirectionAppliesScaleFactors() throws DegenerateMatrixException {
+        Transformation s = TransformationFactory.getScaleTransformation(2, 3, 4);
+        Vector3d d = s.projectDirection(new Vector3d(1, 1, 1));
+        assertTrue(new Vector3d(2, 3, 4).equals(d), "actual: " + d);
+    }
+
+    // -------------------------------------------------------------- toString
+
+    @Test
+    public void toStringFormatsSixteenMatrixEntries() {
+        String s = TransformationFactory.getIdentity().toString();
+        assertTrue(s.startsWith("1.0, 0.0, 0.0, 0.0"), "actual: " + s);
+        assertTrue(s.contains("\n"), "rows should be newline separated");
+    }
 }

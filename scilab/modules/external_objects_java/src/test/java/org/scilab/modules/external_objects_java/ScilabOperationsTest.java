@@ -14,6 +14,7 @@
 package org.scilab.modules.external_objects_java;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -71,5 +72,12 @@ public class ScilabOperationsTest {
         int s = ScilabJavaObject.wrap("s");
         assertThrows(ScilabJavaException.class, () -> ScilabOperations.add(0, s));
         assertThrows(ScilabJavaException.class, () -> ScilabOperations.add(s, 0));
+    }
+
+    @Test
+    public void theUtilityClassCanBeInstantiated() {
+        // ScilabOperations is a stateless static-only helper; constructing it exercises the
+        // implicit default constructor and documents that it has no side effects.
+        assertNotNull(new ScilabOperations());
     }
 }
