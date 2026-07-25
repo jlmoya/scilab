@@ -14,12 +14,20 @@
 package org.scilab.modules.preferences;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
+import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.jupiter.api.Test;
@@ -247,5 +255,89 @@ public class XCommonManagerTest {
         a.appendChild(b);
 
         assertEquals("//a/b[@xconf-uid=\"42\"]", XCommonManager.getNodePath(b));
+    }
+
+    // ----- setDimension ------------------------------------------------------
+
+    @Test
+    public void setDimensionAppliesAPositiveSizeOnce() throws Exception {
+        Document doc = newDoc();
+        JPanel p = new JPanel();
+        Element node = el(doc, "Foo", "height", "100", "width", "200");
+
+        assertTrue(XCommonManager.setDimension(p, node), "first application changes the size");
+        assertEquals(new Dimension(200, 100), p.getPreferredSize());
+        // Idempotent: re-applying the same dimension is a no-op and returns false.
+        assertFalse(XCommonManager.setDimension(p, node), "re-applying the same size changes nothing");
+    }
+
+    @Test
+    public void setDimensionIgnoresNonPositiveOrAbsentDimensions() throws Exception {
+        Document doc = newDoc();
+        JPanel p = new JPanel();
+        assertFalse(XCommonManager.setDimension(p, el(doc, "Foo")), "absent height/width => no change");
+        assertFalse(XCommonManager.setDimension(p, el(doc, "Foo", "height", "0", "width", "50")),
+                    "a zero axis disables the whole resize");
+    }
+
+    // ----- readDocument ------------------------------------------------------
+
+    @Test
+    public void readDocumentParsesAWellFormedFile() throws Exception {
+        File tmp = File.createTempFile("xcommon", ".xml");
+        tmp.deleteOnExit();
+        Files.write(tmp.toPath(), "<root><child a='1'/></root>".getBytes(StandardCharsets.UTF_8));
+
+        Document parsed = XCommonManager.readDocument(tmp.getAbsolutePath());
+        assertNotNull(parsed);
+        assertEquals("root", parsed.getDocumentElement().getNodeName());
+    }
+
+    @Test
+    public void readDocumentReturnsNullForAMissingFile() throws Exception {
+        assertNull(XCommonManager.readDocument("/no/such/file/anywhere.xml"),
+                   "an unreadable path yields null, not an exception");
+    }
+
+    // ----- getElementByContext / getPath (operate on the shared document) ----
+
+    /**
+     * Build {@code <root><scinotes><header/></scinotes><other/></root>} and
+     * install it as the manager's shared {@code document} for the duration of the
+     * test, restoring the previous value afterwards. {@code getElementByContext}
+     * resolves a "/"-separated chain of one-based child indices (skipping text and
+     * comment nodes); {@code getPath} does the inverse name-to-index lookup.
+     */
+    @Test
+    public void contextAndPathTranslateBetweenIndicesAndNames() throws Exception {
+        Document doc = newDoc();
+        Element root = doc.createElement("root");
+        doc.appendChild(root);
+        Element scinotes = doc.createElement("scinotes");
+        Element header = doc.createElement("header");
+        scinotes.appendChild(header);
+        Element other = doc.createElement("other");
+        root.appendChild(scinotes);
+        root.appendChild(other);
+
+        Document saved = XCommonManager.document;
+        try {
+            XCommonManager.document = doc;
+
+            // getElementByContext: index chain -> element.
+            assertSame(scinotes, XCommonManager.getElementByContext("1"));
+            assertSame(other, XCommonManager.getElementByContext("2"));
+            assertSame(header, XCommonManager.getElementByContext("1/1"));
+            assertNull(XCommonManager.getElementByContext("9"), "an out-of-range index yields null");
+
+            // getPath: name chain -> index chain (case-insensitive), trailing '/'.
+            assertEquals("1/", XCommonManager.getPath("scinotes"));
+            assertEquals("2/", XCommonManager.getPath("other"));
+            assertEquals("1/1/", XCommonManager.getPath("scinotes/header"));
+            assertEquals("1/", XCommonManager.getPath("SCINOTES"), "name matching is case-insensitive");
+            assertEquals("1/", XCommonManager.getPath("missing"), "an unknown name falls back to \"1/\"");
+        } finally {
+            XCommonManager.document = saved;
+        }
     }
 }

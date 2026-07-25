@@ -15,9 +15,16 @@ package org.scilab.modules.helptools.scilab;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Hermetic unit tests for {@link HTMLWithStyleScilabCodeHandler}.
@@ -94,5 +101,90 @@ public class HTMLWithStyleScilabCodeHandlerTest {
         String out = h.convert("y");
         assertTrue(out.startsWith("<pre>\n") && out.endsWith("\n</pre>\n"));
         assertTrue(out.contains("y"));
+    }
+
+    // ==================================================================
+    // Richer convert() paths: each token category the lexer recognises
+    // drives the matching handle* method, which emits its colour constant.
+    // ==================================================================
+
+    @Test
+    public void operatorAndBracketsGetTheirColours() {
+        String out = newHandler().convert("[1+2]");
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.OPERATOR), () -> out);
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.OPENCLOSE), () -> out);
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.NUMBER), () -> out);
+    }
+
+    @Test
+    public void structuralKeywordGetsTheSKeywordColour() {
+        String out = newHandler().convert("for");
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.SKEYWORD), () -> out);
+        assertTrue(out.contains("for"), () -> out);
+    }
+
+    @Test
+    public void controlKeywordGetsTheCKeywordColour() {
+        String out = newHandler().convert("return");
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.CKEYWORD), () -> out);
+    }
+
+    @Test
+    public void doubleQuotedStringGetsTheStringColour() {
+        String out = newHandler().convert("\"hi\"");
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.STRING), () -> out);
+    }
+
+    @Test
+    public void lineCommentGetsTheCommentColour() {
+        String out = newHandler().convert("// a note");
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.COMMENT), () -> out);
+        assertTrue(out.contains("note"), () -> out);
+    }
+
+    @Test
+    public void registeredMacroGetsTheMacroColour() {
+        // "myMacro" was registered as a macro in newHandler().
+        String out = newHandler().convert("myMacro");
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.MACRO), () -> out);
+    }
+
+    @Test
+    public void functionBlockGetsTheFunctionKeywordColour() {
+        String out = newHandler().convert("function y = f(x)\n  y = x\nendfunction\n");
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.FKEYWORD), () -> out);
+        assertTrue(out.startsWith("<pre>\n") && out.endsWith("\n</pre>\n"), () -> out);
+    }
+
+    // ---- convert(Reader, Writer) overload ------------------------------
+
+    @Test
+    public void readerWriterOverloadWritesAPreWrappedResult() throws Exception {
+        StringWriter sw = new StringWriter();
+        newHandler().convert(new StringReader("x + 1"), sw);
+        String out = sw.toString();
+        assertTrue(out.startsWith("<pre>\n"), () -> out);
+        assertTrue(out.endsWith("\n</pre>\n"), () -> out);
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.OPERATOR), () -> out);
+        assertTrue(out.contains(HTMLWithStyleScilabCodeHandler.NUMBER), () -> out);
+    }
+
+    // ---- (primFile, macroFile) file constructor ------------------------
+
+    @Test
+    public void fileBackedConstructorLoadsPrimitiveAndMacroNames(@TempDir Path dir) throws Exception {
+        // ScilabLexer(String, String) reads one name per line from each file.
+        File prim = dir.resolve("primitives.txt").toFile();
+        File macro = dir.resolve("macros.txt").toFile();
+        Files.write(prim.toPath(), "disp\n".getBytes(StandardCharsets.UTF_8));
+        Files.write(macro.toPath(), "myMacro\n".getBytes(StandardCharsets.UTF_8));
+
+        HTMLWithStyleScilabCodeHandler h =
+            new HTMLWithStyleScilabCodeHandler(prim.getAbsolutePath(), macro.getAbsolutePath());
+
+        // A primitive loaded from file must be highlighted with the command colour...
+        assertTrue(h.convert("disp").contains(HTMLWithStyleScilabCodeHandler.COMMAND));
+        // ...and a macro loaded from file with the macro colour.
+        assertTrue(h.convert("myMacro").contains(HTMLWithStyleScilabCodeHandler.MACRO));
     }
 }

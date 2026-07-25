@@ -111,4 +111,65 @@ public class JavaLexerTest {
     public void nullReaderConvertReturnsNull() {
         assertNull(new JavaLexer().convert(new Rec(), (java.io.Reader) null, true));
     }
+
+    // ==================================================================
+    // Richer inputs: broader keyword / type / modifier tables, block
+    // comments, string literals, and a whole class body in one pass.
+    // ==================================================================
+
+    private static boolean any(List<String> calls, String prefix) {
+        return calls.stream().anyMatch(s -> s.startsWith(prefix));
+    }
+
+    @Test
+    public void moreKeywordsAreClassified() {
+        assertTrue(lex("return").contains("keyword:return"));
+        assertTrue(lex("new").contains("keyword:new"));
+        assertTrue(lex("if").contains("keyword:if"));
+        assertTrue(lex("import").contains("keyword:import"));
+    }
+
+    @Test
+    public void moreTypesAreClassified() {
+        assertTrue(lex("void").contains("type:void"));
+        assertTrue(lex("boolean").contains("type:boolean"));
+        assertTrue(lex("Object").contains("type:Object"));
+    }
+
+    @Test
+    public void moreModifiersAreClassified() {
+        assertTrue(lex("static").contains("modifier:static"));
+        assertTrue(lex("final").contains("modifier:final"));
+        assertTrue(lex("private").contains("modifier:private"));
+    }
+
+    @Test
+    public void blockCommentIsCaptured() {
+        assertTrue(any(lex("/* a block */"), "comment:"));
+    }
+
+    @Test
+    public void stringLiteralIsAString() {
+        assertTrue(any(lex("\"hello\""), "string:"));
+    }
+
+    @Test
+    public void aWholeClassBodyIsConsumedWithoutError() {
+        String code =
+            "/* a class */\n"
+            + "public class Demo {\n"
+            + "    private static final int N = 3;\n"
+            + "    public String greet() {\n"
+            + "        return \"hi\";\n"
+            + "    }\n"
+            + "}\n";
+        Rec rec = new Rec();
+        String out = new JavaLexer().convert(rec, code);
+        assertNotNull(out, "convert must return the handler rendering");
+        assertTrue(any(rec.calls, "keyword:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "type:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "modifier:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "comment:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "string:"), () -> rec.calls.toString());
+    }
 }

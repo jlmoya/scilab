@@ -24,12 +24,16 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * SCOPE / hermeticity note: {@code setDriver} only reaches
  * {@code Export.getType(...)} for a token that is NOT one of the built-in
- * pseudo-drivers "x11" / "rec" / "null". Java's short-circuit {@code &&}
- * evaluation means every case tested here stops before that call, so the
- * heavyweight {@code Export} class (batik/fop/scirenderer/JoGL) is never
- * loaded. The image-format branch of {@code setDriver} and the
- * {@code setDefaultVisitor}/{@code end} methods need a live figure + renderer
- * and are intentionally out of scope.
+ * pseudo-drivers "x11" / "rec" / "null". For those pseudo-drivers Java's
+ * short-circuit {@code &&} stops before that call. For an image-format token
+ * (png/svg/...) the call DOES run: it merely performs a {@code HashMap}
+ * lookup, and loading {@code Export} only populates two in-memory maps in its
+ * static initialiser (no batik/fop/scirenderer/JoGL is touched at load or
+ * lookup time — {@code ExportTest} exercises the same class), so those tests
+ * stay hermetic too. Only the image-rendering side effects of {@code setDriver}
+ * are absent here: {@code setDefaultVisitor} and {@code end} need a live figure
+ * + renderer (and {@code end}'s messages go through the native localization
+ * layer), so they are intentionally out of scope.
  *
  * {@code Driver} keeps its selected driver in a mutable static field, so
  * {@link #reset()} re-establishes a known baseline before each test to make
@@ -103,5 +107,55 @@ public class DriverTest {
         assertEquals("x11", Driver.getDriver());
         // setPath must not flip the driver's image-rendering classification.
         assertFalse(Driver.isImageRendering());
+    }
+
+    // ------------------------------------------------------------------
+    // Image-format drivers: the branch of setDriver that falls through the
+    // three pseudo-driver guards and validates the token via Export.getType.
+    // ------------------------------------------------------------------
+
+    @Test
+    public void setDriverAcceptsEveryKnownImageFormat() {
+        // None of these is x11/rec/null, so the guard reaches
+        // Export.getType(ext) != -1 -> accepted, stored verbatim.
+        String[] formats = {"png", "bmp", "gif", "jpeg", "jpg", "ppm",
+                            "svg", "eps", "pdf", "ps", "pos", "emf"};
+        for (String ext : formats) {
+            assertTrue(Driver.setDriver(ext), ext + " should be an accepted driver");
+            assertEquals(ext, Driver.getDriver());
+        }
+    }
+
+    @Test
+    public void setDriverRejectsAnUnknownFormatAndKeepsThePreviousDriver() {
+        assertTrue(Driver.setDriver("png"));
+        // Export.getType("tiff") == -1 and it is no pseudo-driver -> rejected.
+        assertFalse(Driver.setDriver("tiff"));
+        // A rejected setDriver returns BEFORE assigning, so the last good value
+        // ("png") is retained rather than being clobbered.
+        assertEquals("png", Driver.getDriver());
+    }
+
+    @Test
+    public void setDriverImageBranchLookupIsCaseInsensitive() {
+        // "PNG" is not a pseudo-driver; Export.getType lower-cases before the
+        // lookup, so it is accepted, and the ORIGINAL casing is what is stored.
+        assertTrue(Driver.setDriver("PNG"));
+        assertEquals("PNG", Driver.getDriver());
+        assertTrue(Driver.setDriver("Svg"));
+        assertEquals("Svg", Driver.getDriver());
+    }
+
+    @Test
+    public void isImageRenderingIsTrueForAnImageFormatDriver() {
+        // The true branch of isImageRendering: driver is none of X11/Rec/null.
+        Driver.setDriver("png");
+        assertTrue(Driver.isImageRendering());
+
+        Driver.setDriver("svg");
+        assertTrue(Driver.isImageRendering());
+
+        Driver.setDriver("pdf");
+        assertTrue(Driver.isImageRendering());
     }
 }

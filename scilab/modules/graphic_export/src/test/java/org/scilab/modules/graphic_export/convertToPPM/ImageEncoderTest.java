@@ -13,6 +13,8 @@
 
 package org.scilab.modules.graphic_export.convertToPPM;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ImageConsumer;
 import java.awt.image.ImageProducer;
@@ -20,9 +22,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.Duration;
 import java.util.Hashtable;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,6 +54,10 @@ public class ImageEncoderTest {
 
         RecordingEncoder(ImageProducer producer, DataOutput dos) throws IOException {
             super(producer, dos);
+        }
+
+        RecordingEncoder(Image img, DataOutput dos) throws IOException {
+            super(img, dos);
         }
 
         @Override
@@ -224,6 +229,76 @@ public class ImageEncoderTest {
         RecordingEncoder enc = newEncoder(new NoopProducer());
         assertDoesNotThrow(() -> enc.setColorModel(null));
         assertDoesNotThrow(() -> enc.setColorModel(ColorModel.getRGBdefault()));
+    }
+
+    // ---- Image-based constructor -----------------------------------------
+
+    @Test
+    public void imageBasedConstructorDrivesEncodingFromTheImageSource() {
+        assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+            // The ImageEncoder(Image, DataOutput) ctor delegates to
+            // this(img.getSource(), dos); a BufferedImage exposes a synchronous
+            // ImageProducer that drives one full pass on the calling thread.
+            BufferedImage img = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
+            img.setRGB(0, 0, 0x0000FF);
+            img.setRGB(1, 0, 0x00FF00);
+
+            RecordingEncoder enc =
+                new RecordingEncoder((Image) img, new DataOutputStream(new ByteArrayOutputStream()));
+            enc.encode();
+
+            // Exactly one start (dimensions from the image) and one done.
+            assertEquals(1, enc.startCalls);
+            assertEquals(2, enc.startW);
+            assertEquals(1, enc.startH);
+            assertEquals(1, enc.doneCalls);
+            // At least one block of pixels was delivered to the subclass.
+            assertTrue(enc.encodePixelsCalls >= 1);
+        });
+    }
+
+    // ---- Accumulate path via the BYTE overload ---------------------------
+
+    @Test
+    public void bytePixelsAreAccumulatedThenFlushedOnceWhenNotTopDown() throws IOException {
+        RecordingEncoder enc = newEncoder(new NoopProducer());
+        enc.setDimensions(2, 2);
+        enc.setHints(0); // no TOPDOWNLEFTRIGHT -> accumulate
+        ColorModel model = new StubColorModel();
+
+        // Deliver the BOTTOM row (y=1) first, then the TOP row (y=0), via the
+        // byte overload — exercises byte->getRGB conversion AND accumulation.
+        enc.setPixels(0, 1, 2, 1, model, new byte[] {(byte) 3, (byte) 4}, 0, 2);
+        enc.setPixels(0, 0, 2, 1, model, new byte[] {(byte) 1, (byte) 2}, 0, 2);
+        enc.imageComplete(ImageConsumer.STATICIMAGEDONE);
+
+        assertEquals(1, enc.startCalls);
+        // Accumulate mode: a single flush from imageComplete, in image order.
+        assertEquals(1, enc.encodePixelsCalls);
+        assertArrayEquals(
+            new int[] {0xFF0000 * 1, 0xFF0000 * 2, 0xFF0000 * 3, 0xFF0000 * 4},
+            enc.lastBlockPixels);
+        assertEquals(1, enc.doneCalls);
+    }
+
+    // ---- Fast path with several blocks -----------------------------------
+
+    @Test
+    public void multipleFastPathBlocksAreEachForwardedImmediately() throws IOException {
+        RecordingEncoder enc = newEncoder(new NoopProducer());
+        enc.setDimensions(1, 2);
+        enc.setHints(ImageConsumer.TOPDOWNLEFTRIGHT);
+
+        enc.setPixels(0, 0, 1, 1, ColorModel.getRGBdefault(), new int[] {111}, 0, 1);
+        enc.setPixels(0, 1, 1, 1, ColorModel.getRGBdefault(), new int[] {222}, 0, 1);
+        enc.imageComplete(ImageConsumer.STATICIMAGEDONE);
+
+        assertEquals(1, enc.startCalls);
+        // No accumulation: each setPixels forwards immediately (two calls), and
+        // imageComplete's encodeFinish adds NOTHING in non-accumulate mode.
+        assertEquals(2, enc.encodePixelsCalls);
+        assertArrayEquals(new int[] {222}, enc.lastBlockPixels); // the last block
+        assertEquals(1, enc.doneCalls);
     }
 
     /**

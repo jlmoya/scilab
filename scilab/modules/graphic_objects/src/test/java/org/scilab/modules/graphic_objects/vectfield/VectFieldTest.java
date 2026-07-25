@@ -203,4 +203,46 @@ public class VectFieldTest {
         assertEquals(UpdateStatus.Success, f.setProperty(lineMode, Boolean.TRUE));
         assertEquals(Boolean.TRUE, f.getProperty(lineMode));
     }
+
+    /* ---- the remaining pure dispatch arms ---- */
+
+    private void assertScalarRoundTrip(int propertyId, Object value) {
+        VectField f = fieldWithArrows(2);
+        Object prop = f.getPropertyFromName(propertyId);
+        f.setProperty(prop, value);
+        assertEquals(value, f.getProperty(prop), "round-trip mismatch for id " + propertyId);
+    }
+
+    private void assertArrayRoundTrip(int propertyId, Double[] value) {
+        VectField f = fieldWithArrows(2);
+        Object prop = f.getPropertyFromName(propertyId);
+        f.setProperty(prop, value);
+        assertArrayEquals(value, (Double[]) f.getProperty(prop),
+                          "array round-trip mismatch for id " + propertyId);
+    }
+
+    @Test
+    public void baseAndDirectionComponentsRoundTripThroughGenericDispatch() {
+        assertArrayRoundTrip(__GO_BASE_X__, new Double[] {10.0, 20.0});
+        assertArrayRoundTrip(__GO_BASE_Y__, new Double[] {30.0, 40.0});
+        assertArrayRoundTrip(__GO_BASE_Z__, new Double[] {50.0, 60.0});
+        assertArrayRoundTrip(__GO_DIRECTION__, new Double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
+        assertArrayRoundTrip(__GO_DIRECTION_X__, new Double[] {1.0, 4.0});
+        assertArrayRoundTrip(__GO_DIRECTION_Y__, new Double[] {2.0, 5.0});
+        assertArrayRoundTrip(__GO_DIRECTION_Z__, new Double[] {3.0, 6.0});
+    }
+
+    @Test
+    public void scalarVectFieldPropertiesRoundTripThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_ARROW_SIZE__, Double.valueOf(2.0));
+        assertScalarRoundTrip(__GO_LINE_STYLE__, Integer.valueOf(3));
+        assertScalarRoundTrip(__GO_LINE_THICKNESS__, Double.valueOf(2.5));
+    }
+
+    @Test
+    public void arrowsListReachableThroughGenericGet() {
+        VectField f = fieldWithArrows(2);
+        Object arrowsProp = f.getPropertyFromName(__GO_ARROWS__);
+        assertSame(f.getArrows(), f.getProperty(arrowsProp));
+    }
 }

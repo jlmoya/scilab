@@ -141,4 +141,67 @@ public class CLexerTest {
     public void nullReaderConvertReturnsNull() {
         assertNull(new CLexer().convert(new Rec(), (java.io.Reader) null, true));
     }
+
+    // ==================================================================
+    // Richer inputs: block comments, char/string literals, the full type
+    // and modifier tables, and a whole translation unit in one pass.
+    // ==================================================================
+
+    private static boolean any(List<String> calls, String prefix) {
+        return calls.stream().anyMatch(s -> s.startsWith(prefix));
+    }
+
+    @Test
+    public void blockCommentBodyIsCaptured() {
+        assertTrue(any(lex("/* a block */"), "comment:"), "block comment must reach handleComment");
+    }
+
+    @Test
+    public void charLiteralIsLexedAsAString() {
+        // The C {char} rule ('x') routes to handleString, same sink as "...".
+        assertTrue(any(lex("'a'"), "string:"), "char literal must reach handleString");
+    }
+
+    @Test
+    public void doubleQuotedStringIsAString() {
+        assertTrue(any(lex("\"text\""), "string:"));
+    }
+
+    @Test
+    public void moreTypesAndModifiersAreClassified() {
+        assertTrue(lex("double").contains("type:double"));
+        assertTrue(lex("void").contains("type:void"));
+        assertTrue(lex("struct").contains("type:struct"));
+        assertTrue(lex("unsigned").contains("type:unsigned"));
+    }
+
+    @Test
+    public void includeDirectiveIsPreprocessor() {
+        assertTrue(any(lex("#include"), "preprocessor:"));
+    }
+
+    @Test
+    public void hexAndFloatLiteralsAreNumbers() {
+        assertTrue(any(lex("0x1F"), "number:"), "hex literal");
+        assertTrue(any(lex("3.14"), "number:"), "float literal");
+    }
+
+    @Test
+    public void aWholeTranslationUnitIsConsumedWithoutError() {
+        String code =
+            "/* header */\n"
+            + "#include <stdio.h>\n"
+            + "int main(void) {\n"
+            + "    const char *s = \"hi\";\n"
+            + "    return 0;\n"
+            + "}\n";
+        Rec rec = new Rec();
+        String out = new CLexer().convert(rec, code);
+        assertNotNull(out, "convert must return the handler rendering");
+        assertTrue(any(rec.calls, "preprocessor:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "comment:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "type:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "string:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "keyword:"), () -> rec.calls.toString());
+    }
 }

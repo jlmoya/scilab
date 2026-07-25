@@ -20,6 +20,8 @@ import org.scilab.modules.graphic_objects.lighting.Light.LightType;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject.UpdateStatus;
 
+import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.*;
+
 /**
  * Hermetic unit tests for {@link Light}: a graphic object with a position,
  * direction, type and an ambient/diffuse/specular colour triplet.
@@ -130,5 +132,35 @@ public class LightTest {
         // copying any Light -- even a default one -- throws NPE.
         Light src = new Light();
         assertThrows(NullPointerException.class, () -> new Light(src));
+    }
+
+    /* ---- getPropertyFromName-driven dispatch coverage ---- */
+
+    @Test
+    public void colourAndVectorPropertiesRoundTripViaGetPropertyFromName() {
+        Light l = new Light();
+
+        Object diffuse = l.getPropertyFromName(__GO_DIFFUSECOLOR__);
+        l.setProperty(diffuse, new Double[] {0.2, 0.3, 0.4});
+        assertArrayEquals(new Double[] {0.2, 0.3, 0.4}, (Double[]) l.getProperty(diffuse));
+
+        Object specular = l.getPropertyFromName(__GO_SPECULARCOLOR__);
+        l.setProperty(specular, new Double[] {0.6, 0.7, 0.8});
+        assertArrayEquals(new Double[] {0.6, 0.7, 0.8}, (Double[]) l.getProperty(specular));
+
+        Object ambient = l.getPropertyFromName(__GO_AMBIENTCOLOR__);
+        assertArrayEquals(new Double[] {0.1, 0.1, 0.1}, (Double[]) l.getProperty(ambient));
+
+        Object direction = l.getPropertyFromName(__GO_DIRECTION__);
+        l.setProperty(direction, new Double[] {-1.0, 0.0, 0.0});
+        assertArrayEquals(new Double[] {-1.0, 0.0, 0.0}, (Double[]) l.getProperty(direction));
+
+        Object position = l.getPropertyFromName(__GO_POSITION__);
+        l.setProperty(position, new Double[] {4.0, 5.0, 6.0});
+        assertArrayEquals(new Double[] {4.0, 5.0, 6.0}, (Double[]) l.getProperty(position));
+
+        Object type = l.getPropertyFromName(__GO_LIGHT_TYPE__);
+        l.setProperty(type, Integer.valueOf(0)); // DIRECTIONAL
+        assertEquals(Integer.valueOf(0), l.getProperty(type));
     }
 }

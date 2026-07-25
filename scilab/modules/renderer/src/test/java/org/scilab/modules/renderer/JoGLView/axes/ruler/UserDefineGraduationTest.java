@@ -131,4 +131,59 @@ class UserDefineGraduationTest {
         axis.setSubticks(3);
         assertEquals(4, g.getSubDensity());
     }
+
+    private static AxisProperty logAxis(Double[] ticks) {
+        AxisProperty ax = new AxisProperty();
+        ax.setLogFlag(Boolean.TRUE);
+        ax.setTicksLocations(ticks);
+        return ax;
+    }
+
+    @Test
+    void getAllValuesFiltersOnTheLog10OfTicksWhenLogFlagIsSet() {
+        // Bounds are expressed in log space: keep a tick d when log10(d) is
+        // in [0, 2], i.e. d in [1, 100]; the stored value is the raw tick.
+        AxisProperty axis = logAxis(new Double[] {1.0, 10.0, 100.0, 1000.0});
+        UserDefineGraduation g = new UserDefineGraduation(axis, 0.0, 2.0);
+        assertEquals(Arrays.asList(1.0, 10.0, 100.0), g.getAllValues());
+    }
+
+    @Test
+    void getSubGraduationsInterpolatesLinearlyBetweenTicks() {
+        // One division between each pair of consecutive ticks: the midpoint.
+        AxisProperty axis = linearAxis(new Double[] {0.0, 10.0});
+        UserDefineGraduation g = new UserDefineGraduation(axis, 0.0, 10.0);
+        assertEquals(Arrays.asList(0.0, 5.0, 10.0), g.getSubGraduations(1));
+    }
+
+    @Test
+    void getSubGraduationsIsComputedOnceAndCached() {
+        AxisProperty axis = linearAxis(new Double[] {0.0, 10.0});
+        UserDefineGraduation g = new UserDefineGraduation(axis, 0.0, 10.0);
+        List<Double> first = g.getSubGraduations(1);
+        assertSame(first, g.getSubGraduations(1), "sub-values are memoised");
+        // Even a different division count returns the cached list (documents
+        // that the first N wins).
+        assertSame(first, g.getSubGraduations(4));
+    }
+
+    @Test
+    void getSubGraduationsFallsBackToRawTicksWhenNoTickIsInBounds() {
+        // No tick's own value lies in [8, 12], so getAllValues() is empty and
+        // the raw locations drive the interpolation; only the interpolated
+        // midpoint 10 falls inside the bounds and survives.
+        AxisProperty axis = linearAxis(new Double[] {5.0, 15.0});
+        UserDefineGraduation g = new UserDefineGraduation(axis, 8.0, 12.0);
+        assertEquals(Arrays.asList(10.0), g.getSubGraduations(1));
+    }
+
+    @Test
+    void getSubGraduationsAppliesTheLogFlagToTheContainmentTest() {
+        // Log axis: ticks 1 and 100 map to log-values 0 and 2, both inside
+        // [0, 2]; the raw-space midpoint 50.5 is kept because log10(50.5) is
+        // inside the bounds too.
+        AxisProperty axis = logAxis(new Double[] {1.0, 100.0});
+        UserDefineGraduation g = new UserDefineGraduation(axis, 0.0, 2.0);
+        assertEquals(Arrays.asList(1.0, 50.5, 100.0), g.getSubGraduations(1));
+    }
 }

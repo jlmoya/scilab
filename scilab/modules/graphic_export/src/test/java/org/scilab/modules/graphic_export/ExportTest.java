@@ -13,10 +13,12 @@
 
 package org.scilab.modules.graphic_export;
 
+import java.io.File;
 import java.util.EnumSet;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.scilab.modules.graphic_export.Export.TYPE;
@@ -48,6 +50,9 @@ import org.scilab.modules.graphic_export.Export.TYPE;
  * {@code GraphicController} and the JoGL/G2D renderer.</p>
  */
 public class ExportTest {
+
+    @TempDir
+    File tempDir;
 
     // ------------------------------------------------------------------
     // Public status-code constants
@@ -281,5 +286,65 @@ public class ExportTest {
             assertEquals(t.ordinal() < 5, Export.isBitmapFormat(t),
                          t + " ordinal/raster relationship");
         }
+    }
+
+    // ------------------------------------------------------------------
+    // exportVectorial(int, int, String, ExportParams, boolean) — file-guard
+    // early returns
+    //
+    // Hermeticity: this int/int/String overload consults ONLY
+    // Utils.checkWritePermission(File) before it would hand off to the
+    // renderer-backed exportVectorial(int, TYPE, File, ...) overload. A null
+    // file name (returns INVALID_FILE) and a file whose parent directory does
+    // not exist (checkWritePermission's createNewFile throws IOException ->
+    // IOEXCEPTION_ERROR) both return BEFORE that hand-off, so no
+    // GraphicController / DrawerVisitor / G2D canvas is ever touched. The
+    // numeric `type` argument is never used on these early-return paths (it
+    // would only index the internal TYPE[] table on the happy path), so any
+    // valid index serves.
+    // ------------------------------------------------------------------
+
+    @Test
+    public void exportVectorialReturnsInvalidFileForNullFilename() {
+        ExportParams params = new ExportParams();
+        assertEquals(Export.INVALID_FILE,
+                     Export.exportVectorial(-1, TYPE.SVG.ordinal(), (String) null, params, false));
+        // headless flag makes no difference: the null guard precedes it.
+        assertEquals(Export.INVALID_FILE,
+                     Export.exportVectorial(-1, TYPE.SVG.ordinal(), (String) null, params, true));
+    }
+
+    @Test
+    public void exportVectorialReturnsIoExceptionErrorWhenParentDirectoryMissing() {
+        ExportParams params = new ExportParams();
+        // "ghost/" does not exist -> createNewFile() throws IOException inside
+        // checkWritePermission -> IOEXCEPTION_ERROR, returned before any render.
+        File ghost = new File(tempDir, "ghost" + File.separator + "figure.svg");
+        assertEquals(Export.IOEXCEPTION_ERROR,
+                     Export.exportVectorial(-1, TYPE.SVG.ordinal(), ghost.getPath(), params, false));
+        assertFalse(ghost.exists());
+    }
+
+    // ------------------------------------------------------------------
+    // exportBitmap(int, int, String, boolean, ExportParams) — file-guard
+    // early returns (same hermetic reasoning as above).
+    // ------------------------------------------------------------------
+
+    @Test
+    public void exportBitmapReturnsInvalidFileForNullFilename() {
+        ExportParams params = new ExportParams();
+        assertEquals(Export.INVALID_FILE,
+                     Export.exportBitmap(-1, TYPE.PNG.ordinal(), (String) null, true, params));
+        assertEquals(Export.INVALID_FILE,
+                     Export.exportBitmap(-1, TYPE.PNG.ordinal(), (String) null, false, params));
+    }
+
+    @Test
+    public void exportBitmapReturnsIoExceptionErrorWhenParentDirectoryMissing() {
+        ExportParams params = new ExportParams();
+        File ghost = new File(tempDir, "ghost" + File.separator + "shot.png");
+        assertEquals(Export.IOEXCEPTION_ERROR,
+                     Export.exportBitmap(-1, TYPE.PNG.ordinal(), ghost.getPath(), true, params));
+        assertFalse(ghost.exists());
     }
 }

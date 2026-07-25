@@ -19,6 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.scilab.modules.graphic_objects.axis.Axis.TicksDirection;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject.UpdateStatus;
+import org.scilab.modules.graphic_objects.textObject.Font;
+
+import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.*;
 
 /**
  * Hermetic unit tests for the {@link Axis} graphic object: a standalone ruler
@@ -138,5 +141,80 @@ public class AxisTest {
         assertEquals(Double.valueOf(14.0), a.getSize());
         assertEquals(Integer.valueOf(7), a.getColor());
         assertTrue(a.getFractional());
+    }
+
+    /* ---- generic getProperty/setProperty dispatch coverage ---- */
+
+    private void assertScalarRoundTrip(int propertyId, Object value) {
+        Axis a = new Axis();
+        Object prop = a.getPropertyFromName(propertyId);
+        a.setProperty(prop, value);
+        assertEquals(value, a.getProperty(prop), "round-trip mismatch for id " + propertyId);
+    }
+
+    private void assertDoubleArrayRoundTrip(int propertyId, Double[] value) {
+        Axis a = new Axis();
+        Object prop = a.getPropertyFromName(propertyId);
+        a.setProperty(prop, value);
+        assertArrayEquals(value, (Double[]) a.getProperty(prop),
+                          "array round-trip mismatch for id " + propertyId);
+    }
+
+    private void assertStringArrayRoundTrip(int propertyId, String[] value) {
+        Axis a = new Axis();
+        Object prop = a.getPropertyFromName(propertyId);
+        a.setProperty(prop, value);
+        assertArrayEquals(value, (String[]) a.getProperty(prop),
+                          "array round-trip mismatch for id " + propertyId);
+    }
+
+    @Test
+    public void scalarPropertiesRoundTripThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_TICKS_DIRECTION__, Integer.valueOf(1)); // BOTTOM
+        assertScalarRoundTrip(__GO_TICKS_COLOR__, Integer.valueOf(12));
+        assertScalarRoundTrip(__GO_TICKS_SEGMENT__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_TICKS_STYLE__, Integer.valueOf(2));
+        assertScalarRoundTrip(__GO_SUBTICKS__, Integer.valueOf(5));
+        assertScalarRoundTrip(__GO_FORMATN__, "%d");
+        // Font is delegated to the owned Font object.
+        assertScalarRoundTrip(__GO_FONT_STYLE__, Integer.valueOf(2));
+        assertScalarRoundTrip(__GO_FONT_SIZE__, Double.valueOf(14.0));
+        assertScalarRoundTrip(__GO_FONT_COLOR__, Integer.valueOf(7));
+        assertScalarRoundTrip(__GO_FONT_FRACTIONAL__, Boolean.TRUE);
+    }
+
+    @Test
+    public void arrayPropertiesRoundTripThroughGenericDispatch() {
+        assertDoubleArrayRoundTrip(__GO_X_TICKS_COORDS__, new Double[] {0.0, 0.25, 0.5, 1.0});
+        assertDoubleArrayRoundTrip(__GO_Y_TICKS_COORDS__, new Double[] {2.0, 3.0});
+        assertStringArrayRoundTrip(__GO_TICKS_LABELS__, new String[] {"a", "b", "c"});
+    }
+
+    @Test
+    public void interpretersRoundTripThroughGenericDispatchAfterLabels() {
+        Axis a = new Axis();
+        Object labels = a.getPropertyFromName(__GO_TICKS_LABELS__);
+        a.setProperty(labels, new String[] {"a", "b", "c"});
+        Object interp = a.getPropertyFromName(__GO_TICKS_INTERPRETERS__);
+        a.setProperty(interp, new String[] {"latex", "latex", "latex"});
+        assertArrayEquals(new String[] {"latex", "latex", "latex"},
+                          (String[]) a.getProperty(interp));
+    }
+
+    @Test
+    public void fontHolderAndReadOnlyCountsReachableThroughGenericDispatch() {
+        Axis a = new Axis();
+        // The whole Font holder can be replaced and is returned by reference.
+        Object fontProp = a.getPropertyFromName(__GO_FONT__);
+        Font font = new Font();
+        a.setProperty(fontProp, font);
+        assertSame(font, a.getProperty(fontProp));
+        // Read-only tick counts are reachable through the generic getter.
+        assertEquals(a.getXNumberTicks(),
+                     a.getProperty(a.getPropertyFromName(__GO_X_NUMBER_TICKS__)));
+        assertEquals(a.getYNumberTicks(),
+                     a.getProperty(a.getPropertyFromName(__GO_Y_NUMBER_TICKS__)));
+        assertEquals(a.getNumberTicksLabels(),
+                     a.getProperty(a.getPropertyFromName(__GO_NUMBER_TICKS_LABELS__)));
     }
 }

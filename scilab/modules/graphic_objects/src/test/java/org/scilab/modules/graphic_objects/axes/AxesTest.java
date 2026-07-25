@@ -373,4 +373,170 @@ public class AxesTest {
         a.setProperty(dataBounds, db);
         assertArrayEquals(db, (Double[]) a.getProperty(dataBounds));
     }
+
+    /* ---- exhaustive generic-dispatch round-trips over the pure surface ---- */
+
+    // Round-trips a Double[] array property through the generic dispatch: the
+    // Object overload of assertScalarRoundTrip cannot be reused because array
+    // equality there is by reference.
+    private void assertArrayRoundTrip(int propertyId, Double[] value) {
+        Axes a = new Axes();
+        Object prop = a.getPropertyFromName(propertyId);
+        a.setProperty(prop, value);
+        assertArrayEquals(value, (Double[]) a.getProperty(prop),
+                          "array round-trip mismatch for id " + propertyId);
+    }
+
+    @Test
+    public void everyBooleanAxisPropertyRoundTripsThroughGenericDispatch() {
+        // Per-axis flags not already covered above.
+        assertScalarRoundTrip(__GO_Y_AXIS_REVERSE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Z_AXIS_REVERSE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Y_AXIS_LOG_FLAG__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Z_AXIS_LOG_FLAG__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_X_AXIS_AUTO_TICKS__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Y_AXIS_AUTO_TICKS__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Z_AXIS_AUTO_TICKS__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_AUTO_SUBTICKS__, Boolean.TRUE);
+        // Camera-owned flags.
+        assertScalarRoundTrip(__GO_ISOVIEW__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_CUBE_SCALING__, Boolean.TRUE);
+        // Box-owned flags.
+        assertScalarRoundTrip(__GO_X_TIGHT_LIMITS__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Y_TIGHT_LIMITS__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_Z_TIGHT_LIMITS__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_ZOOM_ENABLED__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_AUTO_SCALE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_AUTO_STRETCH__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_FIRST_PLOT__, Boolean.FALSE);
+        // Inherited line / mark / clip flags, routed through the Axes switch.
+        assertScalarRoundTrip(__GO_LINE_MODE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_MARK_MODE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_CLIP_BOX_SET__, Boolean.TRUE);
+    }
+
+    @Test
+    public void everyIntegerAxisPropertyRoundTripsThroughGenericDispatch() {
+        // Y/Z grid colours (X covered above).
+        assertScalarRoundTrip(__GO_Y_AXIS_GRID_COLOR__, Integer.valueOf(8));
+        assertScalarRoundTrip(__GO_Z_AXIS_GRID_COLOR__, Integer.valueOf(9));
+        // Per-axis label UIDs.
+        assertScalarRoundTrip(__GO_X_AXIS_LABEL__, Integer.valueOf(11));
+        assertScalarRoundTrip(__GO_Y_AXIS_LABEL__, Integer.valueOf(12));
+        assertScalarRoundTrip(__GO_Z_AXIS_LABEL__, Integer.valueOf(13));
+        // Per-axis subtick counts.
+        assertScalarRoundTrip(__GO_X_AXIS_SUBTICKS__, Integer.valueOf(4));
+        assertScalarRoundTrip(__GO_Y_AXIS_SUBTICKS__, Integer.valueOf(5));
+        assertScalarRoundTrip(__GO_Z_AXIS_SUBTICKS__, Integer.valueOf(6));
+        // Grid styles: Scilab line-style index 1 == SOLID round-trips cleanly.
+        assertScalarRoundTrip(__GO_X_AXIS_GRID_STYLE__, Integer.valueOf(1));
+        assertScalarRoundTrip(__GO_Y_AXIS_GRID_STYLE__, Integer.valueOf(1));
+        assertScalarRoundTrip(__GO_Z_AXIS_GRID_STYLE__, Integer.valueOf(1));
+        // Y/Z axis locations (ordinals 0..5; X covered above).
+        assertScalarRoundTrip(__GO_Y_AXIS_LOCATION__, Integer.valueOf(2)); // MIDDLE
+        assertScalarRoundTrip(__GO_Z_AXIS_LOCATION__, Integer.valueOf(4)); // LEFT
+        // Axes / Box colours.
+        assertScalarRoundTrip(__GO_HIDDEN_COLOR__, Integer.valueOf(6));
+        assertScalarRoundTrip(__GO_HIDDEN_AXIS_COLOR__, Integer.valueOf(4));
+        // Inherited line / mark integers.
+        assertScalarRoundTrip(__GO_LINE_STYLE__, Integer.valueOf(7));       // DOT
+        assertScalarRoundTrip(__GO_LINE_COLOR__, Integer.valueOf(7));
+        assertScalarRoundTrip(__GO_MARK_STYLE__, Integer.valueOf(4));
+        assertScalarRoundTrip(__GO_MARK_SIZE__, Integer.valueOf(6));
+        assertScalarRoundTrip(__GO_MARK_SIZE_UNIT__, Integer.valueOf(1));   // TABULATED
+        assertScalarRoundTrip(__GO_MARK_FOREGROUND__, Integer.valueOf(2));
+        assertScalarRoundTrip(__GO_MARK_BACKGROUND__, Integer.valueOf(1));
+        // Clip state: CLIPGRF (1) round-trips; ON (2) would be demoted with no box.
+        assertScalarRoundTrip(__GO_CLIP_STATE__, Integer.valueOf(1));
+    }
+
+    @Test
+    public void everyDoubleAxisPropertyRoundTripsThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_Y_AXIS_GRID_THICKNESS__, Double.valueOf(3.5));
+        assertScalarRoundTrip(__GO_Z_AXIS_GRID_THICKNESS__, Double.valueOf(4.5));
+        assertScalarRoundTrip(__GO_LINE_THICKNESS__, Double.valueOf(3.0));
+    }
+
+    @Test
+    public void everyStringAxisPropertyRoundTripsThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_X_AXIS_FORMAT__, "%.2f");
+        assertScalarRoundTrip(__GO_Y_AXIS_FORMAT__, "%.3f");
+        assertScalarRoundTrip(__GO_Z_AXIS_FORMAT__, "%.4f");
+    }
+
+    @Test
+    public void everyArrayAxisPropertyRoundTripsThroughGenericDispatch() {
+        // Scale/translate factor pairs.
+        assertArrayRoundTrip(__GO_X_AXIS_ST_FACTORS__, new Double[] {2.0, 3.0});
+        assertArrayRoundTrip(__GO_Y_AXIS_ST_FACTORS__, new Double[] {4.0, 5.0});
+        assertArrayRoundTrip(__GO_Z_AXIS_ST_FACTORS__, new Double[] {6.0, 7.0});
+        // User tick locations (empty by default; setting resizes the active set).
+        assertArrayRoundTrip(__GO_X_AXIS_TICKS_LOCATIONS__, new Double[] {0.0, 0.5, 1.0});
+        assertArrayRoundTrip(__GO_Y_AXIS_TICKS_LOCATIONS__, new Double[] {0.0, 1.0});
+        assertArrayRoundTrip(__GO_Z_AXIS_TICKS_LOCATIONS__, new Double[] {0.0, 2.0, 4.0, 6.0});
+        // Box bounds/boxes are length-6.
+        assertArrayRoundTrip(__GO_REAL_DATA_BOUNDS__, new Double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
+        assertArrayRoundTrip(__GO_ZOOM_BOX__, new Double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0});
+        // Inherited clip box is length-4.
+        assertArrayRoundTrip(__GO_CLIP_BOX__, new Double[] {0.0, 0.0, 1.0, 1.0});
+    }
+
+    @Test
+    public void tickLabelsAndInterpretersRoundTripThroughGenericDispatch() {
+        Axes a = new Axes();
+        // Labels line up with locations, so the locations must exist first.
+        a.setXAxisTicksLocations(new Double[] {0.0, 1.0, 2.0});
+
+        Object labelsProp = a.getPropertyFromName(__GO_X_AXIS_TICKS_LABELS__);
+        assertEquals(UpdateStatus.Success,
+                     a.setProperty(labelsProp, new String[] {"a", "b", "c"}));
+        assertArrayEquals(new String[] {"a", "b", "c"}, (String[]) a.getProperty(labelsProp));
+
+        Object interpProp = a.getPropertyFromName(__GO_X_AXIS_TICKS_INTERPRETERS__);
+        assertEquals(UpdateStatus.Success,
+                     a.setProperty(interpProp, new String[] {"latex", "latex", "latex"}));
+        assertArrayEquals(new String[] {"latex", "latex", "latex"},
+                          (String[]) a.getProperty(interpProp));
+    }
+
+    @Test
+    public void mismatchedTickLabelLengthIsRejectedAsNoChange() {
+        Axes a = new Axes();
+        a.setXAxisTicksLocations(new Double[] {0.0, 1.0, 2.0});
+        // Fewer labels than locations: the active ticks set refuses the change.
+        assertEquals(UpdateStatus.NoChange, a.setXAxisTicksLabels(new String[] {"only-one"}));
+    }
+
+    @Test
+    public void tickHolderCanBeReplacedThroughGenericDispatch() {
+        Axes a = new Axes();
+        Object prop = a.getPropertyFromName(__GO_X_AXIS_TICKS__);
+        TicksProperty tp = new TicksProperty();
+        assertEquals(UpdateStatus.Success, a.setProperty(prop, tp));
+        // The holder is stored and returned by reference.
+        assertSame(tp, a.getProperty(prop));
+    }
+
+    @Test
+    public void readOnlyTickCountsAreReachableThroughGenericGet() {
+        Axes a = new Axes();
+        // A fresh (non-automatic) axis has an empty user ticks set.
+        assertEquals(Integer.valueOf(0),
+                     a.getProperty(a.getPropertyFromName(__GO_X_AXIS_NUMBER_TICKS__)));
+        assertEquals(Integer.valueOf(0),
+                     a.getProperty(a.getPropertyFromName(__GO_Y_AXIS_NUMBER_TICKS__)));
+        assertEquals(Integer.valueOf(0),
+                     a.getProperty(a.getPropertyFromName(__GO_Z_AXIS_NUMBER_TICKS__)));
+    }
+
+    @Test
+    public void colormapPropertiesAreReachableThroughGenericDispatch() {
+        Axes a = new Axes();
+        Object sizeProp = a.getPropertyFromName(__GO_COLORMAP_SIZE__);
+        assertNotNull(a.getProperty(sizeProp));
+        // Colormap size is read-only through setProperty: always NoChange.
+        assertEquals(UpdateStatus.NoChange, a.setProperty(sizeProp, Integer.valueOf(99)));
+        // The colormap data array is reachable through the generic getter.
+        assertNotNull(a.getProperty(a.getPropertyFromName(__GO_COLORMAP__)));
+    }
 }

@@ -21,6 +21,8 @@ import org.scilab.modules.graphic_objects.graphicObject.ClippableProperty.ClipSt
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject.UpdateStatus;
 
+import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.*;
+
 /**
  * Hermetic unit tests for {@link Polyline}. The datatip-refreshing methods
  * (updateDatatips, setDisplayFunction) reach the native GraphicController and
@@ -180,5 +182,58 @@ public class PolylineTest {
         Object arrowKey = p.getPropertyFromName(GraphicObjectProperties.__GO_ARROW_SIZE_FACTOR__);
         assertEquals(UpdateStatus.Success, p.setProperty(arrowKey, Double.valueOf(3.0)));
         assertEquals(3.0, (Double) p.getProperty(arrowKey), EPS);
+    }
+
+    /* ---- the remaining pure PolylineProperty dispatch arms ---- */
+
+    private void assertScalarRoundTrip(int propertyId, Object value) {
+        Polyline p = new Polyline();
+        Object prop = p.getPropertyFromName(propertyId);
+        p.setProperty(prop, value);
+        assertEquals(value, p.getProperty(prop), "round-trip mismatch for id " + propertyId);
+    }
+
+    @Test
+    public void scalarPolylinePropertiesRoundTripThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_INTERP_COLOR_MODE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_INTERP_COLOR_VECTOR_SET__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_BAR_WIDTH__, Double.valueOf(0.8));
+        assertScalarRoundTrip(__GO_DATATIP_MARK__, Integer.valueOf(3));
+        assertScalarRoundTrip(__GO_COLOR_SET__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_DATATIP_DISPLAY_MODE__, Integer.valueOf(1)); // MOUSECLICK
+    }
+
+    @Test
+    public void arrayPolylinePropertiesRoundTripThroughGenericDispatch() {
+        Polyline p = new Polyline();
+
+        Object interpVec = p.getPropertyFromName(__GO_INTERP_COLOR_VECTOR__);
+        p.setProperty(interpVec, new Integer[] {1, 2, 3, 4});
+        assertArrayEquals(new Integer[] {1, 2, 3, 4}, (Integer[]) p.getProperty(interpVec));
+
+        Object datatips = p.getPropertyFromName(__GO_DATATIPS__);
+        p.setProperty(datatips, new Integer[] {7, 8, 9});
+        assertArrayEquals(new Integer[] {7, 8, 9}, (Integer[]) p.getProperty(datatips));
+
+        // Coordinate shifts are primitive double[] arrays.
+        Object xShift = p.getPropertyFromName(__GO_X_SHIFT__);
+        p.setProperty(xShift, new double[] {1.0, 2.0});
+        assertArrayEquals(new double[] {1.0, 2.0}, (double[]) p.getProperty(xShift), EPS);
+
+        Object yShift = p.getPropertyFromName(__GO_Y_SHIFT__);
+        p.setProperty(yShift, new double[] {3.0});
+        assertArrayEquals(new double[] {3.0}, (double[]) p.getProperty(yShift), EPS);
+
+        Object zShift = p.getPropertyFromName(__GO_Z_SHIFT__);
+        p.setProperty(zShift, new double[] {4.0, 5.0, 6.0});
+        assertArrayEquals(new double[] {4.0, 5.0, 6.0}, (double[]) p.getProperty(zShift), EPS);
+    }
+
+    @Test
+    public void datatipsCountReflectsTheDatatipsListThroughGenericGet() {
+        Polyline p = new Polyline();
+        p.setDatatips(new Integer[] {1, 2, 3, 4});
+        Object countProp = p.getPropertyFromName(__GO_DATATIPS_COUNT__);
+        assertEquals(Integer.valueOf(4), p.getProperty(countProp));
     }
 }

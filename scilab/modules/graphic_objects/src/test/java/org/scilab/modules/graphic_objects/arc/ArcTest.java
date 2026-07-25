@@ -20,6 +20,8 @@ import org.scilab.modules.graphic_objects.arc.Arc.ArcDrawingMethod;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject.UpdateStatus;
 
+import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.*;
+
 /**
  * Hermetic unit tests for the {@link Arc} graphic object: bounding-box geometry,
  * start/end angles, and the drawing-method converter.
@@ -103,5 +105,31 @@ public class ArcTest {
 
         // The original is untouched.
         assertArrayEquals(new Double[] {1.0, 2.0, 3.0}, a.getUpperLeftPoint());
+    }
+
+    /* ---- generic getProperty/setProperty dispatch coverage ---- */
+
+    private void assertScalarRoundTrip(int propertyId, Object value) {
+        Arc a = new Arc();
+        Object prop = a.getPropertyFromName(propertyId);
+        a.setProperty(prop, value);
+        assertEquals(value, a.getProperty(prop), "round-trip mismatch for id " + propertyId);
+    }
+
+    @Test
+    public void scalarArcPropertiesRoundTripThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_WIDTH__, Double.valueOf(3.5));
+        assertScalarRoundTrip(__GO_HEIGHT__, Double.valueOf(4.5));
+        assertScalarRoundTrip(__GO_START_ANGLE__, Double.valueOf(1.0));
+        assertScalarRoundTrip(__GO_END_ANGLE__, Double.valueOf(2.0));
+        assertScalarRoundTrip(__GO_ARC_DRAWING_METHOD__, Integer.valueOf(0)); // NURBS
+    }
+
+    @Test
+    public void upperLeftPointRoundTripsThroughGenericDispatch() {
+        Arc a = new Arc();
+        Object prop = a.getPropertyFromName(__GO_UPPER_LEFT_POINT__);
+        a.setProperty(prop, new Double[] {1.0, 2.0, 3.0});
+        assertArrayEquals(new Double[] {1.0, 2.0, 3.0}, (Double[]) a.getProperty(prop));
     }
 }

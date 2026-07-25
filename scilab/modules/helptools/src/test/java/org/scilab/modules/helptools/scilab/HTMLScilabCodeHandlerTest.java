@@ -177,4 +177,32 @@ public class HTMLScilabCodeHandlerTest {
         h.handleMacro("localThing");
         assertEquals("<span class=\"scilabmacro\">localThing</span>", h.toString());
     }
+
+    @Test
+    public void macroMatchingCurrentCommandIsRenderedAsSpanNotLink() throws IOException {
+        // Mirror of the command case: when the macro token IS the page's own
+        // command, it is a plain span and the LinkWriter is never consulted.
+        HTMLScilabCodeHandler.setLinkWriter(new LinkWriter() {
+            public String getLink(String id) {
+                return "SHOULD-NOT-BE-USED";
+            }
+        });
+        AbstractScilabCodeHandler h = HTMLScilabCodeHandler.getInstance("myMacro", "f");
+        h.handleMacro("myMacro");
+        assertEquals("<span class=\"scilabmacro\">myMacro</span>", h.toString());
+    }
+
+    @Test
+    public void functionIdDeclEmitsFunctionIdSpan() throws IOException {
+        AbstractScilabCodeHandler h = HTMLScilabCodeHandler.getInstance("cmd", "f");
+        h.handleFunctionIdDecl("myFun");
+        assertEquals("<span class=\"scilabfunctionid\">myFun</span>", h.toString());
+    }
+
+    @Test
+    public void inputOutputArgsDeclEmitsInputOutputArgsSpan() throws IOException {
+        AbstractScilabCodeHandler h = HTMLScilabCodeHandler.getInstance("cmd", "f");
+        h.handleInputOutputArgsDecl("out");
+        assertEquals("<span class=\"scilabinputoutputargs\">out</span>", h.toString());
+    }
 }

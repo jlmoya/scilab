@@ -13,9 +13,13 @@
 
 package org.scilab.modules.graphic_export.convertToPPM;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageProducer;
 import java.awt.image.MemoryImageSource;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -143,5 +147,56 @@ public class PPMEncoderTest {
         enc.encodeDone();
 
         assertEquals(0, baos.size());
+    }
+
+    // ---- The remaining three constructors -------------------------------
+    //
+    // Beyond (ImageProducer, OutputStream) exercised above, PPMEncoder exposes
+    // three more constructors. These pin them down; the two Image-based ones
+    // additionally cover the super-class ImageEncoder(Image, DataOutput) path
+    // (img.getSource()).
+
+    @Test
+    public void producerAndDataOutputConstructorWritesThroughTheDataOutput() throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutput dos = new DataOutputStream(baos);
+        PPMEncoder enc = new PPMEncoder(dummyProducer(), dos);
+
+        enc.encodeStart(1, 1);
+
+        assertEquals("P6\n1 1\n255\n", baos.toString("UTF-8"));
+    }
+
+    @Test
+    public void imageAndDataOutputConstructorWiresUpTheDataOutput() throws IOException {
+        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutput dos = new DataOutputStream(baos);
+        PPMEncoder enc = new PPMEncoder((Image) img, dos);
+
+        // A direct encodeStart proves the DataOutput handed to the ctor is used.
+        enc.encodeStart(1, 1);
+
+        assertEquals("P6\n1 1\n255\n", baos.toString("UTF-8"));
+    }
+
+    @Test
+    public void imageAndOutputStreamConstructorEncodesTheWholeImage() {
+        assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+            // The (Image, OutputStream) ctor routes through
+            // ImageEncoder(Image, DataOutput) -> img.getSource(); a BufferedImage
+            // supplies a synchronous producer that drives the encode pipeline.
+            BufferedImage img = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
+            img.setRGB(0, 0, 0x010203);
+            img.setRGB(1, 0, 0x040506);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            PPMEncoder enc = new PPMEncoder((Image) img, baos);
+            enc.encode();
+
+            byte[] header = "P6\n2 1\n255\n".getBytes(StandardCharsets.UTF_8);
+            byte[] body = bytes(0x01, 0x02, 0x03, 0x04, 0x05, 0x06);
+            assertArrayEquals(concat(header, body), baos.toByteArray());
+        });
     }
 }

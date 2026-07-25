@@ -25,7 +25,7 @@ import org.scilab.modules.graphic_objects.figure.Figure.RotationType;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject.UpdateStatus;
 
-import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.__GO_BACKGROUND__;
+import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.*;
 
 /**
  * Hermetic unit tests for {@link Figure}: the top-level figure object with its
@@ -301,5 +301,78 @@ public class FigureTest {
         // original untouched.
         copy.setName("changed");
         assertEquals("orig", f.getName());
+    }
+
+    /* ---- exhaustive generic getProperty/setProperty dispatch coverage ---- */
+
+    // Resolves a property id and round-trips a scalar through the generic
+    // dispatch, exercising the getProperty/setProperty switch arms that the
+    // typed setters above reach only directly.
+    private void assertScalarRoundTrip(int propertyId, Object value) {
+        Figure f = new Figure();
+        Object prop = f.getPropertyFromName(propertyId);
+        f.setProperty(prop, value);
+        assertEquals(value, f.getProperty(prop), "round-trip mismatch for id " + propertyId);
+    }
+
+    // Array-valued variant (Integer[] equality is by reference otherwise).
+    private void assertArrayRoundTrip(int propertyId, Integer[] value) {
+        Figure f = new Figure();
+        Object prop = f.getPropertyFromName(propertyId);
+        f.setProperty(prop, value);
+        assertArrayEquals(value, (Integer[]) f.getProperty(prop),
+                          "array round-trip mismatch for id " + propertyId);
+    }
+
+    @Test
+    public void everyScalarFigurePropertyRoundTripsThroughGenericDispatch() {
+        assertScalarRoundTrip(__GO_AUTORESIZE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_NAME__, "abc");
+        assertScalarRoundTrip(__GO_ID__, Integer.valueOf(5));
+        assertScalarRoundTrip(__GO_INFO_MESSAGE__, "hi");
+        assertScalarRoundTrip(__GO_PIXEL_DRAWING_MODE__, Integer.valueOf(6));   // XOR
+        assertScalarRoundTrip(__GO_ANTIALIASING__, Integer.valueOf(0));
+        assertScalarRoundTrip(__GO_IMMEDIATE_DRAWING__, Boolean.FALSE);
+        assertScalarRoundTrip(__GO_BACKGROUND__, Integer.valueOf(9));
+        assertScalarRoundTrip(__GO_EVENTHANDLER_NAME__, "handler");
+        assertScalarRoundTrip(__GO_EVENTHANDLER_ENABLE__, Boolean.TRUE);
+        assertScalarRoundTrip(__GO_ROTATION_TYPE__, Integer.valueOf(1));         // MULTIPLE
+        assertScalarRoundTrip(__GO_RESIZEFCN__, "onResize");
+        assertScalarRoundTrip(__GO_CLOSEREQUESTFCN__, "onClose");
+        assertScalarRoundTrip(__GO_RESIZE__, Boolean.FALSE);
+        assertScalarRoundTrip(__GO_TOOLBAR__, Integer.valueOf(0));               // NONE
+        assertScalarRoundTrip(__GO_TOOLBAR_VISIBLE__, Boolean.FALSE);
+        assertScalarRoundTrip(__GO_MENUBAR__, Integer.valueOf(0));
+        assertScalarRoundTrip(__GO_MENUBAR_VISIBLE__, Boolean.FALSE);
+        assertScalarRoundTrip(__GO_INFOBAR_VISIBLE__, Boolean.FALSE);
+        assertScalarRoundTrip(__GO_DOCKABLE__, Boolean.FALSE);
+        assertScalarRoundTrip(__GO_LAYOUT__, Integer.valueOf(1));                // GRIDBAG
+        assertScalarRoundTrip(__GO_DEFAULT_AXES__, Boolean.FALSE);
+        assertScalarRoundTrip(__GO_UI_ICON__, "icon.png");
+    }
+
+    @Test
+    public void everyArrayFigurePropertyRoundTripsThroughGenericDispatch() {
+        assertArrayRoundTrip(__GO_POSITION__, new Integer[] {10, 20});
+        assertArrayRoundTrip(__GO_SIZE__, new Integer[] {640, 480});
+        assertArrayRoundTrip(__GO_VIEWPORT__, new Integer[] {1, 2});
+        assertArrayRoundTrip(__GO_AXES_SIZE__, new Integer[] {100, 100});
+        assertArrayRoundTrip(__GO_GRID_OPT_GRID__, new Integer[] {2, 3});
+        assertArrayRoundTrip(__GO_GRID_OPT_PADDING__, new Integer[] {6, 7});
+        assertArrayRoundTrip(__GO_BORDER_OPT_PADDING__, new Integer[] {4, 5});
+    }
+
+    @Test
+    public void readOnlyAndColormapFigurePropertiesReachableThroughGenericDispatch() {
+        Figure f = new Figure();
+        // Layout-set is a read-only boolean flag.
+        Object layoutSet = f.getPropertyFromName(__GO_LAYOUT_SET__);
+        assertEquals(Boolean.TRUE, f.getProperty(layoutSet));
+        // Colormap size is read-only through setProperty (always NoChange).
+        Object cmSize = f.getPropertyFromName(__GO_COLORMAP_SIZE__);
+        assertNotNull(f.getProperty(cmSize));
+        assertEquals(UpdateStatus.NoChange, f.setProperty(cmSize, Integer.valueOf(42)));
+        // Colormap data is reachable through the generic getter.
+        assertNotNull(f.getProperty(f.getPropertyFromName(__GO_COLORMAP__)));
     }
 }

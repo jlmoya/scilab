@@ -146,4 +146,103 @@ public class XMLLexerTest {
     public void nullReaderConvertReturnsNull() {
         assertNull(new XMLLexer().convert(new Rec(), (java.io.Reader) null, true));
     }
+
+    // ==================================================================
+    // Richer inputs: entities, processing instructions, self-closing
+    // tags, multiple attributes, and a whole document in one pass.
+    // The FullRec also captures the instruction hooks the terse Rec above
+    // leaves as base-class no-ops, so their routing is asserted directly.
+    // ==================================================================
+
+    /** Extends the routing capture with the processing-instruction hooks. */
+    private static final class FullRec extends AbstractXMLCodeHandler {
+        final List<String> calls = new ArrayList<>();
+        private void rec(String k, String s) {
+            calls.add(k + ":" + s);
+        }
+        public void handleDefault(String s)        {
+            rec("default", s);
+        }
+        public void handleEntity(String s)         {
+            rec("entity", s);
+        }
+        public void handleNothing(String s)        { }
+        public void handleOpenInstr(String s)      {
+            rec("openInstr", s);
+        }
+        public void handleInstrName(String s)      {
+            rec("instrName", s);
+        }
+        public void handleCloseInstr(String s)     {
+            rec("closeInstr", s);
+        }
+        public void handleOpenTagName(String s)    {
+            rec("openTagName", s);
+        }
+        public void handleAttributeName(String s)  {
+            rec("attributeName", s);
+        }
+        public void handleAttributeValue(String s) {
+            rec("attributeValue", s);
+        }
+        public void handleAutoClose(String s)      {
+            rec("autoClose", s);
+        }
+    }
+
+    private static List<String> lexFull(String code) {
+        FullRec rec = new FullRec();
+        new XMLLexer().convert(rec, code);
+        return rec.calls;
+    }
+
+    private static boolean any(List<String> calls, String prefix) {
+        return calls.stream().anyMatch(s -> s.startsWith(prefix));
+    }
+
+    @Test
+    public void namedEntityLandsOnTheEntityHook() {
+        assertTrue(any(lexFull("&amp;"), "entity:"), () -> lexFull("&amp;").toString());
+    }
+
+    @Test
+    public void processingInstructionRoutesOpenNameAndClose() {
+        List<String> calls = lexFull("<?xml version=\"1.0\"?>");
+        assertTrue(calls.contains("instrName:xml"), () -> calls.toString());
+        assertTrue(any(calls, "openInstr:"), () -> calls.toString());
+        assertTrue(any(calls, "closeInstr:"), () -> calls.toString());
+    }
+
+    @Test
+    public void selfClosingTagRoutesToAutoClose() {
+        List<String> calls = lexFull("<br/>");
+        assertTrue(calls.contains("openTagName:br"), () -> calls.toString());
+        assertTrue(any(calls, "autoClose:"), () -> calls.toString());
+    }
+
+    @Test
+    public void multipleAttributesAreEachNamed() {
+        List<String> calls = lexFull("<a b=\"c\" d=\"e\">");
+        assertTrue(calls.contains("attributeName:b"), () -> calls.toString());
+        assertTrue(calls.contains("attributeName:d"), () -> calls.toString());
+    }
+
+    @Test
+    public void aWholeDocumentIsConsumedWithoutError() {
+        String doc =
+            "<?xml version=\"1.0\"?>\n"
+            + "<root a=\"1\">\n"
+            + "  <!-- note -->\n"
+            + "  <child/>\n"
+            + "  <![CDATA[ raw ]]>\n"
+            + "  text &amp; more\n"
+            + "</root>\n";
+        FullRec rec = new FullRec();
+        String out = new XMLLexer().convert(rec, doc);
+        assertNotNull(out, "convert must return the handler rendering");
+        assertTrue(any(rec.calls, "instrName:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "closeInstr:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "openTagName:"), () -> rec.calls.toString());
+        assertTrue(any(rec.calls, "autoClose:"), () -> rec.calls.toString());
+    }
 }
