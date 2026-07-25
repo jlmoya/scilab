@@ -13,7 +13,7 @@ def _cc(tmp_path, entries):
 
 def _derived(defaults=None, overrides=None):
     """A minimal tu_flag_facts-shaped {"defaults", "overrides"} dict -- the same
-    shape capture_tu_flag_facts produces -- for unit-level check_flag_facts/
+    shape the baseline's tu_flag_facts section has -- for unit-level check_flag_facts/
     expected_for tests that must not depend on the real (large, slowly-changing)
     armed baseline."""
     return {"defaults": defaults or {}, "overrides": overrides or {}}
@@ -146,13 +146,13 @@ def test_unchecked_suffixes_is_empty_when_covered(tmp_path):
 # Replaces the old parametrized test_each_required_suffix_is_guarded (7 cases
 # over DEFAULT_EXPECTED_BY_SUFFIX, ".c"/".cpp"/".cxx"/".cc"/".f"/".F"/".f90"):
 # that hand-written map is gone, and the suffix-to-language mapping now lives
-# in, and is tested by, makeflags.py's LANG_BY_SUFFIX (test_makeflags.py) --
-# re-locking ITS composition here would duplicate that file's job. What THIS
-# file still owns, and must still prove, is that check_flag_facts -- walking
-# the REAL derived baseline, not a synthetic one -- actually reaches a live
-# "defaults" entry and catches a bad TU for every one of these 7 suffixes.
-# That is end-to-end plumbing this file is responsible for, distinct from
-# "does the mapping exist" (makeflags' job).
+# in fingerprint.py's LANG_BY_SUFFIX (moved there when parity.makeflags, the
+# autotools-Makefile flag deriver, was retired) -- re-locking ITS composition
+# here would duplicate a trivial constant. What THIS file still owns, and must
+# still prove, is that check_flag_facts -- walking the REAL derived baseline,
+# not a synthetic one -- actually reaches a live "defaults" entry and catches a
+# bad TU for every one of these 7 suffixes. That is end-to-end plumbing this
+# file is responsible for, distinct from "does the mapping exist".
 
 REQUIRED_SUFFIXES = (".c", ".cpp", ".cxx", ".cc", ".f", ".F", ".f90")
 
@@ -203,7 +203,7 @@ def test_derived_overrides_cover_the_known_footgun_dirs():
     derived = _real_derived()
     # NOTE: the brief's Step 4 snippet spells the windows_tools probe as
     # "modules/windows_tools/src/nowindows_tools.c". The real generated Makefile
-    # (and capture_tu_flag_facts's derivation from it) keys this TU one directory
+    # (and the RC-b derivation from it) keys this TU one directory
     # deeper -- "modules/windows_tools/src/nowindows_tools/nowindows_tools.c",
     # verified against both modules/windows_tools/Makefile and the file on disk.
     # The brief's literal path is absent from "overrides", which would silently

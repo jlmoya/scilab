@@ -1,20 +1,25 @@
-"""Assert the semantic compiler-flag facts of a CMake module's compile lines
-against facts DERIVED from the autotools generated Makefiles and frozen into
-the parity baseline (RC-b; parity.capture.capture_tu_flag_facts). Closes the
-hybrid blind spot: the tree-wide flag manifest reads config.status (autotools),
-so it cannot see a CMake module's own flags; this can -- and unlike the
-hand-written expectation tables this replaces, what it checks against is
-DERIVED ground truth, not merely what someone remembered to record."""
+"""THE compiler-flag gate: assert the semantic flag facts of each CMake module's
+compile lines against per-TU facts frozen into the parity baseline (its
+"tu_flag_facts" section).
+
+Those facts were DERIVED from the autotools generated Makefiles (RC-b) and frozen
+BEFORE autotools was deleted, so this gate outlives the Makefiles it came from: at
+run time it reads only the committed baseline and the CMake compile database, never
+config.status or a Makefile. It became the sole flag gate when the coarse tree-wide
+"flags" fingerprint dimension was retired -- that one read config.status (an
+autotools artifact absent on a fresh checkout) and, being derived from SCI_CFLAGS,
+could not gate -std= at all, since autotools spells std in $(CC), not $(SCI_CFLAGS).
+This is per-TU DERIVED ground truth, not a hand-written expectation table."""
 import json, os, sys
-from parity.fingerprint import parse_flag_facts
-from parity.makeflags import LANG_BY_SUFFIX
+from parity.fingerprint import parse_flag_facts, LANG_BY_SUFFIX
 
 # ---------------------------------------------------------------------------
 # Historical knowledge behind the derived facts. The hand-written
 # FILE_EXPECTED_OVERRIDES / DIR_EXPECTED_OVERRIDES tables that used to record
-# this are gone -- capture_tu_flag_facts (parity.capture) now derives their
-# CONTENT straight from the generated Makefiles -- but the reviewed WHY behind
-# those facts is not rederivable from the numbers alone, so it stays here.
+# this are gone -- their CONTENT was DERIVED (RC-b) straight from the autotools
+# generated Makefiles and frozen into the baseline's tu_flag_facts -- but the
+# reviewed WHY behind those facts is not rederivable from the numbers alone, so
+# it stays here.
 #
 # Per-FILE -O0 workaround (opt only; wrapv/min_macos stay at the tree default):
 # colnew.f is compiled -O0 on macOS by an autotools per-file rule
@@ -30,9 +35,9 @@ from parity.makeflags import LANG_BY_SUFFIX
 #   blkfct.f symfct.f ordmmd.f  modules/sparse ("macOS crash")
 # (elementary_functions' libdummy -O0 rules for hqror2/comqr3/pade/unsfdcopy/
 # icopy are a DEAD root-level rule that subdir-objects never requests -- the
-# baseline compiled all five at plain -O2, so capture_tu_flag_facts's
-# object-referenced live-rule filter correctly excludes them and no override
-# is recorded.)
+# baseline compiled all five at plain -O2, so the RC-b derivation's
+# object-referenced live-rule filter correctly excluded them and no override
+# was recorded.)
 #
 # Per-DIRECTORY footgun (opt=O0 + wrapv=False; automake `_la_CFLAGS`-REPLACES-
 # `AM_CFLAGS`): a few Stage-1f fold-in core modules set `libsci<m>_la_CFLAGS`
@@ -73,10 +78,9 @@ INVARIANT = {"min_macos": "11.0"}
 # -O2, not -O0) but slow and a latent trap. The CMake build now gives those TUs the
 # full SCI_CFLAGS default (-O2 -fwrapv -g), so their EXPECTED facts are the tree
 # default, NOT the footgun the (retired) Makefile still encodes. This is expressed
-# HERE, in the expectation, rather than by filtering the derivation in
-# capture_tu_flag_facts -- the derivation stays a faithful autotools ground truth
-# (so its own unit/fault-injection tests keep passing), and the deliberate
-# divergence lives in exactly one place. Net effect: the gate now ENFORCES "no C TU
+# HERE, in the expectation, rather than by editing the frozen baseline facts -- the
+# baseline stays a faithful record of what autotools actually encoded (RC-b), and the
+# deliberate divergence lives in exactly one place. Net effect: the gate now ENFORCES "no C TU
 # stays footgunned" -- a C TU still compiled O0/no-fwrapv now MISMATCHES the
 # tree-default expectation and is flagged. The per-FILE -O0 Fortran workarounds
 # (colnew.f, sszer.f, ...) keep wrapv=True, are not C, and are untouched.
@@ -105,10 +109,10 @@ def check_flag_facts(compile_commands_path, derived, source_root):
     mismatch as a string.
 
     `derived` is the tu_flag_facts section of the parity baseline --
-    {"defaults": {lang: facts}, "overrides": {relpath: facts}} -- exactly as
-    capture_tu_flag_facts produces it. `source_root` is what compile_commands.json's
+    {"defaults": {lang: facts}, "overrides": {relpath: facts}} -- as the RC-b
+    derivation froze it. `source_root` is what compile_commands.json's
     absolute `file` paths are made relative to before the override lookup
-    (capture_tu_flag_facts keys overrides by path relative to the autotools source
+    (overrides are keyed by path relative to the autotools source
     root, e.g. "modules/string/src/c/foo.c").
 
     A TU whose suffix maps to no language, or whose language has neither a

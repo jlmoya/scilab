@@ -75,6 +75,15 @@ def parse_rpaths(otool_l_output):
     return rpaths
 
 
+# Source-suffix -> language bucket, for grouping compile_commands.json entries by
+# language (flagfacts_check) the same way parse_flag_facts reads their flags. Lives
+# here beside parse_flag_facts now that its former home, parity.makeflags (the
+# autotools-Makefile flag deriver), was retired -- the derived facts it produced are
+# frozen in baseline-autotools.json["tu_flag_facts"], so nothing reads the Makefiles.
+LANG_BY_SUFFIX = {"c": "c", "cpp": "cxx", "cxx": "cxx", "cc": "cxx",
+                  "f": "f", "F": "f", "f90": "f"}
+
+
 # -O<level> only: anchored + case-sensitive so "-o foo.o" (the output flag) and
 # "-ObjC" never match; the empty suffix is bare "-O" (which gcc/clang treat as -O1).
 _OPT_TOKEN = re.compile(r"^-O([0-9a-z]*)$")

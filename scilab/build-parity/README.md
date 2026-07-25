@@ -47,17 +47,22 @@ still report `PARITY OK`). `machine.h`, which lives in that same `generated-incl
 deliberately NOT part of `generated_cmake` — it is covered separately by the semantic
 `header_defines` dimension, because CMake's `machine.h` is not byte-identical to configure's.
 
-Plus the **compiler-flag manifest**: the effective per-language (C / C++ / Fortran) codegen facts —
-optimization level (last `-O<x>` wins), `-fwrapv`, `-mmacosx-version-min`, OpenMP, `-DNDEBUG`,
-`-std=` — read from `config.status` (autotools) or `compile_commands.json` (CMake) and compared
-*semantically*, so a dropped `-fwrapv` or an `-O2`→`-O0` slip fails parity even though it moves no
-symbol, link edge, or SDK stamp (exactly the regression that once sat green for days; fixed in
-`516c57573cc`). The `source` label itself is deliberately not compared — autotools→cmake is the
-migration. **Known limitation (v1):** only the GLOBAL per-language flags are captured; per-TU
-overrides (e.g. `differential_equations` forcing `colnew.f` to `-O0` on macOS) are invisible.
+Plus the **compiler-flag gate** (`parity/flagfacts_check.py`, run separately from the fingerprint
+diff): the effective **per-TU** codegen facts — optimization level (last `-O<x>` wins), `-fwrapv`,
+`-mmacosx-version-min`, OpenMP, `-DNDEBUG`, `-std=` — parsed *semantically* from every
+`compile_commands.json` entry and checked against per-TU expectations frozen in the baseline, so a
+dropped `-fwrapv` or an `-O2`→`-O0` slip fails even though it moves no symbol, link edge, or SDK
+stamp (exactly the regression that once sat green for days; fixed in `516c57573cc`). It reads only
+the baseline and the CMake compile database — never `config.status` or a Makefile. A coarse
+per-language `flags` **fingerprint dimension** used to sit alongside it, read from `config.status`;
+it was **retired** once autotools was deleted — that file is absent on a fresh checkout (so the
+dimension only ever compared frozen-vs-frozen where stale artifacts lingered), and being derived from
+`$(SCI_CFLAGS)` it could not gate `-std=` at all, since autotools spells std in `$(CC)`. The per-TU
+gate supersedes it (it catches `colnew.f`-style per-TU `-O0` overrides the coarse row never could).
 
 ## Scope
-Nine dimensions are fingerprinted today:
+Seven dimensions are fingerprinted today (the compiler-flag gate above is separate — a per-TU check,
+not a fingerprint dimension):
 
 | Dimension | Compares | Armed in |
 |---|---|---|
@@ -65,11 +70,13 @@ Nine dimensions are fingerprinted today:
 | `executables` | the same, for `scilab-bin` + `scilab-cli-bin` | Stage 1f-a |
 | `generated` | byte hashes of configure's OWN copies of all 13 generated files — always the SOURCE TREE, on both sides | Stage 0, grown 3→13 at RC-c |
 | `generated_cmake` | CMake's OWN copies of eleven files across two directories — the ten RC-c files (`build-cmake/generated/`) plus `version.h` (`build-cmake/generated-includes/`) — byte-checked against `generated`'s baseline hashes — the actual CMake-vs-configure comparison. `machine.h`, in that same second directory, is covered separately by `header_defines`, not here | RC-c final-review fix, extended |
-| `flags` | semantic per-language flag facts | Stage 1 |
 | `jars` | normalized jar content manifests (entry list + MANIFEST, volatile lines dropped) | Stage 1f-b |
 | `maven_jars` | normalized jar content manifests for Maven's `modules/*/target/*.jar` output, keyed at Ant's `modules/<m>/jar/<basename>` path so it is directly comparable to `jars` | captured Stage 2-c Task 1; **armed** Task 2 by `test_maven_jars_align_with_ant_jars` |
 | `header_defines` | a header's `{macro: value}` `#define` set — **semantic, not bytes** | RC-a |
-| `tu_flag_facts` | per-TU flag facts **derived from the autotools generated Makefiles** | RC-b |
+
+The baseline also carries a **`tu_flag_facts`** section (per-TU flag expectations, RC-b) that is NOT
+a fingerprint dimension: it is the frozen input the compiler-flag gate above reads. See the
+retirement note below.
 
 `generated_cmake` exists because `generated` alone cannot: resolving `GENERATED_FILES` against the
 source tree, as `generated` does, reads configure's own output regardless of which build produced the
@@ -124,24 +131,27 @@ reactor's own `<modules>` list and asserts every declared module produced at lea
 so a build that is merely *partial* now fails loudly instead of passing by omission. A captured
 dimension nobody compares is an observation, not a gate.
 
-`tu_flag_facts` (RC-b) is what `parity/flagfacts_check.py` now checks against, per translation
-unit. It replaced **hand-written** expectations — a hardcoded default plus two manually maintained
-override tables — which had a structural flaw worth stating plainly: such a gate enforces only what
-someone remembered to record, and silently blesses everything else. It was returning rc=0 while real
-divergences existed. `parity/makeflags.py` derives the facts instead, by expanding each generated
-`Makefile`'s own compile recipes (whole-recipe expansion, because `-std=` arrives via `$(CC)` rather
-than `$(SCI_CFLAGS)`; and a rule counts as live only if the build actually requests its object,
-which excludes config.status-disabled and stale hand-written rules). `parity/capture.py` stores a
-tree-wide default per language plus only the ~211 TUs that deviate. It is **frozen** into the
-baseline on purpose: retire-`configure`'s later sub-stages delete the generated Makefiles this is
-derived from, so the committed baseline is what lets autotools-derived truth outlive autotools.
+`tu_flag_facts` (RC-b) is what `parity/flagfacts_check.py` checks against, per translation unit. It
+replaced **hand-written** expectations — a hardcoded default plus two manually maintained override
+tables — which had a structural flaw worth stating plainly: such a gate enforces only what someone
+remembered to record, and silently blesses everything else. It was returning rc=0 while real
+divergences existed. The RC-b derivation (`parity/makeflags.py`, **since retired**) built the facts
+instead, by expanding each generated `Makefile`'s own compile recipes (whole-recipe expansion,
+because `-std=` arrives via `$(CC)` rather than `$(SCI_CFLAGS)`; and a rule counts as live only if
+the build actually requests its object, which excludes config.status-disabled and stale hand-written
+rules) — a tree-wide default per language plus only the ~211 TUs that deviate. It is **frozen** into
+the baseline on purpose: autotools (and the generated Makefiles this was derived from) is now
+deleted, so the committed baseline is what lets autotools-derived truth outlive autotools.
+`flagfacts_check.py` reads that frozen section directly and derives nothing at run time — which is
+why `makeflags.py` and the tautological `tu_flag_facts` *fingerprint dimension* (both sides traced to
+the same frozen Makefiles, so it gated nothing) could be retired, leaving the stronger per-TU gate.
 
 Switching to derived expectations immediately surfaced 50 divergent files, 47 of which mismatched on
 `openmp` — invisible before because the old tables never asserted `openmp` at all. Three of those
 files carry live `#ifdef _OPENMP` branches, so CMake had been compiling serial code paths where
 autotools compiled parallel ones. The `dylibs` dimension cannot see that class: `nm` lists symbol
 *names*, and two `#ifdef` branches defining the same functions with different bodies yield an
-identical symbol set. That is the concrete argument for keeping a semantic flag dimension at all.
+identical symbol set. That is the concrete argument for the semantic flag gate at all.
 
 `header_defines` (RC-a) exists because CMake's generated `machine.h` is **not** byte-identical to
 autoconf's — comment style, `#define` vs `/* #undef */` spelling and ordering all differ — so it is

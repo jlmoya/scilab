@@ -806,3 +806,16 @@ build.** Coexistence shrinks to zero across these committed stages, each DELETIN
 3. **Retire `make`:** delete the `Makefile.am`/`Makefile.in` → the native side is CMake-only.
 4. **Stage 2 (Ant→Maven):** Ant + `build.incl.xml` gone → Maven the sole Java build.
 5. **End state:** autotools + Ant fully removed; **zero coexistence.** Then the FFI phase (SWIG/JNI→Panama).
+
+**Harness self-cleanup (done 2026-07-25).** With autotools deleted, the parity *harness itself* was the
+last thing still reading a frozen autotools artifact: `capture.py` re-read `config.status` (the coarse
+`flags` fingerprint dimension) and the generated Makefiles (`capture_tu_flag_facts` → `makeflags.py`)
+when fingerprinting a candidate. Both are git-ignored — absent on a fresh checkout — so those two
+dimensions would have **failed** `parity.diff` on clean CI; they passed only in a stale working tree,
+comparing frozen-vs-frozen. And being derived from `$(SCI_CFLAGS)`, `flags` could never gate `-std=`
+(autotools spells std in `$(CC)`). Retired: `makeflags.py` deleted, both dimensions removed from
+`capture.py`/`diff.py`, the baseline's vestigial `flags` block dropped. `parity/flagfacts_check.py` —
+per-TU, reading the frozen baseline `tu_flag_facts` + `compile_commands.json`, never an autotools file —
+is now the sole (strictly stronger) flag gate; the `-fwrapv` fault-injection acceptance was rewritten
+to fault-inject the real CMake compile DB through it. Net **−1089** harness lines; the harness now
+stands entirely on CMake outputs + the frozen baseline (register H5).

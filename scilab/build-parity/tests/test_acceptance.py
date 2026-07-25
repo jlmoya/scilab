@@ -23,6 +23,7 @@ import pytest
 
 from parity.capture import fingerprint_build, _default_roots
 from parity.diff import diff_fingerprints
+from parity.flagfacts_check import check_flag_facts
 
 HERE = os.path.dirname(__file__)
 BUILD_DIR = os.path.abspath(os.path.join(HERE, "..", ".."))   # the scilab/ built tree
@@ -51,6 +52,14 @@ _requires_built_tree = pytest.mark.skipif(
 _ANY_ANT_JAR = glob.glob(os.path.join(BUILD_DIR, "modules", "*", "jar", "*.jar"))
 _requires_ant_jars = pytest.mark.skipif(
     not _ANY_ANT_JAR, reason="requires at least one Ant-built module jar")
+
+# The per-TU flag gate (flagfacts_check) reads the CMake compile database, NOT the
+# retired autotools .libs/ tree -- so its sensitivity test guards on that artifact
+# directly, and runs on a fresh Java-only/CMake checkout where .libs/scilab-bin is absent.
+_CMAKE_COMPILE_DB = os.path.join(BUILD_DIR, "build-cmake", "compile_commands.json")
+_requires_cmake_compile_db = pytest.mark.skipif(
+    not os.path.exists(_CMAKE_COMPILE_DB),
+    reason="requires the CMake compile database (build-cmake/compile_commands.json)")
 
 
 def _capture():
@@ -117,19 +126,37 @@ def test_sensitivity_dropped_rpath_is_caught():
     assert any("rpaths" in d for d in r["differences"])
 
 
-@_requires_built_tree
-def test_sensitivity_wrapv_drop_is_caught():
-    # THE codegen blind spot the flag manifest closes: -fwrapv drops out of the C
-    # flags and NOTHING about symbols/link/stamp moves -- the exact class that sat
-    # green for days (fixed in 516c57573cc). Must now fail parity, naming wrapv.
-    base = _capture()
-    assert base["flags"]["source"] == "autotools"
-    assert base["flags"]["c"], "real tree must yield C flag facts"
-    mutated = copy.deepcopy(base)
-    mutated["flags"]["c"]["wrapv"] = False
-    r = diff_fingerprints(base, mutated)
-    assert r["ok"] is False
-    assert any("flags c" in d and "wrapv" in d for d in r["differences"])
+@_requires_cmake_compile_db
+def test_sensitivity_wrapv_drop_is_caught(tmp_path):
+    # THE codegen blind spot the per-TU flag gate closes: -fwrapv drops out of a C
+    # TU's compile command and NOTHING about symbols/link/stamp moves -- the exact
+    # class that sat green for days (fixed in 516c57573cc). flagfacts_check must fail
+    # the run, naming wrapv. Exercised against the REAL CMake compile database,
+    # fault-injected -- the cmake-native successor to the retired coarse "flags"
+    # fingerprint dimension. That dimension read config.status (an autotools artifact
+    # absent on a fresh post-autotools checkout) and, being derived from SCI_CFLAGS,
+    # could not gate -std= at all (autotools spells it in $(CC), not $(SCI_CFLAGS)):
+    # this whole-command gate does, which is why it replaces rather than supplements it.
+    derived = json.load(open(BASELINE))["tu_flag_facts"]
+    db = json.load(open(_CMAKE_COMPILE_DB))
+    # Green baseline: the real, unmutated build already honors every frozen per-TU
+    # expectation, so a caught mutation below is a real catch, not noise.
+    assert check_flag_facts(_CMAKE_COMPILE_DB, derived, BUILD_DIR) == []
+    # Drop -fwrapv from every C TU's command; the wrapv=True-expected TUs (the C
+    # tree default) must then be reported by name.
+    mutated = copy.deepcopy(db)
+    hits = 0
+    for e in mutated:
+        cmd = e.get("command")
+        if e["file"].endswith(".c") and cmd and "-fwrapv" in cmd:
+            e["command"] = cmd.replace(" -fwrapv", "")
+            hits += 1
+    assert hits, "real C TUs must carry -fwrapv to fault-inject"
+    cc = tmp_path / "compile_commands.json"
+    cc.write_text(json.dumps(mutated))
+    mismatches = check_flag_facts(str(cc), derived, BUILD_DIR)
+    assert mismatches, "dropping -fwrapv from every C TU must be caught"
+    assert any("wrapv" in m for m in mismatches)
 
 
 _MVN_NS = "{http://maven.apache.org/POM/4.0.0}"

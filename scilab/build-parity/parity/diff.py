@@ -45,30 +45,13 @@ def _diff_rpaths(kind, name, b, c, out):
     "rpaths" key predates rpath capture (the committed baseline until Task 2
     re-captures it): skip -- not yet gated, not a failure. The reverse is NOT
     tolerated: against an rpath-aware baseline, a candidate lacking the key
-    must not silently skip the gate (mirrors the flags-block rule below)."""
+    must not silently skip the gate (mirrors the jars/header_defines rule below)."""
     if "rpaths" not in b:
         return
     if "rpaths" not in c:
         out.append(f"{kind} {name}: rpaths missing in candidate")
     elif b["rpaths"] != c["rpaths"]:
         out.append(f"{kind} {name}: rpaths {b['rpaths']} != {c['rpaths']}")
-
-
-def _diff_tu_flag_group(kind, base, cand, out):
-    """One group inside "tu_flag_facts" -- "defaults" (keyed by language) or
-    "overrides" (keyed by TU relpath), each a {name: {fact: value}} mapping.
-    Same idiom as header_defines: presence via _diff_named, then a per-shared-
-    name fact diff (added/removed/changed keys, values shown for a change)."""
-    _diff_named(kind, base, cand, out)
-    for name in sorted(set(base) & set(cand)):
-        b, c = base[name], cand[name]
-        for k in sorted(set(b) - set(c)):
-            out.append(f"{kind} {name}: fact removed: {k}")
-        for k in sorted(set(c) - set(b)):
-            out.append(f"{kind} {name}: fact added: {k}")
-        for k in sorted(set(b) & set(c)):
-            if b[k] != c[k]:
-                out.append(f"{kind} {name}: fact changed: {k} ({b[k]!r} -> {c[k]!r})")
 
 
 def diff_fingerprints(base, cand):
@@ -175,7 +158,7 @@ def diff_fingerprints(base, cand):
     # comment in capture.py for why the key is deliberately synthetic. Compared
     # exactly the way `jars` is: presence via _diff_named, then a per-shared-key
     # entry diff (removed/added/changed). Transition rule mirrors jars/rpaths/
-    # header_defines/tu_flag_facts exactly: a baseline with no "maven_jars"
+    # header_defines exactly: a baseline with no "maven_jars"
     # section predates Maven capture -> skip (not yet armed, not a failure). The
     # reverse is NOT tolerated: against a maven_jars-aware baseline, a candidate
     # lacking the section must fail (not silently skip).
@@ -229,50 +212,6 @@ def diff_fingerprints(base, cand):
                     if b[m] != c[m]:
                         out.append(f"{name}: macro changed: {m} ({b[m]!r} -> {c[m]!r})")
 
-    # Compiler-flag facts, per language. The `source` label (autotools vs cmake)
-    # is deliberately NOT compared -- flipping it is the migration itself; only
-    # the semantic codegen facts matter. .get(): fingerprints captured before
-    # the flag manifest existed lack the block entirely -- two old fingerprints
-    # diff clean, but a language present on one side only is a difference (a
-    # pre-manifest candidate must not silently skip the flag check).
-    bflags = base.get("flags") or {}
-    cflags = cand.get("flags") or {}
-    for lang in ("c", "cxx", "f"):
-        b, c = bflags.get(lang), cflags.get(lang)
-        if b is None and c is None:
-            continue
-        if c is None:
-            out.append(f"flags {lang}: facts missing in candidate")
-        elif b is None:
-            out.append(f"flags {lang}: facts extra in candidate")
-        elif b != c:
-            changed = sorted(k for k in set(b) | set(c) if b.get(k) != c.get(k))
-            out.append(f"flags {lang}: " + ", ".join(
-                f"{k} {b.get(k)!r} -> {c.get(k)!r}" for k in changed))
-
-    # Per-TU derived flag-fact baseline (RC-b): the frozen {"defaults", "overrides"}
-    # that parity.flagfacts_check checks CMake TUs against (parity.capture.
-    # capture_tu_flag_facts derives it from the autotools generated Makefiles).
-    # Unlike the "flags" block above (one representative TU per language), this is
-    # the ~211-entry per-TU ground truth, so it gets its own comparison rather than
-    # reusing that one. Compared the same way header_defines/jars are: presence via
-    # _diff_named, then a per-shared-name fact diff -- done once for "defaults"
-    # (keyed by language) and once for "overrides" (keyed by TU relpath). Transition
-    # rule mirrors rpaths/jars/header_defines: a baseline with no "tu_flag_facts"
-    # section predates RC-b -> skip (not yet armed, not a failure); a candidate that
-    # LOST the section against an armed baseline must FAIL (not silently skip). This
-    # is also what catches the frozen baseline drifting from the generated Makefiles
-    # it was derived from -- a hand edit, or a capture taken before ./configure ever
-    # ran (an empty "defaults"/"overrides") -- which flagfacts_check alone cannot
-    # see: it only ever reads the baseline, never cross-checks it against anything
-    # else. Closes Makefile drift too, for as long as the generated Makefiles exist.
-    if "tu_flag_facts" in base:
-        if "tu_flag_facts" not in cand:
-            out.append("tu_flag_facts section missing in candidate")
-        else:
-            btu, ctu = base["tu_flag_facts"], cand["tu_flag_facts"]
-            _diff_tu_flag_group("flags default", btu.get("defaults", {}), ctu.get("defaults", {}), out)
-            _diff_tu_flag_group("flags override", btu.get("overrides", {}), ctu.get("overrides", {}), out)
 
     return {"ok": not out, "differences": out}
 

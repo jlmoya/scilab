@@ -8,9 +8,8 @@ import sys
 import zipfile
 
 from parity.fingerprint import (parse_nm, parse_otool_libs, parse_build_version,
-                                parse_flag_facts, parse_rpaths, normalize_version,
+                                parse_rpaths, normalize_version,
                                 normalize_path, normalize_manifest, parse_defines)
-from parity.makeflags import makefile_tu_facts, LANG_BY_SUFFIX
 
 # Files config.status substitutes, byte-hashed after root normalization. The three
 # original entries plus RC-c's nine (build.incl.xml, RC-c's tenth, retired with Ant
@@ -145,132 +144,6 @@ def _file_reader(path):
             return f.read()
     except OSError:
         return None
-
-
-# config.status spells the per-language flags as S["SCI_CFLAGS"]="..." lines.
-_SCI_FLAG_VARS = {"c": "SCI_CFLAGS", "cxx": "SCI_CXXFLAGS", "f": "SCI_FFLAGS"}
-# compile_commands.json groups by source-file extension (lowercased first).
-_CMAKE_EXT_LANG = {".c": "c", ".cc": "cxx", ".cpp": "cxx", ".cxx": "cxx",
-                   ".f": "f", ".f90": "f", ".f95": "f"}
-
-
-def capture_flag_manifest(build_dir, reader=_file_reader):
-    """Effective per-language compiler-flag facts: {"source", "c", "cxx", "f"}.
-
-    Closes the harness's codegen blind spot: a dropped -fwrapv or an -O2->-O0
-    slip changes no exported symbol, link edge, or SDK stamp, so the binary
-    fingerprint stayed green while every C file compiled unoptimized (the
-    regression fixed in 516c57573cc). v1 captures the GLOBAL per-language
-    flags only -- known limitation: per-TU overrides (e.g. differential_equations
-    forcing colnew.f to -O0 on macOS) are invisible under autotools, and under
-    CMake -- where the FIRST compile_commands.json entry per language stands in
-    for the global flags -- an overridden TU that happens to land first would be
-    MISTAKEN for the global fact, not merely missed.
-
-    `reader(path) -> str | None` is injected for unit tests, mirroring the
-    `runner` injection of the fingerprint functions.
-    """
-    text = reader(os.path.join(build_dir, "config.status"))
-    if text is not None:
-        manifest = {"source": "autotools"}
-        for lang, var in _SCI_FLAG_VARS.items():
-            # Autoconf splits any value longer than 148 chars across backslash-
-            # continuation lines -- `"…first…"\` newline `"…rest…"` -- and the cut
-            # lands MID-TOKEN, so the segments are joined by DIRECT concatenation
-            # (no space). A first-segment-only read would silently truncate
-            # SCI_CFLAGS the moment it crosses the cliff (140 chars today) and
-            # could split a token like -fwrapv into "-fwr"|"apv".
-            m = re.search(r'S\["%s"\]="([^"]*)"((?:\\\n"[^"]*")*)' % var, text)
-            if m:
-                value = m.group(1) + "".join(re.findall(r'"([^"]*)"', m.group(2)))
-                manifest[lang] = parse_flag_facts(value)
-            else:
-                manifest[lang] = None
-        return manifest
-
-    text = reader(os.path.join(build_dir, "compile_commands.json"))
-    if text is not None:
-        manifest = {"source": "cmake", "c": None, "cxx": None, "f": None}
-        for entry in json.loads(text):
-            lang = _CMAKE_EXT_LANG.get(os.path.splitext(entry.get("file", ""))[1].lower())
-            if lang is None or manifest[lang] is not None:
-                continue   # one representative TU per language (global facts, v1)
-            cmd = entry.get("command") or " ".join(entry.get("arguments", []))
-            if cmd:
-                manifest[lang] = parse_flag_facts(cmd)
-        return manifest
-
-    return {"source": "unknown", "c": None, "cxx": None, "f": None}
-
-
-# Derived per-TU flag expectation (RC-b). Stored as a tree-wide default plus ONLY
-# the TUs that deviate -- a few hundred entries instead of ~3600, and it maps
-# directly onto how flagfacts_check asks the question ("what is expected of THIS
-# file?"). The design's original "~40" estimate undercounted: the known-answer
-# validation (Step 5) measures 211 on the real tree -- 146 from
-# modules/differential_equations, 16 from spreadsheet's deliberate -std=c++20, 25
-# from string's (and a handful of siblings') _CFLAGS-replaces-AM_CFLAGS footgun,
-# 13 from mpi's wrapper CC (no -std= token -- see the CAVEAT below), and the rest
-# genuine per-TU divergences (the macOS gfortran -O0 workarounds). A couple
-# hundred is the expected shape; a count in the THOUSANDS would instead mean an
-# empty `defaults` making every TU compare unequal -- investigate, don't
-# rebaseline, if that recurs.
-#
-# The differential_equations 146 is NOT "~145 from the vendored patched_sundials
-# subtree", despite an earlier draft of this comment claiming that -- measured:
-# only 103 of the 146 are under src/patched_sundials/. The other 43 are the
-# module's OWN gateway/manager files (e.g. sci_gateway/cpp/sci_ida.cpp,
-# src/c/Ex-daskr.c), which inherit the SAME -fopenmp fact via the shared
-# libscidifferential_equations_la_CPPFLAGS block that also covers the vendored
-# subtree -- a real deviation, just not a patched_sundials one.
-#
-# CAVEAT on the mpi 13: genuinely derived from modules/mpi/Makefile (CC =
-# $(OPENMPI_CC), which IS blank on this machine, so its recipes really do lose
-# the -std=gnu23 token that normally arrives via $(CC) -- not a parser
-# artifact), but INERT for flagfacts_check today: build-cmake/compile_commands.json
-# carries ZERO modules/mpi entries here (CMake does not build the module on this
-# machine either), so the gate never walks these 13 files to check them against
-# this expectation. Read "211" as "211 derived facts", not "211 CMake-verified
-# deviations" -- 13 of them currently guard nothing.
-#
-# FROZEN ON PURPOSE: RC-e deletes the generated Makefiles this is derived from, so
-# the committed baseline is what lets the autotools-derived truth outlive autotools.
-_DEFAULT_DEVIATION_LIMIT = 8
-
-def capture_tu_flag_facts(source_root):
-    modules = os.path.join(source_root, "modules")
-    per_module, defaults_seen = {}, {}
-    for name in sorted(os.listdir(modules)) if os.path.isdir(modules) else []:
-        mk = os.path.join(modules, name, "Makefile")
-        if not os.path.isfile(mk):
-            continue
-        with open(mk, errors="replace", encoding="utf-8") as f:
-            facts = makefile_tu_facts(f.read())
-        per_module[name] = facts
-        for lang, d in facts["defaults"].items():
-            defaults_seen.setdefault(lang, []).append(json.dumps(d, sort_keys=True))
-
-    # The tree-wide default is the MODAL per-module suffix-rule result, not a
-    # hand-picked representative -- picking one module is the same "representative
-    # TU" weakness that makes the global `flags` row a non-gate.
-    defaults = {}
-    for lang, seen in defaults_seen.items():
-        modal = max(set(seen), key=seen.count)
-        deviants = len(seen) - seen.count(modal)
-        if deviants > _DEFAULT_DEVIATION_LIMIT:
-            raise RuntimeError(
-                f"{lang}: {deviants} modules deviate from the modal default -- "
-                "'the tree-wide default' is not a real notion here; investigate "
-                "before trusting this capture")
-        defaults[lang] = json.loads(modal)
-
-    overrides = {}
-    for name, facts in per_module.items():
-        for relsrc, tu in facts["explicit"].items():
-            lang = LANG_BY_SUFFIX.get(relsrc.rsplit(".", 1)[-1])
-            if lang and tu != defaults.get(lang):
-                overrides[f"modules/{name}/{relsrc}"] = tu
-    return {"defaults": defaults, "overrides": overrides}
 
 
 def _normalize_entry(entry, roots):
@@ -593,9 +466,7 @@ def fingerprint_build(build_dir, roots, runner=_subprocess_runner, build_id="bui
             "dylibs": dylibs, "generated": generated, "generated_cmake": generated_cmake,
             "jars": jars,
             "maven_jars": maven_jars,
-            "header_defines": header_defines,
-            "flags": capture_flag_manifest(build_dir),
-            "tu_flag_facts": capture_tu_flag_facts(build_dir)}
+            "header_defines": header_defines}
 
 
 def _default_roots(build_dir):

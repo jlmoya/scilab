@@ -5,7 +5,7 @@ import re
 
 import pytest
 
-from parity.capture import (fingerprint_dylib, fingerprint_build, capture_flag_manifest,
+from parity.capture import (fingerprint_dylib, fingerprint_build,
                             MACRO_BIN_MANIFEST_KEY)
 
 def fake_runner(responses):
@@ -427,123 +427,6 @@ def fake_reader(files):
     return read
 
 
-# The real S["..."]= lines from the autotools config.status (verified 2026-07-15).
-CONFIG_STATUS_SNIPPET = '''\
-S["SCI_FFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0"
-S["SCI_CXXFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0 -fno-stack-protector -Wall -Wpedantic"
-S["SCI_CFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0 -fno-stack-protector -Wall -Wpedantic -Werror=implicit -Werror=incompatible-pointer-types"
-'''
-
-def test_capture_flag_manifest_autotools():
-    m = capture_flag_manifest("/b", reader=fake_reader({"config.status": CONFIG_STATUS_SNIPPET}))
-    assert m["source"] == "autotools"
-    for lang in ("c", "cxx", "f"):
-        assert m[lang]["opt"] == "O2"
-        assert m[lang]["wrapv"] is True
-        assert m[lang]["min_macos"] == "11.0"
-
-# Autoconf splits any S["..."]="..." value longer than 148 chars across
-# backslash-continuation lines -- `"…first…"\` newline `"…rest…"` -- and the cut
-# lands MID-TOKEN (the real FLIBS/LDFLAGS/PKG_CONFIG_PATH in config.status all
-# have this shape; first segment exactly 148 chars, verified 2026-07-15).
-# SCI_CFLAGS is 140 chars today, 8 under the cliff: the very next flag appended
-# would split it. Here the cut straddles -fwrapv itself ("-fwr" | "apv"), so a
-# first-segment-only read sees no -fwrapv at all; SCI_CXXFLAGS carries TWO
-# continuation lines (the FLIBS length) with -std=c++17 split at the second
-# boundary; SCI_FFLAGS stays unsplit -- both spellings coexist in one file.
-SPLIT_CONFIG_STATUS_SNIPPET = '''\
-S["SCI_FFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0"
-S["SCI_CXXFLAGS"]="-DNDEBUG -g1 -O2 -fwrapv -mmacosx-version-min=11.0 -fno-stack-protector -Wall -Wpedantic -Wextra -Wno-deprecated-declarations -Wno-unused-parameter "\\
-"-Wno-sign-compare -Werror=return-type -fvisibility=hidden -fvisibility-inlines-hidden -fno-common -pipe -fPIC -Wformat=2 -Wshadow -Wpointer-arith -s"\\
-"td=c++17"
-S["SCI_CFLAGS"]="-DNDEBUG -g1 -O2 -mmacosx-version-min=11.0 -fno-stack-protector -Wall -Wpedantic -Werror=implicit -Werror=incompatible-pointer-types -std=gnu17 -fwr"\\
-"apv"
-'''
-
-def test_capture_flag_manifest_autotools_continuation_split():
-    # Fixture honesty: the first SCI_CFLAGS segment is exactly 148 chars (the
-    # real autoconf cliff) and ends mid-token in "-fwr" -- what a naive
-    # first-segment-only regex would hand to the parser.
-    seg1 = re.search(r'S\["SCI_CFLAGS"\]="([^"]*)"', SPLIT_CONFIG_STATUS_SNIPPET).group(1)
-    assert len(seg1) == 148 and seg1.endswith("-fwr")
-
-    m = capture_flag_manifest("/b", reader=fake_reader({"config.status": SPLIT_CONFIG_STATUS_SNIPPET}))
-    assert m["source"] == "autotools"
-    # -fwrapv straddles the boundary as "-fwr"|"apv": only a DIRECT (no-space)
-    # join of the continuation segments reassembles it.
-    assert m["c"]["wrapv"] is True
-    assert m["c"]["std"] == "gnu17"       # the tail before the cut still parses
-    assert m["c"]["opt"] == "O2"
-    # Two continuation lines, -std=c++17 split as "-s"|"td=c++17" at the SECOND
-    # boundary: every segment must be consumed, not just the first continuation.
-    assert m["cxx"]["std"] == "c++17"
-    assert m["cxx"]["wrapv"] is True
-    # The unsplit spelling in the same file still parses.
-    assert m["f"]["opt"] == "O2"
-
-def test_capture_flag_manifest_autotools_missing_language_is_none():
-    m = capture_flag_manifest("/b", reader=fake_reader({"config.status": 'S["SCI_CFLAGS"]="-O2"\n'}))
-    assert m["source"] == "autotools"
-    assert m["c"]["opt"] == "O2"
-    assert m["cxx"] is None
-    assert m["f"] is None
-
-# A small CMake compile_commands.json: one "command" entry, one "arguments"
-# entry, extension-cased Fortran, and a non-compiled-language entry to skip.
-# (No CMake tree exists yet -- this is the fixture the brief prescribes.)
-COMPILE_COMMANDS_SNIPPET = '''\
-[
-  {"directory": "/b", "file": "/src/foo.c",
-   "command": "cc -DNDEBUG -O2 -fwrapv -mmacosx-version-min=11.0 -c /src/foo.c -o foo.o"},
-  {"directory": "/b", "file": "/src/bar.cpp",
-   "arguments": ["c++", "-O2", "-fwrapv", "-std=c++17", "-c", "/src/bar.cpp", "-o", "bar.o"]},
-  {"directory": "/b", "file": "/src/baz.F",
-   "command": "gfortran -O2 -fwrapv -c /src/baz.F -o baz.o"},
-  {"directory": "/b", "file": "/src/skip.s", "command": "as /src/skip.s"}
-]
-'''
-
-def test_capture_flag_manifest_cmake():
-    m = capture_flag_manifest("/b", reader=fake_reader({"compile_commands.json": COMPILE_COMMANDS_SNIPPET}))
-    assert m["source"] == "cmake"
-    assert m["c"]["opt"] == "O2"
-    assert m["c"]["wrapv"] is True
-    assert m["c"]["min_macos"] == "11.0"
-    assert m["c"]["ndebug"] is True
-    assert m["cxx"]["std"] == "c++17"     # the "arguments" (list) spelling works too
-    assert m["f"]["opt"] == "O2"          # .F (uppercase) grouped as fortran
-
-def test_capture_flag_manifest_config_status_wins_over_compile_commands():
-    # Precedence: an autotools tree that ALSO carries a stray compile_commands.json
-    # (a Stage-1 CMake experiment run inside it) still reports the autotools flags.
-    m = capture_flag_manifest("/b", reader=fake_reader({
-        "config.status": CONFIG_STATUS_SNIPPET,
-        "compile_commands.json": '[{"directory": "/b", "file": "/src/x.c", "command": "cc -O0 -c /src/x.c"}]',
-    }))
-    assert m["source"] == "autotools"
-    assert m["c"]["opt"] == "O2"
-
-def test_capture_flag_manifest_unknown_when_neither_exists():
-    assert capture_flag_manifest("/b", reader=fake_reader({})) == {
-        "source": "unknown", "c": None, "cxx": None, "f": None}
-
-def test_fingerprint_build_includes_flag_manifest(tmp_path):
-    # Wiring + the DEFAULT (real file) reader: a config.status in the tree surfaces
-    # as the top-level "flags" block of the fingerprint.
-    build_dir = str(tmp_path)
-    _touch(os.path.join(build_dir, "config.status"), CONFIG_STATUS_SNIPPET)
-    fp = fingerprint_build(build_dir, roots={}, runner=fake_runner_by_path({}), build_id="t")
-    assert fp["flags"]["source"] == "autotools"
-    assert fp["flags"]["c"]["opt"] == "O2"
-    assert fp["flags"]["c"]["wrapv"] is True
-
-def test_fingerprint_build_flags_unknown_on_bare_tree(tmp_path):
-    # No config.status / compile_commands.json (every pre-existing tmp_path test's
-    # shape): the flags block degrades to source=unknown, never a crash.
-    fp = fingerprint_build(str(tmp_path), roots={}, runner=fake_runner_by_path({}), build_id="t")
-    assert fp["flags"] == {"source": "unknown", "c": None, "cxx": None, "f": None}
-
-
 # --- Finding 1 (RC-c review): locale-independent hashing -------------------
 #
 # Both _file_reader and fingerprint_build's generated-file loop used to open
@@ -590,8 +473,8 @@ def _assert_c_locale_is_not_utf8():
 
 
 def test_file_reader_is_locale_independent(tmp_path):
-    # _file_reader (capture_flag_manifest's default reader, capture.py:67) --
-    # one of the two call sites Finding 1 named.
+    # _file_reader (the generated-file reader) -- one of the two call sites
+    # Finding 1 named.
     from parity.capture import _file_reader
 
     path = os.path.join(str(tmp_path), "config.status")
