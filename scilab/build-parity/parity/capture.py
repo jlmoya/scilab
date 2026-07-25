@@ -495,9 +495,7 @@ def _main(argv):
           f"{len(fp['maven_jars'])} maven jars, "
           f"{len(fp['generated'])} generated files, "
           f"{len(fp['generated_cmake'])} generated files (cmake), "
-          f"{len(fp['header_defines'])} semantic headers, "
-          f"flags[{fp['flags']['source']}], "
-          f"{len(fp['tu_flag_facts']['overrides'])} flag-override TUs -> {out}")
+          f"{len(fp['header_defines'])} semantic headers -> {out}")
     return 0
 
 

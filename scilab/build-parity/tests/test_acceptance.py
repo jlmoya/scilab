@@ -159,6 +159,21 @@ def test_sensitivity_wrapv_drop_is_caught(tmp_path):
     assert any("wrapv" in m for m in mismatches)
 
 
+@_requires_built_tree
+def test_capture_main_cli_runs_and_summarizes(tmp_path, capsys):
+    # The CLI entry point (`python -m parity.capture`) is what CI runs, and its
+    # human-readable summary line is NOT exercised by any fingerprint_build test --
+    # so a summary that names a fingerprint key which capture no longer emits crashes
+    # the CLI at exit while every other capture test stays green. (Exactly how the
+    # flags/tu_flag_facts retirement left a dangling `fp['flags']['source']` here.)
+    # Run the real entry point and assert it exits 0 after writing the fingerprint.
+    from parity.capture import _main
+    out = tmp_path / "cand.json"
+    assert _main(["capture", BUILD_DIR, str(out), "cand"]) == 0
+    assert out.exists()
+    assert "captured" in capsys.readouterr().out
+
+
 _MVN_NS = "{http://maven.apache.org/POM/4.0.0}"
 
 
