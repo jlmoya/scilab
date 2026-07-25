@@ -159,4 +159,58 @@ public class FindIconHelperTest {
         // findIcon(...,false) -> null -> empty path -> ImageIO.read(new File("")) fails.
         assertThrows(IOException.class, () -> FindIconHelper.loadIcon("no_such_icon_zzz_123"));
     }
+
+    // ----------------------------------------------------------------- themed sub-directory walk
+    //
+    // findIcon does not only probe "<base>/<theme>/<name>.<ext>" directly: when that misses it
+    // recursively walks the theme tree (findThemeSubdir), keeps the leaf sub-directories whose name
+    // starts with the requested size (findSizedSubdirs), and probes "<theme>/<sizedSubdir>/<name>".
+    // findIcon tries theme "Tango" first, then falls back to "hicolor", so a hicolor/16x16/actions
+    // layout under a registered base exercises the full fallback + tree-walk + size-filter path -
+    // none of which the direct-hit tests above reach.
+
+    @Test
+    public void findIconWalksTheThemeTreeAndFiltersSubdirsBySize(@TempDir Path tmp) throws IOException {
+        Path actions = tmp.resolve("hicolor").resolve("16x16").resolve("actions");
+        Files.createDirectories(actions);
+        Files.write(actions.resolve("themedwalkicon.png").toFile().toPath(), new byte[] {0});
+        FindIconHelper.addThemePath(tmp.toString());
+
+        String resolved = FindIconHelper.findIcon("themedwalkicon", "16x16", false);
+        assertNotNull(resolved, "an icon under <base>/hicolor/16x16/actions must be discovered by the tree walk");
+        assertTrue(resolved.replace('\\', '/').endsWith("hicolor/16x16/actions/themedwalkicon.png"),
+                   "unexpected resolved path: " + resolved);
+        assertTrue(new File(resolved).exists());
+    }
+
+    @Test
+    public void findIconRejectsASizeThatNoSubdirMatches(@TempDir Path tmp) throws IOException {
+        // The icon exists only under a 16x16 subdir; asking for 99x99 makes findSizedSubdirs return
+        // an empty set, so the sized lookup finds nothing and (defaultValue=false) yields null.
+        Path actions = tmp.resolve("hicolor").resolve("16x16").resolve("actions");
+        Files.createDirectories(actions);
+        Files.write(actions.resolve("sizedmissicon.png").toFile().toPath(), new byte[] {0});
+        FindIconHelper.addThemePath(tmp.toString());
+
+        assertNull(FindIconHelper.findIcon("sizedmissicon", "99x99", false));
+    }
+
+    @Test
+    public void repeatedLookupsReuseTheThemeSubdirCache(@TempDir Path tmp) throws IOException {
+        // Two icons in the same theme tree: the first findIcon populates THEME_SUBDIR_CACHE for
+        // <base>/hicolor, the second must hit the cached branch of findThemeSubdir. Both resolve.
+        Path actions = tmp.resolve("hicolor").resolve("16x16").resolve("actions");
+        Files.createDirectories(actions);
+        Files.write(actions.resolve("cachedone.png").toFile().toPath(), new byte[] {0});
+        Files.write(actions.resolve("cachedtwo.png").toFile().toPath(), new byte[] {0});
+        FindIconHelper.addThemePath(tmp.toString());
+
+        String first = FindIconHelper.findIcon("cachedone", "16x16", false);
+        String second = FindIconHelper.findIcon("cachedtwo", "16x16", false);
+
+        assertNotNull(first);
+        assertNotNull(second);
+        assertTrue(first.endsWith("cachedone.png"));
+        assertTrue(second.endsWith("cachedtwo.png"));
+    }
 }

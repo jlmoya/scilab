@@ -107,4 +107,44 @@ public class LibraryPathTest {
 
         assertEquals(base, System.getProperty(KEY)); // treated as duplicate -> not appended
     }
+
+    @Test
+    public void addPathAppendsWhenOnlyASubstringMatchExists() throws Exception {
+        // Dedup is per-segment exact (equalsIgnoreCase on each split element), never substring:
+        // "/lib" is a prefix of "/lib/extra" yet is a genuinely new entry and must be appended.
+        String base = "/lib/extra" + File.pathSeparator + "/other";
+        System.setProperty(KEY, base);
+
+        LibraryPath.addPath("/lib");
+
+        assertEquals(base + File.pathSeparator + "/lib", System.getProperty(KEY));
+    }
+
+    @Test
+    public void getLibraryPathOnEmptyPropertyYieldsSingleEmptyString() {
+        // String.split() on "" returns a one-element array holding "", not an empty array.
+        System.setProperty(KEY, "");
+        assertArrayEquals(new String[] {""}, LibraryPath.getLibraryPath());
+    }
+
+    @Test
+    public void addPathToEmptyPropertyLeavesLeadingSeparator() throws Exception {
+        // Defect characterization: the empty base is not a duplicate of the new path, so
+        // addPath() concatenates "" + pathSeparator + p, leaving a surprising leading empty
+        // segment. Pinning current behavior, not endorsing it.
+        System.setProperty(KEY, "");
+
+        LibraryPath.addPath("/only/entry");
+
+        assertEquals(File.pathSeparator + "/only/entry", System.getProperty(KEY));
+    }
+
+    @Test
+    public void getLibraryPathThrowsWhenPropertyIsAbsent() {
+        // Defect characterization: a stock JVM always sets java.library.path, but the getter
+        // does no null guard — clearing it makes getProperty() return null and the subsequent
+        // split() dereference a null, so the method throws NPE rather than returning empty.
+        System.clearProperty(KEY);
+        assertThrows(NullPointerException.class, LibraryPath::getLibraryPath);
+    }
 }

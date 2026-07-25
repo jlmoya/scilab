@@ -15,21 +15,33 @@ package org.scilab.modules.renderer.utils;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+import org.scilab.modules.graphic_objects.graphicController.GraphicController;
+import org.scilab.modules.graphic_objects.graphicObject.GraphicObject;
+import org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties;
 
 /**
- * Hermetic unit tests for the pure log-scaling helpers of
- * {@link CommonHandler}. The class also carries many editor helpers that
- * go through the graphic controller; those are out of scope here. The
- * scalar and array log/inverse-log converters below are plain arithmetic
- * and run without any Scilab engine.
+ * Hermetic unit tests for {@link CommonHandler}. Two families are covered:
+ * the pure log-scaling helpers (plain arithmetic, no engine) and the editor
+ * helpers that go through the {@link GraphicController} - exercised here
+ * against the pure-Java in-memory model (headless singleton, no views), so no
+ * OpenGL or native engine is involved. The data-model helpers that reach JNI
+ * ({@code duplicate}/{@code computeIntersection} via PolylineData) are out of
+ * scope.
  */
 class CommonHandlerTest {
 
     private static final double EPS = 1e-9;
+    private static final GraphicController CONTROLLER = GraphicController.getController();
+
+    private static Integer create(GraphicObject.Type type) {
+        return CONTROLLER.askObject(type);
+    }
 
     @Test
     void scalarLogScaleOnlyAppliesWhenFlagged() {
@@ -101,5 +113,112 @@ class CommonHandlerTest {
         CommonHandler.toLogScale(data, flags);
         CommonHandler.toInverseLogScale(data, flags);
         assertArrayEquals(new double[] {10.0, 7.0, 1000.0}, data, 1e-6);
+    }
+
+    /* ---- controller-backed editor helpers (in-memory model) ---- */
+
+    @Test
+    void objectExistsIsTrueForARegisteredUidAndFalseOtherwise() {
+        Integer uid = create(GraphicObject.Type.POLYLINE);
+        assertTrue(CommonHandler.objectExists(uid));
+        assertFalse(CommonHandler.objectExists(null), "null uid does not exist");
+        assertFalse(CommonHandler.objectExists(Integer.valueOf(-987654321)), "unknown uid does not exist");
+    }
+
+    @Test
+    void visibilityRoundTripsThroughSetAndIsVisible() {
+        Integer poly = create(GraphicObject.Type.POLYLINE);
+        CommonHandler.setVisible(poly, false);
+        assertFalse(CommonHandler.isVisible(poly));
+        CommonHandler.setVisible(poly, true);
+        assertTrue(CommonHandler.isVisible(poly));
+    }
+
+    @Test
+    void lineAndMarkModeReadBackTheModelFlags() {
+        Integer poly = create(GraphicObject.Type.POLYLINE);
+        CONTROLLER.setProperty(poly, GraphicObjectProperties.__GO_LINE_MODE__, true);
+        CONTROLLER.setProperty(poly, GraphicObjectProperties.__GO_MARK_MODE__, false);
+        assertTrue(CommonHandler.isLineEnabled(poly));
+        assertFalse(CommonHandler.isMarkEnabled(poly));
+
+        CONTROLLER.setProperty(poly, GraphicObjectProperties.__GO_LINE_MODE__, false);
+        CONTROLLER.setProperty(poly, GraphicObjectProperties.__GO_MARK_MODE__, true);
+        assertFalse(CommonHandler.isLineEnabled(poly));
+        assertTrue(CommonHandler.isMarkEnabled(poly));
+    }
+
+    @Test
+    void styleAndMarkGettersReadBackTheModelValues() {
+        Integer poly = create(GraphicObject.Type.POLYLINE);
+        CONTROLLER.setProperty(poly, GraphicObjectProperties.__GO_POLYLINE_STYLE__, 5);
+        CONTROLLER.setProperty(poly, GraphicObjectProperties.__GO_MARK_STYLE__, 3);
+        CONTROLLER.setProperty(poly, GraphicObjectProperties.__GO_MARK_SIZE__, 7);
+        assertEquals(5, CommonHandler.getStyle(poly));
+        assertEquals(Integer.valueOf(3), CommonHandler.getMarkStyle(poly));
+        assertEquals(Integer.valueOf(7), CommonHandler.getMarkSize(poly));
+    }
+
+    @Test
+    void setSelectedIsANullSafeNoOpAndOtherwiseSetsTheFlag() {
+        // Null uid must not throw.
+        CommonHandler.setSelected(null, true);
+
+        Integer poly = create(GraphicObject.Type.POLYLINE);
+        CommonHandler.setSelected(poly, true);
+        assertEquals(Boolean.TRUE, CONTROLLER.getProperty(poly, GraphicObjectProperties.__GO_SELECTED__));
+        CommonHandler.setSelected(poly, false);
+        assertEquals(Boolean.FALSE, CONTROLLER.getProperty(poly, GraphicObjectProperties.__GO_SELECTED__));
+    }
+
+    @Test
+    void getParentReturnsTheLinkedParentUid() {
+        Integer axes = create(GraphicObject.Type.AXES);
+        Integer poly = create(GraphicObject.Type.POLYLINE);
+        CONTROLLER.setGraphicObjectRelationship(axes, poly);
+        assertEquals(axes, CommonHandler.getParent(poly));
+    }
+
+    @Test
+    void backgroundGetterReadsBackTheStoredColorIndex() {
+        Integer poly = create(GraphicObject.Type.POLYLINE);
+        CONTROLLER.setProperty(poly, GraphicObjectProperties.__GO_BACKGROUND__, 4);
+        assertEquals(Integer.valueOf(4), CommonHandler.getBackground(poly));
+    }
+
+    @Test
+    void colorMapCompareAndCloneWorkAcrossFigures() {
+        Integer f1 = create(GraphicObject.Type.FIGURE);
+        Integer f2 = create(GraphicObject.Type.FIGURE);
+        Double[] cmA = {0.0, 0.0, 0.0, 1.0, 1.0, 1.0};
+        Double[] cmB = {0.0, 0.0, 0.0, 0.5, 0.5, 0.5};
+        CONTROLLER.setProperty(f1, GraphicObjectProperties.__GO_COLORMAP__, cmA);
+        CONTROLLER.setProperty(f2, GraphicObjectProperties.__GO_COLORMAP__, cmB);
+
+        assertArrayEquals(cmA, CommonHandler.getColorMap(f1));
+        assertFalse(CommonHandler.cmpColorMap(f1, f2), "different colormaps compare unequal");
+
+        // Cloning f1's colormap onto f2 makes them compare equal.
+        CommonHandler.cloneColorMap(f1, f2);
+        assertTrue(CommonHandler.cmpColorMap(f1, f2), "after cloning they are equal");
+    }
+
+    @Test
+    void cutDetachesAnObjectFromItsParent() {
+        Integer axes = create(GraphicObject.Type.AXES);
+        Integer poly = create(GraphicObject.Type.POLYLINE);
+        CONTROLLER.setGraphicObjectRelationship(axes, poly);
+        assertEquals(axes, CommonHandler.getParent(poly));
+
+        CommonHandler.cut(poly);
+        assertEquals(Integer.valueOf(0), CommonHandler.getParent(poly), "cut reparents to the root (0)");
+    }
+
+    @Test
+    void deleteRemovesTheObjectFromTheModel() {
+        Integer poly = create(GraphicObject.Type.POLYLINE);
+        assertTrue(CommonHandler.objectExists(poly));
+        CommonHandler.delete(poly);
+        assertFalse(CommonHandler.objectExists(poly), "a deleted object no longer exists");
     }
 }

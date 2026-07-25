@@ -177,6 +177,36 @@
       <artifactId>jlatexmath</artifactId>
       <version>1.0.7</version>
     </dependency>
+
+    <!-- TEST-SCOPE ONLY. jeuclid-core's MathML parser (net.sourceforge.jeuclid.
+         parser.Parser) statically references org.apache.commons.logging.LogFactory.
+         The vendored jeuclid-core jar was install-file'd without a POM, so Maven
+         never learns of that transitive dependency; at Scilab runtime it is
+         satisfied by thirdparty/commons-logging-1.1.1.jar on the classpath.xml
+         classpath. ScilabSpecialTextUtilitiesTest exercises the real MathML
+         rendering path headlessly, so it needs the same jar on the *test*
+         classpath — pinned to 1.1.1 to match the bundled thirdparty version.
+         Test scope keeps it out of the produced module jar entirely. -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- TEST-SCOPE ONLY. jeuclid's layout backend (JEuclidView) builds on Apache
+         Batik's DOM (org.apache.batik.dom.*). At Scilab runtime this is supplied
+         by thirdparty/batik-all-1.17.jar (the fat "batik-all" uber jar), wired in
+         etc/classpath.xml right after jeuclid-core with load="onUse". The same
+         coordinate resolves from the local repo, so ScilabSpecialTextUtilitiesTest
+         can drive the real MathML rendering path headlessly. Test scope only —
+         never part of the produced module jar. -->
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-all</artifactId>
+      <version>1.17</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

@@ -15,17 +15,23 @@ package org.scilab.modules.console.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Field;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.scilab.modules.console.utils.ScilabSpecialTextUtilities.SpecialIcon;
@@ -161,5 +167,153 @@ public class ScilabSpecialTextUtilitiesTest {
         boolean rendered = ScilabSpecialTextUtilities.setText(label, "plain text");
         assertFalse(rendered);
         assertSame(ordinary, label.getIcon());
+    }
+
+    // --- real compiler paths (jlatexmath + jeuclid, headless) ---------------
+    //
+    // compileLaTeXExpression / compileMathMLExpression first call the native
+    // LoadClassPath.loadOnUse to add the rendering jar to the classpath. Here the
+    // jars (jlatexmath, jeuclid-core) are ALREADY on the test classpath, so the
+    // only thing to neutralise is that native call: the "loaded" latches are
+    // flipped to true by reflection so the public methods go straight to the
+    // inner compilers, which are pure Java over headless Graphics2D/font metrics.
+
+    @BeforeEach
+    public void resetLoadLatches() throws Exception {
+        setLatches(false, false, null);
+    }
+
+    @AfterEach
+    public void clearLoadLatches() throws Exception {
+        setLatches(false, false, null);
+    }
+
+    @Test
+    public void compileLaTeXExpressionWrapsARealTeXIconForAValidFormula() throws Exception {
+        setBoolean("loadedLaTeX", true);
+        Icon icon = ScilabSpecialTextUtilities.compileLaTeXExpression("x^2 + 1", 15);
+        assertNotNull(icon);
+        assertTrue(icon instanceof SpecialIcon, "a compiled LaTeX icon is always a SpecialIcon");
+        assertTrue(icon.getIconWidth() > 0, "a rendered formula must have a positive width");
+        assertTrue(icon.getIconHeight() > 0, "a rendered formula must have a positive height");
+    }
+
+    @Test
+    public void aLargerFontSizeYieldsATallerLaTeXIcon() throws Exception {
+        setBoolean("loadedLaTeX", true);
+        Icon small = ScilabSpecialTextUtilities.compileLaTeXExpression("x", 10);
+        Icon big = ScilabSpecialTextUtilities.compileLaTeXExpression("x", 40);
+        assertTrue(big.getIconHeight() > small.getIconHeight(),
+                   "a 4x font size must produce a visibly taller icon");
+    }
+
+    @Test
+    public void anInvalidLaTeXFormulaStillReturnsASpecialIconWrappingNoInnerIcon() throws Exception {
+        // Characterization: the ParseException is swallowed inside LaTeXCompiler.compile,
+        // leaving the inner icon null, yet a (null-wrapping) SpecialIcon is still returned.
+        setBoolean("loadedLaTeX", true);
+        Icon icon = ScilabSpecialTextUtilities.compileLaTeXExpression("\\nosuchcommand@@@", 15);
+        assertNotNull(icon);
+        assertTrue(icon instanceof SpecialIcon);
+        assertEquals(0, ((SpecialIcon) icon).getIconDepth());
+    }
+
+    @Test
+    public void compilePartialLaTeXExpressionReturnsARawIconWhenAlreadyLoaded() throws Exception {
+        setBoolean("loadedLaTeX", true);
+        Icon icon = ScilabSpecialTextUtilities.compilePartialLaTeXExpression("x", 15);
+        assertNotNull(icon);
+        // compilePartial returns the raw jlatexmath icon, NOT wrapped in a SpecialIcon.
+        assertFalse(icon instanceof SpecialIcon);
+        assertTrue(icon.getIconWidth() > 0);
+    }
+
+    @Test
+    public void compilePartialLaTeXExpressionShortCircuitsToNullWhileALoadIsAlreadyInFlight() throws Exception {
+        // loadedLaTeX is false but a loader thread already exists, so the method must
+        // NOT spawn a second one and must return null. Using a pre-seeded (unstarted)
+        // dummy thread keeps this deterministic — no background loader is launched.
+        Thread dummy = new Thread();
+        setLatches(false, false, dummy);
+        Icon icon = ScilabSpecialTextUtilities.compilePartialLaTeXExpression("x", 15);
+        assertNull(icon);
+        assertSame(dummy, loadJLM(), "no new loader thread must be spawned");
+    }
+
+    @Test
+    public void compileMathMLExpressionRendersAValidExpressionToASpecialIcon() throws Exception {
+        setBoolean("loadedMathML", true);
+        Icon icon = ScilabSpecialTextUtilities.compileMathMLExpression("<mi>x</mi>", 12);
+        assertNotNull(icon);
+        assertTrue(icon instanceof SpecialIcon);
+        assertTrue(icon.getIconWidth() > 0);
+        assertTrue(icon.getIconHeight() > 0);
+    }
+
+    @Test
+    public void compileMathMLExpressionAcceptsAnAlreadyWrappedMathmlRoot() throws Exception {
+        // Exercises the branch where the string already starts with <mathml> and so
+        // is NOT wrapped a second time.
+        setBoolean("loadedMathML", true);
+        Icon icon = ScilabSpecialTextUtilities.compileMathMLExpression("<mathml><mi>y</mi></mathml>", 12);
+        assertNotNull(icon);
+        assertTrue(icon instanceof SpecialIcon);
+    }
+
+    @Test
+    public void compileMathMLExpressionReturnsNullForMalformedXml() throws Exception {
+        // A mismatched tag makes the SAX parse fail; the exception is caught and null returned.
+        setBoolean("loadedMathML", true);
+        assertNull(ScilabSpecialTextUtilities.compileMathMLExpression("<mi>x", 12));
+    }
+
+    @Test
+    public void compileMathMLExpressionHonoursAnExplicitColorArgument() throws Exception {
+        setBoolean("loadedMathML", true);
+        Icon icon = ScilabSpecialTextUtilities.compileMathMLExpression("<mi>z</mi>", 14, Color.RED);
+        assertNotNull(icon);
+        assertTrue(icon instanceof SpecialIcon);
+    }
+
+    @Test
+    public void setTextRendersALaTeXMarkupStringAndSetsASpecialIconOnTheComponent() throws Exception {
+        setBoolean("loadedLaTeX", true);
+        JLabel label = new JLabel();
+        label.setFont(new Font("Dialog", Font.PLAIN, 12)); // deterministic, no L&F dependency
+        boolean rendered = ScilabSpecialTextUtilities.setText(label, "$x^2$");
+        assertTrue(rendered, "a $...$ string must be recognised and rendered as LaTeX");
+        assertTrue(label.getIcon() instanceof SpecialIcon);
+    }
+
+    @Test
+    public void setTextRendersAMathMLMarkupStringAndSetsASpecialIconOnTheComponent() throws Exception {
+        setBoolean("loadedMathML", true);
+        JLabel label = new JLabel();
+        label.setFont(new Font("Dialog", Font.PLAIN, 12));
+        boolean rendered = ScilabSpecialTextUtilities.setText(label, "<mi>x</mi>");
+        assertTrue(rendered, "a <...> string must be recognised and rendered as MathML");
+        assertTrue(label.getIcon() instanceof SpecialIcon);
+    }
+
+    // --- reflection helpers for the private static load latches -------------
+
+    private static void setLatches(boolean latex, boolean mathml, Thread loadJLM) throws Exception {
+        setBoolean("loadedLaTeX", latex);
+        setBoolean("loadedMathML", mathml);
+        Field f = ScilabSpecialTextUtilities.class.getDeclaredField("loadJLM");
+        f.setAccessible(true);
+        f.set(null, loadJLM);
+    }
+
+    private static void setBoolean(String name, boolean value) throws Exception {
+        Field f = ScilabSpecialTextUtilities.class.getDeclaredField(name);
+        f.setAccessible(true);
+        f.setBoolean(null, value);
+    }
+
+    private static Thread loadJLM() throws Exception {
+        Field f = ScilabSpecialTextUtilities.class.getDeclaredField("loadJLM");
+        f.setAccessible(true);
+        return (Thread) f.get(null);
     }
 }

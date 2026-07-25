@@ -13,12 +13,14 @@
 
 package org.scilab.modules.commons.gui;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 import javax.swing.JTextField;
 
@@ -99,5 +101,61 @@ public class ScilabCaretTest {
 
         assertEquals(Color.RED, b.getSelectionColor());
         assertEquals(Color.BLUE, b.getInactiveSelectionColor());
+    }
+
+    // ----------------------------------------------------------------- damage(Rectangle)
+
+    // The caret is constructed but never install()ed, so DefaultCaret.getComponent() is null and
+    // the repaint() fired at the end of damage()/adjustVisibility() is a guarded no-op - which is
+    // exactly what keeps these geometry paths headless-safe. ScilabCaret extends java.awt.Rectangle
+    // (via DefaultCaret), so x/y/width/height are the public inherited fields asserted below.
+
+    @Test
+    public void damageInOverwriteModeCopiesXYHeightFromTheRectangle() {
+        ScilabCaret caret = newCaret();
+        caret.setOverwriteMode(true);
+
+        caret.damage(new Rectangle(11, 22, 33, 44));
+
+        assertEquals(11, caret.x, "x is taken from r.x");
+        assertEquals(22, caret.y, "y is taken from r.y");
+        assertEquals(44, caret.height, "height is taken from r.height");
+        // The overwrite branch deliberately does NOT touch width (the solid block is sized in
+        // paint() from the font metrics), so it stays at the Rectangle default.
+        assertEquals(0, caret.width, "the overwrite damage() must leave width untouched");
+    }
+
+    @Test
+    public void damageInOverwriteModeIgnoresANullRectangle() {
+        ScilabCaret caret = newCaret();
+        caret.setOverwriteMode(true);
+        caret.damage(new Rectangle(5, 6, 7, 8));   // establish a known geometry
+
+        caret.damage(null);                        // null-guard: must be a no-op, never an NPE
+
+        assertEquals(5, caret.x);
+        assertEquals(6, caret.y);
+        assertEquals(8, caret.height);
+    }
+
+    @Test
+    public void damageOutsideOverwriteModeDelegatesToDefaultCaret() {
+        ScilabCaret caret = newCaret();
+        // overwriteMode defaults to false -> super.damage(r) runs. It positions x with a
+        // look-and-feel-dependent offset (not asserted), but always copies y and height verbatim.
+        assertDoesNotThrow(() -> caret.damage(new Rectangle(100, 200, 10, 20)));
+        assertEquals(200, caret.y, "DefaultCaret.damage copies r.y verbatim");
+        assertEquals(20, caret.height, "DefaultCaret.damage copies r.height verbatim");
+    }
+
+    // ----------------------------------------------------------------- adjustVisibility(Rectangle)
+
+    @Test
+    public void adjustVisibilityIsASilentNoOpWhenSuppressed() {
+        ScilabCaret caret = newCaret();
+        caret.setMustAdjustVisibility(false);
+        // With adjustment suppressed the override returns before calling super (which would need a
+        // realized, installed component), so this is safe and inert headless.
+        assertDoesNotThrow(() -> caret.adjustVisibility(new Rectangle(0, 0, 1, 1)));
     }
 }

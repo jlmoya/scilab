@@ -15,6 +15,7 @@ package org.scilab.modules.console;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.awt.Point;
@@ -119,6 +120,16 @@ public class SciInputParsingManagerTest {
         view.caretPosition = 0;
         view.text = "sqrt";
         assertEquals("", mgr.getPartLevel(0));
+    }
+
+    @Test
+    public void getFilePartLevelReturnsNullWhenCaretIsAtTheStart() {
+        // Symmetric to getPartLevel but for file completion: an empty line short-
+        // circuits before Completion.getFilePartLevel, and the documented "nothing
+        // typed yet" result is null (not the empty string).
+        view.caretPosition = 0;
+        view.text = "/usr/b";
+        assertNull(mgr.getFilePartLevel(0));
     }
 
     @Test

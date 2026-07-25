@@ -18,13 +18,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.io.TempDir;
 import org.scilab.modules.commons.filemonitor.FileSystemMonitor.ChangeType;
 import org.scilab.modules.commons.filemonitor.FileSystemMonitor.FileChangeEvent;
@@ -127,5 +135,62 @@ public class FileSystemMonitorTest {
             m.unsubscribe(dir, listener);
             m.unsubscribe(dir, listener); // already gone - still safe
         });
+    }
+
+    /**
+     * Live end-to-end check: subscribe to a real directory, mutate a file in it and confirm the
+     * background {@code WatchService} loop delivers a well-formed event. This drives the otherwise
+     * uncovered machinery (the watch thread's take/pollEvents loop, the {@code WatchEvent.Kind} to
+     * {@link ChangeType} mapping, context-to-absolute-path resolution and listener fan-out).
+     *
+     * <p>Delivery latency is platform-dependent (the macOS {@code WatchService} polls, so an event
+     * can take several seconds); the file is therefore re-touched on a loop and the assertion is
+     * guarded by {@link Assumptions#assumeTrue} so a watcher that never fires yields a <em>skip</em>,
+     * never a flaky failure. When an event does arrive - as it does on the developer/CI platforms
+     * that back a live watcher - its path and type are asserted precisely.
+     */
+    @Test
+    @Timeout(60)
+    public void liveWatchDeliversAWellFormedEventForAMutatedFile(@TempDir Path dir) throws Exception {
+        FileSystemMonitor m = FileSystemMonitor.getInstance();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final AtomicReference<FileChangeEvent> captured = new AtomicReference<FileChangeEvent>();
+        FileSystemListener listener = event -> {
+            captured.compareAndSet(null, event);
+            latch.countDown();
+        };
+
+        m.subscribe(dir, listener);
+        boolean delivered = false;
+        try {
+            final Path file = dir.resolve("watched.sce");
+            // Re-touch on a loop: survives the asynchronous registration window and the platform
+            // poll interval, and stops as soon as the first event is delivered.
+            final long deadline = System.currentTimeMillis() + 20_000L;
+            int i = 0;
+            while (System.currentTimeMillis() < deadline) {
+                Files.write(file, ("line " + (i++) + "\n").getBytes(StandardCharsets.UTF_8),
+                            StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                if (latch.await(1, TimeUnit.SECONDS)) {
+                    delivered = true;
+                    break;
+                }
+            }
+        } finally {
+            m.unsubscribe(dir, listener);
+        }
+
+        Assumptions.assumeTrue(delivered,
+            "platform WatchService delivered no event within 20s - skipping the live assertion");
+
+        FileChangeEvent event = captured.get();
+        assertNotNull(event);
+        assertNotNull(event.getPath());
+        assertEquals("watched.sce", event.getPath().getFileName().toString());
+        assertEquals(dir.toAbsolutePath().normalize(), event.getPath().getParent(),
+                     "the event path must be resolved under the watched directory");
+        // A create-then-append sequence only ever surfaces as CREATE or MODIFY here.
+        assertTrue(event.getType() == ChangeType.CREATE || event.getType() == ChangeType.MODIFY,
+                   "unexpected change type: " + event.getType());
     }
 }

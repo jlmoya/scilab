@@ -13,13 +13,16 @@
 
 package org.scilab.modules.jvm;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -69,5 +72,32 @@ public class LoadClassPathTest {
     public void loadOnUseThrowsNpeWhenCommonsXmlHelpersAbsent() {
         assertThrows(NullPointerException.class,
                      () -> LoadClassPath.loadOnUse("a-module-never-registered-xyz"));
+    }
+
+    /**
+     * The module cache short-circuits. {@code loadOnUse} opens with
+     * {@code if (loadedModules.contains(module)) return;}, so a module already recorded in the
+     * private static {@code loadedModules} set returns immediately — no class loading, no XML
+     * parsing, and crucially none of the {@link NullPointerException} the "helpers absent" test
+     * above documents. The only writer of that set is a <em>successful</em> load we cannot
+     * perform hermetically, so we seed it reflectively (same-module reflection, no
+     * {@code --add-opens} needed) and confirm the early return is silent. The entry is removed
+     * afterwards so no other test observes the seeded state.
+     */
+    @Test
+    public void loadOnUseReturnsImmediatelyForAlreadyCachedModule() throws Exception {
+        final String module = "cached-module-" + System.nanoTime();
+
+        Field field = LoadClassPath.class.getDeclaredField("loadedModules");
+        field.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        Set<String> loaded = (Set<String>) field.get(null);
+
+        loaded.add(module);
+        try {
+            assertDoesNotThrow(() -> LoadClassPath.loadOnUse(module));
+        } finally {
+            loaded.remove(module);
+        }
     }
 }

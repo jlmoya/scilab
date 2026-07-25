@@ -14,10 +14,12 @@
 package org.scilab.modules.commons;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,6 +27,8 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import javax.swing.SwingUtilities;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -168,5 +172,45 @@ public class ScilabCommonsUtilsTest {
         // Characterizes current behaviour: path.trim() runs before the null-guard, so a null
         // argument dereferences immediately.
         assertThrows(NullPointerException.class, () -> ScilabCommonsUtils.getCorrectedPath(null));
+    }
+
+    // ----------------------------------------------------------------- loadOnUse
+    //
+    // loadOnUse reflectively invokes org.scilab.modules.jvm.LoadClassPath.loadOnUse(String). That
+    // class is NOT on the commons test classpath (jvm is a downstream module reached only through
+    // reflection - see modules/commons/pom.xml), so the Class.forName lookup throws
+    // ClassNotFoundException, which loadOnUse catches and merely logs. Both dispatch arms therefore
+    // complete without throwing and without touching the crashing native layer. The method routes
+    // on SwingUtilities.isEventDispatchThread(); AWT is headless in tests but the EDT still exists,
+    // so both arms are exercised deterministically.
+
+    @Test
+    public void loadOnUseOffTheEventDispatchThreadIsASilentNoOpWhenTheJvmModuleIsAbsent() {
+        // The calling (JUnit) thread is not the EDT, so loadOnUse marshals the work through
+        // SwingUtilities.invokeAndWait - which must return normally after the reflective lookup fails.
+        assertFalse(SwingUtilities.isEventDispatchThread(), "the test thread must not be the EDT");
+        assertDoesNotThrow(() -> ScilabCommonsUtils.loadOnUse("org.scilab.modules.does.not.Exist"));
+    }
+
+    @Test
+    public void loadOnUseOnTheEventDispatchThreadIsASilentNoOpWhenTheJvmModuleIsAbsent() throws Exception {
+        // Drive the OTHER branch: run loadOnUse from inside the EDT so isEventDispatchThread() is
+        // true and the reflective lookup happens directly (no re-marshalling).
+        final Throwable[] escaped = new Throwable[1];
+        SwingUtilities.invokeAndWait(() -> {
+            try {
+                ScilabCommonsUtils.loadOnUse("org.scilab.modules.does.not.Exist");
+            } catch (Throwable t) {
+                escaped[0] = t;
+            }
+        });
+        assertNull(escaped[0], "loadOnUse must swallow the missing-module failure on the EDT too");
+    }
+
+    @Test
+    public void loadOnUseToleratesANullActionName() {
+        // A null argument still funnels through the same reflective path (the missing class fails
+        // before the argument is ever used), so it must not throw.
+        assertDoesNotThrow(() -> ScilabCommonsUtils.loadOnUse(null));
     }
 }

@@ -20,6 +20,7 @@ import org.scilab.modules.graphic_objects.console.Console;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject.Type;
 import org.scilab.modules.graphic_objects.graphicObject.GraphicObject.UpdateStatus;
+import org.scilab.modules.graphic_objects.rectangle.Rectangle;
 
 import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.__GO_CONSOLE__;
 import static org.scilab.modules.graphic_objects.graphicObject.GraphicObjectProperties.__GO_TAG__;
@@ -91,5 +92,123 @@ public class GraphicModelTest {
             }
         }
         assertNull(m.getObjectFromId(CONSOLE_ID));
+    }
+
+    /**
+     * Exercises the large {@code createTypedObject} dispatch: every plain,
+     * side-effect-free type must instantiate a real {@link GraphicObject},
+     * register it under the requested id, and stamp that id as the object's
+     * identifier. Model/console singletons are covered separately to avoid
+     * mutating shared static state here.
+     */
+    @Test
+    public void createObjectInstantiatesEveryPlainType() {
+        GraphicModel m = GraphicModel.getModel();
+        Type[] types = {
+            Type.ARC, Type.AXES, Type.AXIS, Type.CHAMP, Type.COMPOUND,
+            Type.FAC3D, Type.FEC, Type.FIGURE, Type.GRAYPLOT, Type.LABEL,
+            Type.LEGEND, Type.MATPLOT, Type.PLOT3D, Type.POLYLINE, Type.RECTANGLE,
+            Type.SEGS, Type.TEXT, Type.CHECKBOX, Type.EDIT, Type.SPINNER,
+            Type.FRAME, Type.IMAGE, Type.LISTBOX, Type.POPUPMENU, Type.PUSHBUTTON,
+            Type.RADIOBUTTON, Type.SLIDER, Type.TABLE, Type.UITEXT, Type.UIMENU,
+            Type.UICONTEXTMENU, Type.PROGRESSIONBAR, Type.WAITBAR, Type.LIGHT, Type.DATATIP,
+            Type.TAB, Type.LAYER, Type.BORDER, Type.FRAME_SCROLLABLE, Type.BROWSER,
+        };
+        int base = 900002000;
+        for (int i = 0; i < types.length; i++) {
+            Integer id = base + i;
+            try {
+                Integer created = m.createObject(id, types[i]);
+                assertEquals(id, created, "createObject should return the id for " + types[i]);
+                GraphicObject o = m.getObjectFromId(id);
+                assertNotNull(o, "an object should be registered for " + types[i]);
+                assertEquals(id, o.getIdentifier(), "identifier should be set for " + types[i]);
+            } finally {
+                cleanup(m, id);
+            }
+        }
+    }
+
+    @Test
+    public void createObjectSpotChecksConcreteRuntimeTypes() {
+        GraphicModel m = GraphicModel.getModel();
+        Integer id = 900002100;
+        try {
+            m.createObject(id, Type.RECTANGLE);
+            assertTrue(m.getObjectFromId(id) instanceof Rectangle);
+        } finally {
+            cleanup(m, id);
+        }
+    }
+
+    /**
+     * FIGUREMODEL / AXESMODEL creation publishes the objects through the static
+     * {@code getFigureModel} / {@code getAxesModel} accessors and flags them as
+     * invalid (they are templates, not live objects).
+     */
+    @Test
+    public void figureAndAxesModelsAreExposedAndFlaggedInvalid() {
+        GraphicModel m = GraphicModel.getModel();
+        Integer figId = 900002200;
+        Integer axId = 900002201;
+        try {
+            m.createObject(figId, Type.FIGUREMODEL);
+            m.createObject(axId, Type.AXESMODEL);
+
+            assertNotNull(GraphicModel.getFigureModel());
+            assertNotNull(GraphicModel.getAxesModel());
+            assertSame(m.getObjectFromId(figId), GraphicModel.getFigureModel());
+            assertSame(m.getObjectFromId(axId), GraphicModel.getAxesModel());
+            assertFalse(GraphicModel.getFigureModel().isValid());
+            assertFalse(GraphicModel.getAxesModel().isValid());
+        } finally {
+            cleanup(m, figId, axId);
+        }
+    }
+
+    @Test
+    public void cloneObjectCopiesStateUnderANewIndependentId() {
+        GraphicModel m = GraphicModel.getModel();
+        Integer srcId = 900002300;
+        Integer cloneId = 900002301;
+        try {
+            m.createObject(srcId, Type.RECTANGLE);
+            Rectangle src = (Rectangle) m.getObjectFromId(srcId);
+            src.setBackground(12);
+
+            assertEquals(cloneId, m.cloneObject(srcId, cloneId));
+            GraphicObject clone = m.getObjectFromId(cloneId);
+            assertNotNull(clone);
+            assertNotSame(src, clone);
+            assertTrue(clone instanceof Rectangle);
+            assertEquals(cloneId, clone.getIdentifier());
+            assertEquals(Integer.valueOf(12), ((Rectangle) clone).getBackground());
+
+            // Independence: mutating the clone leaves the source untouched.
+            ((Rectangle) clone).setBackground(99);
+            assertEquals(Integer.valueOf(12), src.getBackground());
+        } finally {
+            cleanup(m, srcId, cloneId);
+        }
+    }
+
+    @Test
+    public void getNullPropertyReturnsNullForARegisteredObject() {
+        GraphicModel m = GraphicModel.getModel();
+        Integer id = 900002400;
+        try {
+            m.createObject(id, Type.RECTANGLE);
+            assertNull(m.getNullProperty(id, "anything"));
+        } finally {
+            cleanup(m, id);
+        }
+    }
+
+    private static void cleanup(GraphicModel m, Integer... ids) {
+        for (Integer id : ids) {
+            if (m.getObjectFromId(id) != null) {
+                m.deleteObject(id);
+            }
+        }
     }
 }

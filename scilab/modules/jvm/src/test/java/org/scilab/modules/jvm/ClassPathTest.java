@@ -14,10 +14,16 @@
 package org.scilab.modules.jvm;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Vector;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +44,14 @@ public class ClassPathTest {
 
     private static URL fileUrl(String path) throws Exception {
         return Paths.get(path).toUri().toURL();
+    }
+
+    /** Read the private static background-load queue that mode 1 feeds. */
+    @SuppressWarnings("unchecked")
+    private static Vector<URL> queued() throws Exception {
+        Field f = ClassPath.class.getDeclaredField("queued");
+        f.setAccessible(true);
+        return (Vector<URL>) f.get(null);
     }
 
     @Test
@@ -94,5 +108,48 @@ public class ClassPathTest {
         // Spawns a worker whose per-URL failures are swallowed inside its own try/catch;
         // the caller must never see an exception.
         assertDoesNotThrow(ClassPath::loadBackGroundClassPath);
+    }
+
+    @Test
+    public void addUrlBackgroundModeActuallyAppendsToTheQueue() throws Exception {
+        // Strengthen the "does not throw" contract into an observable one: mode 1 must land
+        // the URL at the tail of the private background queue (and touch nothing else).
+        URL u = fileUrl("/tmp/enqueue-" + System.nanoTime() + ".jar");
+        int before = queued().size();
+
+        ClassPath.addURL(u, 1);
+
+        Vector<URL> q = queued();
+        assertEquals(before + 1, q.size());
+        assertEquals(u.toExternalForm(), q.lastElement().toExternalForm());
+    }
+
+    @Test
+    public void loadBackgroundWorkerLogsPerUrlFailureToStderr() throws Exception {
+        // Drive the anonymous Thread body inside loadBackGroundClassPath(). With the queue
+        // non-empty, the worker's while-loop calls addURL(...,0) on the first URL; under the
+        // stock app class loader that ScilabClassLoader cast throws ClassCastException, which
+        // the worker's own catch turns into a "Error : ..." line on System.err. We capture
+        // stderr and wait (bounded) for that line — the only observable proof the background
+        // run() executed. The worker is a non-daemon thread, so it is guaranteed to run.
+        ClassPath.addURL(fileUrl("/tmp/bg-fail-" + System.nanoTime() + ".jar"), 1);
+
+        PrintStream originalErr = System.err;
+        ByteArrayOutputStream captured = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(captured, true));
+        try {
+            ClassPath.loadBackGroundClassPath();
+
+            long deadline = System.currentTimeMillis() + 5000L;
+            while (System.currentTimeMillis() < deadline
+                    && !captured.toString().contains("Error : ")) {
+                Thread.sleep(20L);
+            }
+        } finally {
+            System.setErr(originalErr);
+        }
+
+        assertTrue(captured.toString().contains("Error : "),
+                   "the background worker should log its swallowed per-URL failure to stderr");
     }
 }
