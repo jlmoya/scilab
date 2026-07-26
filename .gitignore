@@ -16,3 +16,8 @@
 
 # terminal feature spike (scratch; see docs/design/terminal-live-reload.md)
 /terminal-spike/
+
+# CLion CMake generation dirs, if the IDE roots one here rather than under scilab/
+# (scilab/.gitignore covers that side). Never point one at scilab/build-cmake —
+# see deferred-fixes-register.md B15.
+/cmake-build-*/

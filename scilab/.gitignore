@@ -214,8 +214,15 @@ locale/*/*/*.po
 # CMA-ES optimizer runtime outputs (test junk written to the source root by cmaes runs)
 /outcmaes*.xml
 
-# Stage-1 make->CMake driver build dir (hybrid coexistence with autotools)
+# The CMake build dir the build scripts and build-parity use (autotools is deleted,
+# so this is no longer one half of a hybrid — it is THE native build tree).
 /build-cmake/
+
+# CLion's own CMake generation dirs. Kept SEPARATE from /build-cmake/ on purpose:
+# an IDE profile reconfigures its tree with CMAKE_BUILD_TYPE=Debug, which would
+# flip the optimization flags build-parity's per-TU flag gate enforces on
+# /build-cmake/ (O2 plus fwrapv). See deferred-fixes-register.md B15.
+/cmake-build-*/
 
 # Maven module build output — the jars etc/classpath.xml loads at runtime.
 # (Ant's modules/*/jar and modules/*/build ignores were dropped 2026-07-21: Ant
