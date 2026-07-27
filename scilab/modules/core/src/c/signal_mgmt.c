@@ -396,13 +396,14 @@ static void sig_fatal(int signum, siginfo_t * info, void *p)
                 break;
             }
 #endif
-            case SIGTERM:
-            {
-                // kill all processes of the scilab group (PGID)
-                // ie: fork created by host() (spawncommand)
-                kill(-getpgrp(), SIGTERM);
-                break;
-            }
+            // SIGTERM is deliberately NOT handled here any more — it is a polite
+            // request to exit, not a crash, and sig_fatal() ends in
+            // longjmp(ScilabJmpEnv, HUGE_ERROR), i.e. it RESUMES the interpreter.
+            // Routing SIGTERM through here therefore printed "A fatal error has
+            // been detected by Scilab" and then carried on running, so the process
+            // could only be killed with SIGKILL. It also re-broadcast SIGTERM to
+            // its own process group (self included), re-entering this handler.
+            // See sig_term() below and deferred-fixes-register.md B19.
         }
     }
     else
@@ -428,17 +429,47 @@ static void sig_fatal(int signum, siginfo_t * info, void *p)
     longjmp(ScilabJmpEnv, HUGE_ERROR);
 }
 
+/*
+ * SIGTERM — a polite request to terminate, handled SEPARATELY from the fatal
+ * signals (register B19).
+ *
+ * It used to sit in the sig_fatal() list next to SIGSEGV/SIGBUS/SIGILL, which
+ * was wrong three times over: sig_fatal() printed "A fatal error has been
+ * detected by Scilab" with a backtrace (SIGTERM is not an error), it re-issued
+ * kill(-getpgrp(), SIGTERM) — its own process group INCLUDES itself, so the
+ * handler re-entered — and it finished with longjmp(ScilabJmpEnv, HUGE_ERROR),
+ * which RESUMES the interpreter. The net effect was that SIGTERM did not
+ * terminate Scilab at all: `kill`, `timeout` and any supervisor that stops a
+ * process the normal way were left with SIGKILL as the only option. Measured
+ * before this fix: a `gtimeout 300` child was still alive 8h41m after its
+ * SIGTERM.
+ *
+ * What is kept is the original intent recorded in that old comment: take down
+ * the whole Scilab process group, so forks created by host()/spawncommand do
+ * not outlive us. The disposition is reset to SIG_DFL FIRST, so the group
+ * broadcast cannot re-enter this handler; the pending default action then
+ * terminates this process. The _exit() is a belt-and-braces fallback and is
+ * async-signal-safe, unlike exit() (which would run atexit handlers and stdio
+ * flushing from signal context). 128 + signo is the conventional status.
+ */
+static void sig_term(int signum)
+{
+    signal(SIGTERM, SIG_DFL);
+    kill(-getpgrp(), SIGTERM);
+    _exit(128 + SIGTERM);
+}
+
 void base_error_init(void)
 {
     struct sigaction act;
+    struct sigaction ToTerminate;
     int j;
     struct sigaction ToSuspend;
     struct sigaction ToContinue;
     int signals[] =
     {
-#ifdef SIGTERM
-        SIGTERM,
-#endif
+        /* SIGTERM is NOT in this list: it is not a crash. It gets its own
+           handler (sig_term, installed below) which actually terminates. */
 #ifdef SIGABRT
         SIGABRT,
 #endif
@@ -473,6 +504,12 @@ void base_error_init(void)
     ToContinue.sa_flags = 0;
     sigemptyset(&ToContinue.sa_mask);
     sigaction(SIGCONT, &ToContinue, NULL);
+    /* Initialise Terminate Signal (kill, timeout, service supervisors): a clean
+       exit, NOT the fatal-crash path. See sig_term() above / register B19. */
+    ToTerminate.sa_handler = sig_term;
+    ToTerminate.sa_flags = 0;
+    sigemptyset(&ToTerminate.sa_mask);
+    sigaction(SIGTERM, &ToTerminate, NULL);
     /* Signal handlers */
     csignal();
     resizesignal();
