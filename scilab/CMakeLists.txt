@@ -151,6 +151,16 @@ endforeach()
 # both also ride drop-in-all).
 add_subdirectory(modules)
 
+# javasci's NATIVE half (register B17) — declared AFTER modules/ for the same
+# reason the executables below are: libjavasci2 links the libscilab AGGREGATE, so
+# that target must already exist. This mirrors autotools, where
+# modules/Makefile.am ordered javasci last for exactly that reason (see the
+# fold-in note above, which already described libjavasci2 as "a SEPARATE baseline
+# artifact that links AGAINST libscilab.la and is built AFTER it" — that artifact
+# simply never got a CMake target until now, so a fresh clone built no
+# libjavasci2 at all and only a stale autotools leftover kept parity green).
+add_subdirectory(modules/javasci)
+
 # THE EXECUTABLES (Stage 1f) — scilab-bin + scilab-cli-bin on
 # scilab_executable() (declared after modules/ so the aggregates exist).
 #
