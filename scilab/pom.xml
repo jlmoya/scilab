@@ -268,6 +268,15 @@
           <systemPropertyVariables>
             <java.awt.headless>true</java.awt.headless>
           </systemPropertyVariables>
+          <!-- ONE JVM PER TEST CLASS. Harmless for the hermetic tests, ESSENTIAL for
+               the engine-embedding ones: each of those opens and closes the Scilab
+               engine, and the engine is not re-entrant within a process (its C
+               globals are initialised once). With surefire's default fork reuse,
+               several such classes share one JVM and the second engine open
+               SEGFAULTS the fork — observed as `Segmentation fault: 11`, which
+               silently TRUNCATED the run after 3 of the legacy classes rather than
+               reporting the rest as failures. -->
+          <reuseForks>false</reuseForks>
           <!-- The 40 MIGRATED legacy tests under org.scilab.tests.* are native
                INTEGRATION tests: they System.loadLibrary("scilab") / embed the engine
                (javasci). libscilab's siblings link via ABSOLUTE /usr/local/lib/scilab/
@@ -277,6 +286,20 @@
                cmake-install to that prefix). Excluded by default so `mvn test` stays green on any
                machine; run them with -Pnative-tests AFTER that setup. New hermetic unit
                tests live under org.scilab.modules.* and always run. -->
+          <!-- Surefire's DEFAULT includes are Test*/*Test/*Tests/*TestCase — all
+               capitalised. The migrated legacy tests are named testOpenClose.java,
+               testTypes.java, … (lowercase `test` prefix, JUnit-3 era style), so
+               they match NONE of them and were silently NOT SELECTED even with
+               their exclusion lifted: the run simply reported the hermetic tests
+               and BUILD SUCCESS. Restating the defaults is required because
+               declaring <includes> REPLACES them rather than adding to them. -->
+          <includes>
+            <include>**/Test*.java</include>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+            <include>**/*TestCase.java</include>
+            <include>**/test*.java</include>
+          </includes>
           <excludes>
             <exclude>${scilab.test.exclude}</exclude>
             <!-- Engine-embedding legacy tests, held back even under -Pnative-tests
@@ -285,6 +308,17 @@
             <exclude>${scilab.test.exclude.engine.javasci}</exclude>
             <exclude>${scilab.test.exclude.engine.xcos}</exclude>
             <exclude>${scilab.test.exclude.engine.commons}</exclude>
+            <!-- The 4 ADVANCED-mode javasci tests (`new Scilab(true)`), always held
+                 back. B16's javasci2-cli variant fixes the NWNI default, but these
+                 want the opposite combination — the GUI-linked libjavasci2 AND the
+                 full etc/classpath.xml jar set, without which they fail with
+                 NoClassDefFoundError: org/scilab/modules/core/Scilab. Listed
+                 literally rather than as a property because Ant globs have no
+                 alternation and these four share no name pattern. -->
+            <exclude>**/org/scilab/tests/modules/javasci/testBug10801.java</exclude>
+            <exclude>**/org/scilab/tests/modules/javasci/testGraphics.java</exclude>
+            <exclude>**/org/scilab/tests/modules/javasci/testExportOffscreen.java</exclude>
+            <exclude>**/org/scilab/tests/modules/javasci/testBug9544.java</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -585,6 +619,22 @@
              <testExclude> element is ambiguous across plugin versions, whereas this is
              unambiguously "exclude nothing". -->
         <scilab.test.exclude>**/__no_tests_are_excluded__/**</scilab.test.exclude>
+
+        <!-- B16 RESOLVED: the javasci quarantine is LIFTED. The NWNI-default tests
+             now run against the javasci2-cli variant (modules/javasci/CMakeLists.txt),
+             which links libscilab-cli + libscijvm-disable so isItTheDisabledLib()
+             answers TRUE and InitScilab.cpp's checkForLinkerErrors() no longer
+             exit(1)s. The 4 advanced-mode tests stay excluded unconditionally in the
+             base surefire config. xcos/commons remain quarantined (xcos HANGS). -->
+        <scilab.test.exclude.engine.javasci>**/__no_tests_are_excluded__/**</scilab.test.exclude.engine.javasci>
+
+        <!-- TWO directories, ORDER SIGNIFICANT. The cli dir comes FIRST so
+             System.loadLibrary("javasci2") resolves to the NWNI variant rather than
+             the GUI-linked one in the farm; the farm follows so every other
+             loadLibrary (notably "scilab", which GetScilabVariableJNI opens) still
+             resolves. Verified end-to-end by probe: engine opens, `a=1+1` executes,
+             the value reads back as 2.0, and close() succeeds. -->
+        <scilab.test.native.libs>${session.executionRootDirectory}/build-cmake/test-native-libs-cli:${session.executionRootDirectory}/build-cmake/test-native-libs</scilab.test.native.libs>
       </properties>
     </profile>
   </profiles>

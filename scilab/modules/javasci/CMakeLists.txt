@@ -190,7 +190,22 @@ _scilab_module_apply(javasci2-cli)
 get_target_property(_scilab_cli_links libscilab-cli LINK_LIBRARIES)
 target_link_libraries(javasci2-cli PRIVATE
   libscilab-cli ${_scilab_cli_links}
-  scijvm-disable)          # THE point of this variant: isItTheDisabledLib() -> TRUE
+  # The `-disable`/`-minimal` tail. In a CLI process these are supplied by the
+  # EXECUTABLE, not by libscilab-cli: they are the stub halves of the GUI modules,
+  # and scilab-cli-bin lists them explicitly (CMakeLists.txt:235's LDADD_LIBS).
+  # This dylib takes the executable's place in the load chain — the JVM is the
+  # process here — so it must supply them itself. Found the hard way: with only
+  # scijvm-disable, dlopen failed on `symbol not found in flat namespace
+  # '_getCmdLine'`, which libsciconsole-minimal defines and which scilab-cli-bin
+  # links but libscilab-cli does not. The set below is scilab-cli-bin's, in its
+  # order, minus the plain system libs libscilab-cli already carries.
+  scigui-disable scigraphics-disable scigraphic_export-disable
+  sciconsole-minimal sciaction_binding-disable
+  scijvm-disable                # THE point of this variant: isItTheDisabledLib() -> TRUE
+  scixcos-disable scigraphic_objects-disable sciscinotes-disable
+  sciui_data-disable scihistory_browser-disable scicommons-disable
+  scipreferences-cli scitclsci-disable
+  sciwebtools curses)
 
 target_link_options(javasci2-cli PRIVATE
   -nostdlib++
