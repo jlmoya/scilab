@@ -272,9 +272,11 @@ public class testReadWrite {
 
     }
 
-    @Test( expected = UndefinedVariableException.class)
+    @Test
     public void UndefinedVariableExceptionTest() throws NullPointerException, JavasciException {
-        sci.get("undefinedVar"); /* Will launch an UnsupportedTypeException exception */
+        assertThrows(UndefinedVariableException.class, () -> {
+            sci.get("undefinedVar"); /* Will launch an UnsupportedTypeException exception */
+        });
     }
 
     /**

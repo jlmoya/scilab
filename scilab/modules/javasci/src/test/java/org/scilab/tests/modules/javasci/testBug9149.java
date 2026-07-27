@@ -66,10 +66,12 @@ public class testBug9149 {
         assertTrue(sci.open());
     }
 
-    @Test( expected = ScilabErrorException.class)
+    @Test
     public void nonRegBug9149Working() throws NullPointerException, ScilabErrorException {
-        assertEquals(sci.isGraphicOpened(), false);
-        sci.execException("plot3d();");
+        assertThrows(ScilabErrorException.class, () -> {
+            assertEquals(sci.isGraphicOpened(), false);
+            sci.execException("plot3d();");
+        });
     }
 
     /**

@@ -53,10 +53,12 @@ public class testOpenClose {
         assertTrue(sci.close());
     }
 
-    @Test( expected = JavasciException.class)
+    @Test
     public void specificWrongSCIPathTest() throws NullPointerException, JavasciException {
-        assertTrue(sci.close());
-        sci = new Scilab(System.getProperty("java.io.tmpdir") + "/non-existing-directory-scilab/");
+        assertThrows(JavasciException.class, () -> {
+            assertTrue(sci.close());
+            sci = new Scilab(System.getProperty("java.io.tmpdir") + "/non-existing-directory-scilab/");
+        });
     }
 
 
@@ -101,9 +103,11 @@ public class testOpenClose {
         assertEquals(((ScilabBoolean)c).getData()[0][0], false);
     }
 
-    @Test( expected = AlreadyRunningException.class)
+    @Test
     public void OpenMultipleTimeTest() throws NullPointerException, JavasciException {
-        assertTrue(sci.open("a=42*2;"));
+        assertThrows(AlreadyRunningException.class, () -> {
+            assertTrue(sci.open("a=42*2;"));
+        });
     }
 
     /**

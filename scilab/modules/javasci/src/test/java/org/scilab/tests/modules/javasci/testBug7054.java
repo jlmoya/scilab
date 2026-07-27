@@ -43,13 +43,15 @@ public class testBug7054 {
         assertTrue(sci.open());
     }
 
-    @Test( expected = java.lang.ClassCastException.class)
+    @Test
     public void nonRegBug7054() throws NullPointerException, JavasciException {
-        assertTrue(sci.exec("xx = 123;"));
-        /* Trigger an ClassCastException exception with the error:
-         * Exception in thread "main" java.lang.ClassCastException: org.scilab.modules.types.ScilabDouble cannot be cast to org.scilab.modules.types.ScilabInteger */
-        ScilabInteger zz = (ScilabInteger)sci.get("xx");
+        assertThrows(java.lang.ClassCastException.class, () -> {
+            assertTrue(sci.exec("xx = 123;"));
+            /* Trigger an ClassCastException exception with the error:
+             * Exception in thread "main" java.lang.ClassCastException: org.scilab.modules.types.ScilabDouble cannot be cast to org.scilab.modules.types.ScilabInteger */
+            ScilabInteger zz = (ScilabInteger)sci.get("xx");
 
+        });
     }
 
     @Test()

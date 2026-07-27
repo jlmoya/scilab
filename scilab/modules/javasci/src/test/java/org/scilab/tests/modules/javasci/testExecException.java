@@ -118,13 +118,15 @@ public class testExecException {
         }
     }
 
-    @Test( expected = FileNotFoundException.class)
+    @Test
     public void execFromNonExistingFileTest() throws NullPointerException, InitializationException, FileNotFoundException, JavasciException {
-        sci.close();
+        assertThrows(FileNotFoundException.class, () -> {
+            sci.close();
 
-        File nonExistingFile = new File("/wrong/path/file");
+            File nonExistingFile = new File("/wrong/path/file");
 
-        sci.open(nonExistingFile);
+            sci.open(nonExistingFile);
+        });
     }
 
     @Test()
@@ -160,13 +162,15 @@ public class testExecException {
 
     }
 
-    @Test( expected = FileNotFoundException.class)
+    @Test
     public void execExecNonFileTest() throws NullPointerException, InitializationException, FileNotFoundException, JavasciException {
+        assertThrows(FileNotFoundException.class, () -> {
 
-        sci.execException(new File("Doesnotexist"));
+            sci.execException(new File("Doesnotexist"));
 
 
 
+        });
     }
     /**
      * See #open()

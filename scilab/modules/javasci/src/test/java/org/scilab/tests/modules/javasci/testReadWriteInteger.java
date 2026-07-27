@@ -135,29 +135,33 @@ public class testReadWriteInteger {
 
     }
 
-    @Test( expected = UnsupportedTypeException.class)
+    @Test
     // Will be unblocked for Scilab 6
     public void putAndGetInteger64UnsignedTest() throws NullPointerException, JavasciException {
-        long [][]a = {{21, 22, 42, 39}, {23, 24, 44, 40}};
-        ScilabInteger aOriginal = new ScilabInteger(a, true); /* unsigned */
-        sci.put("b", aOriginal); /* Exception launched */
+        assertThrows(UnsupportedTypeException.class, () -> {
+            long [][]a = {{21, 22, 42, 39}, {23, 24, 44, 40}};
+            ScilabInteger aOriginal = new ScilabInteger(a, true); /* unsigned */
+            sci.put("b", aOriginal); /* Exception launched */
 
-        ScilabInteger aFromScilab = (ScilabInteger)sci.get("b");
+            ScilabInteger aFromScilab = (ScilabInteger)sci.get("b");
 
-        assertTrue(aFromScilab.equals(aOriginal));
+            assertTrue(aFromScilab.equals(aOriginal));
+        });
     }
 
-    @Test( expected = UnsupportedTypeException.class)
+    @Test
     // Will be unblocked for Scilab 6
     public void putAndGetInteger64SignedTest() throws NullPointerException, JavasciException {
-        long [][]a = {{ -21, 22, -42, 39}, {23, -24, -44, 40}};
-        ScilabInteger aOriginal = new ScilabInteger(a, false); /* signed */
-        sci.put("b", aOriginal); /* Exception launched */
+        assertThrows(UnsupportedTypeException.class, () -> {
+            long [][]a = {{ -21, 22, -42, 39}, {23, -24, -44, 40}};
+            ScilabInteger aOriginal = new ScilabInteger(a, false); /* signed */
+            sci.put("b", aOriginal); /* Exception launched */
 
-        ScilabInteger aFromScilab = (ScilabInteger)sci.get("b");
+            ScilabInteger aFromScilab = (ScilabInteger)sci.get("b");
 
-        assertTrue(aFromScilab.equals(aOriginal));
+            assertTrue(aFromScilab.equals(aOriginal));
 
+        });
     }
 
     /**

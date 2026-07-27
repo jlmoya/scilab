@@ -80,6 +80,15 @@
          (absolute-install-name) siblings for the native/integration Java tests. -->
     <scilab.test.native.libs>${session.executionRootDirectory}/build-cmake/test-native-libs</scilab.test.native.libs>
     <scilab.test.sci.root>${session.executionRootDirectory}</scilab.test.sci.root>
+
+    <!-- Which tests are held back, for BOTH test-compilation (maven-compiler-plugin
+         testExcludes) and execution (surefire excludes) — one property so the two can
+         never drift apart. Default: the 40 migrated legacy tests under org.scilab.tests.*,
+         which are native INTEGRATION tests (they System.loadLibrary("scilab") / embed the
+         engine), so a plain `mvn test` stays green on a machine with no native setup.
+         The `native-tests` profile clears this to run them; see that profile for the
+         one-time privileged step it requires. -->
+    <scilab.test.exclude>**/org/scilab/tests/**</scilab.test.exclude>
   </properties>
 
   <!-- Inherited test stack: every reactor module gets JUnit 6 (Jupiter) in test scope,
@@ -256,7 +265,7 @@
                machine; run them with -Pnative-tests AFTER that setup. New hermetic unit
                tests live under org.scilab.modules.* and always run. -->
           <excludes>
-            <exclude>**/org/scilab/tests/**</exclude>
+            <exclude>${scilab.test.exclude}</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -368,7 +377,7 @@
                excluded from test-compilation here to keep `mvn package` green everywhere.
                New hermetic unit tests under org.scilab.modules.* compile and run normally. -->
           <testExcludes>
-            <testExclude>**/org/scilab/tests/**</testExclude>
+            <testExclude>${scilab.test.exclude}</testExclude>
           </testExcludes>
           <!-- build.incl.xml:129 encoding="utf-8" -->
           <encoding>UTF-8</encoding>
@@ -519,4 +528,37 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- OPT-IN: also compile and run the 40 migrated legacy tests under
+         org.scilab.tests.*, which are native INTEGRATION tests (they
+         System.loadLibrary("scilab") / embed the engine via javasci).
+
+         PREREQUISITE, one time per machine, and it needs privileges:
+
+             ./build-test-native-libs.sh                 # farm every module dylib
+             sudo ln -sfn "$PWD/build-cmake/test-native-libs" /usr/local/lib/scilab
+
+         WHY the symlink and not just DYLD_LIBRARY_PATH: 134 of the 135 built dylibs
+         carry an ABSOLUTE install-name of /usr/local/lib/scilab/lib*.dylib, and each
+         one records that same absolute path for its dependencies, so dyld resolves
+         them at exactly that location. Overriding via DYLD_LIBRARY_PATH is defeated
+         by macOS SIP, which strips DYLD_* on the way through the `mvn` shell wrapper.
+         Making the hardcoded path resolve is therefore the reliable route. The farm
+         is self-consistent: all 67 distinct /usr/local/lib/scilab dependency paths the
+         dylibs reference are present in it, so the single symlink satisfies every one.
+
+         Nothing here is required for normal work — plain `mvn test` keeps excluding
+         these and stays green with no native setup at all. -->
+    <profile>
+      <id>native-tests</id>
+      <properties>
+        <!-- Clear the shared exclusion (see the property's own comment). A pattern that
+             matches nothing is used rather than an empty value: an empty <exclude>/
+             <testExclude> element is ambiguous across plugin versions, whereas this is
+             unambiguously "exclude nothing". -->
+        <scilab.test.exclude>**/__no_tests_are_excluded__/**</scilab.test.exclude>
+      </properties>
+    </profile>
+  </profiles>
 </project>

@@ -93,14 +93,18 @@ public class testErrorManagement {
     }
 
 
-    @Test( expected = ScilabErrorException.class)
+    @Test
     public void getLastErrorMessageWithExceptionWithErrorTest() throws NullPointerException, ScilabErrorException {
-        sci.execException("a+b"); //undefined a & b
+        assertThrows(ScilabErrorException.class, () -> {
+            sci.execException("a+b"); //undefined a & b
+        });
     }
 
-    @Test( expected = ScilabErrorException.class)
+    @Test
     public void getLastErrorMessageWithExceptionWithError2Test() throws NullPointerException, ScilabErrorException {
-        sci.execException("a+b*"); //undefined a & b
+        assertThrows(ScilabErrorException.class, () -> {
+            sci.execException("a+b*"); //undefined a & b
+        });
     }
 
     /**
