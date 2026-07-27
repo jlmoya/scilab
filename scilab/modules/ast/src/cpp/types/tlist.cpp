@@ -292,7 +292,37 @@ std::wstring TList::getTypeStr() const
         return L"";
     }
 
-    return getFieldNames()->get(0);
+    // Element 0 of a WELL-FORMED t/mlist is the field-name String, whose first
+    // entry is the type name. Nothing enforces that shape for a list built
+    // through a public API: javasci lets callers add leaves to a ScilabMList
+    // without ever supplying that header, so element 0 can be a Double. The old
+    // code went straight to getFieldNames()->get(0), and getFieldNames() is an
+    // UNCHECKED getAs<types::String>() — on a Double it hands back a bogus
+    // String* whose get(0) dereferences a garbage wchar_t* and SIGSEGVs.
+    //
+    // That was reached from MList::~MList() (mlist.cpp:42), which invokes the
+    // overloadable %<type>_clear on destruction and therefore needs the type
+    // name: putting a header-less mlist through javasci and closing the engine
+    // crashed the process in wcslen. The `getSize() < 1` guard above did not
+    // help — it only catches the EMPTY list, and an empty mlist was precisely
+    // the case that already worked. See deferred-fixes-register.md B18.
+    //
+    // A malformed t/mlist simply has no type name, so report none and let the
+    // caller fall back (Overload then uses the generic name) rather than
+    // faulting: the engine must not crash on input a public API can construct.
+    types::InternalType* pHeader = (*m_plData)[0];
+    if (pHeader == nullptr || pHeader->isString() == false)
+    {
+        return L"";
+    }
+
+    types::String* pFieldNames = pHeader->getAs<types::String>();
+    if (pFieldNames->getSize() < 1)
+    {
+        return L"";
+    }
+
+    return pFieldNames->get(0);
 }
 
 std::wstring TList::getShortTypeStr() const
