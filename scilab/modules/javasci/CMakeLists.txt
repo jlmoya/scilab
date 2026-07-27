@@ -149,3 +149,61 @@ add_custom_target(drop-in-javasci
 if(TARGET drop-in-all)
   add_dependencies(drop-in-all drop-in-javasci)
 endif()
+
+# ---------------------------------------------------------------------------
+# javasci2-cli — the NWNI-capable variant (register B16).
+#
+# THE PROBLEM: javasci's DEFAULT mode is non-advanced (Scilab.java:67
+# advancedMode=false), which routes through DisableInteractiveMode() ->
+# setScilabMode(SCILAB_NWNI) (call_scilab.c:62-65). InitScilab.cpp's
+# checkForLinkerErrors() then REQUIRES isItTheDisabledLib() == TRUE in NWNI mode
+# and calls exit(1) otherwise. That symbol is undefined (dynamic_lookup) in the
+# aggregates and DEFINED by both jvm variants with opposite answers —
+# modules/jvm/src/nojvm/nojvm.c:109 returns TRUE (libscijvm-disable),
+# modules/jvm/src/c/JVM.c:314 returns FALSE (libscijvm) — so which one the load
+# chain pulls decides it, exactly as scilab-cli-bin vs scilab-bin decide it for
+# the executables. The main libjavasci2 above links libscilab, which carries the
+# real libscijvm, so NWNI always exit(1)s. Advanced mode is the combination that
+# link serves correctly, which is why BOTH are needed: the legacy suite has 14
+# `new Scilab()` (NWNI) tests and 5 `new Scilab(true)` (advanced) ones.
+#
+# THE SHAPE: same sources and same folded objects, but linked against
+# libscilab-cli (0 scijvm deps — it folds the -disable objects) PLUS an explicit
+# scijvm-disable, mirroring how scilab-cli-bin links. The file keeps the name
+# libjavasci2.dylib and differs only by DIRECTORY, so Java needs no change at all:
+# System.loadLibrary("javasci2") resolves per java.library.path, and a test run
+# selects the variant purely by pointing that at this directory instead of the farm.
+#
+# NOT a parity artifact ON PURPOSE: build-parity's dylib walk keys off directories
+# named exactly ".libs" (capture.py:211), so emitting here adds nothing to the
+# fingerprint and needs no baseline change — this variant is test infrastructure,
+# not a shipped library. It is deliberately NOT registered on drop-in-all for the
+# same reason.
+add_library(javasci2-cli SHARED
+  src/jni/call_scilab_wrap.c
+  src/jni/putLists.c
+  src/c/javasci2_helper.c
+  $<TARGET_OBJECTS:sciapi_scilab-obj>)
+
+_scilab_module_apply(javasci2-cli)
+
+get_target_property(_scilab_cli_links libscilab-cli LINK_LIBRARIES)
+target_link_libraries(javasci2-cli PRIVATE
+  libscilab-cli ${_scilab_cli_links}
+  scijvm-disable)          # THE point of this variant: isItTheDisabledLib() -> TRUE
+
+target_link_options(javasci2-cli PRIVATE
+  -nostdlib++
+  "LINKER:-undefined,dynamic_lookup" "LINKER:-no_fixup_chains"
+  "LINKER:-rpath,/usr/lib" "LINKER:-rpath,/opt/homebrew/opt/gcc/lib/gcc/current")
+
+# Unversioned name: System.loadLibrary("javasci2") looks for exactly
+# libjavasci2.dylib on the java.library.path, and nothing links this by
+# install-name, so no versioned soname is needed.
+set_target_properties(javasci2-cli PROPERTIES
+  OUTPUT_NAME "javasci2"
+  PREFIX "lib" SUFFIX ".dylib"
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/test-native-libs-cli"
+  INSTALL_NAME_DIR "/usr/local/lib/scilab"
+  BUILD_WITH_INSTALL_NAME_DIR TRUE
+  SKIP_BUILD_RPATH TRUE)
