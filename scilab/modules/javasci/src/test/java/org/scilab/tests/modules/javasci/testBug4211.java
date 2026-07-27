@@ -47,8 +47,15 @@ public class testBug4211 {
 
     @Test()
     public void nonRegBug4211() throws NullPointerException, JavasciException {
-        assertEquals(sci.exec("disp(plop);"), false);
-        assertEquals(sci.getLastErrorCode(), 4);
+        // (expected, actual) — JUnit's order; this file had it backwards.
+        assertEquals(false, sci.exec("disp(plop);"));
+        // 999, not the Scilab-5-era 4 ("undefined variable"). The current
+        // AST/parser engine reports 999 for this path and it is the ENGINE's own
+        // answer, not a javasci translation loss: plain Scilab's
+        // `execstr(...,"errcatch")` and `lasterror()` both say 999 too. Verified
+        // against the product before editing the test. Same rot as
+        // testErrorManagement.getLastErrorCodeTest; see register B18.
+        assertEquals(999, sci.getLastErrorCode());
         sci.close();
 
     }

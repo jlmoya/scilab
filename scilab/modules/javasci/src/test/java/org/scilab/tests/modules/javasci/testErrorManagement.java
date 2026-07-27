@@ -44,15 +44,26 @@ public class testErrorManagement {
 
     @Test()
     public void getLastErrorCodeTest() throws NullPointerException, JavasciException {
-        assertEquals(sci.getLastErrorCode(), 0); // No error
+        // Codes are (expected, actual) — JUnit's order, which this file otherwise
+        // has backwards, making its failures read inverted.
+        assertEquals(0, sci.getLastErrorCode()); // No error
         sci.close();
 
-        assertEquals(sci.open("a=1+"), false);
-        assertEquals(sci.getLastErrorCode(), 2);
+        assertEquals(false, sci.open("a=1+"));
+        // 999, not the Scilab-5-era 2 (syntax) and 4 (undefined variable) this
+        // test used to expect. The current AST/parser engine sets 999 explicitly
+        // for these paths (InitScilab.cpp:769, storeCommand.cpp:77), and it is
+        // the ENGINE's own answer, not something javasci loses in translation:
+        // `execstr("qq+ww", "errcatch")` and `lasterror()` both report 999 from
+        // plain Scilab too. Verified against the product before touching the test
+        // rather than assuming test rot. See deferred-fixes-register.md B18.
+        assertEquals(999, sci.getLastErrorCode());
         sci.exec("errclear();");
         sci.exec("a+b");
-        assertEquals(sci.getLastErrorCode(), 4);
+        assertEquals(999, sci.getLastErrorCode());
         sci.exec("errclear();");
+        // errclear() must reset it, or the assertions above prove nothing.
+        assertEquals(0, sci.getLastErrorCode());
     }
 
     @Test()
