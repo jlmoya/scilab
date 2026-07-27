@@ -89,6 +89,19 @@
          The `native-tests` profile clears this to run them; see that profile for the
          one-time privileged step it requires. -->
     <scilab.test.exclude>**/org/scilab/tests/**</scilab.test.exclude>
+
+    <!-- Legacy tests that EMBED the Scilab engine. Held back even under
+         -Pnative-tests: see deferred-fixes-register.md B16 — javasci defaults to
+         SCILAB_NWNI, which requires the libscijvm-DISABLE lib, but libjavasci2
+         links libscilab (the GUI aggregate carrying the real libscijvm), so
+         InitScilab.cpp's checkForLinkerErrors() calls exit(1) before any test
+         body runs. xcos is worse than a failure: its forked JVM HANGS
+         indefinitely, which would wedge CI. Three separate patterns because Ant
+         globs have no alternation. These become runnable when B16 is resolved;
+         until then -Pnative-tests still runs the engine-free legacy tests. -->
+    <scilab.test.exclude.engine.javasci>**/org/scilab/tests/modules/javasci/**</scilab.test.exclude.engine.javasci>
+    <scilab.test.exclude.engine.xcos>**/org/scilab/tests/modules/xcos/**</scilab.test.exclude.engine.xcos>
+    <scilab.test.exclude.engine.commons>**/org/scilab/tests/modules/commons/**</scilab.test.exclude.engine.commons>
   </properties>
 
   <!-- Inherited test stack: every reactor module gets JUnit 6 (Jupiter) in test scope,
@@ -266,6 +279,12 @@
                tests live under org.scilab.modules.* and always run. -->
           <excludes>
             <exclude>${scilab.test.exclude}</exclude>
+            <!-- Engine-embedding legacy tests, held back even under -Pnative-tests
+                 (register B16). Inert by default, where the line above already
+                 excludes the whole org.scilab.tests tree. -->
+            <exclude>${scilab.test.exclude.engine.javasci}</exclude>
+            <exclude>${scilab.test.exclude.engine.xcos}</exclude>
+            <exclude>${scilab.test.exclude.engine.commons}</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -547,6 +566,14 @@
          Making the hardcoded path resolve is therefore the reliable route. The farm
          is self-consistent: all 67 distinct /usr/local/lib/scilab dependency paths the
          dylibs reference are present in it, so the single symlink satisfies every one.
+
+         WHAT THIS ACTUALLY RUNS TODAY: the legacy tests that need the native libs
+         but NOT a running engine — currently
+         org.scilab.tests.modules.action_binding.utils.SignalTest (2/2 green). The
+         engine-EMBEDDING packages (javasci, xcos, commons) stay excluded via the
+         scilab.test.exclude.engine.* properties: they cannot pass until register
+         B16 is resolved, and xcos does not merely fail — it HANGS a forked JVM
+         indefinitely. Lifting those three properties is the acceptance test for B16.
 
          Nothing here is required for normal work — plain `mvn test` keeps excluding
          these and stays green with no native setup at all. -->
