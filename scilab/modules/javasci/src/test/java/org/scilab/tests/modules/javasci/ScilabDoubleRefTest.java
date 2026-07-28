@@ -4,8 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.scilab.modules.javasci.Scilab;
+import org.scilab.modules.javasci.ScilabReferenceException;
 import org.scilab.modules.types.ScilabDouble;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScilabDoubleRefTest {
     private Scilab sci;
@@ -55,5 +57,85 @@ public class ScilabDoubleRefTest {
         sci.exec("a(3,3)=77;");
         assertEquals(4.0, ref.getRealElement(1, 1), 1e-9);
         assertEquals(77.0, ref.getRealElement(2, 2), 1e-9);
+    }
+
+    /**
+     * Once the variable is no longer a double, the view must fail loudly
+     * instead of returning stale or nonsensical data: live()'s instanceof
+     * check is what's under test here.
+     */
+    @Test
+    public void refThrowsAfterTypeChange() throws Exception {
+        sci.put("a", new ScilabDouble(new double[][] {{1.0, 2.0}, {3.0, 4.0}}));
+        ScilabDouble ref = (ScilabDouble) sci.getByReference("a");
+        sci.exec("a=int32(a);");
+        assertThrows(ScilabReferenceException.class, () -> ref.getRealElement(0, 0));
+    }
+
+    /**
+     * Clearing the variable is a different failure path through live() than a
+     * type change: getInCurrentScilabSession() throws JavasciException rather
+     * than returning a non-ScilabDouble, so this exercises live()'s other
+     * catch branch.
+     */
+    @Test
+    public void refThrowsAfterVariableCleared() throws Exception {
+        sci.put("a", new ScilabDouble(new double[][] {{1.0, 2.0}, {3.0, 4.0}}));
+        ScilabDouble ref = (ScilabDouble) sci.getByReference("a");
+        sci.exec("clear a;");
+        assertThrows(ScilabReferenceException.class, () -> ref.getRealElement(0, 0));
+    }
+
+    /**
+     * getVarName() must report the variable's actual name. A ScilabDoubleRef
+     * that shadows rather than populates the inherited varName field would
+     * silently return null here instead.
+     */
+    @Test
+    public void refReportsVarName() throws Exception {
+        sci.put("a", new ScilabDouble(new double[][] {{1.0, 2.0}, {3.0, 4.0}}));
+        ScilabDouble ref = (ScilabDouble) sci.getByReference("a");
+        assertEquals("a", ref.getVarName());
+    }
+
+    /**
+     * Inherited ScilabDouble.setElement(i,j,x,y) assigns realPart[i][j]/
+     * imaginaryPart[i][j] directly, bypassing setRealElement()/
+     * setImaginaryElement(). Left un-overridden, the write would silently
+     * land in this object's frozen construction-time snapshot and never
+     * reach the engine -- no exception, no signal.
+     *
+     * Uses a complex matrix: setElement() always writes both parts
+     * (realPart[i][j] AND imaginaryPart[i][j]), and a real-only ScilabDouble's
+     * imaginaryPart is a genuinely empty double[0][] -- calling setElement on
+     * one throws ArrayIndexOutOfBoundsException regardless of ScilabDoubleRef,
+     * identically on a plain ScilabDouble. That is pre-existing behavior of
+     * setElement() itself, not something this fix needs to work around.
+     */
+    @Test
+    public void scilabSeesRefSetElementWrite() throws Exception {
+        sci.put("a", new ScilabDouble(new double[][] {{1.0, 2.0}, {3.0, 4.0}},
+                                       new double[][] {{0.0, 0.0}, {0.0, 0.0}}));
+        ScilabDouble ref = (ScilabDouble) sci.getByReference("a");
+        ref.setElement(1, 1, 12.5, 3.5);
+        sci.exec("b=a(2,2);");
+        ScilabDouble b = (ScilabDouble) sci.get("b");
+        assertEquals(12.5, b.getRealPart()[0][0], 1e-9);
+        assertEquals(3.5, b.getImaginaryPart()[0][0], 1e-9);
+    }
+
+    /**
+     * getHeight()/getWidth() must report the CURRENT engine shape, not the
+     * shape captured at getByReference() time -- otherwise a natural
+     * `for (i < ref.getHeight())` loop would silently miss rows added after
+     * the view was taken.
+     */
+    @Test
+    public void refReportsCurrentShapeAfterResize() throws Exception {
+        sci.put("a", new ScilabDouble(new double[][] {{1.0, 2.0}, {3.0, 4.0}}));
+        ScilabDouble ref = (ScilabDouble) sci.getByReference("a");
+        sci.exec("a(3,3)=77;");
+        assertEquals(3, ref.getHeight());
+        assertEquals(3, ref.getWidth());
     }
 }
