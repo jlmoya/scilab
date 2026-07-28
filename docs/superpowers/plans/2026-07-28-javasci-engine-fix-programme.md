@@ -233,7 +233,11 @@ Replace the body at `Scilab.java:585`:
 
 - [ ] **Step 6: Run the new test and the existing by-ref doubles**
 
-Run: `cd scilab && mvn -o -Pnative-tests -pl modules/javasci test -Dtest='ScilabDoubleRefTest+testReadWriteBuf' -Dsurefire.failIfNoSpecifiedTests=false`
+Run: `cd scilab && mvn -o -Pnative-tests -pl modules/javasci test -Dtest='ScilabDoubleRefTest,testReadWriteBuf' -Dsurefire.failIfNoSpecifiedTests=false`
+
+Separate multiple classes with a COMMA. The `+` form selects zero tests on this surefire
+3.5.6 / JUnit-platform provider and says so only as a silent empty run, which
+`-Dsurefire.failIfNoSpecifiedTests=false` then reports as success.
 Expected: `ScilabDoubleRefTest` 2/2 PASS. `testReadWriteBuf` still 9 tests with the 3 double cases passing; the 6 integer cases still fail (Task 2 fixes those).
 
 - [ ] **Step 7: Confirm the default path is untouched**
