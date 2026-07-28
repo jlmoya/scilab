@@ -42,7 +42,15 @@ Note: javasci's Java sources live in `modules/javasci/src/java/org/scilab/module
 - Create: `modules/javasci/src/java/org/scilab/modules/javasci/ScilabReferenceException.java`
 - Create: `modules/javasci/src/java/org/scilab/modules/javasci/ScilabDoubleRef.java`
 - Modify: `modules/javasci/src/java/org/scilab/modules/javasci/Scilab.java:585`
-- Test: `modules/javasci/src/test/java/org/scilab/modules/javasci/ScilabDoubleRefTest.java`
+- Test: `modules/javasci/src/test/java/org/scilab/tests/modules/javasci/ScilabDoubleRefTest.java`
+
+The test MUST live under `org/scilab/tests/modules/javasci/`, not `org/scilab/modules/javasci/`.
+It embeds the engine, and only the `org.scilab.tests.*` tree carries the
+`scilab.test.exclude.engine.javasci` exclusion (`**/org/scilab/tests/modules/javasci/**`).
+`pom.xml` states the rule directly: "New hermetic unit tests live under org.scilab.modules.*
+and always run" — an engine test placed there would run in the DEFAULT profile with no native
+libs and break the 28/0 global constraint. Nothing in the test needs package-private access:
+`put`, `getByReference`, `exec` and `get` are all public.
 
 **Interfaces:**
 - Consumes: `Scilab.getInCurrentScilabSession(String)` → `ScilabType` (throws `JavasciException`); `Scilab.putInCurrentScilabSession(String, ScilabType)` → `boolean` (throws `JavasciException`).
@@ -51,11 +59,12 @@ Note: javasci's Java sources live in `modules/javasci/src/java/org/scilab/module
 - [ ] **Step 1: Write the failing test**
 
 ```java
-package org.scilab.modules.javasci;
+package org.scilab.tests.modules.javasci;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.scilab.modules.javasci.Scilab;
 import org.scilab.modules.types.ScilabDouble;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -230,7 +239,9 @@ Expected: `ScilabDoubleRefTest` 2/2 PASS. `testReadWriteBuf` still 9 tests with 
 - [ ] **Step 7: Confirm the default path is untouched**
 
 Run: `cd scilab && mvn -o -pl modules/javasci test`
-Expected: `Tests run: 30, Failures: 0` (28 existing + the 2 new).
+Expected: `Tests run: 28, Failures: 0` — unchanged. The 2 new tests embed the engine and sit
+under `org.scilab.tests.modules.javasci`, so the default profile excludes them. A count of 30
+here means the test landed in the wrong package and is running without native libs.
 
 - [ ] **Step 8: Commit**
 
@@ -238,7 +249,7 @@ Expected: `Tests run: 30, Failures: 0` (28 existing + the 2 new).
 git add scilab/modules/javasci/src/java/org/scilab/modules/javasci/ScilabReferenceException.java \
         scilab/modules/javasci/src/java/org/scilab/modules/javasci/ScilabDoubleRef.java \
         scilab/modules/javasci/src/java/org/scilab/modules/javasci/Scilab.java \
-        scilab/modules/javasci/src/test/java/org/scilab/modules/javasci/ScilabDoubleRefTest.java
+        scilab/modules/javasci/src/test/java/org/scilab/tests/modules/javasci/ScilabDoubleRefTest.java
 git commit -F - <<'EOF'
 fix(javasci): make by-reference double views live instead of raw pointers (B18)
 
@@ -355,7 +366,8 @@ Expected: `Tests run: 9, Failures: 0`.
 - [ ] **Step 5: Run the whole javasci native suite**
 
 Run: `cd scilab && mvn -o -Pnative-tests -pl modules/javasci test`
-Expected: 94 tests, 0 crashes, exactly 1 failure left — `testReadWrite.ReadStructTest` (Task 3).
+Expected: 96 tests (the pre-existing 94 plus Task 1's 2), 0 crashes, exactly 1 failure left —
+`testReadWrite.ReadStructTest` (Task 3).
 
 - [ ] **Step 6: Commit**
 
@@ -544,8 +556,8 @@ git push git@github.com:jlmoya/scilab.git main
 
 ```bash
 cd scilab
-mvn -o -Pnative-tests -pl modules/javasci test          # expect 94 tests, 0 failures, 0 crashes
-mvn -o -pl modules/javasci test                          # expect 30 tests, 0 failures
+mvn -o -Pnative-tests -pl modules/javasci test          # expect 96 tests, 0 failures, 0 crashes
+mvn -o -pl modules/javasci test                          # expect 28 tests, 0 failures
 cd build-parity && python3 -m pytest -q                  # expect 170 passed, 1 skipped
 ```
 
