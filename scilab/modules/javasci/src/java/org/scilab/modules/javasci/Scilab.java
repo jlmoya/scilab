@@ -583,7 +583,13 @@ public class Scilab {
      * @throws UnsupportedTypeException Type not managed yet.
      */
     public ScilabType getByReference(String varname) throws JavasciException {
-        return getInCurrentScilabSession(varname, true);
+        ScilabType value = getInCurrentScilabSession(varname, true);
+        // Hand back a LIVE view rather than a raw pointer into engine memory:
+        // see ScilabDoubleRef / register B18.
+        if (value instanceof ScilabDouble) {
+            return new ScilabDoubleRef(varname, (ScilabDouble) value);
+        }
+        return value;
     }
 
     /**
