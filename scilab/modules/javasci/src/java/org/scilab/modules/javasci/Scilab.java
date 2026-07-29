@@ -585,9 +585,14 @@ public class Scilab {
      * WHICH TYPES GET A VIEW. Doubles (sci_matrix), integers (sci_ints, 8/16/32
      * bit) and booleans (sci_boolean) come back as ScilabDoubleRef,
      * ScilabIntegerRef and ScilabBooleanRef respectively. EVERY OTHER TYPE
-     * silently comes back exactly as get() would return it -- strings,
-     * polynomials, sparse matrices, and list/tlist/mlist containers are
-     * ordinary by-value objects with no live behaviour. Container CHILDREN are
+     * comes back BY VALUE, with no live behaviour -- strings, polynomials,
+     * sparse matrices and list/tlist/mlist containers are ordinary objects.
+     * By value is NOT the same as identical to get(): this call marshals with
+     * swaped=false where get() uses swaped=true (ScilabToJava.cpp:67 vs :812),
+     * and that flag selects the opposite branch of getMatrix, so a by-value
+     * result here can carry a different row/column layout and a different
+     * isSwaped() than the same variable fetched with get(). Prefer get() when
+     * you want a snapshot. Container CHILDREN are
      * a sharper case: the marshaller propagates the by-reference request into
      * nested items, so the children of a returned list/tlist/mlist can be raw
      * ScilabDoubleReference/ScilabIntegerReference/ScilabBooleanReference
