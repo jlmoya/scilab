@@ -118,9 +118,29 @@ public abstract class SwingScilabWindow extends JFrame implements SimpleWindow {
             Desktop desktop = Desktop.getDesktop();
             Taskbar taskbar = Taskbar.getTaskbar();
             taskbar.setIconImage(new ImageIcon(FindIconHelper.findIcon("scilabMacOS", "256x256")).getImage());
-            desktop.setAboutHandler(e->InterpreterManagement.requestScilabExec("about();"));
-            desktop.setPreferencesHandler(e ->InterpreterManagement.requestScilabExec("preferences();"));
-            desktop.setQuitHandler((e,r)->InterpreterManagement.requestScilabExec("exit();"));
+            desktop.setAboutHandler(e->postToInterpreter("about();"));
+            desktop.setPreferencesHandler(e ->postToInterpreter("preferences();"));
+            desktop.setQuitHandler((e,r)-> {
+                if (postToInterpreter("exit();")) {
+                    /*
+                     * Scilab owns its own shutdown: exit() runs the orderly teardown and
+                     * ends the process itself, so AppKit must NOT also terminate us and
+                     * race it. What matters is that we answer at all -- until one of
+                     * these two calls arrives, AppKit blocks in -[NSApplication
+                     * _shouldTerminate] and the quit is reported as an AppleEvent
+                     * timeout (-1712), which is what surfaces the "not responding /
+                     * Force Quit" dialog.
+                     */
+                    r.cancelQuit();
+                } else {
+                    /*
+                     * The command never reached the interpreter, so nothing else is
+                     * going to end this process. Let AppKit terminate rather than
+                     * strand the user with a window that will not close.
+                     */
+                    r.performQuit();
+                }
+            });
         }
 
         /* defining the Layout */
@@ -157,6 +177,27 @@ public abstract class SwingScilabWindow extends JFrame implements SimpleWindow {
                 }
             }
         });
+    }
+
+    /**
+     * Queues a command for the Scilab interpreter on behalf of the macOS
+     * application menu, reporting the failure these call sites used to discard.
+     *
+     * requestScilabExec returns a parse_state: 0 (Succeded) means the command was
+     * parsed and queued, anything else means it was rejected before reaching the
+     * queue -- so nothing will run and no error would otherwise be seen anywhere.
+     *
+     * @param command the Scilab command to queue
+     * @return true when the interpreter accepted the command
+     */
+    private static boolean postToInterpreter(String command) {
+        int ret = InterpreterManagement.requestScilabExec(command);
+        if (ret != 0) {
+            System.err.println("Scilab could not queue \"" + command
+                               + "\" requested from the macOS application menu (status " + ret + ").");
+            return false;
+        }
+        return true;
     }
 
     public void setIsRestoring(boolean b) {
