@@ -599,13 +599,20 @@
          is self-consistent: all 67 distinct /usr/local/lib/scilab dependency paths the
          dylibs reference are present in it, so the single symlink satisfies every one.
 
-         WHAT THIS ACTUALLY RUNS TODAY: the legacy tests that need the native libs
-         but NOT a running engine — currently
-         org.scilab.tests.modules.action_binding.utils.SignalTest (2/2 green). The
-         engine-EMBEDDING packages (javasci, xcos) stay excluded via the
-         scilab.test.exclude.engine.* properties: they cannot pass until register
-         B16 is resolved, and xcos does not merely fail — it HANGS a forked JVM
-         indefinitely. Lifting those two properties is the acceptance test for B16.
+         WHAT THIS ACTUALLY RUNS TODAY: the legacy tests that need the native libs,
+         WITH the embedded engine for javasci. Register B16 is RESOLVED (2026-07-27),
+         so this profile clears scilab.test.exclude.engine.javasci and those tests
+         run against the javasci2-cli variant — see the property's own comment below.
+         org.scilab.tests.modules.action_binding.utils.SignalTest (2/2, engine-free)
+         still runs too, and the commons tests were un-quarantined outright once
+         measured: they never needed an engine.
+
+         ONE package is still excluded here: xcos, via
+         scilab.test.exclude.engine.xcos, which this profile deliberately does NOT
+         override. It does not merely fail — it HANGS a forked JVM indefinitely
+         (register B21), so it would wedge CI rather than report a failure.
+         Separately, 4 advanced-mode javasci tests stay excluded by name in the base
+         surefire config, independent of this profile (register B22).
 
          Nothing here is required for normal work — plain `mvn test` keeps excluding
          these and stays green with no native setup at all. -->
@@ -623,7 +630,8 @@
              which links libscilab-cli + libscijvm-disable so isItTheDisabledLib()
              answers TRUE and InitScilab.cpp's checkForLinkerErrors() no longer
              exit(1)s. The 4 advanced-mode tests stay excluded unconditionally in the
-             base surefire config. xcos remains quarantined (xcos HANGS). -->
+             base surefire config (register B22). xcos remains quarantined because it
+             HANGS a forked JVM rather than failing (register B21). -->
         <scilab.test.exclude.engine.javasci>**/__no_tests_are_excluded__/**</scilab.test.exclude.engine.javasci>
 
         <!-- TWO directories, ORDER SIGNIFICANT. The cli dir comes FIRST so
