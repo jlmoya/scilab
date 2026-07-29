@@ -96,7 +96,7 @@
          links libscilab (the GUI aggregate carrying the real libscijvm), so
          InitScilab.cpp's checkForLinkerErrors() calls exit(1) before any test
          body runs. xcos is worse than a failure: its forked JVM HANGS
-         indefinitely, which would wedge CI. Three separate patterns because Ant
+         indefinitely, which would wedge CI. Two separate patterns because Ant
          globs have no alternation. These become runnable when B16 is resolved;
          until then -Pnative-tests still runs the engine-free legacy tests. -->
     <scilab.test.exclude.engine.javasci>**/org/scilab/tests/modules/javasci/**</scilab.test.exclude.engine.javasci>
@@ -602,10 +602,10 @@
          WHAT THIS ACTUALLY RUNS TODAY: the legacy tests that need the native libs
          but NOT a running engine — currently
          org.scilab.tests.modules.action_binding.utils.SignalTest (2/2 green). The
-         engine-EMBEDDING packages (javasci, xcos, commons) stay excluded via the
+         engine-EMBEDDING packages (javasci, xcos) stay excluded via the
          scilab.test.exclude.engine.* properties: they cannot pass until register
          B16 is resolved, and xcos does not merely fail — it HANGS a forked JVM
-         indefinitely. Lifting those three properties is the acceptance test for B16.
+         indefinitely. Lifting those two properties is the acceptance test for B16.
 
          Nothing here is required for normal work — plain `mvn test` keeps excluding
          these and stays green with no native setup at all. -->
@@ -623,7 +623,7 @@
              which links libscilab-cli + libscijvm-disable so isItTheDisabledLib()
              answers TRUE and InitScilab.cpp's checkForLinkerErrors() no longer
              exit(1)s. The 4 advanced-mode tests stay excluded unconditionally in the
-             base surefire config. xcos/commons remain quarantined (xcos HANGS). -->
+             base surefire config. xcos remains quarantined (xcos HANGS). -->
         <scilab.test.exclude.engine.javasci>**/__no_tests_are_excluded__/**</scilab.test.exclude.engine.javasci>
 
         <!-- TWO directories, ORDER SIGNIFICANT. The cli dir comes FIRST so
