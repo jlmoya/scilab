@@ -585,9 +585,12 @@ public class Scilab {
     public ScilabType getByReference(String varname) throws JavasciException {
         ScilabType value = getInCurrentScilabSession(varname, true);
         // Hand back a LIVE view rather than a raw pointer into engine memory:
-        // see ScilabDoubleRef / register B18.
+        // see ScilabDoubleRef/ScilabIntegerRef / register B18.
         if (value instanceof ScilabDouble) {
             return new ScilabDoubleRef(varname, (ScilabDouble) value);
+        }
+        if (value instanceof ScilabInteger) {
+            return new ScilabIntegerRef(varname, (ScilabInteger) value);
         }
         return value;
     }
