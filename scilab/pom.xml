@@ -101,7 +101,6 @@
          until then -Pnative-tests still runs the engine-free legacy tests. -->
     <scilab.test.exclude.engine.javasci>**/org/scilab/tests/modules/javasci/**</scilab.test.exclude.engine.javasci>
     <scilab.test.exclude.engine.xcos>**/org/scilab/tests/modules/xcos/**</scilab.test.exclude.engine.xcos>
-    <scilab.test.exclude.engine.commons>**/org/scilab/tests/modules/commons/**</scilab.test.exclude.engine.commons>
   </properties>
 
   <!-- Inherited test stack: every reactor module gets JUnit 6 (Jupiter) in test scope,
@@ -307,7 +306,6 @@
                  excludes the whole org.scilab.tests tree. -->
             <exclude>${scilab.test.exclude.engine.javasci}</exclude>
             <exclude>${scilab.test.exclude.engine.xcos}</exclude>
-            <exclude>${scilab.test.exclude.engine.commons}</exclude>
             <!-- The 4 ADVANCED-mode javasci tests (`new Scilab(true)`), always held
                  back. B16's javasci2-cli variant fixes the NWNI default, but these
                  want the opposite combination — the GUI-linked libjavasci2 AND the
