@@ -90,15 +90,26 @@
          one-time privileged step it requires. -->
     <scilab.test.exclude>**/org/scilab/tests/**</scilab.test.exclude>
 
-    <!-- Legacy tests that EMBED the Scilab engine. Held back even under
-         -Pnative-tests: see deferred-fixes-register.md B16 — javasci defaults to
-         SCILAB_NWNI, which requires the libscijvm-DISABLE lib, but libjavasci2
-         links libscilab (the GUI aggregate carrying the real libscijvm), so
-         InitScilab.cpp's checkForLinkerErrors() calls exit(1) before any test
-         body runs. xcos is worse than a failure: its forked JVM HANGS
-         indefinitely, which would wedge CI. Two separate patterns because Ant
-         globs have no alternation. These become runnable when B16 is resolved;
-         until then -Pnative-tests still runs the engine-free legacy tests. -->
+    <!-- Legacy tests that EMBED the Scilab engine. Both are excluded from a
+         plain `mvn test`; what -Pnative-tests does with them now DIFFERS.
+
+         javasci: NO LONGER held back. B16 is RESOLVED (register
+         deferred-fixes-register.md), so the profile clears this property and
+         the javasci engine tests RUN: 105 tests as measured on 2026-07-28.
+         The historic blocker was that javasci defaults to SCILAB_NWNI, which
+         requires the libscijvm-DISABLE lib, while libjavasci2 links libscilab
+         (the GUI aggregate carrying the real libscijvm), so
+         InitScilab.cpp's checkForLinkerErrors() called exit(1) before any
+         test body ran. The fix was a second dylib, javasci2-cli
+         (modules/javasci/CMakeLists.txt), plus the cli directory FIRST on
+         java.library.path. The 4 advanced-mode javasci tests stay excluded
+         unconditionally in the surefire config below (register B22).
+
+         xcos: STILL held back even under -Pnative-tests (register B21). It is
+         worse than a failure: its forked JVM HANGS indefinitely, which would
+         wedge CI. Do not lift it experimentally.
+
+         Two separate properties because Ant globs have no alternation. -->
     <scilab.test.exclude.engine.javasci>**/org/scilab/tests/modules/javasci/**</scilab.test.exclude.engine.javasci>
     <scilab.test.exclude.engine.xcos>**/org/scilab/tests/modules/xcos/**</scilab.test.exclude.engine.xcos>
   </properties>
@@ -301,9 +312,12 @@
           </includes>
           <excludes>
             <exclude>${scilab.test.exclude}</exclude>
-            <!-- Engine-embedding legacy tests, held back even under -Pnative-tests
-                 (register B16). Inert by default, where the line above already
-                 excludes the whole org.scilab.tests tree. -->
+            <!-- Engine-embedding legacy tests. Both are inert by default, where
+                 the line above already excludes the whole org.scilab.tests tree;
+                 these two properties are what -Pnative-tests then decides
+                 individually. It CLEARS the javasci one (B16 resolved, 105 tests
+                 run) and KEEPS the xcos one (B21, it hangs a forked JVM). See
+                 the properties' own comment for the full story. -->
             <exclude>${scilab.test.exclude.engine.javasci}</exclude>
             <exclude>${scilab.test.exclude.engine.xcos}</exclude>
             <!-- The 4 ADVANCED-mode javasci tests (`new Scilab(true)`), always held

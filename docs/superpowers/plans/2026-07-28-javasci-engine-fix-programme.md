@@ -531,14 +531,35 @@ Add to the register that `/Applications/Scilab-2027.0.0.app` carries its own eng
 - [ ] **Step 3: Verify the register table did not break**
 
 Run:
+The check is HEADER-RELATIVE. An earlier version hardcoded 6 pipes, which made
+it permanently red and therefore worthless: its regex also matches section 3's
+`H` rows, whose table has 4 columns / 5 pipes, so it reported
+`malformed: ['H1','H2','H3','H4','H5','H6']` no matter what the file said. It
+also silently SKIPPED the struck-through rows (`| ~~B13~~ |`), which its
+`^\| (P|B|H)\d+ ` regex never matched, and it miscounted `\|` — a pipe escaped
+inside an inline code span, which GFM does not treat as a cell separator.
+
 ```bash
-cd /Users/josemoya/Projects/CLionProjects/scilab && python3 -c "
+cd /Users/josemoya/Projects/CLionProjects/scilab && python3 - <<'EOF'
 import re
-rows=[l for l in open('docs/design/deferred-fixes-register.md') if re.match(r'^\| (P|B|H)\d+ ', l)]
-bad=[l.split('|')[1].strip() for l in rows if l.rstrip('\n').count('|') != 6]
-print('rows:', len(rows), 'malformed:', bad or 'none')"
+PIPE = re.compile(r'(?<!\\)\|')          # a cell separator: an UNESCAPED pipe
+hdr, rows, bad = None, 0, []
+for n, line in enumerate(open('docs/design/deferred-fixes-register.md'), 1):
+    line = line.rstrip('\n')
+    if line.startswith('## '):           # new section: forget the old header
+        hdr = None
+    elif line.startswith('| # |'):       # this section's header row
+        hdr = len(PIPE.findall(line))
+    elif re.match(r'^\| ~*(P|B|H)\d+', line):
+        rows += 1
+        if hdr is None or len(PIPE.findall(line)) != hdr:
+            bad.append('%s (line %d: %d pipes vs header %s)'
+                       % (line.split('|')[1].strip(), n, len(PIPE.findall(line)), hdr))
+print('rows:', rows, 'malformed:', bad or 'none')
+EOF
 ```
-Expected: `malformed: none` — every row keeps 6 pipes, matching the header.
+Expected: `malformed: none` — every row matches the pipe count of the header of
+the section it is in. Measured 2026-07-28: `rows: 36 malformed: none`.
 
 - [ ] **Step 4: Commit and push both remotes**
 
