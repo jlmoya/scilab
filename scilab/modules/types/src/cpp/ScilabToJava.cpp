@@ -15,6 +15,12 @@
  */
 
 #include "ScilabToJava.hxx"
+
+// struct() variables are marshalled from the type itself rather than through
+// the list API -- see the sci_mlist case of sendVariable below. struct.hxx also
+// brings in types::List and types::String (via singlestruct.hxx).
+#include "struct.hxx"
+
 #ifdef _MSC_VER
 #pragma warning(disable: 4800)
 #endif
@@ -411,6 +417,62 @@ bool ScilabToJava::sendVariable(const std::string & name, std::vector<int> & ind
             break;
         case sci_mlist :
             listtype = 'm';
+            // struct() does not build an MList: it builds a types::Struct, a
+            // distinct type that merely reports sci_mlist. The list API answers
+            // 0 items for it on purpose (getListItemNumber, api_stack_list.cpp),
+            // so letting a struct reach the shared list block below would send
+            // an empty mlist to Java. Marshal it here instead, as the very mlist
+            // Scilab itself uses to represent a struct -- which is exactly the
+            // shape ScilabMList already expects:
+            //   mlist(["st" "dims" <field names>], int32(<dims>), <field values>)
+            // A struct ARRAY uses that same encoding, with no truncation: for a
+            // multi-element struct each field value is a list holding that field
+            // for every element (see types::Struct::extractField).
+            if (((types::InternalType *)addr)->isStruct())
+            {
+                types::Struct * pStruct = (types::Struct *)addr;
+                types::String * pFields = pStruct->getFieldNames();
+                const int nbFields = pFields ? pFields->getSize() : 0;
+
+                types::String * pHeader = new types::String(1, nbFields + 2);
+                pHeader->set(0, L"st");
+                pHeader->set(1, L"dims");
+                for (int i = 0; i < nbFields; i++)
+                {
+                    pHeader->set(i + 2, pFields->get(i));
+                }
+
+                // The item list owns everything appended to it: append() takes a
+                // reference and ~List() drops it again. So the header and the
+                // dims vector die with the list, while the struct's own field
+                // values -- already referenced by the struct -- survive it.
+                types::List * pItems = new types::List();
+                pItems->append(pHeader);
+                pItems->append(pStruct->extractField(L"dims"));
+                for (int i = 0; i < nbFields; i++)
+                {
+                    pItems->append(pStruct->extractField(pFields->get(i)));
+                }
+
+                if (pFields)
+                {
+                    pFields->killMe();
+                }
+
+                // Always by value, never byref: the header and the dims vector
+                // exist only for the duration of this call, and sending them by
+                // reference would hand Java a direct buffer over memory the
+                // killMe() below frees. Sending only the field values by
+                // reference is not an option either -- sendItems applies one
+                // byref to every item.
+                nbItems = pItems->getSize();
+                sendVariable(name, nbItems, indexes, listtype, false, handlerId);
+                bool b = sendItems(name, nbItems, indexes, (int *)pItems, swaped, false, handlerId, pvApiCtx);
+                closeList(indexes, handlerId);
+                pItems->killMe();
+
+                return b;
+            }
             break;
         case sci_tlist :
             listtype = 't';

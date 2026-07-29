@@ -257,7 +257,12 @@ public class testReadWrite {
         assertEquals(sci.getVariableType("myDate"), ScilabTypeEnum.sci_mlist);
 
         ScilabMList myDate = (ScilabMList)sci.get("myDate");
-        assertTrue(myDate.toString().equals("mlist([\"st\", \"dims\", \"day\", \"month\", \"year\"], int32([1, 1]), [25.0], [\"DEC\"], [2006.0])"));
+        // The doubles render as `25` / `2006`, not `[25.0]` / `[2006.0]`: upstream
+        // 639cd4227d9 (2023) gave ScilabDouble.toString a real-scalar fast path and
+        // dropped the ".0" from integral values, so the old literal has been
+        // unreachable for any input ever since. It survived only because these
+        // engine tests could not run at all until B16 was fixed.
+        assertTrue(myDate.toString().equals("mlist([\"st\", \"dims\", \"day\", \"month\", \"year\"], int32([1, 1]), 25, [\"DEC\"], 2006)"));
         assertEquals(myDate.getHeight(), 1);
         assertEquals(myDate.getWidth(), 5);
         assertTrue(myDate.getVarName().equals("myDate"));

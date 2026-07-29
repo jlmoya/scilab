@@ -65,5 +65,12 @@ scilab_module(types-java
     ${CMAKE_CURRENT_SOURCE_DIR}/src/jni
     ${SCILAB_SOURCE_DIR}/modules/commons/src/jni
     ${SCILAB_SOURCE_DIR}/modules/jvm/includes
+    # NOT from the retired autotools line: added with the struct-marshalling
+    # fix (register B20). ScilabToJava.cpp now includes struct.hxx, whose
+    # arrayof.hxx includes os_string.h -- which lives here. Every other module
+    # that reaches for the ast types carries this same dir (api_scilab, core,
+    # data_structures, ...). Include-path only: no codegen flag moves, so the
+    # flagfacts gate is untouched.
+    ${SCILAB_SOURCE_DIR}/modules/string/includes
   CLASS GUI_LIBS
   SYMBOLS 79)
