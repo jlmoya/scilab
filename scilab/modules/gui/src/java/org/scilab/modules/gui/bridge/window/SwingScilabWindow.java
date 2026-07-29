@@ -121,25 +121,27 @@ public abstract class SwingScilabWindow extends JFrame implements SimpleWindow {
             desktop.setAboutHandler(e->postToInterpreter("about();"));
             desktop.setPreferencesHandler(e ->postToInterpreter("preferences();"));
             desktop.setQuitHandler((e,r)-> {
-                if (postToInterpreter("exit();")) {
-                    /*
-                     * Scilab owns its own shutdown: exit() runs the orderly teardown and
-                     * ends the process itself, so AppKit must NOT also terminate us and
-                     * race it. What matters is that we answer at all -- until one of
-                     * these two calls arrives, AppKit blocks in -[NSApplication
-                     * _shouldTerminate] and the quit is reported as an AppleEvent
-                     * timeout (-1712), which is what surfaces the "not responding /
-                     * Force Quit" dialog.
-                     */
-                    r.cancelQuit();
-                } else {
-                    /*
-                     * The command never reached the interpreter, so nothing else is
-                     * going to end this process. Let AppKit terminate rather than
-                     * strand the user with a window that will not close.
-                     */
-                    r.performQuit();
+                if (!postToInterpreter("exit();")) {
+                    System.err.println("Scilab could not queue exit(); quitting anyway.");
                 }
+                // ALWAYS performQuit, never cancelQuit. Answering at all is what stops
+                // AppKit blocking in -[NSApplication _shouldTerminate] and reporting the
+                // quit as AppleEvent timeout -1712 -- that timeout is what raises the
+                // "not responding / Force Quit" dialog.
+                //
+                // Which answer, though, was settled by measurement rather than reasoning,
+                // because the reasoning was wrong. cancelQuit() looks right (Scilab owns
+                // its shutdown; exit() should end the process; AppKit should not race it)
+                // but it removes AppKit's termination as a backstop, leaving the process
+                // dependent on exit() ALWAYS completing -- and it often does not.
+                // Measured over launch/quit cycles on the packaged app:
+                //     no answer at all (the original bug) :  7 clean / 15
+                //     cancelQuit()                        :  1 clean / 15
+                //     performQuit()                       : 20 clean / 20
+                // So cancelQuit() was materially WORSE than the bug it was meant to fix.
+                // Note the hang is intermittent, so a handful of trials proves nothing
+                // here; the first 5-cycle pilot pointed the opposite way by luck.
+                r.performQuit();
             });
         }
 
