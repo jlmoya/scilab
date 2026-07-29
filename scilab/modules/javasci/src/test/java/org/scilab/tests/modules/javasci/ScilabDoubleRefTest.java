@@ -6,8 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.scilab.modules.javasci.Scilab;
 import org.scilab.modules.javasci.ScilabReferenceException;
 import org.scilab.modules.types.ScilabDouble;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ScilabDoubleRefTest {
     private Scilab sci;
@@ -137,5 +140,62 @@ public class ScilabDoubleRefTest {
         sci.exec("a(3,3)=77;");
         assertEquals(3, ref.getHeight());
         assertEquals(3, ref.getWidth());
+    }
+
+    /**
+     * The WHOLE-MATRIX surface, after an engine-side write that also RESIZES.
+     * Every other test in this class uses only per-element accessors, which is
+     * exactly the gap this closes: nothing anywhere called getRealPart(),
+     * getRawRealPart(), getSerializedObject(), toString(), hashCode() or
+     * isEmpty() on a live view, so a future "optimization" of getWidth() or
+     * getRealPart() back to a plain field read would have gone unnoticed while
+     * silently breaking equals() and toString().
+     *
+     * The matrix is NON-SQUARE (2x4 grown to 2x5) on purpose. That is the only
+     * shape where a row/column-major mix-up is visible at all: on an n x n
+     * matrix the whole-matrix getters return the exact TRANSPOSE, which still
+     * has the right dimensions and looks entirely plausible.
+     */
+    @Test
+    public void wholeMatrixAccessorsReflectEngineWrite() throws Exception {
+        sci.put("a", new ScilabDouble(new double[][] {{1.0, 2.0, 3.0, 4.0},
+                                                      {5.0, 6.0, 7.0, 8.0}}));
+        ScilabDouble ref = (ScilabDouble) sci.getByReference("a");
+        sci.exec("a(1,5)=99;");
+
+        assertFalse(ref.isEmpty());
+        assertTrue(ref.isReal());
+        assertEquals(2, ref.getHeight());
+        assertEquals(5, ref.getWidth());
+
+        double[][] expected = new double[][] {{1.0, 2.0, 3.0, 4.0, 99.0},
+                                              {5.0, 6.0, 7.0, 8.0, 0.0}};
+        assertArrayEquals(expected, ref.getRealPart());
+        assertArrayEquals(expected, (double[][]) ref.getRawRealPart());
+        assertArrayEquals(expected, (double[][]) ((Object[]) ref.getSerializedObject())[0]);
+
+        assertEquals("[1, 2, 3, 4, 99 ; 5, 6, 7, 8, 0]", ref.toString());
+
+        ScilabDouble byValue = (ScilabDouble) sci.get("a");
+        assertEquals(byValue.hashCode(), ref.hashCode());
+        assertTrue(ref.equals(byValue));
+    }
+
+    /**
+     * getSerializedComplexMatrix() is overridden to resolve the variable once
+     * instead of inheriting a body whose loop conditions call getHeight()/
+     * getWidth() per iteration. This checks the delegation actually produces
+     * the engine's current contents (and does not recurse): the serialized
+     * form is column-major, real block first, then the imaginary block.
+     */
+    @Test
+    public void serializedComplexMatrixReflectsEngineWrite() throws Exception {
+        sci.put("a", new ScilabDouble(new double[][] {{1.0, 2.0, 3.0}},
+                                       new double[][] {{4.0, 5.0, 6.0}}));
+        ScilabDouble ref = (ScilabDouble) sci.getByReference("a");
+        sci.exec("a(1,2)=7+8*%i;");
+
+        assertArrayEquals(new double[] {1.0, 7.0, 3.0, 4.0, 8.0, 6.0},
+                          ref.getSerializedComplexMatrix(), 1e-9);
     }
 }

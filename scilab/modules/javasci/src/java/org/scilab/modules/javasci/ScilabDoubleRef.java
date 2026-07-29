@@ -27,6 +27,30 @@ import org.scilab.modules.types.ScilabType;
  * are left inherited too: ScilabDoubleRef has no public no-arg constructor,
  * so standard Java deserialization of one can never succeed regardless of
  * what readExternal does.
+ *
+ * Three properties of ALL the *Ref views that are easy to get wrong:
+ *
+ *  - GETTERS RETURN DETACHED ARRAYS. getRealPart()/getImaginaryPart()/
+ *    getRawRealPart() hand back the array live() built for this call, not a
+ *    window onto the variable, so `ref.getRealPart()[0][0] = 42;` is a silent
+ *    no-op -- even though the same expression on a plain ScilabDouble would
+ *    mutate that object. Under this class's own "no silent lost writes" rule:
+ *    mutate-through-getter is NOT a write path. Use setRealElement()/
+ *    setElement()/setRealPart(), which store() back to the engine.
+ *
+ *  - SESSION IDENTITY IS NEVER CAPTURED. live()/store() call the STATIC
+ *    Scilab.getInCurrentScilabSession/putInCurrentScilabSession, so a view
+ *    held across close()/open() silently rebinds to the NEW session's
+ *    same-named variable, and a view touched after close() re-enters a
+ *    torn-down engine. That is the one path where "memory-safe by
+ *    construction" does not hold: within a single live session a freed buffer
+ *    is never touched, but nothing here defends against outliving the session
+ *    itself.
+ *
+ *  - A *Ref IS A POOR HASH KEY. hashCode() and equals() are live, so both can
+ *    now throw ScilabReferenceException if the backing variable was cleared or
+ *    retyped -- from inside a HashMap lookup, where an exception is not
+ *    expected. Key maps on getVarName() instead.
  */
 public final class ScilabDoubleRef extends ScilabDouble {
     private static final long serialVersionUID = 1L;
@@ -97,6 +121,14 @@ public final class ScilabDoubleRef extends ScilabDouble {
      * by name, non-byref -- never a ScilabDoubleReference, never another
      * ScilabDoubleRef), so every delegate below terminates in one hop; none
      * of this recurses back into ScilabDoubleRef's own overrides.
+     *
+     * NOTE the cost: this is a full JNI fetch AND a full re-marshal of the
+     * whole variable, not the cheap name lookup it might read as. Per-element
+     * accessors pay it once per element on purpose -- that is what makes them
+     * live. Whole-object methods must call it exactly ONCE and delegate (see
+     * toString and getSerializedComplexMatrix below); leaving one inherited
+     * would issue a live() per loop iteration and turn an O(H*W) method into
+     * O((H*W)^2) element copies.
      */
     private ScilabDouble live() {
         try {
@@ -161,14 +193,16 @@ public final class ScilabDoubleRef extends ScilabDouble {
 
     // -- Whole-object / whole-matrix accessors and mutators below: all read
     // or write the frozen snapshot fields if left inherited, so all delegate.
-    // getElement(), getSerializedComplexMatrix(), getSerializedObject(),
-    // toString() and equals() are deliberately NOT repeated here: each is
-    // inherited unchanged, and each is written entirely in terms of virtual
-    // calls (isEmpty(), isReal(), getHeight(), getWidth(), getRealElement(),
-    // getImaginaryElement(), getRealPart(), getImaginaryPart(),
-    // getRawRealPart(), getRawImaginaryPart(), isSwaped()) -- once those
-    // dependencies are live, dynamic dispatch makes the inherited method live
-    // too, with no override needed.
+    // getElement(), getSerializedObject() and equals() are deliberately NOT
+    // repeated here: each is inherited unchanged, and each is written entirely
+    // in terms of virtual calls (isEmpty(), isReal(), getHeight(), getWidth(),
+    // getRealElement(), getImaginaryElement(), getRealPart(),
+    // getImaginaryPart(), getRawRealPart(), getRawImaginaryPart(),
+    // isSwaped()) -- once those dependencies are live, dynamic dispatch makes
+    // the inherited method live too, with no override needed. Each of the
+    // three costs a BOUNDED handful of live() calls, which is why they stay
+    // inherited where toString() and getSerializedComplexMatrix(), whose call
+    // counts scale with H*W, do not (see their overrides below).
 
     @Override
     public boolean isEmpty() {
@@ -242,6 +276,37 @@ public final class ScilabDoubleRef extends ScilabDouble {
         return live().hashCode();
     }
 
+    /**
+     * Resolved ONCE, for cost. Inherited ScilabDouble.toString()
+     * (ScilabDouble.java:449-469) is already transitively live -- it calls
+     * isEmpty(), isReal(), getHeight(), getWidth(), getRealElement() and
+     * getImaginaryElement() -- but its loop CONDITIONS call getHeight()/
+     * getWidth() every iteration, so left inherited it would issue roughly
+     * 2*H*W live() calls, each a full fetch and re-marshal of the whole
+     * variable: about 2*(H*W)^2 element copies. On a 1000x1000 matrix that
+     * presents as a hang, not as a slow print. Delegating to the plain
+     * ScilabDouble live() returns costs exactly one fetch; that object's own
+     * virtual calls dispatch to ITSELF, not back into this class, so there is
+     * no recursion.
+     */
+    @Override
+    public String toString() {
+        return live().toString();
+    }
+
+    /**
+     * Resolved ONCE, for the same reason as toString(). Inherited
+     * ScilabDouble.getSerializedComplexMatrix() (ScilabDouble.java:316-327)
+     * calls this.getHeight() twice and this.getWidth() once per iteration on
+     * top of the two element reads, so left inherited it would issue O(H*W)
+     * live() calls and copy O((H*W)^2) elements to produce an O(H*W) result.
+     * Same non-recursion argument: live() is a plain ScilabDouble.
+     */
+    @Override
+    public double[] getSerializedComplexMatrix() {
+        return live().getSerializedComplexMatrix();
+    }
+
     // getType(): always sci_matrix. Constant regardless of what the named
     // variable currently holds -- this object's whole nature is "a double
     // view"; if the variable stops being a double, that surfaces as
@@ -256,15 +321,44 @@ public final class ScilabDoubleRef extends ScilabDouble {
     // -- that aliasing is exactly what register B18 was.
     //
     // isSwaped(): inherited, returns the `swaped` field, always false here
-    // (see the constructor comment) and always false for whatever live()
-    // returns too (Scilab.getInCurrentScilabSession's non-byref fetch path
-    // also constructs its plain ScilabDouble with swaped=false). A constant,
-    // consistent representation convention, not engine data -- nothing to
-    // delegate.
+    // (see the constructor comment). This is a REPRESENTATION FLAG describing
+    // the array THIS object hands out, not engine data, and it must NOT be
+    // delegated to live() -- see the block below for why.
     //
     // getVarName(): inherited, now correctly reads the properly-populated
     // superclass field (see the constructor comment / Finding 3). The name
     // is this view's own identity and lookup key, not engine data Scilab
     // could invalidate out from under it, so it does not need to be live
     // either.
+
+    // -- Why isSwaped() stays false, and must not be "corrected" to
+    //    `return live().isSwaped()`.
+    //
+    // live() returns an object whose swaped flag is TRUE, not false. Chain:
+    // Scilab.getInCurrentScilabSession(varname) -> its sci_matrix case
+    // (Scilab.java:688, the shared dispatch line) ->
+    // ScilabVariablesJavasci.getScilabVariable(varname,
+    // true, byref) -> ScilabVariablesJavasci.java:67 passes
+    // `swapRowCol ? 1 : 0` into GetScilabVariable.getScilabVariable ->
+    // ScilabToJava.cpp:812-814 -> :71-89 (sendVariable with swaped=true) ->
+    // ScilabVariables.java:111-117, which constructs
+    // `new ScilabDouble(varName, data, null, swaped)` with swaped TRUE.
+    // So this class's false is a deliberate divergence from what live()
+    // reports, NOT an oversight, and NOT something to make "consistent".
+    //
+    // It is harmless today by dispatch luck: ScilabTypeUtils.equalsDouble
+    // sends an array-vs-array comparison to the Object[] overload, which
+    // discards BOTH flags and calls Arrays.deepEquals. It stops being
+    // harmless the moment the other operand is a ScilabDoubleReference,
+    // because a buffer-vs-array comparison routes to
+    // ScilabTypeUtils.java:283-306, where `dswaped` selects how the ARRAY is
+    // read -- and that overload's polarity is the OPPOSITE of ScilabToJava's.
+    // There, dswaped == false means the array is natural [row][col] (it
+    // compares data[i][j] against buffer.get(i + rows * j)); in
+    // ScilabToJava::getMatrix (ScilabToJava.cpp:720-745), swaped == false
+    // means the array is the TRANSPOSE, [col][row], and swaped == true is the
+    // natural one. The arrays this class hands out are natural [row][col], so
+    // false is the flag that makes the comparison correct. Delegating to
+    // live()'s true would flip the overload into reading a [row][col] array
+    // as [col][row] and return false for any non-square matrix.
 }

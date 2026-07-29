@@ -566,31 +566,69 @@ public class Scilab {
     }
 
     /**
-     * Returns a reference variable named varname<BR>
+     * Returns a LIVE VIEW of the variable named varname, rather than a
+     * snapshot of its current contents<BR>
      * Throws an exception if the datatype is not managed or if the variable is not available
      * <BR>
-     * Example:<BR>
+     * A view re-resolves the variable BY NAME on every accessor, so it always
+     * reports what Scilab currently holds, and writes through it reach the
+     * engine:<BR>
      * <code>
      * double [][]a={{21.2, 22.0, 42.0, 39.0},{23.2, 24.0, 44.0, 40.0}};<BR>
-     * double [][]aImg={{212.2, 221.0, 423.0, 393.0},{234.2, 244.0, 441.0, 407.0}};<BR>
-     * ScilabDouble aOriginal = new ScilabDouble(a, aImg);<BR>
-     * sci.put("a",aOriginal);<BR>
-     * ScilabDouble aFromScilab = (ScilabDouble)sci.get("a");<BR>
-     * <BR>
+     * sci.put("a", new ScilabDouble(a));<BR>
+     * ScilabDouble ref = (ScilabDouble)sci.getByReference("a");<BR>
+     * sci.exec("a(3,3)=77;");            // grows and REALLOCATES the variable<BR>
+     * ref.getRealElement(2, 2);          // 77.0 -- the view followed it<BR>
+     * ref.setRealElement(0, 0, 1.5);     // lands in the engine, not in a copy<BR>
      * </code>
+     * <BR>
+     * WHICH TYPES GET A VIEW. Doubles (sci_matrix), integers (sci_ints, 8/16/32
+     * bit) and booleans (sci_boolean) come back as ScilabDoubleRef,
+     * ScilabIntegerRef and ScilabBooleanRef respectively. EVERY OTHER TYPE
+     * silently comes back exactly as get() would return it -- strings,
+     * polynomials, sparse matrices, and list/tlist/mlist containers are
+     * ordinary by-value objects with no live behaviour. Container CHILDREN are
+     * a sharper case: the marshaller propagates the by-reference request into
+     * nested items, so the children of a returned list/tlist/mlist can be raw
+     * ScilabDoubleReference/ScilabIntegerReference/ScilabBooleanReference
+     * objects over engine memory, with the invalidation hazard the top-level
+     * views exist to remove (register B18/B26). Do not hold them across an
+     * assignment to the container.
+     * <BR>
+     * WHAT CAN THROW. Accessors on a view -- getRealElement, getHeight,
+     * toString, even equals/hashCode -- re-enter the engine, so they throw the
+     * UNCHECKED {@link ScilabReferenceException} if the variable has since been
+     * cleared or has changed type. Nothing in ScilabType's signatures declares
+     * that, so it will not be caught by a `catch (JavasciException)` around
+     * this call; it surfaces later, at the accessor.
+     * <BR>
+     * OTHER DIFFERENCES FROM get(). isReference() returns FALSE on a view
+     * (per ScilabType's contract it means "backed by a java.nio.Buffer", which
+     * a view deliberately is not). A view is not zero-copy: each accessor is a
+     * full fetch, so a snapshot from get() is faster when liveness is not
+     * wanted. Arrays returned by whole-matrix getters are DETACHED copies --
+     * mutating one is a silent no-op; write through setElement/setData.
+     * A view also captures no session identity, so one held across
+     * close()/open() rebinds to the new session's same-named variable.
+     *
      * @param varname the name of the variable
-     * @return return the variable
+     * @return a live view for double/integer/boolean variables, otherwise the
+     *         same by-value object get() would return
      * @throws UnsupportedTypeException Type not managed yet.
+     * @see #get(String)
      */
     public ScilabType getByReference(String varname) throws JavasciException {
         ScilabType value = getInCurrentScilabSession(varname, true);
         // Hand back a LIVE view rather than a raw pointer into engine memory:
-        // see ScilabDoubleRef/ScilabIntegerRef / register B18.
+        // see ScilabDoubleRef/ScilabIntegerRef/ScilabBooleanRef / register B18.
         if (value instanceof ScilabDouble) {
             return new ScilabDoubleRef(varname, (ScilabDouble) value);
         }
         if (value instanceof ScilabInteger) {
             return new ScilabIntegerRef(varname, (ScilabInteger) value);
+        }
+        if (value instanceof ScilabBoolean) {
+            return new ScilabBooleanRef(varname, (ScilabBoolean) value);
         }
         return value;
     }

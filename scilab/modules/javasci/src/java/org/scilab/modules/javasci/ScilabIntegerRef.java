@@ -26,8 +26,11 @@ import org.scilab.modules.types.ScilabType;
  * (getDataAsByte/Short/Int, the four setData overloads) that ScilabDouble has
  * no analogue of. Methods left inherited fall into three groups: (a) ones
  * that reach live data anyway, transitively, by calling only virtual
- * accessors that are themselves live -- getElement, setElement, getData,
- * getRawData, getSerializedObject, toString, equals; (b) ones that describe
+ * accessors that are themselves live, in a BOUNDED number of live() calls --
+ * getElement, setElement, getRawData, getSerializedObject, equals. (getData
+ * and toString are transitively live in the same way, but their live() count
+ * scales with H*W, so they are overridden below for cost, not correctness.)
+ * (b) ones that describe
  * this object's identity or representation rather than engine data --
  * getType, isReference, isSwaped, getVarName (see the block below); (c) the
  * 64-bit width itself -- getLongElement, setLongElement, getDataAsLong,
@@ -45,6 +48,31 @@ import org.scilab.modules.types.ScilabType;
  * same reason as ScilabDoubleRef: this class has no public no-arg
  * constructor, so standard Java deserialization of one can never succeed
  * regardless of what readExternal does.
+ *
+ * Three properties of ALL the *Ref views that are easy to get wrong:
+ *
+ *  - GETTERS RETURN DETACHED ARRAYS. getDataAsByte()/getDataAsShort()/
+ *    getDataAsInt()/getData()/getCorrectData()/getRawData() hand back the
+ *    array live() built for this call, not a window onto the variable, so
+ *    `ref.getDataAsByte()[0][0] = 42;` is a silent no-op -- even though the
+ *    same expression on a plain ScilabInteger would mutate that object. Under
+ *    this class's own "no silent lost writes" rule: mutate-through-getter is
+ *    NOT a write path. Use setElement()/setByteElement()/setData(), which
+ *    store() back to the engine.
+ *
+ *  - SESSION IDENTITY IS NEVER CAPTURED. live()/store() call the STATIC
+ *    Scilab.getInCurrentScilabSession/putInCurrentScilabSession, so a view
+ *    held across close()/open() silently rebinds to the NEW session's
+ *    same-named variable, and a view touched after close() re-enters a
+ *    torn-down engine. That is the one path where "memory-safe by
+ *    construction" does not hold: within a single live session a freed buffer
+ *    is never touched, but nothing here defends against outliving the session
+ *    itself.
+ *
+ *  - A *Ref IS A POOR HASH KEY. hashCode() and equals() are live, so both can
+ *    now throw ScilabReferenceException if the backing variable was cleared or
+ *    retyped -- from inside a HashMap lookup, where an exception is not
+ *    expected. Key maps on getVarName() instead.
  */
 public final class ScilabIntegerRef extends ScilabInteger {
     private static final long serialVersionUID = 1L;
@@ -150,6 +178,14 @@ public final class ScilabIntegerRef extends ScilabInteger {
      * by name, non-byref -- never a ScilabIntegerReference, never another
      * ScilabIntegerRef), so every delegate below terminates in one hop; none
      * of this recurses back into ScilabIntegerRef's own overrides.
+     *
+     * NOTE the cost: this is a full JNI fetch AND a full re-marshal of the
+     * whole variable, not the cheap name lookup it might read as. Per-element
+     * accessors pay it once per element on purpose -- that is what makes them
+     * live. Whole-object methods must call it exactly ONCE and delegate (see
+     * getData and toString below); leaving one inherited would issue a live()
+     * per loop iteration and turn an O(H*W) method into O((H*W)^2) element
+     * copies.
      */
     private ScilabInteger live() {
         try {
@@ -355,6 +391,36 @@ public final class ScilabIntegerRef extends ScilabInteger {
         return live().hashCode();
     }
 
+    /**
+     * Resolved ONCE, for cost. Inherited ScilabInteger.getData()
+     * (ScilabInteger.java:356-389) is already transitively live -- it calls
+     * this.getPrec(), then getByteElement()/getShortElement()/getIntElement()
+     * per cell -- but every one of its loop CONDITIONS calls this.getHeight()
+     * or this.getWidth(), so left inherited it would issue roughly 2*H*W
+     * live() calls, each a full fetch and re-marshal of the whole variable:
+     * about 2*(H*W)^2 element copies to produce an O(H*W) result. Delegating
+     * to the plain ScilabInteger live() returns costs exactly one fetch; that
+     * object's own virtual calls dispatch to ITSELF, not back into this class,
+     * so there is no recursion.
+     */
+    @Override
+    public long[][] getData() {
+        return live().getData();
+    }
+
+    /**
+     * Resolved ONCE, for the same reason as getData(). Inherited
+     * ScilabInteger.toString() reaches appendData(), whose loop conditions
+     * call getHeight()/getWidth() per iteration on top of its single
+     * getData(), so left inherited it would be O(H*W) live() calls and
+     * O((H*W)^2) element copies. Same non-recursion argument: live() is a
+     * plain ScilabInteger.
+     */
+    @Override
+    public String toString() {
+        return live().toString();
+    }
+
     // getType(): always sci_ints. Constant regardless of which width the
     // named variable currently holds -- this object's whole nature is "an
     // integer view"; if the variable stops being an integer, that surfaces
@@ -369,14 +435,46 @@ public final class ScilabIntegerRef extends ScilabInteger {
     // buffer-backed -- that aliasing is exactly what register B18 was.
     //
     // isSwaped(): inherited, returns the `swaped` field, always false here
-    // (see the constructor) and always false for whatever live() returns too
-    // (Scilab.getInCurrentScilabSession's non-byref fetch path also
-    // constructs its plain ScilabInteger with the same convention
-    // ScilabDoubleRef relies on). A constant, consistent representation
-    // convention, not engine data -- nothing to delegate.
+    // (see the constructor). This is a REPRESENTATION FLAG describing the
+    // array THIS object hands out, not engine data, and it must NOT be
+    // delegated to live() -- see the block below for why.
     //
     // getVarName(): inherited, reads the properly-populated superclass field
     // (see the constructor). The name is this view's own identity and lookup
     // key, not engine data Scilab could invalidate out from under it, so it
     // does not need to be live either.
+
+    // -- Why isSwaped() stays false, and must not be "corrected" to
+    //    `return live().isSwaped()`.
+    //
+    // live() returns an object whose swaped flag is TRUE, not false. Chain:
+    // Scilab.getInCurrentScilabSession(varname) -> its sci_ints case
+    // (Scilab.java:699, the per-precision dispatch line) ->
+    // ScilabVariablesJavasci.getScilabVariable(varname,
+    // true, byref) -> ScilabVariablesJavasci.java:67 passes
+    // `swapRowCol ? 1 : 0` into GetScilabVariable.getScilabVariable ->
+    // ScilabToJava.cpp:812-814 -> :71-89 (sendVariable with swaped=true) ->
+    // the ScilabVariables.sendData overload for this width, which passes that
+    // flag straight into the constructed plain ScilabInteger -- exactly as
+    // ScilabVariables.java:111-117 does for the double case. So this class's
+    // false is a deliberate divergence from what live() reports, NOT an
+    // oversight, and NOT something to make "consistent".
+    //
+    // It is harmless today by dispatch luck: ScilabTypeUtils's equals* entry
+    // points send an array-vs-array comparison to the Object[] overload,
+    // which discards BOTH flags and calls Arrays.deepEquals. It stops being
+    // harmless the moment the other operand is a ScilabIntegerReference,
+    // because a buffer-vs-array comparison routes to the per-width
+    // buffer/array overloads (the byte one at ScilabTypeUtils.java:319, the
+    // double analogue at :283-306 being the clearest written form), where
+    // `dswaped` selects how the ARRAY is read -- and that polarity is the
+    // OPPOSITE of ScilabToJava's. There, dswaped == false means the array is
+    // natural [row][col] (it compares data[i][j] against
+    // buffer.get(i + rows * j)); in ScilabToJava::getMatrix
+    // (ScilabToJava.cpp:720-745), swaped == false means the array is the
+    // TRANSPOSE, [col][row], and swaped == true is the natural one. The
+    // arrays this class hands out are natural [row][col], so false is the
+    // flag that makes the comparison correct. Delegating to live()'s true
+    // would flip the overload into reading a [row][col] array as [col][row]
+    // and return false for any non-square matrix.
 }
