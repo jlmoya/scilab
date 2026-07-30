@@ -491,7 +491,27 @@ bool ScilabToJava::sendVariable(const std::string & name, std::vector<int> & ind
         }
 
         sendVariable(name, nbItems, indexes, listtype, false, handlerId);
-        bool b = sendItems(name, nbItems, indexes, addr, swaped, byref, handlerId, pvApiCtx);
+        // Containers are BY VALUE all the way down, even under getByReference:
+        // pass false rather than propagating byref into the children (register B26).
+        //
+        // Propagating it wrapped every numeric or boolean child in a
+        // Scilab<T>Reference over a direct java.nio buffer into engine memory --
+        // the same use-after-free B18 removed at the top level, one level in.
+        // Reassigning or growing the container frees the buffers those children
+        // still point at, and a write through a child's setElement lands in
+        // freed memory.
+        //
+        // The by-name re-resolution B18 uses cannot rescue them: a child has no
+        // variable name to re-resolve against. Every construction site passes
+        // null for it (ScilabVariables.java, the addElement(indexes, ...) calls),
+        // so there is nothing to look up. That leaves by value as the only
+        // memory-safe answer short of inventing a parent-plus-index-path view,
+        // which is a much larger change for a case no test exercised.
+        //
+        // Same conclusion the struct branch above reached for the same reason,
+        // and it costs only zero-copy on container children -- get() was already
+        // by value, so nothing that worked before changes.
+        bool b = sendItems(name, nbItems, indexes, addr, swaped, false, handlerId, pvApiCtx);
         closeList(indexes, handlerId);
         return b;
     }
