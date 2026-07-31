@@ -201,6 +201,14 @@ public class ScilabIntegerReference extends ScilabInteger {
      */
     @Override
     public void setData(byte[][] data, boolean bUnsigned) {
+        // A by-value ScilabInteger can switch width here (setData replaces the
+        // backing array); a view over engine memory of another width cannot --
+        // its byteBuffer is null, and dereferencing it is a process kill under
+        // the engine's SIGSEGV handler, not an NPE (register B23(a)).
+        if (byteBuffer == null) {
+            throw new IllegalStateException(
+                "the width of a by-reference integer cannot be changed through the view");
+        }
         ScilabTypeUtils.setPart(byteBuffer, data);
         if (bUnsigned) {
             this.precision = ScilabIntegerTypeEnum.sci_uint8;
@@ -219,6 +227,14 @@ public class ScilabIntegerReference extends ScilabInteger {
      */
     @Override
     public void setData(short[][] data, boolean bUnsigned) {
+        // A by-value ScilabInteger can switch width here (setData replaces the
+        // backing array); a view over engine memory of another width cannot --
+        // its shortBuffer is null, and dereferencing it is a process kill under
+        // the engine's SIGSEGV handler, not an NPE (register B23(a)).
+        if (shortBuffer == null) {
+            throw new IllegalStateException(
+                "the width of a by-reference integer cannot be changed through the view");
+        }
         ScilabTypeUtils.setPart(shortBuffer, data);
         if (bUnsigned) {
             this.precision = ScilabIntegerTypeEnum.sci_uint16;
@@ -237,6 +253,14 @@ public class ScilabIntegerReference extends ScilabInteger {
      */
     @Override
     public void setData(int[][] data, boolean bUnsigned) {
+        // A by-value ScilabInteger can switch width here (setData replaces the
+        // backing array); a view over engine memory of another width cannot --
+        // its intBuffer is null, and dereferencing it is a process kill under
+        // the engine's SIGSEGV handler, not an NPE (register B23(a)).
+        if (intBuffer == null) {
+            throw new IllegalStateException(
+                "the width of a by-reference integer cannot be changed through the view");
+        }
         ScilabTypeUtils.setPart(intBuffer, data);
         if (bUnsigned) {
             this.precision = ScilabIntegerTypeEnum.sci_uint32;
@@ -255,6 +279,14 @@ public class ScilabIntegerReference extends ScilabInteger {
      */
     @Override
     public void setData(long[][] data, boolean bUnsigned) {
+        // A by-value ScilabInteger can switch width here (setData replaces the
+        // backing array); a view over engine memory of another width cannot --
+        // its longBuffer is null, and dereferencing it is a process kill under
+        // the engine's SIGSEGV handler, not an NPE (register B23(a)).
+        if (longBuffer == null) {
+            throw new IllegalStateException(
+                "the width of a by-reference integer cannot be changed through the view");
+        }
         ScilabTypeUtils.setPart(longBuffer, data);
         if (bUnsigned) {
             this.precision = ScilabIntegerTypeEnum.sci_uint64;
@@ -270,6 +302,11 @@ public class ScilabIntegerReference extends ScilabInteger {
      */
     @Override
     public short[][] getDataAsShort() {
+        // By-value parity: ScilabInteger.getDataAsShort() returns its backing field,
+        // null when the value is not this width (register B23(a)).
+        if (shortBuffer == null) {
+            return null;
+        }
         short[][] d = new short[nbRows][nbCols];
         ScilabTypeUtils.setBuffer(d, shortBuffer);
 
@@ -283,6 +320,11 @@ public class ScilabIntegerReference extends ScilabInteger {
      */
     @Override
     public byte[][] getDataAsByte() {
+        // By-value parity: ScilabInteger.getDataAsByte() returns its backing field,
+        // null when the value is not this width (register B23(a)).
+        if (byteBuffer == null) {
+            return null;
+        }
         byte[][] d = new byte[nbRows][nbCols];
         ScilabTypeUtils.setBuffer(d, byteBuffer);
 
@@ -296,6 +338,11 @@ public class ScilabIntegerReference extends ScilabInteger {
      */
     @Override
     public int[][] getDataAsInt() {
+        // By-value parity: ScilabInteger.getDataAsInt() returns its backing field,
+        // null when the value is not this width (register B23(a)).
+        if (intBuffer == null) {
+            return null;
+        }
         int[][] d = new int[nbRows][nbCols];
         ScilabTypeUtils.setBuffer(d, intBuffer);
 
@@ -309,6 +356,11 @@ public class ScilabIntegerReference extends ScilabInteger {
      */
     @Override
     public long[][] getDataAsLong() {
+        // By-value parity: ScilabInteger.getDataAsLong() returns its backing field,
+        // null when the value is not this width (register B23(a)).
+        if (longBuffer == null) {
+            return null;
+        }
         long[][] d = new long[nbRows][nbCols];
         ScilabTypeUtils.setBuffer(d, longBuffer);
 

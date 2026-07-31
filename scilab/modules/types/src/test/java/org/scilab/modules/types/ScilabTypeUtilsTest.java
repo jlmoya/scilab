@@ -96,8 +96,13 @@ public class ScilabTypeUtilsTest {
         double[][] part = {{1.5, 2.5}, {3.5, 4.5}};
         DoubleBuffer buffer = DoubleBuffer.allocate(4);
         ScilabTypeUtils.setPart(buffer, part);
-        // setPart writes rows sequentially: [1.5, 2.5, 3.5, 4.5].
-        assertArrayEquals(new double[] {1.5, 2.5, 3.5, 4.5}, buffer.array(), 0.0);
+        // setPart writes COLUMN-MAJOR (index i + rows*j), Scilab's own storage
+        // order and the layout every per-element reference accessor uses:
+        // {{1.5, 2.5}, {3.5, 4.5}} flattens to [1.5, 3.5, 2.5, 4.5]. An earlier
+        // revision pinned the row-major bulk write here — that was register
+        // B23(b), the defect that made whole-matrix accessors return the
+        // transpose, not a contract.
+        assertArrayEquals(new double[] {1.5, 3.5, 2.5, 4.5}, buffer.array(), 0.0);
 
         double[][] recovered = new double[2][2];
         ScilabTypeUtils.setBuffer(recovered, buffer);
@@ -110,7 +115,8 @@ public class ScilabTypeUtilsTest {
         int[][] part = {{10, 20}, {30, 40}};
         IntBuffer buffer = IntBuffer.allocate(4);
         ScilabTypeUtils.setPart(buffer, part);
-        assertArrayEquals(new int[] {10, 20, 30, 40}, buffer.array());
+        // Column-major, as for the double overload above.
+        assertArrayEquals(new int[] {10, 30, 20, 40}, buffer.array());
 
         int[][] recovered = new int[2][2];
         ScilabTypeUtils.setBuffer(recovered, buffer);
@@ -239,7 +245,8 @@ public class ScilabTypeUtilsTest {
         byte[][] part = {{1, 2}, {3, 4}};
         ByteBuffer buffer = ByteBuffer.allocate(4);
         ScilabTypeUtils.setPart(buffer, part);
-        assertArrayEquals(new byte[] {1, 2, 3, 4}, buffer.array());
+        // Column-major (see the double overload's comment above).
+        assertArrayEquals(new byte[] {1, 3, 2, 4}, buffer.array());
 
         byte[][] recovered = new byte[2][2];
         ScilabTypeUtils.setBuffer(recovered, buffer);
@@ -252,7 +259,8 @@ public class ScilabTypeUtilsTest {
         short[][] part = {{10, 20}, {30, 40}};
         ShortBuffer buffer = ShortBuffer.allocate(4);
         ScilabTypeUtils.setPart(buffer, part);
-        assertArrayEquals(new short[] {10, 20, 30, 40}, buffer.array());
+        // Column-major (see the double overload's comment above).
+        assertArrayEquals(new short[] {10, 30, 20, 40}, buffer.array());
 
         short[][] recovered = new short[2][2];
         ScilabTypeUtils.setBuffer(recovered, buffer);
@@ -265,7 +273,8 @@ public class ScilabTypeUtilsTest {
         long[][] part = {{100L, 200L}, {300L, 400L}};
         LongBuffer buffer = LongBuffer.allocate(4);
         ScilabTypeUtils.setPart(buffer, part);
-        assertArrayEquals(new long[] {100L, 200L, 300L, 400L}, buffer.array());
+        // Column-major (see the double overload's comment above).
+        assertArrayEquals(new long[] {100L, 300L, 200L, 400L}, buffer.array());
 
         long[][] recovered = new long[2][2];
         ScilabTypeUtils.setBuffer(recovered, buffer);

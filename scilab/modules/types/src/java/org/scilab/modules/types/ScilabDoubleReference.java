@@ -144,10 +144,20 @@ public class ScilabDoubleReference extends ScilabDouble {
     /**
      * Get the imaginary part of the data.
      *
-     * @return the imaginary part.
+     * @return the imaginary part, empty when the variable is real-only —
+     *         exactly what a real-only by-value {@link ScilabDouble} returns.
      */
     @Override
     public double[][] getImaginaryPart() {
+        // Real-only means a null (or zero-capacity) imaginary buffer. The
+        // pre-B23(a) body handed the null straight to the bulk fill; under the
+        // engine's in-process SIGSEGV handler (signal_mgmt.c) that dereference
+        // killed the whole JVM instead of surfacing as an NPE, because HotSpot
+        // implements implicit null checks as SEGV traps the engine's handler
+        // eats first.
+        if (isReal()) {
+            return new double[0][];
+        }
         double[][] d = new double[nbRows][nbCols];
         ScilabTypeUtils.setBuffer(d, imaginaryBuffer);
         return d;
@@ -158,9 +168,17 @@ public class ScilabDoubleReference extends ScilabDouble {
      *
      * @param imaginaryPart
      *            the imaginary part.
+     * @throws IllegalStateException
+     *             when the variable is real-only: a by-value ScilabDouble can
+     *             become complex because its setter replaces the field, but a
+     *             view cannot conjure an imaginary buffer in engine memory.
      */
     @Override
     public void setImaginaryPart(double[][] imaginaryPart) {
+        if (isReal()) {
+            throw new IllegalStateException(
+                "the variable is real-only: a by-reference view cannot be made complex");
+        }
         ScilabTypeUtils.setPart(imaginaryBuffer, imaginaryPart);
     }
 
@@ -177,6 +195,15 @@ public class ScilabDoubleReference extends ScilabDouble {
      */
     @Override
     public double getImaginaryElement(final int i, final int j) {
+        // By-value parity: ScilabDouble indexes new double[0][] on a real-only
+        // value and throws ArrayIndexOutOfBoundsException. Throwing the same
+        // catchable class here also keeps the null imaginary buffer from ever
+        // being dereferenced — which is a process kill under the engine's
+        // SIGSEGV handler, not an NPE (register B23(a)).
+        if (isReal()) {
+            throw new ArrayIndexOutOfBoundsException(
+                "the variable is real-only: it has no imaginary part");
+        }
         return imaginaryBuffer.get(i + nbRows * j);
     }
 
@@ -193,6 +220,11 @@ public class ScilabDoubleReference extends ScilabDouble {
      */
     @Override
     public void setImaginaryElement(final int i, final int j, final double x) {
+        // Same by-value-parity guard as getImaginaryElement (register B23(a)).
+        if (isReal()) {
+            throw new ArrayIndexOutOfBoundsException(
+                "the variable is real-only: it has no imaginary part");
+        }
         imaginaryBuffer.put(i + nbRows * j, x);
     }
 
@@ -201,8 +233,15 @@ public class ScilabDoubleReference extends ScilabDouble {
      */
     @Override
     public void setElement(final int i, final int j, final double x, final double y) {
+        // Same by-value-parity guard as getImaginaryElement (register B23(a)).
+        if (isReal()) {
+            throw new ArrayIndexOutOfBoundsException(
+                "the variable is real-only: it has no imaginary part");
+        }
         realBuffer.put(i + nbRows * j, x);
-        imaginaryBuffer.put(i + nbRows * j, x);
+        // y is the imaginary component, as in ScilabDouble.setElement. The
+        // pre-B23 body wrote x into BOTH buffers, silently discarding y.
+        imaginaryBuffer.put(i + nbRows * j, y);
     }
 
     /**

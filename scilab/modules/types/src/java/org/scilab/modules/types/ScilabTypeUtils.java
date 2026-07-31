@@ -462,9 +462,16 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major (index = i + c*j; c is the ROW count of part), the
+            // engine's own storage order and the layout the per-element
+            // reference accessors use. The pre-B23(b) bulk get() filled each
+            // row from consecutive slots, returning the transpose. The boolean
+            // overload below always did it this way.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.get(part[i]);
+                for (int j = 0; j < r; j++) {
+                    part[i][j] = buffer.get(i + c * j);
+                }
             }
         }
     }
@@ -476,9 +483,14 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major write, mirroring setBuffer: the pre-B23(b) bulk
+            // put() wrote row-major, so a whole-matrix write through a
+            // reference landed transposed in engine memory.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.put(part[i]);
+                for (int j = 0; j < r; j++) {
+                    buffer.put(i + c * j, part[i][j]);
+                }
             }
         }
     }
@@ -493,9 +505,16 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major (index = i + c*j; c is the ROW count of part), the
+            // engine's own storage order and the layout the per-element
+            // reference accessors use. The pre-B23(b) bulk get() filled each
+            // row from consecutive slots, returning the transpose. The boolean
+            // overload below always did it this way.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.get(part[i]);
+                for (int j = 0; j < r; j++) {
+                    part[i][j] = buffer.get(i + c * j);
+                }
             }
         }
     }
@@ -507,9 +526,14 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major write, mirroring setBuffer: the pre-B23(b) bulk
+            // put() wrote row-major, so a whole-matrix write through a
+            // reference landed transposed in engine memory.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.put(part[i]);
+                for (int j = 0; j < r; j++) {
+                    buffer.put(i + c * j, part[i][j]);
+                }
             }
         }
     }
@@ -524,9 +548,16 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major (index = i + c*j; c is the ROW count of part), the
+            // engine's own storage order and the layout the per-element
+            // reference accessors use. The pre-B23(b) bulk get() filled each
+            // row from consecutive slots, returning the transpose. The boolean
+            // overload below always did it this way.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.get(part[i]);
+                for (int j = 0; j < r; j++) {
+                    part[i][j] = buffer.get(i + c * j);
+                }
             }
         }
     }
@@ -538,9 +569,14 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major write, mirroring setBuffer: the pre-B23(b) bulk
+            // put() wrote row-major, so a whole-matrix write through a
+            // reference landed transposed in engine memory.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.put(part[i]);
+                for (int j = 0; j < r; j++) {
+                    buffer.put(i + c * j, part[i][j]);
+                }
             }
         }
     }
@@ -555,9 +591,16 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major (index = i + c*j; c is the ROW count of part), the
+            // engine's own storage order and the layout the per-element
+            // reference accessors use. The pre-B23(b) bulk get() filled each
+            // row from consecutive slots, returning the transpose. The boolean
+            // overload below always did it this way.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.get(part[i]);
+                for (int j = 0; j < r; j++) {
+                    part[i][j] = buffer.get(i + c * j);
+                }
             }
         }
     }
@@ -569,9 +612,14 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major write, mirroring setBuffer: the pre-B23(b) bulk
+            // put() wrote row-major, so a whole-matrix write through a
+            // reference landed transposed in engine memory.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.put(part[i]);
+                for (int j = 0; j < r; j++) {
+                    buffer.put(i + c * j, part[i][j]);
+                }
             }
         }
     }
@@ -586,9 +634,16 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major (index = i + c*j; c is the ROW count of part), the
+            // engine's own storage order and the layout the per-element
+            // reference accessors use. The pre-B23(b) bulk get() filled each
+            // row from consecutive slots, returning the transpose. The boolean
+            // overload below always did it this way.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.get(part[i]);
+                for (int j = 0; j < r; j++) {
+                    part[i][j] = buffer.get(i + c * j);
+                }
             }
         }
     }
@@ -600,9 +655,14 @@ final class ScilabTypeUtils {
         final int c = part.length;
         final int r = c > 0 ? part[0].length : 0;
         if (r * c <= buffer.capacity()) {
+            // Column-major write, mirroring setBuffer: the pre-B23(b) bulk
+            // put() wrote row-major, so a whole-matrix write through a
+            // reference landed transposed in engine memory.
             buffer.clear();
             for (int i = 0; i < c; i++) {
-                buffer.put(part[i]);
+                for (int j = 0; j < r; j++) {
+                    buffer.put(i + c * j, part[i][j]);
+                }
             }
         }
     }

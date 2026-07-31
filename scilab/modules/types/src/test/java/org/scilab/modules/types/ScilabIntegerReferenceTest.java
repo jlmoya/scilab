@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.ByteBuffer;
@@ -80,26 +82,64 @@ public class ScilabIntegerReferenceTest {
     }
 
     @Test
-    public void getDataAsByteReadsBufferSequentially() {
-        // setBuffer fills each row from consecutive buffer slots, so [10,20,30,40]
-        // reconstructs as {{10,20},{30,40}} (distinct from the column-major getByteElement view).
+    public void getDataAsByteAgreesWithElementAccess() {
+        // The column-major buffer [10,20,30,40] as 2x2 is {{10,30},{20,40}} —
+        // the same values getByteElement returns. An earlier revision pinned the
+        // row-major bulk fill ({{10,20},{30,40}}, the transpose) as documented
+        // behaviour; that was register B23(b), not a contract.
         ScilabIntegerReference r = new ScilabIntegerReference("v", int8Buffer(), 2, 2, false);
         byte[][] d = r.getDataAsByte();
-        assertArrayEquals(new byte[] {10, 20}, d[0]);
-        assertArrayEquals(new byte[] {30, 40}, d[1]);
+        assertArrayEquals(new byte[] {10, 30}, d[0]);
+        assertArrayEquals(new byte[] {20, 40}, d[1]);
     }
 
     @Test
-    public void setDataWritesSequentiallyAndUpdatesPrecision() {
+    public void nonSquareGetDataAsByteAgreesWithElementAccess() {
+        // 2x3, where the old bulk fill was a general scramble rather than a
+        // transpose: column-major [1..6] is {{1,3,5},{2,4,6}}.
+        ByteBuffer buf = ByteBuffer.wrap(new byte[] {1, 2, 3, 4, 5, 6});
+        ScilabIntegerReference r = new ScilabIntegerReference("v", buf, 2, 3, false);
+        byte[][] d = r.getDataAsByte();
+        assertArrayEquals(new byte[] {1, 3, 5}, d[0]);
+        assertArrayEquals(new byte[] {2, 4, 6}, d[1]);
+    }
+
+    @Test
+    public void setDataRoundTripsThroughElementAccessAndUpdatesPrecision() {
+        // setData must land each data[i][j] where the per-element readers look —
+        // the true round-trip property, replacing an assertion that only held
+        // because the write side shared the read side's row-major defect.
         ScilabIntegerReference r = new ScilabIntegerReference("v", int8Buffer(), 2, 2, false);
-        r.setData(new byte[][] {{1, 2}, {3, 4}}, true);
+        byte[][] data = {{1, 2}, {3, 4}};
+        r.setData(data, true);
         assertEquals(ScilabIntegerTypeEnum.sci_uint8, r.getPrec());
         assertTrue(r.isUnsigned());
-        // setPart wrote [1,2,3,4]; column-major get reads them back in that order.
-        assertEquals(1, r.getByteElement(0, 0));
-        assertEquals(2, r.getByteElement(1, 0));
-        assertEquals(3, r.getByteElement(0, 1));
-        assertEquals(4, r.getByteElement(1, 1));
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                assertEquals(data[i][j], r.getByteElement(i, j));
+            }
+        }
+    }
+
+    @Test
+    public void wrongWidthGetDataReturnsNullLikeByValue() {
+        // By-value parity: ScilabInteger.getDataAsShort() is a plain field
+        // return, null when the value is not 16-bit. The reference used to hand
+        // its null buffer to the bulk fill instead — an NPE at best, a process
+        // kill under the engine's SIGSEGV handler (register B23(a) mechanism).
+        ScilabIntegerReference r = new ScilabIntegerReference("v", int8Buffer(), 2, 2, false);
+        assertNull(r.getDataAsShort());
+        assertNull(r.getDataAsInt());
+        assertNull(r.getDataAsLong());
+    }
+
+    @Test
+    public void wrongWidthSetDataThrowsIllegalState() {
+        // A by-value ScilabInteger can switch width (setData replaces the
+        // backing array); a view over an int8 engine buffer cannot become
+        // int16. Loud beats the old null-buffer dereference.
+        ScilabIntegerReference r = new ScilabIntegerReference("v", int8Buffer(), 2, 2, false);
+        assertThrows(IllegalStateException.class, () -> r.setData(new short[][] {{1, 2}, {3, 4}}, false));
     }
 
     @Test
