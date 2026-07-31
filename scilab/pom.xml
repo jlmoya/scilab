@@ -107,8 +107,21 @@
 
          xcos: ONE class held back even under -Pnative-tests (register B21).
          XcosCellFactoryTest posts a command through synchronousScilabExec and
-         waits for the notify() callback that ends it; that callback never
-         arrives and the test blocks on Object.wait() forever.
+         waits for the notify() callback that ends it. Nothing consumes that
+         command, because the test never STARTS an engine: its setup calls
+         System.loadLibrary("scilab"), which only maps the dylib. So it blocked
+         on Object.wait() forever instead of failing.
+
+         It cannot simply be handed an engine here either. This module's
+         libscixcos links the REAL libscijvm while the NWNI libjavasci2 that
+         this profile puts first links libscijvm-disable, and loading both is
+         exactly what checkForLinkerErrors() calls exit(1) on. The engine has to
+         be an ADVANCED-mode one, which additionally wants the full
+         etc/classpath.xml jar set and loadXcosLibs(). The scenario therefore
+         lives in modules/xcos/tests/native/run_xcos_cell_factory.sh, which
+         derives all of that from the files the real launcher reads and asserts
+         what the test asserts. It PASSES: createBlock is correct; only the
+         surefire environment was ever wrong.
 
          This was a blanket over all TEN legacy xcos classes until 2026-07-30,
          on the belief that the harness had no interpreter thread to consume
