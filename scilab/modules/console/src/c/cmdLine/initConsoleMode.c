@@ -117,7 +117,25 @@ int initConsoleMode(int bin)
         return -1;
     }
 
-    if (!isatty(fileno(stdin)))
+    /* STDIN_FILENO, not fileno(stdin): fileno() takes the FILE's internal lock,
+     * and the console reader thread HOLDS that lock for as long as it sits in
+     * fgets() waiting for input (fgets locks the FILE, then blocks in read()).
+     * So on shutdown the main thread reached this very check -- the one whose
+     * whole job is to answer "not a tty, nothing to do" -- and deadlocked
+     * against a reader that would never return, because its stdin was a pipe
+     * nobody was going to write to or close.
+     *
+     * Observed as an intermittent hang of `scilab -quit -f script` with an open
+     * stdin: main thread in StopScilabEngine -> initConsoleMode -> fileno ->
+     * flockfile, reader thread in getPipeLine -> fgets -> read. It only bit when
+     * the reader happened to be inside fgets at that moment, which is why it
+     * reproduced roughly one run in three.
+     *
+     * The file descriptor is what is actually wanted here, and the rest of this
+     * file already talks to fd 0 directly (tcgetattr/tcsetattr), so this also
+     * makes the check consistent with its neighbours. Answering it takes no
+     * locks and cannot block. */
+    if (!isatty(STDIN_FILENO))
     {
         /* We are in a pipe, no need to init the console */
         return 0;

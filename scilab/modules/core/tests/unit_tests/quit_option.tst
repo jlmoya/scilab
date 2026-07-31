@@ -63,3 +63,21 @@ assert_checkequal(exitcode, 0);
 // without -quit option the behavior is the same
 exitcode = host("< " + filepath + " " + scilabBin + "  --timeout 2m");
 assert_checkequal(exitcode, 0);
+
+// NOT covered here: -quit when stdin is a pipe that stays OPEN and never
+// delivers EOF (java.lang.Runtime.exec hands a child exactly that). Scilab used
+// to discard -quit in that situation and block forever; the fix lives in
+// scilab.cpp's "we are in a pipe" branch.
+//
+// It is deliberately not a .tst case. Reproducing it needs a writer that never
+// goes away, and holding one open from inside host() -- whether by a background
+// process or a shell descriptor on a fifo -- races with the child's open() of
+// that fifo. Measured over three runs of this file, that shape passed twice and
+// failed once with 134 (the watchdog aborting a child whose open never
+// completed). An intermittent test is worse than no test, so the coverage lives
+// in a deterministic runner instead:
+//
+//     modules/core/tests/native/run_quit_open_stdin.sh
+//
+// which is the same convention already used for the B21/B22 scenarios the .tst
+// harness cannot host reliably.
