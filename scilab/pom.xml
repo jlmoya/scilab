@@ -321,11 +321,24 @@
             <exclude>${scilab.test.exclude.engine.javasci}</exclude>
             <exclude>${scilab.test.exclude.engine.xcos}</exclude>
             <!-- The 4 ADVANCED-mode javasci tests (`new Scilab(true)`), always held
-                 back. B16's javasci2-cli variant fixes the NWNI default, but these
-                 want the opposite combination — the GUI-linked libjavasci2 AND the
-                 full etc/classpath.xml jar set, without which they fail with
-                 NoClassDefFoundError: org/scilab/modules/core/Scilab. Listed
-                 literally rather than as a property because Ant globs have no
+                 back — for HARNESS TOPOLOGY, not for a product defect. The defect
+                 they used to hit (register B22: the engine initialised JOGL, and so
+                 AppKit, off the main thread and the process died with SIGTRAP) was
+                 fixed on 2026-07-30 in SwingView.initializeJOGL(), and advanced mode
+                 now opens, computes, plots and exports — proven bidirectionally by
+                 modules/javasci/tests/native/run_b22_advanced_mode.sh, which fails
+                 with exit 133 against the pre-fix code.
+
+                 What still blocks THESE FOUR is that a surefire run has exactly one
+                 java.library.path, and it cannot serve both javasci2 variants:
+                 -Pnative-tests must put the CLI one first for the 105 NWNI tests
+                 (B16), while advanced mode needs the GUI-linked one first. They also
+                 want the full etc/classpath.xml jar set, and restating those 86
+                 entries here would be a second source of truth that rots. The runner
+                 above derives all of it from etc/{classpath,librarypath,jvm_options}.xml
+                 instead, so the scenario is covered without either compromise.
+
+                 Listed literally rather than as a property because Ant globs have no
                  alternation and these four share no name pattern. -->
             <exclude>**/org/scilab/tests/modules/javasci/testBug10801.java</exclude>
             <exclude>**/org/scilab/tests/modules/javasci/testGraphics.java</exclude>

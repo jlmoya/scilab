@@ -90,10 +90,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GLCapabilities;
+import com.jogamp.nativewindow.NativeWindowFactory;
 import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.awt.GLCanvas;
+import jogamp.nativewindow.macosx.OSXUtil;
 import javax.swing.JComponent;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
@@ -101,8 +100,8 @@ import javax.swing.SwingUtilities;
 import org.flexdock.docking.Dockable;
 import org.flexdock.docking.DockingManager;
 import org.flexdock.docking.activation.ActiveDockableTracker;
+import org.scilab.modules.commons.OS;
 import org.scilab.modules.graphic_export.Driver;
-import org.scilab.modules.graphic_objects.DataLoader;
 import org.scilab.modules.graphic_objects.console.Console;
 import org.scilab.modules.graphic_objects.figure.Figure;
 import org.scilab.modules.graphic_objects.graphicController.GraphicController;
@@ -177,14 +176,9 @@ public final class SwingView implements GraphicView {
         GraphicController.getController().register(this);
         allObjects = Collections.synchronizedMap(new HashMap<Integer, TypedObject>());
 
-        try {
-            GLCanvas tmpCanvas = new GLCanvas(new GLCapabilities(GLProfile.getDefault()));
-            tmpCanvas.getContext().makeCurrent();
-            GL gl = tmpCanvas.getGL();
-            DataLoader.setABGRExt(gl.isExtensionAvailable("GL_EXT_abgr") ? 1 : 0);
-            tmpCanvas.getContext().release();
-            tmpCanvas = null;
+        initializeJOGL();
 
+        try {
             /*
              * Forces font loading from the main thread. This is done because if
              * getSciFontManager (thus, font loading) is concurrently accessed
@@ -193,6 +187,47 @@ public final class SwingView implements GraphicView {
              */
             FontManager.getSciFontManager();
         } catch (Exception e) {
+            System.err.println("SwingView: font pre-loading failed: " + e);
+        }
+    }
+
+    /**
+     * Bring up JOGL's singletons, on the AppKit main thread when that is what
+     * the platform demands.
+     *
+     * Probing the available GL profiles creates and destroys dummy windows. On
+     * macOS those are NSWindows, and AppKit window operations are legal ONLY on
+     * the process main thread: AppKit asserts in
+     * -[NSWMWindowCoordinator performTransactionUsingBlock:] and kills the
+     * process with EXC_BREAKPOINT otherwise. The standalone launcher happens to
+     * call registerSwingView() on the main thread, which is why this was never
+     * noticed; an EMBEDDER does not. javasci advanced mode, and any call_scilab
+     * host, reach StartScilabEngine -> InitializeGUI -> registerSwingView from a
+     * secondary thread, and every such process died here. See
+     * deferred-fixes-register.md B22.
+     *
+     * Doing this eagerly, once, is also what keeps the LATER work legal: by the
+     * time a figure is built JOGL's singletons already exist, so no figure has
+     * to initialise them from the EDT -- which is not the main thread either.
+     */
+    private static void initializeJOGL() {
+        try {
+            if (OS.get() == OS.MAC) {
+                // Loads libnativewindow_macosx, which OSXUtil's natives need.
+                // It creates no window, so it is safe on any thread.
+                NativeWindowFactory.initSingleton();
+                if (!OSXUtil.IsMainThread()) {
+                    OSXUtil.RunOnMainThread(true, false, GLProfile::initSingleton);
+                    return;
+                }
+            }
+            GLProfile.initSingleton();
+        } catch (Throwable e) {
+            // Not fatal: Scilab still runs without graphics, and a headless or
+            // GL-less host is a legitimate way to embed the engine. Do not
+            // swallow it silently though -- every figure will fail afterwards.
+            System.err.println("SwingView: JOGL initialization failed, "
+                               + "graphics will be unavailable: " + e);
         }
     }
 
