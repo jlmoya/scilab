@@ -177,7 +177,17 @@ public class ScilabJavaCompiler {
             compilationUnits.add(sourceString);
         }
 
-        String[] compileOptions = new String[] {"-d", BINPATH, "-target", "17"};
+        // No -source/-target pin. What is compiled here is loaded straight into
+        // the JVM doing the compiling, so the only target that is always right
+        // is that JVM's own release -- which is exactly what javac defaults to.
+        //
+        // This used to pin "-target", "17" with no matching -source. On a JDK
+        // newer than 17 javac takes the source release from the running JDK and
+        // then rejects the pair outright ("specified target release 17 is too
+        // old for the default source release 25"), so jcompile failed for every
+        // caller on any modern JDK. The pin also contradicted the build itself,
+        // which compiles at source/target 25 (see pom.xml).
+        String[] compileOptions = new String[] {"-d", BINPATH};
         Iterable<String> options = Arrays.asList(compileOptions);
 
         try {
