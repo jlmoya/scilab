@@ -52,7 +52,7 @@ public class ControlPortTest {
     @Test
     public void checkStyle() {
         ControlPort port = new ControlPort(controller, controller.createObject(Kind.PORT), Kind.PORT, null, null, new UID().toString());
-        assert port.getStyle().contains(null);
+        assert port.getStyle().contains("ControlPort");
     }
 
     @Test

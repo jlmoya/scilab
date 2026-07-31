@@ -54,7 +54,7 @@ public class ExplicitOutputPortTest {
     @Test
     public void checkStyle() {
         ExplicitOutputPort port = new ExplicitOutputPort(controller, controller.createObject(Kind.PORT), Kind.PORT, null, null, new UID().toString());
-        assert port.getStyle().contains(null);
+        assert port.getStyle().contains("ExplicitOutputPort");
     }
 
     @Test

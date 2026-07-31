@@ -54,7 +54,7 @@ public class ImplicitInputPortTest {
     @Test
     public void checkStyle() {
         ImplicitInputPort port = new ImplicitInputPort(controller, controller.createObject(Kind.PORT), Kind.PORT, null, null, new UID().toString());
-        assert port.getStyle().contains(null);
+        assert port.getStyle().contains("ImplicitInputPort");
     }
 
     @Test

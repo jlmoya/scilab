@@ -63,16 +63,24 @@ public class FileTypeTest {
         }
     }
 
+    /**
+     * findFileType(String) maps on the EXTENSION ALONE — it has no file to look
+     * inside. Every type, XCOS included, must map back to itself.
+     *
+     * This used to special-case XCOS and assert null, which the implementation
+     * has no way to produce: findFileType(String) walks values() comparing
+     * extensions and XCOS's is "xcos". The null belongs to the FILE overload,
+     * which layers checkHeader() on top for XCOS and ZCOS — and that behaviour
+     * has its own test, validateXcosFindFileType below, which writes a real
+     * diagram and expects XCOS back. Keeping the two apart is the point:
+     * extension mapping here, content validation there. Register B21.
+     */
     @Test
     public void validateFindFileType() throws IOException {
         for (XcosFileType type : XcosFileType.values()) {
             File tmp = File.createTempFile("xcosTest", type.getDottedExtension());
 
-            if (type != XcosFileType.XCOS) {
-                assert type == XcosFileType.findFileType(tmp.getAbsolutePath());
-            } else {
-                assert XcosFileType.findFileType(tmp.getAbsolutePath()) == null;
-            }
+            assert type == XcosFileType.findFileType(tmp.getAbsolutePath());
 
             tmp.delete();
         }

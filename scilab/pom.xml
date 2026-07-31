@@ -105,13 +105,28 @@
          java.library.path. The 4 advanced-mode javasci tests stay excluded
          unconditionally in the surefire config below (register B22).
 
-         xcos: STILL held back even under -Pnative-tests (register B21). It is
-         worse than a failure: its forked JVM HANGS indefinitely, which would
-         wedge CI. Do not lift it experimentally.
+         xcos: ONE class held back even under -Pnative-tests (register B21).
+         XcosCellFactoryTest posts a command through synchronousScilabExec and
+         waits for the notify() callback that ends it; that callback never
+         arrives and the test blocks on Object.wait() forever.
+
+         This was a blanket over all TEN legacy xcos classes until 2026-07-30,
+         on the belief that the harness had no interpreter thread to consume
+         posted commands. It has one — Call_ScilabOpen starts runScilabEngine
+         on a background thread (call_scilab.c:174) — and measuring the ten
+         individually showed nine of them do not hang at all. Six were failing
+         on `assert port.getStyle().contains(null)`, which throws NPE by
+         contract and can never have passed; one on a stale expectation in
+         FileTypeTest; two were already green. All nine now run. Only
+         XcosCellFactoryTest actually hangs, so only it is excluded.
+
+         Lifting it experimentally is now safe: forkedProcessTimeoutInSeconds
+         (see the surefire config below) turns the hang into an ordinary
+         failure instead of a wedged run.
 
          Two separate properties because Ant globs have no alternation. -->
     <scilab.test.exclude.engine.javasci>**/org/scilab/tests/modules/javasci/**</scilab.test.exclude.engine.javasci>
-    <scilab.test.exclude.engine.xcos>**/org/scilab/tests/modules/xcos/**</scilab.test.exclude.engine.xcos>
+    <scilab.test.exclude.engine.xcos>**/org/scilab/tests/modules/xcos/graph/model/XcosCellFactoryTest.java</scilab.test.exclude.engine.xcos>
   </properties>
 
   <!-- Inherited test stack: every reactor module gets JUnit 6 (Jupiter) in test scope,
@@ -310,6 +325,21 @@
             <include>**/*TestCase.java</include>
             <include>**/test*.java</include>
           </includes>
+          <!-- A HANGING test must FAIL, never wedge. These are engine-embedding
+               integration tests: a test that posts a command to the interpreter
+               and waits for a reply that never comes will block on Object.wait()
+               forever, and with no deadline surefire waits with it — the run
+               produces no output, no failure and no exit, which is why the xcos
+               quarantine (register B21) had to be a blanket over ten classes
+               nobody could safely measure. With a deadline the same hang is an
+               ordinary "There was a timeout in the fork" failure, so a suspect
+               class can be run and read like any other.
+
+               600s is far above the observed worst case (no class approaches
+               30s, whole-module forks stay well under a minute) and far below
+               "forever", which is the only other option. reuseForks is false, so
+               this is a per-CLASS budget, not a per-run one. -->
+          <forkedProcessTimeoutInSeconds>600</forkedProcessTimeoutInSeconds>
           <excludes>
             <exclude>${scilab.test.exclude}</exclude>
             <!-- Engine-embedding legacy tests. Both are inert by default, where

@@ -52,7 +52,7 @@ public class CommandPortTest {
     @Test
     public void checkStyle() {
         CommandPort port = new CommandPort(controller, controller.createObject(Kind.PORT), Kind.PORT, null, null, new UID().toString());
-        assert port.getStyle().contains(null);
+        assert port.getStyle().contains("CommandPort");
     }
 
     @Test
