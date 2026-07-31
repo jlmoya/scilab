@@ -16,7 +16,23 @@
 #define __SIGNAL_MGMT_H__
 
 /**
- * Initialize the signal management system
+ * Declare that ScilabJmpEnv has been armed with setjmp() by the caller, so the
+ * fatal-signal handler has somewhere to longjmp() back to.
+ *
+ * Only the standalone startup (modules/startup/src/cpp/scilab.cpp) does that.
+ * An EMBEDDER -- javasci, or any call_scilab host -- calls StartScilabEngine
+ * directly and never arms it, so a fatal handler that longjmps would jump into
+ * a zero-initialised jmp_buf. Call this immediately after setjmp() and before
+ * StartScilabEngine(); base_error_init() consults it to decide whether
+ * installing the handler is safe. See deferred-fixes-register.md B22.
+ */
+void armScilabJmpEnv(void);
+
+/**
+ * Initialize the signal management system.
+ *
+ * Installs the fatal-signal handler ONLY when armScilabJmpEnv() has been
+ * called; otherwise the host process keeps its own handlers.
  */
 void base_error_init(void);
 

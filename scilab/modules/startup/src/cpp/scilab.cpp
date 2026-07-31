@@ -30,6 +30,7 @@ extern "C"
 #include "initMacOSXEnv.h"
 #endif
 #include "InitScilab.h"
+#include "signal_mgmt.h"    /* armScilabJmpEnv: we own the setjmp target (B22) */
 #include "charEncoding.h"
 #include "configvariable_interface.h"
 #include "scilabRead.h"
@@ -518,6 +519,15 @@ int main(int argc, char *argv[])
     }
 
     int val = setjmp(ScilabJmpEnv);
+    /*
+     * This is the ONLY place in the tree that arms ScilabJmpEnv, which makes it
+     * the only place the fatal-signal handler may be installed: that handler
+     * ends in longjmp() back to here. Telling signal_mgmt so must happen before
+     * StartScilabEngine(), because base_error_init() runs inside it and reads
+     * the flag to decide. Embedders (javasci, call_scilab hosts) never reach
+     * this line, so they keep their own handlers. Register B22.
+     */
+    armScilabJmpEnv();
     if (!val)
     {
         val = StartScilabEngine(pSEI);

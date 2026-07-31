@@ -50,6 +50,34 @@
 
 jmp_buf ScilabJmpEnv;
 
+/*
+ * Has anybody actually armed ScilabJmpEnv with setjmp()?
+ *
+ * sig_fatal() ends in longjmp(ScilabJmpEnv, ...), which is only meaningful if
+ * some caller up the stack established that jump target. Exactly ONE place in
+ * the tree does: modules/startup/src/cpp/scilab.cpp, the standalone
+ * executable's main. Every EMBEDDER -- javasci/libjavasci2, and any
+ * call_scilab host -- enters through StartScilabEngine() without a setjmp, yet
+ * reached the same base_error_init() and got the same handler installed.
+ * ScilabJmpEnv is zero-initialised common data, so on those paths the handler
+ * longjmp'd into an all-zero jmp_buf: undefined behaviour that both killed the
+ * process and destroyed the fault context, leaving crash reports containing
+ * nothing but _longjmp/_sigtramp.
+ *
+ * Worse, installing the handler at all is a trespass when embedded: the host
+ * owns process signal policy. A JVM installs its own SIGSEGV handler and relies
+ * on it, and overwriting that silently takes machinery away from it.
+ *
+ * sig_atomic_t + volatile because sig_fatal() reads this from signal context.
+ * See deferred-fixes-register.md B22.
+ */
+static volatile sig_atomic_t ScilabJmpEnvArmed = 0;
+
+void armScilabJmpEnv(void)
+{
+    ScilabJmpEnvArmed = 1;
+}
+
 /*----------------------------------------------------------------------------
  * Handle a fatal signal (such as SIGFPE or SIGSEGV)
  *----------------------------------------------------------------------------*/
@@ -426,6 +454,20 @@ static void sig_fatal(int signum, siginfo_t * info, void *p)
         setCharDisplay(DISP_RESET);
     }
 
+    /*
+     * Belt and braces: base_error_init() should not have installed us unarmed,
+     * but if we ever get here that way, longjmp'ing into a zero jmp_buf is the
+     * worst available option. Restore the default disposition and re-raise so
+     * the fault reaches whoever should own it -- the host's handler, or the OS,
+     * which produces a real crash report naming the actual faulting frame.
+     */
+    if (!ScilabJmpEnvArmed)
+    {
+        signal(signum, SIG_DFL);
+        raise(signum);
+        return;
+    }
+
     longjmp(ScilabJmpEnv, HUGE_ERROR);
 }
 
@@ -513,6 +555,26 @@ void base_error_init(void)
     /* Signal handlers */
     csignal();
     resizesignal();
+
+    /*
+     * The fatal handler is only installable when somebody armed ScilabJmpEnv,
+     * because that is the only thing sig_fatal() can do at the end: longjmp to
+     * it. The standalone startup arms it (setjmp then StartScilabEngine, so the
+     * flag is already set by the time we run). An embedder -- javasci, or any
+     * call_scilab host -- never does, and for it BOTH halves of installing this
+     * handler are wrong: the longjmp target is a zero jmp_buf, and we would be
+     * seizing signal handling that belongs to the host process (a JVM installs
+     * its own SIGSEGV handler and relies on it).
+     *
+     * So when unarmed we leave the host's handlers untouched. Faults then
+     * surface the normal way -- the JVM's own handler, or a crash report that
+     * names the real faulting frame instead of _longjmp/_sigtramp. Register B22.
+     */
+    if (!ScilabJmpEnvArmed)
+    {
+        return;
+    }
+
     memset(&act, 0, sizeof(act));
     act.sa_sigaction = sig_fatal;
     act.sa_flags = SA_SIGINFO;
