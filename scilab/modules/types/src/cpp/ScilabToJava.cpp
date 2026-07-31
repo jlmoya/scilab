@@ -65,7 +65,20 @@ bool ScilabToJava::sendVariableAsReference(const std::string & name, int handler
     }
 
     std::vector<int> indexes;
-    return sendVariable(name, indexes, addr, false, true, handlerId, 0);
+    // swaped=true, matching the by-value entry point below. Every caller of the
+    // by-value path (ScilabVariablesJavasci.getScilabVariable) passes
+    // swapRowCol=true, so `true` is what "the same variable, fetched the other
+    // way" has to mean; this used to pass false and the two disagreed.
+    //
+    // It matters ONLY for the types that fall through to by-value here, because
+    // the byref branches ignore swaped entirely -- sendDataAsBuffer takes row
+    // and col and lets the Java-side view do its own indexing. But those
+    // fall-through types are most of them: sci_strings, sci_poly, both sparse
+    // kinds and the list family all hardcode byref=false further down, so under
+    // getByReference() they were built transposed while get() built them
+    // correctly. A non-square string came back with element (0,1) holding
+    // (1,0)'s text. See deferred-fixes-register.md B23(c).
+    return sendVariable(name, indexes, addr, true, true, handlerId, 0);
 }
 
 bool ScilabToJava::sendVariable(const std::string & name, bool swaped, int handlerId)
