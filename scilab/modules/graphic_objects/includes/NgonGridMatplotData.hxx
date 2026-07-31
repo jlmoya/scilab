@@ -57,7 +57,6 @@ private :
     unsigned int dataSize;
 
     static const bool isLittleEndian;
-    static bool isABGRSupported;
 
 protected :
 
@@ -231,11 +230,6 @@ public :
      */
     void setDataZ(double const* data, int numElements);
 
-    /**
-     * Set true if ABGR extension is supported
-     * @param[in] _isABGRSupported true if ABGR extension is supported
-     */
-    static void setABGRSupported(bool _isABGRSupported);
 
 private:
 

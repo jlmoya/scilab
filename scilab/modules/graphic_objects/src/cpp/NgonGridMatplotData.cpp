@@ -27,7 +27,6 @@ extern "C" {
 }
 
 const bool NgonGridMatplotData::isLittleEndian = NgonGridMatplotData::initEndian();
-bool NgonGridMatplotData::isABGRSupported = false;
 
 NgonGridMatplotData::NgonGridMatplotData(void)
 {
@@ -677,10 +676,6 @@ bool NgonGridMatplotData::initEndian()
     return *(char *)&num == 1;
 }
 
-void NgonGridMatplotData::setABGRSupported(bool _isABGRSupported)
-{
-    isABGRSupported = _isABGRSupported;
-}
 
 void NgonGridMatplotData::disposeTextureData(void)
 {

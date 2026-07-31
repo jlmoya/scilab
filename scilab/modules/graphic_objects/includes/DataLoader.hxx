@@ -203,11 +203,6 @@ void disposeTextureData(int id, unsigned char * buffer);
  */
 int isTextureRowOrder(int id);
 
-/**
- * Set tha availability of the ABGR extension
- * @param[in] isAvailable 0 if it is not available
- */
-void setABGRExt(int isAvailable);
 
 #ifdef __cplusplus
 } //extern "C"

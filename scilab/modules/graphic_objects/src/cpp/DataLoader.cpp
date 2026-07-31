@@ -451,7 +451,3 @@ int isTextureRowOrder(int id)
     return 0;
 }
 
-void setABGRExt(int isAvailable)
-{
-    NgonGridMatplotData::setABGRSupported(isAvailable != 0);
-}
