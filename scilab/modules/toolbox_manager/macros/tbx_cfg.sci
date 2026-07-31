@@ -4,7 +4,17 @@ function cfg = tbx_cfg()
     cfg.projects = fullfile(cfg.home, "Projects", "SciLabProjects");
     cfg.tbxdir   = fullfile(SCIHOME, "toolboxes");          // remote clones live here
     cfg.manifest = fullfile(SCIHOME, "installed_toolboxes.tbx");
+    // Clone sources, tried IN THIS ORDER by tbxInstall:
+    //   glbase    our fork — carries the macOS/arm64 fixes, so it must win
+    //   forgebase gitlab.com/scilab/forge — the CANONICAL upstream. Without this
+    //             any toolbox we have not forked was simply uninstallable:
+    //             tbxInstall fell straight through to the GitHub fork namespace
+    //             and reported "Repository not found", which is how helptbx
+    //             (a declared dependency of distfun and stixbox) stayed missing
+    //             even though it sits on the forge.
+    //   ghbase    GitHub mirror of our fork, last resort
     cfg.glbase   = "git@gitlab.com:jlmoya/";                 // SSH (works on this Mac)
+    cfg.forgebase = "https://gitlab.com/scilab/forge/";
     cfg.ghbase   = "https://github.com/jlmoya/";
     // native-build env (needed only when BUILDING native toolboxes)
     cfg.cpath    = "/opt/homebrew/opt/gettext/include";

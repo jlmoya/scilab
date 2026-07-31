@@ -9,7 +9,11 @@ function ok = tbxInstall(name, source)
         else
             mprintf("  git clone...\n");
             [ok, o] = tbx_sh("git clone " + cfg.glbase + name + ".git " + path);
-            if ~ok then  // GitLab failed, try GitHub
+            if ~ok then  // our fork has it not — try the CANONICAL upstream forge
+                mprintf("  not in our fork; trying the Scilab forge...\n");
+                [ok, o] = tbx_sh("git clone " + cfg.forgebase + name + ".git " + path);
+            end
+            if ~ok then  // finally the GitHub mirror
                 [ok, o] = tbx_sh("git clone " + cfg.ghbase + name + ".git " + path);
             end
             if ~ok then mprintf("  clone FAILED for %s\n", name); ok = %f; return; end
