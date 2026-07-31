@@ -237,6 +237,11 @@ void setForceQuit(int force)
     ConfigVariable::setForceQuit(force != 0);
 }
 
+void setExitOnUncaughtError(int exitOnUncaughtError)
+{
+    ConfigVariable::setExitOnUncaughtError(exitOnUncaughtError != 0);
+}
+
 int isEnableDebug()
 {
     return ConfigVariable::getEnableDebug() ? 1 : 0;

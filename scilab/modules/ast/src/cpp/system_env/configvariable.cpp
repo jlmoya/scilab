@@ -154,6 +154,36 @@ int ConfigVariable::getExitStatus(void)
 */
 
 /*
+** Batch run status
+** \{
+*/
+int ConfigVariable::m_iUncaughtErrorStatus = 0;
+bool ConfigVariable::m_bExitOnUncaughtError = false;
+
+void ConfigVariable::setUncaughtErrorStatus(int _iStatus)
+{
+    m_iUncaughtErrorStatus = _iStatus;
+}
+
+int ConfigVariable::getUncaughtErrorStatus(void)
+{
+    return m_iUncaughtErrorStatus;
+}
+
+void ConfigVariable::setExitOnUncaughtError(bool _bExitOnUncaughtError)
+{
+    m_bExitOnUncaughtError = _bExitOnUncaughtError;
+}
+
+bool ConfigVariable::getExitOnUncaughtError(void)
+{
+    return m_bExitOnUncaughtError;
+}
+/*
+** \}
+*/
+
+/*
 ** Digit precision, ex format function
 ** \{
 */

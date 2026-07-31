@@ -134,6 +134,14 @@ int StaticRunner::launch()
         scilabErrorW(se.GetErrorMessage().c_str());
         ConfigVariable::resetWhereError();
         iRet = 1;
+
+        // Reaching here means the error escaped the command uncaught -- a
+        // try/catch would have handled it inside the visitor and never thrown
+        // this far. Record it so a batch quit can report a real failure, and
+        // only a real one. Sticky on purpose: piped input runs one command per
+        // line, and any line that failed means the run failed.
+        int iErr = ConfigVariable::getLastErrorNumber();
+        ConfigVariable::setUncaughtErrorStatus(iErr != 0 ? iErr : 1);
     }
     catch (const ast::InternalAbort& ia)
     {

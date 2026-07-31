@@ -77,6 +77,12 @@ static parse_state parseCommand(const char* command, ast::Exp** tree)
         ConfigVariable::setLastErrorNumber(999);
         ConfigVariable::setLastErrorMessage(parser.getErrorMessage());
 
+        // A command that does not parse never runs, so the runner never sees it
+        // and cannot record the failure. Nothing can catch a syntax error here
+        // either -- there is no try/catch around parsing a stored command -- so
+        // it is uncaught by construction. See issue_17175.
+        ConfigVariable::setUncaughtErrorStatus(999);
+
         ThreadManagement::UnlockParser();
         return Failed;
     }

@@ -459,7 +459,8 @@ int StartScilabEngine(ScilabEngineInfo* _pSEI)
     // Setting ConfigVariable::setForceQuit() here avoids Scilab to quit before executing callbacks.
     if (_pSEI->iForceQuit == 1)
     {
-        StoreCommand("[_,__err__]=lasterror();exit(__err__);");
+        ConfigVariable::setExitOnUncaughtError(true);
+        StoreCommand("exit();");
     }
 
     ConfigVariable::setUserMode(2);
@@ -768,6 +769,12 @@ void* scilabReadAndStore(void*)
             scilabForcedWriteW(parserErrorMsg);
             ConfigVariable::setLastErrorNumber(999);
             ConfigVariable::setLastErrorMessage(parserErrorMsg);
+
+            // Same as storeCommand.cpp: a line that does not parse never
+            // reaches the runner, and nothing can catch a syntax error read
+            // from the console or a pipe. Record it so the batch quit reports
+            // the failure. See issue_17175.
+            ConfigVariable::setUncaughtErrorStatus(999);
     
             continue;
         }

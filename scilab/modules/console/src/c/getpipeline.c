@@ -28,8 +28,9 @@ char* getPipeLine(void)
     int eof = (fgets(buffer, bsiz, stdin) == NULL);
     if (eof)
     {
-        //send command to quit Scilab
-        return os_strdup("[_,__err__]=lasterror();exit(__err__);");
+        //send command to quit Scilab, reporting whether the piped run failed
+        setExitOnUncaughtError(1);
+        return os_strdup("exit();");
     }
 
     //remove trailing \n

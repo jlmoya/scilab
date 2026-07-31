@@ -99,6 +99,27 @@ public :
     static void setExitStatus(int _iExitStatus);
     static int getExitStatus(void);
 
+    // Batch run status
+    //
+    // m_iUncaughtErrorStatus is the error number of the last command that ended
+    // in an UNCAUGHT error, and m_bExitOnUncaughtError says a batch quit is in
+    // effect (-quit, or EOF on redirected stdin) so a no-argument exit() should
+    // report it.
+    //
+    // These exist because lasterror() cannot answer "did this run fail?". It
+    // reports the last error RAISED, caught or not, and only forgets it when
+    // something reads it — so a try/catch that fully handles an error still
+    // leaves the number set and fails the process. See bug_14225.
+private :
+    static int m_iUncaughtErrorStatus;
+    static bool m_bExitOnUncaughtError;
+
+public :
+    static void setUncaughtErrorStatus(int _iStatus);
+    static int getUncaughtErrorStatus(void);
+    static void setExitOnUncaughtError(bool _bExitOnUncaughtError);
+    static bool getExitOnUncaughtError(void);
+
     // Digit precision, ex format function
 private :
     static int m_iFormatSize;

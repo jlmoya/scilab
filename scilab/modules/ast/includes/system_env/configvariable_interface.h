@@ -78,6 +78,8 @@ EXTERN_AST void removeReferenceModule(const wchar_t* _module);
 EXTERN_AST int getForceQuit();
 EXTERN_AST void setForceQuit(int force);
 
+EXTERN_AST void setExitOnUncaughtError(int exitOnUncaughtError);
+
 EXTERN_AST int getEntryPointPosition(wchar_t* _pwstEntryPointName);
 typedef void (*dynlib_ptr)();
 EXTERN_AST dynlib_ptr getEntryPointFromPosition(int position);

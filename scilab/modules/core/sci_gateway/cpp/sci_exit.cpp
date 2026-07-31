@@ -65,16 +65,32 @@ types::Function::ReturnValue sci_exit(types::typed_list &in, int _iRetCount, typ
         }
     }
 
+    // A batch quit (-quit, or EOF on redirected stdin) queues a bare exit().
+    // It is not a user asking to leave, so it never takes no for an answer, and
+    // it reports the status of the run rather than 0.
+    bool batchQuit = in.size() == 0 && ConfigVariable::getExitOnUncaughtError();
+
     if (ConfigVariable::getScilabMode() != SCILAB_NWNI)
     {
-        if (in.size() == 0)
+        if (in.size() == 0 && batchQuit == false)
         {
             shouldExit = canCloseMainScilabObject();
         }
         else
         {
+            // Batch quits force-close like the argument form always did: the
+            // command this replaced was exit(<number>), so it landed here.
+            // Routing it through canCloseMainScilabObject() instead would let
+            // the GUI refuse, and -quit would not quit.
             forceCloseMainScilabObject();
         }
+    }
+
+    // 0 unless some command ended in an UNCAUGHT error. An explicit exit(n) in
+    // the script still wins, via the block below.
+    if (batchQuit)
+    {
+        dExit = ConfigVariable::getUncaughtErrorStatus();
     }
 
     // exit have already been called,
