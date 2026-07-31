@@ -11,6 +11,13 @@ if   [ -s "$CFG" ];           then export JAVA_HOME="$(sed -n '1p' "$CFG")"
 elif [ -n "${JAVA_HOME:-}" ]; then :
 else export JAVA_HOME="$(/usr/libexec/java_home -v 25)"; fi
 PROJECTS="$HOME/Projects/SciLabProjects"
+# Toolboxes installed from a remote (tbxInstall clones them) live in the REAL
+# SCIHOME's toolboxes/, not under SciLabProjects. The throwaway -scihome below
+# exists to isolate mutable STATE (prefs, manifest), not to hide installed
+# toolboxes, so that directory is linked into each scratch home -- otherwise
+# every SCIHOME-resident toolbox fails with "toolbox dir not found", which is
+# what happened to helptbx (a declared dependency of distfun and stixbox).
+INSTALLED="${TBX_INSTALLED_DIR:-$HOME/.Scilab/scilab-app-2027/toolboxes}"
 OUT="${TBX_REPORT:-$HERE/tbx-verify-report.tsv}"
 TIMEOUT="${TBX_TIMEOUT:-300}"
 : > "$OUT"
@@ -20,10 +27,19 @@ if [ ${#names[@]} -eq 0 ]; then
         d="${d%/}"; n="${d##*/}"
         [ -f "$d/loader.sce" ] || [ -f "$d/builder.sce" ] && names+=("$n")
     done
+    # ...plus anything installed only under the real SCIHOME
+    if [ -d "$INSTALLED" ]; then
+        for d in "$INSTALLED"/*/; do
+            d="${d%/}"; n="${d##*/}"
+            [ -e "$PROJECTS/$n" ] && continue
+            { [ -f "$d/loader.sce" ] || [ -f "$d/builder.sce" ]; } && names+=("$n")
+        done
+    fi
 fi
 pass=0; fail=0
 for n in "${names[@]}"; do
     sch="$(mktemp -d "${TMPDIR:-/tmp}/tbxverify-$n-XXXXXX")"
+    [ -d "$INSTALLED" ] && ln -s "$INSTALLED" "$sch/toolboxes"
     TBX_NAME="$n" TBX_OUT="$sch/result.tsv" gtimeout "$TIMEOUT" \
         "$HERE/bin/scilab-adv-cli" -nb -scihome "$sch" -f "$HERE/tbx-verify-one.sce" \
         > "$sch/log.txt" 2>&1

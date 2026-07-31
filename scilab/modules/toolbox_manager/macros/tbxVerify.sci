@@ -21,6 +21,66 @@ function __tbxv_R = tbxVerify(name)
     [archok, bad] = tbx_arch_check(path);
     __tbxv_R.archok = archok;
     if ~archok then __tbxv_R.err = "non-arm64 native lib: " + strcat(bad', ", "); return; end
+    // ---- load declared dependencies FIRST, transitively, dependency-first ----
+    // Without this, verification exercises a configuration no user ever runs:
+    // the app's autoload closes over dependencies and topologically sorts them
+    // (tbxAutoloadList), while this ran the toolbox's loader alone. A toolbox
+    // whose loader hard-requires a dependency therefore failed the sweep for a
+    // reason that has nothing to do with the toolbox -- guimaker's "apifun is
+    // required but not loaded" is exactly that, and it is a correct guard doing
+    // its job, not a defect.
+    //
+    // Deps come from DESCRIPTION only, never from the manifest: this runs in a
+    // throwaway SCIHOME whose manifest is empty by construction, so a
+    // dependency recorded only in one user's manifest is invisible here. That
+    // is the point -- it forces the dependency to be declared IN the toolbox,
+    // where every consumer can see it.
+    __tbxv_pend = tbx_deps(path);
+    __tbxv_seen = [];
+    while ~isempty(__tbxv_pend)
+        __tbxv_nm = __tbxv_pend(1);
+        __tbxv_pend(1) = [];
+        if ~isempty(__tbxv_seen) && or(__tbxv_seen == __tbxv_nm) then continue; end
+        __tbxv_seen = [__tbxv_seen ; __tbxv_nm];
+        __tbxv_dp = fullfile(cfg.projects, __tbxv_nm);
+        if ~isdir(__tbxv_dp) then __tbxv_dp = fullfile(cfg.tbxdir, __tbxv_nm); end
+        if ~isdir(__tbxv_dp) then
+            __tbxv_R.err = "declared dependency not installed: " + __tbxv_nm;
+            return;
+        end
+        __tbxv_pend = [__tbxv_pend ; tbx_deps(__tbxv_dp)];
+    end
+    if ~isempty(__tbxv_seen) then
+        __tbxv_dl = list();
+        for __tbxv_k = 1:size(__tbxv_seen, "*")
+            __tbxv_dp = fullfile(cfg.projects, __tbxv_seen(__tbxv_k));
+            if ~isdir(__tbxv_dp) then __tbxv_dp = fullfile(cfg.tbxdir, __tbxv_seen(__tbxv_k)); end
+            __tbxv_dl(__tbxv_k) = tbx_deps(__tbxv_dp);
+        end
+        [__tbxv_ord, __tbxv_miss, __tbxv_cyc] = tbx_toposort(__tbxv_seen, __tbxv_dl);
+        // cycle members are still loaded, just unordered -- same policy as
+        // tbxAutoloadList: a cycle is worth reporting, not worth refusing over.
+        for __tbxv_k = 1:size(__tbxv_seen, "*")
+            if isempty(find(__tbxv_ord == __tbxv_k)) then
+                __tbxv_ord = [__tbxv_ord ; __tbxv_k];
+            end
+        end
+        for __tbxv_k = 1:size(__tbxv_ord, "*")
+            __tbxv_nm = __tbxv_seen(__tbxv_ord(__tbxv_k));
+            __tbxv_dp = fullfile(cfg.projects, __tbxv_nm);
+            if ~isdir(__tbxv_dp) then __tbxv_dp = fullfile(cfg.tbxdir, __tbxv_nm); end
+            __tbxv_ldr = fullfile(__tbxv_dp, "loader.sce");
+            if ~isfile(__tbxv_ldr) then
+                __tbxv_R.err = "declared dependency " + __tbxv_nm + " has no loader.sce";
+                return;
+            end
+            if execstr("exec(__tbxv_ldr, -1)", "errcatch") <> 0 then
+                __tbxv_R.err = "declared dependency " + __tbxv_nm + " failed to load: " + lasterror();
+                return;
+            end
+        end
+    end
+
     nbefore = size(librarieslist(), "*");
     // execstr(..., "errcatch") here is fail-safe by construction (contrast
     // tbxLoad.sci:17-20's IMPORTANT warning about this same shape trapping
