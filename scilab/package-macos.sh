@@ -22,6 +22,7 @@ DEV="$(cd "$(dirname "$0")" && pwd)"            # the dev build tree (this scrip
 APP="/Applications/Scilab-2027.0.0.app"
 JDK_PIN=25
 REBUILD_TBX=0
+ALLOW_DEBUG=0
 APP_SCIHOME="$HOME/.Scilab/scilab-app-2027"
 
 while [ $# -gt 0 ]; do
@@ -29,10 +30,39 @@ while [ $# -gt 0 ]; do
     --app)            APP="$2"; shift 2;;
     --jdk-version)    JDK_PIN="$2"; shift 2;;
     --rebuild-toolboxes) REBUILD_TBX=1; shift;;
+    --allow-debug)    ALLOW_DEBUG=1; shift;;
     -h|--help) sed -n '2,22p' "$0"; exit 0;;
     *) echo "unknown arg: $1" >&2; exit 2;;
   esac
 done
+
+# ---- build-type guard ------------------------------------------------------
+# Release and debug builds drop into the SAME modules/*/.libs/ layout, because that is
+# where bin/scilab and the rsync below both read their binaries. So a debug build silently
+# replaces the release one, and without this check you could build debug, forget, package,
+# and ship an unoptimised Scilab (-O0 -g3) with nothing anywhere saying so.
+#
+# build-macos.sh writes .scilab-build-type after its drop-in step. A MISSING stamp is
+# reported as unknown rather than assumed to be release: `cmake --build <dir> --target
+# drop-in-all` by hand bypasses the stamp entirely, so absence proves nothing.
+_stamp_file="$DEV/.scilab-build-type"
+_build_type="$( [ -f "$_stamp_file" ] && tr -d '[:space:]' < "$_stamp_file" || echo unknown )"
+case "$_build_type" in
+  release) ;;
+  debug)
+    if [ "$ALLOW_DEBUG" -eq 0 ]; then
+      echo "REFUSING: modules/*/.libs/ holds a DEBUG build (-O0 -g3)." >&2
+      echo "  Packaging it would ship an unoptimised Scilab." >&2
+      echo "  Re-run ./build-macos.sh for a release build, or pass --allow-debug to" >&2
+      echo "  package the debug one deliberately." >&2
+      exit 3
+    fi
+    echo "WARNING: packaging a DEBUG build (-O0 -g3) because --allow-debug was given."
+    ;;
+  *)
+    echo "NOTE: build type unknown (no $_stamp_file) — packaging whatever is in modules/*/.libs/."
+    ;;
+esac
 
 PAYLOAD="$APP/Contents/Resources/scilab"
 MACOS_DIR="$APP/Contents/MacOS"
