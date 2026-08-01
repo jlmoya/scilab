@@ -220,7 +220,7 @@ Run:
 cd /Users/josemoya/Projects/CLionProjects/scilab/scilab
 ./modules/core/tests/native/run_macos_usage_plist.sh
 ```
-Expected: `FAIL scilab-bin: no __TEXT,__info_plist section` (and the same for the other two), exit status 1. If it prints `SKIP … not built`, build first with `cmake --build cmake-build-release --target drop-in-all` and re-run — a run where everything skipped proves nothing.
+Expected: `FAIL scilab-bin: no __TEXT,__info_plist section` (and the same for the other two), exit status 1. If it prints `SKIP … not built`, build first with `cmake --build build-cmake --target drop-in-all` and re-run — a run where everything skipped proves nothing.
 
 - [ ] **Step 3: Create the usage-description plist**
 
@@ -298,7 +298,7 @@ Also extend the function's header comment. In the block that begins `# THE LINK 
 Run:
 ```bash
 cd /Users/josemoya/Projects/CLionProjects/scilab/scilab
-cmake --build cmake-build-release --target drop-in-scilab-bin drop-in-scilab-cli-bin
+cmake --build build-cmake --target drop-in-scilab-bin drop-in-scilab-cli-bin
 ./modules/core/tests/native/run_macos_usage_plist.sh
 ```
 Expected: three `PASS` lines, each echoing the usage string, exit status 0.
@@ -310,7 +310,7 @@ Predict first, in writing: the executables dimension should be **identical** —
 Run:
 ```bash
 cd /Users/josemoya/Projects/CLionProjects/scilab/scilab/build-parity
-./capture.sh /tmp/parity-sectcreate.json
+./capture.sh .. /tmp/parity-sectcreate.json sectcreate
 ./diff.sh baseline-autotools.json /tmp/parity-sectcreate.json
 ```
 Expected: no `executable …` lines in the diff. Macro-manifest drift is expected only if macros were rebuilt; nothing in this task touches macros, so that section should be silent too. If any `executable` line appears, stop and investigate — do not re-baseline.
@@ -437,7 +437,10 @@ In `scilab/package-macos.sh`, inside the `<<'PLIST'` heredoc, immediately after 
 
 - [ ] **Step 4: Add the key to the dev-tree bundle**
 
-In `scilab/Scilab-2027.0.0.app/Contents/Info.plist`, add the same pair inside the top-level `<dict>` (this file is hand-maintained and tracked, not generated):
+In `scilab/Scilab-2027.0.0.app/Contents/Info.plist`, add the same pair inside the top-level `<dict>` (hand-maintained, not generated). **It is NOT tracked** — root `.gitignore:15` has
+`/scilab/Scilab-*.app/`, so a plain `git add` exits 1 and the change would vanish from the
+commit silently. Stage it with `git add -f` on this one path only; do not un-ignore the
+whole bundle, whose launcher script hardcodes an absolute developer path:
 
 ```xml
 	<key>NSCameraUsageDescription</key>
@@ -737,7 +740,9 @@ Delete the stale `include/opencv2/core/cvdef.h` — its line-479 edit no longer 
 rm -f sci_gateway/c/swig/include/opencv2/core/cvdef.h
 ```
 
-- [ ] **Step 5: Verify once more from a pristine checkout**
+- [ ] **Step 5: Verify once more from a pristine checkout — run this AFTER Step 6's commit**
+
+**Ordering matters and the numbering here is misleading.** `git clone` only sees committed history, and Step 6 is the commit that puts `regen.sh` and the tracked shadow header into it. Run as numbered, this clones a repo with no `regen.sh` and fails for the wrong reason. Do Step 6's commit first, then this, then push.
 
 Run:
 ```bash
@@ -746,7 +751,17 @@ git stash list  # note anything already stashed; do not disturb it
 rm -rf /tmp/scicv-clean && git clone . /tmp/scicv-clean
 cd /tmp/scicv-clean/sci_gateway/c/swig && ./regen.sh
 ```
-Expected: succeeds, `gateway table entries: 4132`. This is the check that actually proves the untracked-shadow problem is gone — a run in the working tree cannot distinguish "tracked" from "left over".
+Expected: succeeds, `gateway table entries: 4132`. This is the check that actually proves the untracked-shadow problem is gone — a run in the working tree cannot distinguish "tracked" from "left over". If it fails, amend rather than pushing something broken.
+
+**Entry count alone is not sufficient acceptance.** It counts `..`-terminated lines in `builder_gateway_c.sce`, so it is structurally blind to constant-registration drift inside `scicv_wrap.cxx` — the exact place a version-guard bug lands. Also confirm the regenerated wrapper compiles:
+```bash
+cd /Users/josemoya/Projects/SciLabProjects/scicv/sci_gateway/c
+PC=/opt/homebrew/bin/pkg-config; command -v "$PC" >/dev/null || PC=pkg-config
+for n in opencv6 opencv5 opencv4 opencv; do "$PC" --exists "$n" && OPENCV_PC="$n" && break; done
+printf '#include <opencv2/opencv.hpp>\nint main(){ return (int)cv::CAP_PROP_GIGA_FRAME_HEIGH_MAX; }\n' > /tmp/probe.cpp
+clang++ -fsyntax-only -std=c++17 $("$PC" --cflags "$OPENCV_PC") /tmp/probe.cpp
+```
+Expected: that probe **fails** (`no member named 'CAP_PROP_GIGA_FRAME_HEIGH_MAX'`) — proving the symbol genuinely does not exist in OpenCV 5 — and `grep -c CAP_PROP_GIGA_FRAME_HEIGH_MAX scicv_wrap.cxx` returns **0**, proving `regen.sh` no longer emits it.
 
 - [ ] **Step 6: Commit**
 
@@ -967,7 +982,13 @@ This exact configuration was dry-run in a scratch copy on 2026-08-01 and produce
 Run:
 ```bash
 cd /Users/josemoya/Projects/SciLabProjects/scicv
-scilab2027 -nb -f build_macos.sce
+# The DEV-TREE interpreter, not scilab2027. The packaged app autoloads scicv, so
+# libscicv is already loaded and ilib_build refuses to relink it -- the build
+# silently does nothing and Scilab then spins at an interactive prompt forever
+# (measured: 144 MB of "-->" in one run). build_macos.sce's own header documents
+# scilab-cli as the intended driver.
+/Users/josemoya/Projects/CLionProjects/scilab/scilab/bin/scilab-cli -nb -f build_macos.sce \
+    > /tmp/scicv-build.log 2>&1 &
 ```
 Expected: `[1/3] … ierr=0`, `[2/3] … ierr=0`, `[3/3] … ierr=0`. The configure step inside `ilib_build` flakes intermittently with "C compiler cannot create executables" — if that appears, simply re-run, as `build_macos.sce`'s own header documents.
 
@@ -1150,6 +1171,33 @@ scilab2027 -nb -e "exec('loader.sce',-1); test_run('scicv','opencv_version',['no
 ```
 Expected: failure — `scicv_opencv_version` is undefined.
 
+- [ ] **Step 3a: Expose the version constants to SWIG — the accessor cannot work without this**
+
+**Measured 2026-08-01:** `CV_VERSION_MAJOR` / `_MINOR` / `_REVISION` are **not wrapped**. Zero occurrences in `sci_gateway/c/scicv_wrap.cxx`; absent from the 2434-entry `tests/unit_tests/variables-5.0.0.txt`. They live in `opencv2/core/version.hpp` (lines 8–10, plain integer `#define`s), and no `.i` file ever `%include`s it — `modules/opencv_core.i` pulls in `interface.h`, `cvdef.h`, `types.hpp`, `mat.hpp`, `core.hpp`, `base.hpp` and `utility.hpp`, but never `version.hpp`. The compiler gets the macros transitively through `core.hpp`; SWIG does not, because it does not recurse into `#include`.
+
+In `sci_gateway/c/swig/modules/opencv_core.i`, add immediately after the `%include "opencv2/core/cvdef.h"` line:
+
+```swig
+// CV_VERSION_MAJOR / _MINOR / _REVISION. Not pulled in transitively: SWIG does not
+// recurse into #include, so without this the constants are invisible to Scilab AND
+// version-gated blocks in other headers evaluate against an undefined (=0) major.
+// regen.sh also passes -DCV_VERSION_MAJOR/-DCV_VERSION_MINOR for the guard case; this
+// %include is what makes the values reachable from Scilab code.
+%include "opencv2/core/version.hpp" // CV_VERSION_MAJOR, CV_VERSION_MINOR, CV_VERSION_REVISION
+```
+
+Do **not** rely on the `CV_VERSION` *string* being wrapped — `version.hpp:19` builds it by macro concatenation (`CVAUX_STR(...) "." ...`), which SWIG may not fold. The three integers are all the accessor needs.
+
+Then add the three names to `tests/unit_tests/variables-5.0.0.txt` so `symbols-5.0.0.tst` guards them, inserting before the closing `];`:
+
+```
+"CV_VERSION_MAJOR";
+"CV_VERSION_MINOR";
+"CV_VERSION_REVISION";
+```
+
+**Rejected alternative, for the record:** having `scicv_opencv_version()` shell out to `pkg-config` at runtime. That reports the *installed* OpenCV, not the one the gateway was compiled against — and those diverge after a `brew upgrade`, which is precisely the drift this task exists to expose.
+
 - [ ] **Step 3: Add the runtime accessor**
 
 Create `scicv/macros/scicv_opencv_version.sci`:
@@ -1224,13 +1272,21 @@ mprintf("[0/3] OpenCV resolved via pkg-config: %s\n", getOpenCVVersion());
 
 - [ ] **Step 6: Rebuild macros and run the test to verify it passes**
 
+Adding `version.hpp` to the SWIG interface changes the wrapper, so this step regenerates and rebuilds before testing.
+
 Run:
 ```bash
+cd /Users/josemoya/Projects/SciLabProjects/scicv/sci_gateway/c/swig && ./regen.sh
 cd /Users/josemoya/Projects/SciLabProjects/scicv
-scilab2027 -nb -f build_macos.sce
+# BUILD with the dev-tree interpreter, never scilab2027: the packaged app autoloads
+# scicv, so libscicv is already loaded, ilib_build refuses to relink, and Scilab
+# spins at an interactive prompt forever (measured: 144 MB of "-->" in one run).
+/Users/josemoya/Projects/CLionProjects/scilab/scilab/bin/scilab-cli -nb -f build_macos.sce \
+    > /tmp/scicv-build.log 2>&1 &
+# TEST with the packaged CLI once the build is done -- autoload is fine (helpful, even) here.
 scilab2027 -nb -e "exec('loader.sce',-1); test_run('scicv','opencv_version',['no_check_error_output']); exit(0)"
 ```
-Expected: the build banner prints `[0/3] OpenCV resolved via pkg-config: 5.0.0`, and the test passes.
+Expected: the build banner prints `[0/3] OpenCV resolved via pkg-config: 5.0.0`, `regen.sh` reports a gateway table larger than before (the three `CV_VERSION_*` constants are now registered), and the test passes.
 
 - [ ] **Step 7: Commit**
 
