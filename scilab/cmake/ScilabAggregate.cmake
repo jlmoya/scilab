@@ -264,6 +264,12 @@ endfunction()
 #  * No -undefined dynamic_lookup, no -nostdlib++: programs are NOT dylibs —
 #    libtool gave them neither; the C++ driver's implicit -lc++ is authentic
 #    here (it deduped against the -lstdc++ rewrite above).
+#
+#  * `-sectcreate __TEXT __info_plist etc/macos-usage-descriptions.plist`: the
+#    TCC usage descriptions, carried in the binary because Scilab's Mach-O sits
+#    outside Contents/MacOS/ and so has no bundle Info.plist. Not part of the
+#    autotools baseline -- a deliberate, parity-neutral addition (a section, not
+#    a load command).
 # -----------------------------------------------------------------------------
 function(scilab_executable NAME)
   cmake_parse_arguments(E "" "ALIAS"
@@ -312,6 +318,34 @@ function(scilab_executable NAME)
     "LINKER:-platform_version,macos,${CMAKE_OSX_DEPLOYMENT_TARGET},${CMAKE_OSX_DEPLOYMENT_TARGET}"
     "LINKER:-framework,CoreFoundation"
     "LINKER:-bind_at_load")
+
+  # macOS TCC: this process is the one that opens a camera (scicv/OpenCV's
+  # AVFoundation backend), and TCC aborts it with
+  # __TCC_CRASHING_DUE_TO_PRIVACY_VIOLATION__ unless it can read a usage
+  # description for the REQUESTING BINARY. The app-bundle route never reaches
+  # us: CFBundleExecutable is a shell script in Contents/MacOS/ that execs
+  # Contents/Resources/scilab/.libs/Scilab-<version>, so [NSBundle mainBundle]
+  # resolves to .libs/ -- no Info.plist there. Apple's route for an executable
+  # outside a bundle is to carry the plist inside the Mach-O.
+  #
+  # PARITY: -sectcreate adds a __TEXT SECTION, not a load command. The
+  # executables dimension fingerprints build_version, first dep (install_name
+  # slot), the sorted dep set and the ordered rpaths (build-parity/parity/
+  # capture.py::_fingerprint_exe) -- none of which a section touches. Expect a
+  # clean diff; if it is not clean, something else changed, so investigate
+  # rather than re-baseline.
+  #
+  # LINK_DEPENDS makes an edit to the plist relink the executable; without it
+  # CMake sees no changed input and the stale section survives.
+  if(APPLE)
+    set(_usage_plist ${SCILAB_SOURCE_DIR}/etc/macos-usage-descriptions.plist)
+    if(NOT EXISTS ${_usage_plist})
+      message(FATAL_ERROR "scilab_executable(${NAME}): missing ${_usage_plist}")
+    endif()
+    target_link_options(${NAME} PRIVATE
+      "LINKER:-sectcreate,__TEXT,__info_plist,${_usage_plist}")
+    set_property(TARGET ${NAME} APPEND PROPERTY LINK_DEPENDS ${_usage_plist})
+  endif()
 
   # Post-object order: -lstdc++, the LINK head (aggregate + its predecessors),
   # then the transcribed LDADD tail — LC_LOAD_DYLIB order IS this order, and

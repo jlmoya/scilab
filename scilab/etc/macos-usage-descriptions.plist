@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  TCC usage descriptions for the Scilab executables.
+
+  This file is NOT an app-bundle Info.plist. It is linked INTO each Scilab
+  executable as the __TEXT,__info_plist section (see scilab_executable() in
+  cmake/ScilabAggregate.cmake), because the real Mach-O lives in
+  Contents/Resources/scilab/.libs/ rather than Contents/MacOS/, so the bundle
+  Info.plist never reaches the process. Keep it to privacy keys: anything that
+  belongs to the bundle identity (CFBundleIdentifier, icons, LSArchitecture*)
+  is set by package-macos.sh on the bundle itself.
+-->
+<plist version="1.0">
+<dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Scilab uses the camera when a script captures video, for example through the scicv (OpenCV) toolbox.</string>
+</dict>
+</plist>
