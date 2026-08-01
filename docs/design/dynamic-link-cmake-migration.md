@@ -309,9 +309,15 @@ more than the size of our own set.
    detect absent/too-old CMake and print the install line, rather than leaking a
    CMake error to someone who just wanted `tbxInstall("scicv")` to work.
 5. **Gate** — run §5 in full, both paths, and compare artifacts.
-6. **Cut over and delete** — remove the 18-file skeleton, the env flag,
-   `scicompile.sh`, `compilerDetection.sh`, and the timestamp hack.
-7. **Windows (phase 2)** — fold `Makefile.incl.mak` + `TEMPLATE_MAKEFILE.VC`
+6. **Cut over and deprecate** — CMake becomes the default and does the work.
+   The skeleton STAYS, reachable only by explicit opt-out, and every use of it
+   prints the deprecation warning naming its removal release (§10). The
+   development-time A/B flag from step 3 is deleted here; the opt-out is a
+   different, deliberately user-facing thing.
+7. **Delete, in the named release** — remove the 18-file skeleton, the opt-out,
+   `scicompile.sh`, `compilerDetection.sh`, and the timestamp hack. This is a
+   scheduled task, not an aspiration (§10).
+8. **Windows (phase 2)** — fold `Makefile.incl.mak` + `TEMPLATE_MAKEFILE.VC`
    into the same generator. This is A's payoff and is deliberately *not*
    attempted in pass 1; it cannot be validated on this machine.
 
@@ -327,5 +333,45 @@ more than the size of our own set.
 
 1. ~~Bundle CMake, or require it?~~ **Answered 2026-08-01: require it** (§3).
 2. ~~Is a net +34 MB app acceptable?~~ **Moot** — nothing is bundled.
-3. Should pass 1 keep the old path behind a flag for one release as an escape
-   hatch for third-party authors, or cut clean?  **STILL OPEN.**
+3. ~~Cut clean, or keep a fallback?~~ **Answered 2026-08-01: DEPRECATE, do not
+   delete yet** — see §10.
+
+
+---
+
+## 10. Deprecation policy for the autotools path (decided 2026-08-01)
+
+The skeleton is **kept, not cut**, when CMake lands — but only as a compatibility
+path, and on a clock.
+
+**What ships:**
+
+- **CMake is the default and does the work.** `ilib_build` and friends emit
+  CMake. Every toolbox goes through it unless someone explicitly opts out.
+- The autotools skeleton remains reachable **only by deliberate opt-out** (an
+  env var or an explicit argument — not a fallback that engages silently on
+  error, which would hide CMake bugs behind a path nobody is testing).
+- **Every use of the opt-out prints a deprecation warning naming the release it
+  is removed in.** Not "deprecated" — a release.
+
+**Why not cut clean.** `ilib_build` is documented public API with third-party
+ATOMS consumers we do not control. Ours are safe (nan, scicv and scimax all use
+the public API), but a third-party toolbox that patched `Makefile.orig`, called
+`scicompile.sh` directly or parsed the generated Makefile would have had no
+recourse in that release. One release of overlap costs little and removes that
+cliff.
+
+**Why the date is not optional.** A deprecation without a named removal release
+is how a "temporary" path survives for a decade — which is *precisely* this
+skeleton's own history. It outlived autotools everywhere else in the project
+because nobody ever set a date for it. Setting one is what distinguishes this
+from repeating that.
+
+Accordingly the removal is step 7 in the work breakdown — a scheduled task with
+the release named in the warning text and in this document, not an aspiration
+recorded in a comment.
+
+**Cost of keeping it for one release, stated plainly:** the 1.8 MB stays, both
+code paths must keep working and being tested, and the "delete the last
+autotools" win is deferred rather than banked. That is the price of not
+stranding a third-party author, and it is worth paying once — not twice.
