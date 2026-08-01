@@ -211,6 +211,13 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
     <key>CFBundleShortVersionString</key><string>2027.0.0</string>
     <key>CFBundleVersion</key><string>2027.0.0</string>
     <key>NSHighResolutionCapable</key><true/>
+    <!-- TCC: the camera prompt macOS shows when a script opens a capture device
+         (scicv/OpenCV). The engine binary also carries this string in its own
+         __TEXT,__info_plist (cmake/ScilabAggregate.cmake) because the real
+         Mach-O lives under Contents/Resources/scilab/.libs/, outside the bundle
+         layout TCC would otherwise consult. Keep the two strings in sync with
+         etc/macos-usage-descriptions.plist. -->
+    <key>NSCameraUsageDescription</key><string>Scilab uses the camera when a script captures video, for example through the scicv (OpenCV) toolbox.</string>
     <key>LSMinimumSystemVersion</key><string>11.0</string>
     <!-- Force native Apple-Silicon execution: refuse Rosetta and prefer the arm64 slice.
          The whole stack (scilab-bin, all module dylibs, the JDK 25 JVM, JOGL/GlueGen/MoltenVK)
