@@ -615,10 +615,25 @@ public class Scilab {
      * mutating one is a silent no-op; write through setElement/setData.
      * A view also captures no session identity, so one held across
      * close()/open() rebinds to the new session's same-named variable.
+     * <BR>
+     * COMPOSITE TYPES ARE ALWAYS BY VALUE — struct, list, tlist and mlist come
+     * back as a snapshot, never a live view, and this call does not fail or warn
+     * when asked for one. That is deliberate, not a gap (register B25/B26).
+     * <BR>
+     * A live view re-resolves its variable BY NAME on every accessor; that is what
+     * makes it safe when the engine reallocates underneath it. The children of a
+     * container have no name to re-resolve against — every construction site
+     * passes null — so a by-reference child could only be a raw pointer into
+     * engine memory, and reassigning or growing the container frees exactly that
+     * memory while the child still points at it. Writing through such a child
+     * lands in freed memory. By value is the only shape that is safe to hand out.
+     * <BR>
+     * Read a container's contents from the snapshot; to mutate the variable, use
+     * {@link #put(String, ScilabType)} or execute a Scilab assignment.
      *
      * @param varname the name of the variable
-     * @return a live view for double/integer/boolean variables, otherwise the
-     *         same by-value object get() would return
+     * @return a live view for double/integer/boolean variables; a by-value
+     *         snapshot for every other type, including all composite types
      * @throws UnsupportedTypeException Type not managed yet.
      * @see #get(String)
      */

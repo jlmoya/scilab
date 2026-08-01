@@ -20,6 +20,9 @@
 // the list API -- see the sci_mlist case of sendVariable below. struct.hxx also
 // brings in types::List and types::String (via singlestruct.hxx).
 #include "struct.hxx"
+// types::Int32 (typedef Int<int>, int.hxx:696) for the struct shape vector built
+// below -- struct.hxx alone does not pull it in.
+#include "int.hxx"
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4800)
@@ -461,7 +464,31 @@ bool ScilabToJava::sendVariable(const std::string & name, std::vector<int> & ind
                 // values -- already referenced by the struct -- survive it.
                 types::List * pItems = new types::List();
                 pItems->append(pHeader);
-                pItems->append(pStruct->extractField(L"dims"));
+
+                // Slot 1 is the SHAPE, built here from getDims()/getDimsArray()
+                // rather than fetched as extractField(L"dims").
+                //
+                // It used to be the latter, which worked only because "dims"
+                // shadowed any real field of that name. Register B24 removed that
+                // shadowing -- a real field now wins -- so asking by name would put
+                // the USER'S field value where the shape belongs and corrupt the
+                // wire format for every reader. The shape is wanted here
+                // unconditionally, so it is taken unconditionally.
+                //
+                // A struct that really does have a "dims" field therefore lists the
+                // name twice in the header: once as this pseudo-key at index 1, once
+                // as itself among the field names. That is a wart, not a defect --
+                // ScilabMList decodes positionally and contains no reference to
+                // "dims" at all, so each slot resolves to the right value. Before
+                // B24 the duplication was genuinely broken: BOTH slots carried the
+                // shape and the user's value was unreachable.
+                const int nbDims = pStruct->getDims();
+                types::Int32 * pShape = new types::Int32(1, nbDims);
+                for (int i = 0; i < nbDims; i++)
+                {
+                    pShape->set(i, pStruct->getDimsArray()[i]);
+                }
+                pItems->append(pShape);
                 for (int i = 0; i < nbFields; i++)
                 {
                     pItems->append(pStruct->extractField(pFields->get(i)));

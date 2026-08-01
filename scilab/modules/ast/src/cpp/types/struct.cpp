@@ -603,7 +603,22 @@ typed_list Struct::extractFields(std::vector<std::wstring> _wstFields)
 
 InternalType * Struct::extractField(const std::wstring & wstField)
 {
-    if (wstField == L"dims")
+    // "dims" is a pseudo-field reporting the struct array's shape, and it used to
+    // shadow a REAL field of that name unconditionally. The consequence was silent
+    // data loss (register B24): struct('dims', 7).dims answered int32([1,1]), and
+    // s.dims = 42 on any struct stored the value -- fieldnames() listed it, the
+    // field count included it -- while nothing could ever read it back.
+    //
+    // A real field now wins; the shape is only the fallback. This strictly widens
+    // behaviour. A struct WITHOUT a dims field is unaffected, and a struct WITH one
+    // could not previously be read at all, so no working code can depend on the old
+    // answer. exists() is consulted only for this one name, so the lookup path for
+    // every other field is untouched.
+    //
+    // NOTE for anyone marshalling: do NOT reach for the shape through
+    // extractField(L"dims") any more -- it may now return the user's field. Build it
+    // from getDims()/getDimsArray() directly, as ScilabToJava.cpp does.
+    if (wstField == L"dims" && exists(L"dims") == false)
     {
         Int32 * pDims = new Int32(1, getDims());
         for (int j = 0 ; j < getDims() ; j++)
