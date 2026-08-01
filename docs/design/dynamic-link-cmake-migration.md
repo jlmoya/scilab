@@ -164,30 +164,58 @@ than being ported. That is the strongest argument that this is the right shape.
 
 ---
 
-## 3. The one real cost, and how it gets paid
+## 3. CMake availability — SETTLED 2026-08-01: require it, do not bundle
 
-Today a user building a toolbox needs `sh`, `make`, and a compiler — on macOS,
-exactly what Command Line Tools provides. **CMake would be new**, and "install
-CMake first" is a poor first-run experience for someone who just wants a
-toolbox to work.
+**Decision: CMake is a documented prerequisite, like the compiler.** Scilab
+bundles no build tool today (verified: 0 `cmake`, `make`, `clang` or `gfortran`
+executables anywhere in the shipped app — only the autotools *scripts*), and
+this migration does not change that.
 
-Measured footprint if bundled: **13 MB binary + 23 MB share data ≈ 36 MB.**
+### Who is actually affected
 
-Options:
+Measured, because the answer decides the question:
 
-- **(a) Bundle CMake in the app** and prefer it. ~36 MB against an app already in
-  the hundreds of MB. Deterministic: every user has the same version, so toolbox
-  builds stop depending on what happens to be installed.
-- **(b) Require a system CMake**, detect it, and fail with a precise message.
-  Free, but pushes a setup step onto users and makes builds
-  version-dependent.
-- **(c) Bundle, but prefer a newer system CMake if present.** Worst of both —
-  reintroduces the version variance (a) exists to remove.
+- `tbxInstall` git-clones **source** and builds when the clone ships no
+  committed `loader.sce`. That is **50 of 54** installed toolboxes — so building
+  on the user's machine is the normal path, not an edge case. (`helptbx` proves
+  it: its `loader.sce` exists but is untracked — it was built at install time.)
+- **But almost none of that touches a compiler.** For a pure-macro toolbox
+  `builder.sce` is just `genlib`. Only toolboxes with native gateways reach
+  `ilib_build` and this skeleton: **3** — nan, scicv, scimax.
 
-**Recommendation: (a), with (b)'s clear diagnostic as the fallback** when the
-bundled copy is missing (a relocated or trimmed install). This must be settled
-before implementation starts, because it changes what `package-macos.sh` ships
-and what the size baseline records.
+So the exposure is: an end user — not a developer — installing one of ~3 native
+toolboxes. Real, but narrow.
+
+### Why require rather than bundle
+
+Bundling was considered and rejected. It buys determinism (one CMake version for
+everyone) and removes a setup step, at a measured **13 MB binary + 23 MB share
+data ≈ 36 MB**, i.e. a **net +34 MB** app to delete 1.8 MB of autotools. Against
+that:
+
+- it would be the **first executable build tool Scilab ever ships**, breaking the
+  pattern that every other build dependency (compiler, make, Fortran runtime) is
+  system-provided;
+- it becomes an ongoing obligation — security updates, signing and notarising a
+  third-party binary inside the bundle, architecture coverage;
+- a pinned CMake eventually becomes the *old* one a toolbox author cannot use;
+- and it solves a problem only for users who **already** need a full
+  C/C++/Fortran toolchain. Someone without Command Line Tools cannot build scicv
+  today either. One more named prerequisite is marginal.
+
+### The gap it leaves, and the fix
+
+The one genuine loss is ergonomic: macOS auto-prompts to install Command Line
+Tools the first time a compiler is invoked; nothing prompts for CMake. That
+deserves **a precise diagnostic, not 36 MB**. `ilib_build` must detect a missing
+or too-old CMake and say so plainly —
+
+    CMake not found. Scilab needs it to build toolbox gateways.
+    Install it with:  brew install cmake     (requires >= 3.20)
+
+— rather than surfacing a CMake stack trace or a bare non-zero exit. Same shape
+as the preflight in `build-macos.sh`. This is a required deliverable of step 4,
+not a nicety.
 
 ---
 
@@ -263,8 +291,9 @@ more than the size of our own set.
 1. **Characterise** — capture the exact `make` command lines the current path
    produces for the C/C++/Fortran/mixed matrix. This is the oracle everything
    else is compared against.
-2. **Decide the CMake-availability policy** (§3) and, if bundling, wire it into
-   `package-macos.sh` + the size baseline.
+2. ~~Decide the CMake-availability policy~~ **SETTLED (§3): require it, do not
+   bundle.** Nothing to wire into `package-macos.sh`; the size baseline is
+   unaffected. What this step now owns is the *diagnostic* — see step 4.
 2b. **Export a Scilab CMake package** (§2) — `ScilabConfig.cmake` + version file,
    installed with the app; refactor `_scilab_module_flag_env` /
    `_scilab_module_apply` so the flag, include, rpath and install_name policy
@@ -276,7 +305,9 @@ more than the size of our own set.
    `scilab_gateway()`; keep the skeleton in place and switch behind an env flag
    so both paths can be diffed.
 4. **Driver** — `ilib_compile` runs cmake; preserve `ilib_verbose` diagnostics,
-   re-signing, and rpath/install_name.
+   re-signing, and rpath/install_name. **Plus the missing-CMake diagnostic (§3)**:
+   detect absent/too-old CMake and print the install line, rather than leaking a
+   CMake error to someone who just wanted `tbxInstall("scicv")` to work.
 5. **Gate** — run §5 in full, both paths, and compare artifacts.
 6. **Cut over and delete** — remove the 18-file skeleton, the env flag,
    `scicompile.sh`, `compilerDetection.sh`, and the timestamp hack.
@@ -294,8 +325,7 @@ more than the size of our own set.
 
 ## 9. Open questions
 
-1. **Bundle CMake, or require it?** (§3) Blocks step 2. Recommendation: bundle.
-2. Is a **net +34 MB** app acceptable to remove the last autotools? If not,
-   option (b) or a trimmed CMake install is the lever.
+1. ~~Bundle CMake, or require it?~~ **Answered 2026-08-01: require it** (§3).
+2. ~~Is a net +34 MB app acceptable?~~ **Moot** — nothing is bundled.
 3. Should pass 1 keep the old path behind a flag for one release as an escape
-   hatch for third-party authors, or cut clean?
+   hatch for third-party authors, or cut clean?  **STILL OPEN.**
