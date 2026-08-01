@@ -1,6 +1,9 @@
 # Retiring the runtime autotools skeleton: `ilib_build` on CMake
 
-**Status:** scoped, not started. **Decision:** approved 2026-08-01 — emit CMake (option A).
+**Status:** fully scoped, no open questions, not started.
+**Decisions (2026-08-01):** emit CMake (option A) · reuse `scilab_module()`'s
+policy via an installable package · require CMake, do not bundle · deprecate the
+autotools path and **remove it in 2027.1**.
 
 This is the last live autotools in the tree. Everything else — the project's own
 build — moved to CMake + Maven; this skeleton survived the purge deliberately,
@@ -314,7 +317,7 @@ more than the size of our own set.
    prints the deprecation warning naming its removal release (§10). The
    development-time A/B flag from step 3 is deleted here; the opt-out is a
    different, deliberately user-facing thing.
-7. **Delete, in the named release** — remove the 18-file skeleton, the opt-out,
+7. **Delete, in 2027.1** — remove the 18-file skeleton, the opt-out,
    `scicompile.sh`, `compilerDetection.sh`, and the timestamp hack. This is a
    scheduled task, not an aspiration (§10).
 8. **Windows (phase 2)** — fold `Makefile.incl.mak` + `TEMPLATE_MAKEFILE.VC`
@@ -333,8 +336,8 @@ more than the size of our own set.
 
 1. ~~Bundle CMake, or require it?~~ **Answered 2026-08-01: require it** (§3).
 2. ~~Is a net +34 MB app acceptable?~~ **Moot** — nothing is bundled.
-3. ~~Cut clean, or keep a fallback?~~ **Answered 2026-08-01: DEPRECATE, do not
-   delete yet** — see §10.
+3. ~~Cut clean, or keep a fallback?~~ **Answered 2026-08-01: DEPRECATE, remove in
+   2027.1** — see §10. No open questions remain.
 
 
 ---
@@ -352,7 +355,12 @@ path, and on a clock.
   env var or an explicit argument — not a fallback that engages silently on
   error, which would hide CMake bugs behind a path nobody is testing).
 - **Every use of the opt-out prints a deprecation warning naming the release it
-  is removed in.** Not "deprecated" — a release.
+  is removed in.** Not "deprecated" — a release. That release is **2027.1**
+  (confirmed 2026-08-01), and the warning text says so literally:
+
+      WARNING: the autotools build path for toolbox gateways is DEPRECATED and
+      will be REMOVED in Scilab 2027.1. Your gateway built, but rebuild it with
+      the default (CMake) path before upgrading.
 
 **Why not cut clean.** `ilib_build` is documented public API with third-party
 ATOMS consumers we do not control. Ours are safe (nan, scicv and scimax all use
@@ -367,9 +375,10 @@ skeleton's own history. It outlived autotools everywhere else in the project
 because nobody ever set a date for it. Setting one is what distinguishes this
 from repeating that.
 
-Accordingly the removal is step 7 in the work breakdown — a scheduled task with
-the release named in the warning text and in this document, not an aspiration
-recorded in a comment.
+Accordingly the removal is step 7 in the work breakdown, targeted at **2027.1** —
+a scheduled task with the release named in the warning text and in this
+document, not an aspiration recorded in a comment. The current version is
+2027.0.0, so the deprecated path lives for exactly one minor release.
 
 **Cost of keeping it for one release, stated plainly:** the 1.8 MB stays, both
 code paths must keep working and being tested, and the "delete the last
