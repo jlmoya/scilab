@@ -73,6 +73,24 @@ mkdir -p "$PAYLOAD" "$MACOS_DIR" "$RES_DIR" "$APP_SCIHOME"
 # disk when Ant was retired. Gitignored, zero tracked files, nothing newer than pom.xml, and
 # no runtime reference (classpath.xml has zero /build/ entries) -- but rsync copied them into
 # every bundle regardless. Excluded here; deleting them from the dev tree is safe too.
+#
+# /cmake-build-*/ is a GLOB, not another literal, and that is the point. The exclude above
+# names build-cmake/ exactly, so CLion's default build directory -- cmake-build-debug/ --
+# walked straight past it and shipped 29M of IDE build output inside the application. That is
+# the third time this class of leak has been found (build-cmake/ ~500M in 554d38cf1c8, then
+# modules/*/build/ 14M, now this), each time because the exclude enumerated the directories
+# that existed rather than the shape of the ones that appear. The glob covers CLion's whole
+# family at once: cmake-build-debug, -release, -relwithdebinfo, -minsizerel.
+#
+# Nothing under it was ever shipped-and-used: cmake-build-debug/ holds 0 dylibs and 41 stray
+# objects, and the runtime reads its binaries from modules/*/.libs/ (the drop-in layout that
+# build-cmake/ populates). The shipped engine is unaffected -- it is a release build, -O2
+# -DNDEBUG -fwrapv on all 3606 TUs, set by cmake/ScilabFlags.cmake rather than by
+# CMAKE_BUILD_TYPE, which is deliberately left empty.
+#
+# /build/ is the last of the same family: a 36K autotools leftover holding one stale
+# config.log. Untracked, no runtime reference. Anchored with a leading slash so it hits only
+# the top-level directory, never a module's own build/ (already handled above).
 echo "[1/6] rsync dev build -> payload (incremental)…"
 rsync -a --delete \
   --exclude='Scilab-2027.0.0.app/' \
@@ -82,10 +100,31 @@ rsync -a --delete \
   --exclude='config.log' --exclude='config.status' \
   --exclude='.git/' \
   --exclude='/build-cmake/' --exclude='/build-parity/' --exclude='/.atoms/' \
+  --exclude='/cmake-build-*/' --exclude='/build/' \
   --exclude='modules/*/target/classes/' --exclude='modules/*/target/maven-status/' \
   --exclude='modules/*/target/generated-sources/' --exclude='modules/*/target/maven-archiver/' \
   --exclude='modules/*/build/' \
   "$DEV"/ "$PAYLOAD"/
+
+# rsync's --delete does NOT remove destination files that an --exclude matches: excluded
+# paths are PROTECTED in the destination, not pruned from it. So adding an exclude only
+# stops FUTURE copies -- a bundle built before the exclude existed keeps the directory
+# forever. That is why cmake-build-debug/ (29M) was still inside the app after being
+# excluded, and why re-running the packager did not shrink it.
+#
+# --delete-excluded would fix it in a single flag and is deliberately NOT used: it applies
+# to EVERY exclude above, including the Scilab-2027.0.0.app/ recursion guard, so it would
+# delete the app directory out of its own payload whenever the dev tree contains one.
+#
+# Pruning the known-stale build directories explicitly is the narrow version of that. Only
+# these names, only at the payload root, only if present.
+for _stale in build-cmake build-parity cmake-build-debug cmake-build-release \
+              cmake-build-relwithdebinfo cmake-build-minsizerel build .atoms; do
+    if [ -e "$PAYLOAD/$_stale" ]; then
+        echo "       pruning stale build dir from payload: $_stale ($(du -sh "$PAYLOAD/$_stale" | cut -f1))"
+        rm -rf "${PAYLOAD:?}/$_stale"
+    fi
+done
 
 # ---- 3. relocate: rewrite the dev abs-path -> payload path in text files ----
 # (All dev-path-bearing files are text: launcher wrapper scripts, classpath.xml,
