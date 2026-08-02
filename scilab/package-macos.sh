@@ -298,9 +298,30 @@ if [ "$REBUILD_TBX" = "1" ]; then
   # in a bash double-quoted string `""` is empty concatenation rather than an escaped
   # quote -- mprintf("x") silently became mprintf(x), a Scilab syntax error, which
   # would have produced exactly the silent hang this block exists to prevent.
+  # DO NOT exec Resources/toolbox-manager/tbxmgr.sce here. That file carries its
+  # OWN standalone copy of tbxUpdate (line ~174, the old one-argument signature),
+  # and exec'ing it REDEFINES the core module's tbxUpdate with that stale copy --
+  # visibly, as "Warning : redefining function: tbxUpdate". A run that did so
+  # failed with "Undefined variable: name" and never executed the fixed version
+  # at all. The engine's own modules/toolbox_manager macros are rsync'd into the
+  # payload and load at startup, so tbxUpdate and tbx_manifest_read are already
+  # available -- verified in the packaged app: the 2-argument signature resolves
+  # without tbxmgr.sce being exec'd.
+  #
+  # The duplicate itself is a standing hazard: two implementations of the same
+  # verbs, and only one of them gets fixed when someone fixes a bug.
   TBX_SCE="$(mktemp -t scilab-tbxupdate).sce"
   cat > "$TBX_SCE" <<'TBXEOF'
-ierr = execstr("exec(fullfile(SCI, ''..'', ''toolbox-manager'', ''tbxmgr.sce''), -1); tbxUpdate();", "errcatch");
+// Guard: fail loudly if a stale one-argument tbxUpdate is what we ended up with,
+// rather than silently rebuilding through it.
+if execstr("nargs = 0; nargs = macrovar(tbxUpdate); ", "errcatch") == 0 then
+    if size(nargs(1), "*") < 2 then
+        mprintf("tbxUpdate has the STALE 1-arg signature -- refusing to run.\n");
+        mprintf("Something redefined it over the core module version.\n");
+        exit(1);
+    end
+end
+ierr = execstr("tbxUpdate();", "errcatch");
 if ierr <> 0 then
     mprintf("tbxUpdate FAILED (ierr=%d): %s\n", ierr, lasterror());
 end
