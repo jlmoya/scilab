@@ -29,8 +29,11 @@
 
 function ok = tbxUpdate(name, dopull)
 
-    if argn(1) < 2 then dopull = %f; end
-    if argn(1) < 1 then name = []; end
+    // argn(2) is the INPUT count; argn(1) is the OUTPUT count and is
+    // always 1 here. The original code tested argn(1) < 1, which is never
+    // true, so its no-argument "update all" branch never actually fired.
+    if argn(2) < 2 then dopull = %f; end
+    if argn(2) < 1 then name = []; end
 
     // ---- update every registered toolbox ----------------------------------
     if isempty(name) then
