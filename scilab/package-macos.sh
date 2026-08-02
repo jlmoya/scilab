@@ -327,9 +327,19 @@ if ierr <> 0 then
 end
 exit(ierr <> 0);
 TBXEOF
+  # -nouserstartup is LOAD-BEARING, not tidiness. Without it the app's
+  # $SCIHOME/.scilab autoloads all 53 registered toolboxes before the rebuild
+  # starts, and you cannot relink a library that is already loaded into the
+  # running process: every native toolbox then fails instantly with
+  # "<name> library is already loaded" or a configure error. Measured with the
+  # flag: scicv_Init and pyEvalStr are absent (nothing autoloaded) while
+  # tbxUpdate and tbx_manifest_read are still present, because the toolbox
+  # manager is a core Scilab module rather than something .scilab pulls in.
+  # The ordering then works out on its own -- tbxUpdate loads each toolbox only
+  # AFTER building it, so nothing is ever loaded before its own rebuild.
   JAVA_HOME="$(/usr/libexec/java_home -v "$JDK_PIN" 2>/dev/null)" \
-    "$PAYLOAD/bin/scilab-cli" -nb -scihome "$APP_SCIHOME" -f "$TBX_SCE" \
-    < /dev/null 2>&1 | grep -iE "tbxUpdate|building|loaded|FAILED|error" || true
+    "$PAYLOAD/bin/scilab-cli" -nb -nouserstartup -scihome "$APP_SCIHOME" -f "$TBX_SCE" \
+    < /dev/null 2>&1 | grep -iE "tbxUpdate|building|loaded|FAILED|error|\[[0-9]+/" || true
   TBX_RC=${PIPESTATUS[0]}
   rm -f "$TBX_SCE"
   if [ "${TBX_RC:-0}" -ne 0 ]; then
