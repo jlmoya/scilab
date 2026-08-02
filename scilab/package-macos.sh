@@ -288,8 +288,12 @@ codesign -f -s - "$MACOS_DIR/$BIN_NAME" 2>/dev/null || true
 if [ "$REBUILD_TBX" = "1" ]; then
   N_TBX=$(grep -cvE '^\s*(#|$)' "$APP_SCIHOME/installed_toolboxes.tbx" 2>/dev/null || echo 0)
   echo "[7/7] --rebuild-toolboxes: tbxUpdate() over $N_TBX toolbox(es) in $APP_SCIHOME"
-  echo "      Each native toolbox runs ./configure && make -- this takes TENS OF MINUTES."
-  echo "      Progress and errors stream below; nothing is being hidden."
+  echo "      Each native toolbox runs ./configure && make -- tens of minutes is normal."
+  echo "      NO NETWORK: tbxUpdate's git pull is opt-in and stays off here. A 24h+ wedge"
+  echo "      was traced to it -- 52 of the registered toolboxes have SSH remotes and"
+  echo "      tbx_sh() had no timeout, so one unreachable host stopped everything."
+  echo "      Per-toolbox progress with [i/N] and elapsed seconds streams below, so a"
+  echo "      stall is distinguishable from work. Nothing is hidden."
   # Driven from a temp script, not -e: the snippet needs nested Scilab strings, and
   # in a bash double-quoted string `""` is empty concatenation rather than an escaped
   # quote -- mprintf("x") silently became mprintf(x), a Scilab syntax error, which
