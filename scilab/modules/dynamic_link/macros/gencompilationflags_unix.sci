@@ -57,8 +57,25 @@ function cmd = gencompilationflags_unix(ldflags, cflags, fflags, cc, flagsType)
     end
 
     // CFLAGS
+    //
+    // ilib_build gives callers ONE flags channel for two languages, and the line
+    // below used to hand it verbatim to the C compiler as well. A C++ toolbox has
+    // no way to pass -std=c++17 except through this channel, so it landed in
+    // CFLAGS, and the autotools skeleton's AC_PROG_CC then compiled its conftest.c
+    // as C with a C++ standard selected:
+    //
+    //     error: invalid argument '-std=c++17' not allowed with 'C'
+    //
+    // which autoconf reports as the thoroughly misleading "C compiler cannot
+    // create executables". It is deterministic, not the intermittent flake it has
+    // long been recorded as, and it broke every C++ toolbox in the tree (cgal,
+    // parquet, scicv, sciTorch). A C++ standard selector is never valid in CFLAGS,
+    // so strip exactly those and leave everything else untouched; CXXFLAGS below
+    // still receives the full set.
+    ccflags = cflags;
+    ccflags = strsubst(ccflags, "/(^|\s)-std=(c|gnu)\+\+[0-9a-z]+/", " ", "r");
     if cflags <> "" then
-        cmd = cmd + " CFLAGS="""+tbxFlag+envFlag+cflags+""""
+        cmd = cmd + " CFLAGS="""+tbxFlag+envFlag+ccflags+""""
     end
 
     // CXXFLAGS ... use the same as C
