@@ -265,14 +265,57 @@ echo "[6/7] ad-hoc sign launcher…"
 codesign -f -s - "$MACOS_DIR/$BIN_NAME" 2>/dev/null || true
 
 # ---- optional: rebuild native toolboxes (core-ABI-changed case) ------------
+#
+# You usually do NOT need this. Toolboxes registered as `local` are loaded from
+# their source directory (see installed_toolboxes.tbx), so a toolbox you rebuilt
+# yourself is already live in the app -- rebuild only when Scilab's own native ABI
+# changed under them.
+#
+# THREE BUGS LIVED HERE, all of which made a slow step look like a hung one:
+#
+#  * `SCIHOME=<dir>` as an ENVIRONMENT VARIABLE IS IGNORED by Scilab -- measured:
+#    the child reported SCIHOME=~/.Scilab/scilab-branch-2027.0 (the dev home) while
+#    this line passed the app's. So the rebuild silently targeted the WRONG toolbox
+#    manifest. -scihome is the only thing that works, which is why the launcher
+#    written above uses the flag, not the variable.
+#  * `quit` at the end of -e never runs if tbxUpdate() raises, and Scilab then falls
+#    through to the interactive prompt. Run from a terminal that is a real tty, it
+#    waits on stdin forever. `exit(n)` inside errcatch always runs, and </dev/null
+#    guarantees EOF terminates it even if something still reaches a prompt.
+#  * `2>/dev/null | grep ...` threw away every error message AND buffered stdout, so
+#    a step that legitimately takes tens of minutes (ilib_build runs a full
+#    ./configure && make PER TOOLBOX) printed nothing at all while it worked.
 if [ "$REBUILD_TBX" = "1" ]; then
-  echo "[7/7] --rebuild-toolboxes: tbxUpdate() all registered toolboxes…"
+  N_TBX=$(grep -cvE '^\s*(#|$)' "$APP_SCIHOME/installed_toolboxes.tbx" 2>/dev/null || echo 0)
+  echo "[7/7] --rebuild-toolboxes: tbxUpdate() over $N_TBX toolbox(es) in $APP_SCIHOME"
+  echo "      Each native toolbox runs ./configure && make -- this takes TENS OF MINUTES."
+  echo "      Progress and errors stream below; nothing is being hidden."
+  # Driven from a temp script, not -e: the snippet needs nested Scilab strings, and
+  # in a bash double-quoted string `""` is empty concatenation rather than an escaped
+  # quote -- mprintf("x") silently became mprintf(x), a Scilab syntax error, which
+  # would have produced exactly the silent hang this block exists to prevent.
+  TBX_SCE="$(mktemp -t scilab-tbxupdate).sce"
+  cat > "$TBX_SCE" <<'TBXEOF'
+ierr = execstr("exec(fullfile(SCI, ''..'', ''toolbox-manager'', ''tbxmgr.sce''), -1); tbxUpdate();", "errcatch");
+if ierr <> 0 then
+    mprintf("tbxUpdate FAILED (ierr=%d): %s\n", ierr, lasterror());
+end
+exit(ierr <> 0);
+TBXEOF
   JAVA_HOME="$(/usr/libexec/java_home -v "$JDK_PIN" 2>/dev/null)" \
-    SCIHOME="$APP_SCIHOME" "$PAYLOAD/bin/scilab-cli" -nb -e \
-    "exec(fullfile(SCI,'..','toolbox-manager','tbxmgr.sce'),-1); tbxUpdate(); quit" \
-    2>/dev/null | grep -iE "tbxUpdate|loaded|FAILED" || true
+    "$PAYLOAD/bin/scilab-cli" -nb -scihome "$APP_SCIHOME" -f "$TBX_SCE" \
+    < /dev/null 2>&1 | grep -iE "tbxUpdate|building|loaded|FAILED|error" || true
+  TBX_RC=${PIPESTATUS[0]}
+  rm -f "$TBX_SCE"
+  if [ "${TBX_RC:-0}" -ne 0 ]; then
+    echo "      toolbox rebuild reported failures (exit $TBX_RC) — see the lines above" >&2
+  else
+    echo "      (toolbox rebuild finished cleanly)"
+  fi
 else
   echo "[7/7] (skip toolbox rebuild — pass --rebuild-toolboxes to force)"
+  echo "      Toolboxes registered 'local' load from their source dir, so a toolbox"
+  echo "      you rebuilt yourself is already live without this flag."
 fi
 
 echo
