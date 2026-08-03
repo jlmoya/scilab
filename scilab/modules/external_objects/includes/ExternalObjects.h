@@ -17,7 +17,15 @@
 #ifndef __EXTERNALOBJECTS_H__
 #define __EXTERNALOBJECTS_H__
 
+/* Callers may already have defined this: a toolbox that wants the deprecated
+ * stack functions sets the environment variable of the same name, and
+ * gencompilationflags_unix.sci turns that into -D__USE_DEPRECATED_STACK_FUNCTIONS__,
+ * which the driver expands to the value 1. Defining it unconditionally here does
+ * not match that, so every translation unit including this header warns
+ * (-Wmacro-redefined) -- 42 times in a single PIMS build. */
+#ifndef __USE_DEPRECATED_STACK_FUNCTIONS__
 #define __USE_DEPRECATED_STACK_FUNCTIONS__
+#endif
 
 //#define EODEBUG
 
