@@ -39,7 +39,7 @@ scilab_module(arnoldi
     sci_gateway/c/sci_znaupd.c
   LANG C
   SYSTEM_LIBS
-    /opt/homebrew/opt/openblas/lib/libopenblas.dylib
+    ${SCILAB_BLAS_LIBFILE}                                  # see SCILAB_BLAS_BACKEND
     /opt/homebrew/opt/arpack/lib/libarpack.dylib
   EXTRA_INCLUDES
     ${SCILAB_SOURCE_DIR}/modules/elementary_functions/includes

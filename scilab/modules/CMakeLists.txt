@@ -123,7 +123,7 @@ set(_scilab_engine_system_libs
   xml2 z icucore                                            # core/io -> /usr/lib
   gfortran                                                  # FLIBS -> @rpath/libgfortran.5
   quadmath                                                  # FLIBS -> @rpath/libquadmath.0
-  /opt/homebrew/opt/openblas/lib/libopenblas.dylib)         # BLAS_LIBS
+  ${SCILAB_BLAS_LIBFILE})                                   # BLAS_LIBS (see SCILAB_BLAS_BACKEND)
 
 # libscilab — the GUI aggregate: ENGINE + jvm + GUI_LIBS, plus the GUI-only
 # system records (curses <- console chain; jli <- jvm's
