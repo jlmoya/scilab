@@ -285,6 +285,17 @@ codesign -f -s - "$MACOS_DIR/$BIN_NAME" 2>/dev/null || true
 #  * `2>/dev/null | grep ...` threw away every error message AND buffered stdout, so
 #    a step that legitimately takes tens of minutes (ilib_build runs a full
 #    ./configure && make PER TOOLBOX) printed nothing at all while it worked.
+#
+# DO NOT PUT A FILTER BACK ON THIS PIPELINE. A `grep -iE "...|error|..."` lived here
+# and was worse than no output at all: ilib_compile prints
+#   "ilib_compile: Warning: No error code returned by the compilation but the error
+#    output is not empty:"
+# and then the compiler's actual text. The header matched the filter (it contains the
+# word "error"); the diagnostics under it did not, so every run showed ten alarming
+# headers with the explanation stripped out -- unreadable, and indistinguishable from
+# a real failure. The output belongs to whoever is reading it; they decide what
+# matters. tee keeps it on screen and on disk. Summarising or suppressing warnings
+# here is the same mistake in a nicer costume.
 if [ "$REBUILD_TBX" = "1" ]; then
   N_TBX=$(grep -cvE '^\s*(#|$)' "$APP_SCIHOME/installed_toolboxes.tbx" 2>/dev/null || echo 0)
   echo "[7/7] --rebuild-toolboxes: tbxUpdate() over $N_TBX toolbox(es) in $APP_SCIHOME"
@@ -293,7 +304,10 @@ if [ "$REBUILD_TBX" = "1" ]; then
   echo "      was traced to it -- 52 of the registered toolboxes have SSH remotes and"
   echo "      tbx_sh() had no timeout, so one unreachable host stopped everything."
   echo "      Per-toolbox progress with [i/N] and elapsed seconds streams below, so a"
-  echo "      stall is distinguishable from work. Nothing is hidden."
+  echo "      stall is distinguishable from work."
+  TBX_LOG="$APP_SCIHOME/rebuild-toolboxes-$(date +%Y%m%d-%H%M%S).log"
+  echo "      Output is UNFILTERED: every compiler warning is printed verbatim."
+  echo "      Full copy saved to: $TBX_LOG"
   # Driven from a temp script, not -e: the snippet needs nested Scilab strings, and
   # in a bash double-quoted string `""` is empty concatenation rather than an escaped
   # quote -- mprintf("x") silently became mprintf(x), a Scilab syntax error, which
@@ -339,7 +353,7 @@ TBXEOF
   # AFTER building it, so nothing is ever loaded before its own rebuild.
   JAVA_HOME="$(/usr/libexec/java_home -v "$JDK_PIN" 2>/dev/null)" \
     "$PAYLOAD/bin/scilab-cli" -nb -nouserstartup -scihome "$APP_SCIHOME" -f "$TBX_SCE" \
-    < /dev/null 2>&1 | grep -iE "tbxUpdate|building|loaded|FAILED|error|\[[0-9]+/" || true
+    < /dev/null 2>&1 | tee "$TBX_LOG"
   TBX_RC=${PIPESTATUS[0]}
   rm -f "$TBX_SCE"
   if [ "${TBX_RC:-0}" -ne 0 ]; then
