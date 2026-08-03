@@ -121,7 +121,7 @@ mkdir -p "$PAYLOAD" "$MACOS_DIR" "$RES_DIR" "$APP_SCIHOME"
 # /build/ is the last of the same family: a 36K autotools leftover holding one stale
 # config.log. Untracked, no runtime reference. Anchored with a leading slash so it hits only
 # the top-level directory, never a module's own build/ (already handled above).
-echo "[1/6] rsync dev build -> payload (incremental)…"
+echo "[1/7] rsync dev build -> payload (incremental)…"
 rsync -a --delete \
   --exclude='Scilab-2027.0.0.app/' \
   --exclude='*.o' --exclude='*.lo' \
@@ -160,7 +160,7 @@ done
 # (All dev-path-bearing files are text: launcher wrapper scripts, classpath.xml,
 #  *.properties, libtool *.la. The Mach-O binaries hold it only as harmless
 #  debug cruft and resolve siblings relatively, so they are left untouched.)
-echo "[2/6] relocate dev path -> $PAYLOAD …"
+echo "[2/7] relocate dev path -> $PAYLOAD …"
 # strip a stale nested stub if it slipped in
 rm -rf "$PAYLOAD/Scilab-2027.0.0.app"
 # grep -I skips binaries; rewrite only files that actually contain the old path
@@ -170,7 +170,7 @@ done
 echo "      remaining dev-path refs in text files: $(grep -rlI "$DEV" "$PAYLOAD" 2>/dev/null | wc -l | tr -d ' ')"
 
 # ---- 4. launcher (configurable JDK + own SCIHOME) --------------------------
-echo "[3/6] launcher (JDK pin=$JDK_PIN, SCIHOME=$APP_SCIHOME)…"
+echo "[3/7] launcher (JDK pin=$JDK_PIN, SCIHOME=$APP_SCIHOME)…"
 cat > "$MACOS_DIR/$BIN_NAME" <<LAUNCHER
 #!/bin/bash
 # Scilab-2027.0.0.app launcher — independent relocated install (this Mac).
@@ -194,7 +194,7 @@ LAUNCHER
 chmod +x "$MACOS_DIR/$BIN_NAME"
 
 # ---- 5. Info.plist + icon --------------------------------------------------
-echo "[4/6] Info.plist + icon…"
+echo "[4/7] Info.plist + icon…"
 cp -f "$DEV/Scilab-2027.0.0.app/Contents/Resources/scilab.icns" "$RES_DIR/scilab.icns" 2>/dev/null || true
 cat > "$APP/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -339,7 +339,13 @@ ierr = execstr("tbxUpdate();", "errcatch");
 if ierr <> 0 then
     mprintf("tbxUpdate FAILED (ierr=%d): %s\n", ierr, lasterror());
 end
-exit(ierr <> 0);
+// bool2s is REQUIRED. `ierr <> 0` is a boolean and exit() wants a numeric
+// scalar, so exit(ierr <> 0) raises
+//     exit: Wrong type for input argument #1: A scalar expected.
+// and never exits. Measured: the process then ended with 231 for BOTH the
+// success and the failure case, i.e. the status carried no information at
+// all, and the script's "reported failures" check could not work.
+exit(bool2s(ierr <> 0));
 TBXEOF
   # -nouserstartup is LOAD-BEARING, not tidiness. Without it the app's
   # $SCIHOME/.scilab autoloads all 53 registered toolboxes before the rebuild
@@ -351,10 +357,21 @@ TBXEOF
   # manager is a core Scilab module rather than something .scilab pulls in.
   # The ordering then works out on its own -- tbxUpdate loads each toolbox only
   # AFTER building it, so nothing is ever loaded before its own rebuild.
+  set +e
   JAVA_HOME="$(/usr/libexec/java_home -v "$JDK_PIN" 2>/dev/null)" \
     "$PAYLOAD/bin/scilab-cli" -nb -nouserstartup -scihome "$APP_SCIHOME" -f "$TBX_SCE" \
     < /dev/null 2>&1 | tee "$TBX_LOG"
+  # `set +e` is required, and NOT interchangeable with the `|| true` that used to
+  # be here. This script runs under `set -euo pipefail` (line 19): with pipefail
+  # the pipeline carries scilab-cli's status, so a non-zero one aborts the script
+  # instantly -- before the verdict below and before "Done." ever prints. That is
+  # exactly what a run did after the filter was removed: the log stopped dead on
+  # the last toolbox with no summary. `|| true` prevented that abort, but it also
+  # reset PIPESTATUS to a single (0), so TBX_RC was ALWAYS 0 and the failure
+  # branch below could never be reached -- the guard was decorative. Suspending
+  # errexit around the pipeline keeps both the real status and the rest of the run.
   TBX_RC=${PIPESTATUS[0]}
+  set -e
   rm -f "$TBX_SCE"
   if [ "${TBX_RC:-0}" -ne 0 ]; then
     echo "      toolbox rebuild reported failures (exit $TBX_RC) — see the lines above" >&2
