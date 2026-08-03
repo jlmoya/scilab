@@ -43,13 +43,25 @@ function ok = tbx_build(path)
 
     logf = fullfile(TMPDIR, "tbx_build_" + basename(path) + ".log");
     mdelete(logf);
+
+    // The builder is exec'd at level -1, i.e. IN THIS FUNCTION'S OWN SCOPE, and it
+    // is an arbitrary third-party script: every variable it assigns lands on top
+    // of ours. scimax's builder.sce assigns `path` (pointing it at the Overload
+    // Toolbox loader), which silently redirected the loader.sce test below to a
+    // file that cannot exist -- so a build that ran start to finish, wrote its
+    // loader and reported no error at all was still recorded as FAILED. Snapshot
+    // everything still needed after the exec under names no builder will collide
+    // with; `path` and `logf` themselves must be treated as clobbered from here.
+    tbx__loader = fullfile(path, "loader.sce");
+    tbx__logf   = logf;
+
     diary(logf);
     ie = execstr("exec(""" + script + """, -1)", "errcatch");
     diary(0);
 
     lerr = "";
     if ie <> 0 then lerr = lasterror(); end
-    ok = (ie == 0) & isfile(fullfile(path, "loader.sce"));
+    ok = (ie == 0) & isfile(tbx__loader);
 
     // Help is the LAST step in every toolbox builder, and it cannot run here:
     //
@@ -63,7 +75,7 @@ function ok = tbx_build(path)
     // exact message and nothing else, and only when loader.sce is present.
     if ~ok & lerr <> [] then
         if grep(lerr, "documentation cannot be built in this scilab mode") <> [] & ..
-           isfile(fullfile(path, "loader.sce")) then
+           isfile(tbx__loader) then
             mprintf("      note: help not regenerated (NWNI has no JVM); code and macros built\n");
             ok = %t;
         end
@@ -71,8 +83,8 @@ function ok = tbx_build(path)
     if ~ok then return; end
 
     // The builder exited cleanly -- now check it did not quietly fail inside.
-    if ~isfile(logf) then return; end
-    txt = mgetl(logf);
+    if ~isfile(tbx__logf) then return; end
+    txt = mgetl(tbx__logf);
     if txt == [] then return; end
     bad = [];
     hits = grep(txt, "ierr=");

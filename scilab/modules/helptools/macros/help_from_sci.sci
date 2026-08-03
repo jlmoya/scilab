@@ -356,7 +356,11 @@ function [helptxt,demotxt]=help_from_sci(funname,helpdir,demodir)
     if ~isempty(helpdir) then
         fnme = pathconvert(helpdir, %t, %f) + outxml + ".xml";
         answ = 1;
-        if isfile(fnme) then  // file exists...
+        // Only ask when someone can answer. messagebox raises in -nwni/-nogui,
+        // which is how every batch toolbox build runs, and the error escapes
+        // builder.sce and fails the build. Regenerating is what the caller
+        // asked for, so outside a GUI keep the file-absent default: overwrite.
+        if isfile(fnme) & getscilabmode() == "STD" then  // file exists...
             answ = messagebox(fnme + " exists!", "Warning - help_from_sci", "warning", ["Create anyway" "Skip file"], "modal");
         end
         if answ == 1 then
@@ -372,7 +376,7 @@ function [helptxt,demotxt]=help_from_sci(funname,helpdir,demodir)
     if ~isempty(demodir) then
         fnme = demodir + filesep() + out + ".dem.sce";
         answ = 1;
-        if isfile(fnme) then
+        if isfile(fnme) & getscilabmode() == "STD" then   // see the .xml case above
             answ = messagebox(fnme + " exists!", "Warning - help_from_sci", "warning", ["Create anyway" "Skip file"], "modal");
         end
         if answ == 1 then
