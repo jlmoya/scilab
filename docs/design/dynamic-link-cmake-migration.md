@@ -687,9 +687,33 @@ the record. **The export rule for real toolboxes should be the same shape as the
 dependency rule: a CMake-built subset is acceptable; a symbol CMake exports that
 autotools does not, or any undefined reference, is a failure.**
 
+### Gate 2 — `scicv`: PASS
+
+Rebuilt through the CMake path via `build_macos.sce`. Its own 33-case suite:
+**32/33 on the CMake build and 32/33 on the autotools build** — the same single
+pre-existing `CascadeClassifier` failure. Exports 4044 vs 4540, a strict subset
+with **0 symbols CMake adds**; dependencies differ only by the intended `FLIBS`
+drop. Restored byte-identical afterwards.
+
+### Gate 2 — `scimax`: PASS
+
+Built in 1.9 s. Exports **45 vs 45, 0 CMake-only**; dependencies differ only by
+the `FLIBS` drop. It ships no `.tst` suite, so the check here is
+build + load + artifact comparison, not a functional suite — stated plainly
+rather than counted as more evidence than it is. Restored byte-identical.
+
+### A trap that cost three detours
+
+`cgal`, `scicv` and (nearly) `nan` all appeared to fail under CMake with
+`fatal error: 'libintl.h' file not found`. In every case the **autotools path
+failed identically** from the same entry point, and the cause was the entry
+point: these toolboxes have a `build_macos.sce` that does
+`setenv("CPATH", "/opt/homebrew/opt/gettext/include")` before delegating, and
+`builder.sce` does not. **Always A/B before attributing a toolbox build failure
+to this change** — twice the answer was "wrong entry point", not "regression".
+
 ### Not yet run
 
-- gate 2 for **scicv** and **scimax**;
 - gate 3, the **54-toolbox verification sweep**;
 - gate 4 reduces to `PARITY OK`: the "+36 MB if CMake is bundled" line is moot,
   §3 decided not to bundle, and the −1.8 MB only lands when the skeleton is
