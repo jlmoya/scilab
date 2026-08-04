@@ -50,8 +50,17 @@ Makefile.in  Makefile.incl.mak  missing  scicompile.sh  TEMPLATE_MAKEFILE.VC
 5. `make`.
 
 **That earlier "correction" was wrong, and step 1 measured it wrong-way-round.**
-Configure *is* re-probed on every toolbox build. The cache at `:165-168` is dead
-code in practice, and the per-build cost is the dominant cost.
+Configure *was* re-probed on every toolbox build: the cache at `:165-168` was
+dead code, and the per-build cost was the dominant cost.
+
+> **FIXED 2026-08-04 (`e93cf255055`)** — the two defects below are repaired and
+> the cache now works: a flagless gateway build went from 11.7 s to 1.7 s, with
+> the oracle re-capturing byte-identically and cgal still 33/33. The analysis is
+> kept because it is the measured "before" this migration is judged against, and
+> because the same trap is easy to reintroduce. **The remaining per-build cost is
+> now paid only by builds that pass their own flags — about half the gateway call
+> sites in the toolbox set (12 of 26 are flagless).** That is what the CMake path
+> removes for everyone.
 
 Measured (2026-08-04, this machine, one-file C gateway):
 
