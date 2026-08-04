@@ -386,7 +386,13 @@ more than the size of our own set.
    genuinely fast **silently drops the Fortran runtime**. Steady-state gap is
    0.7 s per gateway build, which is accepted — see §12 for the numbers and the
    trap.
-5. **Gate** — run §5 in full, both paths, and compare artifacts.
+5. **Gate** — PARTLY DONE 2026-08-04. `modules/dynamic_link/tests/oracle/gate-both-paths.sh`
+   builds the same gateway both ways and compares the linked artifact. Gate 1
+   (C/C++/mixed matrix) **passes 3/3**, and the gate is proven to have teeth: run
+   against the §12 artifacts it reports DIFFER on a Fortran gateway missing its
+   runtime *despite identical exports*. Gate 2 done for **nan** (see §13).
+   **Still to run: gate 2 for scicv and scimax, and gate 3, the 54-toolbox
+   sweep.**
 6. **Cut over and deprecate** — CMake becomes the default and does the work.
    The skeleton STAYS, reachable only by explicit opt-out, and every use of it
    prints the deprecation warning naming its removal release (§10). The
@@ -634,3 +640,57 @@ a fair price; shipping one that silently omits a runtime library is not.
 **If anyone revisits this**, the gate is not the clock. Diff `otool -L` and
 `nm -gU` against a build with no cache at all, on a gateway that has Fortran
 sources — a C-only gateway cannot show this bug.
+
+
+---
+
+## 13. Gate results (step 5, in progress)
+
+### Gate 1 — the C / C++ / mixed matrix: PASS 3/3
+
+`tests/oracle/gate-both-paths.sh`. The comparison is on the **linked artifact**,
+never on command lines (they cannot match — §11 invariant 7) and never on exit
+status (§12's bug exited 0).
+
+The dependency rule is **asymmetric on purpose**:
+
+- a gateway with **no** Fortran sources may lose `libgfortran`/`libquadmath`
+  under CMake — the autotools path appends `$(FLIBS)` unconditionally, so it
+  links a Fortran runtime that pure-C gateways never call (§11 invariant 5).
+  Flagging that on every C gateway would train everyone to ignore the gate;
+- a gateway **with** Fortran sources must match exactly. That is where §12's bug
+  lived, and it is the only case that can expose it.
+
+Proven in both directions against the real §12 artifacts: `DIFFER` for the
+Fortran gateway whose runtime went missing — **even though its exported symbols
+were identical** — and lenient only where there is genuinely no Fortran.
+
+### Gate 2 — `nan`: PASS, with one divergence worth recording
+
+Rebuilt through the CMake path in 1.2 s. Loads; `sumskipnan([1 2 %nan 4 5])`
+returns 12 / 4, correct.
+
+`covm` and `histo` fail — **and fail identically on the autotools artifact**
+(`Undefined variable: histo`). Pre-existing, unrelated to this change. Verified
+by restoring the original binary and re-running, not assumed.
+
+The CMake build exports **8 fewer symbols**: the internal `__sumskipnan{2,3}w{,e,r,er}__`
+helpers. They are `T` (defined, external) in the autotools build and absent from
+the CMake one, with **zero undefined references** to them in the CMake artifact —
+so the link is complete and they were inlined rather than dropped.
+
+This is a divergence from §11 invariant 2: the autotools path does libtool's
+two-step `ld -r -keep_private_externs` partial link, and `scilab_gateway()` does
+a single-step `-dynamiclib`. The practical effect here is *better* (a smaller,
+cleaner export set with no functional change), but it is drift and it is now on
+the record. **The export rule for real toolboxes should be the same shape as the
+dependency rule: a CMake-built subset is acceptable; a symbol CMake exports that
+autotools does not, or any undefined reference, is a failure.**
+
+### Not yet run
+
+- gate 2 for **scicv** and **scimax**;
+- gate 3, the **54-toolbox verification sweep**;
+- gate 4 reduces to `PARITY OK`: the "+36 MB if CMake is bundled" line is moot,
+  §3 decided not to bundle, and the −1.8 MB only lands when the skeleton is
+  deleted in step 7.
