@@ -25,11 +25,11 @@ public:
 
     virtual ~Object();
 
-    ScilabType getType(void) { return ScilabObject; }
-    ScilabId getId(void) { return IdObject; }
+    ScilabType getType(void) override { return ScilabObject; }
+    ScilabId getId(void) override { return IdObject; }
 
-    bool isObject() { return true; }
-    bool isA(const std::wstring& type)
+    bool isObject() override { return true; }
+    bool isA(const std::wstring& type) override
     {
         if (type == L"object" || type == def->getName())
         {
@@ -50,14 +50,14 @@ public:
     std::wstring getTypeStr() const override { return def->getName(); };
     std::wstring getShortTypeStr() const override { return def->getName(); }
 
-    bool isAssignable() { return true; }
+    bool isAssignable() override { return true; }
     bool isInvokable() const override { return true; }
 
     bool hasMethod(const std::wstring& method);
-    virtual bool hasGetFields() { return true; }
+    virtual bool hasGetFields() override { return true; }
 
     // overload this method if hasGetFields method return true
-    virtual String* getFields();
+    virtual String* getFields() override;
 
     bool hasProperty(const std::wstring& property);
     InternalType* getProperty(const std::wstring& name);
@@ -69,11 +69,11 @@ public:
     Function::ReturnValue callMethod(const std::wstring& method, Callable* call, typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e);
     Function::ReturnValue callSuperclassContructor(Classdef* super, typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e);
 
-    bool extract(const std::wstring& name, InternalType*& out);
+    bool extract(const std::wstring& name, InternalType*& out) override;
     using UserType::insert;
     Object* insert(typed_list* _pArgs, InternalType* _pSource, const ast::Exp& e);
 
-    Object* clone()
+    Object* clone() override
     {
         //IncreaseRef();
         return this;
@@ -94,7 +94,7 @@ public:
     InternalType* serialize();
     bool deserialize(InternalType* data);
 
-    bool getMemory(long long* _piSize, long long* _piSizePlusType);
+    bool getMemory(long long* _piSize, long long* _piSizePlusType) override;
   private:
     Classdef* def;
     std::map<std::wstring, InternalType*> properties;

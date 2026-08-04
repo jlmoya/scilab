@@ -50,13 +50,13 @@ public:
 
     virtual ~Classdef();
 
-    ScilabType getType(void) { return ScilabClassdef; }
-    ScilabId getId(void) { return IdClassdef; }
+    ScilabType getType(void) override { return ScilabClassdef; }
+    ScilabId getId(void) override { return IdClassdef; }
 
-    bool isClassdef() { return true; }
+    bool isClassdef() override { return true; }
     virtual bool toString(std::wostringstream& ostr) override;
 
-    bool isA(const std::wstring& type)
+    bool isA(const std::wstring& type) override
     {
         if (type == L"classdef" || type == name)
         {
@@ -77,7 +77,7 @@ public:
     virtual std::wstring getTypeStr() const override { return name; };
     virtual std::wstring getShortTypeStr() const override { return name; }
 
-    InternalType* clone(void)
+    InternalType* clone(void) override
     {
         return this;
     }
@@ -93,12 +93,12 @@ public:
 
     std::vector<std::tuple<std::wstring, Classdef*>> getSuperclass() const;
 
-    bool isInvokable() const
+    bool isInvokable() const override
     {
         return true;
     }
 
-    bool invoke(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e);
+    bool invoke(typed_list& in, optional_list& opt, int _iRetCount, typed_list& out, const ast::Exp& e) override;
     bool extract(const std::wstring& name, InternalType*& out);
     Classdef* insert(typed_list* _pArgs, InternalType* _pSource);
 

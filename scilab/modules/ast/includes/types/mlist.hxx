@@ -49,7 +49,7 @@ public :
         return false;
     }
 
-    bool isA(const std::wstring& type)
+    bool isA(const std::wstring& type) override
     {
         return type == L"mlist" || type == getTypeStr();
     }

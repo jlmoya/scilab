@@ -69,7 +69,7 @@ public :
         return true;
     }
 
-    bool isA(const std::wstring& type)
+    bool isA(const std::wstring& type) override
     {
         return type == L"list";
     }

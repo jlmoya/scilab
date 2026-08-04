@@ -105,7 +105,7 @@ public :
         return true;
     }
 
-    bool isA(const std::wstring& type)
+    bool isA(const std::wstring& type) override
     {
         if (type == L"int" || type == L"integer")
         {

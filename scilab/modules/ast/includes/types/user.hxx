@@ -46,7 +46,7 @@ public :
         return true;
     }
 
-    virtual bool isA(const std::wstring& type)
+    virtual bool isA(const std::wstring& type) override
     {
         return type == L"usertype" || type == getTypeStr();
     }
