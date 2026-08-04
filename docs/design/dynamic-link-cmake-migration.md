@@ -363,10 +363,26 @@ more than the size of our own set.
    which *replaces* automake's `-g -O2` instead of extending it; `CXXFLAGS`/
    `FFLAGS` are not exported and keep theirs) — the generated build applies
    `-g -O2` uniformly.
-4. **Driver** — `ilib_compile` runs cmake; preserve `ilib_verbose` diagnostics,
-   re-signing, and rpath/install_name. **Plus the missing-CMake diagnostic (§3)**:
-   detect absent/too-old CMake and print the install line, rather than leaking a
-   CMake error to someone who just wanted `tbxInstall("scicv")` to work.
+4. ~~**Driver**~~ **DONE 2026-08-04 (`9cc80bbeb19`).** `ilib_compile` runs
+   cmake (in-source, because `.libs/<lib_name>` is resolved relative to that
+   directory); flags are NOT re-passed, they are already baked into the
+   generated file. The missing-CMake diagnostic is in and verified by hiding
+   cmake from `PATH`; the version compare is numeric, since a string compare
+   ranks `"3.9"` above `"3.20"`.
+
+   **Measured, and it is not yet a speed win.** cmake configure **5.3 s**, build
+   0.4 s: CMake re-detects the toolchain per build directory exactly as
+   `./configure` did — less of it (5.3 s vs 10.8 s), but the same shape of cost,
+   and the autotools path with its cache repaired is currently *faster* at
+   2.5 s. Detection depends only on the toolchain, not on the library, so the
+   same shared-cache fix applies (a seeded initial cache via `cmake -C`).
+   **Tracked as step 4b below** — the migration's case rests on one build
+   language and one generator for both platforms, not on raw speed, but shipping
+   it slower than what it replaces would be a regression users would feel.
+4b. **Shared toolchain cache** — seed CMake's compiler detection once per
+   installation (`cmake -C <initial-cache>`), the direct analogue of the
+   `Makefile.orig` reuse repaired in §1. Prerequisite for the cutover in step 6:
+   without it the CMake path is slower than the path it replaces.
 5. **Gate** — run §5 in full, both paths, and compare artifacts.
 6. **Cut over and deprecate** — CMake becomes the default and does the work.
    The skeleton STAYS, reachable only by explicit opt-out, and every use of it
