@@ -1,0 +1,19 @@
+libtool: compile: gcc -I. -I/opt/homebrew/opt/openssl/include -D__SCILAB_TOOLBOX__ <SCI-INCLUDES x16> -c gw_c.c -fno-common -DPIC -o .libs/gw_c.o
+libtool: compile: g++ -I. -g -O2 -D__SCILAB_TOOLBOX__ <SCI-INCLUDES x16> -c libOracleC.cpp -fno-common -DPIC -o .libs/libOracleC.o
+libtool: link: g++ -r -keep_private_externs -nostdlib -o .libs/libOracleC.0.dylib-master.o .libs/gw_c.o .libs/libOracleC.o
+libtool: link: g++ -dynamiclib -Wl,-undefined -Wl,dynamic_lookup -o .libs/libOracleC.0.dylib .libs/libOracleC.0.dylib-master.o -L/opt/homebrew/opt/openssl/lib <GCC-LIBDIRS x3> -lemutls_w -lheapt_w -lgfortran -lquadmath -g -O2 -install_name /usr/local/lib/scilab/libOracleC.0.dylib -compatibility_version 1 -current_version 1.0
+libtool: link: (cd ".libs" && rm -f "libOracleC.dylib" && ln -s "libOracleC.0.dylib" "libOracleC.dylib")
+libtool: link: ( cd ".libs" && rm -f "libOracleC.la" && ln -s "../libOracleC.la" "libOracleC.la" )
+libtool: compile: g++ -I. -g -O2 -D__SCILAB_TOOLBOX__ <SCI-INCLUDES x16> -c gw_cxx.cpp -fno-common -DPIC -o .libs/gw_cxx.o
+libtool: compile: g++ -I. -g -O2 -D__SCILAB_TOOLBOX__ <SCI-INCLUDES x16> -c libOracleX.cpp -fno-common -DPIC -o .libs/libOracleX.o
+libtool: link: g++ -r -keep_private_externs -nostdlib -o .libs/libOracleX.0.dylib-master.o .libs/gw_cxx.o .libs/libOracleX.o
+libtool: link: g++ -dynamiclib -Wl,-undefined -Wl,dynamic_lookup -o .libs/libOracleX.0.dylib .libs/libOracleX.0.dylib-master.o -L/opt/homebrew/opt/openssl/lib <GCC-LIBDIRS x3> -lemutls_w -lheapt_w -lgfortran -lquadmath -g -O2 -install_name /usr/local/lib/scilab/libOracleX.0.dylib -compatibility_version 1 -current_version 1.0
+libtool: link: (cd ".libs" && rm -f "libOracleX.dylib" && ln -s "libOracleX.0.dylib" "libOracleX.dylib")
+libtool: link: ( cd ".libs" && rm -f "libOracleX.la" && ln -s "../libOracleX.la" "libOracleX.la" )
+libtool: compile: gcc -I. -I/opt/homebrew/opt/openssl/include -D__SCILAB_TOOLBOX__ <SCI-INCLUDES x16> -c gw_c.c -fno-common -DPIC -o .libs/gw_c.o
+libtool: compile: gfortran -g -O2 <SCI-INCLUDES x1> -c gw_f.f -fno-common -o .libs/gw_f.o
+libtool: compile: g++ -I. -g -O2 -D__SCILAB_TOOLBOX__ <SCI-INCLUDES x16> -c libOracleF.cpp -fno-common -DPIC -o .libs/libOracleF.o
+libtool: link: g++ -r -keep_private_externs -nostdlib -o .libs/libOracleF.0.dylib-master.o .libs/gw_c.o .libs/gw_f.o .libs/libOracleF.o
+libtool: link: g++ -dynamiclib -Wl,-undefined -Wl,dynamic_lookup -o .libs/libOracleF.0.dylib .libs/libOracleF.0.dylib-master.o -L/opt/homebrew/opt/openssl/lib <GCC-LIBDIRS x3> -lemutls_w -lheapt_w -lgfortran -lquadmath -g -O2 -install_name /usr/local/lib/scilab/libOracleF.0.dylib -compatibility_version 1 -current_version 1.0
+libtool: link: (cd ".libs" && rm -f "libOracleF.dylib" && ln -s "libOracleF.0.dylib" "libOracleF.dylib")
+libtool: link: ( cd ".libs" && rm -f "libOracleF.la" && ln -s "../libOracleF.la" "libOracleF.la" )

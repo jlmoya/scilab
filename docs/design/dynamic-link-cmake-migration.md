@@ -49,11 +49,47 @@ Makefile.in  Makefile.incl.mak  missing  scicompile.sh  TEMPLATE_MAKEFILE.VC
    that rule (`ilib_gen_Make_unix.sci:180-188`);
 5. `make`.
 
-**Correction to an earlier claim of mine:** configure is *not* re-probed on every
-toolbox build. `Makefile.orig` is cached and reused when the compilation flags
-are empty or unchanged since the last call (`:167-177`). The per-build cost is
-therefore lower than "a full configure each time" — the cost is the 1.8 MB of
-vendored 1990s shell and the maintenance surface, not per-build latency.
+**That earlier "correction" was wrong, and step 1 measured it wrong-way-round.**
+Configure *is* re-probed on every toolbox build. The cache at `:165-168` is dead
+code in practice, and the per-build cost is the dominant cost.
+
+Measured (2026-08-04, this machine, one-file C gateway):
+
+| | |
+|---|---|
+| `ilib_build` end to end | **11.7 s** |
+| of which `./configure` | **10.8 s (92 %)** |
+| actual compile + link | ~0.9 s |
+| full configure runs across 3 consecutive `ilib_build`s in one session | **3** |
+
+**Why the cache never hits.** The reuse branch requires *three* conditions:
+flags unchanged (`stringToHash == libname`, true whenever the caller passes no
+flags) **and** `usercommandpath/Makefile.orig` **and** `usercommandpath/libtool`.
+On this installation `usercommandpath` —
+`$SCIHOME/modules/dynamic_link/src/scripts` — contains **66 entries including 40+
+`<libname>.md5` files** written by `:193`, and **neither `Makefile.orig` nor
+`libtool`**. Conditions 2 and 3 are therefore permanently false.
+
+Nothing in the live code path can ever create them:
+
+- `:200` calls `generateConfigure(linkBuildDir, …)`, so `compilerDetection.sh`
+  runs with `cd $(dirname $0)` = **`linkBuildDir`** and its `mv Makefile
+  Makefile.orig` lands in `TMPDIR/<libname>/`, which dies with the session.
+- `:77` is the only call that targets `usercommandpath`, it is reachable only
+  once (guarded by `isdir(usercommandpath) == %F`, and `:75` has already
+  `mkdir`'d it), and it passes **1 of 5 arguments**. `generateConfigure`
+  forwards all five to `gencompilationflags_unix`, so the call raises
+  `Undefined variable: ldflags`. Verified directly in Scilab: forwarding an
+  unsupplied formal parameter errors with `ierr=999`, it does not default.
+
+So `:193` writes a cache key on every build that `:165` can never act on. Each
+of the 40+ `.md5` files is a receipt for a configure run whose result was thrown
+away.
+
+This changes the value proposition of the migration: it is not only 1.8 MB of
+vendored 1990s shell and maintenance surface — it is **~11 s of pure waste on
+every gateway library built**, on every machine, forever. The 54-toolbox rebuild
+pays this once per gateway library.
 
 ### The Windows flow
 
@@ -291,9 +327,9 @@ more than the size of our own set.
 
 ## 7. Work breakdown
 
-1. **Characterise** — capture the exact `make` command lines the current path
-   produces for the C/C++/Fortran/mixed matrix. This is the oracle everything
-   else is compared against.
+1. ~~**Characterise**~~ **DONE 2026-08-04 — see §11.** The oracle is captured for
+   the C / C++ / mixed-Fortran matrix, and the exercise also found the dead
+   configure cache now recorded in §1.
 2. ~~Decide the CMake-availability policy~~ **SETTLED (§3): require it, do not
    bundle.** Nothing to wire into `package-macos.sh`; the size baseline is
    unaffected. What this step now owns is the *diagnostic* — see step 4.
@@ -384,3 +420,115 @@ document, not an aspiration recorded in a comment. The current version is
 code paths must keep working and being tested, and the "delete the last
 autotools" win is deferred rather than banked. That is the price of not
 stranding a third-party author, and it is worth paying once — not twice.
+
+---
+
+## 11. The oracle (step 1 output, captured 2026-08-04)
+
+Captured on macOS 26 / arm64 against the installed app, `ilib_verbose(2)`, with
+a three-case gateway matrix: pure C, pure C++, and C + Fortran mixed. The
+fixtures and a re-capture script live in
+**`modules/dynamic_link/tests/oracle/`**; the checked-in
+`oracle-commands-macos-arm64.txt` is the byte-for-byte output of running
+`capture-oracle.sce` there.
+
+Two collapses are applied for legibility: the repeated
+`-I$SCI/modules/<m>/includes` flags become `<SCI-INCLUDES xN>` and the
+gcc-runtime `-L…/gcc/…` paths become `<GCC-LIBDIRS xN>`, with `N` the real
+count. Nothing else is elided.
+
+### C gateway (`gw_c.c` → `libnC.dylib`)
+
+```
+libtool: compile: gcc -I. -I/opt/homebrew/opt/openssl/include -D__SCILAB_TOOLBOX__ \
+    <SCI-INCLUDES x16> -c gw_c.c -fno-common -DPIC -o .libs/gw_c.o
+libtool: compile: g++ -I. -g -O2 -D__SCILAB_TOOLBOX__ \
+    <SCI-INCLUDES x16> -c libOracleC.cpp -fno-common -DPIC -o .libs/libOracleC.o
+libtool: link: g++ -r -keep_private_externs -nostdlib \
+    -o .libs/libOracleC.0.dylib-master.o .libs/gw_c.o .libs/libOracleC.o
+libtool: link: g++ -dynamiclib -Wl,-undefined -Wl,dynamic_lookup \
+    -o .libs/libOracleC.0.dylib .libs/libOracleC.0.dylib-master.o \
+    -L/opt/homebrew/opt/openssl/lib <GCC-LIBDIRS x3> \
+    -lemutls_w -lheapt_w -lgfortran -lquadmath -g -O2 \
+    -install_name /usr/local/lib/scilab/libOracleC.0.dylib \
+    -compatibility_version 1 -current_version 1.0
+libtool: link: (cd ".libs" && rm -f "libOracleC.dylib" && ln -s "libOracleC.0.dylib" "libOracleC.dylib")
+```
+
+### C++ gateway (`gw_cxx.cpp`)
+
+Identical shape; the only difference is that the user source is compiled by the
+same `g++ -g -O2` rule as the generated wrapper, so there is no `gcc` line and
+no openssl `-I`.
+
+### Mixed C + Fortran (`gw_c.c` + `gw_f.f`)
+
+Adds exactly one compile line and one more object to both link steps:
+
+```
+libtool: compile: gfortran -g -O2 <SCI-INCLUDES x1> -c gw_f.f -fno-common -o .libs/gw_f.o
+libtool: link: g++ -r -keep_private_externs -nostdlib \
+    -o .libs/libOracleF.0.dylib-master.o .libs/gw_c.o .libs/gw_f.o .libs/libOracleF.o
+```
+
+Note `gfortran` gets **no `-D__SCILAB_TOOLBOX__`, and exactly one Scilab include
+(`modules/core/includes/`) against C/C++'s sixteen** — automake's F77 rule feeds
+from `FFLAGS`, which `gencompilationflags_unix` populates far more sparsely than
+`CFLAGS`/`CXXFLAGS`. `scilab_module()` already reproduces this asymmetry
+deliberately (§2), so `scilab_gateway()` inherits it for free.
+
+The capture script records these counts as `<SCI-INCLUDES x16>` /
+`<SCI-INCLUDES x1>` rather than collapsing them to one opaque token, precisely
+so a regression that "helpfully" gives Fortran the full C include set shows up
+as a diff instead of hiding inside the placeholder.
+
+### Invariants the CMake path must reproduce
+
+1. **The link driver is always `g++`**, even for a pure-C gateway — the
+   generated wrapper (`lib<name>.cpp`) is C++, so libc++ is always linked in.
+2. **Two-step link**: a `-r -keep_private_externs -nostdlib` partial link into
+   `…-master.o`, then `-dynamiclib` on that single object. This is libtool's
+   macOS export-hiding idiom, and it is why gateway dylibs export only their
+   intended symbols.
+3. **`-undefined dynamic_lookup`** — gateways reference `Scierror`,
+   `types::Function`, … which resolve at `dlopen` time. Already the policy in
+   `cmake/ScilabModule.cmake`.
+4. **`-install_name /usr/local/lib/scilab/lib<name>.0.dylib`** — a path that
+   does not exist in the app bundle. Harmless only because `link()` loads by
+   explicit path. Not worth reproducing; worth *not* regressing into something
+   that breaks that assumption.
+5. **The Fortran runtime is linked unconditionally** — `-lemutls_w -lheapt_w
+   -lgfortran -lquadmath` plus four gcc `-L`s appear on the pure-C link too,
+   because `FLIBS` is appended regardless of whether any Fortran source exists.
+6. **`-fno-common -DPIC`** on every compile; `-g -O2` on C++/Fortran but *not*
+   on the C rule (C gets `CFLAGS` from Scilab's own configure, which carried
+   only `-I/opt/homebrew/opt/openssl/include`).
+7. **The openssl `-I`/`-L` leak into every user toolbox build** — inherited from
+   the flags Scilab's own `configure` was run with. Cosmetic, but it means the
+   current oracle is not environment-independent; the CMake path should not
+   reproduce it, and the gate in §5 must therefore compare *behaviour and
+   exports*, not literal flag strings.
+
+Invariant 7 is the reason the acceptance gate compares linked artifacts rather
+than command lines: a byte-identical command line is neither achievable nor
+desirable here.
+
+### Reproducing
+
+```
+cd modules/dynamic_link/tests/oracle
+scilab-cli -f capture-oracle.sce      # writes oracle-commands-<platform>.NEW.txt
+```
+
+It builds in a `TMPDIR` scratch copy (so the fixture directory stays clean) and
+writes to a `.NEW` file, so a re-capture never silently overwrites the
+reference. Diff, then rename only if the change was intended.
+
+Two traps cost time when re-deriving this, both worth knowing:
+
+- **`ilib_build` strips a leading `lib` from the build directory name.**
+  `ilib_build("libnC", …)` builds in `TMPDIR/nC`, not `TMPDIR/libnC`. Looking
+  for the generated `Makefile` under the library name finds nothing.
+- **The second argument is a table**, `[scilab_name, entry_point]` pairs. A
+  malformed table fails as `ierr=10000` / "no build dir", which reads like an
+  `ilib_build` limitation and is not one.
