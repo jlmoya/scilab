@@ -162,13 +162,52 @@ function libn = ilib_compile(lib_name, ..
             setenv("LD_LIBRARY_PATH",GCClibpath+":"+getenv("LD_LIBRARY_PATH"));
         end
 
-        cmd = "make "
+        // Step 4 of docs/design/dynamic-link-cmake-migration.md. The generator
+        // (ilib_gen_Make_unix) reads the same SCILAB_GATEWAY_BUILD and has
+        // already produced either a Makefile or a CMakeLists.txt here.
+        if getenv("SCILAB_GATEWAY_BUILD", "make") == "cmake" then
 
-        cmd = cmd + gencompilationflags_unix(ldflags, cflags, fflags, cc, "build")
+            // Fail with an instruction, not a stack trace. Someone who typed
+            // tbxInstall("scicv") did not opt into diagnosing a build system;
+            // macOS auto-prompts to install Command Line Tools the first time a
+            // compiler is invoked, but nothing prompts for CMake.
+            ilib_cmake_preflight();
 
-        //** BEWARE : this function can cause errors if used with "old style" Makefile inside a Scilab 5
-        //**          environment where the Makefile are created from a "./configure"
-        [ierr, msg, stderr] = host(cmd) ;
+            // Configure IN SOURCE, deliberately: this directory is
+            // TMPDIR/<libname>, created for this one build and discarded with
+            // the session, and it is what ilib_compile's own `.libs/<lib_name>`
+            // lookup below is relative to. An out-of-tree build would put the
+            // artifact one directory deeper and silently break that contract.
+            cmd = "cmake -S . -B . -DCMAKE_RULE_MESSAGES=OFF";
+            [ierr, msg, stderr] = host(cmd);
+
+            if ( ilib_verbose() == 2 ) then
+                mprintf(gettext("%s: Configure command: %s\n"),"ilib_compile",cmd);
+                mprintf(gettext("Output: %s\n"),msg);
+                mprintf(gettext("stderr: %s\n"),stderr);
+            end
+
+            if ierr == 0 then
+                cmd = "cmake --build . --parallel";
+                [ierr, msg, stderr] = host(cmd);
+            end
+
+            // Flags are NOT passed on the command line here: unlike make, which
+            // needs CFLAGS=... on every invocation, the caller's flags were
+            // baked into the generated CMakeLists.txt by ilib_gen_cmake_unix.
+            // Passing them again would apply them twice.
+
+        else
+
+            cmd = "make "
+
+            cmd = cmd + gencompilationflags_unix(ldflags, cflags, fflags, cc, "build")
+
+            //** BEWARE : this function can cause errors if used with "old style" Makefile inside a Scilab 5
+            //**          environment where the Makefile are created from a "./configure"
+            [ierr, msg, stderr] = host(cmd) ;
+
+        end
 
         if ( ilib_verbose() == 2 ) then
             mprintf(gettext("%s: Build command: %s\n"),"ilib_compile",cmd);
@@ -209,6 +248,66 @@ function libn = ilib_compile(lib_name, ..
 endfunction
 //=============================================================================
 // function only defined in ilib_compile
+//=============================================================================
+// Required deliverable of step 4 (section 3 of the design doc): CMake is a hard
+// prerequisite for building toolbox gateways, and unlike a missing compiler --
+// which makes macOS offer to install the Command Line Tools -- nothing prompts
+// for it. Absent that, a user who typed tbxInstall("scicv") would see a bare
+// non-zero exit or a CMake stack trace. Say what is wrong and how to fix it.
+function ilib_cmake_preflight()
+
+    SCILAB_CMAKE_MIN = "3.20";
+
+    [ierr, msg, stderr] = host("cmake --version");
+    if ierr <> 0 | msg == [] then
+        error([ ..
+            msprintf(gettext("%s: CMake not found. Scilab needs it to build toolbox gateways.\n"), "ilib_compile") ; ..
+            msprintf(gettext("Install it with:  brew install cmake     (requires >= %s)\n"), SCILAB_CMAKE_MIN) ]);
+        return;
+    end
+
+    // "cmake version 3.31.6" -- take the first line; --version can add a
+    // second line about the CMake suite.
+    ver = "";
+    line1 = msg(1);
+    k = strindex(line1, "version");
+    if k <> [] then
+        ver = stripblanks(part(line1, (k($) + length("version")):length(line1)));
+        ver = tokens(ver, [" ", ascii(9)]);
+        if ver <> [] then ver = ver(1); else ver = ""; end
+    end
+
+    if ver == "" then
+        // Present but unparseable: do not block the build on a version string
+        // we failed to read -- let CMake itself object if it is genuinely too
+        // old. Silence would be worse, so say what happened.
+        if ilib_verbose() <> 0 then
+            mprintf(gettext("%s: could not parse the CMake version from ""%s""; continuing.\n"), ..
+                    "ilib_compile", line1);
+        end
+        return;
+    end
+
+    // Compare numerically on major.minor. A string compare would rank "3.9"
+    // above "3.20", which is exactly the range that matters here.
+    v = tokens(ver, ".");
+    have = 0;
+    if size(v, "*") >= 2 then
+        have = evstr(v(1)) * 1000 + evstr(v(2));
+    elseif size(v, "*") == 1 then
+        have = evstr(v(1)) * 1000;
+    end
+    m = tokens(SCILAB_CMAKE_MIN, ".");
+    need = evstr(m(1)) * 1000 + evstr(m(2));
+
+    if have < need then
+        error([ ..
+            msprintf(gettext("%s: CMake %s is too old to build toolbox gateways (found %s).\n"), ..
+                     "ilib_compile", SCILAB_CMAKE_MIN, ver) ; ..
+            msprintf(gettext("Upgrade it with:  brew upgrade cmake     (requires >= %s)\n"), SCILAB_CMAKE_MIN) ]);
+    end
+
+endfunction
 //=============================================================================
 function [make_command, lib_name_make, lib_name,path, makename, files] = ..
     ilib_compile_get_names(lib_name, files)
