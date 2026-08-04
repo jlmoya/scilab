@@ -379,10 +379,13 @@ more than the size of our own set.
    **Tracked as step 4b below** — the migration's case rests on one build
    language and one generator for both platforms, not on raw speed, but shipping
    it slower than what it replaces would be a regression users would feel.
-4b. **Shared toolchain cache** — seed CMake's compiler detection once per
-   installation (`cmake -C <initial-cache>`), the direct analogue of the
-   `Makefile.orig` reuse repaired in §1. Prerequisite for the cutover in step 6:
-   without it the CMake path is slower than the path it replaces.
+4b. ~~**Shared toolchain cache**~~ **INVESTIGATED AND REJECTED 2026-08-04 — see
+   §12.** The premise was wrong: CMake's configure is ~1.7–2.0 s, not the 5.3 s
+   step 4 reported (that was a cold first run after a repackage), and the part a
+   cache could skip is not worth what skipping it costs. The one variant that is
+   genuinely fast **silently drops the Fortran runtime**. Steady-state gap is
+   0.7 s per gateway build, which is accepted — see §12 for the numbers and the
+   trap.
 5. **Gate** — run §5 in full, both paths, and compare artifacts.
 6. **Cut over and deprecate** — CMake becomes the default and does the work.
    The skeleton STAYS, reachable only by explicit opt-out, and every use of it
@@ -568,3 +571,66 @@ Two traps cost time when re-deriving this, both worth knowing:
 - **The second argument is a table**, `[scilab_name, entry_point]` pairs. A
   malformed table fails as `ierr=10000` / "no build dir", which reads like an
   `ilib_build` limitation and is not one.
+
+
+---
+
+## 12. Why there is no shared toolchain cache (step 4b, rejected)
+
+Step 4 reported `cmake` configure at 5.3 s and concluded the CMake path was
+half the speed of the repaired autotools one. **Both halves of that were wrong**,
+and the correction is worth recording because the obvious fix is a trap.
+
+### The numbers, re-measured
+
+5.3 s was a cold first run immediately after a repackage — the app bundle's
+files were not in the page cache. Repeated, steady state:
+
+| | configure | build | `ilib_build` end to end |
+|---|---|---|---|
+| autotools skeleton (cache repaired, §1) | — | — | **2.0 s** |
+| CMake, as shipped | 1.7–2.0 s | 0.4 s | **2.7 s** |
+
+So the gap is **0.7 s per gateway build**, not 2.8 s. Across the 26 gateway call
+sites in the whole toolbox set that is ~18 s on a full rebuild.
+
+### The trap
+
+CMake re-detects the toolchain per build directory, so caching that detection
+looks like the same win the `Makefile.orig` repair produced. Three routes were
+measured, and the artifact — not the clock — decided:
+
+| route | configure | artifact |
+|---|---|---|
+| `cmake -C <initial-cache>` with the compiler paths + `*_COMPILER_WORKS` + `*_ABI_COMPILED` | **0.73 s** | **BROKEN — no `libgfortran`, no `libquadmath`** |
+| toolchain file carrying the probe's full per-language facts | 1.26 s | identical to the reference |
+| `-G Ninja` | 2.13 s | identical (nothing to parallelise in a 3-file project) |
+
+**The fastest route is the broken one.** Setting `CMAKE_<LANG>_ABI_COMPILED`
+skips ABI detection *and* makes CMake rewrite
+`CMakeFiles/<ver>/CMake<LANG>Compiler.cmake` with **empty**
+`IMPLICIT_LINK_LIBRARIES` — clobbering seeded values, because the implicit link
+libraries are an *output* of the detection being skipped. The result compiles,
+links, exports an identical symbol set, and is the same size. It differs only in
+two `otool -L` lines. A Fortran gateway built that way is missing its runtime.
+
+That is the same shape as the unsound per-library md5 branch removed from the
+autotools cache in §1: a cache that silently changes the output. It was caught
+only because the acceptance check compares **dependencies**, not just exports and
+exit status.
+
+### The decision
+
+The safe route buys 0.4 s and costs a persistent probe directory, an
+invalidation key (CMake version *and* compiler identities — an in-place Xcode or
+gcc upgrade must invalidate it), and a mechanism that produced a wrong artifact
+twice while being explored. That is a bad trade for 0.4 s, so it is not shipped.
+
+The 0.7 s stands, and it is affordable: the case for CMake here was never speed
+(§1) — it is one build language instead of three, and one generator instead of
+two platform-specific ones. Shipping a build that is 35 % slower per gateway is
+a fair price; shipping one that silently omits a runtime library is not.
+
+**If anyone revisits this**, the gate is not the clock. Diff `otool -L` and
+`nm -gU` against a build with no cache at all, on a gateway that has Fortran
+sources — a C-only gateway cannot show this bug.
