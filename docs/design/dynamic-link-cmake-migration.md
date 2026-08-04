@@ -342,13 +342,17 @@ more than the size of our own set.
 2. ~~Decide the CMake-availability policy~~ **SETTLED (§3): require it, do not
    bundle.** Nothing to wire into `package-macos.sh`; the size baseline is
    unaffected. What this step now owns is the *diagnostic* — see step 4.
-2b. **Export a Scilab CMake package** (§2) — `ScilabConfig.cmake` + version file,
-   installed with the app; refactor `_scilab_module_flag_env` /
-   `_scilab_module_apply` so the flag, include, rpath and install_name policy
-   resolves against either the source tree or the installed prefix from ONE
-   definition; expose `scilab_gateway()`. Fold the macOS re-sign into that
-   shared policy. **This is the bulk of the work and the prerequisite for
-   step 3** — it is what "use the exact mechanism" costs, and it is worth it.
+2b. ~~**Export a Scilab CMake package**~~ **DONE 2026-08-04 (`409269f1c71`).**
+   `cmake/ScilabConfig.cmake` + `ScilabConfigVersion.cmake` +
+   `ScilabGatewayPolicy.cmake`, none of them generated (the bundle is rsynced,
+   not `cmake --install`ed, so a configured file would have to be written back
+   into the source tree to survive packaging — they derive everything at load
+   time from files the bundle already ships, and reach the app through the
+   existing rsync). `scilab_gateway()` is a **sibling** of `scilab_module()`,
+   not a caller: same link policy, different include set (16 vs 12 — the oracle
+   is the arbiter), and no parity-baseline obligations. The macOS re-sign is
+   folded in. Verified against both the oracle and libtool's own artifact:
+   x16/x1 includes, identical exports, loads and runs via `addinter()`.
 3. **Generator** — emit a declarative `CMakeLists.txt` calling
    `scilab_gateway()`; keep the skeleton in place and switch behind an env flag
    so both paths can be diffed.
