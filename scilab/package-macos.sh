@@ -15,6 +15,7 @@
 #   ./package-macos.sh --app /path/Foo.app   # alternate target (e.g. for testing)
 #   ./package-macos.sh --jdk-version 26      # pin a different default JDK
 #   ./package-macos.sh --rebuild-toolboxes   # also rebuild native toolboxes (phase 2+)
+#   ./package-macos.sh --allow-stale-macros  # package .sci newer than .bin anyway
 # ============================================================================
 set -euo pipefail
 
@@ -23,6 +24,7 @@ APP="/Applications/Scilab-2027.0.0.app"
 JDK_PIN=25
 REBUILD_TBX=0
 ALLOW_DEBUG=0
+ALLOW_STALE_MACROS=0
 APP_SCIHOME="$HOME/.Scilab/scilab-app-2027"
 
 while [ $# -gt 0 ]; do
@@ -31,6 +33,7 @@ while [ $# -gt 0 ]; do
     --jdk-version)    JDK_PIN="$2"; shift 2;;
     --rebuild-toolboxes) REBUILD_TBX=1; shift;;
     --allow-debug)    ALLOW_DEBUG=1; shift;;
+    --allow-stale-macros) ALLOW_STALE_MACROS=1; shift;;
     -h|--help) sed -n '2,22p' "$0"; exit 0;;
     *) echo "unknown arg: $1" >&2; exit 2;;
   esac
@@ -63,6 +66,56 @@ case "$_build_type" in
     echo "NOTE: build type unknown (no $_stamp_file) — packaging whatever is in modules/*/.libs/."
     ;;
 esac
+
+# ---- stale-macro guard -----------------------------------------------------
+# Same failure as the build-type guard above, one directory over. Scilab loads
+# macros from the COMPILED .bin, never from the .sci beside it, and this script
+# only rsyncs -- it does not compile. So editing a macro and packaging without
+# ./build-macos.sh (or `cmake --build <dir> --target macros`) ships the OLD
+# behaviour while the .sci in the bundle shows the new source: the most
+# confusing shape a regression can take, because the code you read is not the
+# code that runs.
+#
+# Nearly hit exactly this while fixing ilib_gen_Make_unix: its .bin in the tree
+# was two days older than the .sci, and a plain repackage would have silently
+# reverted the fix.
+#
+# Cheap to detect, so detect it. Refuse rather than compile: building is
+# build-macos.sh's job, and a packager that quietly starts building is a
+# packager you can no longer reason about.
+# Scoped to directories that genlib ACTUALLY BUILT here -- i.e. that already
+# contain at least one .bin. A macros/ dir with no .bin at all belongs to a
+# module not compiled on this platform (tclsci ships 76 .sci and 0 .bin on
+# macOS; windows_tools, 2 and 0). Their sources are not stale, they are simply
+# not ours to build, and flagging them would make this guard fire on every
+# single run -- as useless as one that never fires. Deriving the directory list
+# from the .bin files also picks up nested libraries (macros/utils, and so on)
+# without hardcoding them.
+_stale_macros="$(
+  find "$DEV/modules" -type f -name '*.bin' -path '*/macros/*' 2>/dev/null |
+  sed 's#/[^/]*$##' | sort -u |
+  while IFS= read -r d; do
+    for sci in "$d"/*.sci; do
+      [ -e "$sci" ] || continue
+      bin="${sci%.sci}.bin"
+      if [ ! -f "$bin" ] || [ "$sci" -nt "$bin" ]; then
+        printf '%s\n' "${sci#$DEV/}"
+      fi
+    done
+  done
+)"
+if [ -n "$_stale_macros" ]; then
+  _n="$(printf '%s\n' "$_stale_macros" | wc -l | tr -d ' ')"
+  if [ "$ALLOW_STALE_MACROS" -eq 0 ]; then
+    echo "REFUSING: $_n macro source(s) are newer than their compiled .bin:" >&2
+    printf '%s\n' "$_stale_macros" | sed 's/^/    /' >&2
+    echo "  Scilab runs the .bin, so packaging now would ship the OLD behaviour." >&2
+    echo "  Rebuild them with:  cmake --build build-cmake --target macros" >&2
+    echo "  (or ./build-macos.sh), or pass --allow-stale-macros to package anyway." >&2
+    exit 4
+  fi
+  echo "WARNING: packaging $_n stale macro(s) because --allow-stale-macros was given."
+fi
 
 PAYLOAD="$APP/Contents/Resources/scilab"
 MACOS_DIR="$APP/Contents/MacOS"
