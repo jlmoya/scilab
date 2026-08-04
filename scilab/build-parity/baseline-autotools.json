@@ -11,7 +11,6 @@
         "/opt/homebrew/opt/hdf5/lib/libhdf5_hl.320.dylib",
         "/opt/homebrew/opt/libarchive/lib/libarchive.13.dylib",
         "/opt/homebrew/opt/libomp/lib/libomp.dylib",
-        "/opt/homebrew/opt/openblas/lib/libopenblas.0.dylib",
         "/opt/homebrew/opt/pcre2/lib/libpcre2-32.0.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libamd.3.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libklu.2.dylib",
@@ -59,6 +58,7 @@
         "/usr/local/lib/scilab/libsciui_data.VER.dylib",
         "/usr/local/lib/scilab/libsciwebtools.VER.dylib",
         "/usr/local/lib/scilab/libscixml.VER.dylib",
+        "@rpath/libarmpl_lp64_mp.dylib",
         "@rpath/libcurl.4.dylib",
         "@rpath/libgfortran.5.dylib",
         "@rpath/libjli.dylib",
@@ -1007,13 +1007,14 @@
     "libsciarnoldi.VER.dylib": {
       "deps": [
         "/opt/homebrew/opt/arpack/lib/libarpack.2.dylib",
-        "/opt/homebrew/opt/openblas/lib/libopenblas.0.dylib",
-        "/usr/lib/libSystem.B.dylib"
+        "/usr/lib/libSystem.B.dylib",
+        "@rpath/libarmpl_lp64_mp.dylib"
       ],
       "install_name": "/usr/local/lib/scilab/libsciarnoldi.VER.dylib",
       "rpaths": [
         "/usr/lib",
-        "/opt/homebrew/opt/gcc/lib/gcc/current"
+        "/opt/homebrew/opt/gcc/lib/gcc/current",
+        "/opt/arm/armpl_26.07_flang-22/lib"
       ],
       "symbols": [
         "T _eigs",
@@ -13267,7 +13268,6 @@
         "/opt/homebrew/opt/hdf5/lib/libhdf5_hl.320.dylib",
         "/opt/homebrew/opt/libarchive/lib/libarchive.13.dylib",
         "/opt/homebrew/opt/libomp/lib/libomp.dylib",
-        "/opt/homebrew/opt/openblas/lib/libopenblas.0.dylib",
         "/opt/homebrew/opt/pcre2/lib/libpcre2-32.0.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libamd.3.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libklu.2.dylib",
@@ -13295,6 +13295,7 @@
         "/usr/local/lib/scilab/libscisundials.VER.dylib",
         "/usr/local/lib/scilab/libsciwebtools.VER.dylib",
         "/usr/local/lib/scilab/libscixml.VER.dylib",
+        "@rpath/libarmpl_lp64_mp.dylib",
         "@rpath/libcurl.4.dylib",
         "@rpath/libgfortran.5.dylib",
         "@rpath/libquadmath.0.dylib"
@@ -16862,7 +16863,6 @@
         "/opt/homebrew/opt/hdf5/lib/libhdf5_hl.320.dylib",
         "/opt/homebrew/opt/libarchive/lib/libarchive.13.dylib",
         "/opt/homebrew/opt/libomp/lib/libomp.dylib",
-        "/opt/homebrew/opt/openblas/lib/libopenblas.0.dylib",
         "/opt/homebrew/opt/pcre2/lib/libpcre2-32.0.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libamd.3.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libklu.2.dylib",
@@ -16909,6 +16909,7 @@
         "/usr/local/lib/scilab/libsciui_data.VER.dylib",
         "/usr/local/lib/scilab/libsciwebtools.VER.dylib",
         "/usr/local/lib/scilab/libscixml.VER.dylib",
+        "@rpath/libarmpl_lp64_mp.dylib",
         "@rpath/libcurl.4.dylib",
         "@rpath/libgfortran.5.dylib",
         "@rpath/libjli.dylib",
@@ -29487,7 +29488,6 @@
         "/opt/homebrew/opt/hdf5/lib/libhdf5_hl.320.dylib",
         "/opt/homebrew/opt/libarchive/lib/libarchive.13.dylib",
         "/opt/homebrew/opt/libomp/lib/libomp.dylib",
-        "/opt/homebrew/opt/openblas/lib/libopenblas.0.dylib",
         "/opt/homebrew/opt/pcre2/lib/libpcre2-32.0.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libamd.3.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libklu.2.dylib",
@@ -29535,6 +29535,7 @@
         "/usr/local/lib/scilab/libsciui_data.VER.dylib",
         "/usr/local/lib/scilab/libsciwebtools.VER.dylib",
         "/usr/local/lib/scilab/libscixml.VER.dylib",
+        "@rpath/libarmpl_lp64_mp.dylib",
         "@rpath/libc++.1.dylib",
         "@rpath/libcurl.4.dylib",
         "@rpath/libgfortran.5.dylib",
@@ -29545,7 +29546,9 @@
       "rpaths": [
         "/usr/lib",
         "/opt/homebrew/opt/gcc/lib/gcc/current",
-        "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/lib"
+        "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home/lib",
+        "/opt/arm/armpl_26.07_flang-22/lib",
+        "/opt/homebrew/opt/libomp/lib"
       ],
       "tmp_leak": false
     },
@@ -29563,7 +29566,6 @@
         "/opt/homebrew/opt/hdf5/lib/libhdf5_hl.320.dylib",
         "/opt/homebrew/opt/libarchive/lib/libarchive.13.dylib",
         "/opt/homebrew/opt/libomp/lib/libomp.dylib",
-        "/opt/homebrew/opt/openblas/lib/libopenblas.0.dylib",
         "/opt/homebrew/opt/pcre2/lib/libpcre2-32.0.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libamd.3.dylib",
         "/opt/homebrew/opt/suite-sparse/lib/libklu.2.dylib",
@@ -29607,6 +29609,7 @@
         "/usr/local/lib/scilab/libsciwebtools.VER.dylib",
         "/usr/local/lib/scilab/libscixcos-disable.VER.dylib",
         "/usr/local/lib/scilab/libscixml.VER.dylib",
+        "@rpath/libarmpl_lp64_mp.dylib",
         "@rpath/libc++.1.dylib",
         "@rpath/libcurl.4.dylib",
         "@rpath/libgfortran.5.dylib",
@@ -29615,7 +29618,9 @@
       "install_name": "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
       "rpaths": [
         "/usr/lib",
-        "/opt/homebrew/opt/gcc/lib/gcc/current"
+        "/opt/homebrew/opt/gcc/lib/gcc/current",
+        "/opt/arm/armpl_26.07_flang-22/lib",
+        "/opt/homebrew/opt/libomp/lib"
       ],
       "tmp_leak": false
     }
@@ -29626,7 +29631,7 @@
     "etc/classpath.xml": "377272d04fe1db5977cd6f9c6daf61782504aa5098f10573ae648099d78357a2",
     "etc/logging.properties": "af3a95a34d4b1a40f027c885c48764e4524eb59a98b05bdb32d480fba281a637",
     "etc/modules.xml": "acf1819a4f3858aa94ed7d8fec4e2c9084ad6263a899da3d1e31128b9b8028bf",
-    "macros/*.bin (manifest)": "fbf97b5634c9c73d4f3f938b4ddac05cce457e34529f0017cf02b5520dc58d51",
+    "macros/*.bin (manifest)": "a16118f4fbd4c5bbda7b91cf33e5eef0b9fc020a33eb6d1cec41a2e0d328a00a",
     "modules/atoms/etc/repositories": "c737fbcc77eac2915fcc167e5fcea7a9bba694a90952b2284e13f0733a58eb53",
     "modules/atoms/tests/unit_tests/repositories.orig": "c737fbcc77eac2915fcc167e5fcea7a9bba694a90952b2284e13f0733a58eb53",
     "modules/core/includes/machine.h": "16afcf3b750f32d75a1c8100cbca0cd5fb1b468494e7190f95d735aa0e82cdb1",
