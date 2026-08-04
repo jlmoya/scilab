@@ -70,11 +70,36 @@ function ilib_gen_Make_unix(names,   ..
     commandpath = SCI+"/modules/dynamic_link/src/scripts";
     usercommandpath = SCIHOME+"/modules/dynamic_link/src/scripts";
 
-    // generate the stuff into the user directory in order to avoid the configure each time.
-     if isdir(usercommandpath) == %F then
+    // Seed (or repair) the shared flagless configure cache, so that the ~11 s
+    // ./configure below runs once per installation instead of once per library.
+    //
+    // This used to be guarded on `isdir(usercommandpath) == %F` and to call
+    // generateConfigure with 1 of its 5 arguments, which raises "Undefined
+    // variable: ldflags". The directory had already been mkdir'd on the line
+    // above, so the guard never let it retry: the cache directory existed,
+    // Makefile.orig and libtool never appeared in it, and the reuse test below
+    // could not succeed on any installation. Every gateway build re-ran the
+    // full compiler detection and then wrote a cache key nobody would read.
+    //
+    // Guard on the artifacts, not on the directory, so an installation left in
+    // that state repairs itself.
+    if ~isdir(usercommandpath) then
         mkdir(usercommandpath);
-        copyMandatoryFiles(commandpath,usercommandpath);
-        generateConfigure(usercommandpath);
+    end
+    if ~isfile(usercommandpath+"/Makefile.orig") | ~isfile(usercommandpath+"/libtool") then
+        // Deliberately flagless: this cache is shared by every library, so it
+        // may only ever hold a build that depends on no caller's flags. The
+        // reuse test below enforces the matching half of that contract.
+        //
+        // errcatch because seeding is an optimisation, not a precondition. If
+        // it fails we fall through to the per-build configure, which is exactly
+        // what happens today -- a broken cache must not break the build.
+        ie_seed = execstr("copyMandatoryFiles(commandpath, usercommandpath); " + ..
+                          "generateConfigure(usercommandpath, """", """", """", """");", "errcatch");
+        if ie_seed <> 0 & ilib_verbose() == 2 then
+            mprintf(gettext("   %s: Could not seed the shared compiler detection (%s); continuing without it.\n"), ..
+                    "ilib_gen_Make", lasterror()(1));
+        end
     end
 
     // Copy files => linkBuildDir
@@ -158,15 +183,24 @@ function ilib_gen_Make_unix(names,   ..
         end
     end
 
-    stringToHash =  strcat([libname,ldflags,cflags,fflags,cc])
-
-    hash = getmd5(stringToHash,"string");
-    md5file = fullfile(usercommandpath,libname+".md5");
-    if (stringToHash == libname || (isfile(md5file) && ...
-        mgetl(md5file) == hash)) && ...
+    // Reuse the shared detection only for a build that asked for no flags of its
+    // own, because there is exactly ONE shared Makefile.orig for every library
+    // on the installation and it was generated flagless.
+    //
+    // The previous test also accepted a match against a per-library
+    // <libname>.md5 key. That is unsound and only stayed harmless because the
+    // cache never populated: the key is per library, the cached artifact is
+    // shared, so library A built with -DFOO would record its key, and a later
+    // A build would then reuse whatever flagless Makefile.orig some unrelated
+    // library had left behind -- silently dropping -DFOO. Fixing the cache
+    // without removing that branch would have turned a dead optimisation into a
+    // wrong-output bug. Flagged builds simply run their own configure, which is
+    // what they already do today.
+    flagless = strcat([ldflags,cflags,fflags,cc]) == ""
+    if flagless && ...
         isfile(usercommandpath+"/Makefile.orig") && ...
         isfile(usercommandpath+"/libtool")
-        // Reuse existing Makefile.orig because compilation flags are all empty or unchanged since last call
+        // Reuse existing Makefile.orig: this build contributed no flags of its own
         [status,msg]=copyfile(usercommandpath+"/Makefile.orig",linkBuildDir);
 
         if ( ilib_verbose() == 2 ) then
@@ -187,10 +221,12 @@ function ilib_gen_Make_unix(names,   ..
         sleep(1000);
         host("touch Makefile");
     else
-        // Makefile.orig doesn't exists or may be invalid regarding the flags
-        // run the ./configure with the flags
-
-        mputl(hash,md5file)
+        // This build carries its own flags, so the shared detection cannot
+        // represent it: run ./configure with those flags, in this build's own
+        // directory. (No cache key is written -- see the note above on why a
+        // per-library key over a shared artifact is unsound. The old code wrote
+        // one on every build and nothing ever read it, which is why an
+        // installation accumulates dozens of stale <libname>.md5 files.)
 
         if ( ilib_verbose() == 2 ) then
             mprintf(gettext("   %s: Need to run the compiler detection (configure).\n"),"ilib_gen_Make");
