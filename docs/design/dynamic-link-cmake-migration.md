@@ -712,9 +712,42 @@ point: these toolboxes have a `build_macos.sce` that does
 `builder.sce` does not. **Always A/B before attributing a toolbox build failure
 to this change** — twice the answer was "wrong entry point", not "regression".
 
-### Not yet run
+### Gate 3 — the toolbox sweep: 51/53
 
-- gate 3, the **54-toolbox verification sweep**;
-- gate 4 reduces to `PARITY OK`: the "+36 MB if CMake is bundled" line is moot,
-  §3 decided not to bundle, and the −1.8 MB only lands when the skeleton is
-  deleted in step 7.
+`tbxVerify` over every toolbox in `SciLabProjects` that has a `loader.sce` or
+`builder.sce`, on the **default (autotools) path** — this gate is the regression
+check that the §1 cache repair, the step-3 generator hook and the step-4 driver
+branch did not disturb normal operation.
+
+**51 pass. The 2 failures are both GUI-only** and cannot be verified headlessly:
+
+| toolbox | reason |
+|---|---|
+| `gui2bitmap` | "can't work in NWNI mode" |
+| `guimaker` | "'figure' function disabled in -nogui or -nwni mode" |
+
+Neither is a regression; both need a display.
+
+**Two harness bugs, both mine, both worth recording** because the sweep is the
+kind of thing that gets re-run later:
+
+1. **One Scilab for all 53 is wrong.** The first attempt ran everything in a
+   single process and died silently at `scimax`, whose loader calls `exit()` —
+   taking the remaining toolboxes with it and leaving a log that just stops. The
+   sweep now runs **one process per toolbox**, with a timeout.
+2. **A result marker must not be line-anchored.** `cgal` and `montesci` were
+   reported as DIED when both pass. Their loader banners end **without a
+   trailing newline**, so the `RESULT|` marker was glued onto the banner
+   (`…gatewayspass=1`) and `grep "^RESULT|"` never saw it. The marker now starts
+   with `\n`. This is the second time in this work that cgal's newline-less
+   banner has silently swallowed output — assume it, do not rediscover it.
+
+Also: running the sweep **with** the app's startup enabled autoloads every
+toolbox first, so `tbxVerify` then verifies an already-loaded one and the
+"already loaded" paths dominate. Use `-nouserstartup`.
+
+### Gate 4
+
+Reduces to `PARITY OK`: the "+36 MB if CMake is bundled" line is moot, §3
+decided not to bundle, and the −1.8 MB only lands when the skeleton is deleted
+in step 7.
