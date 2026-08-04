@@ -86,13 +86,24 @@ int scivprint(const char *fmt, va_list args)
     va_list savedargs;
     va_copy(savedargs, args);
 
-#ifdef _MSC_VER
-    count = vsnprintf(s_buf, MAXPRINTF - 1, fmt, args );
-#else
-    count = vsprintf(s_buf, fmt, args );
-#endif
+    // Bounded on EVERY platform. This used to call vsnprintf only under
+    // _MSC_VER and plain vsprintf everywhere else, so on macOS and Linux any
+    // message longer than bsiz (4096) overflowed this static buffer. It was
+    // reachable from ordinary use: addinter() on a path that does not exist
+    // makes scilabLink sciprint the path into its error message, and a long
+    // enough path trapped in __chk_fail_overflow -- SIGTRAP, uncatchable by
+    // errcatch, with the process gone. Without _FORTIFY_SOURCE the same input
+    // would have silently corrupted whatever follows s_buf instead.
+    //
+    // vsnprintf is C99 and has been in MSVC since 2015, so the guard bought
+    // nothing on any platform Scilab still supports.
+    count = vsnprintf(s_buf, MAXPRINTF, fmt, args);
 
-    if (count == -1)
+    // Negative means an encoding error; >= MAXPRINTF means truncation, and
+    // count is then what WOULD have been written. vsnprintf always terminates,
+    // but pin the terminator anyway so this stays correct if the MSVC
+    // _vsnprintf alias (which does not) is ever reinstated above.
+    if (count < 0 || count >= MAXPRINTF)
     {
         s_buf[MAXPRINTF - 1] = '\0';
     }

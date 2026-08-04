@@ -68,15 +68,14 @@ void sciprint_full(char *fmt, ...)
 
     va_start(ap, fmt);
 
-#if defined(linux) || defined(_MSC_VER)
-    count = vsnprintf (s_buf, MAXCHARSSCIPRINT_FULL - 1, fmt, ap );
-    if (count == -1)
+    // Bounded on every platform -- see the note in sciprint.c. The old guard
+    // listed linux and _MSC_VER, so macOS fell through to an unbounded
+    // vsprintf into this fixed buffer.
+    count = vsnprintf(s_buf, MAXCHARSSCIPRINT_FULL, fmt, ap);
+    if (count < 0 || count >= MAXCHARSSCIPRINT_FULL)
     {
         s_buf[MAXCHARSSCIPRINT_FULL - 1] = '\0';
     }
-#else
-    (void )vsprintf(s_buf, fmt, ap );
-#endif
 
     va_end(ap);
 

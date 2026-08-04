@@ -36,11 +36,15 @@ int addErrorMessage(SciErr* _psciErr, int _iErr, const char* _pstMsg, ...)
     va_list ap;
 
     va_start(ap, _pstMsg);
-#if defined (vsnprintf) || defined (linux)
-    iRet = vsnprintf(pstMsg, bsiz - 1, _pstMsg, ap );
-#else
-    iRet = vsprintf(pstMsg, _pstMsg, ap );
-#endif
+    // Bounded on every platform -- see the note in output_stream/src/c/sciprint.c.
+    // The old guard was `defined(vsnprintf) || defined(linux)`: the first test
+    // asks whether vsnprintf is a MACRO, which it is not on any modern libc, so
+    // in practice only Linux got the bounded call and macOS overflowed pstMsg.
+    iRet = vsnprintf(pstMsg, bsiz, _pstMsg, ap);
+    if (iRet < 0 || iRet >= bsiz)
+    {
+        pstMsg[bsiz - 1] = '\0';
+    }
     va_end(ap);
 
     if (_psciErr->iMsgCount >= MESSAGE_STACK_SIZE)

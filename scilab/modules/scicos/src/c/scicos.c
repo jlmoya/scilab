@@ -6159,11 +6159,15 @@ void Coserror(const char *fmt, ...)
 
     va_start(ap, fmt);
 
-#ifdef vsnprintf
+    // Bounded on every platform -- see the note in output_stream/src/c/sciprint.c.
+    // `#ifdef vsnprintf` tests whether vsnprintf is a MACRO; it is a function on
+    // every modern libc, so this guard was false EVERYWHERE and coserr.buf was
+    // filled by an unbounded vsprintf on all platforms, not just macOS.
     retval = vsnprintf(coserr.buf, COSERR_len, fmt, ap);
-#else
-    retval = vsprintf(coserr.buf, fmt, ap);
-#endif
+    if (retval >= COSERR_len)
+    {
+        coserr.buf[COSERR_len - 1] = '\0';
+    }
 
     if (retval == -1)
     {

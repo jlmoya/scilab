@@ -577,8 +577,10 @@ void LSProcessError (LSodarMem ls_mem, int error_code, const char *module, const
     }
     else                     /* We can call ehfun */
     {
-        /* Compose the message */
-        vsprintf(msg, msgfmt, ap);
+        /* Compose the message -- bounded: msg is char[256] and these formats
+           interpolate solver state, so an unbounded vsprintf here could overrun
+           it. See the note in output_stream/src/c/sciprint.c. */
+        vsnprintf(msg, sizeof(msg), msgfmt, ap);
 
         /* Call ehfun */
         ehfun(error_code, module, fname, msg, NULL);
