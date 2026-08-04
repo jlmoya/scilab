@@ -353,9 +353,16 @@ more than the size of our own set.
    is the arbiter), and no parity-baseline obligations. The macOS re-sign is
    folded in. Verified against both the oracle and libtool's own artifact:
    x16/x1 includes, identical exports, loads and runs via `addinter()`.
-3. **Generator** — emit a declarative `CMakeLists.txt` calling
-   `scilab_gateway()`; keep the skeleton in place and switch behind an env flag
-   so both paths can be diffed.
+3. ~~**Generator**~~ **DONE 2026-08-04 (`00741d66559`).**
+   `macros/ilib_gen_cmake_unix.sci`, switched by `SCILAB_GATEWAY_BUILD`
+   (`make` default / `cmake` / `both`). The branch sits **above** the compiler
+   detection, so `cmake` mode skips `./configure` entirely — 0.1 s to generate
+   against 11.6 s. Verified against libtool on the same library: identical
+   exports and dependencies, loads and runs. It also exposed that **C gateway
+   sources are compiled unoptimized today** (the launcher exports `CFLAGS`,
+   which *replaces* automake's `-g -O2` instead of extending it; `CXXFLAGS`/
+   `FFLAGS` are not exported and keep theirs) — the generated build applies
+   `-g -O2` uniformly.
 4. **Driver** — `ilib_compile` runs cmake; preserve `ilib_verbose` diagnostics,
    re-signing, and rpath/install_name. **Plus the missing-CMake diagnostic (§3)**:
    detect absent/too-old CMake and print the install line, rather than leaking a
