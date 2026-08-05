@@ -162,10 +162,11 @@ function libn = ilib_compile(lib_name, ..
             setenv("LD_LIBRARY_PATH",GCClibpath+":"+getenv("LD_LIBRARY_PATH"));
         end
 
-        // Step 4 of docs/design/dynamic-link-cmake-migration.md. The generator
-        // (ilib_gen_Make_unix) reads the same SCILAB_GATEWAY_BUILD and has
-        // already produced either a Makefile or a CMakeLists.txt here.
-        if getenv("SCILAB_GATEWAY_BUILD", "make") == "cmake" then
+        // The generator (ilib_gen_Make_unix) resolved the same mode and has
+        // already produced either a Makefile or a CMakeLists.txt here. Both
+        // sides MUST agree, which is why the decision is one shared function
+        // rather than two getenv() calls that can drift apart.
+        if ilib_gateway_use_cmake(%f) then
 
             // Fail with an instruction, not a stack trace. Someone who typed
             // tbxInstall("scicv") did not opt into diagnosing a build system;

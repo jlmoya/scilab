@@ -403,11 +403,18 @@ feared" is exactly the kind of assumption that makes a cutover go badly.
    runtime *despite identical exports*. Gate 2 done for **nan** (see §13).
    **Still to run: gate 2 for scicv and scimax, and gate 3, the 54-toolbox
    sweep.**
-6. **Cut over and deprecate** — CMake becomes the default and does the work.
-   The skeleton STAYS, reachable only by explicit opt-out, and every use of it
-   prints the deprecation warning naming its removal release (§10). The
-   development-time A/B flag from step 3 is deleted here; the opt-out is a
-   different, deliberately user-facing thing.
+6. ~~**Cut over and deprecate**~~ **DONE 2026-08-05.** CMake is the default.
+   `SCILAB_GATEWAY_BUILD` unset or `cmake` → CMake; `autotools` (or the legacy
+   `make`) → the skeleton, and **every use warns, naming 2027.1**. An unknown
+   value warns and takes the default rather than silently selecting the
+   deprecated path on a typo. The decision is one shared function,
+   `ilib_gateway_use_cmake()`, because the generator and the driver MUST agree —
+   a CMakeLists built by `make` fails in a way that reads like a compiler
+   problem. The dev-time `both` mode is gone.
+
+   Prerequisite evidence: **22 of 23** toolboxes that go through `ilib_build`
+   rebuild on CMake and verify, **0 regressions** (sciTorch fails on both paths
+   and has its own build script). Getting there fixed two real bugs — see §14.
 7. **Delete, in 2027.1** — remove the 18-file skeleton, the opt-out,
    `scicompile.sh`, `compilerDetection.sh`, and the timestamp hack. This is a
    scheduled task, not an aspiration (§10).
@@ -761,3 +768,46 @@ toolbox first, so `tbxVerify` then verifies an already-loaded one and the
 Reduces to `PARITY OK`: the "+36 MB if CMake is bundled" line is moot, §3
 decided not to bundle, and the −1.8 MB only lands when the skeleton is deleted
 in step 7.
+
+
+---
+
+## 14. What the 23-toolbox cutover validation found
+
+Two bugs, both real, neither visible from the synthetic matrix.
+
+### CMake de-duplicates compile options, and it broke sciFinance
+
+sciFinance passes `-isystem <gettext> -isystem <boost>` — space-separated option
+**pairs**. Split into a plain CMake list, the repeated `-isystem` collapses to
+one and the orphaned path becomes a bare argument: it stops being an include and
+lands on the **link** line, where clang says `'linker' input unused`, and the
+compile then fails on a header it can no longer find. Two symptoms, one cause,
+and neither of them names de-duplication.
+
+Caller flags now go through as a single `"SHELL:"` item — CMake's documented
+escape hatch, split like a shell and exempt from de-duplication.
+
+### Scilab's own public header needs gettext, and nothing provided it
+
+`modules/localization/includes/localization.h` does `#include <libintl.h>`, so
+**every** gateway that reaches any Scilab header needs gettext's include
+directory. Measured across all 23: every toolbox shipping a hand-written
+`build_macos.sce` built; every one without it failed with
+`fatal error: 'libintl.h' file not found` — **on both paths**. Those
+`build_macos.sce` files exist largely to do
+`setenv("CPATH", ".../gettext/include")`: a per-toolbox workaround for a platform
+gap, and a third-party ATOMS author would hit a compile error inside Scilab's own
+header with nothing to explain it. `scilab_gateway()` now `find_path()`s
+`libintl.h` and adds it (searched, not hardcoded — Homebrew ships it both as a
+keg and in the shared prefix, and the prefix differs on Intel).
+
+### And one bug in the validator itself
+
+`builder.sce` does more than build the gateway; most also build help, and
+`tbx_build_help` refuses in NWNI. The script reported that as "the gateway
+failed", blaming a display requirement on this change. It now asks the
+artifacts — if a native library was just written, the gateway compiled and
+something later failed — which moved **7** toolboxes out of "failed" and into
+the truth. A validator that mis-attributes is worse than none, because its
+verdict gets quoted.

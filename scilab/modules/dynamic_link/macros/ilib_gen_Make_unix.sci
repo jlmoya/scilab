@@ -183,26 +183,17 @@ function ilib_gen_Make_unix(names,   ..
         end
     end
 
-    // Step 3 of the CMake migration: emit the declarative CMakeLists.txt.
-    // SCILAB_GATEWAY_BUILD selects which generator runs --
-    //   unset / "make"  the autotools skeleton alone (unchanged default)
-    //   "cmake"         CMakeLists.txt alone
-    //   "both"          both, so the two can be diffed on a real toolbox
+    // Step 6 of the CMake migration: CMAKE IS THE DEFAULT. The autotools
+    // skeleton is reachable only by deliberate opt-out and warns every time.
     //
     // Placed here, ABOVE the compiler detection, on purpose: everything below
     // exists only to produce the skeleton's Makefile, and ./configure is the
-    // ~11 s that the migration is meant to delete. Emitting CMake and then
-    // running configure anyway would hide the win the switch exists to measure.
-    // filelist and linkBuildDir are both final at this point.
-    //
-    // The switch lives in the generator rather than in ilib_compile because
-    // this is where those two are in scope; ilib_compile reads the same
-    // variable to decide what to invoke (step 4).
-    gwBuild = getenv("SCILAB_GATEWAY_BUILD", "make");
-    if gwBuild == "cmake" | gwBuild == "both" then
+    // ~11 s the migration deletes. Emitting CMake and then running configure
+    // anyway would throw that away. filelist and linkBuildDir are both final at
+    // this point, which is why the switch lives here rather than in
+    // ilib_compile -- ilib_compile resolves the same mode to decide what to run.
+    if ilib_gateway_use_cmake() then
         ilib_gen_cmake_unix(libname, filelist, ldflags, cflags, fflags, cc, linkBuildDir);
-    end
-    if gwBuild == "cmake" then
         chdir(originPath);
         return;
     end

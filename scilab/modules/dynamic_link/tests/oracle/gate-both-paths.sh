@@ -77,7 +77,7 @@ printf '%-8s  %-9s %-9s %-9s %-9s\n' -------- --------- --------- --------- ----
 for c in "${CASES[@]}"; do
   name="${c%%|*}"; srcs="${c#*|}"
 
-  a="$(build_one make  "$name" "$srcs")"; a_ok=$?
+  a="$(build_one autotools  "$name" "$srcs")"; a_ok=$?
   b="$(build_one cmake "$name" "$srcs")"; b_ok=$?
 
   a_s=$([ $a_ok -eq 0 ] && echo built || echo FAILED)
