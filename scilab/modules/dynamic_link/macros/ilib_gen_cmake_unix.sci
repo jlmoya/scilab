@@ -108,18 +108,21 @@ function ilib_gen_cmake_unix(libname, filelist, ldflags, cflags, fflags, cc, bui
     txt = [txt; "  NO_DEFAULT_PATH)"];
     txt = [txt; ""];
 
-    // Caller flags arrive as opaque command-line strings. separate_arguments
-    // splits them the way a shell would, so quoted -I paths with spaces survive;
-    // splitting on whitespace here would break them.
-    if cflags <> "" then
-        txt = [txt; "separate_arguments(GW_C_FLAGS NATIVE_COMMAND """ + cmakeQuote(cflags) + """)"];
-    end
-    if fflags <> "" then
-        txt = [txt; "separate_arguments(GW_F_FLAGS NATIVE_COMMAND """ + cmakeQuote(fflags) + """)"];
-    end
-    if ldflags <> "" then
-        txt = [txt; "separate_arguments(GW_LD_FLAGS NATIVE_COMMAND """ + cmakeQuote(ldflags) + """)"];
-    end
+    // Caller flags are passed as ONE "SHELL:" item rather than a separated list.
+    //
+    // This is not cosmetic. CMake DE-DUPLICATES compile options, and real
+    // toolboxes use space-separated option pairs -- sciFinance passes
+    // "-isystem /opt/homebrew/opt/gettext/include -isystem /opt/homebrew/opt/boost/include".
+    // Split into a plain list, the repeated `-isystem` collapses to one, and the
+    // orphaned path becomes a bare argument: it stops being an include and turns
+    // up on the LINK line, where clang reports "'linker' input unused" and the
+    // compile then fails on a header it can no longer find. Both symptoms, one
+    // cause.
+    //
+    // "SHELL:" is CMake's documented escape hatch for exactly this: the string is
+    // split the way a shell would and is exempt from de-duplication, so option
+    // pairs survive intact. It is why these are emitted verbatim instead of
+    // through separate_arguments().
     txt = [txt; ""];
 
     txt = [txt; "scilab_gateway(" + libname];
@@ -130,14 +133,14 @@ function ilib_gen_cmake_unix(libname, filelist, ldflags, cflags, fflags, cc, bui
     if cflags <> "" then
         // CXX gets the same flags as C: gencompilationflags_unix emits one
         // CFLAGS value and passes it as both CFLAGS and CXXFLAGS to make.
-        txt = [txt; "  C_FLAGS ${GW_C_FLAGS}"];
-        txt = [txt; "  CXX_FLAGS ${GW_C_FLAGS}"];
+        txt = [txt; "  C_FLAGS ""SHELL:" + cmakeQuote(cflags) + """"];
+        txt = [txt; "  CXX_FLAGS ""SHELL:" + cmakeQuote(cflags) + """"];
     end
     if fflags <> "" then
-        txt = [txt; "  Fortran_FLAGS ${GW_F_FLAGS}"];
+        txt = [txt; "  Fortran_FLAGS ""SHELL:" + cmakeQuote(fflags) + """"];
     end
     if ldflags <> "" then
-        txt = [txt; "  LINK_FLAGS ${GW_LD_FLAGS}"];
+        txt = [txt; "  LINK_FLAGS ""SHELL:" + cmakeQuote(ldflags) + """"];
     end
     // ilib_compile looks for the built library at .libs/<lib_name> inside the
     // build directory -- the libtool layout it has always read. Keep it.

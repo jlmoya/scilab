@@ -285,14 +285,24 @@ scripts) are contract.
 
 Toolboxes in `SciLabProjects` that build native code:
 
-| toolbox | path |
-|---|---|
-| **nan, scicv, scimax** | call `ilib_build`/`ilib_gen_gateway` — **directly affected** |
-| FOSSEE-Optimization-toolbox, sci-ipopt, sciTorch, xlsx | own shell scripts, bypass `ilib_build` — **unaffected; good controls** |
+**CORRECTED 2026-08-05 — this table was wrong, and wrong in the direction that
+understates the risk.** It claimed three toolboxes were affected and named four
+others as unaffected "controls". Grepping every `*.sce` for
+`tbx_build_gateway` / `ilib_build` / `ilib_gen_gateway` finds **23**, including
+all four of the supposed controls:
 
-Narrower than feared: most of our ported natives already bypass this path. The
-real consumer is the third-party ATOMS author, which is precisely why §4 matters
-more than the size of our own set.
+```
+accsum  cgal  csv-readwrite  distfun  FOSSEE-Optimization-toolbox  krisp
+libsvm  lowdisc  nan  nisp  parquet  PIMS  quapro  sci_gsl  sci-ipopt
+scicv  sciDatabase  scidoe  sciFinance  scimax  sciTorch  sndfile-toolbox  xlsx
+```
+
+`tbx_build_gateway` is a thin wrapper over `ilib_build`, which is why a toolbox
+can go through this path without ever naming it. So flipping the default in
+step 6 changes how **23** toolboxes rebuild, not 3 — and there are no controls.
+`tests/oracle/rebuild-all-gateways.sh` rebuilds all of them on the CMake path
+and A/Bs every failure against the autotools path, because "narrower than
+feared" is exactly the kind of assumption that makes a cutover go badly.
 
 **Gates:**
 

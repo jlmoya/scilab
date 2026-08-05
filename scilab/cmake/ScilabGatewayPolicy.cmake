@@ -60,6 +60,38 @@ set(SCILAB_GATEWAY_INCLUDES_RELATIVE
 # spelled out separately rather than derived by slicing the list above.
 set(SCILAB_GATEWAY_Fortran_INCLUDES_RELATIVE modules/core/includes)
 
+# gettext. Scilab's OWN public header modules/localization/includes/localization.h
+# does `#include <libintl.h>`, so every gateway that reaches any Scilab header
+# needs gettext's include directory -- yet nothing in the toolchain provided it.
+#
+# Measured across the 23 toolboxes that go through ilib_build: every one that
+# ships a hand-written build_macos.sce builds, and every one that does not fails
+# with "fatal error: 'libintl.h' file not found" -- on BOTH the autotools and the
+# CMake path. Those build_macos.sce files exist largely to do
+# `setenv("CPATH", "/opt/homebrew/opt/gettext/include")`. That is a per-toolbox
+# workaround for a gap in the platform, and it means a third-party ATOMS author
+# hits a compile error in Scilab's own header with nothing to tell them why.
+#
+# Searched rather than hardcoded to one path, because Homebrew installs gettext
+# both as a keg (opt/gettext/include) and linked into the shared prefix, and the
+# prefix differs on Intel (/usr/local). find_path caches the result, so this
+# costs nothing after the first configure.
+find_path(SCILAB_LIBINTL_INCLUDE_DIR libintl.h
+  HINTS /opt/homebrew/opt/gettext/include /opt/homebrew/include
+        /usr/local/opt/gettext/include /usr/local/include
+  DOC "Directory containing libintl.h, required by Scilab's localization.h")
+
+if(NOT SCILAB_LIBINTL_INCLUDE_DIR)
+  # Not fatal: a platform whose libc provides gettext natively (glibc) needs no
+  # extra -I at all, and failing the configure there would be wrong. Warn only
+  # where it is actually needed.
+  if(APPLE)
+    message(WARNING
+      "scilab_gateway: libintl.h not found. Scilab's localization.h includes it, "
+      "so gateway compilation will fail. Install it with: brew install gettext")
+  endif()
+endif()
+
 # Resolve a relative include list against a root, dropping entries that do not
 # exist. A missing directory is a WARNING, not an error: a stripped-down install
 # that omits, say, modules/mexlib/includes should still build gateways that do
@@ -125,10 +157,18 @@ function(scilab_gateway NAME)
   target_compile_definitions(${NAME} PRIVATE
     "$<$<NOT:$<COMPILE_LANGUAGE:Fortran>>:__SCILAB_TOOLBOX__>")
 
+  # gettext goes to C/C++ only, alongside the Scilab include set: it is needed
+  # because a Scilab header pulls <libintl.h>, and the Fortran rule includes no
+  # Scilab headers beyond core/includes.
+  set(_c_incs ${_incs})
+  if(SCILAB_LIBINTL_INCLUDE_DIR)
+    list(APPEND _c_incs "${SCILAB_LIBINTL_INCLUDE_DIR}")
+  endif()
+
   # Quoting the genexes is load-bearing: unquoted, the ;-lists inside would be
   # split into separate arguments mid-genex.
   target_include_directories(${NAME} PRIVATE
-    "$<$<NOT:$<COMPILE_LANGUAGE:Fortran>>:${_incs}>"
+    "$<$<NOT:$<COMPILE_LANGUAGE:Fortran>>:${_c_incs}>"
     "$<$<COMPILE_LANGUAGE:Fortran>:${_fincs}>")
 
   if(G_C_FLAGS OR G_CXX_FLAGS OR G_Fortran_FLAGS)
