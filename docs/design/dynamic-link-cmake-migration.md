@@ -412,9 +412,8 @@ feared" is exactly the kind of assumption that makes a cutover go badly.
    a CMakeLists built by `make` fails in a way that reads like a compiler
    problem. The dev-time `both` mode is gone.
 
-   Prerequisite evidence: **22 of 23** toolboxes that go through `ilib_build`
-   rebuild on CMake and verify, **0 regressions** (sciTorch fails on both paths
-   and has its own build script). Getting there fixed two real bugs — see §14.
+   Prerequisite evidence: **23 of 23** toolboxes that go through `ilib_build`
+   rebuild on CMake. Getting there fixed **three** real bugs — see §14.
 7. **Delete, in 2027.1** — remove the 18-file skeleton, the opt-out,
    `scicompile.sh`, `compilerDetection.sh`, and the timestamp hack. This is a
    scheduled task, not an aspiration (§10).
@@ -802,7 +801,22 @@ header with nothing to explain it. `scilab_gateway()` now `find_path()`s
 `libintl.h` and adds it (searched, not hardcoded — Homebrew ships it both as a
 keg and in the shared prefix, and the prefix differs on Intel).
 
-### And one bug in the validator itself
+### `cc` is a COMMAND, not a program — and it broke sciTorch
+
+sciTorch passes `cc = "clang++ -x c++"`, forcing its C sources through the C++
+front end. `make` runs `$(CC)` through a shell, so the arguments come along for
+free. `CMAKE_<LANG>_COMPILER` is a single executable **path**, so handing it the
+whole string produced:
+
+    The CMAKE_CXX_COMPILER: clang++ -x c++
+    is not a full path and was not found in the PATH.
+
+The generator now splits it: first token is the compiler, the rest join the
+compile flags — placed *first* so a caller's own cflags still win. They have to
+reach the compile line: dropping `-x c++` silently would compile the C sources
+as C and fail at **link** on mangled-name mismatches, a long way from the cause.
+
+### And two bugs in the validator itself
 
 `builder.sce` does more than build the gateway; most also build help, and
 `tbx_build_help` refuses in NWNI. The script reported that as "the gateway
@@ -811,3 +825,11 @@ artifacts — if a native library was just written, the gateway compiled and
 something later failed — which moved **7** toolboxes out of "failed" and into
 the truth. A validator that mis-attributes is worse than none, because its
 verdict gets quoted.
+
+Worse, the A/B compared **exit codes** rather than failure **reasons**, and that
+is how sciTorch was first reported as "both paths fail — pre-existing". Its
+autotools run also exits nonzero — at the *help* step, with the gateway already
+built. Judging by exit code alone equated "the gateway did not compile" with
+"something later needed a display", and hid a genuine regression behind a label
+that reads like an all-clear. The A/B now asks whether the other path produced a
+fresh **artifact**.

@@ -121,8 +121,12 @@ for n in "${names[@]}"; do
       printf '%-28s %-9s %-9s %s\n' "$n" built n/a \
         "gateway built; builder failed later: ${note:-non-gateway step}"
       ok=$((ok+1))
-    elif build_with make "$n" "$e"; then
-      printf '%-28s %-9s %-9s %s\n' "$n" FAILED - "REGRESSION: make built it, cmake did not"
+    elif build_with autotools "$n" "$e"; ab=$?;
+         [ $ab -eq 0 ] || [ "$(find "$PROJECTS/$n" -name '*.dylib' -newermt '-3 minutes' 2>/dev/null | grep -cv thirdparty)" -gt 0 ]; then
+      # Compare ARTIFACTS, not exit codes. sciTorch's autotools run exits
+      # nonzero at the HELP step with its gateway already built; judging by exit
+      # code alone called that "both paths fail" and hid a real regression.
+      printf '%-28s %-9s %-9s %s\n' "$n" FAILED - "REGRESSION: autotools built the gateway, cmake did not"
       regress=$((regress+1))
     else
       printf '%-28s %-9s %-9s %s\n' "$n" FAILED - "both paths fail -- pre-existing, not this change"

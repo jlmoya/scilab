@@ -11,9 +11,9 @@
 // CMakeLists.txt that calls scilab_gateway(), as the replacement for the
 // autotools skeleton's Makefile.orig + scicompile.sh rewriting.
 //
-// Generation only. ilib_compile still runs `make` unless the build is switched
-// over (step 4); with SCILAB_GATEWAY_BUILD=both the two generators run
-// side by side so their outputs can be diffed on real toolboxes.
+// Since step 6 this is the DEFAULT generator. The autotools skeleton is reached
+// only via SCILAB_GATEWAY_BUILD=autotools, which warns on every use; see
+// ilib_gateway_use_cmake().
 //
 // The generated file is deliberately self-contained and readable: it pins the
 // Scilab it was generated against rather than relying on a CMAKE_PREFIX_PATH
@@ -76,9 +76,28 @@ function ilib_gen_cmake_unix(libname, filelist, ldflags, cflags, fflags, cc, bui
 
     // A compiler override has to precede project(), which is what latches the
     // toolchain; setting it afterwards is silently ignored.
+    //
+    // The `cc` argument is a COMMAND, not just a program: sciTorch passes
+    // "clang++ -x c++" to force its C sources through the C++ front end. make
+    // runs $(CC) through a shell, so the arguments come along for free.
+    // CMAKE_<LANG>_COMPILER is a single executable PATH -- handed the whole
+    // string it reports:
+    //
+    //     The CMAKE_CXX_COMPILER: clang++ -x c++
+    //     is not a full path and was not found in the PATH.
+    //
+    // So split it: first token is the compiler, the rest are compile flags. They
+    // must reach the compile line, or "-x c++" is silently dropped and the C
+    // sources get compiled as C -- which would build and then fail at link with
+    // mangled-name mismatches, far from the cause.
+    ccExtra = "";
     if cc <> "" then
-        txt = [txt; "set(CMAKE_C_COMPILER """ + cmakeQuote(cc) + """)"];
-        txt = [txt; "set(CMAKE_CXX_COMPILER """ + cmakeQuote(cc) + """)"];
+        ccTok = tokens(stripblanks(cc), [" ", ascii(9)]);
+        txt = [txt; "set(CMAKE_C_COMPILER """ + cmakeQuote(ccTok(1)) + """)"];
+        txt = [txt; "set(CMAKE_CXX_COMPILER """ + cmakeQuote(ccTok(1)) + """)"];
+        if size(ccTok, "*") > 1 then
+            ccExtra = strcat(ccTok(2:$), " ");
+        end
     end
 
     txt = [txt; "project(" + libname + "_gateway " + langs + ")"];
@@ -130,11 +149,15 @@ function ilib_gen_cmake_unix(libname, filelist, ldflags, cflags, fflags, cc, bui
     for s = sources(:)'
         txt = [txt; "    """ + cmakeQuote(s) + """"];
     end
-    if cflags <> "" then
+    // Arguments carried by the `cc` override (e.g. sciTorch's "-x c++") ride
+    // with the compile flags, since CMAKE_<LANG>_COMPILER can only hold the
+    // executable. Placed FIRST so a caller's own cflags can still override.
+    cAll = stripblanks(ccExtra + " " + cflags);
+    if cAll <> "" then
         // CXX gets the same flags as C: gencompilationflags_unix emits one
         // CFLAGS value and passes it as both CFLAGS and CXXFLAGS to make.
-        txt = [txt; "  C_FLAGS ""SHELL:" + cmakeQuote(cflags) + """"];
-        txt = [txt; "  CXX_FLAGS ""SHELL:" + cmakeQuote(cflags) + """"];
+        txt = [txt; "  C_FLAGS ""SHELL:" + cmakeQuote(cAll) + """"];
+        txt = [txt; "  CXX_FLAGS ""SHELL:" + cmakeQuote(cAll) + """"];
     end
     if fflags <> "" then
         txt = [txt; "  Fortran_FLAGS ""SHELL:" + cmakeQuote(fflags) + """"];
