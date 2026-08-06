@@ -412,8 +412,10 @@ feared" is exactly the kind of assumption that makes a cutover go badly.
    a CMakeLists built by `make` fails in a way that reads like a compiler
    problem. The dev-time `both` mode is gone.
 
-   Prerequisite evidence: **23 of 23** toolboxes that go through `ilib_build`
-   rebuild on CMake. Getting there fixed **three** real bugs — see §14.
+   Prerequisite evidence: **22 of 23** toolboxes that go through `ilib_build`
+   rebuild their gateway on CMake, **0 regressions**. The one that does not,
+   `csv-readwrite`, fails on **both** paths. Getting there fixed **four** real
+   bugs — see §14.
 7. **Delete, in 2027.1** — remove the 18-file skeleton, the opt-out,
    `scicompile.sh`, `compilerDetection.sh`, and the timestamp hack. This is a
    scheduled task, not an aspiration (§10).
@@ -816,6 +818,15 @@ compile flags — placed *first* so a caller's own cflags still win. They have t
 reach the compile line: dropping `-x c++` silently would compile the C sources
 as C and fail at **link** on mangled-name mismatches, a long way from the cause.
 
+### `-I.` — the build directory was missing from the include path
+
+Every compile line in the oracle opens with `-I.`, and `scilab_gateway()` never
+reproduced it. `ilib_build` copies a toolbox's sources *and its private headers*
+into the build directory, so a gateway writing `#include <its_own_header.h>` —
+angle brackets, which do not search the including file's directory — resolves
+only because of it. csv-readwrite surfaced it as `unknown type name
+'csv_complexArray'`: its own type, from its own header, invisible.
+
 ### And two bugs in the validator itself
 
 `builder.sce` does more than build the gateway; most also build help, and
@@ -833,3 +844,20 @@ built. Judging by exit code alone equated "the gateway did not compile" with
 "something later needed a display", and hid a genuine regression behind a label
 that reads like an all-clear. The A/B now asks whether the other path produced a
 fresh **artifact**.
+
+
+### The one that still fails: csv-readwrite
+
+Not a regression, and not fixed. It fails on **both** paths and produces no
+complete build on either:
+
+- **autotools** dies at `libintl.h` (the gettext gap above, which is fixed only
+  for the CMake path — the skeleton is deprecated and was not given the fix);
+- **CMake** gets past that and dies on the toolbox's own `csv_complex.h`.
+
+It builds **two** libraries (`csv_readwrite` from `src/c/` and the
+`csvreadwrite_c` gateway) and the failing one is the `src/c` library, whose
+sources and headers are siblings that the copy-into-TMPDIR step does not keep
+together. That is csv-readwrite's own layout to untangle, and it is listed here
+so the next person does not rediscover it as a cutover blocker. **Nothing worked
+before this change, so nothing was broken by it.**
