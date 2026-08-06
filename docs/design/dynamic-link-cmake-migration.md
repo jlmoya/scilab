@@ -846,6 +846,18 @@ that reads like an all-clear. The A/B now asks whether the other path produced a
 fresh **artifact**.
 
 
+### The `n/a` rows were a real gap, and it is now closed
+
+Eight toolboxes (accsum, distfun, krisp, nisp, sci_gsl, sci-ipopt, scidoe,
+sciTorch) show `n/a` above: their gateway compiled and the installed `.dylib`
+was replaced with a CMake-built one, but the builder then died at the NWNI help
+step, so `tbxVerify` never ran on them. That left eight toolboxes running
+binaries nobody had loaded — a worse exposure than the one toolbox that fails
+outright, because these are toolboxes that *did* work.
+
+**All 8 verified: `pass`, smoke OK.** Anyone re-running the rebuild script
+should treat an `n/a` as unfinished, not as a pass.
+
 ### The one that still fails: csv-readwrite
 
 Not a regression, and not fixed. It fails on **both** paths and produces no
