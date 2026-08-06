@@ -121,16 +121,27 @@ for n in "${names[@]}"; do
       printf '%-28s %-9s %-9s %s\n' "$n" built n/a \
         "gateway built; builder failed later: ${note:-non-gateway step}"
       ok=$((ok+1))
-    elif build_with autotools "$n" "$e"; ab=$?;
-         [ $ab -eq 0 ] || [ "$(find "$PROJECTS/$n" -name '*.dylib' -newermt '-3 minutes' 2>/dev/null | grep -cv thirdparty)" -gt 0 ]; then
-      # Compare ARTIFACTS, not exit codes. sciTorch's autotools run exits
-      # nonzero at the HELP step with its gateway already built; judging by exit
-      # code alone called that "both paths fail" and hid a real regression.
-      printf '%-28s %-9s %-9s %s\n' "$n" FAILED - "REGRESSION: autotools built the gateway, cmake did not"
-      regress=$((regress+1))
     else
-      printf '%-28s %-9s %-9s %s\n' "$n" FAILED - "both paths fail -- pre-existing, not this change"
+    # Classify by the autotools failure REASON, not its exit code and not
+    # artifact mtimes. Two earlier versions of this got it wrong in both
+    # directions:
+    #   - exit code alone called sciTorch "both paths fail" when its autotools
+    #     run had merely stopped at the NWNI help step with the gateway built,
+    #     hiding a real regression;
+    #   - "did the other path leave a fresh .dylib" then called csv-readwrite a
+    #     regression, because it has TWO gateway libs and a partial autotools
+    #     build wrote one before failing on the other.
+    # The signal that actually means "the gateway did not compile" is
+    # ilib_compile's own message, so test for that.
+    build_with autotools "$n" "$e"; ab=$?
+    if [ $ab -ne 0 ] && grep -q "ilib_compile: An error occurred during the compilation" \
+         "${TMPDIR:-/tmp}/build_autotools_$n.log" 2>/dev/null; then
+      printf '%-28s %-9s %-9s %s\n' "$n" FAILED - "both paths fail to compile -- pre-existing, not this change"
       preexist=$((preexist+1))
+    else
+      printf '%-28s %-9s %-9s %s\n' "$n" FAILED - "REGRESSION: autotools compiled the gateway, cmake did not"
+      regress=$((regress+1))
+    fi
     fi
   fi
 done

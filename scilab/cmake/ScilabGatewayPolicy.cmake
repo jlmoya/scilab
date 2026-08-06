@@ -157,10 +157,19 @@ function(scilab_gateway NAME)
   target_compile_definitions(${NAME} PRIVATE
     "$<$<NOT:$<COMPILE_LANGUAGE:Fortran>>:__SCILAB_TOOLBOX__>")
 
-  # gettext goes to C/C++ only, alongside the Scilab include set: it is needed
-  # because a Scilab header pulls <libintl.h>, and the Fortran rule includes no
-  # Scilab headers beyond core/includes.
-  set(_c_incs ${_incs})
+  # The build directory itself, FIRST. This is the `-I.` that opens every one of
+  # the oracle's compile lines, and it is not decoration: ilib_build copies the
+  # toolbox's sources AND its private headers into this directory, so a gateway
+  # that writes `#include <its_own_header.h>` (angle brackets, which do not
+  # search the including file's directory) resolves only because of it.
+  #
+  # Omitting it made csv-readwrite fail with "unknown type name
+  # 'csv_complexArray'" -- its own type, from its own header, invisible. The
+  # autotools path compiled the same file with nothing worse than a warning.
+  # Both source and binary dir are listed so an out-of-tree build by hand (which
+  # the generated CMakeLists invites) behaves the same as the in-source one
+  # ilib_compile drives.
+  set(_c_incs "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}" ${_incs})
   if(SCILAB_LIBINTL_INCLUDE_DIR)
     list(APPEND _c_incs "${SCILAB_LIBINTL_INCLUDE_DIR}")
   endif()
