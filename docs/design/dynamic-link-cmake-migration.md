@@ -412,10 +412,9 @@ feared" is exactly the kind of assumption that makes a cutover go badly.
    a CMakeLists built by `make` fails in a way that reads like a compiler
    problem. The dev-time `both` mode is gone.
 
-   Prerequisite evidence: **22 of 23** toolboxes that go through `ilib_build`
-   rebuild their gateway on CMake, **0 regressions**. The one that does not,
-   `csv-readwrite`, fails on **both** paths. Getting there fixed **four** real
-   bugs — see §14.
+   Prerequisite evidence: **23 of 23** toolboxes that go through `ilib_build`
+   rebuild their gateway on CMake, **0 regressions, 0 pre-existing failures**.
+   Getting there fixed **five** real bugs — see §14.
 7. **Delete, in 2027.1** — remove the 18-file skeleton, the opt-out,
    `scicompile.sh`, `compilerDetection.sh`, and the timestamp hack. This is a
    scheduled task, not an aspiration (§10).
@@ -858,18 +857,30 @@ outright, because these are toolboxes that *did* work.
 **All 8 verified: `pass`, smoke OK.** Anyone re-running the rebuild script
 should treat an `n/a` as unfinished, not as a pass.
 
-### The one that still fails: csv-readwrite
+### Include ORDER is part of the contract (csv-readwrite)
 
-Not a regression, and not fixed. It fails on **both** paths and produces no
-complete build on either:
+The autotools compile line is `-I.` → **caller's cflags** → **Scilab's
+includes**: `ilib_compile` *appends* the Scilab module includes to whatever the
+caller passed, so a toolbox's own `-I` always precedes them.
 
-- **autotools** dies at `libintl.h` (the gettext gap above, which is fixed only
-  for the CMake path — the skeleton is deprecated and was not given the fix);
-- **CMake** gets past that and dies on the toolbox's own `csv_complex.h`.
+CMake emits `INCLUDE_DIRECTORIES` **before** `COMPILE_OPTIONS`. Putting the
+Scilab set in `target_include_directories` and the caller's flags in
+`target_compile_options` therefore inverted it — measured on a marker path, the
+caller's `-I` landed at position **19 of 20**, behind Scilab's at **8**.
 
-It builds **two** libraries (`csv_readwrite` from `src/c/` and the
-`csvreadwrite_c` gateway) and the failing one is the `src/c` library, whose
-sources and headers are siblings that the copy-into-TMPDIR step does not keep
-together. That is csv-readwrite's own layout to untangle, and it is listed here
-so the next person does not rediscover it as a cutover blocker. **Nothing worked
-before this change, so nothing was broken by it.**
+csv-readwrite is what that costs. It ships its own `stringToComplex.h`; so does
+Scilab (`modules/string/includes`). With the order inverted its
+`#include "stringToComplex.h"` picked up **Scilab's**, which declares
+`complexArray` rather than `csv_complexArray`, and the compile failed on the
+toolbox's own type — with the compiler helpfully suggesting Scilab's:
+
+    unknown type name 'csv_complexArray'; did you mean 'complexArray'?
+
+Only the build directory now goes in `INCLUDE_DIRECTORIES` (it must be first,
+and CMake puts it there); the Scilab set became `-I` compile options emitted
+*after* the caller's, reproducing the autotools order exactly.
+
+**A header-name collision with Scilab's own modules is the failure mode this
+guards against, and only a toolbox that has one can expose it.** csv-readwrite
+now builds, and `csvWrite`/`csvRead` round-trip exactly, including a
+semicolon-separated string read.

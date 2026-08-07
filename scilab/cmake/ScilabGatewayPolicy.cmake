@@ -174,18 +174,50 @@ function(scilab_gateway NAME)
     list(APPEND _c_incs "${SCILAB_LIBINTL_INCLUDE_DIR}")
   endif()
 
-  # Quoting the genexes is load-bearing: unquoted, the ;-lists inside would be
-  # split into separate arguments mid-genex.
+  # INCLUDE ORDER IS PART OF THE CONTRACT, and getting it backwards silently
+  # changes which header wins.
+  #
+  # The autotools line is:  -I.  <caller's cflags>  <Scilab's includes>
+  # -- ilib_compile APPENDS the Scilab module includes to whatever the caller
+  # passed, so a toolbox's own -I always precedes them.
+  #
+  # CMake emits INCLUDE_DIRECTORIES *before* COMPILE_OPTIONS, so putting the
+  # Scilab set in target_include_directories and the caller's flags in
+  # target_compile_options inverts that: measured, the caller's -I landed at
+  # position 19 of 20, behind Scilab's at position 8.
+  #
+  # csv-readwrite is what that costs. It ships its own stringToComplex.h, and so
+  # does Scilab (modules/string/includes). With the order inverted, its
+  # `#include "stringToComplex.h"` picked up SCILAB's -- which declares
+  # `complexArray`, not `csv_complexArray` -- and the compile failed on the
+  # toolbox's own type with the compiler helpfully suggesting Scilab's.
+  #
+  # So: only the build directory goes in INCLUDE_DIRECTORIES (it must be first,
+  # and CMake puts it there); everything else becomes -I compile options, in the
+  # order autotools uses.
   target_include_directories(${NAME} PRIVATE
-    "$<$<NOT:$<COMPILE_LANGUAGE:Fortran>>:${_c_incs}>"
-    "$<$<COMPILE_LANGUAGE:Fortran>:${_fincs}>")
+    "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}")
 
+  # 1. the caller's flags
   if(G_C_FLAGS OR G_CXX_FLAGS OR G_Fortran_FLAGS)
     target_compile_options(${NAME} PRIVATE
       "$<$<COMPILE_LANGUAGE:C>:${G_C_FLAGS}>"
       "$<$<COMPILE_LANGUAGE:CXX>:${G_CXX_FLAGS}>"
       "$<$<COMPILE_LANGUAGE:Fortran>:${G_Fortran_FLAGS}>")
   endif()
+
+  # 2. then Scilab's own include set, as -I options so it lands after them
+  set(_sci_c_opts "")
+  foreach(_d IN LISTS _c_incs)
+    list(APPEND _sci_c_opts "-I${_d}")
+  endforeach()
+  set(_sci_f_opts "")
+  foreach(_d IN LISTS _fincs)
+    list(APPEND _sci_f_opts "-I${_d}")
+  endforeach()
+  target_compile_options(${NAME} PRIVATE
+    "$<$<NOT:$<COMPILE_LANGUAGE:Fortran>>:${_sci_c_opts}>"
+    "$<$<COMPILE_LANGUAGE:Fortran>:${_sci_f_opts}>")
 
   if(G_LIBS)
     target_link_libraries(${NAME} PRIVATE ${G_LIBS})
