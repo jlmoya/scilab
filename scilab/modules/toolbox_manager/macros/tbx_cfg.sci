@@ -19,7 +19,16 @@ function cfg = tbx_cfg()
     // native-build env (needed only when BUILDING native toolboxes)
     cfg.cpath    = "/opt/homebrew/opt/gettext/include";
     cfg.libpath  = "/opt/homebrew/opt/gettext/lib:/opt/homebrew/lib/gcc/current/gcc/aarch64-apple-darwin25/16:/opt/homebrew/lib/gcc/current";
-    // verified-on-macOS set (pre-ticked in tbxManager; refined empirically in phase 5)
+    // Verified-on-macOS set: pre-ticked in tbxManager and shown there as
+    // "(verified)" vs "(build-only)". This is a RECORD of tbxVerify results, not
+    // a live check -- the GUI never runs tbxVerify itself (that needs a throwaway
+    // session per toolbox; see tbx-verify-all.sh). So a toolbox added after the
+    // last sweep reads as "(build-only)" purely because nobody re-ran the sweep,
+    // which is what happened to the three appended below: guimaker and
+    // gui2bitmap were installed after this list was last refreshed, and
+    // sciFinance is newer still. All three were re-verified on 2026-08-09
+    // (PASS, delta=1, smoke=OK) before being added here.
+    // To extend: ./tbx-verify-all.sh <names> and paste the PASS names it prints.
     cfg.verified = ["sciDatabase" "parquet" "xlsx" "libsvm" "guibuilder" "scicv" ..
                     "cgal" "sndfile-toolbox" "sciSymPy" "sciTorch" "sciQuantLib" ..
                     "PIMS" "financial" "nan" "quapro" "json" "specfun" "distfun" ..
@@ -29,6 +38,7 @@ function cfg = tbx_cfg()
                     "krisp" "csv-readwrite" "arfit" ..
                     "anova" "casci" "condnb" "conint" "dbldbl" "hypt" "makematrix" ..
                     "neuralnetwork" "number" "ortpol" ..
-                    "pso-toolbox" "sci_gsl" "sci-ipopt" "accsum" "scimax"];
+                    "pso-toolbox" "sci_gsl" "sci-ipopt" "accsum" "scimax" ..
+                    "gui2bitmap" "guimaker" "sciFinance" "helptbx"];
     if ~isdir(cfg.tbxdir) then mkdir(cfg.tbxdir); end
 endfunction
