@@ -78,6 +78,7 @@ XLNT_SRC_SHA="93a7ca746acadc08ec1ea3b4368b2c0602007e2c1bac09480a840ae26acfbef8"
 # repo: central = repo1.maven.org, jb = JetBrains intellij-dependencies (JediTerm lives there)
 MAVEN_MANIFEST="
 central com.google.code.gson:gson:2.10.1                 4241c14a7727c34feea6507ec801318a3d4a90f070e4525681079fb94ee4c593
+central com.formdev:flatlaf:3.7.2                        917aff3963c88d797d0fd9b9ccbd70f7681c101df9d11c59e2bc7a3a6c0fabf4
 central net.java.dev.jna:jna:5.14.0                      34ed1e1f27fa896bca50dbc4e99cf3732967cec387a7a0d5e3486c09673fe8c6
 central org.jetbrains.kotlin:kotlin-stdlib:2.1.21        263bdc679e1f62012db7b091796279b6d71cf36f4797a98ff1ace05835f201c8
 central org.jetbrains:annotations:24.0.1                 61666dbce7e42e6c85b43c04fcfb8293a21dcb55b3c80e869270ce42c01a6b35
@@ -170,6 +171,14 @@ if [ "$VERIFY_ONLY" = 0 ]; then
   # jar nondeterministic — keep exactly one of each: the JDK-parity JavaFX set installed above
   # and the pinned jcef-api.jar (installed in step 3, matching the step-5 natives release).
   rm -f "$TP"/javafx.base-*.jar "$TP"/javafx.graphics-*.jar "$TP"/javafx.swing-*.jar "$TP"/jcef-1*.jar
+
+  # The tarball also ships flatlaf-3.4.1.jar, which this fork supersedes with the version
+  # pinned above (adopted as the macOS look and feel — see modules/gui utils/FlatLafSetup).
+  # Two flatlaf jars in thirdparty/ would make etc/classpath.xml's @FLATLAF@ glob match
+  # more than one, which ScilabClasspath.cmake treats as a fatal error. Keep exactly the
+  # pinned one; this must stay in step with the flatlaf version in MAVEN_MANIFEST above
+  # and in the parent POM's staging list.
+  find "$TP" -maxdepth 1 -name 'flatlaf-*.jar' ! -name 'flatlaf-3.7.2.jar' -delete 2>/dev/null || true
 
   echo "[3/8] Maven artifacts (fork additions)…"
   while read -r repo gav pin dest; do
@@ -306,7 +315,7 @@ for j in gson-2.10.1 jna-5.14.0 kotlin-stdlib-2.1.21 annotations-24.0.1 \
          jogl-all-2.5.0 gluegen-rt-2.5.0 flexdock-1.2.5 jgraphx-2.1.0.7 skinlf-1.2.3 \
          jlatexmath-1.0.7 fop-core-2.9 batik-all-1.17 freehep-graphics2d-2.4 \
          lucene-core-9.10.0 lucene-queryparser-9.10.0 jrosetta-API-1.0.4 jrosetta-engine-1.0.4 \
-         commons-io-2.11.0 commons-logging-1.1.1 jhall-2.0 jgoodies-looks-2.7.0; do
+         commons-io-2.11.0 commons-logging-1.1.1 jhall-2.0 jgoodies-looks-2.7.0 flatlaf-3.7.2; do
   need "$TP/$j.jar"
 done
 need "$TP/lucene-analyzers-common-9.10.0.jar"
