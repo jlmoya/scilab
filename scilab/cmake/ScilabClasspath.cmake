@@ -48,6 +48,10 @@ set(_SCILAB_CLASSPATH_TP_MAP
   "JAVAFX_GRAPHICS|javafx.graphics.jar"
   "JCEF|jcef-api.jar"
   "GSON|gson-*.jar"
+  # Exact filename, NOT flatlaf-*.jar: upstream's prerequirements tarball still drops
+  # the superseded flatlaf-3.4.1.jar into thirdparty/ alongside the 3.7.2 the parent POM
+  # stages, so a wildcard would match TWO jars and trip the 1-jar assertion below.
+  "FLATLAF|flatlaf-3.7.2.jar"
   "JEDITERM_CORE|jediterm-core-*.jar"
   "JEDITERM_UI|jediterm-ui-*.jar"
   "LWJGL|lwjgl-[0-9]*.jar"

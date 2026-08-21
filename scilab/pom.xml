@@ -443,6 +443,12 @@
               <overWriteIfNewer>true</overWriteIfNewer>
               <artifactItems>
                 <artifactItem><groupId>com.google.code.gson</groupId><artifactId>gson</artifactId><version>2.10.1</version><destFileName>gson-2.10.1.jar</destFileName></artifactItem>
+                <!-- FlatLaf: the macOS look and feel (modules/gui FlatLafSetup). Upstream's
+                     prerequirements tarball still drops an unused flatlaf-3.4.1.jar here; this
+                     entry supersedes it with the current release, resolved and checksummed by
+                     Maven like every other Tier A jar. Verified byte-identical to Central by
+                     SHA-1 before being listed, per the Tier A rule above. -->
+                <artifactItem><groupId>com.formdev</groupId><artifactId>flatlaf</artifactId><version>3.7.2</version><destFileName>flatlaf-3.7.2.jar</destFileName></artifactItem>
                 <artifactItem><groupId>net.java.dev.jna</groupId><artifactId>jna</artifactId><version>5.14.0</version><destFileName>jna-5.14.0.jar</destFileName></artifactItem>
                 <artifactItem><groupId>org.apache.lucene</groupId><artifactId>lucene-core</artifactId><version>9.10.0</version><destFileName>lucene-core-9.10.0.jar</destFileName></artifactItem>
                 <artifactItem><groupId>org.apache.lucene</groupId><artifactId>lucene-queryparser</artifactId><version>9.10.0</version><destFileName>lucene-queryparser-9.10.0.jar</destFileName></artifactItem>

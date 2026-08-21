@@ -29,8 +29,22 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class LookAndFeelManager {
 
-    private static UIManager.LookAndFeelInfo[] availableLookAndFeels = UIManager.getInstalledLookAndFeels();
     private boolean ret;
+
+    /**
+     * The installed look-and-feels, queried LIVE rather than cached in a static.
+     *
+     * This used to be a static field initialised at class-load time. That made the
+     * list depend on WHEN this class happened to be loaded: a look and feel
+     * registered afterwards -- as FlatLafSetup.install() does for the macOS themes
+     * -- was invisible here, so isSupportedLookAndFeel() returned false for a theme
+     * that was in fact available and the caller silently fell back to the system
+     * look and feel. Querying UIManager each time removes that ordering hazard;
+     * UIManager already holds the array, so there is nothing to cache.
+     */
+    private static UIManager.LookAndFeelInfo[] installedLookAndFeels() {
+        return UIManager.getInstalledLookAndFeels();
+    }
 
     /**
      * Constructor
@@ -43,9 +57,10 @@ public class LookAndFeelManager {
      * @return an array of String
      */
     public String[] getInstalledLookAndFeels() {
-        String[] retStrings = new String[availableLookAndFeels.length];
-        for (int i = 0; i < availableLookAndFeels.length; i++) {
-            retStrings[i] =  availableLookAndFeels[i].getClassName();
+        UIManager.LookAndFeelInfo[] available = installedLookAndFeels();
+        String[] retStrings = new String[available.length];
+        for (int i = 0; i < available.length; i++) {
+            retStrings[i] =  available[i].getClassName();
         }
         return retStrings;
     }
@@ -55,7 +70,7 @@ public class LookAndFeelManager {
      * @return size of array of String
      */
     public int numbersOfInstalledLookAndFeels() {
-        return availableLookAndFeels.length;
+        return installedLookAndFeels().length;
     }
 
     /**
@@ -72,8 +87,9 @@ public class LookAndFeelManager {
      * @return if it exists or not
      */
     public boolean isSupportedLookAndFeel(String lookandfeel) {
-        for (int i = 0; i < availableLookAndFeels.length; i++) {
-            if (availableLookAndFeels[i].getClassName().equals(lookandfeel)) {
+        UIManager.LookAndFeelInfo[] available = installedLookAndFeels();
+        for (int i = 0; i < available.length; i++) {
+            if (available[i].getClassName().equals(lookandfeel)) {
                 return true;
             }
         }

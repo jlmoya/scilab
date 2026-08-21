@@ -352,6 +352,16 @@
       <artifactId>gson</artifactId>
       <version>2.10.1</version>
     </dependency>
+    <!-- FlatLaf — com.formdev.flatlaf.themes.{FlatMacLightLaf, FlatMacDarkLaf},
+         used by utils/FlatLafSetup.java for the macOS look and feel. A normal
+         Maven Central dependency, not a systemPath entry: the jar is staged into
+         thirdparty/ by the parent POM so etc/classpath.xml still finds it at
+         runtime under the filename it resolves by. -->
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <version>3.7.2</version>
+    </dependency>
     <!-- JCEF — org.cef.{CefApp, CefClient, CefSettings, browser.*,
          callback.*, handler.*, misc.*, network.*}, the embedded Chromium
          browser (help browser + plot browser bridge). Real Maven Central

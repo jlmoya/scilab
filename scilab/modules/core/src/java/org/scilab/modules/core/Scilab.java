@@ -47,6 +47,7 @@ import org.scilab.modules.gui.console.ScilabConsole;
 import org.scilab.modules.gui.tabfactory.ScilabTabFactory;
 import org.scilab.modules.gui.utils.ClosingOperationsManager;
 import org.scilab.modules.gui.utils.ConfigManager;
+import org.scilab.modules.gui.utils.FlatLafSetup;
 import org.scilab.modules.gui.utils.LookAndFeelManager;
 import org.scilab.modules.gui.utils.WindowsConfigurationManager;
 
@@ -166,7 +167,32 @@ public class Scilab {
                 } else if (System.getProperty(OSNAME).toLowerCase().indexOf(MACOS) != -1) {
                     /** OPTION ADDED TO ALLOW DOCKING UNDER MACOSX */
                     System.setProperty(DockingConstants.HEAVYWEIGHT_DOCKABLES, ENABLE);
+
+                    /*
+                     * macOS uses FlatLaf's macOS-styled themes instead of Aqua, and
+                     * follows the system Light/Dark setting (see FlatLafSetup for why
+                     * the appearance has to be read from `defaults`).
+                     *
+                     * install() must run BEFORE the isSupportedLookAndFeel() check
+                     * below: that check tests UIManager.getInstalledLookAndFeels(),
+                     * and an unregistered FlatLaf class name fails it, which would
+                     * quietly select the system look and feel instead -- the theme
+                     * would simply never appear, with nothing logged to say why.
+                     *
+                     * If anything here fails, scilabLookAndFeel keeps a value the
+                     * check rejects and the existing fallback applies the system look
+                     * and feel, exactly as before this change.
+                     *
+                     * Windows and Linux are deliberately untouched: they cannot be
+                     * tested on this platform, so they keep their existing look.
+                     */
                     scilabLookAndFeel = "apple.laf.AquaLookAndFeel";
+                    try {
+                        FlatLafSetup.install();
+                        scilabLookAndFeel = FlatLafSetup.preferredLookAndFeel();
+                    } catch (Throwable e) {
+                        System.err.println("FlatLaf unavailable, keeping the system look and feel: " + e);
+                    }
                 } else {
                     scilabLookAndFeel = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
 
@@ -195,6 +221,12 @@ public class Scilab {
 
                     if (lookAndFeel.isSupportedLookAndFeel(scilabLookAndFeel)) {
                         lookAndFeel.setLookAndFeel(scilabLookAndFeel);
+                        // Keep following the macOS appearance, but only if the theme
+                        // above actually applied -- no point watching for changes we
+                        // would not be able to act on.
+                        if (FlatLafSetup.isMacOS()) {
+                            FlatLafSetup.startSystemAppearanceWatcher();
+                        }
                     } else {
                         lookAndFeel.setSystemLookAndFeel();
                     }
