@@ -41,6 +41,45 @@ function paths = tbxAutoloadList()
         allDeps(i) = tbx_deps(M.path(i), d);
     end
 
+    // MANIFEST PATHS MUST BE THE CANONICAL TOOLBOX ROOT.
+    //
+    // tbx_resolve() only ever yields <projects>/<name> or <tbxdir>/<name>, so a
+    // path that is neither is a stale or hand-edited entry. Such an entry is NOT
+    // necessarily broken -- and that is exactly what makes it dangerous.
+    //
+    // sciQuantLib was recorded as .../sciQuantLib/quantlib-swig/Scilab/toolbox,
+    // a NESTED directory that has a perfectly good loader.sce. The toolbox loaded
+    // and every gateway function worked, so nothing looked wrong. What silently
+    // did not happen was the toolbox ROOT's own loader.sce ever running -- the
+    // delegator that registers the Demonstrations menu entry. The demo was simply
+    // absent, with no error anywhere to connect it to a path recorded months
+    // earlier. A check for "does the loader load" would never have caught it.
+    //
+    // So: when the canonical root exists AND carries a loader.sce, it is
+    // authoritative (it is what a fresh tbxInstall would record) and the manifest
+    // is repaired in place. When it does not, the entry is left alone -- it may be
+    // a deliberate custom location -- and only reported.
+    cfg = tbx_cfg();
+    fixed = %f;
+    for i = 1:nAll
+        canon  = fullfile(cfg.projects, M.name(i));
+        remote = fullfile(cfg.tbxdir,   M.name(i));
+        if M.path(i) == canon | M.path(i) == remote then continue; end
+        if isfile(fullfile(canon, "loader.sce")) then
+            mprintf("[toolbox-manager] %s: manifest path was %s, which is not the " + ..
+                    "toolbox root. Repaired to %s (the root loader registers demos " + ..
+                    "and help, and was being skipped).\n", M.name(i), M.path(i), canon);
+            M.path(i) = canon;
+            fixed = %t;
+        else
+            mprintf("[toolbox-manager] %s: manifest path %s is not the canonical " + ..
+                    "root and %s has no loader.sce — left as-is. If this is not " + ..
+                    "deliberate, re-register with tbxInstall(""%s"").\n", ..
+                    M.name(i), M.path(i), canon, M.name(i));
+        end
+    end
+    if fixed then tbx_manifest_write(M); end
+
     // seed: autoload-enabled and actually loadable
     want = zeros(nAll, 1);
     for i = 1:nAll
