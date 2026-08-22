@@ -3,6 +3,14 @@
 
     <!-- Map the PLAFs to specific themes -->
     <plaf name="com.apple.laf.AquaLookAndFeel" ref="scilab-macos" />
+    <!-- FlatLaf (macOS look and feel, see modules/gui utils/FlatLafSetup).
+         PlafMappingFactory keys this table on UIManager.getLookAndFeel().getClass().getName()
+         and returns NULL for anything it does not find, which leaves a dockable with no
+         titlebar UI at all: the title disappears, only the drag handle remains, and the main
+         frame falls back to showing the active dockable's name. Both themes map to the same
+         macOS view as Aqua did, so docking looks exactly as it did before FlatLaf. -->
+    <plaf name="com.formdev.flatlaf.themes.FlatMacLightLaf" ref="scilab-macos" />
+    <plaf name="com.formdev.flatlaf.themes.FlatMacDarkLaf" ref="scilab-macos" />
     <plaf name="javax.swing.plaf.metal.MetalLookAndFeel" ref="scilab" />
     <plaf name="com.sun.java.swing.plaf.gtk.GTKLookAndFeel" ref="scilab" />
     <plaf name="com.sun.java.swing.plaf.windows.WindowsLookAndFeel" ref="scilab" />
