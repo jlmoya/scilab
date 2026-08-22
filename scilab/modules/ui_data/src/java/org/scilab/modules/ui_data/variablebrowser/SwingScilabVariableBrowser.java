@@ -30,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -207,8 +208,22 @@ public final class SwingScilabVariableBrowser extends SwingScilabDockablePanel i
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setCellSelectionEnabled(true);
 
-        table.setBackground(Color.WHITE);
-        if (table.getGridColor().equals(Color.WHITE)) {
+        // Was table.setBackground(Color.WHITE), which FORCED white regardless of the
+        // look and feel. Under a dark theme that left the browser unreadable in the
+        // worst way: the background stayed white while the foreground followed the
+        // theme, so light grey text was painted onto white and all but vanished.
+        //
+        // Taking Table.background keeps the table matching every other list/table in
+        // the window, and the fallback preserves the historical white for any look
+        // and feel that does not define the key.
+        Object tableBg = UIManager.get("Table.background");
+        table.setBackground((tableBg instanceof Color) ? (Color) tableBg : Color.WHITE);
+
+        // The grid must stay visible against whatever background is in force. The old
+        // test only rescued the light case (grid == WHITE on a white table); a dark
+        // theme can equally hand back a grid colour equal to its own dark background.
+        // Comparing against the table's ACTUAL background covers both.
+        if (table.getGridColor().equals(table.getBackground())) {
             table.setGridColor(new Color(128, 128, 128));
         }
         table.setShowHorizontalLines(true);

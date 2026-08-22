@@ -16,6 +16,8 @@
 package org.scilab.modules.ui_data.filebrowser;
 
 import java.awt.Color;
+
+import javax.swing.UIManager;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -77,7 +79,11 @@ public class SwingScilabTreeTable extends JTable {
     private static final Border BORDER =
     new AbstractBorder() {
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.setColor(Color.LIGHT_GRAY);
+            // Was Color.LIGHT_GRAY: a near-white column separator, which is invisible
+            // on a light theme's white and glaring on a dark one. The look and feel's
+            // own grid colour tracks the theme.
+            Object gc = UIManager.get("Table.gridColor");
+            g.setColor((gc instanceof Color) ? (Color) gc : Color.LIGHT_GRAY);
             g.drawLine(x, y, x, y + height);
         }
 

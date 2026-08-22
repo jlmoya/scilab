@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -76,6 +77,8 @@ public class NewsFeedWidget extends JPanel implements NewsFeedEventListener, Hyp
         editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
         Font font = UIManager.getFont("Label.font");
         editorPane.setFont(font);
+        editorPane.setBackground(lafColor("EditorPane.background", Color.WHITE));
+        editorPane.setForeground(lafColor("EditorPane.foreground", Color.BLACK));
 
         HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
         editorPane.setEditorKit(htmlEditorKit);
@@ -207,9 +210,24 @@ public class NewsFeedWidget extends JPanel implements NewsFeedEventListener, Hyp
     }
 
     private String getHTML(StringBuilder htmlBuilder) {
-        htmlBuilder.insert(0, "<html><body>");
+        // The body carried no colours, so HTMLEditorKit painted its default white
+        // page: a bright panel in the corner of an otherwise dark window. Setting
+        // them from the look and feel makes the feed follow the theme. The pane's
+        // own background is set too -- the margin around the HTML page is painted by
+        // the component, not by the document.
+        htmlBuilder.insert(0, "<html><body style=\"background-color:" + toHex(lafColor("EditorPane.background", Color.WHITE))
+                           + ";color:" + toHex(lafColor("EditorPane.foreground", Color.BLACK)) + ";\">");
         htmlBuilder.append("</body></html>");
         return htmlBuilder.toString();
+    }
+
+    private static Color lafColor(String key, Color fallback) {
+        Object c = UIManager.get(key);
+        return (c instanceof Color) ? (Color) c : fallback;
+    }
+
+    private static String toHex(Color c) {
+        return String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
     }
 
     private void display(final Action titleAction, final String htmlContent) {

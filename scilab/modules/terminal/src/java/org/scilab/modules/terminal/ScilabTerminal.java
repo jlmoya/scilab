@@ -16,6 +16,7 @@ package org.scilab.modules.terminal;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ import java.util.concurrent.ThreadFactory;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -42,6 +44,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import com.jediterm.terminal.TerminalExecutorServiceManager;
+import com.jediterm.terminal.TextStyle;
+import com.jediterm.terminal.TerminalColor;
 import com.jediterm.terminal.ui.JediTermWidget;
 import com.jediterm.terminal.ui.settings.DefaultSettingsProvider;
 import com.jediterm.terminal.ui.settings.SettingsProvider;
@@ -423,6 +427,32 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
         @Override
         public boolean audibleBell() {
             return bell;
+        }
+
+        /**
+         * Terminal colours, taken from the look and feel.
+         *
+         * JediTerm's DefaultSettingsProvider hardcodes a light default style, so the
+         * embedded terminal stayed a white rectangle when everything around it went
+         * dark -- the single brightest thing left on the screen. TextPane.* is used
+         * rather than a bespoke palette so the terminal matches the Scilab console
+         * sitting directly above it.
+         *
+         * Only the DEFAULT style is overridden: the ANSI palette is left alone,
+         * because those sixteen colours are what programs running in the shell ask
+         * for by name and are not ours to reinterpret.
+         */
+        @Override
+        public TextStyle getDefaultStyle() {
+            Color fg = lafColor("TextPane.foreground", Color.BLACK);
+            Color bg = lafColor("TextPane.background", Color.WHITE);
+            return new TextStyle(new TerminalColor(fg.getRed(), fg.getGreen(), fg.getBlue()),
+                                 new TerminalColor(bg.getRed(), bg.getGreen(), bg.getBlue()));
+        }
+
+        private static Color lafColor(String key, Color fallback) {
+            Object c = UIManager.get(key);
+            return (c instanceof Color) ? (Color) c : fallback;
         }
     }
 

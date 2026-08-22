@@ -14,12 +14,14 @@
 package org.scilab.modules.console;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Color;
+import javax.swing.UIManager;
 import java.awt.Font;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -90,14 +92,97 @@ public class ConsoleOptionsTest {
     }
 
     @Test
-    public void consoleColorForcesBlackOnWhiteWhenUsingSystemColors() throws Exception {
+    public void consoleColorTakesTheLookAndFeelColorsWhenUsingSystemColors() throws Exception {
+        // This method used to hardcode white-on-black under "use system color", which is
+        // the opposite of what the flag says and left the console a white rectangle inside
+        // a dark look and feel. It now resolves the colours from the look and feel, so the
+        // expectation here is whatever UIManager currently reports -- NOT a fixed literal,
+        // which is what made the old assertion wrong in the first place.
+        Color expectedBg = uiColor("TextPane.background", Color.WHITE);
+        Color expectedFg = uiColor("TextPane.foreground", Color.BLACK);
+        Color expectedCaret = uiColor("TextPane.caretForeground", expectedFg);
+
         ConsoleOptions.ConsoleColor cc = instantiate(ConsoleOptions.ConsoleColor.class);
-        // Explicit colors are supplied but must be ignored in favour of the system defaults.
+        // Explicit colours are supplied but must be ignored in favour of the L&F ones.
         invokeSet(cc, new Class[] {Color.class, Color.class, Color.class, boolean.class},
                   Color.RED, Color.GREEN, Color.BLUE, true);
-        assertEquals(Color.WHITE, cc.background);
-        assertEquals(Color.BLACK, cc.cursor);
-        assertEquals(Color.BLACK, cc.foreground);
+
+        assertEquals(expectedBg, cc.background);
+        assertEquals(expectedFg, cc.foreground);
+        assertEquals(expectedCaret, cc.cursor);
+
+        // and the supplied colours really were ignored
+        assertNotSame(Color.RED, cc.background);
+        assertNotSame(Color.GREEN, cc.cursor);
+        assertNotSame(Color.BLUE, cc.foreground);
+    }
+
+    /**
+     * A dark look and feel must actually produce a dark console: the whole point of the
+     * change. Uses a synthetic dark palette rather than depending on FlatLaf, which is not
+     * on this module's test classpath.
+     */
+    @Test
+    public void consoleColorFollowsADarkLookAndFeel() throws Exception {
+        Object savedBg = UIManager.get("TextPane.background");
+        Object savedFg = UIManager.get("TextPane.foreground");
+        Object savedCaret = UIManager.get("TextPane.caretForeground");
+        try {
+            Color darkBg = new Color(0x28, 0x28, 0x28);
+            Color darkFg = new Color(0xDD, 0xDD, 0xDD);
+            UIManager.put("TextPane.background", darkBg);
+            UIManager.put("TextPane.foreground", darkFg);
+            UIManager.put("TextPane.caretForeground", darkFg);
+
+            ConsoleOptions.ConsoleColor cc = instantiate(ConsoleOptions.ConsoleColor.class);
+            invokeSet(cc, new Class[] {Color.class, Color.class, Color.class, boolean.class},
+                      Color.RED, Color.GREEN, Color.BLUE, true);
+
+            assertEquals(darkBg, cc.background);
+            assertEquals(darkFg, cc.foreground);
+            assertEquals(darkFg, cc.cursor);
+        } finally {
+            UIManager.put("TextPane.background", savedBg);
+            UIManager.put("TextPane.foreground", savedFg);
+            UIManager.put("TextPane.caretForeground", savedCaret);
+        }
+    }
+
+    /**
+     * The historical values must survive a look and feel that defines none of these keys,
+     * so nothing regresses on an exotic L&F.
+     */
+    @Test
+    public void consoleColorFallsBackToBlackOnWhiteWhenTheLookAndFeelDefinesNothing() throws Exception {
+        Object savedBg = UIManager.get("TextPane.background");
+        Object savedFg = UIManager.get("TextPane.foreground");
+        Object savedCaret = UIManager.get("TextPane.caretForeground");
+        try {
+            // NOT put(key, null): that only clears the USER defaults, and UIManager.get()
+            // then falls through to the look and feel's own table, so the key still
+            // resolves. Storing a non-Color value is what actually drives the
+            // "absent or unusable" branch the fallback exists for.
+            UIManager.put("TextPane.background", "not-a-color");
+            UIManager.put("TextPane.foreground", "not-a-color");
+            UIManager.put("TextPane.caretForeground", "not-a-color");
+
+            ConsoleOptions.ConsoleColor cc = instantiate(ConsoleOptions.ConsoleColor.class);
+            invokeSet(cc, new Class[] {Color.class, Color.class, Color.class, boolean.class},
+                      Color.RED, Color.GREEN, Color.BLUE, true);
+
+            assertEquals(Color.WHITE, cc.background);
+            assertEquals(Color.BLACK, cc.foreground);
+            assertEquals(Color.BLACK, cc.cursor);
+        } finally {
+            UIManager.put("TextPane.background", savedBg);
+            UIManager.put("TextPane.foreground", savedFg);
+            UIManager.put("TextPane.caretForeground", savedCaret);
+        }
+    }
+
+    private static Color uiColor(String key, Color fallback) {
+        Object c = UIManager.get(key);
+        return (c instanceof Color) ? (Color) c : fallback;
     }
 
     // --- LaTeXFont ----------------------------------------------------------

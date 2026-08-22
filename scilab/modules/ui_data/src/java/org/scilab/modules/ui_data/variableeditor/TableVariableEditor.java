@@ -38,6 +38,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -210,10 +211,17 @@ public class TableVariableEditor extends JTable {
         scrollPane.setRowHeaderView(new RowHeader(this));
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setCellSelectionEnabled(true);
-        setBackground(Color.WHITE);
+        // Same defect the variable BROWSER had: forcing white here ignored the look
+        // and feel, so under a dark theme the cells kept a white background while the
+        // text followed the theme and became unreadable.
+        Object tableBg = UIManager.get("Table.background");
+        setBackground((tableBg instanceof Color) ? (Color) tableBg : Color.WHITE);
         setAutoResizeMode(AUTO_RESIZE_OFF);
 
-        if (getGridColor().equals(Color.WHITE)) {
+        // Compare against the ACTUAL background, not the literal white: a dark theme
+        // can hand back a grid colour equal to its own dark background just as a light
+        // one can hand back white.
+        if (getGridColor().equals(getBackground())) {
             setGridColor(new Color(128, 128, 128));
         }
         setShowHorizontalLines(true);

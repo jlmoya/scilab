@@ -10,7 +10,7 @@
          frame falls back to showing the active dockable's name. Both themes map to the same
          macOS view as Aqua did, so docking looks exactly as it did before FlatLaf. -->
     <plaf name="com.formdev.flatlaf.themes.FlatMacLightLaf" ref="scilab-macos" />
-    <plaf name="com.formdev.flatlaf.themes.FlatMacDarkLaf" ref="scilab-macos" />
+    <plaf name="com.formdev.flatlaf.themes.FlatMacDarkLaf" ref="scilab-macos-dark" />
     <plaf name="javax.swing.plaf.metal.MetalLookAndFeel" ref="scilab" />
     <plaf name="com.sun.java.swing.plaf.gtk.GTKLookAndFeel" ref="scilab" />
     <plaf name="com.sun.java.swing.plaf.windows.WindowsLookAndFeel" ref="scilab" />
@@ -69,6 +69,69 @@
             <property name="classname" value="org.flexdock.plaf.resources.paint.DefaultPainter"/>
             <property name="bgcolor.active" value="#000000" handler="color"/>
         </painter-resource>
+
+    </theme>
+    <!-- End Scilab MacOS-->
+
+    <!-- Begin Scilab MacOS dark -->
+    <!--
+      Dark counterpart of scilab-macos, used when FlatMacDarkLaf is active.
+      scilab-macos cannot simply be reused. Its ACTIVE titlebar is #000000, which
+      disappears against FlatMacDarkLaf's #1E1E1E panel, and its INACTIVE titlebar
+      falls through to DefaultPainter.DEFAULT_BG_COLOR (#EEEEEE), a near-white bar
+      on a dark window, which is the more glaring of the two.
+
+      Measured against FlatMacDarkLaf: Panel.background #1E1E1E, Label.foreground
+      #DDDDDD. The three bands are therefore ordered panel (#1E1E1E) < inactive
+      (#2B2B2B) < active (#4A4E51), so focus reads as a lift out of the background
+      rather than the drop into black that works in light mode.
+
+      The icon map is overridden too: the shared scilab icons use the BLACK variants
+      for the inactive state, which would be invisible on a dark titlebar, so both
+      states use the white artwork here.
+    -->
+    <theme name="scilab-macos-dark" description="Scilab Theme for MacOS dark mode" view-ui="scilab-macos-dark" extends="scilab">
+
+        <view-ui name="scilab-macos-dark" extends="scilab">
+            <property name="titlebar-ui" value="scilab-macos-dark"/>
+        </view-ui>
+
+        <titlebar-ui name="scilab-macos-dark" extends="scilab">
+            <property name="painter" value="scilabMacosDarkPainter" handler="paint"/>
+            <property name="font.color" value="#9DA0A3" handler="color"/>
+            <property name="font.color.active" value="#FFFFFF" handler="color"/>
+            <property name="icon-map" value="scilab-dark" />
+        </titlebar-ui>
+
+        <painter-resource name="scilabMacosDarkPainter">
+            <property name="classname" value="org.flexdock.plaf.resources.paint.DefaultPainter"/>
+            <property name="bgcolor" value="#2B2B2B" handler="color"/>
+            <property name="bgcolor.active" value="#4A4E51" handler="color"/>
+        </painter-resource>
+
+        <icon-resource name="scilab-dark.undock">
+            <property name="default" value="undock-icon-white.png" />
+            <property name="active" value="undock-icon-white.png" />
+            <property name="tooltip" value="Undock" handler="string" />
+        </icon-resource>
+
+        <icon-resource name="scilab-dark.help">
+            <property name="default" value="doc-icon-white.png" />
+            <property name="active" value="doc-icon-white.png" />
+            <property name="tooltip" value="Documentation on component" handler="string" />
+        </icon-resource>
+
+        <icon-resource name="scilab-dark.close" extends="win32.close">
+            <property name="default" value="close-icon-white.png" />
+            <property name="active" value="close-icon-white.png" />
+        </icon-resource>
+
+        <icon-map name="scilab-dark">
+            <property name="close" value="scilab-dark.close" />
+            <property name="pin" value="win32.pin" />
+            <property name="undock" value="scilab-dark.undock" />
+            <property name="help" value="scilab-dark.help" />
+        </icon-map>
 
     </theme>
 

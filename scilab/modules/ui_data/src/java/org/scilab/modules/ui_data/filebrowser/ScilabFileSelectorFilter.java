@@ -43,6 +43,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.DefaultEditorKit;
 
 import org.scilab.modules.commons.gui.FindIconHelper;
+import org.scilab.modules.commons.gui.ThemedIcons;
 import org.scilab.modules.gui.events.callback.CommonCallBack;
 import org.scilab.modules.ui_data.utils.UiDataMessages;
 
@@ -165,14 +166,14 @@ public class ScilabFileSelectorFilter extends JPanel {
             gbc.weightx = 0.0;
             gbc.fill = GridBagConstraints.NONE;
 
-            caseSensitive = new JToggleButton(new ImageIcon(FindIconHelper.findIcon("case-sensitive")));
+            caseSensitive = new JToggleButton(ThemedIcons.load(FindIconHelper.findIcon("case-sensitive")));
             caseSensitive.setToolTipText(UiDataMessages.CASESENSITIVE);
             caseSensitive.setMargin(new Insets(0, 0, 0, 0));
             gbc.gridx = 1;
             gbc.gridy = 0;
             this.add(caseSensitive, gbc);
 
-            regexp = new JToggleButton(new ImageIcon(FindIconHelper.findIcon("regex")));
+            regexp = new JToggleButton(ThemedIcons.load(FindIconHelper.findIcon("regex")));
             regexp.setToolTipText(UiDataMessages.REGEXP);
             regexp.setMargin(new Insets(0, 0, 0, 0));
             gbc.gridx = 2;
@@ -187,7 +188,7 @@ public class ScilabFileSelectorFilter extends JPanel {
                     textField.toggleContents();
                 }
             });
-            clear.setIcon(new ImageIcon(FindIconHelper.findIcon("clear")));
+            clear.setIcon(ThemedIcons.load(FindIconHelper.findIcon("clear")));
             clear.setToolTipText(UiDataMessages.CLEAR);
             clear.setMargin(new Insets(0, 0, 0, 0));
             gbc.gridx = 3;
@@ -200,7 +201,7 @@ public class ScilabFileSelectorFilter extends JPanel {
                     stt.setFilter(getPattern());
                 }
             });
-            filter.setIcon(new ImageIcon(FindIconHelper.findIcon("filter")));
+            filter.setIcon(ThemedIcons.load(FindIconHelper.findIcon("filter")));
             filter.setToolTipText(UiDataMessages.RUNFILTER);
             filter.setMargin(new Insets(0, 0, 0, 0));
             gbc.gridx = 4;

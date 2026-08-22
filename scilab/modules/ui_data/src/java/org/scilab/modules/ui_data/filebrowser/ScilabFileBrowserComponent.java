@@ -18,6 +18,8 @@ package org.scilab.modules.ui_data.filebrowser;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.UIManager;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -44,7 +46,10 @@ public class ScilabFileBrowserComponent extends JPanel {
         setBorder(new EmptyBorder(GAP, GAP, GAP, GAP));
         ScilabFileSelectorComboBox combobox = new ScilabFileSelectorComboBox();
         stt = new SwingScilabTreeTable(new ScilabFileBrowserModel(), combobox);
-        Color bg = Color.WHITE;
+        // Was Color.WHITE, which kept the file browser a white rectangle under a dark
+        // look and feel. Table.background is what the tree-table would use anyway.
+        Object c = UIManager.get("Table.background");
+        Color bg = (c instanceof Color) ? (Color) c : Color.WHITE;
         stt.setBackground(bg);
 
         add(new ScilabFileSelectorPanel(stt), BorderLayout.PAGE_START);

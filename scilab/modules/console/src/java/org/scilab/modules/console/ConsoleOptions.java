@@ -22,6 +22,8 @@ import org.w3c.dom.Document;
 
 import org.scilab.modules.commons.ScilabGeneralPrefs;
 import static org.scilab.modules.commons.xml.XConfiguration.XConfAttribute;
+import javax.swing.UIManager;
+
 import org.scilab.modules.commons.xml.XConfiguration;
 
 /**
@@ -74,12 +76,37 @@ public class ConsoleOptions {
 
         private ConsoleColor() { }
 
+        /**
+         * Resolve a colour from the current look and feel, falling back when the key
+         * is absent (headless, or a look and feel that does not define it).
+         */
+        private static Color lafColor(String key, Color fallback) {
+            Object c = UIManager.get(key);
+            return (c instanceof Color) ? (Color) c : fallback;
+        }
+
         @XConfAttribute(tag = "desktop-colors", attributes = {"background", "cursor", "text", "use-system-color"})
         private void set(Color background, Color cursor, Color foreground, boolean useSystemColor) {
             if (useSystemColor) {
-                this.background = Color.WHITE;
-                this.cursor = Color.BLACK;
-                this.foreground = Color.BLACK;
+                // "use system color" is the SHIPPED DEFAULT, and it used to hardcode
+                // white-on-black here -- which is the opposite of what the name says and
+                // meant the console could never follow a dark look and feel: the rest of
+                // the UI went dark while the console stayed a white rectangle.
+                //
+                // Take the colours from the look and feel instead, so the setting finally
+                // means what it claims. TextPane.* is the right family: the console IS a
+                // styled text component, and those keys are what a JTextPane would use.
+                //
+                // This does NOT change the light appearance. Measured on FlatMacLightLaf,
+                // TextPane.background is #FFFFFF and TextPane.foreground #262626 -- the
+                // same white background and near-black text as before. On FlatMacDarkLaf
+                // they are #282828 / #DDDDDD.
+                //
+                // The fallbacks preserve the historical values exactly, so any look and
+                // feel that does not define these keys behaves as it always did.
+                this.background = lafColor("TextPane.background", Color.WHITE);
+                this.foreground = lafColor("TextPane.foreground", Color.BLACK);
+                this.cursor = lafColor("TextPane.caretForeground", this.foreground);
             } else {
                 this.background = background;
                 this.cursor = cursor;

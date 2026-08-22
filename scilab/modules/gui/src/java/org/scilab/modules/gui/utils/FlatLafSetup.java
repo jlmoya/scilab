@@ -21,6 +21,11 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.flexdock.plaf.PlafManager;
+
+import org.scilab.modules.commons.xml.XConfiguration;
+import org.scilab.modules.console.ConsoleOptions;
+
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
@@ -183,6 +188,35 @@ public final class FlatLafSetup {
     private static void applyLookAndFeel(String laf) {
         try {
             UIManager.setLookAndFeel(laf);
+
+            // Re-resolve FlexDock's theme BEFORE restyling the trees. FlexDock maps
+            // the look and feel to a docking theme in modules/gui/etc/flexdock-themes.xml
+            // (light and dark map to different titlebar colours), and it resolves that
+            // mapping once, at install time. Without this the panels would keep the
+            // previous theme's titlebars: switching to dark would leave near-white
+            // titlebars on a dark window.
+            try {
+                PlafManager.installSystemTheme();
+            } catch (Throwable t) {
+                System.err.println("Could not re-apply the docking theme: " + t);
+            }
+
+            // The console does not take its colours from the look and feel directly:
+            // it caches them in ConsoleOptions and only re-reads on a configuration
+            // event. Without this the console would keep the previous theme's colours
+            // after a live switch -- a white console inside a dark window, which is the
+            // single most jarring part of getting this wrong.
+            //
+            // Only the colours path is announced, so the console re-applies exactly
+            // foreground/background/caret and nothing else (fonts and display settings
+            // are untouched).
+            try {
+                XConfiguration.addModifiedPath(ConsoleOptions.COLORSPATH);
+                XConfiguration.fireXConfigurationEvent();
+            } catch (Throwable t) {
+                System.err.println("Could not refresh the console colours: " + t);
+            }
+
             for (Window w : Window.getWindows()) {
                 SwingUtilities.updateComponentTreeUI(w);
             }
