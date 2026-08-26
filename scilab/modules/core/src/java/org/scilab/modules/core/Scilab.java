@@ -226,6 +226,10 @@ public class Scilab {
                         // would not be able to act on.
                         if (FlatLafSetup.isMacOS()) {
                             FlatLafSetup.startSystemAppearanceWatcher();
+                            // Follow the Appearance preference from here on. Kept out
+                            // of FlatLafSetup.install() so that method stays free of
+                            // any Scilab runtime dependency.
+                            FlatLafSetup.installPreferenceListener();
                         }
                     } else {
                         lookAndFeel.setSystemLookAndFeel();

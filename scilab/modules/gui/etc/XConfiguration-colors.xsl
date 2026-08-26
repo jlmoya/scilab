@@ -13,6 +13,39 @@
     
     <xsl:template match="desktop-colors">
         
+        <!-- Appearance: Light / Dark / Automatic.
+             Placed above the desktop colours because it governs the whole interface,
+             not just the console, and because everything below it is expressed
+             relative to whichever appearance is in force. -->
+        <Title text="_(Appearance)">
+            <Grid>
+                <Label gridx="1" gridy="1" text="_(Interface theme)"/>
+                <Select gridx="2" gridy="1" listener="ActionListener">
+                    <xsl:variable name="appearance" select="@appearance"/>
+                    <actionPerformed choose="appearance">
+                        <xsl:call-template name="context"/>
+                    </actionPerformed>
+                    <option value="_(Automatic (follow the system))" key="auto">
+                        <!-- also the fallback for a configuration saved before this
+                             setting existed, where the attribute is simply absent -->
+                        <xsl:if test="$appearance='auto' or not(@appearance) or $appearance=''">
+                            <xsl:attribute name="selected">selected</xsl:attribute>
+                        </xsl:if>
+                    </option>
+                    <option value="_(Light)" key="light">
+                        <xsl:if test="$appearance='light'">
+                            <xsl:attribute name="selected">selected</xsl:attribute>
+                        </xsl:if>
+                    </option>
+                    <option value="_(Dark)" key="dark">
+                        <xsl:if test="$appearance='dark'">
+                            <xsl:attribute name="selected">selected</xsl:attribute>
+                        </xsl:if>
+                    </option>
+                </Select>
+            </Grid>
+        </Title>
+        
         <Title text="_(Desktop color)">
             
             <Grid>

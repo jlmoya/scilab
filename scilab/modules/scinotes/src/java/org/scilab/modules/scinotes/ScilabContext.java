@@ -17,6 +17,8 @@
 package org.scilab.modules.scinotes;
 
 import java.awt.Color;
+import org.scilab.modules.commons.gui.ContrastColors;
+import javax.swing.UIManager;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
@@ -198,6 +200,8 @@ public class ScilabContext implements ViewFactory {
         tokenColors[ScilabLexerConstants.AUTHORS] = tokenColors[ScilabLexerConstants.COMMENT];
         tokenColors[ScilabLexerConstants.OSKEYWORD] = tokenColors[ScilabLexerConstants.SKEYWORD];
         tokenColors[ScilabLexerConstants.ELSEIF] = tokenColors[ScilabLexerConstants.SKEYWORD];
+
+        adaptColorsToBackground();
 
         // Default attributes
         for (Integer i : typeToDefault) {
@@ -423,4 +427,57 @@ public class ScilabContext implements ViewFactory {
             return false;
         }
     }
+
+    /**
+     * Keep the syntax colours legible against whatever background the editor is
+     * actually using.
+     *
+     * The 25 shipped colours were chosen for a white page. On a dark editor several
+     * are unusable and two are literally invisible: Identifier and MacroInFile are
+     * #000000, which is black text on a #282828 background.
+     *
+     * Two different rules apply, because the tokens mean different things:
+     *
+     *   PLAIN TEXT (Default, Identifier, MacroInFile) is not a syntax accent, it is
+     *   the ordinary body text of the file and should be the most legible thing on
+     *   screen. Merely making #000000 "legal" against the background produced a mid
+     *   grey, which left ordinary code looking dimmer than the keywords around it --
+     *   the opposite of what an editor wants. These take the theme's normal text
+     *   colour instead.
+     *
+     *   ACCENTS (keywords, strings, comments, ...) keep their identity: the colour is
+     *   only adjusted if it fails the contrast threshold, and the adjustment holds
+     *   the hue, so a red keyword stays red. Colours that already pass are left
+     *   exactly as they are, which is why a light theme is unaffected.
+     *
+     * Only colours still at their SHIPPED value are reinterpreted as "plain text";
+     * a colour the user chose is treated as an accent and merely kept readable.
+     */
+    private void adaptColorsToBackground() {
+        Color bg = SciNotesOptions.getSciNotesDisplay().backgroundColor;
+        if (bg == null || tokenColors == null) {
+            return;
+        }
+
+        Color text = uiColor("TextPane.foreground", null);
+        if (text != null) {
+            for (int type : new int[] {ScilabLexerConstants.DEFAULT,
+                                       ScilabLexerConstants.ID,
+                                       ScilabLexerConstants.MACROINFILE}) {
+                if (type < tokenColors.length && Color.BLACK.equals(tokenColors[type])) {
+                    tokenColors[type] = text;
+                }
+            }
+        }
+
+        for (int i = 0; i < tokenColors.length; i++) {
+            tokenColors[i] = ContrastColors.readable(tokenColors[i], bg);
+        }
+    }
+
+    private static Color uiColor(String key, Color fallback) {
+        Object c = UIManager.get(key);
+        return (c instanceof Color) ? (Color) c : fallback;
+    }
+
 }

@@ -226,6 +226,10 @@ public final class SwingScilabVariableBrowser extends SwingScilabDockablePanel i
         if (table.getGridColor().equals(table.getBackground())) {
             table.setGridColor(new Color(128, 128, 128));
         }
+
+        // Re-apply on every look-and-feel change. Reading Table.background once here
+        // left the browser showing the PREVIOUS theme after a live switch.
+        table.addPropertyChangeListener("UI", evt -> applyThemeColors());
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(true);
 
@@ -671,6 +675,21 @@ public final class SwingScilabVariableBrowser extends SwingScilabDockablePanel i
                                  + "end");
         } catch (InterpreterException e1) {
             System.err.println("An error in the interpreter has been catched: " + e1.getLocalizedMessage());
+        }
+    }
+
+
+    /** Take the table colours from the current look and feel. */
+    private void applyThemeColors() {
+        if (table == null) {
+            return;
+        }
+        Object bg = UIManager.get("Table.background");
+        if (bg instanceof Color) {
+            table.setBackground((Color) bg);
+        }
+        if (table.getGridColor().equals(table.getBackground())) {
+            table.setGridColor(new Color(128, 128, 128));
         }
     }
 

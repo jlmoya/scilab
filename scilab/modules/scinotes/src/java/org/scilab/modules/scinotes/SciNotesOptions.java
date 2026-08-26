@@ -16,6 +16,8 @@
 package org.scilab.modules.scinotes;
 
 import java.awt.Color;
+
+import javax.swing.UIManager;
 import java.text.DateFormat;
 import java.util.Calendar;
 
@@ -124,6 +126,15 @@ public class SciNotesOptions {
         public Color backgroundColor;
         public Color caretColor;
 
+        /** The colours shipped in XConfiguration-scinotes.xml, i.e. "untouched". */
+        private static final Color SHIPPED_BACKGROUND = Color.WHITE;
+        private static final Color SHIPPED_CARET = Color.BLACK;
+
+        private static Color lafColor(String key, Color fallback) {
+            Object c = UIManager.get(key);
+            return (c instanceof Color) ? (Color) c : fallback;
+        }
+
         private Display() { }
 
         @XConfAttribute(tag = "scinotes-display", attributes = {"highlight-current-line", "current-line-color", "show-line-numbers", "wrap-lines", "keywords-colorization", "highlight-brackets", "brackets-color", "brackets-highlightment", "brackets-onmouseover", "highlight-keywords", "keywords-color", "keywords-highlightment", "keywords-onmouseover", "whereami", "tab-size", "tab-representation", "use-spaces", "indent-size", "automatic-indent", "auto-complete-openers", "auto-complete-keywords", "background-color", "caret-color"})
@@ -173,6 +184,22 @@ public class SciNotesOptions {
 
             this.autoCompleteOpeners = autoCompleteOpeners;
             this.autoCompleteKeywords = autoCompleteKeywords;
+            // SciNotes has no "use system color" flag and cannot gain one: adding an
+            // attribute means bumping the XConfiguration version, and the loader
+            // DELETES the user's preferences file when the version changes.
+            //
+            // So the shipped default is treated as "not customised": a stored white
+            // background / black caret means the user never chose anything, and the
+            // look and feel decides. Anything else is an explicit choice and is
+            // honoured untouched. On a light theme the resolved values equal the old
+            // defaults, so nothing changes there.
+            if (SHIPPED_BACKGROUND.equals(backgroundColor)) {
+                backgroundColor = lafColor("TextPane.background", backgroundColor);
+            }
+            if (SHIPPED_CARET.equals(caretColor)) {
+                caretColor = lafColor("TextPane.caretForeground",
+                                      lafColor("TextPane.foreground", caretColor));
+            }
             this.backgroundColor = backgroundColor;
             this.caretColor = caretColor;
         }

@@ -209,6 +209,27 @@ public class NewsFeedWidget extends JPanel implements NewsFeedEventListener, Hyp
         }, getHTML(errMsgHtmlBuilder));
     }
 
+    /**
+     * The look-and-feel colours are baked into the generated HTML, so a theme change
+     * needs the document re-emitted; restyling the component alone leaves the old
+     * page colours in place.
+     */
+    @Override
+    public void updateUI() {
+        super.updateUI();
+        if (editorPane != null) {
+            editorPane.setBackground(lafColor("EditorPane.background", Color.WHITE));
+            editorPane.setForeground(lafColor("EditorPane.foreground", Color.BLACK));
+            String html = editorPane.getText();
+            if (html != null && html.contains("<body")) {
+                editorPane.setText(html.replaceAll(
+                    "<body[^>]*>",
+                    "<body style=\"background-color:" + toHex(lafColor("EditorPane.background", Color.WHITE))
+                    + ";color:" + toHex(lafColor("EditorPane.foreground", Color.BLACK)) + ";\">"));
+            }
+        }
+    }
+
     private String getHTML(StringBuilder htmlBuilder) {
         // The body carried no colours, so HTMLEditorKit painted its default white
         // page: a bright panel in the corner of an otherwise dark window. Setting

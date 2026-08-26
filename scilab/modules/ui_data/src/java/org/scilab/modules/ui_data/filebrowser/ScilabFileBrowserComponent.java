@@ -37,6 +37,7 @@ public class ScilabFileBrowserComponent extends JPanel {
 
     private SwingScilabFileBrowser filebrowser;
     private SwingScilabTreeTable stt;
+    private JScrollPane scrollPane;
 
     /**
      * Default constructor
@@ -57,7 +58,32 @@ public class ScilabFileBrowserComponent extends JPanel {
 
         JScrollPane jsp = new JScrollPane(stt);
         jsp.getViewport().setBackground(bg);
+        this.scrollPane = jsp;
         add(jsp, BorderLayout.CENTER);
+    }
+
+    /**
+     * Re-read the background whenever the look and feel changes.
+     *
+     * Reading it once in the constructor was not enough: on a live theme switch the
+     * panel kept the previous theme's colour while the rest of the window changed,
+     * leaving a white file browser inside a dark window. A JViewport in particular
+     * never picks the new value up on its own, because nothing installs a UI-managed
+     * background on it.
+     */
+    @Override
+    public void updateUI() {
+        super.updateUI();
+        Object c = UIManager.get("Table.background");
+        if (c instanceof Color) {
+            Color bg = (Color) c;
+            if (stt != null) {
+                stt.setBackground(bg);
+            }
+            if (scrollPane != null) {
+                scrollPane.getViewport().setBackground(bg);
+            }
+        }
     }
 
     /**

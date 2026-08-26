@@ -395,6 +395,116 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
      * JediTerm settings backed by the Terminal preferences pane: configured font,
      * scrollback (buffer max lines) and audible-bell.
      */
+    /**
+     * Repaint the terminal after a look-and-feel change.
+     *
+     * getDefaultStyle() below reads the look and feel on every call, but JediTerm does
+     * not re-consult its settings provider by itself, so the panel keeps drawing with
+     * the colours it already has. There is no settings-refresh entry point on
+     * JediTermWidget (it exposes only getTerminalPanel() and repaint()), so this is
+     * the most that can be done without recreating the widget and losing the session.
+     */
+    @Override
+    public void updateUI() {
+        super.updateUI();
+        refreshTerminalColors();
+    }
+
+    /**
+     * Re-apply the terminal colours after a look-and-feel change.
+     *
+     * JediTerm reads its default style ONCE, when the panel is built, and offers no
+     * public way to re-read it: JediTermWidget exposes only getTerminalPanel() and
+     * repaint(), and repainting alone redraws the same cached colours. The state is
+     * reachable though -- TerminalPanel keeps a StyleState whose setDefaultStyle() IS
+     * public -- so the field is taken reflectively and the supported setter used on
+     * it, followed by the panel's own colour-cache reset.
+     *
+     * The alternative was rebuilding the widget, which would kill the running shell
+     * and everything in its scrollback just to change a colour. Reflection into one
+     * field is the smaller price, and it fails softly: if a future JediTerm renames
+     * the field, the terminal simply keeps the previous colours until Scilab restarts.
+     */
+    private void refreshTerminalColors() {
+        if (widget == null || widget.getTerminalPanel() == null) {
+            return;
+        }
+        Object panel = widget.getTerminalPanel();
+        try {
+            // Walk the hierarchy: getTerminalPanel() may hand back a SUBCLASS of
+            // TerminalPanel, and getDeclaredField only searches the exact class, so
+            // looking only at panel.getClass() silently found nothing and the whole
+            // refresh became a no-op.
+            java.lang.reflect.Field f = null;
+            for (Class<?> k = panel.getClass(); k != null && f == null; k = k.getSuperclass()) {
+                try {
+                    f = k.getDeclaredField("myStyleState");
+                } catch (NoSuchFieldException ignored) {
+                    // keep walking up
+                }
+            }
+            if (f == null) {
+                System.err.println("Terminal colours: StyleState field not found on "
+                                   + panel.getClass().getName() + "; colours follow at next start");
+                widget.getTerminalPanel().repaint();
+                return;
+            }
+            f.setAccessible(true);
+            Object styleState = f.get(panel);
+            if (styleState instanceof com.jediterm.terminal.model.StyleState) {
+                ((com.jediterm.terminal.model.StyleState) styleState)
+                    .setDefaultStyle(themeFollowingStyle());
+            }
+            for (Class<?> k = panel.getClass(); k != null; k = k.getSuperclass()) {
+                try {
+                    java.lang.reflect.Method reset = k.getDeclaredMethod("resetColorCache");
+                    reset.setAccessible(true);
+                    reset.invoke(panel);
+                    break;
+                } catch (NoSuchMethodException ignored) {
+                    // keep walking up
+                }
+            }
+        } catch (Throwable t) {
+            // Cosmetic only: keep the old colours rather than disturb a live shell.
+            // Reported rather than swallowed -- a silent catch here is what hid the
+            // subclass problem above.
+            System.err.println("Terminal colours could not be refreshed: " + t);
+        }
+        widget.getTerminalPanel().repaint();
+    }
+
+    /** Look-and-feel colour with a fallback, mirroring the settings provider below. */
+    private static Color lafColor(String key, Color fallback) {
+        Object c = UIManager.get(key);
+        return (c instanceof Color) ? (Color) c : fallback;
+    }
+
+    /**
+     * The terminal's default style, built from colours that resolve LAZILY.
+     *
+     * Setting the default style to fixed RGB was not enough to retheme a live
+     * terminal: every cell already in the buffer stores the TextStyle it was written
+     * with, so the prompt on screen kept the colours it was drawn in and only new
+     * output would have picked up the change. Rewriting the buffer was the obvious
+     * alternative and a bad one -- it means walking every cell of the scrollback.
+     *
+     * TerminalColor also accepts a Supplier, evaluated when the colour is actually
+     * needed. Cells then hold a colour that ASKS the look and feel at paint time, so
+     * the text already on screen follows a theme change with nothing rewritten.
+     */
+    private static TextStyle themeFollowingStyle() {
+        return new TextStyle(
+            new TerminalColor(() -> coreColor("TextPane.foreground", Color.BLACK)),
+            new TerminalColor(() -> coreColor("TextPane.background", Color.WHITE)));
+    }
+
+    private static com.jediterm.core.Color coreColor(String key, Color fallback) {
+        Object c = UIManager.get(key);
+        Color awt = (c instanceof Color) ? (Color) c : fallback;
+        return new com.jediterm.core.Color(awt.getRed(), awt.getGreen(), awt.getBlue());
+    }
+
     private static final class TerminalSettingsProvider extends DefaultSettingsProvider {
 
         private static final int FALLBACK_SCROLLBACK = 5000;
@@ -444,10 +554,7 @@ public final class ScilabTerminal extends SwingScilabDockablePanel implements Si
          */
         @Override
         public TextStyle getDefaultStyle() {
-            Color fg = lafColor("TextPane.foreground", Color.BLACK);
-            Color bg = lafColor("TextPane.background", Color.WHITE);
-            return new TextStyle(new TerminalColor(fg.getRed(), fg.getGreen(), fg.getBlue()),
-                                 new TerminalColor(bg.getRed(), bg.getGreen(), bg.getBlue()));
+            return themeFollowingStyle();
         }
 
         private static Color lafColor(String key, Color fallback) {
