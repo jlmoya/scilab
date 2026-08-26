@@ -97,8 +97,8 @@
   it needs the superinterface's class file at compile time even though
   scinotes' source never spells org.apache.xmlgraphics.* out directly.
   Applied here BEFORE a build iteration had to rediscover it (cross-
-  referenced, not restated): both org.apache.xmlgraphics:fop-core:2.9 and
-  org.apache.xmlgraphics:xmlgraphics-commons:2.9 below, same coordinates,
+  referenced, not restated): both org.apache.xmlgraphics:fop-core:2.11 and
+  org.apache.xmlgraphics:xmlgraphics-commons:2.11 below, same coordinates,
   same thirdparty/ files, same groupId as modules/helptools/pom.xml. Only
   the plain FOP/xmlgraphics-commons pair is needed — CodeExporter.java never
   touches org.scilab.forge.jlatexmath{,.fop}, net.sourceforge.jeuclid, or the
@@ -274,7 +274,21 @@
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>fop-core</artifactId>
-      <version>2.9</version>
+      <version>2.11</version>
+      <!-- fop-core's transitives are excluded deliberately. FOP declares the SPLIT
+           batik modules (batik-anim, batik-bridge, batik-gvt, ...) at whatever
+           ${batik.version} fop-parent pins, but this fork vendors the batik-all FAT
+           JAR, which already contains every one of them. Without this, a fop upgrade
+           silently drags in a second, duplicate copy of batik as ~10 extra jars and
+           couples our batik version to FOP's release schedule.
+           What is compiled against is declared explicitly in this file; what is on the
+           classpath at RUNTIME comes from etc/classpath.xml, not from Maven. -->
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- NOT DIRECTLY IMPORTED — needed for the identical inherited-
          superinterface reason modules/helptools/pom.xml documents in full
@@ -286,7 +300,19 @@
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>xmlgraphics-commons</artifactId>
-      <version>2.9</version>
+      <version>2.11</version>
+      <!-- Transitives excluded, as for fop-core and batik-all above:
+           xmlgraphics-commons 2.11 declares commons-logging 1.3.0, while this fork
+           vendors and ships commons-logging-1.1.1.jar. Resolving it transitively would
+           put a second, different commons-logging on the compile classpath and tie our
+           version to xmlgraphics' choice. Compile deps are declared explicitly in this
+           file; the runtime classpath comes from etc/classpath.xml. -->
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- javax.annotation.Generated("JFlex") on four generated lexers/
          scanners. Same jar, same coordinate as modules/helptools/pom.xml

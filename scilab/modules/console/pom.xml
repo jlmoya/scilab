@@ -196,7 +196,7 @@
 
     <!-- TEST-SCOPE ONLY. jeuclid's layout backend (JEuclidView) builds on Apache
          Batik's DOM (org.apache.batik.dom.*). At Scilab runtime this is supplied
-         by thirdparty/batik-all-1.17.jar (the fat "batik-all" uber jar), wired in
+         by thirdparty/batik-all-1.19.jar (the fat "batik-all" uber jar), wired in
          etc/classpath.xml right after jeuclid-core with load="onUse". The same
          coordinate resolves from the local repo, so ScilabSpecialTextUtilitiesTest
          can drive the real MathML rendering path headlessly. Test scope only —
@@ -204,7 +204,7 @@
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-all</artifactId>
-      <version>1.17</version>
+      <version>1.19</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

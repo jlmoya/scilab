@@ -180,6 +180,20 @@ if [ "$VERIFY_ONLY" = 0 ]; then
   # and in the parent POM's staging list.
   find "$TP" -maxdepth 1 -name 'flatlaf-*.jar' ! -name 'flatlaf-3.7.2.jar' -delete 2>/dev/null || true
 
+  # Apache FOP and its two companions move in LOCKSTEP -- fop-parent pins the batik and
+  # xmlgraphics-commons versions, so 2.11 goes with batik 1.19 and xmlgraphics-commons
+  # 2.11 (2.9 went with batik 1.17 / commons 2.9). The tarball ships the older trio;
+  # this fork supersedes all three, chiefly to leave fop-core 2.9 behind and with it the
+  # XXE advisory GHSA-jqfv-jrvq-95jm.
+  #
+  # Leaving an old jar beside the new one is not merely untidy: etc/classpath.xml globs
+  # these by name (FOP_CORE, BATIK, XMLGRAPHICS_COMMONS) and ScilabClasspath.cmake treats
+  # a glob matching more than one jar as a fatal error. Keep exactly the pinned versions,
+  # in step with the parent POM's staging list and the verify list at the end of this file.
+  find "$TP" -maxdepth 1 -name 'fop-core-*.jar'            ! -name 'fop-core-2.11.jar'            -delete 2>/dev/null || true
+  find "$TP" -maxdepth 1 -name 'batik-all-*.jar'           ! -name 'batik-all-1.19.jar'           -delete 2>/dev/null || true
+  find "$TP" -maxdepth 1 -name 'xmlgraphics-commons-*.jar' ! -name 'xmlgraphics-commons-2.11.jar' -delete 2>/dev/null || true
+
   echo "[3/8] Maven artifacts (fork additions)…"
   while read -r repo gav pin dest; do
     [ -n "$repo" ] || continue
@@ -313,7 +327,8 @@ for j in gson-2.10.1 jna-5.14.0 kotlin-stdlib-2.1.21 annotations-24.0.1 \
          lwjgl-3.3.4 lwjgl-3.3.4-natives-macos-arm64 lwjgl-vulkan-3.3.4 lwjgl-jawt-3.3.4 \
          lwjgl3-awt-0.2.4 swing-gpu-surface-0.1.0 jcef-api \
          jogl-all-2.5.0 gluegen-rt-2.5.0 flexdock-1.2.5 jgraphx-2.1.0.7 skinlf-1.2.3 \
-         jlatexmath-1.0.7 fop-core-2.9 batik-all-1.17 freehep-graphics2d-2.4 \
+         jlatexmath-1.0.7 fop-core-2.11 batik-all-1.19 xmlgraphics-commons-2.11 \
+         freehep-graphics2d-2.4 \
          lucene-core-9.10.0 lucene-queryparser-9.10.0 jrosetta-API-1.0.4 jrosetta-engine-1.0.4 \
          commons-io-2.11.0 commons-logging-1.1.1 jhall-2.0 jgoodies-looks-2.7.0 flatlaf-3.7.2; do
   need "$TP/$j.jar"

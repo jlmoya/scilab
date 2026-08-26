@@ -30,7 +30,7 @@
         thirdparty/jeuclid-core-3.1.14.jar, below (same jar, same coordinate
         as modules/console/pom.xml and modules/helptools/pom.xml).
       - org.apache.batik.{anim.dom,bridge,dom,ext.awt,gvt,svggen,util} — SVG
-        export of the diagram canvas. thirdparty/batik-all-1.17.jar, below
+        export of the diagram canvas. thirdparty/batik-all-1.19.jar, below
         (same jar, same coordinate as modules/helptools/pom.xml and
         modules/graphic_export/pom.xml).
       - org.scilab.forge.jlatexmath — label/GED text rendering, same single
@@ -88,7 +88,7 @@
 
   BATIK-ALL, JEUCLID-CORE, JLATEXMATH — all three cross-referenced from
   earlier modules rather than re-justified: batik-all's coordinate
-  (org.apache.xmlgraphics:batik-all:1.17) is the same one used, and
+  (org.apache.xmlgraphics:batik-all:1.19) is the same one used, and
   independently confirmed against the jar's own Maven-built manifest
   (Implementation-Title: org.apache.xmlgraphics:batik-all), in
   modules/helptools/pom.xml and modules/graphic_export/pom.xml; jeuclid-core
@@ -186,7 +186,20 @@
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-all</artifactId>
-      <version>1.17</version>
+      <version>1.19</version>
+      <!-- batik-all's transitives are excluded for the same reason as fop-core's
+           above: this is the FAT jar, so its declared split-module and utility
+           dependencies (commons-logging, xml-apis, ...) are either already inside it
+           or vendored separately at versions this fork pins. Letting them resolve
+           transitively would pull a second copy at whatever version batik happens to
+           track. Compile deps are declared explicitly here; the runtime classpath is
+           etc/classpath.xml. -->
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- net.sourceforge.jeuclid.swing — MathML rendering inside graph
          labels. SAME JAR, SAME COORDINATE AS modules/console/pom.xml and
