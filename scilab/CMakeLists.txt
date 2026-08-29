@@ -237,16 +237,45 @@ add_subdirectory(modules/javasci)
 # ledger debt again: miniconda3/lib PRECEDES the gcc keg + SDK dirs, which is
 # what lands -lstdc++(->c++)/-lgfortran/-lquadmath/-lcurl on miniconda's
 # @rpath-install_name'd copies — the baseline's recorded deps.
-set(_gcc_libdir /opt/homebrew/Cellar/gcc/16.1.0/bin/../lib/gcc/current)  # FLIBS spelling
+# The gcc runtime dir, ASKED OF THE COMPILER rather than written down.
+#
+# This was hardcoded to /opt/homebrew/Cellar/gcc/16.1.0/... and broke the moment
+# Homebrew moved to 16.2.0: the keg path stopped existing, ld could no longer find
+# libemutls_w, and BOTH executables failed to link while every other target and the
+# whole Maven reactor still reported success -- so the build looked healthy right up
+# to the final link. Any future gcc upgrade would have reproduced it exactly.
+#
+# -print-file-name resolves against the compiler actually in use, so the answer
+# tracks whatever gcc is installed. libemutls_w.a is the right probe because it is
+# precisely the library whose disappearance caused the failure; asking for it returns
+# the arch-specific directory the three -L entries below are built from.
+#
+# If the probe fails the value is left empty rather than guessed: an unresolvable -L
+# is harmless, whereas a stale one silently searches a directory that is not there.
+execute_process(
+  COMMAND "${CMAKE_Fortran_COMPILER}" -print-file-name=libemutls_w.a
+  OUTPUT_VARIABLE _emutls_lib OUTPUT_STRIP_TRAILING_WHITESPACE
+  ERROR_QUIET)
+if(IS_ABSOLUTE "${_emutls_lib}" AND EXISTS "${_emutls_lib}")
+  get_filename_component(_gcc_archdir "${_emutls_lib}" DIRECTORY)
+  # <keg>/lib/gcc/current/gcc/<triple>/<ver>  ->  <keg>/lib/gcc/current
+  get_filename_component(_gcc_libdir "${_gcc_archdir}/../../.." ABSOLUTE)
+  message(STATUS "gcc runtime dir (from ${CMAKE_Fortran_COMPILER}): ${_gcc_libdir}")
+else()
+  set(_gcc_archdir "")
+  set(_gcc_libdir "")
+  message(WARNING "Could not locate libemutls_w.a via ${CMAKE_Fortran_COMPILER}; "
+                  "the executables may fail to link.")
+endif()
 set(_scilab_exe_search_dirs
   -L/opt/homebrew/opt/openssl/lib
   -L/opt/homebrew/lib
   -L/opt/homebrew/opt/libomp/lib
   -L/opt/homebrew/opt/libarchive/lib
   -L/Users/josemoya/miniconda3/lib
-  -L${_gcc_libdir}/gcc/aarch64-apple-darwin25/16
-  -L${_gcc_libdir}/gcc
-  -L${_gcc_libdir}/gcc/aarch64-apple-darwin25/16/../../..
+  -L${_gcc_archdir}
+  -L${_gcc_archdir}/../..
+  -L${_gcc_libdir}
   -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib
   -L/opt/homebrew/opt/suite-sparse/lib
   -L${SCILAB_BLAS_LINKDIR}
