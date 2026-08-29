@@ -17,6 +17,8 @@ package org.scilab.modules.xcos.preferences;
 
 import java.awt.Color;
 
+import javax.swing.UIManager;
+
 import org.scilab.modules.commons.xml.XConfiguration;
 import org.scilab.modules.commons.xml.XConfiguration.XConfAttribute;
 import org.scilab.modules.xcos.VectorOfDouble;
@@ -68,6 +70,14 @@ public class XcosOptions {
     }
 
     public static class Edition {
+        /**
+         * The colour shipped in XConfiguration-xcos.xml. Seeing exactly this
+         * value back means the user never opened the colour picker, which is
+         * what lets the canvas follow the look and feel without overriding a
+         * deliberate choice.
+         */
+        private static final Color DEFAULT_GRAPH_BACKGROUND = new Color(0xffffff);
+
         private String edgeStyle = "";
         private Color graphBackground;
 
@@ -116,7 +126,31 @@ public class XcosOptions {
         }
 
         public Color getGraphBackground() {
+            // A diagram is an editing surface, so it follows the look and feel
+            // the way the console and SciNotes do. Left hardcoded, dark mode put
+            // a bright white rectangle in the middle of an otherwise dark window.
+            //
+            // Deliberately NOT Panel.background: that is a light grey in the
+            // light theme, which would have visibly changed the canvas for every
+            // existing user. TextPane.background is white in the light theme, so
+            // light mode looks exactly as it always did.
+            //
+            // Only the shipped default defers to the theme. Anyone who picked a
+            // colour in Preferences keeps precisely that colour in both
+            // appearances -- an explicit choice is not ours to reinterpret.
+            if (graphBackground == null || DEFAULT_GRAPH_BACKGROUND.equals(graphBackground)) {
+                return lafColor("TextPane.background", DEFAULT_GRAPH_BACKGROUND);
+            }
             return graphBackground;
+        }
+
+        /**
+         * Resolve a colour from the current look and feel, falling back when the
+         * key is absent (headless, or a look and feel that does not define it).
+         */
+        private static Color lafColor(String key, Color fallback) {
+            Object c = UIManager.get(key);
+            return (c instanceof Color) ? (Color) c : fallback;
         }
 
         public boolean isGraphGridEnable() {

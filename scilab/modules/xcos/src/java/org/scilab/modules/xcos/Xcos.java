@@ -40,6 +40,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.Timer;
 
 import org.scilab.modules.action_binding.InterpreterManagement;
@@ -77,6 +78,7 @@ import org.scilab.modules.xcos.graph.model.XcosCellFactory;
 import org.scilab.modules.xcos.graph.model.XcosGraphModel;
 import org.scilab.modules.xcos.io.XcosFileType;
 import org.scilab.modules.xcos.palette.PaletteManager;
+import org.scilab.modules.xcos.preferences.XcosOptions;
 import org.scilab.modules.xcos.palette.view.PaletteManagerView;
 import org.scilab.modules.xcos.preferences.XcosConfiguration;
 import org.scilab.modules.xcos.utils.FileUtils;
@@ -197,6 +199,45 @@ public final class Xcos {
         }
         ScilabTabFactory.getInstance().addTabFactory(this.factory);
 
+        /*
+         * Follow live appearance changes.
+         *
+         * The canvas colour is applied with setBackground(Color), and a plain
+         * Color is not a UIResource -- so updateComponentTreeUI() leaves it
+         * alone and an open diagram would keep its light background after a
+         * switch to the dark theme. Listening on UIManager rather than being
+         * called by whoever changes the theme keeps this self-contained: xcos
+         * is not on the gui module's dependency list, and this works no matter
+         * what triggers the change.
+         */
+        UIManager.addPropertyChangeListener(evt -> {
+            if ("lookAndFeel".equals(evt.getPropertyName())) {
+                refreshOpenedDiagramsBackground();
+            }
+        });
+    }
+
+    /**
+     * Re-apply the configured canvas colour to every open diagram.
+     *
+     * Reads sharedInstance directly and returns when it is null: calling
+     * getInstance() here would CREATE an Xcos instance, so merely switching
+     * themes would launch Xcos for a user who never opened it.
+     */
+    public static void refreshOpenedDiagramsBackground() {
+        final Xcos instance = sharedInstance;
+        if (instance == null) {
+            return;
+        }
+        if (!SwingUtilities.isEventDispatchThread()) {
+            SwingUtilities.invokeLater(Xcos::refreshOpenedDiagramsBackground);
+            return;
+        }
+        final java.awt.Color background = XcosOptions.getEdition().getGraphBackground();
+        for (final XcosDiagram diagram : instance.openedDiagrams()) {
+            diagram.getAsComponent().setBackground(background);
+            diagram.getAsComponent().repaint();
+        }
     }
 
     @Override

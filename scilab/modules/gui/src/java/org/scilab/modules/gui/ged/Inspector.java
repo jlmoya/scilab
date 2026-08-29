@@ -15,6 +15,7 @@
 package org.scilab.modules.gui.ged;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
 import org.scilab.modules.gui.bridge.window.SwingScilabWindow;
 import org.scilab.modules.gui.textbox.ScilabTextBox;
@@ -33,6 +34,31 @@ public class Inspector {
     private static Inspector instance;
     private static SwingInspector inspectorTab;
     private static GEDView gedView;
+
+    static {
+        // GED's chrome colours are set imperatively (see ContentLayout), so they
+        // survive updateComponentTreeUI() and an inspector left open across a
+        // Light/Dark switch would otherwise keep the old palette. Registered once
+        // per class, and it only walks a tree that already exists.
+        UIManager.addPropertyChangeListener(evt -> {
+            if ("lookAndFeel".equals(evt.getPropertyName())) {
+                SwingUtilities.invokeLater(Inspector::refreshTheme);
+            }
+        });
+    }
+
+    /**
+     * Re-apply GED's role-tagged colours after a look and feel change.
+     *
+     * Only the inspector tab is walked: GEDView is a GraphicView, not a
+     * Component, and owns no themed widgets.
+     */
+    private static void refreshTheme() {
+        if (inspectorTab != null) {
+            ContentLayout.refreshTheme(inspectorTab);
+            inspectorTab.repaint();
+        }
+    }
 
     /**
     * Constructor.

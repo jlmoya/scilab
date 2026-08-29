@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.scilab.modules.commons.xml.XConfigurationEvent;
 import org.scilab.modules.commons.xml.XConfigurationListener;
+import org.scilab.modules.xcos.Xcos;
 
 public class XcosConfiguration implements XConfigurationListener {
 
@@ -36,6 +37,14 @@ public class XcosConfiguration implements XConfigurationListener {
         final Options options = new Options(e.getModifiedPaths());
         if (options.changed()) {
             XcosOptions.invalidate(options);
+        }
+
+        // Invalidating the cache only affects diagrams opened from now on.
+        // Without this, picking a new canvas colour in Preferences left every
+        // already-open diagram on the old colour until it was closed and
+        // reopened.
+        if (options.edition) {
+            Xcos.refreshOpenedDiagramsBackground();
         }
 
         final KeyMap keymap = new KeyMap(e.getModifiedPaths());

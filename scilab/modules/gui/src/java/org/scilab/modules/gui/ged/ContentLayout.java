@@ -15,6 +15,8 @@
 package org.scilab.modules.gui.ged;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,6 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.UIManager;
 import javax.swing.Box.Filler;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -43,6 +47,7 @@ import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import org.scilab.modules.commons.gui.ContrastColors;
 import org.scilab.modules.graphic_objects.PolylineData;
 import org.scilab.modules.gui.ged.actions.ShowHide;
 
@@ -52,6 +57,91 @@ import org.scilab.modules.gui.ged.actions.ShowHide;
 * @author Marcos CARDINOT <mcardinot@gmail.com>
 */
 public class ContentLayout extends JPanel {
+
+    /**
+     * GED sets a number of colours imperatively rather than letting the look and
+     * feel supply them, so those components do not follow a theme change on their
+     * own: a plain Color is not a UIResource, so updateComponentTreeUI()
+     * deliberately leaves it alone.
+     *
+     * Rather than keep a registry of components -- GED's inspector is a static
+     * singleton, so a registry would pin every widget it ever built -- each themed
+     * component is tagged with the ROLE it plays. refreshTheme() then walks the
+     * live tree and re-applies by role: correct however often GED is rebuilt, and
+     * holding no references of its own.
+     */
+    private static final String ROLE = "ged.themeRole";
+    private static final String ROLE_FIELD_SURFACE = "fieldSurface";
+    private static final String ROLE_BORDERED = "bordered";
+    private static final String ROLE_DATA_LABEL = "dataLabel";
+
+    /** GED's data-label accent. An identity rather than chrome, so it is kept in both themes. */
+    private static final Color DATA_LABEL_BACKGROUND = new Color(239, 77, 31);
+
+    /**
+     * Background for the small entry surfaces (colour wells, data fields).
+     *
+     * TextField.background rather than Panel.background: these read as entry
+     * fields, and TextField.background is white in the light theme, so light mode
+     * looks exactly as it always did.
+     */
+    private static Color fieldSurface() {
+        Object c = UIManager.get("TextField.background");
+        return (c instanceof Color) ? (Color) c : Color.WHITE;
+    }
+
+    /** Hairline around those surfaces -- pure black swamps a dark theme. */
+    private static Color fieldBorder() {
+        for (String key : new String[] {"Component.borderColor", "Separator.foreground", "controlShadow"}) {
+            Object c = UIManager.get(key);
+            if (c instanceof Color) {
+                return (Color) c;
+            }
+        }
+        return Color.BLACK;
+    }
+
+    private static void asFieldSurface(JComponent c) {
+        c.putClientProperty(ROLE, ROLE_FIELD_SURFACE);
+        c.setBackground(fieldSurface());
+        c.setBorder(BorderFactory.createLineBorder(fieldBorder()));
+    }
+
+    private static void asBordered(JComponent c) {
+        c.putClientProperty(ROLE, ROLE_BORDERED);
+        c.setBorder(BorderFactory.createLineBorder(fieldBorder()));
+    }
+
+    private static void asDataLabel(JComponent c) {
+        c.putClientProperty(ROLE, ROLE_DATA_LABEL);
+        c.setBackground(DATA_LABEL_BACKGROUND);
+        // The theme decides the default label foreground; against this fixed
+        // orange that can land well under the readable threshold, so pick one.
+        c.setForeground(ContrastColors.readable(c.getForeground(), DATA_LABEL_BACKGROUND));
+    }
+
+    /**
+     * Re-apply every role-tagged colour beneath {@code root}. Safe to call on a
+     * tree that contains none.
+     */
+    public static void refreshTheme(Component root) {
+        if (root instanceof JComponent) {
+            final JComponent c = (JComponent) root;
+            final Object role = c.getClientProperty(ROLE);
+            if (ROLE_FIELD_SURFACE.equals(role)) {
+                asFieldSurface(c);
+            } else if (ROLE_BORDERED.equals(role)) {
+                asBordered(c);
+            } else if (ROLE_DATA_LABEL.equals(role)) {
+                asDataLabel(c);
+            }
+        }
+        if (root instanceof Container) {
+            for (Component child : ((Container) root).getComponents()) {
+                refreshTheme(child);
+            }
+        }
+    }
     private GridBagLayout layout;
     private GridBagConstraints gbc;
     private static String imagepath = System.getenv("SCI") + "/modules/gui/images/icons/";
@@ -109,12 +199,11 @@ public class ContentLayout extends JPanel {
 
     public void addColorField(JPanel parentPanel, JPanel fieldPanel, final JDialog colorDialog,
                               JButton colorButton, JLabel fieldColor, int column, int row) {
-        fieldPanel.setBackground(new Color(255, 255, 255));
-        fieldPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        asFieldSurface(fieldPanel);
         fieldPanel.setPreferredSize(new Dimension(5, 20));
         fieldPanel.setLayout(new GridBagLayout());
 
-        colorButton.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        asBordered(colorButton);
         colorButton.setContentAreaFilled(false);
         colorButton.setMaximumSize(new Dimension(16, 16));
         colorButton.setMinimumSize(new Dimension(16, 16));
@@ -135,7 +224,7 @@ public class ContentLayout extends JPanel {
         fieldPanel.add(colorButton, gbc);
 
         fieldColor.setText(" ");
-        fieldColor.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        asBordered(fieldColor);
         fieldColor.setOpaque(true);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -229,12 +318,11 @@ public class ContentLayout extends JPanel {
                              JLabel dataLabel,
                              int column,
                              int row) {
-        fieldPanel.setBackground(new Color(255, 255, 255));
-        fieldPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        asFieldSurface(fieldPanel);
         fieldPanel.setPreferredSize(new Dimension(5, 20));
         fieldPanel.setLayout(new GridBagLayout());
 
-        dataButton.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        asBordered(dataButton);
         dataButton.setContentAreaFilled(false);
         dataButton.setMinimumSize(new Dimension(16, 16));
         dataButton.setPreferredSize(new Dimension(16, 16));
@@ -250,7 +338,7 @@ public class ContentLayout extends JPanel {
         gbc.insets = new Insets(2, 10, 2, 0);
         fieldPanel.add(dataButton, gbc);
 
-        dataLabel.setBackground(new Color(239, 77, 31));
+        asDataLabel(dataLabel);
         dataLabel.setBorder(null);
         dataLabel.setMaximumSize(new Dimension(100, 20));
         dataLabel.setMinimumSize(new Dimension(50, 20));
@@ -449,8 +537,7 @@ public class ContentLayout extends JPanel {
     }
 
     public void addJLabel(JPanel panel, JLabel label, String text, int column, int row, int insetLeft) {
-        label.setBackground(new Color(255, 255, 255));
-        label.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        asFieldSurface(label);
         label.setOpaque(true);
         label.setPreferredSize(new Dimension(5, 20));
         label.setText(" " + text);
@@ -467,7 +554,7 @@ public class ContentLayout extends JPanel {
     }
 
     public void addJTextField(JPanel panel, JTextField textField, boolean editable, int column, int row) {
-        textField.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        asBordered(textField);
         textField.setPreferredSize(new Dimension(5, 20));
         textField.setEditable(editable);
 
@@ -649,8 +736,7 @@ public class ContentLayout extends JPanel {
                                   JCheckBox check1, JCheckBox check2, JCheckBox check3,
                                   int column, int row) {
 
-        fieldPanel.setBackground(new Color(255, 255, 255));
-        fieldPanel.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
+        asFieldSurface(fieldPanel);
         fieldPanel.setPreferredSize(new Dimension(5, 20));
         fieldPanel.setLayout(new GridBagLayout());
 
