@@ -135,4 +135,45 @@ public class SourceDocumentTest {
         assertEquals("abXfgh", doc.render());
         assertEquals(1, doc.editedRanges().size());
     }
+
+    // --- Fix-round-1 regression: two edits that share a start offset are
+    // not "overlapping" under the half-open contract when one of them is a
+    // zero-length insertion point -- SourceRange(2,5).overlaps(SourceRange(2,2))
+    // is false, since overlaps() is "start < other.end && other.start < end"
+    // and 2 < 2 fails. render() must still produce a defined, order-independent
+    // result for that case: a zero-length insertion at offset N is applied
+    // before a wider replacement that also starts at N. ---
+
+    @Test
+    public void twoEditsSharingAStartOffsetRenderTheZeroLengthInsertionFirst() {
+        SourceDocument doc = new SourceDocument("abcdefgh");
+        doc.replace(new SourceRange(2, 5), "X");
+        doc.replace(new SourceRange(2, 2), "Y");
+        assertEquals("abYXfgh", doc.render());
+    }
+
+    @Test
+    public void theSameEditsInTheOppositeInsertionOrderProduceTheIdenticalResult() {
+        String src = "abcdefgh";
+
+        SourceDocument wideFirst = new SourceDocument(src);
+        wideFirst.replace(new SourceRange(2, 5), "X");
+        wideFirst.replace(new SourceRange(2, 2), "Y");
+        String wideFirstResult = wideFirst.render();
+
+        SourceDocument zeroLengthFirst = new SourceDocument(src);
+        zeroLengthFirst.replace(new SourceRange(2, 2), "Y");
+        zeroLengthFirst.replace(new SourceRange(2, 5), "X");
+        String zeroLengthFirstResult = zeroLengthFirst.render();
+
+        assertEquals(zeroLengthFirstResult, wideFirstResult);
+    }
+
+    @Test
+    public void twoZeroLengthInsertionsAtTheSameOffsetApplyInTheOrderTheyWereAdded() {
+        SourceDocument doc = new SourceDocument("abcdefgh");
+        doc.replace(new SourceRange(3, 3), "A");
+        doc.replace(new SourceRange(3, 3), "B");
+        assertEquals("abcABdefgh", doc.render());
+    }
 }

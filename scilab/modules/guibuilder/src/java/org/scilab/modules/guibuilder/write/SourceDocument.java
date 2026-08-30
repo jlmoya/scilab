@@ -77,7 +77,20 @@ public final class SourceDocument {
 
     public String render() {
         List<Edit> ordered = new ArrayList<>(edits);
-        ordered.sort(Comparator.comparingInt(e -> e.range.start()));
+        // Sorting by start() alone leaves same-start edits in an
+        // insertion-order tie -- fine when both ends also match, but wrong
+        // when one of them is a zero-length insertion point sharing its
+        // start with a wider edit: SourceRange(2,5).overlaps(SourceRange(2,2))
+        // is false (half-open ranges do not consider a point at their own
+        // start an overlap), so both are accepted by replace(), and without
+        // this second key an insertion added AFTER the wider edit would sort
+        // after it too, driving the cursor backwards. Breaking the tie by
+        // end() ascending applies a zero-length insertion at offset N before
+        // any wider edit that also starts at N, regardless of which order
+        // they were added in -- restoring the order-independence this class
+        // otherwise guarantees.
+        ordered.sort(Comparator.comparingInt((Edit e) -> e.range.start())
+                                .thenComparingInt(e -> e.range.end()));
         StringBuilder out = new StringBuilder(original.length());
         int cursor = 0;
         for (Edit e : ordered) {
