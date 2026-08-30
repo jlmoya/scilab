@@ -1,7 +1,9 @@
 function tbx_relaunch()
     appbundle = fullpath(fullfile(SCI, "..", "..", ".."));   // /Applications/Scilab-2027.0.0.app
     if isdir(appbundle) & part(appbundle, length(appbundle)-3:length(appbundle)) == ".app" then
-        unix_g("open -n """ + appbundle + """ >/dev/null 2>&1 &");
+        // host() replaces the deprecated unix_g(); nothing is captured here, and
+        // the command redirects its own output, so only the exit status differs.
+        host("open -n """ + appbundle + """ >/dev/null 2>&1 &");
         exit;
     else
         // In-tree dev build (no app bundle): relaunch the same binary with the
@@ -10,7 +12,7 @@ function tbx_relaunch()
         scilab_bin = fullfile(SCI, "bin", "scilab");
         if isfile(scilab_bin) then
             dq = """";
-            unix_g("nohup " + dq + scilab_bin + dq + " -scihome " + dq + SCIHOME + dq + ..
+            host("nohup " + dq + scilab_bin + dq + " -scihome " + dq + SCIHOME + dq + ..
                    " >/dev/null 2>&1 &");
             exit;
         else
