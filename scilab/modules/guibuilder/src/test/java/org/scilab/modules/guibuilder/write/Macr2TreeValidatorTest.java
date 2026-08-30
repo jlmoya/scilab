@@ -17,8 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Exercises {@link Macr2TreeValidator} against a real, packaged Scilab
@@ -65,5 +67,28 @@ public class Macr2TreeValidatorTest {
         // Refusing every save because the oracle is missing would be worse than
         // the problem. Unknown is not the same as invalid -- see the class doc.
         assertTrue(new Macr2TreeValidator("/nonexistent/scilab").isValidScilab("a = 1;\n"));
+    }
+
+    /**
+     * The nonexistent-path case above only pins the {@code canExecute()}
+     * guard at the top of {@code isValidScilab}. This pins the OTHER way
+     * "cannot run Scilab" happens: a path that exists and passes that same
+     * guard, yet cannot actually be started, so the failure surfaces from
+     * inside the try block instead -- {@code ProcessBuilder#start()}
+     * throwing, caught by {@code catch (IOException | RuntimeException)}.
+     *
+     * <p>A directory, not a plain file: measured directly before writing
+     * this test that a plain empty file marked executable does NOT reach
+     * that catch on this machine. {@code File#canExecute()} is true for a
+     * directory too (traversal needs the executable bit, and a freshly
+     * created directory already has it), so it clears the guard exactly
+     * like a real launcher would, but a directory can never be executed as
+     * a program -- {@code ProcessBuilder#start()} reliably throws {@code
+     * IOException} for one ("Exec failed, error: 13").
+     */
+    @Test
+    public void aLauncherThatExistsButCannotBeStartedIsTreatedAsUnableToConfirm(@TempDir Path tempDir) {
+        assertTrue(tempDir.toFile().canExecute(), "precondition: a directory must pass the executable check");
+        assertTrue(new Macr2TreeValidator(tempDir.toString()).isValidScilab("a = 1;\n"));
     }
 }
