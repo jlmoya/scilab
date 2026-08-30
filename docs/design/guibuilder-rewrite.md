@@ -43,7 +43,7 @@ them is intact. This document specifies the replacement.
 
 | Question | Decision |
 |---|---|
-| Where it lives | **New Scilab core module**, `modules/guibuilder`. The ATOMS toolbox is retired. |
+| Where it lives | **New Scilab core module**, `modules/guibuilder`, shipping the `guidesigner` command. The ATOMS toolbox is retired in phase 2. |
 | Source of truth | **The `.sce` itself.** Bi-directional: no project file, no generated/user distinction. |
 | Positioning | **Layout-aware from day one** — Scilab's border/grid/gridbag layouts. |
 | Callback bodies | **Edited inside the builder**, via the embedded Scilab editor component. |
@@ -119,12 +119,12 @@ Maven dependency on `scinotes` for the lexer and the editor pane — a dependenc
 
 Follows the SciNotes route:
 
-    guibuilder()  or  guibuilder("myapp.sce")   [macro]
-      -> sci_gateway/cpp/sci_guibuilder.cpp
+    guidesigner()  or  guidesigner("myapp.sce")   [macro]
+      -> sci_gateway/cpp/sci_guidesigner.cpp
       -> giws bridge generated from @ScilabExported
-      -> Java GuiBuilder.open(path)
+      -> Java GuiDesigner.open(path)
 
-The editor is a `GuiBuilderTabFactory extends AbstractScilabTabFactory`, so it docks,
+The editor is a `GuiDesignerTabFactory extends AbstractScilabTabFactory`, so it docks,
 follows the FlatLaf theme and is restored by `WindowsConfigurationManager` like SciNotes and
 Xcos.
 
@@ -278,27 +278,49 @@ asserted. Headless Swing construction is already proven here by `ContentLayoutTh
 
 ## 11. Phases
 
-**Phase 1 — round-trip core.** Module plumbing, gateway, dockable tab; `model`, `parse`,
-`write` with the byte-identical invariant and the locking contract; a real canvas for
-absolute positioning (select, move, resize, multi-select, snap, align/distribute); palette;
-inspector; tree; undo/redo; embedded callback editor; preview. Layouts are modelled but only
-`None` is selectable. The ATOMS toolbox is retired here, since the command collision appears
-as soon as the core `guibuilder()` exists.
+Each phase lands as working software. The round-trip core is deliberately separated from
+the canvas: the parser and writer carry the project's risk, and they can be proven against
+real files before a single pixel of editing UI exists.
 
-**Phase 2 — layouts.** Border, Grid and GridBag: parsing them out of existing files, drop
+**Phase 1 — round-trip core.** Module plumbing, gateway, dockable tab shell; `model`,
+`parse`, `write`; the byte-identical no-op invariant; the locking contract; the oracle
+check; the corpus tests. The visible deliverable is a tab that opens a `.sce` and shows
+**what it understood** — the component tree, each widget with its properties, and every
+locked region with its reason — plus a save that provably does not disturb the file. No
+editing yet.
+
+This is the phase that answers the only question that can sink the project: *does it read
+real Scilab GUIs, and can it write them back untouched?* Getting that answer before
+building an editor on top is the entire point of the split.
+
+**Phase 2 — the canvas.** Palette, design surface, selection, move, resize, multi-select,
+snapping and alignment guides, align/distribute, property editing in the inspector,
+undo/redo, the embedded callback editor, and preview. Absolute positioning. At the end of
+this phase the new module is a strictly better tool than the ATOMS toolbox, and the toolbox
+is retired here.
+
+**Phase 3 — layouts.** Border, Grid and GridBag: parsing them out of existing files, drop
 zones, constraint editing, a canvas driven by the real Swing layout managers, and writing
 layout and constraints back. GUIs that resize correctly.
 
-**Phase 3 — polish.** Nested-frame interaction, cross-design copy and paste, z-order, the
+**Phase 4 — polish.** Nested-frame interaction, cross-design copy and paste, z-order, the
 specifics of image/table/axes, keyboard-first flows, templates and help pages.
 
-## 12. Retiring the ATOMS toolbox
+## 12. Command naming and retiring the ATOMS toolbox
 
-The toolbox defines a `guibuilder` macro and is in the autoload set, so two `guibuilder`
-commands would shadow each other unpredictably. In phase 1 it is removed from the tbxManager
-catalog and the autoload manifest, `cfg.verified` is updated so the catalog count stays
-honest, and the repository is left in place as history with its recent fixes intact. Its
-generated `.sce` files remain openable — that is a phase-1 test, not a courtesy.
+The ATOMS toolbox defines a `guibuilder` macro and is in the autoload set, so two
+`guibuilder` commands would shadow each other unpredictably. But retiring the toolbox in
+phase 1 would leave no GUI editor at all until phase 2, which is a regression rather than
+progress.
+
+So the new module ships as **`guidesigner`** from phase 1. The toolbox keeps `guibuilder`
+and keeps working. In **phase 2**, when `guidesigner` can actually edit, the toolbox is
+removed from the tbxManager catalog and the autoload manifest, `cfg.verified` is updated so
+the catalog count stays honest, and `guibuilder` becomes an alias for `guidesigner`. The
+toolbox repository is left in place as history with its recent fixes intact.
+
+Its generated `.sce` files must remain openable — that is a phase-1 corpus test, not a
+courtesy.
 
 ## 13. Non-goals
 
