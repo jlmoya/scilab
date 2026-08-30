@@ -58,6 +58,17 @@ import org.scilab.modules.guibuilder.model.WidgetStyle;
  * <p>Locking is decided per property. A position computed from a variable
  * locks that position and leaves the widget's string, font and colours
  * editable, so one dynamic value does not cost the user the whole widget.
+ *
+ * <p><b>What locks a whole call.</b> Only a {@code for} or {@code while} body,
+ * because only repetition makes one call in the source stand for many widgets
+ * at runtime, and then no single call is the right thing to edit. Nesting on
+ * its own does not lock: a widget built inside {@code function},
+ * {@code if}, {@code select} or {@code try} is still one call producing at most
+ * one widget, so it is modelled and stays editable. {@code function} in
+ * particular is the commonest way a Scilab GUI is written, and locking it was
+ * measured to turn a working two-widget file into zero widgets and five
+ * unmodelled regions -- a designer blind to most of the files it exists to
+ * open. See {@link #opensBlock(String)} for the full reasoning.
  */
 public final class ScilabGuiParser {
 
@@ -337,23 +348,49 @@ public final class ScilabGuiParser {
     }
 
     /**
-     * Whether this identifier opens a control-flow block. Deliberately just
-     * the six that Scilab's own grammar closes with {@code end}/
-     * {@code endfunction} and that a GUI file realistically contains;
-     * {@code classdef}, {@code properties}, {@code methods} and
-     * {@code arguments} are left out because {@code arguments} in particular
-     * is an ordinary variable name, and treating it as a keyword would lock
-     * far more than it protects.
+     * Whether this identifier opens a block that makes one call stand for more
+     * than one widget. <b>Only {@code for} and {@code while}</b>, and the
+     * omissions are the point.
+     *
+     * <p>The hazard being guarded against is repetition: one call in the
+     * source, many widgets at runtime, so no single call is the right thing to
+     * edit. Only a loop creates that.
+     *
+     * <p>{@code function} is deliberately absent. A function body <em>scopes</em>
+     * widgets, it does not multiply them -- one call there is still exactly one
+     * widget, so editing that call is exactly right. Counting it was measured
+     * before it was rejected: wrapping a working two-widget file in
+     * {@code function demo() ... endfunction} turned it into zero widgets and
+     * five unmodelled regions. Since that wrapper is the commonest way people
+     * write a Scilab GUI, locking it would make the designer blind to most of
+     * the files it exists to open.
+     *
+     * <p>{@code if}, {@code select} and {@code try} are absent for a weaker but
+     * sufficient version of the same reason: a conditional call produces zero
+     * or one widgets, never many, so the call remains the right edit target.
+     * The only cost is canvas fidelity -- the tree may show a widget that will
+     * not appear at runtime -- and that is a phase-2 question to settle with a
+     * canvas in hand, not a write-safety question now.
+     *
+     * <p>{@code classdef}, {@code properties}, {@code methods} and
+     * {@code arguments} also take {@code end} in Scilab's grammar and are
+     * likewise absent; {@code arguments} in particular is an ordinary variable
+     * name, and treating it as a keyword would lock far more than it protects.
      */
     private static boolean opensBlock(String text) {
-        return "for".equals(text) || "while".equals(text) || "if".equals(text)
-               || "select".equals(text) || "try".equals(text) || "function".equals(text);
+        return "for".equals(text) || "while".equals(text);
     }
 
+    /**
+     * Only {@code end}, and only because only loops are counted as open.
+     * {@code endfunction} is not here: nothing this parser opens could be
+     * closed by it, so accepting it would only ever pop a loop it does not
+     * own. A plain {@code end} closing a function (legal Scilab --
+     * parsescilab.yy:961 gives {@code endfunction : ENDFUNCTION | END}) pops
+     * nothing, because a function never pushed.
+     */
     private static boolean closesBlock(String text) {
-        // parsescilab.yy:961 -- "endfunction : ENDFUNCTION | END" -- so a
-        // function may be closed by either spelling.
-        return "end".equals(text) || "endfunction".equals(text);
+        return "end".equals(text);
     }
 
     /**

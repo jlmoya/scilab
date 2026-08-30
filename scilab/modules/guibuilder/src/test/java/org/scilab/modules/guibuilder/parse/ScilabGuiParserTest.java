@@ -344,21 +344,64 @@ public class ScilabGuiParserTest {
     }
 
     @Test
-    public void aWidgetInsideAConditionalOrAFunctionBodyIsCarriedThroughToo() {
-        String conditional = ""
+    public void aGuiWrappedInAFunctionYieldsOrdinaryEditableWidgets() {
+        // The single most common way people write a Scilab GUI. A function
+        // body scopes widgets, it does not multiply them: one call here is
+        // still exactly one widget, so editing that call is exactly right.
+        // Locking these would make the designer blind to most real files.
+        String src = ""
+            + "function demo()\n"
+            + "  f = figure(\"figure_name\", \"Demo\");\n"
+            + "  ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", \"string\", \"OK\");\n"
+            + "  cancel = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"cancel\", \"string\", \"Cancel\");\n"
+            + "endfunction\n"
+            + "demo();\n";
+        Design d = ScilabGuiParser.parse(src);
+        assertEquals(2, d.allNodes().size(), "a function-wrapped GUI must open as widgets:" + reasons(d));
+        assertEquals("Demo", d.root().properties().get("figure_name").value());
+        assertNotNull(d.byTag("ok"));
+        assertFalse(d.byTag("ok").isLocked(), "nothing in this widget is computed");
+        assertEquals("OK", d.byTag("ok").properties().get("string").value());
+        assertNothingIsUnaccountedFor(src);
+    }
+
+    @Test
+    public void aWidgetInsideAConditionalIsModelledBecauseItIsStillOneCall() {
+        // Zero or one runtime widgets, never many, so the call is still the
+        // right thing to edit. That the tree may show a widget which will not
+        // appear is a canvas-fidelity question for phase 2, not a reason to
+        // refuse writes now.
+        String src = ""
             + "if wide then\n"
             + "  ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", \"string\", \"Go\");\n"
             + "end\n";
-        assertTrue(ScilabGuiParser.parse(conditional).allNodes().isEmpty(),
-                   "a widget that may never be created must not be shown as one that always is");
-        String inFunction = ""
-            + "function build()\n"
-            + "  ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", \"string\", \"Go\");\n"
-            + "endfunction\n";
-        assertTrue(ScilabGuiParser.parse(inFunction).allNodes().isEmpty(),
-                   "a widget in a function body is created once per call, which may be never");
-        assertNothingIsUnaccountedFor(conditional);
-        assertNothingIsUnaccountedFor(inFunction);
+        Design d = ScilabGuiParser.parse(src);
+        assertNotNull(d.byTag("ok"), "a conditional widget is still one call:" + reasons(d));
+        assertFalse(d.byTag("ok").isLocked());
+        assertNothingIsUnaccountedFor(src);
+    }
+
+    @Test
+    public void aWidgetInsideALoopBodyIsStillRecordedAsAnUnmodelledRegion() {
+        // Repetition is the whole hazard, and it is the only one: one call,
+        // five runtime widgets. The region has to cover the CALL, because the
+        // writer refuses an edit only when it overlaps a region.
+        String loop = ""
+            + "for k = 1:5\n"
+            + "  uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"btn\", \"string\", \"Go\");\n"
+            + "end\n";
+        String whileLoop = ""
+            + "while more\n"
+            + "  uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"btn\", \"string\", \"Go\");\n"
+            + "end\n";
+        for (String src : new String[] {loop, whileLoop}) {
+            Design d = ScilabGuiParser.parse(src);
+            assertTrue(d.allNodes().isEmpty(), "a repeated call is not one widget:" + reasons(d));
+            int call = src.indexOf("uicontrol(");
+            assertTrue(d.unmodelled().stream().anyMatch(r -> r.range().contains(call)),
+                       "the call itself must be inside a region, or the writer may edit it:" + reasons(d));
+            assertNothingIsUnaccountedFor(src);
+        }
     }
 
     @Test
