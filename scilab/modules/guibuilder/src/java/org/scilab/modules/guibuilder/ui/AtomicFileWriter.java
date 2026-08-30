@@ -46,6 +46,11 @@ import java.nio.file.StandardCopyOption;
  * target} already exists; a brand-new {@code target} keeps the temp file's
  * restrictive default, which is the right mode for a file nobody has set
  * permissions on yet.
+ *
+ * <p>Not preserved across the inode swap, and not fixable here: the file's
+ * OWNERSHIP (the new inode takes the saving process's uid/gid, so a non-owner
+ * saving a shared file becomes its owner -- correcting that needs chown
+ * privilege) and its ACLs.
  */
 final class AtomicFileWriter {
 

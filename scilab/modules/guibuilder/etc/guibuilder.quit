@@ -8,5 +8,15 @@
 // For more information, see the COPYING file which you should have received
 // along with this program.
 
-// Nothing to release yet: GuiDesignerTab (Task 7) opens no window, just
-// prints a summary. Revisit once Task 8 gives it a real tab to close.
+// Nothing to release. GuiDesignerTab is a real dockable tab now, but it
+// registers its own ClosingOperation with ClosingOperationsManager and adds
+// itself as a dependency of the root window, so the docking framework closes
+// it with everything else -- there is no separate teardown for this file to
+// call. Compare modules/scinotes/etc/scinotes.quit, which DOES need one:
+// closeEditor() exists because SciNotes keeps editor state of its own that
+// outlives the tab. The designer keeps none: the Design is read-only, the
+// file on disk is already whatever the last save left, and phase 1 has no
+// unsaved state to prompt about.
+//
+// Revisit in phase 2, when editing means there IS unsaved state -- that is
+// where askForClosing() stops returning null.

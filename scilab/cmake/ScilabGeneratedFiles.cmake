@@ -152,12 +152,12 @@ endif()
 # this coexistence-stage driver cannot test; that is an "improve", not a
 # "reproduce", and does not belong here.)
 #
-# FORWARD HAZARD: etc/modules.xml therefore ALWAYS activates the 9 modules keyed
-# on @GUI_ENABLE@ (gui, graphic_objects, scinotes, ui_data, terminal) or on the
-# DEMOTOOLS_ENABLE/GRAPHICS_ENABLE cascade below (demo_tools, graphics, renderer,
-# graphic_export) regardless of WITH_GUI's value, TODAY. The moment a future
-# stage wires WITH_GUI=OFF to actually skip BUILDING the GUI-side jars, this
-# generated file will still tell the runtime to activate those 9 modules --
+# FORWARD HAZARD: etc/modules.xml therefore ALWAYS activates the 10 modules keyed
+# on @GUI_ENABLE@ (gui, graphic_objects, scinotes, guibuilder, ui_data, terminal)
+# or on the DEMOTOOLS_ENABLE/GRAPHICS_ENABLE cascade below (demo_tools, graphics,
+# renderer, graphic_export) regardless of WITH_GUI's value, TODAY. The moment a
+# future stage wires WITH_GUI=OFF to actually skip BUILDING the GUI-side jars, this
+# generated file will still tell the runtime to activate those 10 modules --
 # producing a ClassNotFoundException, not a clean headless configuration.
 # Whoever makes WITH_GUI load-bearing MUST revisit this block (and the cascade).
 if(JAVA_ENABLE STREQUAL "yes" OR WITH_GUI)

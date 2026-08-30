@@ -41,11 +41,29 @@ import org.junit.jupiter.api.io.TempDir;
  */
 public class Macr2TreeValidatorTest {
 
-    private static final String SCILAB =
-        "/Applications/Scilab-2027.0.0.app/Contents/MacOS/Scilab-2027.0.0";
+    /**
+     * Where to find a packaged Scilab, overridable with
+     * {@code -Dguibuilder.test.scilab=/path/to/launcher}.
+     *
+     * <p>The default is this fork's macOS install location, which is where it
+     * is on the machine this module was written on. Hardcoding it outright was
+     * the same silent-skip problem the class javadoc above warns about, just
+     * relocated: on any machine where that path does not exist, the two
+     * substantive tests below would {@code assumeTrue}-skip and the suite
+     * would go green having exercised nothing -- and the filename convention
+     * that javadoc defends would have bought nothing. The property makes that
+     * recoverable rather than fatal, and
+     * {@link #requireScilab()} reports the path it looked at so a skip says
+     * WHY it skipped instead of only that it did.
+     */
+    private static final String SCILAB = System.getProperty(
+        "guibuilder.test.scilab",
+        "/Applications/Scilab-2027.0.0.app/Contents/MacOS/Scilab-2027.0.0");
 
     private static void requireScilab() {
-        assumeTrue(new File(SCILAB).canExecute(), "needs a packaged Scilab; skipped");
+        assumeTrue(new File(SCILAB).canExecute(),
+                   "needs a packaged Scilab at " + SCILAB
+                   + " (override with -Dguibuilder.test.scilab=...); skipped");
     }
 
     @Test

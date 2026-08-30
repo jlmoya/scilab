@@ -3,11 +3,17 @@
 A state-of-the-art, **bi-directional** visual GUI designer for Scilab 2027, replacing the
 `guibuilder` ATOMS toolbox with a core module.
 
-Status: **design approved 2026-08-29** (revision 2), not yet implemented.
+Status: **design approved 2026-08-29** (revision 2). **Phase 1 implemented 2026-08-30**;
+phases 2–4 not yet started.
 
 Revision 2 replaces the project-file-plus-guarded-regions model of revision 1 with
 source-as-model round-tripping, and brings callback editing into the builder. Revision 1
 under-scoped the brief; the reasoning that replaced it is in section 3.
+
+Revision 3 (2026-08-30) records two places where phase 1 measured something this document
+had assumed, and amends the document to match the code rather than leaving a future reader
+to "correct" the code back: the SciNotes lexer dependency in sections 3 and 5.1, and the
+library-name collision with the ATOMS toolbox in section 12.
 
 ## 1. Why replace it
 
@@ -71,7 +77,7 @@ tree, and all three were verified before being relied on:
 
 | Asset | Provides | Verification |
 |---|---|---|
-| SciNotes `scilab.jflex`, `ScilabLexer`, `FunctionScanner`, `MatchingBlockScanner` | A Scilab tokenizer in Java with source positions | 146 Java files, in production use for highlighting |
+| SciNotes `scilab.jflex`, `ScilabLexer`, `FunctionScanner`, `MatchingBlockScanner` | A Scilab tokenizer in Java with source positions | 146 Java files, in production use for highlighting — **but see the amendment below: measured unusable for this, and not reused** |
 | `macr2tree` + `tree2code` | Full Scilab parse to tree and back to source | Run live: round-tripped a function **with its comments intact**, including a trailing comment |
 | `ScilabEditorPane extends JEditorPane` | Embeddable Scilab editor with highlighting | Already embedded outside SciNotes by `helptools/ScilabSourceBrowser` and `preferences/PreviewCode` |
 
@@ -81,6 +87,49 @@ lost. Regenerating a user's file through it would reformat all of it. It is also
 from `modules/core/sci_gateway/*.xml` despite working at runtime, so its registration is
 not where a maintainer would look. For both reasons it is used **only as a validation
 oracle**, never as the write path.
+
+### Amendment (revision 3): SciNotes' lexer is not reused, and that is not the helptools mistake
+
+This section warned that helptools' forked `ScilabLexer` "is not to be repeated", and
+section 5.1 required a Maven dependency on `scinotes` for the lexer. Phase 1 wrote its own
+focused scanner instead (`parse/ScilabTokenStream`), and `modules/guibuilder` takes no
+`scinotes` dependency at all. That is a deviation from this document, so this document
+changes — the alternative is a future reader "fixing" the code back to a design that was
+measured not to work.
+
+The measurement, made against the real API before any of it was written, not inferred from
+reading it:
+
+- `ScilabLexer` **does** run headlessly. `ScilabDocument` extends `PlainDocument` and needs
+  no editor pane or `ViewFactory`; it was instantiated and driven in a headless JVM. The
+  Swing-leakage concern was therefore not the blocker.
+- Its token stream is the wrong shape. `getScilabTokens(String)` scans a whole document in
+  one pass with **no per-line state reset**: on `"a = 1;   // note\nb = 2;\n"` every
+  character after the first `//` — the whole second line included — came back typed as
+  comment. The reset only happens in the real editor, which re-invokes the lexer per
+  physical line via `setRange(int, int)` and carries block-comment state across lines on
+  each line's `Element`.
+- Even driven correctly (a state reset was prototyped and confirmed to fix that), its
+  `QSTRING` and `COMMENT` states are tuned for per-character re-colouring, not for whole
+  lexical units: `"hi"` comes back as three `STRING` tokens and a comment body comes back
+  one character per token.
+
+Reusing it would therefore mean reimplementing its per-line reinvocation protocol *and*
+writing a token-merging layer keyed to an editor colouriser's internal granularity — at
+least as much code as the scanner it replaced, and coupled to incidental behaviour rather
+than a documented contract.
+
+**Why this is not helptools' mistake.** Helptools *forked the lexer*: a second copy of the
+same JFlex grammar, which must now be kept in step with the original by hand and silently
+rots when it is not. Nothing was forked here. `ScilabTokenStream` is ~350 lines implementing
+a deliberately smaller language than Scilab — identifiers, numbers, quoted strings with
+doubled-quote escapes, `//` comments, operators, punctuation, and explicitly *not* block
+comments or interpreter-state-dependent highlighting — with its own tests, its own
+contract (every token slices back out of the source at its own range; the stream covers
+every character with no gaps), and no shared lineage to drift from. Its character classes
+were cross-checked against `scilab.jflex` for fidelity without importing it. The rule this
+section is really stating — *do not maintain a second copy of somebody else's grammar* —
+is upheld.
 
 ## 4. Why a Swing design surface
 
@@ -111,9 +160,21 @@ against a widget set stable for years. A test asserts the mapping against the re
 ### 5.1 Module
 
 `modules/guibuilder`, with the anatomy of `modules/scinotes`: `CMakeLists.txt`, `pom.xml`,
-`macros/`, `sci_gateway/`, `src/java/`, `etc/`, `help/`, `locales/`, `tests/`. It takes a
-Maven dependency on `scinotes` for the lexer and the editor pane — a dependency, not a copy.
-(`helptools` carries its own forked `ScilabLexer`; that fork is not to be repeated.)
+`macros/`, `sci_gateway/`, `src/java/`, `etc/`, `help/`, `locales/`, `tests/`.
+
+**Amended in revision 3.** This section originally read: "It takes a Maven dependency on
+`scinotes` for the lexer and the editor pane — a dependency, not a copy. (`helptools`
+carries its own forked `ScilabLexer`; that fork is not to be repeated.)" As built, phase 1
+takes **no `scinotes` dependency**: its only Maven dependency is `gui`. The lexer half of
+that sentence was retired on measurement — see the amendment at the end of section 3 for
+what was measured and why writing a focused scanner is not the fork this document warns
+about. The editor pane half is not retired, only unspent: phase 1 has no code pane. When
+phase 2 embeds `ScilabEditorPane` for callback editing, the dependency is added then, for
+the reason it was named here.
+
+The module directory, the Maven `artifactId`, the gateway and the dylib are all called
+`guibuilder`. Only two names are `guidesigner`: the user-facing command, and the macro
+library variable — see section 12 for the collision that forces the second.
 
 ### 5.2 Launch path
 
@@ -314,7 +375,38 @@ phase 1 would leave no GUI editor at all until phase 2, which is a regression ra
 progress.
 
 So the new module ships as **`guidesigner`** from phase 1. The toolbox keeps `guibuilder`
-and keeps working. In **phase 2**, when `guidesigner` can actually edit, the toolbox is
+and keeps working.
+
+### Amendment (revision 3): the command was not the only name that clashed
+
+Naming the command `guidesigner` was necessary and not sufficient. `genlib()` defines its
+first argument as a **variable in the base workspace**, and the toolbox's own loader opens
+with a guard on exactly that variable:
+
+```scilab
+if isdef("guibuilderlib") then
+    warning("Toolbox skeleton library is already loaded");
+    return;
+end
+```
+
+Module `.start` files run **before** `~/.Scilab/<version>/.scilab`, so a core module whose
+library is named `guibuilderlib` has already defined it by the time the toolbox loads: the
+toolbox returns early, and the `guibuilder` command this section promises "keeps working"
+silently does not exist. Measured in a live interpreter, both directions:
+
+    pre-fix    guidesignerlib defined: 0    guibuilderlib defined: 1
+    post-fix   guidesignerlib defined: 1    guibuilderlib defined: 0
+
+The module's library is therefore named **`guidesignerlib`** (`macros/buildmacros.sce`).
+Nothing else is renamed — module directory, `artifactId`, gateway and dylib stay
+`guibuilder`.
+
+The general lesson, worth carrying into phase 2's retirement work: replacing a toolbox with
+a core module means checking **every** name the two share in the base workspace, not only
+the ones a user types.
+
+In **phase 2**, when `guidesigner` can actually edit, the toolbox is
 removed from the tbxManager catalog and the autoload manifest, `cfg.verified` is updated so
 the catalog count stays honest, and `guibuilder` becomes an alias for `guidesigner`. The
 toolbox repository is left in place as history with its recent fixes intact.

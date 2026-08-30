@@ -45,8 +45,16 @@ public class NodeTest {
         assertFalse(n.isLocked());
     }
 
+    /**
+     * The computed property is added LAST here and FIRST in the test below,
+     * and both orders matter. Adding it only ever last would let an {@code
+     * isLocked()} that examined nothing but the most recently added property
+     * pass -- a mistake easy to write and impossible to see from a green
+     * suite. The pair pins "any locked property locks the node", which is
+     * what the class actually promises.
+     */
     @Test
-    public void oneComputedPropertyLocksTheNode() {
+    public void oneComputedPropertyLocksTheNodeWhenItIsAddedLast() {
         Node n = new Node("okButton", WidgetStyle.PUSHBUTTON, anywhere());
         n.putProperty("string", PropertyValue.literal("\"OK\"", anywhere(), "OK"));
         n.putProperty("position", PropertyValue.computed("[x y w h]", anywhere(),
@@ -54,6 +62,19 @@ public class NodeTest {
         assertTrue(n.isLocked());
         // ...but only that property is locked; the rest stay editable.
         assertFalse(n.properties().get("string").isLocked());
+        assertTrue(n.properties().get("position").isLocked());
+    }
+
+    @Test
+    public void oneComputedPropertyLocksTheNodeWhenItIsAddedFirst() {
+        Node n = new Node("okButton", WidgetStyle.PUSHBUTTON, anywhere());
+        n.putProperty("position", PropertyValue.computed("[x y w h]", anywhere(),
+                                                         "position is computed from variables"));
+        n.putProperty("string", PropertyValue.literal("\"OK\"", anywhere(), "OK"));
+        n.putProperty("visible", PropertyValue.literal("\"on\"", anywhere(), "on"));
+        assertTrue(n.isLocked(), "a locked property anywhere in the map locks the node");
+        assertFalse(n.properties().get("string").isLocked());
+        assertFalse(n.properties().get("visible").isLocked());
         assertTrue(n.properties().get("position").isLocked());
     }
 }

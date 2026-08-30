@@ -48,6 +48,17 @@ bool GuiDesigner::open(JavaVM* jvm_, char const* path)
     jclass cls = initClass(curEnv);
     if (cls == NULL)
     {
+        // FindClass leaves a NoClassDefFoundError pending when it fails, and
+        // initClass (GuiDesigner.hxx) does not clear it -- it only reports
+        // NULL. A pending exception left on the thread poisons the next JNI
+        // call any other code makes on it, which would surface far from here
+        // as an unrelated abort. Cleared on the way out, exactly as the
+        // GetStaticMethodID and CallStaticBooleanMethod paths below do.
+        if (curEnv->ExceptionCheck())
+        {
+            curEnv->ExceptionDescribe();
+            curEnv->ExceptionClear();
+        }
         fprintf(stderr, "guidesigner: could not find class %s\n", className().c_str());
         return false;
     }

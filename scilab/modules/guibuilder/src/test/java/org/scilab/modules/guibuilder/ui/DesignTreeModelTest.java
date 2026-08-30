@@ -60,6 +60,11 @@ public class DesignTreeModelTest {
     public void everyLockedEntryCanExplainItself() {
         Design d = ScilabGuiParser.parse(SRC);
         DesignTreeModel m = new DesignTreeModel(d);
+        // Without this the loop below is vacuous: a lockedReasons() that
+        // returned an empty list -- having lost every reason -- would satisfy
+        // "every element is non-blank" perfectly.
+        assertFalse(m.lockedReasons().isEmpty(),
+                    "SRC builds a widget in a loop, so there is something to explain");
         for (String reason : m.lockedReasons()) {
             assertTrue(reason != null && !reason.isBlank());
         }
