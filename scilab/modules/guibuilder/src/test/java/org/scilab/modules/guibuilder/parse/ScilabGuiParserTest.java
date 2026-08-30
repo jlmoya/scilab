@@ -20,10 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import org.scilab.modules.guibuilder.CoverageInvariant;
 import org.scilab.modules.guibuilder.model.Design;
 import org.scilab.modules.guibuilder.model.Node;
 import org.scilab.modules.guibuilder.model.PropertyValue;
@@ -455,81 +452,39 @@ public class ScilabGuiParserTest {
     }
 
     /**
-     * The load-bearing invariant: every significant token is inside a modelled
-     * widget or inside an unmodelled region. Task 5's writer refuses an edit
-     * only when it OVERLAPS a region, so a span in no region at all is a span
-     * it will happily overwrite.
-     *
-     * <p>Two exemptions, both narrow and both principled. A {@code ;} or
-     * {@code ,} at top-level bracket depth that directly follows a call we
-     * modelled terminates the statement that widget is, and the parser absorbs
-     * it deliberately; a separator anywhere else -- inside an enclosing call's
-     * argument list, or between matrix rows -- carries meaning of its own and
-     * is not exempt. And a line continuation plus the rest of its line is
-     * ignored, because Scilab itself ignores it. Both rules are recomputed
-     * here from the token stream rather than asked of the parser, so this
-     * stays an independent statement of the contract.
+     * {@code guigencode.sci:70} unconditionally emits
+     * {@code f.visible = ""on"";} at the end of every file the real ATOMS
+     * builder ever generated. Inside a single-quoted Scilab string only
+     * {@code ''} escapes a quote -- {@code ""} does not -- so the two
+     * double-quotes around {@code on} are literal characters, not an escaped
+     * one: this is not a rare corner, it is what every genuine
+     * ATOMS-generated file actually contains, and it is not valid Scilab.
+     * Confirmed by direct inspection before writing this test (not assumed):
+     * it tokenizes as two empty strings around the identifier {@code on},
+     * calls neither {@code figure} nor {@code uicontrol}, so it models no
+     * widget, and the parser carries the whole line through as one
+     * unmodelled region rather than dropping any of it.
      */
-    private static void assertNothingIsUnaccountedFor(String src) {
+    @Test
+    public void theAtomsGeneratorsUnescapedVisibilityLineIsAccountedForNotDropped() {
+        String src = "f.visible = \"\"on\"\";\n";
         Design d = ScilabGuiParser.parse(src);
-        Set<Integer> modelledEnds = new HashSet<>();
-        modelledEnds.add(d.root().sourceRange().end());
-        for (Node n : d.allNodes()) {
-            modelledEnds.add(n.sourceRange().end());
-        }
-
-        List<Token> tokens = ScilabTokenStream.tokenize(src);
-        int depth = 0;
-        int previousEnd = -1;
-        boolean ignoringContinuedLine = false;
-        for (int i = 0; i < tokens.size(); i++) {
-            Token t = tokens.get(i);
-            if (t.type() == Token.Type.EOF) {
-                break;
-            }
-            if (ignoringContinuedLine) {
-                ignoringContinuedLine = t.text().indexOf('\n') < 0 && t.text().indexOf('\r') < 0;
-                continue;
-            }
-            if (t.type() == Token.Type.WHITESPACE || t.type() == Token.Type.COMMENT) {
-                continue;
-            }
-            if (startsContinuation(tokens, i)) {
-                ignoringContinuedLine = true;
-                continue;
-            }
-            boolean separator = t.type() == Token.Type.PUNCTUATION
-                                && (";".equals(t.text()) || ",".equals(t.text()));
-            if (!(separator && depth == 0 && modelledEnds.contains(previousEnd))) {
-                boolean accounted = d.root().sourceRange().overlaps(t.range());
-                for (Node n : d.allNodes()) {
-                    accounted = accounted || n.sourceRange().overlaps(t.range());
-                }
-                for (UnmodelledRegion r : d.unmodelled()) {
-                    accounted = accounted || r.range().overlaps(t.range());
-                }
-                assertTrue(accounted, "nothing accounts for " + t + " in <" + src + ">:" + reasons(d));
-            }
-            if (t.type() == Token.Type.PUNCTUATION) {
-                if ("([{".contains(t.text())) {
-                    depth++;
-                } else if (")]}".contains(t.text())) {
-                    depth = Math.max(0, depth - 1);
-                }
-            }
-            previousEnd = t.range().end();
-        }
+        assertNotNull(d, "parse must never return null, even for this line");
+        assertTrue(d.allNodes().isEmpty(),
+                   "this line calls neither figure nor uicontrol, so it models no widget: " + reasons(d));
+        assertFalse(d.unmodelled().isEmpty(),
+                    "the line must be recorded as unmodelled rather than silently dropped: " + reasons(d));
+        assertFalse(d.unmodelled().get(0).reason().isBlank());
+        assertNothingIsUnaccountedFor(src);
     }
 
-    /** Two or more adjacent "." operators: Scilab's line continuation. */
-    private static boolean startsContinuation(List<Token> tokens, int i) {
-        Token dot = tokens.get(i);
-        if (dot.type() != Token.Type.OPERATOR || !".".equals(dot.text())) {
-            return false;
-        }
-        Token next = i + 1 < tokens.size() ? tokens.get(i + 1) : null;
-        return next != null && next.type() == Token.Type.OPERATOR && ".".equals(next.text())
-               && next.range().start() == dot.range().end();
+    /**
+     * The coverage invariant lives in {@link CoverageInvariant}, shared with
+     * {@code CorpusRoundTripTest} so the two narrow exemptions it encodes are
+     * defined exactly once.
+     */
+    private static void assertNothingIsUnaccountedFor(String src) {
+        CoverageInvariant.assertNothingIsUnaccountedFor(src);
     }
 
     private static String reasons(Design d) {
