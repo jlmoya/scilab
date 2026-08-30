@@ -1,0 +1,27 @@
+<!--
+ *  Scilab ( https://www.scilab.org/ ) - This file is part of Scilab
+ *  Copyright (C) 2026 - Scilab GUI Designer
+ *
+ * This file is hereby licensed under the terms of the GNU GPL v2.0,
+ * pursuant to article 5.3.4 of the CeCILL v.2.1.
+ * This file was originally licensed under the terms of the CeCILL v2.1,
+ * and continues to be available under such terms.
+ * For more information, see the COPYING file which you should have received
+ * along with this program.
+ *
+ Documents the C++ <-> Java boundary that GuiDesigner.hxx/GuiDesigner.cpp
+ implement BY HAND (see this module's CMakeLists.txt comment for why: this
+ module does not depend on modules/graph, so it cannot use @ScilabExported,
+ and no GIWS code generator is wired into this tree's CMake build -- every
+ *.giws.xml in this repository documents a pair of .hxx/.cpp files that were
+ generated once, long ago, and are now maintained as ordinary checked-in
+ source; this one is the same shape, just hand-written from the start
+ instead of hand-edited after a generator run).
+-->
+<package name="org.scilab.modules.guibuilder.ui">
+    <object name="GuiDesigner">
+        <method name="open" returnType="boolean" modifier="static">
+            <parameter name="path" type="String"/>
+        </method>
+    </object>
+</package>

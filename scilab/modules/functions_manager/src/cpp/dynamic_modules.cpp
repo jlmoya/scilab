@@ -140,6 +140,38 @@ int ScinotesModule::Load()
     return 1;
 }
 
+//Guibuilder module (the guidesigner command)
+bool GuibuilderModule::loadedDep = false;
+int GuibuilderModule::LoadDeps(const std::wstring& /*_functionName*/)
+{
+    if (loadedDep == false)
+    {
+        loadOnUseClassPath("GuiDesigner");
+        loadedDep = true;
+    }
+
+    return 1;
+}
+
+int GuibuilderModule::Load()
+{
+    std::wstring wstModuleName = L"guibuilder";
+#ifdef _MSC_VER
+    wchar_t* pwstLibName = buildModuleDynLibraryNameW(wstModuleName.c_str(), DYNLIB_NAME_FORMAT_2);
+#else
+    wchar_t* pwstLibName = buildModuleDynLibraryNameW(wstModuleName.c_str(), DYNLIB_NAME_FORMAT_3);
+#endif
+    vectGateway vect = loadGatewaysName(wstModuleName);
+
+    for (int i = 0 ; i < (int)vect.size() ; i++)
+    {
+        symbol::Context::getInstance()->addFunction(types::Function::createFunction(vect[i].wstFunction, vect[i].wstName, pwstLibName, vect[i].iType, &GuibuilderModule::LoadDeps, wstModuleName));
+    }
+
+    FREE(pwstLibName);
+    return 1;
+}
+
 //Functions module
 int FunctionsModule::Load()
 {

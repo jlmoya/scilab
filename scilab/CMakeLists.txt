@@ -143,22 +143,29 @@ add_custom_target(drop-in-all)
 # exemplars + Batch A's 8 simple leaves + Batch B's 10 variant-pair GUI
 # modules + Batch C's 17 external-dependency modules + Batch D's jvm (the JNI
 # module — links the JDK's libjli) + Batch E's 6 inter-module-edge dirs) are
-# on scilab_module(). Each Batch-B dir declares TWO dylibs (main + `-disable`
-# stub) in one CMakeLists.txt; so do Batch C's console (`-minimal`),
-# preferences (`-cli`), scicos_blocks (`-cli`), Batch D's jvm (`-disable`) and
-# Batch E's helptools (`-disable`), scicos (`-cli`), xcos (`-disable`) and
-# differential_equations (whose SECOND dylib is the vendored libscisundials —
-# no modules/sundials/ dir exists). Batch E's MODULE_DEPS edges (diff_eq ->
-# sundials; helptools -> commons; types/external_objects_java -> commons+jvm;
-# scicos -> sundials+scicos_blocks[-cli]; xcos -> scicos+sundials+
-# scicos_blocks+commons+jvm) are CMake target links: CMake orders the build,
-# so the foreach order below is documentation, not a topo-sort.
+# on scilab_module(), PLUS guibuilder — the GUI designer's Phase 1 module,
+# never part of the autotools tree and so outside that "ALL 64 baseline"
+# count and its parity-harness arbitration. Each Batch-B dir declares TWO
+# dylibs (main + `-disable` stub) in one CMakeLists.txt; so do Batch C's
+# console (`-minimal`), preferences (`-cli`), scicos_blocks (`-cli`),
+# Batch D's jvm (`-disable`) and Batch E's helptools (`-disable`), scicos
+# (`-cli`), xcos (`-disable`) and differential_equations (whose SECOND dylib
+# is the vendored libscisundials — no modules/sundials/ dir exists).
+# guibuilder shares Batch B's GUI_LIBS dependency shape but declares only ONE
+# dylib — see its own CMakeLists.txt for why a `-disable` stub does not apply
+# to a module with no legacy variant to reproduce. Batch E's MODULE_DEPS
+# edges (diff_eq -> sundials; helptools -> commons; types/
+# external_objects_java -> commons+jvm; scicos -> sundials+
+# scicos_blocks[-cli]; xcos -> scicos+sundials+scicos_blocks+commons+jvm) are
+# CMake target links: CMake orders the build, so the foreach order below is
+# documentation, not a topo-sort.
 foreach(m
     sound parallel coverage interpolation                       # exemplars
     ast call_scilab completion external_objects functions       # Batch A
     functions_manager history_manager renderer                  # Batch A
     action_binding commons graphic_export graphic_objects       # Batch B
-    graphics gui history_browser scinotes tclsci ui_data        # Batch B
+    graphics gui history_browser scinotes guibuilder tclsci     # Batch B
+    ui_data                                                     # Batch B
     arnoldi console hdf5 localization matio optimization        # Batch C
     preferences randlib scicos_blocks signal_processing slint   # Batch C
     special_functions spreadsheet statistics umfpack webtools   # Batch C

@@ -341,6 +341,7 @@ bool FuncManager::CreateModuleList(void)
     m_ModuleMap[L"time"] = std::pair<GW_MOD, GW_MOD>(&TimeModule::Load, &TimeModule::Unload);
     m_ModuleMap[L"string"] = std::pair<GW_MOD, GW_MOD>(&StringModule::Load, &StringModule::Unload);
     m_ModuleMap[L"scinotes"] = std::pair<GW_MOD, GW_MOD>(&ScinotesModule::Load, &ScinotesModule::Unload);
+    m_ModuleMap[L"guibuilder"] = std::pair<GW_MOD, GW_MOD>(&GuibuilderModule::Load, &GuibuilderModule::Unload);
     m_ModuleMap[L"localization"] = std::pair<GW_MOD, GW_MOD>(&LocalizationModule::Load, &LocalizationModule::Unload);
     m_ModuleMap[L"helptools"] = std::pair<GW_MOD, GW_MOD>(&HelptoolsModule::Load, &HelptoolsModule::Unload);
     m_ModuleMap[L"hdf5"] = std::pair<GW_MOD, GW_MOD>(&Hdf5Module::Load, &Hdf5Module::Unload);

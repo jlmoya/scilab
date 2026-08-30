@@ -55,6 +55,18 @@ public :
     static int Load();
 };
 
+// The GUI designer's Phase 1 module (the guidesigner command). Same shape
+// as ScinotesModule: its one Java entry point (GuiDesigner) is loaded onto
+// the classpath lazily, on first use, rather than unconditionally at
+// startup -- see etc/classpath.xml.in's guibuilder entry.
+class GuibuilderModule : public GenericModule
+{
+    static bool loadedDep;
+    static int LoadDeps(const std::wstring& _functionName);
+public :
+    static int Load();
+};
+
 class FunctionsModule : public GenericModule
 {
 public :

@@ -266,6 +266,11 @@ The option is "disableUnderMode" and can be:
     <load on="SciNotes"/>
 </path>
 
+<!-- guibuilder module (the guidesigner command) -->
+<path value="$SCILAB/modules/guibuilder/target/org.scilab.modules.guibuilder.jar" load="onUse">
+    <load on="GuiDesigner"/>
+</path>
+
 <!-- Xcos module -->
 <path value="$SCILAB/modules/xcos/target/org.scilab.modules.xcos.jar" load="onUse">
     <load on="Xcos"/>
