@@ -574,6 +574,68 @@ public class ScilabGuiParserTest {
     }
 
     /**
+     * A region's reason is not a diagnostic string: {@code GuiDesignerTab}'s
+     * cell renderer uses it verbatim as the tree label. A UTF-8 byte order
+     * mark is a one-character token that no other rule claims, so it became
+     * its own region -- labelled "code we do not model: " followed by an
+     * invisible character. The user is shown an entry that appears to say
+     * nothing, about a file that opens fine.
+     */
+    @Test
+    public void aByteOrderMarkIsExplainedRatherThanLabelledWithAnInvisibleCharacter() {
+        String src = "﻿f = figure(\"figure_name\", \"Demo\");\n"
+            + "ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\");\n";
+        Design d = ScilabGuiParser.parse(src);
+
+        UnmodelledRegion bom = null;
+        for (UnmodelledRegion r : d.unmodelled()) {
+            if (r.range().contains(0)) {
+                bom = r;
+            }
+        }
+        assertNotNull(bom, "the byte order mark must still be accounted for:" + reasons(d));
+        assertTrue(bom.reason().contains("byte order mark"),
+                   "the reason has to say what it is; was: <" + bom.reason() + ">");
+        assertFalse(bom.reason().indexOf('﻿') >= 0,
+                    "the reason must not itself contain the invisible character");
+        assertNotNull(d.byTag("ok"), "a leading BOM must not stop the file being read:" + reasons(d));
+        assertNothingIsUnaccountedFor(src);
+    }
+
+    /**
+     * A gap reason named only its first token, so an entire unmodelled block
+     * -- a callback function, a data-preparation section, a thousand
+     * characters of it -- was labelled "code we do not model: handles". The
+     * label is what the user has to decide from, so it describes the span:
+     * its first line, elided if long, and how many more lines it covers.
+     */
+    @Test
+    public void aGapReasonDescribesTheSpanRatherThanNamingOneToken() {
+        String src = ""
+            + "handles.dummy = 0;\n"
+            + "handles.data = [1 2 3];\n"
+            + "handles.more = 4;\n";
+        Design d = ScilabGuiParser.parse(src);
+        assertEquals(1, d.unmodelled().size(), "expected one gap over the lot:" + reasons(d));
+
+        String reason = d.unmodelled().get(0).reason();
+        assertTrue(reason.contains("handles.dummy = 0;"),
+                   "the first line of the span belongs in the label; was: <" + reason + ">");
+        assertTrue(reason.contains("2 more lines"),
+                   "how much else it covers belongs in the label; was: <" + reason + ">");
+    }
+
+    @Test
+    public void aLongFirstLineIsElidedRatherThanPastedWholeIntoTheLabel() {
+        String src = "handles.averyLongVariableNameIndeed = someFunction(1, 2, 3) "
+            + "+ anotherFunction(4, 5, 6) + yetMore(7, 8, 9);\n";
+        String reason = ScilabGuiParser.parse(src).unmodelled().get(0).reason();
+        assertTrue(reason.contains("..."), "a long line must be elided; was: <" + reason + ">");
+        assertTrue(reason.length() < src.length(),
+                   "the label must be shorter than the code it describes; was: <" + reason + ">");
+    }
+
+    /**
      * The coverage invariant lives in {@link CoverageInvariant}, shared with
      * {@code CorpusRoundTripTest} so the two narrow exemptions it encodes are
      * defined exactly once.

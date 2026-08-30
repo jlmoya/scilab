@@ -82,6 +82,16 @@ public final class ScilabGuiParser {
     /** The tag a figure gets when the file does not name one. */
     private static final String DEFAULT_FIGURE_TAG = "figure";
 
+    /**
+     * A UTF-8 byte order mark. Legal, invisible, and common at the start of a
+     * file written by a Windows editor; it is not Scilab code, so it lands in
+     * an unmodelled region and needs saying so in words.
+     */
+    private static final char BOM = '﻿';
+
+    /** How much of a span's first line a reason quotes before eliding it. */
+    private static final int PREVIEW_LIMIT = 48;
+
     /** One recognised call, located in the token stream. */
     private static final class Call {
 
@@ -531,8 +541,100 @@ public final class ScilabGuiParser {
         if (first < 0) {
             return;
         }
-        addRegion(tokens.get(first).range().start(), tokens.get(last).range().end(),
-                  "code we do not model: " + tokens.get(first).text());
+        int start = tokens.get(first).range().start();
+        int end = tokens.get(last).range().end();
+        addRegion(start, end, gapReason(start, end));
+    }
+
+    /**
+     * What to tell the user about a span we did not model.
+     *
+     * <p>This is not a diagnostic string. {@code GuiDesignerTab}'s cell
+     * renderer puts it into the tree verbatim, so it is the whole of what a
+     * user has to decide from -- and naming only the first token failed that
+     * twice. A thousand-character block of callback code came back as "code
+     * we do not model: handles", and a file whose only unmodelled span was a
+     * leading byte order mark came back as "code we do not model: " followed
+     * by an invisible character, an entry that appears to say nothing at all.
+     */
+    private String gapReason(int start, int end) {
+        if (start == 0 && !source.isEmpty() && source.charAt(0) == BOM) {
+            String rest = describeSpan(1, end);
+            if (rest.isEmpty()) {
+                return "this file starts with a byte order mark, which is carried through unchanged";
+            }
+            return "this file starts with a byte order mark, followed by code we do not model: " + rest;
+        }
+        return "code we do not model: " + describeSpan(start, end);
+    }
+
+    /**
+     * A readable one-line summary of {@code [start, end)}: its first line,
+     * elided past {@link #PREVIEW_LIMIT} characters, plus how many further
+     * lines it covers. Invisible characters are escaped rather than pasted
+     * in, so a reason can never render as blank however odd the source is.
+     */
+    private String describeSpan(int start, int end) {
+        int from = Math.max(0, Math.min(start, source.length()));
+        int to = Math.max(from, Math.min(end, source.length()));
+        String text = source.substring(from, to);
+
+        int lineBreak = indexOfLineBreak(text);
+        String firstLine = printable(lineBreak < 0 ? text : text.substring(0, lineBreak)).trim();
+        if (firstLine.length() > PREVIEW_LIMIT) {
+            firstLine = firstLine.substring(0, PREVIEW_LIMIT) + "...";
+        }
+
+        int extra = countLines(text) - 1;
+        if (extra <= 0) {
+            return firstLine;
+        }
+        return firstLine + " (and " + extra + (extra == 1 ? " more line)" : " more lines)");
+    }
+
+    private static int indexOfLineBreak(String text) {
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) == '\n' || text.charAt(i) == '\r') {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /** Lines spanned by {@code text}, counting CRLF as one break. */
+    private static int countLines(String text) {
+        int lines = 1;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '\n') {
+                lines++;
+            } else if (c == '\r' && (i + 1 >= text.length() || text.charAt(i + 1) != '\n')) {
+                lines++;
+            }
+        }
+        return lines;
+    }
+
+    /**
+     * {@code text} with anything a label cannot show made visible: a tab
+     * becomes a space, and a control or format character -- the byte order
+     * mark above, a stray {@code  }, a bidi override -- becomes its own
+     * escape. Without this a reason can be a string of real characters and
+     * still look empty on screen.
+     */
+    private static String printable(String text) {
+        StringBuilder out = new StringBuilder(text.length());
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '\t') {
+                out.append(' ');
+            } else if (Character.isISOControl(c) || Character.getType(c) == Character.FORMAT) {
+                out.append(String.format("\\u%04X", (int) c));
+            } else {
+                out.append(c);
+            }
+        }
+        return out.toString();
     }
 
     // ------------------------------------------------------------------
