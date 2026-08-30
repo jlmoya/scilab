@@ -90,6 +90,75 @@ public class DesignWriterTest {
         assertTrue(e.getMessage().toLowerCase().contains("locked"));
     }
 
+    /**
+     * {@code PropertyValue}'s javadoc says a computed property is "displayed,
+     * carried through untouched, and refused as an edit target". The first
+     * two were true and the third was not enforced anywhere: the writer only
+     * ever compared edits against {@code Design#unmodelled()}, and a computed
+     * property lives INSIDE a modelled node's range, in no region at all.
+     *
+     * <p>Phase 1 creates no edits, so nothing was corrupted by it. But phase
+     * 2's inspector is going to be built on this writer, on the strength of
+     * that documented guarantee, and a guarantee nobody has watched hold is
+     * not a guarantee.
+     */
+    @Test
+    public void anEditOverlappingAComputedPropertyIsRefused() {
+        // Deliberately no "w = 100;" line: that would be a gap region of its
+        // own, and then a refusal could come from the region check rather
+        // than from the property check this test exists to pin.
+        String src = "ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", "
+            + "\"position\", [10 10 w 20]);\n";
+        Design d = ScilabGuiParser.parse(src);
+        Node ok = d.byTag("ok");
+        assertTrue(ok.properties().get("position").isLocked(), "precondition: position is computed");
+        assertTrue(d.unmodelled().isEmpty(),
+                   "precondition: no unmodelled region covers it, so only the property check can refuse");
+
+        SourceDocument doc = new SourceDocument(src);
+        doc.replace(ok.properties().get("position").range(), "[10 10 80 20]");
+
+        WriteRefusedException e = assertThrows(WriteRefusedException.class,
+                                               () -> DesignWriter.write(d, doc, ALWAYS_VALID));
+        assertTrue(e.getMessage().contains("position"),
+                   "the refusal must name the property; was: " + e.getMessage());
+        assertTrue(e.getMessage().contains("computed"),
+                   "and carry its reason; was: " + e.getMessage());
+    }
+
+    /** The root figure's own properties are locked on the same terms. */
+    @Test
+    public void anEditOverlappingAComputedPropertyOfTheFigureIsRefused() {
+        String src = "f = figure(\"figure_name\", name);\n";
+        Design d = ScilabGuiParser.parse(src);
+        assertTrue(d.root().properties().get("figure_name").isLocked(),
+                   "precondition: the figure name is computed");
+        assertTrue(d.unmodelled().isEmpty(), "precondition: nothing else here is unmodelled");
+
+        SourceDocument doc = new SourceDocument(src);
+        doc.replace(d.root().properties().get("figure_name").range(), "\"Other\"");
+
+        WriteRefusedException e = assertThrows(WriteRefusedException.class,
+                                               () -> DesignWriter.write(d, doc, ALWAYS_VALID));
+        assertTrue(e.getMessage().contains("figure_name"), "was: " + e.getMessage());
+    }
+
+    /** ...and a literal property beside a locked one is still editable. */
+    @Test
+    public void anEditOnALiteralPropertyBesideALockedOneIsStillAllowed() throws Exception {
+        String src = "ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", "
+            + "\"position\", [10 10 w 20], \"string\", \"OK\");\n";
+        Design d = ScilabGuiParser.parse(src);
+        Node ok = d.byTag("ok");
+        assertTrue(ok.properties().get("position").isLocked(), "precondition");
+
+        SourceDocument doc = new SourceDocument(src);
+        doc.replace(ok.properties().get("string").range(), "\"Go\"");
+
+        assertTrue(DesignWriter.write(d, doc, ALWAYS_VALID).contains("\"Go\""),
+                   "locking one property must never lock the others");
+    }
+
     // --- Beyond the brief: the controlling invariant through the full
     // pipeline (parser included), not just through SourceDocument in
     // isolation -- and not just for files shaped like the brief's SRC. ---
