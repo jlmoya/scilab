@@ -15,6 +15,7 @@ package org.scilab.modules.guibuilder.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +43,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.scilab.modules.commons.ScilabConstants;
+
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
 import org.scilab.modules.gui.bridge.window.SwingScilabWindow;
 import org.scilab.modules.gui.messagebox.ScilabModalDialog;
@@ -57,6 +60,7 @@ import org.scilab.modules.guibuilder.model.PropertyValue;
 import org.scilab.modules.guibuilder.model.UnmodelledRegion;
 import org.scilab.modules.guibuilder.parse.ScilabGuiParser;
 import org.scilab.modules.guibuilder.write.DesignWriter;
+import org.scilab.modules.guibuilder.write.Macr2TreeValidator;
 import org.scilab.modules.guibuilder.write.SourceDocument;
 import org.scilab.modules.guibuilder.write.SourceValidator;
 import org.scilab.modules.guibuilder.write.WriteRefusedException;
@@ -277,11 +281,9 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         if (path == null || path.isEmpty()) {
             return;
         }
-        // Task 9 supplies the real Scilab-backed validator and will replace
-        // this; phase 1 has no edits for it to reject in the first place.
-        SourceValidator alwaysValid = source -> true;
+        SourceValidator validator = new Macr2TreeValidator(scilabLauncher());
         try {
-            String rendered = DesignWriter.write(design, new SourceDocument(design.source()), alwaysValid);
+            String rendered = DesignWriter.write(design, new SourceDocument(design.source()), validator);
             AtomicFileWriter.write(Paths.get(path), rendered.getBytes(StandardCharsets.UTF_8));
         } catch (WriteRefusedException e) {
             ScilabModalDialog.show(this, e.getMessage(), APPLICATION, IconType.ERROR_ICON);
@@ -289,6 +291,21 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
             ScilabModalDialog.show(this, "could not write " + path + ": " + e.getMessage(),
                                    APPLICATION, IconType.ERROR_ICON);
         }
+    }
+
+    /**
+     * The launcher of the very Scilab this code is running inside of,
+     * derived from {@link ScilabConstants#SCI} rather than any hardcoded
+     * install location. {@code <SCI>/bin/scilab} is the standard entry
+     * point documented at the top of that script itself, and resolves
+     * correctly whether {@code SCI} names a packaged app's bundled copy or
+     * an in-tree development build. Nothing here needs to pre-check that
+     * the result is actually runnable: {@link Macr2TreeValidator} already
+     * degrades to "cannot confirm" on its own -- see its class javadoc --
+     * when it is handed a path that is not.
+     */
+    private static String scilabLauncher() {
+        return new File(ScilabConstants.SCI, "bin/scilab").getPath();
     }
 
     private void registerClosingOperation() {
