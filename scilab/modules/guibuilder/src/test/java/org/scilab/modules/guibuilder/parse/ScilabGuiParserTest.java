@@ -20,6 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.scilab.modules.guibuilder.model.Design;
 import org.scilab.modules.guibuilder.model.Node;
 import org.scilab.modules.guibuilder.model.PropertyValue;
@@ -282,36 +286,95 @@ public class ScilabGuiParserTest {
 
     @Test
     public void everySignificantTokenIsInsideAWidgetOrInsideAnUnmodelledRegion() {
-        // The second contract: a span we fail to record is a span the writer
-        // will happily overwrite. Statement separators are exempt -- they
-        // belong to the call they terminate, which is modelled.
-        String src = ""
+        assertNothingIsUnaccountedFor(""
             + "// header\n"
             + "w = 100;\n"
             + "f = figure(\"figure_name\", \"Demo\");\n"
             + "ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", \"position\", [10 10 w 20]);\n"
+            + "disp(uicontrol(f, \"style\", \"text\", \"tag\", \"d\"), \"hello\");\n"
             + "for k = 1:3\n"
             + "  uicontrol(f, \"style\", \"text\", \"tag\", \"t\" + string(k));\n"
             + "end\n"
             + "function ok_callback()\n"
             + "  disp(\"hi\");\n"
-            + "endfunction\n";
+            + "endfunction\n");
+    }
+
+    @Test
+    public void aSeparatorInsideAnEnclosingCallIsNotAbsorbed() {
+        // This comma separates disp's two arguments; it does not terminate the
+        // uicontrol statement. Absorbing it leaves it inside no region at all,
+        // and the writer only refuses edits that OVERLAP a region -- so an edit
+        // landing on it would be permitted.
+        String src = "disp(uicontrol(f, \"style\", \"text\", \"tag\", \"a\"), \"hello\");\n";
         Design d = ScilabGuiParser.parse(src);
-        for (Token t : ScilabTokenStream.tokenize(src)) {
-            if (t.type() == Token.Type.WHITESPACE || t.type() == Token.Type.COMMENT
-                || t.type() == Token.Type.EOF || t.text().equals(";") || t.text().equals(",")) {
-                continue;
-            }
-            boolean accounted = false;
-            for (Node n : d.allNodes()) {
-                accounted = accounted || n.sourceRange().overlaps(t.range());
-            }
-            accounted = accounted || d.root().sourceRange().overlaps(t.range());
-            for (UnmodelledRegion r : d.unmodelled()) {
-                accounted = accounted || r.range().overlaps(t.range());
-            }
-            assertTrue(accounted, "nothing accounts for " + t + ":" + reasons(d));
-        }
+        int comma = src.indexOf("), \"hello\"") + 1;
+        assertTrue(d.unmodelled().stream().anyMatch(r -> r.range().contains(comma)),
+                   "the comma at " + comma + " belongs to disp's argument list:" + reasons(d));
+        assertNothingIsUnaccountedFor(src);
+    }
+
+    @Test
+    public void aRowSeparatorInsideBracketsIsNotAbsorbed() {
+        // A ";" between matrix rows is load-bearing: it is what makes this two
+        // rows rather than one. It is not a statement terminator to swallow.
+        String src = "h = [uicontrol(f, \"style\", \"text\", \"tag\", \"a\"); "
+            + "uicontrol(f, \"style\", \"text\", \"tag\", \"b\")];\n";
+        Design d = ScilabGuiParser.parse(src);
+        int semicolon = src.indexOf("\"a\"); ") + "\"a\")".length();
+        assertTrue(d.unmodelled().stream().anyMatch(r -> r.range().contains(semicolon)),
+                   "the row separator at " + semicolon + " must be accounted for:" + reasons(d));
+        assertNothingIsUnaccountedFor(src);
+    }
+
+    @Test
+    public void aWidgetCreatedInsideALoopIsNotModelledAsOneWidget() {
+        // Every property here is literal, so nothing else would lock it. One
+        // node standing for five runtime widgets is a lie both the canvas and
+        // the writer would act on.
+        String src = ""
+            + "for k = 1:5\n"
+            + "  uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"btn\", \"string\", \"Go\");\n"
+            + "end\n";
+        Design d = ScilabGuiParser.parse(src);
+        assertTrue(d.allNodes().isEmpty(), "a widget created in a loop must not be modelled as one widget");
+        assertTrue(d.unmodelled().stream().anyMatch(r -> r.reason().contains("for")),
+                   "the reason should name the block it sits inside:" + reasons(d));
+        assertNothingIsUnaccountedFor(src);
+    }
+
+    @Test
+    public void aWidgetInsideAConditionalOrAFunctionBodyIsCarriedThroughToo() {
+        String conditional = ""
+            + "if wide then\n"
+            + "  ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", \"string\", \"Go\");\n"
+            + "end\n";
+        assertTrue(ScilabGuiParser.parse(conditional).allNodes().isEmpty(),
+                   "a widget that may never be created must not be shown as one that always is");
+        String inFunction = ""
+            + "function build()\n"
+            + "  ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", \"string\", \"Go\");\n"
+            + "endfunction\n";
+        assertTrue(ScilabGuiParser.parse(inFunction).allNodes().isEmpty(),
+                   "a widget in a function body is created once per call, which may be never");
+        assertNothingIsUnaccountedFor(conditional);
+        assertNothingIsUnaccountedFor(inFunction);
+    }
+
+    @Test
+    public void endUsedAsAnIndexDoesNotCloseTheBlockItIsInside() {
+        // Scilab lexes "end" inside parentheses as the last-index idiom, not as
+        // a block close: scanscilab.ll:348-361 returns DOLLAR when
+        // paren_levels.top() > 0. Counting this one as a block close would
+        // reopen the loop and let the widget through as editable.
+        String src = ""
+            + "for k = 1:3\n"
+            + "  name = names(end);\n"
+            + "  uicontrol(f, \"style\", \"text\", \"tag\", \"a\", \"string\", \"Go\");\n"
+            + "end\n";
+        Design d = ScilabGuiParser.parse(src);
+        assertTrue(d.allNodes().isEmpty(), "the loop is still open at the uicontrol:" + reasons(d));
+        assertNothingIsUnaccountedFor(src);
     }
 
     @Test
@@ -339,7 +402,91 @@ public class ScilabGuiParserTest {
             Design d = ScilabGuiParser.parse(src);
             assertNotNull(d, "parse returned null for: " + src);
             assertNotNull(d.root(), "no root for: " + src);
+            if (src != null) {
+                // Not crashing is the floor, not the bar. Malformed input must
+                // still account for every byte it could not model, or the
+                // writer would be free to edit into the wreckage.
+                assertNothingIsUnaccountedFor(src);
+            }
         }
+    }
+
+    /**
+     * The load-bearing invariant: every significant token is inside a modelled
+     * widget or inside an unmodelled region. Task 5's writer refuses an edit
+     * only when it OVERLAPS a region, so a span in no region at all is a span
+     * it will happily overwrite.
+     *
+     * <p>Two exemptions, both narrow and both principled. A {@code ;} or
+     * {@code ,} at top-level bracket depth that directly follows a call we
+     * modelled terminates the statement that widget is, and the parser absorbs
+     * it deliberately; a separator anywhere else -- inside an enclosing call's
+     * argument list, or between matrix rows -- carries meaning of its own and
+     * is not exempt. And a line continuation plus the rest of its line is
+     * ignored, because Scilab itself ignores it. Both rules are recomputed
+     * here from the token stream rather than asked of the parser, so this
+     * stays an independent statement of the contract.
+     */
+    private static void assertNothingIsUnaccountedFor(String src) {
+        Design d = ScilabGuiParser.parse(src);
+        Set<Integer> modelledEnds = new HashSet<>();
+        modelledEnds.add(d.root().sourceRange().end());
+        for (Node n : d.allNodes()) {
+            modelledEnds.add(n.sourceRange().end());
+        }
+
+        List<Token> tokens = ScilabTokenStream.tokenize(src);
+        int depth = 0;
+        int previousEnd = -1;
+        boolean ignoringContinuedLine = false;
+        for (int i = 0; i < tokens.size(); i++) {
+            Token t = tokens.get(i);
+            if (t.type() == Token.Type.EOF) {
+                break;
+            }
+            if (ignoringContinuedLine) {
+                ignoringContinuedLine = t.text().indexOf('\n') < 0 && t.text().indexOf('\r') < 0;
+                continue;
+            }
+            if (t.type() == Token.Type.WHITESPACE || t.type() == Token.Type.COMMENT) {
+                continue;
+            }
+            if (startsContinuation(tokens, i)) {
+                ignoringContinuedLine = true;
+                continue;
+            }
+            boolean separator = t.type() == Token.Type.PUNCTUATION
+                                && (";".equals(t.text()) || ",".equals(t.text()));
+            if (!(separator && depth == 0 && modelledEnds.contains(previousEnd))) {
+                boolean accounted = d.root().sourceRange().overlaps(t.range());
+                for (Node n : d.allNodes()) {
+                    accounted = accounted || n.sourceRange().overlaps(t.range());
+                }
+                for (UnmodelledRegion r : d.unmodelled()) {
+                    accounted = accounted || r.range().overlaps(t.range());
+                }
+                assertTrue(accounted, "nothing accounts for " + t + " in <" + src + ">:" + reasons(d));
+            }
+            if (t.type() == Token.Type.PUNCTUATION) {
+                if ("([{".contains(t.text())) {
+                    depth++;
+                } else if (")]}".contains(t.text())) {
+                    depth = Math.max(0, depth - 1);
+                }
+            }
+            previousEnd = t.range().end();
+        }
+    }
+
+    /** Two or more adjacent "." operators: Scilab's line continuation. */
+    private static boolean startsContinuation(List<Token> tokens, int i) {
+        Token dot = tokens.get(i);
+        if (dot.type() != Token.Type.OPERATOR || !".".equals(dot.text())) {
+            return false;
+        }
+        Token next = i + 1 < tokens.size() ? tokens.get(i + 1) : null;
+        return next != null && next.type() == Token.Type.OPERATOR && ".".equals(next.text())
+               && next.range().start() == dot.range().end();
     }
 
     private static String reasons(Design d) {

@@ -221,45 +221,90 @@ public final class ScilabGuiParser {
     private void scan() {
         int gapStart = 0;
         int i = 0;
+        // Bracket depth, and the control-flow blocks still open around us. Both
+        // are carried through the walk rather than recomputed, because both
+        // questions -- "is this separator mine to absorb?" and "would this call
+        // run more than once?" -- depend on where we are, not on the call.
+        int depth = 0;
+        List<String> openBlocks = new ArrayList<>();
+
         while (i < tokens.size()) {
             Token token = tokens.get(i);
             if (token.type() == Token.Type.EOF) {
                 break;
             }
-            if (insignificant[i] || token.type() != Token.Type.IDENTIFIER || !isCallName(token.text())) {
-                i++;
-                continue;
-            }
-            int open = nextSignificant(i + 1);
-            if (open < 0 || !isPunctuation(open, "(")) {
+            if (insignificant[i]) {
                 i++;
                 continue;
             }
 
-            // An assignment prefix only counts if it is still unclaimed source:
-            // never walk backwards into a call we have already modelled.
-            int[] prefix = assignment(i);
-            boolean assigned = prefix[0] >= gapStart;
-            int start = assigned ? prefix[0] : i;
-            int capture = assigned ? prefix[1] : -1;
-            recordGap(gapStart, start);
+            if (token.type() == Token.Type.IDENTIFIER && isCallName(token.text())) {
+                int open = nextSignificant(i + 1);
+                if (open >= 0 && isPunctuation(open, "(")) {
+                    // An assignment prefix only counts if it is still unclaimed
+                    // source: never walk backwards into a call already modelled.
+                    int[] prefix = assignment(i);
+                    boolean assigned = prefix[0] >= gapStart;
+                    int start = assigned ? prefix[0] : i;
+                    int capture = assigned ? prefix[1] : -1;
+                    recordGap(gapStart, start);
 
-            int close = matchingClose(open);
-            if (close < 0) {
-                // A call whose end we never saw. Everything from here on is
-                // unaccounted for: we cannot tell where the next statement
-                // begins, so we stop rather than guess.
-                addRegion(tokens.get(start).range().start(), source.length(),
-                          "unterminated call: the \"(\" after " + token.text()
-                          + " is never closed, so the rest of the file is carried through unchanged");
-                consumed = source.length();
-                return;
+                    int close = matchingClose(open);
+                    if (close < 0) {
+                        // A call whose end we never saw. Everything from here on
+                        // is unaccounted for: we cannot tell where the next
+                        // statement begins, so we stop rather than guess.
+                        addRegion(tokens.get(start).range().start(), source.length(),
+                                  "unterminated call: the \"(\" after " + token.text()
+                                  + " is never closed, so the rest of the file is carried through unchanged");
+                        consumed = source.length();
+                        return;
+                    }
+
+                    if (openBlocks.isEmpty()) {
+                        calls.add(new Call(token.text(), start, open, close, capture));
+                        i = afterStatementSeparator(close + 1, depth);
+                    } else {
+                        // Inside a loop or a conditional this call is not one
+                        // widget: it may run five times or none. Modelling it as
+                        // a single editable node would be a lie the canvas and
+                        // the writer would both act on, so it is carried through.
+                        // Its terminator goes into the same region, so the user
+                        // is shown one statement rather than a statement and a
+                        // stray semicolon.
+                        int after = afterStatementSeparator(close + 1, depth);
+                        addRegion(tokens.get(start).range().start(), tokens.get(after - 1).range().end(),
+                                  "this " + token.text() + " call is inside a "
+                                  + openBlocks.get(openBlocks.size() - 1)
+                                  + " block, so it may create more than one widget or none: it is carried "
+                                  + "through unchanged");
+                        i = after;
+                    }
+                    consumed = Math.max(consumed, tokens.get(close).range().end());
+                    gapStart = i;
+                    continue;
+                }
             }
 
-            calls.add(new Call(token.text(), start, open, close, capture));
-            consumed = tokens.get(close).range().end();
-            i = afterStatementSeparator(close + 1);
-            gapStart = i;
+            if (token.type() == Token.Type.IDENTIFIER && depth == 0) {
+                // Only at bracket depth 0. Scilab lexes "end" inside parentheses
+                // as the last-index idiom rather than a block close -- see
+                // scanscilab.ll:348-361, which returns DOLLAR when
+                // paren_levels.top() > 0 -- so x(end) must not close a loop.
+                if (opensBlock(token.text())) {
+                    openBlocks.add(token.text());
+                } else if (closesBlock(token.text()) && !openBlocks.isEmpty()) {
+                    openBlocks.remove(openBlocks.size() - 1);
+                }
+            }
+            if (token.type() == Token.Type.PUNCTUATION) {
+                if (isOpener(token.text())) {
+                    depth++;
+                } else if (isCloser(token.text())) {
+                    depth = Math.max(0, depth - 1);
+                }
+            }
+            i++;
         }
         recordGap(gapStart, tokens.size());
     }
@@ -270,8 +315,18 @@ public final class ScilabGuiParser {
      * this, every modelled line in the file would leave its own semicolon
      * behind as "code we do not model", and the writer would then refuse
      * edits to a file the user can perfectly well edit.
+     *
+     * <p>Only at bracket depth 0. Deeper in, the same character is not a
+     * statement terminator at all: it separates an enclosing call's arguments
+     * (<code>disp(uicontrol(...), "hi")</code>) or a matrix's rows
+     * (<code>[uicontrol(...); uicontrol(...)]</code>), where it carries
+     * meaning of its own. Absorbing it there would leave it inside no region,
+     * and a span in no region is one the writer is free to overwrite.
      */
-    private int afterStatementSeparator(int from) {
+    private int afterStatementSeparator(int from, int depth) {
+        if (depth != 0) {
+            return from;
+        }
         int next = nextSignificant(from);
         if (next >= 0 && tokens.get(next).type() == Token.Type.PUNCTUATION
             && (";".equals(tokens.get(next).text()) || ",".equals(tokens.get(next).text()))) {
@@ -279,6 +334,26 @@ public final class ScilabGuiParser {
             return next + 1;
         }
         return from;
+    }
+
+    /**
+     * Whether this identifier opens a control-flow block. Deliberately just
+     * the six that Scilab's own grammar closes with {@code end}/
+     * {@code endfunction} and that a GUI file realistically contains;
+     * {@code classdef}, {@code properties}, {@code methods} and
+     * {@code arguments} are left out because {@code arguments} in particular
+     * is an ordinary variable name, and treating it as a keyword would lock
+     * far more than it protects.
+     */
+    private static boolean opensBlock(String text) {
+        return "for".equals(text) || "while".equals(text) || "if".equals(text)
+               || "select".equals(text) || "try".equals(text) || "function".equals(text);
+    }
+
+    private static boolean closesBlock(String text) {
+        // parsescilab.yy:961 -- "endfunction : ENDFUNCTION | END" -- so a
+        // function may be closed by either spelling.
+        return "end".equals(text) || "endfunction".equals(text);
     }
 
     /**
