@@ -1,8 +1,9 @@
 # These files are round-trip fixtures: the whole point of this corpus is
 # that the bytes committed here are the bytes measured against. Line-ending
-# normalization would silently rewrite handwritten-simple.sce (a CRLF file as
-# found) on checkout under an autocrlf configuration that differs from the
-# one used to add it, making the committed fixture no longer the file that
+# normalization would silently rewrite handwritten-simple.sce (deliberately
+# CRLF, because real Scilab GUIs written on Windows are) on checkout under an
+# autocrlf configuration that differs from the one used to add it, making the
+# committed fixture no longer the file that
 # was actually tested. None of them are touched by anything but the tests
 # that read them, so "text" here has no upside and a real downside.
 *.sce -text
