@@ -10,4 +10,9 @@
 
 // Load functions libraries
 // =============================================================================
+// This defines `guidesignerlib` in the base workspace, not `guibuilderlib`:
+// the ATOMS guibuilder toolbox guards its own loader on isdef("guibuilderlib")
+// and would refuse to load if this ran first, which it does -- module .start
+// files run before ~/.Scilab/<version>/.scilab. See macros/buildmacros.sce,
+// which names the library, for the full reasoning.
 load(SCI+"/modules/guibuilder/macros/lib");
