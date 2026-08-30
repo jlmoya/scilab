@@ -14,7 +14,9 @@ package org.scilab.modules.guibuilder.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -53,6 +55,7 @@ import org.scilab.modules.gui.messagebox.ScilabModalDialog.IconType;
 import org.scilab.modules.gui.tab.SimpleTab;
 import org.scilab.modules.gui.tabfactory.ScilabTabFactory;
 import org.scilab.modules.gui.utils.ClosingOperationsManager;
+import org.scilab.modules.gui.utils.Size;
 import org.scilab.modules.gui.utils.WindowsConfigurationManager;
 
 import org.scilab.modules.guibuilder.model.Design;
@@ -223,9 +226,33 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         return APPLICATION + " - " + Paths.get(path).getFileName();
     }
 
+    /**
+     * A tree beside a properties table needs room. SwingScilabWindow defaults to
+     * 500x500, which truncated every label in the tree -- including the
+     * unmodelled-region reasons, which are the whole point of this read-only
+     * view: an entry reading "code we do not model: hand..." tells the user
+     * nothing about what the tool will refuse to touch.
+     *
+     * Clamped to the display rather than fixed, so it stays usable on a screen
+     * smaller than the size we would prefer.
+     */
+    private static final int PREFERRED_WIDTH = 1100;
+    private static final int PREFERRED_HEIGHT = 700;
+
+    /** Initial width of the tree pane, which sets where the divider starts. */
+    private static final int TREE_PANE_WIDTH = 380;
+
+    private static Size defaultWindowSize() {
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = Math.min(PREFERRED_WIDTH, (int) (screen.width * 0.8));
+        int height = Math.min(PREFERRED_HEIGHT, (int) (screen.height * 0.8));
+        return new Size(width, height);
+    }
+
     private void display() {
         SwingScilabWindow window = SwingScilabWindow.createWindow(true);
         window.addTab(this);
+        window.setDims(defaultWindowSize());
         window.setVisible(true);
     }
 
@@ -244,7 +271,11 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         JSplitPane rightSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, propertiesPanel, regionsPanel);
         rightSplit.setResizeWeight(0.5);
 
-        JSplitPane mainSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), rightSplit);
+        // A JSplitPane starts its divider at the left component's preferred width,
+        // so this is what stops the tree opening too narrow to read.
+        JScrollPane treeScroll = new JScrollPane(tree);
+        treeScroll.setPreferredSize(new Dimension(TREE_PANE_WIDTH, PREFERRED_HEIGHT));
+        JSplitPane mainSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScroll, rightSplit);
         mainSplit.setResizeWeight(0.35);
         mainSplit.setOneTouchExpandable(true);
 
