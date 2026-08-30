@@ -16,11 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -102,6 +106,35 @@ public class AtomicFileWriterTest {
 
         dir.toFile().setWritable(true, false);
         assertArrayEquals(ORIGINAL, readQuietly(target), "a failed save must not touch the original bytes");
+    }
+
+    /**
+     * {@code Files.createTempFile} creates its file owner-only ({@code
+     * rw-------}); {@code ATOMIC_MOVE} makes {@code target} become that
+     * inode, so without deliberately carrying the old mode over, every save
+     * would silently narrow a group- or other-readable {@code .sce} -- the
+     * ordinary shape for a file shared or checked out on a multi-user
+     * machine -- down to owner-only the first time someone saved it in the
+     * designer. Confirmed empirically before writing this test: a plain
+     * {@code Files.getPosixFilePermissions(target)} right after an
+     * unguarded {@code AtomicFileWriter.write} comes back {@code
+     * rw-------} even when {@code target} started as {@code rw-r--r--}.
+     */
+    @Test
+    public void savingPreservesTheOriginalFilesPermissions() throws Exception {
+        Set<PosixFilePermission> distinctive = PosixFilePermissions.fromString("rw-r--r--");
+        boolean posixSupported = true;
+        try {
+            Files.setPosixFilePermissions(target, distinctive);
+        } catch (UnsupportedOperationException e) {
+            posixSupported = false;
+        }
+        assumeTrue(posixSupported, "this filesystem has no POSIX permissions to preserve");
+
+        AtomicFileWriter.write(target, "new content".getBytes(StandardCharsets.UTF_8));
+
+        assertEquals(distinctive, Files.getPosixFilePermissions(target),
+                     "a save must not silently narrow an existing file's permission bits");
     }
 
     @Test

@@ -36,6 +36,16 @@ import java.nio.file.StandardCopyOption;
  * the platform's shared temp directory, because {@link
  * StandardCopyOption#ATOMIC_MOVE} is only atomic -- and on most systems only
  * possible at all -- between two paths on the same file store.
+ *
+ * <p>{@link Files#createTempFile} creates that temporary file owner-only,
+ * and the move makes {@code target} become it -- inode and all -- so
+ * without deliberately carrying the old file's mode across, every save
+ * would silently narrow a group- or other-readable {@code .sce} down to
+ * owner-only. {@link #write} copies {@code target}'s existing POSIX
+ * permissions onto the temporary file before the move whenever {@code
+ * target} already exists; a brand-new {@code target} keeps the temp file's
+ * restrictive default, which is the right mode for a file nobody has set
+ * permissions on yet.
  */
 final class AtomicFileWriter {
 
@@ -53,6 +63,7 @@ final class AtomicFileWriter {
         Path tmp = Files.createTempFile(directory, target.getFileName().toString(), ".tmp");
         try {
             Files.write(tmp, bytes);
+            preservePermissions(target, tmp);
             try {
                 Files.move(tmp, target, StandardCopyOption.ATOMIC_MOVE);
             } catch (AtomicMoveNotSupportedException e) {
@@ -66,6 +77,27 @@ final class AtomicFileWriter {
         } catch (IOException e) {
             Files.deleteIfExists(tmp);
             throw e;
+        }
+    }
+
+    /**
+     * Carries {@code target}'s existing POSIX permissions onto {@code tmp},
+     * so the move below does not silently narrow them to {@code
+     * createTempFile}'s owner-only default. Nothing to do when {@code
+     * target} does not exist yet -- there is no mode to preserve, and
+     * owner-only is the right default for a file nobody has set permissions
+     * on. Nothing to do on a filesystem with no POSIX permissions view
+     * either ({@link UnsupportedOperationException}): there is no mode
+     * there at all, on either file, so this is not a failure to report.
+     */
+    private static void preservePermissions(Path target, Path tmp) throws IOException {
+        if (!Files.exists(target)) {
+            return;
+        }
+        try {
+            Files.setPosixFilePermissions(tmp, Files.getPosixFilePermissions(target));
+        } catch (UnsupportedOperationException e) {
+            // No POSIX permissions on this filesystem -- nothing to preserve.
         }
     }
 }
