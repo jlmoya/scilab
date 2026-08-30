@@ -95,6 +95,16 @@ import org.scilab.modules.guibuilder.model.SourceRange;
  * comments are tokens too; an unrecognised character is still consumed as a
  * one-character {@code OPERATOR} token rather than dropped. A gap would be
  * bytes the position-preserving writer (Task 5) could not account for.
+ *
+ * <p><b>Known limitation, accepted rather than fixed.</b> Scilab's line
+ * continuation ({@code ..}/{@code ...}, plus everything after it up to the
+ * next newline) is not given any special handling: each {@code .} is its own
+ * one-character {@code OPERATOR} token, and the rest of the continued line
+ * is scanned as ordinary code rather than being suppressed the way it
+ * semantically continues the previous line. A consumer that scans the token
+ * stream for a specific character (a comma to split arguments, a bracket to
+ * match nesting) rather than going through Task 4's parser would therefore
+ * also count one that happens to sit in a continuation's trailing text.
  */
 public final class ScilabTokenStream {
 
@@ -122,10 +132,11 @@ public final class ScilabTokenStream {
         int pos = 0;
 
         // Whether a following "'" is the transpose operator rather than the
-        // start of a string -- true right after an identifier, a number, a
-        // closing bracket, or another transpose/string. Mirrors the
-        // `transposable` flag ScilabLexer itself tracks for the same
-        // ambiguity, cross-checked against scilab.jflex.
+        // start of a string -- true right after an identifier, a number, or
+        // a closing bracket. Mirrors the `transposable` flag ScilabLexer
+        // itself tracks for the same ambiguity (scilab.jflex), but the real
+        // parser grammar (scanscilab.ll) additionally overrides it whenever
+        // whitespace directly precedes the quote: see precededByWhitespace.
         boolean transposable = false;
 
         while (pos < len) {
@@ -151,7 +162,7 @@ public final class ScilabTokenStream {
                 continue;
             }
 
-            if (c == '\'' && transposable) {
+            if (c == '\'' && transposable && !precededByWhitespace(source, pos)) {
                 tokens.add(token(Token.Type.OPERATOR, source, pos, pos + 1));
                 pos++;
                 // stays transposable: a transposed value can be transposed again
@@ -162,7 +173,11 @@ public final class ScilabTokenStream {
                 int start = pos;
                 pos = scanString(source, pos, c);
                 tokens.add(token(Token.Type.STRING, source, start, pos));
-                transposable = true;
+                // a string is never a transpose trigger, whether it closed
+                // cleanly or was cut off at a line boundary: scanscilab.ll's
+                // string-close rules (791-817) and scilab.jflex's QSTRING
+                // close rule (499-503) both clear this flag on close.
+                transposable = false;
                 continue;
             }
 
@@ -209,14 +224,25 @@ public final class ScilabTokenStream {
      * (which holds the opening quote) and returns the offset just past its
      * end. A doubled delimiter ({@code ""} inside a double-quoted string,
      * {@code ''} inside a single-quoted one) is an escaped literal quote
-     * character, not the end of the string. An unterminated string runs to
-     * the end of the source, so the caller always makes progress.
+     * character, not the end of the string.
+     *
+     * <p>Real Scilab treats a bare newline inside an open string as a hard
+     * parse error -- strings cannot cross lines (scanscilab.ll:1323-1330 for
+     * a single-quoted string, :1382-1389 for a double-quoted one). This
+     * scanner has no error token to raise instead, so an unterminated string
+     * stops at the line boundary without consuming the newline, the same way
+     * this class's {@code //} comment handling already does; the caller
+     * always makes progress and the rest of the source -- including the next
+     * line -- still tokenizes normally.
      */
     private static int scanString(String source, int pos, char quote) {
         int len = source.length();
         pos++;
         while (pos < len) {
             char c = source.charAt(pos);
+            if (c == '\n' || c == '\r') {
+                break;
+            }
             if (c == quote) {
                 if (pos + 1 < len && source.charAt(pos + 1) == quote) {
                     pos += 2;
@@ -228,6 +254,17 @@ public final class ScilabTokenStream {
             pos++;
         }
         return pos;
+    }
+
+    /**
+     * Whether {@code pos} is directly preceded by whitespace, with nothing
+     * else in between. Scilab's {@code {spaces}{quote}} grammar rule
+     * (scanscilab.ll:776-787) makes a quote in that position open a new
+     * string unconditionally -- never a transpose -- regardless of what
+     * token the whitespace itself followed.
+     */
+    private static boolean precededByWhitespace(String source, int pos) {
+        return pos > 0 && Character.isWhitespace(source.charAt(pos - 1));
     }
 
     /**
