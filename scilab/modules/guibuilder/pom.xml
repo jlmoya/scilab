@@ -13,6 +13,14 @@
   <packaging>jar</packaging>
   <name>Scilab GUI Designer</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.scilab</groupId>
+      <artifactId>gui</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
   <build>
     <!-- This tree's non-standard source layout: Java lives in src/java/, not
          src/main/java/ (see modules/scinotes/pom.xml and
