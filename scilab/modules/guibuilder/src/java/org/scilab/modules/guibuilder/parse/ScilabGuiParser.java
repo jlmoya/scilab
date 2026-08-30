@@ -68,7 +68,11 @@ import org.scilab.modules.guibuilder.model.WidgetStyle;
  * particular is the commonest way a Scilab GUI is written, and locking it was
  * measured to turn a working two-widget file into zero widgets and five
  * unmodelled regions -- a designer blind to most of the files it exists to
- * open. See {@link #opensBlock(String)} for the full reasoning.
+ * open. See {@link #locksCalls(String)} for the full reasoning, and
+ * {@link #opensBlock(String)} for why "does not lock" is nevertheless not the
+ * same as "is not tracked": {@code if}, {@code select} and {@code try} each
+ * take an {@code end}, so each must push a frame for that {@code end} to pop,
+ * or it pops the enclosing loop instead and cancels a lock that was right.
  */
 public final class ScilabGuiParser {
 
@@ -85,13 +89,27 @@ public final class ScilabGuiParser {
         private final int startIndex;
         private final int openIndex;
         private final int closeIndex;
+
+        /**
+         * The last token of the STATEMENT this call is, which is
+         * {@code closeIndex} unless {@link #afterStatementSeparator} absorbed
+         * a {@code ;} or {@code ,} after it, in which case it is that
+         * separator. The two differ by exactly the character that has no
+         * other owner: it is not a gap (the scan skipped past it) and it is
+         * not part of the node's own range, so anything that turns this call
+         * into an {@link UnmodelledRegion} instead of a node has to reach out
+         * to here or leave the terminator inside nothing at all.
+         */
+        private final int endIndex;
+
         private final int captureIndex;
 
-        Call(String name, int startIndex, int openIndex, int closeIndex, int captureIndex) {
+        Call(String name, int startIndex, int openIndex, int closeIndex, int endIndex, int captureIndex) {
             this.name = name;
             this.startIndex = startIndex;
             this.openIndex = openIndex;
             this.closeIndex = closeIndex;
+            this.endIndex = endIndex;
             this.captureIndex = captureIndex;
         }
 
@@ -272,25 +290,24 @@ public final class ScilabGuiParser {
                         return;
                     }
 
-                    if (openBlocks.isEmpty()) {
-                        calls.add(new Call(token.text(), start, open, close, capture));
-                        i = afterStatementSeparator(close + 1, depth);
+                    int after = afterStatementSeparator(close + 1, depth);
+                    String loop = innermostLoop(openBlocks);
+                    if (loop == null) {
+                        calls.add(new Call(token.text(), start, open, close, after - 1, capture));
                     } else {
-                        // Inside a loop or a conditional this call is not one
-                        // widget: it may run five times or none. Modelling it as
-                        // a single editable node would be a lie the canvas and
-                        // the writer would both act on, so it is carried through.
-                        // Its terminator goes into the same region, so the user
-                        // is shown one statement rather than a statement and a
-                        // stray semicolon.
-                        int after = afterStatementSeparator(close + 1, depth);
+                        // Inside a loop this call is not one widget: it may run
+                        // five times or none. Modelling it as a single editable
+                        // node would be a lie the canvas and the writer would
+                        // both act on, so it is carried through. Its terminator
+                        // goes into the same region, so the user is shown one
+                        // statement rather than a statement and a stray
+                        // semicolon.
                         addRegion(tokens.get(start).range().start(), tokens.get(after - 1).range().end(),
-                                  "this " + token.text() + " call is inside a "
-                                  + openBlocks.get(openBlocks.size() - 1)
+                                  "this " + token.text() + " call is inside a " + loop
                                   + " block, so it may create more than one widget or none: it is carried "
                                   + "through unchanged");
-                        i = after;
                     }
+                    i = after;
                     consumed = Math.max(consumed, tokens.get(close).range().end());
                     gapStart = i;
                     continue;
@@ -348,46 +365,86 @@ public final class ScilabGuiParser {
     }
 
     /**
-     * Whether this identifier opens a block that makes one call stand for more
-     * than one widget. <b>Only {@code for} and {@code while}</b>, and the
-     * omissions are the point.
+     * Whether this identifier opens a block that {@code end} closes -- and so
+     * needs a frame on the stack, whether or not it locks anything.
+     *
+     * <p>The distinction between "opens a block" and "locks the calls inside
+     * it" is the whole point, and conflating them was a real bug. Ruling 8
+     * says only a loop locks, and that is right; the first implementation
+     * expressed it by pushing only for loops, which is not the same thing.
+     * {@code end} then popped whatever was on top, so an ordinary
+     * {@code if wide then x = 1; end} in a loop body popped the <em>loop</em>,
+     * and the {@code uicontrol} after it came back as one editable node
+     * standing for three runtime widgets. Everything that takes an {@code end}
+     * must therefore push; only {@link #locksCalls(String)} decides what a
+     * frame means.
+     *
+     * <p>{@code function} is deliberately still absent, because it is normally
+     * closed by {@code endfunction} rather than {@code end} and pushing a
+     * frame that its usual terminator never pops would leave a permanent
+     * stale entry. Its rarer plain-{@code end} form (legal Scilab --
+     * parsescilab.yy:961 gives {@code endfunction : ENDFUNCTION | END}) then
+     * pops nothing when the stack is empty, which is harmless, or one frame
+     * too many when it is not -- and that direction only ever <em>unlocks</em>
+     * on input that is already unusual. The alternative leaks a frame on every
+     * ordinary function, which is worse.
+     *
+     * <p>{@code classdef}, {@code properties}, {@code methods} and
+     * {@code arguments} also take {@code end} in Scilab's grammar and are
+     * likewise absent; {@code arguments} in particular is an ordinary variable
+     * name, and treating it as a keyword would push a frame on code that has
+     * no block at all.
+     */
+    private static boolean opensBlock(String text) {
+        return locksCalls(text) || "if".equals(text) || "select".equals(text) || "try".equals(text);
+    }
+
+    /**
+     * Whether an open block of this kind makes one call stand for more than
+     * one widget. <b>Only {@code for} and {@code while}</b>, and the omissions
+     * are the point.
      *
      * <p>The hazard being guarded against is repetition: one call in the
      * source, many widgets at runtime, so no single call is the right thing to
      * edit. Only a loop creates that.
      *
-     * <p>{@code function} is deliberately absent. A function body <em>scopes</em>
-     * widgets, it does not multiply them -- one call there is still exactly one
-     * widget, so editing that call is exactly right. Counting it was measured
-     * before it was rejected: wrapping a working two-widget file in
-     * {@code function demo() ... endfunction} turned it into zero widgets and
-     * five unmodelled regions. Since that wrapper is the commonest way people
-     * write a Scilab GUI, locking it would make the designer blind to most of
-     * the files it exists to open.
+     * <p>A function body <em>scopes</em> widgets, it does not multiply them --
+     * one call there is still exactly one widget, so editing that call is
+     * exactly right. Counting it was measured before it was rejected: wrapping
+     * a working two-widget file in {@code function demo() ... endfunction}
+     * turned it into zero widgets and five unmodelled regions. Since that
+     * wrapper is the commonest way people write a Scilab GUI, locking it would
+     * make the designer blind to most of the files it exists to open.
      *
-     * <p>{@code if}, {@code select} and {@code try} are absent for a weaker but
-     * sufficient version of the same reason: a conditional call produces zero
-     * or one widgets, never many, so the call remains the right edit target.
-     * The only cost is canvas fidelity -- the tree may show a widget that will
-     * not appear at runtime -- and that is a phase-2 question to settle with a
-     * canvas in hand, not a write-safety question now.
-     *
-     * <p>{@code classdef}, {@code properties}, {@code methods} and
-     * {@code arguments} also take {@code end} in Scilab's grammar and are
-     * likewise absent; {@code arguments} in particular is an ordinary variable
-     * name, and treating it as a keyword would lock far more than it protects.
+     * <p>{@code if}, {@code select} and {@code try} do not lock for a weaker
+     * but sufficient version of the same reason: a conditional call produces
+     * zero or one widgets, never many, so the call remains the right edit
+     * target. The only cost is canvas fidelity -- the tree may show a widget
+     * that will not appear at runtime -- and that is a phase-2 question to
+     * settle with a canvas in hand, not a write-safety question now.
      */
-    private static boolean opensBlock(String text) {
+    private static boolean locksCalls(String text) {
         return "for".equals(text) || "while".equals(text);
     }
 
     /**
-     * Only {@code end}, and only because only loops are counted as open.
-     * {@code endfunction} is not here: nothing this parser opens could be
-     * closed by it, so accepting it would only ever pop a loop it does not
-     * own. A plain {@code end} closing a function (legal Scilab --
-     * parsescilab.yy:961 gives {@code endfunction : ENDFUNCTION | END}) pops
-     * nothing, because a function never pushed.
+     * The innermost open block that locks, or null when none of them does.
+     * Innermost rather than outermost so the reason a user reads names the
+     * loop the call is actually repeated by.
+     */
+    private static String innermostLoop(List<String> openBlocks) {
+        for (int i = openBlocks.size() - 1; i >= 0; i--) {
+            if (locksCalls(openBlocks.get(i))) {
+                return openBlocks.get(i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Only {@code end}. {@code endfunction} is not here: nothing this parser
+     * opens could be closed by it, so accepting it would only ever pop a frame
+     * it does not own.
      */
     private static boolean closesBlock(String text) {
         return "end".equals(text);
@@ -503,18 +560,18 @@ public final class ScilabGuiParser {
                     // edited one figure at a time, and the others are carried
                     // through as unmodelled. Half-modelling the second one
                     // would let an edit land in the wrong window.
-                    addRegion(rangeOf(call), "this file builds more than one figure and only the first is "
-                              + "edited here, so this figure is carried through unchanged");
+                    addRegion(statementRangeOf(call), "this file builds more than one figure and only the "
+                              + "first is edited here, so this figure is carried through unchanged");
                 } else {
                     buildWidget(call);
                 }
             } catch (RuntimeException e) {
                 // One unreadable call must not cost the reader the rest of the
                 // file. It is reported by name rather than swallowed.
-                addRegion(rangeOf(call), "this widget could not be read, so it is carried through "
+                addRegion(statementRangeOf(call), "this widget could not be read, so it is carried through "
                           + "unchanged: " + describe(e));
             }
-            consumed = Math.max(consumed, rangeOf(call).end());
+            consumed = Math.max(consumed, statementRangeOf(call).end());
         }
         return design;
     }
@@ -555,7 +612,10 @@ public final class ScilabGuiParser {
             return root;
         } catch (RuntimeException e) {
             stray.clear();
-            stray.add(new UnmodelledRegion(rangeOf(call),
+            // statementRangeOf, not rangeOf: the root is about to become a
+            // synthetic frame owning no bytes, so this region is the only
+            // thing accounting for the call -- its terminator included.
+            stray.add(new UnmodelledRegion(statementRangeOf(call),
                       "this figure could not be read, so it is carried through unchanged: " + describe(e)));
             return syntheticRoot();
         }
@@ -567,9 +627,10 @@ public final class ScilabGuiParser {
 
         WidgetStyle style = styleOf(properties);
         if (style == null) {
-            // Reported as one region over the whole call: the individual
+            // Reported as one region over the whole statement -- terminator
+            // included, since no node will own it -- because the individual
             // arguments are not worth listing for a widget we are not showing.
-            addRegion(rangeOf(call), unreadableStyleReason(properties));
+            addRegion(statementRangeOf(call), unreadableStyleReason(properties));
             return;
         }
 
@@ -932,9 +993,38 @@ public final class ScilabGuiParser {
                                tokens.get(indices.get(indices.size() - 1)).range().end());
     }
 
+    /**
+     * The span of the CALL itself, {@code name(...)} with its assignment
+     * prefix and closing parenthesis, and nothing after. This is what a
+     * modelled node owns: the writer replaces property values inside it, and
+     * the statement's terminator is none of its business.
+     */
     private SourceRange rangeOf(Call call) {
         return new SourceRange(tokens.get(call.startIndex).range().start(),
                                tokens.get(call.closeIndex).range().end());
+    }
+
+    /**
+     * The span of the whole STATEMENT, including the {@code ;} or {@code ,}
+     * the scan absorbed after it. Used wherever a call becomes an
+     * {@link UnmodelledRegion} instead of a node.
+     *
+     * <p>The two are not interchangeable and the difference is not cosmetic.
+     * {@link #afterStatementSeparator} skips past a modelled call's
+     * terminator on the grounds that it belongs to that statement, so it
+     * never lands in a gap region. When the call is a node, the terminator
+     * sitting just outside the node's range is fine: the coverage rule
+     * exempts a separator directly after something modelled. When the call
+     * turns out NOT to be modelled -- a second figure, a style we cannot
+     * read, a widget that failed to build -- that exemption does not apply,
+     * and a region stopping at the {@code )} leaves the terminator inside
+     * nothing at all. The writer refuses an edit only when it OVERLAPS a
+     * region, so a character in no region is a character it is free to
+     * overwrite.
+     */
+    private SourceRange statementRangeOf(Call call) {
+        return new SourceRange(tokens.get(call.startIndex).range().start(),
+                               tokens.get(call.endIndex).range().end());
     }
 
     private void addRegion(SourceRange range, String reason) {

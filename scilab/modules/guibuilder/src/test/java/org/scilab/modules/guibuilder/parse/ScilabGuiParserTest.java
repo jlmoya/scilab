@@ -76,6 +76,10 @@ public class ScilabGuiParserTest {
         assertNotNull(d.byTag("b"), "a later widget must still be modelled");
         assertTrue(d.unmodelled().stream().anyMatch(r -> r.reason().contains("hologram")),
                    "the unknown style should be reported with its name");
+        // The call became a region rather than a node, so the ";" the scan
+        // already absorbed for it belongs to no node either -- it has to be in
+        // the region, or it is in nothing at all and the writer may edit it.
+        assertNothingIsUnaccountedFor(src);
     }
 
     @Test
@@ -195,9 +199,13 @@ public class ScilabGuiParserTest {
             }
         }
         assertNotNull(second, "the second figure must not be silently dropped:" + reasons(d));
-        assertEquals("g = figure(\"figure_name\", \"Second\")",
-                     src.substring(second.range().start(), second.range().end()));
         assertTrue(second.reason().contains("figure"), "reason was: " + second.reason());
+        // Same hole as the unreadable-style case above: the second figure is a
+        // region, not a node, so the ";" absorbed for it must be inside that
+        // region. The span therefore runs to the terminator, not to the ")".
+        assertEquals("g = figure(\"figure_name\", \"Second\");",
+                     src.substring(second.range().start(), second.range().end()));
+        assertNothingIsUnaccountedFor(src);
     }
 
     @Test
@@ -399,6 +407,93 @@ public class ScilabGuiParserTest {
                        "the call itself must be inside a region, or the writer may edit it:" + reasons(d));
             assertNothingIsUnaccountedFor(src);
         }
+    }
+
+    /**
+     * The other half of ruling 8, which the first implementation left
+     * undone. {@code if}, {@code select} and {@code try} do not lock -- that
+     * decision stands -- but their {@code end} is still an {@code end}, and a
+     * counter that only pushes for loops pops the enclosing loop when it
+     * arrives. The loop is then no longer open at the {@code uicontrol}
+     * below, so a call standing for three runtime widgets comes back as one
+     * editable node: exactly the lie the lock exists to prevent, reachable by
+     * a line of code as ordinary as {@code if wide then x = 1; end}.
+     *
+     * <p>Three constructs, one bug, so three tests rather than one: each
+     * closes with {@code end} for its own grammatical reason and a future
+     * change could plausibly get one right and another wrong.
+     */
+    @Test
+    public void anIfEndInsideALoopDoesNotCancelTheLoopsLock() {
+        assertTheLoopStillLocksAcross(""
+            + "for k = 1:3\n"
+            + "  if wide then x = 1; end\n"
+            + "  uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"btn\", \"string\", \"Go\");\n"
+            + "end\n");
+    }
+
+    @Test
+    public void aSelectEndInsideALoopDoesNotCancelTheLoopsLock() {
+        assertTheLoopStillLocksAcross(""
+            + "for k = 1:3\n"
+            + "  select k\n"
+            + "  case 1 then x = 1;\n"
+            + "  else x = 2;\n"
+            + "  end\n"
+            + "  uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"btn\", \"string\", \"Go\");\n"
+            + "end\n");
+    }
+
+    @Test
+    public void aTryCatchEndInsideALoopDoesNotCancelTheLoopsLock() {
+        assertTheLoopStillLocksAcross(""
+            + "for k = 1:3\n"
+            + "  try\n"
+            + "    x = 1;\n"
+            + "  catch\n"
+            + "    x = 2;\n"
+            + "  end\n"
+            + "  uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"btn\", \"string\", \"Go\");\n"
+            + "end\n");
+    }
+
+    private static void assertTheLoopStillLocksAcross(String src) {
+        Design d = ScilabGuiParser.parse(src);
+        assertTrue(d.allNodes().isEmpty(),
+                   "the enclosing loop is still open at the uicontrol:" + reasons(d));
+        int call = src.indexOf("uicontrol(");
+        assertTrue(d.unmodelled().stream().anyMatch(r -> r.range().contains(call)),
+                   "the repeated call must be inside a region, or the writer may edit it:" + reasons(d));
+        assertNothingIsUnaccountedFor(src);
+    }
+
+    /**
+     * The one ruling-8 combination that had no committed guard: a loop nested
+     * inside a function. Both halves of the ruling meet here -- the function
+     * must not lock, the loop must -- and a single test pins the pair,
+     * because getting one right by breaking the other would still fail it.
+     */
+    @Test
+    public void aLoopNestedInsideAFunctionLocksTheLoopAndNothingElse() {
+        String src = ""
+            + "function demo()\n"
+            + "  f = figure(\"figure_name\", \"Demo\");\n"
+            + "  for k = 1:3\n"
+            + "    uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"btn\", \"string\", \"Go\");\n"
+            + "  end\n"
+            + "  ok = uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"ok\", \"string\", \"OK\");\n"
+            + "endfunction\n";
+        Design d = ScilabGuiParser.parse(src);
+
+        int repeated = src.indexOf("uicontrol(f, \"style\", \"pushbutton\", \"tag\", \"btn\"");
+        assertTrue(d.unmodelled().stream().anyMatch(r -> r.range().contains(repeated)),
+                   "the call inside the loop must be carried through:" + reasons(d));
+
+        assertNotNull(d.byTag("ok"), "the call after the loop is ordinary code:" + reasons(d));
+        assertFalse(d.byTag("ok").isLocked());
+        assertEquals(1, d.allNodes().size(), "exactly one widget is editable here:" + reasons(d));
+        assertEquals("Demo", d.root().properties().get("figure_name").value());
+        assertNothingIsUnaccountedFor(src);
     }
 
     @Test
