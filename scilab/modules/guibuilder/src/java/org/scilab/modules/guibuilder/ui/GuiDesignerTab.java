@@ -18,8 +18,7 @@ import java.awt.FlowLayout;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,6 +103,13 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
     private final String path;
     private final Design design;
 
+    /**
+     * The charset {@code path} decoded with. Remembered rather than assumed
+     * so the save writes the file's own encoding back -- see {@link
+     * SourceFile} for what assuming UTF-8 costs.
+     */
+    private final Charset charset;
+
     private final JTree tree;
     private final PropertiesTableModel propertiesModel;
     private final JTable regionsTable;
@@ -118,9 +124,9 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
      */
     static boolean openOn(String path) {
         try {
-            String source = readSource(path);
-            Design design = ScilabGuiParser.parse(source);
-            return showTab(path, design);
+            SourceFile source = readSource(path);
+            Design design = ScilabGuiParser.parse(source.text());
+            return showTab(path, design, source.charset());
         } catch (IOException e) {
             report("could not open " + path + ": " + e.getMessage());
             return false;
@@ -134,11 +140,11 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         }
     }
 
-    private static String readSource(String path) throws IOException {
+    private static SourceFile readSource(String path) throws IOException {
         if (path == null || path.isEmpty()) {
-            return "";
+            return SourceFile.empty();
         }
-        return new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);
+        return SourceFile.read(Paths.get(path));
     }
 
     /**
@@ -148,15 +154,15 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
      * {@code SciNotes.endedRestoration} and its siblings dispatch their own
      * Swing work.
      */
-    private static boolean showTab(String path, Design design) {
+    private static boolean showTab(String path, Design design, Charset charset) {
         if (SwingUtilities.isEventDispatchThread()) {
-            new GuiDesignerTab(path, design).display();
+            new GuiDesignerTab(path, design, charset).display();
             return true;
         }
         final boolean[] opened = {false};
         try {
             SwingUtilities.invokeAndWait(() -> {
-                new GuiDesignerTab(path, design).display();
+                new GuiDesignerTab(path, design, charset).display();
                 opened[0] = true;
             });
         } catch (InterruptedException e) {
@@ -175,10 +181,11 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         ScilabModalDialog.show((SimpleTab) null, message, APPLICATION, IconType.ERROR_ICON);
     }
 
-    private GuiDesignerTab(String path, Design design) {
+    private GuiDesignerTab(String path, Design design, Charset charset) {
         super(title(path), UUID.randomUUID().toString());
         this.path = path;
         this.design = design;
+        this.charset = charset;
 
         DesignTreeModel treeModel = new DesignTreeModel(design);
         tree = new JTree(treeModel);
@@ -284,7 +291,7 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         SourceValidator validator = new Macr2TreeValidator(scilabLauncher());
         try {
             String rendered = DesignWriter.write(design, new SourceDocument(design.source()), validator);
-            AtomicFileWriter.write(Paths.get(path), rendered.getBytes(StandardCharsets.UTF_8));
+            AtomicFileWriter.write(Paths.get(path), SourceFile.encode(rendered, charset));
         } catch (WriteRefusedException e) {
             ScilabModalDialog.show(this, e.getMessage(), APPLICATION, IconType.ERROR_ICON);
         } catch (IOException e) {
