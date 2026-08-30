@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -36,6 +37,7 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -283,21 +285,65 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
      * {@link DesignWriter#write} can only either return {@link
      * Design#source()} unchanged or refuse; either way the file on disk is
      * never left in a broken state.
+     *
+     * <p><b>Off the event thread.</b> The validation oracle is not a library
+     * call: {@link Macr2TreeValidator} launches a whole packaged Scilab and
+     * {@code waitFor}s it with a sixty-second timeout. Run from the button's
+     * own listener that blocks the EDT for up to a minute -- no repaint, no
+     * menu, no window close, the beach ball. So the work goes to a {@link
+     * SwingWorker} and the Save control is disabled while it runs, which is
+     * also what stops a second save being started on top of the first.
+     *
+     * <p>The worker returns the message to show rather than throwing, so
+     * every outcome -- refusal, I/O failure, or an unexpected runtime
+     * failure -- arrives at {@code done()} the same way and is reported from
+     * the EDT. {@link RuntimeException} is caught explicitly: without it a
+     * runtime failure would be swallowed into the worker's own
+     * {@code ExecutionException} and Save would appear to do nothing at all.
      */
     private void onSave() {
         if (path == null || path.isEmpty()) {
             return;
         }
-        SourceValidator validator = new Macr2TreeValidator(scilabLauncher());
-        try {
-            String rendered = DesignWriter.write(design, new SourceDocument(design.source()), validator);
-            AtomicFileWriter.write(Paths.get(path), SourceFile.encode(rendered, charset));
-        } catch (WriteRefusedException e) {
-            ScilabModalDialog.show(this, e.getMessage(), APPLICATION, IconType.ERROR_ICON);
-        } catch (IOException e) {
-            ScilabModalDialog.show(this, "could not write " + path + ": " + e.getMessage(),
-                                   APPLICATION, IconType.ERROR_ICON);
-        }
+        saveButton.setEnabled(false);
+        new SwingWorker<String, Void>() {
+
+            @Override
+            protected String doInBackground() {
+                SourceValidator validator = new Macr2TreeValidator(scilabLauncher());
+                try {
+                    String rendered =
+                        DesignWriter.write(design, new SourceDocument(design.source()), validator);
+                    AtomicFileWriter.write(Paths.get(path), SourceFile.encode(rendered, charset));
+                    return null;
+                } catch (WriteRefusedException e) {
+                    return e.getMessage();
+                } catch (IOException e) {
+                    return "could not write " + path + ": " + e.getMessage();
+                } catch (RuntimeException e) {
+                    return "could not save " + path + ": " + e;
+                }
+            }
+
+            @Override
+            protected void done() {
+                saveButton.setEnabled(true);
+                String failure;
+                try {
+                    failure = get();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    failure = "interrupted while saving " + path;
+                } catch (ExecutionException e) {
+                    // Only an Error can get here now that doInBackground
+                    // catches RuntimeException; reported rather than lost.
+                    failure = "could not save " + path + ": " + e.getCause();
+                }
+                if (failure != null) {
+                    ScilabModalDialog.show(GuiDesignerTab.this, failure, APPLICATION, IconType.ERROR_ICON);
+                }
+            }
+        }.execute();
     }
 
     /**
@@ -408,7 +454,12 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         }
     }
 
-    /** The unmodelled regions of one design, oldest first -- {@link Design#unmodelled()}'s own order. */
+    /**
+     * The unmodelled regions of one design, in SOURCE order -- {@link
+     * Design#addUnmodelled} re-sorts by start offset on every insertion, so
+     * the list reads top-of-file first regardless of the order the parser
+     * happened to find them in.
+     */
     private static final class RegionsTableModel extends AbstractTableModel {
 
         private static final String[] COLUMNS = {"Code", "Reason"};
