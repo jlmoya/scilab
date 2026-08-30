@@ -282,7 +282,7 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         SourceValidator alwaysValid = source -> true;
         try {
             String rendered = DesignWriter.write(design, new SourceDocument(design.source()), alwaysValid);
-            Files.write(Paths.get(path), rendered.getBytes(StandardCharsets.UTF_8));
+            AtomicFileWriter.write(Paths.get(path), rendered.getBytes(StandardCharsets.UTF_8));
         } catch (WriteRefusedException e) {
             ScilabModalDialog.show(this, e.getMessage(), APPLICATION, IconType.ERROR_ICON);
         } catch (IOException e) {
