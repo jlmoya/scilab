@@ -21,6 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +52,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.scilab.modules.commons.ScilabConstants;
 
 import org.scilab.modules.gui.bridge.tab.SwingScilabDockablePanel;
+import org.scilab.modules.action_binding.InterpreterManagement;
 import org.scilab.modules.gui.bridge.window.SwingScilabWindow;
 import org.scilab.modules.gui.messagebox.ScilabModalDialog;
 import org.scilab.modules.gui.messagebox.ScilabModalDialog.IconType;
@@ -119,6 +123,7 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
     private final PropertiesTableModel propertiesModel;
     private final JTable regionsTable;
     private final JButton saveButton;
+    private final JButton previewButton;
 
     /**
      * Opens {@code path} (or an empty designer, when it is null or empty) in
@@ -212,6 +217,10 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         saveButton.setEnabled(path != null && !path.isEmpty());
         saveButton.addActionListener(e -> onSave());
 
+        previewButton = new JButton("Preview");
+        previewButton.setToolTipText("Run this file in Scilab, so you can see the GUI it builds");
+        previewButton.addActionListener(e -> onPreview());
+
         setContentPane(buildContentPane(propertiesTable));
         tree.setSelectionPath(new TreePath(design.root()));
 
@@ -249,6 +258,54 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
         return new Size(width, height);
     }
 
+    /**
+     * Write the design to a throwaway file and ask Scilab to run it, so the user
+     * can see the actual GUI rather than a drawing of one.
+     *
+     * <p>Phase 1 has no canvas, and this is deliberately not a substitute for the
+     * one phase 2 brings: it renders nothing itself. It hands the source to
+     * Scilab and lets Scilab build the real thing, which means what appears
+     * cannot disagree with what the file says. When the canvas does arrive, any
+     * disagreement between it and this is a bug with a reproducible test.
+     *
+     * <p>This RUNS the file, including any code in it. That is the point -- it is
+     * the user's own file, opened deliberately -- but it is why the button says
+     * so in its tooltip rather than looking like a passive view.
+     */
+    private void onPreview() {
+        try {
+            Path tmp = writePreviewFile(design.source());
+            InterpreterManagement.requestScilabExec(execCommand(tmp));
+        } catch (IOException e) {
+            report("could not write the preview file: " + e.getMessage());
+        }
+    }
+
+    /**
+     * The preview file is written as UTF-8 regardless of the charset the original
+     * was decoded with, because Scilab reads scripts as UTF-8 and this copy exists
+     * only to be executed. The file on disk is untouched, and {@link #onSave}
+     * still writes it back in its own charset.
+     */
+    static Path writePreviewFile(String source) throws IOException {
+        Path tmp = Files.createTempFile("guidesigner-preview-", ".sce");
+        tmp.toFile().deleteOnExit();
+        Files.write(tmp, source.getBytes(StandardCharsets.UTF_8));
+        return tmp;
+    }
+
+    /**
+     * {@code exec} with mode -1 so the console shows the GUI appearing rather
+     * than a transcript of the code that built it. Any double quote in the path
+     * is doubled, which is how Scilab escapes one inside a double-quoted string;
+     * a single quote needs no special handling there, and would be the more
+     * dangerous of the two to leave unescaped.
+     */
+    static String execCommand(Path previewFile) {
+        String quoted = previewFile.toAbsolutePath().toString().replace("\"", "\"\"");
+        return "exec(\"" + quoted + "\", -1);";
+    }
+
     private void display() {
         SwingScilabWindow window = SwingScilabWindow.createWindow(true);
         window.addTab(this);
@@ -259,6 +316,7 @@ final class GuiDesignerTab extends SwingScilabDockablePanel {
     private JPanel buildContentPane(JTable propertiesTable) {
         JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT));
         top.add(saveButton);
+        top.add(previewButton);
 
         JPanel propertiesPanel = new JPanel(new BorderLayout());
         propertiesPanel.add(new JLabel("Properties"), BorderLayout.NORTH);
