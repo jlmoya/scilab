@@ -3,7 +3,8 @@
 A state-of-the-art, **bi-directional** visual GUI designer for Scilab 2027, replacing the
 `guibuilder` ATOMS toolbox with a core module.
 
-Status: **design approved 2026-08-29** (revision 2). **Phase 1 implemented 2026-08-30**;
+Status: **design approved 2026-08-29** (revision 4). **Phase 1 implemented 2026-08-30**;
+**phase 2 editing semantics approved 2026-08-31** — see section 15;
 phases 2–4 not yet started.
 
 Revision 2 replaces the project-file-plus-guarded-regions model of revision 1 with
@@ -356,9 +357,13 @@ building an editor on top is the entire point of the split.
 
 **Phase 2 — the canvas.** Palette, design surface, selection, move, resize, multi-select,
 snapping and alignment guides, align/distribute, property editing in the inspector,
-undo/redo, the embedded callback editor, and preview. Absolute positioning. At the end of
-this phase the new module is a strictly better tool than the ATOMS toolbox, and the toolbox
-is retired here.
+undo/redo, the embedded callback editor. Preview shipped early, during phase 1. Absolute
+positioning **plus normalized units** (see 15.2). At the end of this phase the new module is
+a strictly better tool than the ATOMS toolbox, and the toolbox is retired here.
+
+**Section 15 settles the editing semantics this paragraph leaves open** — how an edit reaches
+the source, what happens to a property that is absent or computed, and how undo stays unable
+to corrupt a document.
 
 **Phase 3 — layouts.** Border, Grid and GridBag: parsing them out of existing files, drop
 zones, constraint editing, a canvas driven by the real Swing layout managers, and writing
@@ -438,3 +443,144 @@ courtesy.
 - **Module plumbing** touches CMake, Maven and the classpath, where `ScilabClasspath.cmake`
   fatals if a token's glob does not match exactly one jar. Known ground after the build
   migration, but phase-1 work that must be budgeted.
+
+## 15. Phase 2 editing semantics
+
+Approved 2026-08-31. Section 11's phase-2 paragraph says what the canvas *is*; this section
+says what an edit *does*. Everything here is new capability — phase 1 only ever preserved
+bytes, and phase 2 is the first time the tool changes them on purpose.
+
+### 15.1 How an edit reaches the source
+
+Four kinds of edit, four mechanisms. All of them are minimal-diff: section 8's rule stands,
+and nothing outside the span being changed is rewritten.
+
+- **A literal property changes** — the common case, covering every drag, resize and inspector
+  edit. Replace that property's span; `PropertyValue.range()` already records it exactly.
+- **A property that was absent is set.** A hand-written widget may carry no `position` at all,
+  relying on Scilab's default, and dragging it has to add one. This is the one capability the
+  writer lacks: it can only replace spans, and nothing anchors "just before this call's
+  closing parenthesis". The parser knows that offset internally as `Call.closeIndex`; phase 2
+  surfaces it on the model as `Node.argumentInsertionPoint()`. The insertion is then a
+  zero-length replace, which `SourceDocument` already handles — that is what the same-start
+  tie-break fix during phase 1 was for.
+- **A widget is added.** Insert a whole statement after the last sibling's statement, matching
+  that sibling's indentation; with no siblings, after the `figure(...)` statement.
+- **A widget is deleted.** Remove its statement span. **Its callback function is not touched.**
+  That is user code and a widget can be deleted by accident; the inspector reports the
+  now-orphaned callback instead.
+
+Both of section 8's refusals continue to apply, and `DesignWriter` already enforces them: no
+edit may overlap an unmodelled region, and no edit may touch a locked property. The canvas
+offers only the handles the writer would accept, so a refusal is never a surprise — the user
+finds out by the handle being absent, not by a dialog after the fact.
+
+### 15.2 Units
+
+A design carries a units choice: **pixels** (fixed) or **normalized** (fractions of the
+parent, so widgets scale when the window resizes). Normalized is Scilab's own cheap adaptive
+mechanism and costs nothing but a property — it is the phase-2 answer to wanting a GUI that
+adapts, with gridbag weights, the real springs, arriving in phase 3.
+
+The canvas converts at exactly one point: normalized values are multiplied by the figure size
+to place, and divided to store. One conversion site means the two modes cannot disagree.
+
+This must be got right rather than inherited. The old ATOMS generator writes
+`'unit','normalized'` and then `'Position',[20,200,80,25]` — pixel numbers under a normalized
+unit. Its own output is internally inconsistent, so the designer decides deliberately which
+units it is writing and keeps the position consistent with them.
+
+### 15.3 Widgets whose position is an expression
+
+A widget written as `"position", [10 10 w 20]` has no position we can know, because `w` is
+computed at run time. It therefore **cannot be drawn**, and what cannot be drawn cannot be
+dragged.
+
+Such widgets appear in the tree marked *not placed — position is computed*. The inspector
+offers **"Set a literal position"**, which names the expression being replaced and, on
+acceptance, converts it; the widget then appears on the canvas and behaves like any other.
+
+An earlier draft had the conversion happen mid-drag behind a confirmation. That was
+incoherent — there was nothing on the canvas to drag — and worse as a design: trading a
+computation for a constant is a decision, not a side effect of a mouse gesture. The drag path
+consequently needs no dialog at all, because everything draggable is by definition literal.
+
+Note the scope: it is the *property* that locks, not the widget. A widget whose `string` is
+computed drags perfectly well; only its string resists editing.
+
+### 15.4 Commands, and why undo cannot corrupt a file
+
+**Commands change the model only. They never touch source text.**
+
+Source edits are derived once, at save, by walking the model against the ranges the parser
+recorded: a property whose value differs from the parsed one becomes a replacement at its
+range; a property that was not there becomes an insertion at the anchor; a new node becomes an
+inserted statement; a deleted node becomes a removed span.
+
+Two things follow. Undo and redo cannot corrupt the document, because they never see one. And
+exactly one place in the system turns intent into bytes, so the byte-identical guarantee has a
+single point of failure rather than one per gesture.
+
+Granularity is **one command per gesture**, not per event: a drag is one command however many
+pixels it crossed, a multi-select move is one command covering all of them, and a text field
+commits on Enter or focus loss rather than per keystroke. Undo should step the way the user
+thinks, not the way the mouse fires.
+
+### 15.5 What the canvas draws
+
+Each node renders as the same Swing class Scilab uses — `JButton` for a pushbutton,
+`JCheckBox`, `JSlider`, `JScrollPane` around a `JList` for a listbox. That is section 4's
+approach A, and it is why the canvas cannot drift from the runtime: it is the same components
+under the same rules.
+
+The canvas is the figure, sized from `figure_size`, so what is on screen is the window being
+designed.
+
+**A transparent overlay owns every mouse event.** Widgets render but never receive input, so
+clicking a `JButton` selects it rather than pressing it. The old builder faked this with
+marker rectangles and `gce()`, which is how a stray click could delete its own component
+listbox.
+
+Interaction: click to select, shift-click to extend, marquee on empty space; eight resize
+handles; drag to move; arrows nudge 1px and shift-arrow 10px; Escape cancels a drag in
+flight; snapping to sibling edges and centres and to parent margins with live guides; align
+and distribute across a multi-selection.
+
+Unmodelled regions are not drawn. They are spans of code with no geometry, and they stay in
+the tree where phase 1 put them.
+
+### 15.6 Callback editing
+
+Editing a callback body means replacing that function's body span, so the model gains callback
+functions and their ranges. `FunctionScanner` already locates them; phase 1 simply did not
+model them.
+
+The embedded `ScilabEditorPane` — the same component SciNotes uses, already reused outside it
+by `helptools` and `preferences` — shows the selected widget's callback with real Scilab
+highlighting. Creating a widget offers to create its callback. **From that moment the body is
+the user's and is never regenerated.** Renaming a tag offers to rename the callback and update
+the reference; declining leaves both untouched and warns, rather than silently orphaning it.
+
+### 15.7 Testing
+
+- **Commands**: property-based — every command's undo restores the exact prior model state.
+- **Edit derivation**: headless, with golden files. The governing case is that a design with
+  no changes derives **no edits at all** — phase 1's byte-identical guarantee, restated one
+  level up, where phase 2 can break it.
+- **Units**: a round trip through normalized and back to pixels changes no bytes.
+- **Refusals**: an edit overlapping an unmodelled region or a locked property is refused, and
+  the canvas does not offer the handle that would produce one.
+- **Canvas**: thin, as in phase 1 — only what runs headlessly.
+- **End to end**: open a corpus file, move a widget, save, run the result, and assert the
+  widget moved and nothing else changed.
+
+### 15.8 Retiring the ATOMS toolbox
+
+The last task of the phase, not the first. Drop the toolbox from the tbxManager catalog and
+the autoload manifest, correct `cfg.verified`, and make `guibuilder` an alias for
+`guidesigner`. The repository stays as history, carrying the fixes made to it during this
+work — including the 2026-08-31 generator fix, without which every GUI it ever produced failed
+to run on Scilab 2027.
+
+This happens only once the replacement genuinely does more than the original, opening the
+files the original produced included — which is already a phase-1 corpus test.
